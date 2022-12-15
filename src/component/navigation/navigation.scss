@@ -1,0 +1,17 @@
+.navParent {
+    .navIcon {
+        min-width: auto !important;
+        margin-right: 18px;
+    }
+}
+
+.navSubParent {
+    .navSubTxt {
+        background-color: #e8edf2 !important;
+
+        &:hover {
+
+            background-color: #d3d3d3 !important;
+        }
+    }
+}
