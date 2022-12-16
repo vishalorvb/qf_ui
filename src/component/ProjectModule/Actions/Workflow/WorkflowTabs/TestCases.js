@@ -1,29 +1,31 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../../../../Environment"; 
 import WorkflowNav from "../WorkflowNav";
 import Table from "../../../../Table";
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CreateTestcase from "../CreateTestcase";
 
-export default function TestCases() {
+export default function TestCases(props) {
 
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const {module} = props;
 
 const [testCaseList,setTestCaseList] = useState([]);
 const [dataset,setDataset] = useState([]);
+const [selectedTestcase,setSelectedTestcase] = useState({})
+const [anchorEl, setAnchorEl] = useState(null);
+const open = Boolean(anchorEl);
+const handleClick = (event) => {
+  setAnchorEl(event.currentTarget);
+};
+const handleClose = () => {
+  setAnchorEl(null);
+};
 
 const columns = [
   { field: 'id', headerName: 'S.no.', flex: 1, valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, },
@@ -57,9 +59,12 @@ const columns = [
     renderCell: (param) => {
       return (
           <div >
-             <ContentCopyOutlinedIcon/>
-             <ContentCopyOutlinedIcon/>
-             <ContentCopyOutlinedIcon/>
+             <IconButton><ContentCopyIcon/></IconButton>
+             <IconButton><EditIcon/></IconButton>
+             <IconButton><DeleteIcon/></IconButton>
+             
+             
+             
           </div>
       )
     },   
@@ -67,17 +72,18 @@ const columns = [
   ];
 
   const getModuleTestCases = () => {
-    axios.get(baseUrl+'/ProjectMS/Project/getModuleTestCases?moduleId=1035')
+    axios.get(baseUrl+`/ProjectMS/Project/getModuleTestCases?moduleId=${module?.module_id}`)
     .then((resp)=>{
         setTestCaseList(resp.data)
+        setSelectedTestcase(resp.data[0])
     })
     .catch((err)=>{
         console.error(err);
     })
   }
 
-  const getModuleScreensElements = () => {
-    axios.get(baseUrl+'/ProjectMS/Project/getModuleTestCaseDatasets?testcase_id=751')
+  const getDatasets = () => {
+    axios.get(baseUrl+`/ProjectMS/Project/getModuleTestCaseDatasets?testcase_id=${selectedTestcase?.testcase_id}`)
     .then((resp)=>{
         setDataset(resp.data)
     })
@@ -88,13 +94,20 @@ const columns = [
 
   useEffect(() => {
     getModuleTestCases();
-    getModuleScreensElements();
-  }, [])
+  }, [module])
+
+  useEffect(() => {
+    selectedTestcase?.testcase_id !== undefined && getDatasets();
+  }, [selectedTestcase])
   
 
     return(
         <Box sx={{ display: "flex", gap: 1 }}>
-      <WorkflowNav workflowModules={testCaseList} setWorkFlowModuleHead={console.log} navigationHeader={"TestCases"}/>
+          <Box>
+        
+       
+      {testCaseList.length > 0 ? <WorkflowNav workflowModules={testCaseList} selectClickedElement={console.log} navigationHeader={"TestCases"}/> : "No testcase Found"}
+      </Box>
       <Box
         component="main"
         sx={{
@@ -105,18 +118,23 @@ const columns = [
           margin: "0px",
         }}
       >
-        <Grid container justifyContent='flex-end' sx={{marginBottom:'10px'}}>
+        <Grid container justifyContent='flex-end' sx={{marginBottom:'10px'}} gap={1}>
+        <Button
+            variant="contained"
+          >
+            Create TestCase
+          </Button>
           <Button
-           variant="contained"
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-         Create Dataset
-      </Button>
-      <Menu
+            variant="contained"
+            id="basic-button"
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+          >
+            Create Dataset
+          </Button>
+          <Menu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}

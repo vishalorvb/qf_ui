@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import { baseUrl } from '../../../../Environment';
 import axios from "axios";
 
-export default function Workflow() {
+export default function Workflow(props) {
   const navigate = useNavigate();
+
+  const {projectId} = props;
 
   const [workflowModules,setWorkFlowModule] = useState([
     {
@@ -276,10 +278,10 @@ export default function Workflow() {
 
   const getWorkflowModules = () => {
 
-    axios.get(baseUrl+"/ProjectMS/Project/getProjectWorkflows?projectId=80")
+    axios.get(baseUrl+`/ProjectMS/Project/getProjectWorkflows?projectId=${80}`)
     .then((resp)=>{
         setWorkFlowModule(resp.data);
-        console.log(resp.data);
+        setWorkFlowModuleDetails(resp.data[0]);
     })
   }
  
@@ -296,7 +298,7 @@ export default function Workflow() {
     <Box sx={{ display: "flex", gap: 1 }}>
       <WorkflowNav
         workflowModules={workflowModules}
-        setWorkFlowModuleHead={setWorkFlowModuleDetails}
+        selectClickedElement={setWorkFlowModuleDetails}
         navigationHeader={"WorkFlows"}
       />
       <Box

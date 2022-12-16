@@ -1,3 +1,4 @@
+import './navigation.scss';
 import NavItems from "./NavigationRenderer"
 
 import List from '@mui/material/List';
@@ -9,7 +10,6 @@ import PeopleIcon from '@mui/icons-material/People';
 
 export default function Navigation({openDrawer,setDrawerOpen}) {
 
-    
 
     const navItems = [
         {

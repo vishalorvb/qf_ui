@@ -14,7 +14,7 @@ export default function Screens(props) {
 const [screensList,setScreensList] = useState([]);
 const [screensElements,setScreensElements] = useState([]);
 const [selectedScreen,setSelectedScreen] = useState({})
-const [showCreateScreen,setShowCreateScreen] = useState(false)
+const [showCreateScreen, setShowCreateScreen] = useState(false)
 
 const columns = [
   { field: 'id', headerName: 'S.no.', flex: 1, valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, },
@@ -101,8 +101,8 @@ const columns = [
         </Grid>
         
         <Table rows={screensElements} columns={columns} hidefooter={false} />
+       <CreateScreen showCreateScreen={showCreateScreen} setShowCreateScreen={setShowCreateScreen} module={module}/>
       </Box>
-      <CreateScreen module={module} showCreateScreen={showCreateScreen} setShowCreateScreen={setShowCreateScreen}/>
     </Box>
     )
 }

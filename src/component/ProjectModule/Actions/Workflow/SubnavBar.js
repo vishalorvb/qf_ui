@@ -8,17 +8,17 @@ import TestCases from './WorkflowTabs/TestCases';
 import TestSets from './WorkflowTabs/TestSets';
 import Report from './WorkflowTabs/Report';
 import API from './WorkflowTabs/API';
+import { useEffect } from 'react';
 
 export default function SubnavBar ({workFlowModuleDetails}) {
 
     const tabs = [
-      {value:"module_name",label:workFlowModuleDetails.module_name,component:'',moduleType:[1,2,3,4,5,6,7,8,9,0]},
-      {value:"api",label:"API",component:<API/>,moduleType:[1]},
-      {value:"page",label:"Pages",component:<PagesScreen/>,moduleType:[1,2]},
-      {value:"screen",label:"Screens",component:<Screens/>,moduleType:[1,2]},
-      {value:"testCase",label:"TestCases",component:<TestCases/>,moduleType:[1,2]},
-      {value:"testSet",label:"TestSets",component:<TestSets/>,moduleType:[1,2]},
-      {value:"report",label:"Report",component:<Report/>,moduleType:[1,2]},
+      {value:"api",label:"API",component:<API module={workFlowModuleDetails}/>,moduleType:[1]},
+      {value:"page",label:"Pages",component:<PagesScreen module={workFlowModuleDetails}/>,moduleType:[1,2]},
+      {value:"screen",label:"Screens",component:<Screens module={workFlowModuleDetails}/>,moduleType:[1,2]},
+      {value:"testCase",label:"TestCases",component:<TestCases module={workFlowModuleDetails}/>,moduleType:[1,2]},
+      {value:"testSet",label:"TestSets",component:<TestSets module={workFlowModuleDetails}/>,moduleType:[1,2]},
+      {value:"report",label:"Report",component:<Report module={workFlowModuleDetails}/>,moduleType:[1,2]},
     ];
 
     const [value, setValue] = React.useState(null);
@@ -31,6 +31,19 @@ export default function SubnavBar ({workFlowModuleDetails}) {
     const switchTab = (component) => {
         setTabDisplay(component)
     }
+
+    useEffect(() => {
+      setTabDisplay(()=>{
+        const match = tabs.find((tab)=> tab.moduleType.includes(workFlowModuleDetails.module_type));
+        return match?.component;
+      })
+      setValue(()=>{
+        const match = tabs.find((tab)=> tab.moduleType.includes(workFlowModuleDetails.module_type));
+        return match?.value;
+      })
+      console.log(workFlowModuleDetails)
+    }, [workFlowModuleDetails])
+    
 
 
     return (

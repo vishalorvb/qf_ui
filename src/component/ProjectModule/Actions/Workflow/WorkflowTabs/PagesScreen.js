@@ -6,8 +6,9 @@ import Table from "../../../../Table";
 import { baseUrl } from "../../../../../Environment";
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 
-export default function PagesScreen() {
+export default function PagesScreen(props) {
 
+  const {module} = props;
 
 const columns = [
   { field: 'id', headerName: 'S.no.', flex: 1, valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,},
@@ -49,29 +50,41 @@ const columns = [
 
   const [pageElements,setPageElements] = useState([])
   const [pages,setPages] = useState([])
+  const [selectedPage,setSelectedPage] = useState({})
+  const [preSelectedElement,setPreSelectedElement] = useState([])
 
   const getPage = () => {
-    axios.get(baseUrl+'/ProjectMS/Project/getModulePages?moduleId=79')
+    axios.get(baseUrl+`/ProjectMS/Project/getModulePages?moduleId=${module?.module_id}`)
     .then((resp)=>{
       setPages(resp.data);
+      setSelectedPage(resp.data[0])
     })  
   }
 
   const getPageElements = () => {
-    axios.get(baseUrl+'/ProjectMS/Project/getModulePagesElements?webPageId=212')
+    axios.get(baseUrl+`/ProjectMS/Project/getModulePagesElements?webPageId=${selectedPage?.web_page_id}`)
     .then((resp)=>{
       setPageElements(resp.data);
+      setPreSelectedElement(()=>{
+        const data = resp.data;
+        const selectedData = data.filter((item)=>item.is_selected === true).map((item)=>item.id);
+        console.log(selectedData)
+        return selectedData;
+      })
     })
   }
 
   useEffect(()=>{
     getPage();
-    getPageElements();
-  },[])
+  },[module])
+
+  useEffect(()=>{
+    selectedPage?.web_page_id !== undefined && getPageElements();
+  },[selectedPage])
 
     return(
         <Box sx={{ display: "flex", gap: 1 }}>
-      <WorkflowNav workflowModules={pages} setWorkFlowModuleHead={console.log} navigationHeader={"Pages"}/>
+      { pages.length > 0 ? <WorkflowNav workflowModules={pages} selectClickedElement={setSelectedPage} navigationHeader={"Pages"}/> : "No Pages Found"}
       <Box
         component="main"
         sx={{
@@ -91,7 +104,7 @@ const columns = [
           
         </Grid>
         
-        <Table rows={pageElements} columns={columns} hidefooter={false} checkboxSelection={true}/>
+        <Table rows={pageElements} columns={columns} hidefooter={false} checkboxSelection={true} selectionModel={preSelectedElement} setSelectionModel={setPreSelectedElement}/>
        
       </Box>
     </Box>

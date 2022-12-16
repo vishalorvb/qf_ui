@@ -26,9 +26,9 @@ export default function Table(props) {
   // columns for header details
   // hidefooter for true to hide footer
 
-  const { rows, columns, checkboxSelection, selectionModel, setSelectionModel } = props
+  const { rows, columns, hidefooter, checkboxSelection, selectionModel, setSelectionModel } = props
   const [pagesize, setPagesize] = useState(10);
-
+  
 
   return (
     <div className="tableParent">
@@ -42,7 +42,7 @@ export default function Table(props) {
         rowHeight={45}
         autoHeight={true}
         disableColumnMenu
-        hideFooter={rows.length > 10 ? false : true}
+        hideFooter={rows.length < 11 ? true : false}
         showCellRightBorder
         showColumnRightBorder
         disableSelectionOnClick
@@ -72,7 +72,7 @@ export default function Table(props) {
             },
           },
         }}
-        onSelectionModelChange={(i) => { console.log(i); setSelectionModel(i) }}
+        onSelectionModelChange={(i)=>{console.log(i);setSelectionModel(i)}}
         selectionModel={selectionModel}
         components={{ Toolbar: QuickSearchToolbar }}
       />
