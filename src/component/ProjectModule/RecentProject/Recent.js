@@ -1,4 +1,4 @@
-
+import '../projects.scss';
 
 import { Alert, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
@@ -27,6 +27,10 @@ import Workflow from '../Actions/Workflow/Workflow';
 import ActionOverview from '../Actions/Overview';
 
 function Recent() {
+    const [showWorkflow, setShowWorkflow] = useState({
+        flag: false,
+        projectId: null
+    });
     let [createProject, setCreateProject] = useState(false)
     let [popup, setPopup] = useState(false)
     let [pid, setPid] = useState()
@@ -156,6 +160,16 @@ function Recent() {
 
     }
 
+    const handleWorkflow = (projectId) => {
+        setAction("workflow")
+        if (showWorkflow.projectId === projectId) {
+            setShowWorkflow((pv) => ({ ...pv, 'flag': !pv.flag, 'projectId': projectId }))
+        }
+        else {
+            setShowWorkflow((pv) => ({ ...pv, 'flag': true, 'projectId': projectId }))
+        }
+    }
+
     const columns = [
         {
 
@@ -163,7 +177,7 @@ function Recent() {
             field: 'sno',
             valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
             flex: 1,
-            align: 'center',
+            align: 'left',
             sortable: false,
         },
         {
@@ -171,6 +185,7 @@ function Recent() {
             headerName: 'Project Name',
             flex: 3,
             sortable: false,
+            align: 'left',
 
         },
         {
@@ -178,7 +193,7 @@ function Recent() {
             headerName: 'Automation Framework',
             flex: 3,
             sortable: false,
-            align: 'center',
+            align: 'left',
 
         },
         {
@@ -199,9 +214,9 @@ function Recent() {
                     )
                 }
             },
-            flex: 2,
+            flex: 1,
             sortable: false,
-            align: 'center',
+            align: 'left',
         },
         {
             headerName: 'Action',
@@ -216,7 +231,7 @@ function Recent() {
                             <IconButton onClick={() => { handleEdit(param.row) }}><EditIcon ></EditIcon></IconButton>
                         </Tooltip>
                         <Tooltip title="Workflow">
-                            <IconButton onClick={() => setAction("Workflow")}><SchemaIcon ></SchemaIcon></IconButton>
+                            <IconButton onClick={() => handleWorkflow(param.row.id)}><SchemaIcon ></SchemaIcon></IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
                             <IconButton onClick={(e) => { handleDeletePopup(param.row.id, param.row.user_id) }}><DeleteIcon ></DeleteIcon></IconButton>
@@ -235,9 +250,9 @@ function Recent() {
                 )
             },
             flex: 4,
-            headerAlign: "center",
+            headerAlign: "left",
             sortable: false,
-            align: 'center',
+            align: 'left',
         }
     ];
 
@@ -264,8 +279,9 @@ function Recent() {
 
 
     return (
-        <div >
-            <div className="recenttable" style={{ margin: "2px", marginBottom: '20px' }} >
+        <div className="recentProjects">
+            
+            <div className="tableTopSection fd-r"  >
                 <Button onClick={() => { setCreateProject(pv => !pv); setAction("CreateProject") }} variant="contained" endIcon={createProject ? <RemoveIcon></RemoveIcon> : <AddIcon />} >Create Project </Button>
             </div>
             <Table
@@ -314,7 +330,7 @@ function Recent() {
                 message={popmessage}
                 onConfirm={() => DeleteProjectFromUser(pid, uid)}
             ></ConfirmPop>
-            {<Workflow />}
+            {showWorkflow.flag && action == "workflow" && <Workflow projectId={showWorkflow.projectId} />}
 
 
         </div>

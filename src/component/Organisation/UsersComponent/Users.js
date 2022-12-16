@@ -62,9 +62,9 @@ function Users() {
 
   const getUserDetails = () => {
     axios
-      .get(baseUrl+`/OrganisationMS/Users/getAllUsers`)
+      .get(baseUrl + `/OrganisationMS/Users/getAllUsers`)
       .then((Response) => {
-        var response=Response.data;
+        var response = Response.data;
         setUsers(response);
       })
       .catch((error) => {
@@ -77,18 +77,18 @@ function Users() {
   }, []);
 
   const columns = [
-    { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
+    { headerName: "S.No", field: 'sno', valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "left", sortable: false, align: 'left' },
     {
       field: 'name',
       headerName: 'Name',
       flex: 3,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: 'left',
       renderCell: (params) => {
         return (
           <div>
-            {params.row.fname +" "+ params.row.lname}
+            {params.row.fname + " " + params.row.lname}
           </div>
         )
       }
@@ -97,7 +97,7 @@ function Users() {
       field: 'email',
       headerName: 'Email',
       flex: 3,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: 'left'
 
@@ -106,14 +106,14 @@ function Users() {
       field: 'sid',
       headerName: 'User Id',
       flex: 3,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: 'left'
     },
     {
-      field: '',
+      field: 'actions',
       headerName: 'Actions',
-      flex: 3,
+      flex: 2,
       sortable: false,
       renderCell: (param) => {
         return (
@@ -135,29 +135,29 @@ function Users() {
           </>
         )
       },
-      headerAlign: "center",
-      align: 'center',
+      headerAlign: "left",
+      align: 'left',
     },
   ];
 
   return (
-    <div>
-      <div className="recenttable" style={{ flot: "right", marginBottom:"10px" }}>
+    <div className="users">
+      <div className="tableTopSection fd-r">
         <Button variant="contained" endIcon={<AddIcon />} onClick={addUserHandler}>Add User</Button>
       </div>
-      <SnackbarNotify open={addSuccessMsg} close={setAddSuccessMsg} msg="User added successfully" severity="success"/>
-      <SnackbarNotify open={editSuccessMsg} close={setEditSuccessMsg} msg="Changes are updated" severity="success"/>
-      <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="User deleted successfully" severity="success"/>
-      <SnackbarNotify open={actSuccessMsg} close={setActSuccessMsg} msg="User is active" severity="success"/>
-      <SnackbarNotify open={deactSuccessMsg} close={setDeactSuccessMsg} msg="User is inactive" severity="success"/>
-      <SnackbarNotify open={addErrorMsg} close={setAddErrorMsg} msg="User is already exist with this id, Please select another id" severity="error"/>
-      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
-      <div className="datatable" style={{ marginTop: "20px" }}>
+      <SnackbarNotify open={addSuccessMsg} close={setAddSuccessMsg} msg="User added successfully" severity="success" />
+      <SnackbarNotify open={editSuccessMsg} close={setEditSuccessMsg} msg="Changes are updated" severity="success" />
+      <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="User deleted successfully" severity="success" />
+      <SnackbarNotify open={actSuccessMsg} close={setActSuccessMsg} msg="User is active" severity="success" />
+      <SnackbarNotify open={deactSuccessMsg} close={setDeactSuccessMsg} msg="User is inactive" severity="success" />
+      <SnackbarNotify open={addErrorMsg} close={setAddErrorMsg} msg="User is already exist with this id, Please select another id" severity="error" />
+      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
+      <div className="datatable">
         {open ? <AddUserPopup open={open} setOpen={setOpen} getUserDetails={getUserDetails} setAddSuccessMsg={setAddSuccessMsg} users={users} addErrorMsg={addErrorMsg} setAddErrorMsg={setAddErrorMsg} setValidationMsg={setValidationMsg} /> : ""}
         {openEdit ? <EditUserPopup object={editObject} openEdit={openEdit} setOpenEdit={setOpenEdit} getUserDetails={getUserDetails} setEditSuccessMsg={setEditSuccessMsg} setValidationMsg={setValidationMsg} /> : ""}
-        {openDelete ? <DeleteUserPopup object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete} getUserDetails={getUserDetails} setDelSuccessMsg={setDelSuccessMsg}/> : ""}
-        {openActive ? <ActiveUserPopup object={activeObject} openActive={openActive} setOpenActive={setOpenActive} getUserDetails={getUserDetails} setActSuccessMsg={setActSuccessMsg}/> : ""}
-        {openDeactive ? <DeactiveUserPopup object={deactiveObject} openDeactive={openDeactive} setOpenDeactive={setOpenDeactive} getUserDetails={getUserDetails} setDeactSuccessMsg={setDeactSuccessMsg}/> : ""}
+        {openDelete ? <DeleteUserPopup object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete} getUserDetails={getUserDetails} setDelSuccessMsg={setDelSuccessMsg} /> : ""}
+        {openActive ? <ActiveUserPopup object={activeObject} openActive={openActive} setOpenActive={setOpenActive} getUserDetails={getUserDetails} setActSuccessMsg={setActSuccessMsg} /> : ""}
+        {openDeactive ? <DeactiveUserPopup object={deactiveObject} openDeactive={openDeactive} setOpenDeactive={setOpenDeactive} getUserDetails={getUserDetails} setDeactSuccessMsg={setDeactSuccessMsg} /> : ""}
         <Table
           columns={columns}
           rows={users}

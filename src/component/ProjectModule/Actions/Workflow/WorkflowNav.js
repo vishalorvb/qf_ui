@@ -3,13 +3,13 @@ import { useState } from "react";
 import NavItem from "./NavItem";
 
 export default function WorkflowNav(props) {
-  const { workflowModules, setWorkFlowModuleHead, navigationHeader } = props;
+  const { workflowModules, selectClickedElement, navigationHeader } = props;
 
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleListItemClick = (event, index, mod) => {
     setSelectedIndex(index);
-    setWorkFlowModuleHead(mod);
+    selectClickedElement(mod);
   };
 
   return (

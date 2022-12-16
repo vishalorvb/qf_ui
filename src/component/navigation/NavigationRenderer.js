@@ -18,7 +18,7 @@ export default function NavigationRenderer({ nav, openDrawer, setDrawerOpen }) {
     return (
       <ListItemButton
         key={subnav.item}
-        sx={{ pl: 10 }}
+        className="navSubTxt"
         onClick={() => navigate(subnav.route)}
       >
         <ListItemText primary={subnav.item} />
@@ -32,20 +32,20 @@ export default function NavigationRenderer({ nav, openDrawer, setDrawerOpen }) {
 
   return (
     <>
-      <Tooltip title={openDrawer ? "" : nav.item} placement="right-start">
+      <Tooltip className="navParent" title={openDrawer ? "" : nav.item} placement="right-start">
         <ListItemButton
           onClick={() => {
             !openDrawer && setDrawerOpen(true);
             setShowSubMenu((ps) => !ps);
           }}
         >
-          <ListItemIcon>{nav.icon}</ListItemIcon>
-          <ListItemText primary={nav.item} />
+          <ListItemIcon className="navIcon">{nav.icon}</ListItemIcon>
+          <ListItemText className="navTxt" primary={nav.item} />
           {showSubMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
       </Tooltip>
       <Collapse in={showSubMenu} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List className="navSubParent" disablePadding>
           {nav.children.map((item) => subMenuRender(item))}
         </List>
       </Collapse>
