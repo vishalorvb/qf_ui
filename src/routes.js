@@ -12,7 +12,7 @@ const CreateWorkFlow = React.lazy(() => import('./component/ProjectModule/Action
 const ProjectFavorite = React.lazy(() => import('./component/ProjectModule/Favourites/Favourite'))
 const ProjectSearch = React.lazy(() => import('./component/ProjectModule/Search/SearchProject'))
 
-const et = React.lazy(() => import('./component/ProjectModule/Actions/Workflow/ExecutionToolbar'))
+const et = React.lazy(() => import('./Workflows'))
 
 const routes = [
   { path: '/recent-project', name: 'ProjectRecent', element: ProjectRecent, exact: true },

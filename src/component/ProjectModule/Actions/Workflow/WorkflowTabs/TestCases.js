@@ -72,7 +72,7 @@ const columns = [
   ];
 
   const getModuleTestCases = () => {
-    axios.get(baseUrl+`/ProjectMS/Project/getModuleTestCases?moduleId=${module?.module_id}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getModuleTestCases?moduleId=${module?.module_id}`)
     .then((resp)=>{
         setTestCaseList(resp.data)
         setSelectedTestcase(resp.data[0])
@@ -83,7 +83,7 @@ const columns = [
   }
 
   const getDatasets = () => {
-    axios.get(baseUrl+`/ProjectMS/Project/getModuleTestCaseDatasets?testcase_id=${selectedTestcase?.testcase_id}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getModuleTestCaseDatasets?testcase_id=${selectedTestcase?.testcase_id}`)
     .then((resp)=>{
         setDataset(resp.data)
     })

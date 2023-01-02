@@ -52,7 +52,7 @@ function Favourite() {
     })
 
     function getRows() {
-        axios.get(baseUrl + "/ProjectMS/Project/getUserFavouriteProject?userId=" + userId).then(response => {
+        axios.get(baseUrl + "/ProjectsMS/Project/getUserFavouriteProject?userId=" + userId).then(response => {
             setRows(response.data)
             console.log(response.data)
         })
@@ -99,7 +99,7 @@ function Favourite() {
         console.log(projectId + "=======" + userId)
         axios({
             method: 'delete',
-            url: baseUrl + '/ProjectMS/Project/deleteProjectFromUser',
+            url: baseUrl + '/ProjectsMS/Project/deleteProjectFromUser',
             data: {
                 projectId: projectId,
                 userId: userId

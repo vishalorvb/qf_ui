@@ -82,7 +82,7 @@ function Recent() {
         console.log(projectId + "=======" + userId)
         axios({
             method: 'post',
-            url: baseUrl + '/ProjectMS/Project/addProjectToFavourite',
+            url: baseUrl + '/ProjectsMS/Project/addProjectToFavourite',
             data: {
                 "projectId": projectId,
                 "userId": userId
@@ -113,7 +113,7 @@ function Recent() {
         console.log(projectId + "=======" + userId)
         axios({
             method: 'delete',
-            url: baseUrl + '/ProjectMS/Project/deleteProjectFromUser',
+            url: baseUrl + '/ProjectsMS/Project/deleteProjectFromUser',
             data: {
                 projectId: projectId,
                 userId: userId

@@ -278,7 +278,7 @@ export default function Workflow(props) {
 
   const getWorkflowModules = () => {
 
-    axios.get(baseUrl+`/ProjectMS/Project/getProjectWorkflows?projectId=${80}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getProjectWorkflows?projectId=${80}`)
     .then((resp)=>{
         setWorkFlowModule(resp.data);
         setWorkFlowModuleDetails(resp.data[0]);

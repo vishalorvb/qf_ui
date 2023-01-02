@@ -49,7 +49,7 @@ const columns = [
   ];
 
   const getModuleScreens = () => {
-    axios.get(baseUrl+`/ProjectMS/Project/getModuleScreens?moduleId=${module?.module_id}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getModuleScreens?moduleId=${module?.module_id}`)
     .then((resp)=>{
         setScreensList(resp.data)
         setSelectedScreen(resp.data[0])
@@ -60,7 +60,7 @@ const columns = [
   }
 
   const getModuleScreensElements = () => {
-    axios.get(baseUrl+`/ProjectMS/Project/getModuleScreensElements?screenId=${selectedScreen?.screen_id}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getModuleScreensElements?screenId=${selectedScreen?.screen_id}`)
     .then((resp)=>{
         setScreensElements(resp.data)
     })

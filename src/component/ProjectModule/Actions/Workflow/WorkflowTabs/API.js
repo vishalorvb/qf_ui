@@ -39,14 +39,14 @@ const columns = [
   const [screen,setScreen] = useState([])
 
   const getScreen = () => {
-    axios.get('http://10.11.12.243:8090/ProjectMS/Project/getModulePages?moduleId=79')
+    axios.get('http://10.11.12.243:8090/ProjectsMS/Project/getModulePages?moduleId=79')
     .then((resp)=>{
       setScreen(resp.data);
     })
   }
 
   const getScreenElements = () => {
-    axios.get('http://10.11.12.243:8090/ProjectMS/Project/getModulePagesElements?webscreenId=212')
+    axios.get('http://10.11.12.243:8090/ProjectsMS/Project/getModulePagesElements?webscreenId=212')
     .then((resp)=>{
       setScreenElements(resp.data);
     })

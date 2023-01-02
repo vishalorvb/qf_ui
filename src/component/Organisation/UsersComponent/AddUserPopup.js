@@ -7,6 +7,7 @@ import { baseUrl } from './../../../Environment';
 import { styled } from "@mui/system";
 import { StyledTextField } from '../../CustomTextField';
 import { validateForm, resetClassName,NumberValidation } from '../../../FormValidation';
+import SnackbarNotify from '../../SnackbarNotify';
 
 
 function AddUserPopup(props) {
@@ -49,10 +50,8 @@ function AddUserPopup(props) {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log("Calling submit")
         if ( validateForm(emailFields,[],passwordField,requiredOnlyAlphabets,numberFields,autoComplete, "error")) 
         {
-            console.log(uid);
             if(NumberValidation(uid,4,"error"))
             {
                 var data = {
@@ -63,9 +62,10 @@ function AddUserPopup(props) {
                     Email: email.current.value,
                     RoleId: roleId.current
                 }
-        
+                console.log(data.ssoId);
                 users.forEach(element => {
-                    if (element.id === uid) {
+                    if (element.sid === data.ssoId) {
+                        console.log("Durgarao");
                         setAddErrorMsg(true);
                         getUserDetails();
                         setTimeout(() => {
@@ -109,10 +109,10 @@ function AddUserPopup(props) {
         <Dialog open={open} onClose={handleClose} maxWidth='md'>
             <DialogTitle id="alert-dialog-title" className="dialogTitle border-bottom" sx={{
                 padding: 0.5,
-                backgroundColor: 'primary.main',
+                backgroundColor: "rgba(137,196,244,1)",
             }}>
                 <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
-                    <Typography sx={{ marginLeft: 1, marginTop: "auto", marginBottom: "auto ",color:"white" }} variant="inherit">Add User </Typography>
+                    <Typography sx={{ marginLeft: 1, marginTop: "auto", marginBottom: "auto " }} variant="inherit">Add User </Typography>
                     <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
                         <ClearIcon sx={{ color: 'white' }} />
                     </IconButton>
@@ -126,12 +126,12 @@ function AddUserPopup(props) {
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>First Name <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}> 
-                                    <input type="text" ref={first_name} name="" />
+                                    <input type="text" ref={first_name} name="" placeholder="Enter First Name" />
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Last Name <span className="importantfield" >*</span>:</label></Grid>
-                                    <Grid item xs={6} sm={6} md={8}> <input type="text" ref={last_name} name="" /></Grid>
+                                    <Grid item xs={6} sm={6} md={8}> <input type="text" ref={last_name} name="" placeholder="Enter Last Name" /></Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>User Id <span className="importantfield" >*</span>:</label></Grid>
@@ -160,7 +160,7 @@ function AddUserPopup(props) {
                                             noOptionsText={'Role not found'}
                                             renderInput={(params) =>
                                                 <div ref={params.InputProps.ref}>
-                                                <input type="text" name="roleAutocomplete" {...params.inputProps} placeholder="Please Select" />
+                                                <input type="text" name="roleAutocomplete" {...params.inputProps} placeholder="Enter atleast 3 letters" />
                                               </div>
                                             }
                                         />
@@ -171,7 +171,7 @@ function AddUserPopup(props) {
                     </form>
                 </div>
             </DialogContent>
-            <DialogActions style={{ marginTop: "1px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto", backgroundColor: 'primary.main'}}>
+            <DialogActions style={{ marginTop: "1px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
                 <Button variant="contained" onClick={submit} startIcon={<SaveIcon />}>
                     Save
                 </Button>

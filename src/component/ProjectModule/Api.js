@@ -5,14 +5,14 @@ import { baseUrl } from "../../Environment"
 let userId = 112
 export function getProjects(callback) {
 
-    axios.get(baseUrl + '/ProjectMS/Project/getProject?userId=' + userId).then(response => {
+    axios.get(baseUrl + '/ProjectsMS/Project/getProject?userId=' + userId).then(response => {
         console.table(response.data)
         callback(response.data)
     })
 }
 
 export function getAutomationType(callback) {
-    axios.get(baseUrl + "/ProjectMS/Project/getAutomationType").then(response => {
+    axios.get(baseUrl + "/ProjectsMS/Project/getAutomationType").then(response => {
         callback(response.data)
         console.log(response.data)
     })
@@ -22,7 +22,7 @@ export async function DeleteProjectFromFavourite(projectId, userId) {
     console.log(projectId + "=======" + userId)
     await axios({
         method: 'delete',
-        url: baseUrl + '/ProjectMS/Project/deleteProjectToFavourite',
+        url: baseUrl + '/ProjectsMS/Project/deleteProjectToFavourite',
         data: {
             projectId: projectId,
             userId: userId
@@ -38,7 +38,7 @@ export async function DeleteProjectFromFavourite(projectId, userId) {
 }
 
 export function getUserFromProject(callback, projectId) {
-    axios.get(baseUrl + '/ProjectMS/Project/getUserFromProject?projectId=' + projectId).then((res) => {
+    axios.get(baseUrl + '/ProjectsMS/Project/getUserFromProject?projectId=' + projectId).then((res) => {
         callback(res.data)
     })
 }
@@ -50,18 +50,18 @@ export async function AddProject(projectData, DbData) {
     console.log(DbData)
     let project_id = await axios({
         method: 'post',
-        url: baseUrl + '/ProjectMS/Project/createProject',
+        url: baseUrl + '/ProjectsMS/Project/createProject',
         data: projectData
     })
     DbData.project_id = project_id.data
     let db = await axios({
         method: 'post',
-        url: baseUrl + '/ProjectMS/Project/addDatabaseDetails',
+        url: baseUrl + '/ProjectsMS/Project/addDatabaseDetails',
         data: DbData
     })
     await axios({
         method: 'post',
-        url: baseUrl + '/ProjectMS/Project/addProjectToUser',
+        url: baseUrl + '/ProjectsMS/Project/addProjectToUser',
         data: {
             "projectId": project_id.data,
             "userId": userId,
@@ -81,13 +81,13 @@ export async function updateProject(projectData, DbData){
 
    await axios({
         method: 'put',
-        url: baseUrl + '/ProjectMS/Project/updateProject',
+        url: baseUrl + '/ProjectsMS/Project/updateProject',
         data: projectData
     })
 
     await axios({
         method: 'put',
-        url: baseUrl + '/ProjectMS/Project/updateDatabase',
+        url: baseUrl + '/ProjectsMS/Project/updateDatabase',
         data: DbData
     })
 }

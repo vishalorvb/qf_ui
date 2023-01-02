@@ -117,7 +117,7 @@ export default function Dashboard() {
         return (
             <Card sx={{ Width: '100px' }}>
                 <CardContent>
-                    <Typography sx={{ fontSize: 20, backgroundColor: 'primary.main' }} align='center' color="text.secondary" gutterBottom>
+                    <Typography sx={{ fontSize: 20, backgroundColor: "rgba(137,196,244,1)" }} align='center' color="text.secondary" gutterBottom>
                         {header[index]}
                     </Typography>
                     <Typography variant="h3" align='left' component="div">

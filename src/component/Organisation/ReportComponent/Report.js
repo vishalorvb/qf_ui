@@ -17,18 +17,20 @@ function Report() {
     const [usersObject, setUsersObject] = useState([]);
     const [projectsObject, setProjectsObject] = useState([]);
     const [workflowsObject, setWorkflowsObject] = useState([]);
-    // const [userId, setUserId] = useState(0);
-    let Uid = useRef();
-    // const [projectId, setProjectId] = useState(0);
-    let Project_Id = useRef();
-    // const [workflowId, setWorkflowId] = useState(0);
-    let Workflow_Id = useRef();
+    const [userId, setUserId] = useState(0);
+    // const [user,setUser] = useState(null);
+    // let Uid = useRef();
+    const [projectId, setProjectId] = useState(0);
+    const [project, setProject] = useState({project_name:""});
+    // let Project_Id = useRef();
+    const [workflowId, setWorkflowId] = useState(0);
+    const [workflow, setWorkflow] = useState({module_name:""});
+    // let Workflow_Id = useRef();
     const [tbData, setTbData] = useState([]);
     const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
     const [validationMsg, setValidationMsg] = useState(false);
     let autoComplete = ["userAutocomplete", "projectAutocomplete", "workflowAutocomplete"];
-    let Fields = [];
-    const [showTable,setShowTable] = useState(false);
+    let requiredFields = [From_Date,To_Date];
 
     const columns = [
         { headerName: "S.No", field: 'sno', valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
@@ -91,11 +93,10 @@ function Report() {
                 console.log(error)
             });
     };
-
+    
     const getProjects = () => {
-        console.log(Uid.current);
         axios
-            .get(baseUrl + `/ProjectMS/Project/getProject?userId=${Uid}`)
+            .get(baseUrl + `/ProjectsMS/Project/getProject?userId=${userId}`)
             .then((Response) => {
                 var response = Response.data;
                 if(response.length == 0)
@@ -111,7 +112,7 @@ function Report() {
 
     const getWorkflows = () => {
         axios
-            .get(baseUrl + `/ProjectMS/Project/getProjectWorkflows?projectId=${Project_Id.current}`)
+            .get(baseUrl + `/ProjectsMS/Project/getProjectWorkflows?projectId=${projectId}`)
             .then((Response) => {
                 var response = Response.data;
                 setWorkflowsObject(response);
@@ -131,16 +132,13 @@ function Report() {
         getUsers();
         getProjects();
         getWorkflows();
-    }, [Uid, Project_Id, Workflow_Id]);
+    }, [userId, projectId, workflowId]);
 
     const submit = (e) => {
         e.preventDefault();
-        if (validateForm([], [], [], [], [], [autoComplete], "error")) {
-            console.log(Uid.current);
-            console.log(Project_Id.current);
-            console.log(Workflow_Id.current);
+        if (validateForm(requiredFields, [], [], [], [], autoComplete, "error")) {
             var data = {
-                workflowId: Workflow_Id.current,
+                workflowId: workflowId,
                 fromDate: fromDate + " 00:00:00",
                 toDate: toDate + " 00:00:00"
             }
@@ -148,12 +146,11 @@ function Report() {
                 .post(baseUrl + "/OrganisationMS/Reports/getAllReports", data)
                 .then((Response) => {
                     setTbData(Response.data);
-                    setShowTable(true);
                 })
                 .catch((error) => {
                     console.log(error)
                 });
-            console.log("Valid Form")
+            console.log("Valid Form");
         }
         else {
             setValidationMsg(true);
@@ -172,12 +169,16 @@ function Report() {
                         <Grid item xs={6} sm={6} md={3.5} xl={4}><label>User <span className="importantfield" >*</span>:</label></Grid>
                         <Grid item xs={6} sm={6} md={8} xl={7}>
                             <Autocomplete
+                                // value={user}
                                 size="small"
                                 options={usersObject}
                                 getOptionLabel={(option) => (option.fname) + " " + (option.lname)}
                                 onChange={(e, value) => {
-                                    Uid.current = value.id;
-                                    // setUserId(value.id) 
+                                    // Uid.current = value.id;
+                                    setUserId(value.id);
+                                    setProject(null);
+                                    setWorkflow(null);
+                                    setProjectId(0);
                                 }}
                                 noOptionsText={'User not found'}
                                 renderInput={(params) =>
@@ -193,11 +194,15 @@ function Report() {
                         <Grid item xs={6} sm={6} md={3.5} xl={4}><label>Projects <span className="importantfield" >*</span>:</label></Grid>
                         <Grid item xs={6} sm={6} md={8} xl={7}>
                             <Autocomplete
+                                value={project}
                                 size="small"
                                 options={projectsObject}
                                 getOptionLabel={(option) => option.project_name}
                                 onChange={(e, value) => {
-                                    Project_Id.current = value.project_id; 
+                                    // Project_Id.current = value.project_id; 
+                                    setProjectId(value.project_id);
+                                    setProject(value);
+                                    setWorkflow(null);
                                }}
                                 noOptionsText={'Projects not found'}
                                 renderInput={(params) =>
@@ -212,11 +217,14 @@ function Report() {
                         <Grid item xs={6} sm={6} md={3.5} xl={4}><label>Workflow <span className="importantfield" >*</span>:</label></Grid>
                         <Grid item xs={6} sm={6} md={8} xl={7}>
                             <Autocomplete
+                             value={workflow}
                                 size="small"
                                 options={workflowsObject}
                                 getOptionLabel={(option) => option.module_name}
                                 onChange={(e, value) => {
-                                    Workflow_Id.current = value.module_id 
+                                    // Workflow_Id.current = value.module_id 
+                                    setWorkflowId(value.module_id);
+                                    setWorkflow(value);
                                }}
                                 noOptionsText={'Workflows not found'}
                                 renderInput={(params) =>
@@ -233,13 +241,11 @@ function Report() {
                             <input
                                 id="date"
                                 type="date"
+                                ref={From_Date}
                                 defaultValue={fromDate}
                                 sx={{ width: 158 }}
                                 onChange={(newValue) => {
                                     setFromDate(moment(newValue).format('YYYY-MM-DD'));
-                                }}
-                                InputLabelProps={{
-                                    shrink: true
                                 }}
                             />
                         </Grid>
@@ -250,13 +256,11 @@ function Report() {
                             <input
                                 id="date"
                                 type="date"
+                                ref={To_Date}
                                 defaultValue={toDate}
                                 sx={{ width: 158 }}
                                 onChange={(newValue) => {
                                     setToDate(moment(newValue).format('YYYY-MM-DD'));
-                                }}
-                                InputLabelProps={{
-                                    shrink: true
                                 }}
                             />
                         </Grid>
@@ -268,15 +272,13 @@ function Report() {
             </Paper>
             <SnackbarNotify open={reportSuccessMsg} close={setReportSuccessMsg} msg="We got the report" severity="success"/>
             <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
-            {showTable ?
-                <div className="datatable" style={{ marginTop: "15px" }}>
-                    <Table
-                        columns={columns}
-                        rows={tbData}
-                        hidefooter={false}
-                    />
-                </div>
-                : ""}
+            <div className="datatable" style={{ marginTop: "15px" }}>
+                <Table
+                    columns={columns}
+                    rows={tbData}
+                    hidefooter={false}
+                />
+            </div>
         </div>
     )
 }

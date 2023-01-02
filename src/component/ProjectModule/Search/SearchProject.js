@@ -37,13 +37,13 @@ function SearchProject() {
 
 
     function getAutomationType() {
-        axios.get(baseUrl + "/ProjectMS/Project/getAutomationType").then(response => {
+        axios.get(baseUrl + "/ProjectsMS/Project/getAutomationType").then(response => {
             setAutomationType(response.data)
             console.log(response.data)
         })
     }
     function getProject() {
-        axios.get(baseUrl + "/ProjectMS/Project/getProject?userId=" + userId).then(response => {
+        axios.get(baseUrl + "/ProjectsMS/Project/getProject?userId=" + userId).then(response => {
             setProject(response.data)
             console.log(response.data)
         })

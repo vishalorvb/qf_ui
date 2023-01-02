@@ -54,7 +54,7 @@ const columns = [
   const [preSelectedElement,setPreSelectedElement] = useState([])
 
   const getPage = () => {
-    axios.get(baseUrl+`/ProjectMS/Project/getModulePages?moduleId=${module?.module_id}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getModulePages?moduleId=${module?.module_id}`)
     .then((resp)=>{
       setPages(resp.data);
       setSelectedPage(resp.data[0])
@@ -62,7 +62,7 @@ const columns = [
   }
 
   const getPageElements = () => {
-    axios.get(baseUrl+`/ProjectMS/Project/getModulePagesElements?webPageId=${selectedPage?.web_page_id}`)
+    axios.get(baseUrl+`/ProjectsMS/Project/getModulePagesElements?webPageId=${selectedPage?.web_page_id}`)
     .then((resp)=>{
       setPageElements(resp.data);
       setPreSelectedElement(()=>{

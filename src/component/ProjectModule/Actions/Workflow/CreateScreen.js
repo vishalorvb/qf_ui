@@ -66,7 +66,7 @@ export default function CreateScreen(props) {
     axios
       .get(
         baseUrl +
-          `/ProjectMS/Project/getModulePages?moduleId=${module?.module_id}`
+          `/ProjectsMS/Project/getModulePages?moduleId=${module?.module_id}`
       )
       .then((resp) => {
         setPages(resp.data);
@@ -77,7 +77,7 @@ export default function CreateScreen(props) {
   const getPageElements = () => {
     axios
       .get(
-        baseUrl + `/ProjectMS/Project/getModulePagesElements?webPageId=${12}`
+        baseUrl + `/ProjectsMS/Project/getModulePagesElements?webPageId=${12}`
       )
       .then((resp) => {
         setPageElements(resp.data);
