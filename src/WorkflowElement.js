@@ -3,6 +3,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
 import { useState } from "react";
 
+import PagesScreen from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/PagesScreen";
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -21,7 +23,7 @@ export default function WorkflowElement(props) {
     const[workflowExpanded,setWorkFlowExpanded] = useState(false);
 
   return (
-    <Paper elevation={1}>
+    <Paper elevation={1} sx={{ marginTop: '10px' }}>
       <Box sx={{backgroundColor: "primary.main" }}>
         <ExpandMore
           expand={workflowExpanded}
@@ -35,7 +37,7 @@ export default function WorkflowElement(props) {
           {workflowName}
         </Typography>
       </Box>
-      <Collapse in={workflowExpanded} timeout="auto" unmountOnExit></Collapse>
+      <Collapse in={workflowExpanded} timeout="auto" unmountOnExit><PagesScreen/></Collapse>
     </Paper>
   );
 }
