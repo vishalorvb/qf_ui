@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CreateTestcase from "../CreateTestcase";
+import Pillnav from "../../../../../Pillnav";
 
 export default function TestCases(props) {
 
@@ -102,12 +103,7 @@ const columns = [
   
 
     return(
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <Box>
-        
-       
-      {testCaseList.length > 0 ? <WorkflowNav workflowModules={testCaseList} selectClickedElement={console.log} navigationHeader={"TestCases"}/> : "No testcase Found"}
-      </Box>
+      <Box>
       <Box
         component="main"
         sx={{
@@ -118,6 +114,8 @@ const columns = [
           margin: "0px",
         }}
       >
+        <Pillnav workflowModules={testCaseList} selectClickedElement={console.log}/>
+
         <Grid container justifyContent='flex-end' sx={{marginBottom:'10px'}} gap={1}>
         <Button
             variant="contained"

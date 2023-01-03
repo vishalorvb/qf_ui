@@ -4,6 +4,7 @@ import axios from "axios";
 import { baseUrl } from "../../../../../Environment"; 
 import WorkflowNav from "../WorkflowNav";
 import Table from "../../../../Table";
+import Pillnav from "../../../../../Pillnav";
 
 export default function Testsets(props) {
 
@@ -67,9 +68,6 @@ const columns = [
   
 
     return(
-      <Box sx={{ display: "flex", gap: 1 }}>
-
-        {testSetList.length > 0 ? <WorkflowNav workflowModules={testSetList} selectClickedElement={setSelectedTestset} navigationHeader={"TestSets"}/> : "No Testset Found"}
 
         <Box
           component="main"
@@ -81,6 +79,8 @@ const columns = [
             margin: "0px",
           }}
         >
+        <Pillnav workflowModules={testSetList} selectClickedElement={setSelectedTestset}/>
+
           <Grid container justifyContent='flex-end' sx={{marginBottom:'10px'}}>
             <Button
               variant="contained"
@@ -92,6 +92,5 @@ const columns = [
           <Table rows={testCases} columns={columns} hidefooter={false} checkboxSelection={true}/>
         
         </Box>
-    </Box>
     )
 }
