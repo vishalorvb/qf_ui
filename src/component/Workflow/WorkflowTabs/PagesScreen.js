@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Table from "../../CustomComponent/Table";
@@ -89,10 +89,12 @@ export default function PagesScreen(props) {
 
   useEffect(() => {
     getPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [module]);
 
   useEffect(() => {
     selectedPage?.web_page_id !== undefined && getPageElements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
   return (

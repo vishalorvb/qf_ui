@@ -4,15 +4,8 @@ import { Alert, Button, Paper, Box, Typography, Collapse } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import StarIcon from "@mui/icons-material/Star";
-import EditIcon from "@mui/icons-material/Edit";
-import SchemaIcon from "@mui/icons-material/Schema";
-import PeopleIcon from "@mui/icons-material/People";
-import DeleteIcon from "@mui/icons-material/Delete";
-import PlayCircleIcon from "@mui/icons-material/PlayCircleOutline";
-import AnalyticsIcon from "@mui/icons-material/AnalyticsOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import PreviewIcon from "@mui/icons-material/Preview";
 import Table from "../../CustomComponent/Table";
 import axios from "axios";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
@@ -78,7 +71,6 @@ function Recent() {
   let popheader = "Delete Project";
   let popmessage = "Are you sure to delete this project";
 
-  const userId = 112;
   function getProject() {
     getProjects(setRow);
   }
@@ -146,7 +138,7 @@ function Recent() {
   }
   function handleOverview(project) {
     setAction("Overview");
-    if (Overview.project == null || Overview.project.id == project.id) {
+    if (Overview.project === null || Overview.project.id === project.id) {
       setOverview((pv) => ({ ...pv, flag: !pv.flag, project: project }));
     } else {
       setOverview((pv) => ({ ...pv, flag: true, project: project }));
@@ -154,7 +146,7 @@ function Recent() {
   }
   function handleEdit(project) {
     setAction("Edit");
-    if (edit.project == null || edit.project.id == project.id) {
+    if (edit.project === null || edit.project.id === project.id) {
       setEdit((pv) => ({ ...pv, flag: !pv.flag, project: project }));
     } else {
       setEdit((pv) => ({ ...pv, flag: true, project: project }));
@@ -351,7 +343,7 @@ function Recent() {
             columns={columns}
             hidefooter={true}
           ></Table>
-          {showWorkflow.flag && action == "workflow" && (
+          {showWorkflow.flag && action === "workflow" && (
             <WorkflowDropdown
               project={showWorkflow.projectId}
               setDisplayWorkflow={setDisplayWorkflow}
@@ -375,19 +367,19 @@ function Recent() {
       </Snackbar>
 
       <div className="actions">
-        {createProject && action == "CreateProject" && (
+        {createProject && action === "CreateProject" && (
           <CreateProject edit={false}></CreateProject>
         )}
 
-        {action == "Overview" && Overview.flag && (
+        {action === "Overview" && Overview.flag && (
           <ActionOverview project={Overview.project}></ActionOverview>
         )}
 
-        {user.flag && action == "Users" && (
+        {user.flag && action === "Users" && (
           <ActionUsers projectId={user.projectId}></ActionUsers>
         )}
 
-        {edit.flag && action == "Edit" && (
+        {edit.flag && action === "Edit" && (
           <CreateProject edit={true} project={edit.project}></CreateProject>
         )}
       </div>

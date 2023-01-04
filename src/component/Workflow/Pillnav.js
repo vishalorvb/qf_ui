@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Paper, List, Typography, Button } from "@mui/material";
+import { Paper, Button } from "@mui/material";
 
 export default function Pillnav(props) {
   const { workflowModules, selectClickedElement } = props;

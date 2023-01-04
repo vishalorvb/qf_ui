@@ -1,43 +1,43 @@
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
-import {
-  GridToolbarQuickFilter,
-  GridLinkOperator,
-} from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { useState } from "react";
+import { GridToolbarQuickFilter, GridLinkOperator } from "@mui/x-data-grid";
 
 export default function Table(props) {
-
   function QuickSearchToolbar() {
     return (
-      <GridToolbarQuickFilter className='tableSearch'
+      <GridToolbarQuickFilter
+        className="tableSearch"
         quickFilterParser={(searchInput) =>
           searchInput
-            .split(',')
+            .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== '')
+            .filter((value) => value !== "")
         }
       />
     );
   }
 
-
   // row for row data
   // columns for header details
   // hidefooter for true to hide footer
 
-  const { rows, columns, hidefooter, checkboxSelection, selectionModel, setSelectionModel } = props
+  const {
+    rows,
+    columns,
+    checkboxSelection,
+    selectionModel,
+    setSelectionModel,
+  } = props;
   const [pagesize, setPagesize] = useState(10);
-  
 
   return (
     <div className="tableParent">
       <DataGrid
-        className='tableData'
+        className="tableData"
         rows={rows}
         columns={columns}
         pageSize={pagesize}
-        onPageSizeChange={newPageSize => setPagesize(newPageSize)}
+        onPageSizeChange={(newPageSize) => setPagesize(newPageSize)}
         rowsPerPageOptions={[10, 20, 30]}
         rowHeight={45}
         autoHeight={true}
@@ -47,23 +47,25 @@ export default function Table(props) {
         showColumnRightBorder
         disableSelectionOnClick
         density="compact"
-        checkboxSelection={checkboxSelection === undefined ? false : checkboxSelection}
+        checkboxSelection={
+          checkboxSelection === undefined ? false : checkboxSelection
+        }
         sx={{
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: '#e8edf2',
-            color: '#505050',
+            backgroundColor: "#e8edf2",
+            color: "#505050",
             fontSize: 12,
           },
 
-          [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
-            outline: 'none',
-          },
+          [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]:
+            {
+              outline: "none",
+            },
           [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]:
-          {
-            outline: 'none',
-          }
+            {
+              outline: "none",
+            },
         }}
-
         initialState={{
           filter: {
             filterModel: {
@@ -72,10 +74,13 @@ export default function Table(props) {
             },
           },
         }}
-        onSelectionModelChange={(i)=>{console.log(i);setSelectionModel(i)}}
+        onSelectionModelChange={(i) => {
+          console.log(i);
+          setSelectionModel(i);
+        }}
         selectionModel={selectionModel}
         components={{ Toolbar: QuickSearchToolbar }}
       />
     </div>
-  )
+  );
 }

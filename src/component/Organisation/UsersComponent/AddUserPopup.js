@@ -15,13 +15,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
 import { baseUrl } from "./../../../Environment";
-import { styled } from "@mui/system";
 import {
   validateForm,
   resetClassName,
   NumberValidation,
 } from "../../../FormValidation";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 function AddUserPopup(props) {
   const {

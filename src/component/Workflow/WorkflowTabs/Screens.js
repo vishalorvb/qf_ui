@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../../Environment";
@@ -82,10 +82,12 @@ export default function Screens(props) {
 
   useEffect(() => {
     getModuleScreens();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [module]);
 
   useEffect(() => {
     selectedScreen?.screen_id !== undefined && getModuleScreensElements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedScreen]);
 
   return (

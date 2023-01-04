@@ -93,10 +93,12 @@ export default function CreateScreen(props) {
 
   useEffect(() => {
     getPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [module]);
 
   useEffect(() => {
     selectedPage?.web_page_id !== undefined && getPageElements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPage]);
 
   return (
@@ -135,7 +137,6 @@ export default function CreateScreen(props) {
       </DialogTitle>
       <DialogContent className="AddUsers" style={{ marginTop: "10px" }}>
         <Box sx={{ display: "flex", gap: 1 }}>
-         
           <Box
             component="main"
             sx={{
