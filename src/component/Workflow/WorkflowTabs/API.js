@@ -1,8 +1,7 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import WorkflowNav from "../WorkflowNav";
-import Table from "../../../../Table";
+import Table from "../../CustomComponent/Table";
 
 export default function API() {
 
@@ -61,7 +60,6 @@ const columns = [
 
     return(
         <Box sx={{ display: "flex", gap: 1 }}>
-      <WorkflowNav workflowModules={screen} setWorkFlowModuleHead={console.log} navigationHeader={"screen"}/>
       <Box
         component="main"
         sx={{

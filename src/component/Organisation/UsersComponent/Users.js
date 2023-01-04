@@ -1,6 +1,6 @@
 import { Alert, Button, IconButton, Snackbar, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react'
-import Table from '../../Table';
+import Table from '../../CustomComponent/Table';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,7 +13,7 @@ import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 import axios from 'axios';
 import { baseUrl } from '../../../Environment';
-import SnackbarNotify from '../../SnackbarNotify';
+import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 
 
 function Users() {

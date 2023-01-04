@@ -1,11 +1,10 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import WorkflowNav from "../WorkflowNav";
-import Table from "../../../../Table";
-import { baseUrl } from "../../../../../Environment";
+import Table from "../../CustomComponent/Table";
+import { baseUrl } from "../../../Environment";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import Pillnav from "../../../../../Pillnav";
+import Pillnav from "../Pillnav";
 
 export default function PagesScreen(props) {
   const { module } = props;

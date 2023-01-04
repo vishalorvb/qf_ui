@@ -1,10 +1,9 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { baseUrl } from "../../../../../Environment"; 
-import WorkflowNav from "../WorkflowNav";
-import Table from "../../../../Table";
-import Pillnav from "../../../../../Pillnav";
+import { baseUrl } from "../../../Environment"; 
+import Table from "../../CustomComponent/Table";
+import Pillnav from "../Pillnav";
 
 export default function Testsets(props) {
 

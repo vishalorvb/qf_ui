@@ -1,11 +1,11 @@
 import { Typography } from "@mui/material";
 import WorkflowElement from "./WorkflowElement";
-import API from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/API";
-import PagesScreen from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/PagesScreen";
-import Screens from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/Screens";
-import TestCases from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/TestCases";
-import TestSets from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/TestSets";
-import Report from "./component/ProjectModule/Actions/Workflow/WorkflowTabs/Report";
+import API from "./WorkflowTabs/API";
+import PagesScreen from "./WorkflowTabs/PagesScreen";
+import Screens from "./WorkflowTabs/Screens";
+import TestCases from "./WorkflowTabs/TestCases";
+import TestSets from "./WorkflowTabs/TestSets";
+import Report from "./WorkflowTabs/Report";
 
 export default function Workflows(props) {
   const { project } = props;

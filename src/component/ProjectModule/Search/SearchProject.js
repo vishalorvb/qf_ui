@@ -8,9 +8,9 @@ import AnalyticsIcon from '@mui/icons-material/AnalyticsOutlined';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import PreviewIcon from '@mui/icons-material/Preview';
-import Table from '../../Table';
+import Table from '../../CustomComponent/Table';
 import { baseUrl } from '../../../Environment';
-import { StyledTextField } from '../../CustomTextField';
+import { StyledTextField } from '../../CustomComponent/CustomTextField';
 
 
 

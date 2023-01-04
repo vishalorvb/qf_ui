@@ -13,7 +13,7 @@ import AnalyticsIcon from "@mui/icons-material/AnalyticsOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import PreviewIcon from "@mui/icons-material/Preview";
-import Table from "../../Table";
+import Table from "../../CustomComponent/Table";
 import axios from "axios";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import { baseUrl } from "../../../Environment";
@@ -23,13 +23,11 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ConfirmPop from "../../ConfirmPop";
 import { getProjects, DeleteProjectFromFavourite } from "../Api";
 import ActionUsers from "../Actions/ActionUsers";
-import Workflow from "../Actions/Workflow/Workflow";
 import ActionOverview from "../Actions/Overview";
-import Workflows from "../../../Workflows";
-
-import { ExpandMore } from "../../ExpandMore";
+import Workflows from "../../Workflow/Workflows";
+import { ExpandMore } from "../../CustomComponent/ExpandMore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import WorkflowDropdown from "../../../WorkflowDropdown";
+import WorkflowDropdown from "../../Workflow/WorkflowDropdown";
 
 function Recent() {
   const [showWorkflow, setShowWorkflow] = useState({
