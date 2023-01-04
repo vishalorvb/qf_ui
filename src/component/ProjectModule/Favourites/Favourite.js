@@ -11,7 +11,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import PreviewIcon from '@mui/icons-material/Preview';
-import Table from '../../Table';
+import Table from '../../CustomComponent/Table';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import Table from '../../Table';
+import Table from '../../CustomComponent/Table';
 import React, { useEffect, useState } from 'react'
 import { getUserFromProject } from '../Api';
 

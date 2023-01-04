@@ -18,7 +18,7 @@ import {
 export default function CreateTestcase() {
 
     return(
-        <Dialog open={true} fullWidth >
+        <Dialog open={false} fullWidth >
              <DialogTitle
         id="alert-dialog-title"
         className="dialogTitle border-bottom"
