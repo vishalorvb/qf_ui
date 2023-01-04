@@ -1,7 +1,7 @@
 import { Grid, Typography,Input } from "@mui/material"
 import { Container } from "@mui/system"
 import {Paper,Autocomplete,TextField} from "@mui/material"
-import Table from "../Table"
+import Table from "../CustomComponent/Table";
 
 export default function ExecutionSearch() {
 

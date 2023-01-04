@@ -3,11 +3,10 @@ import { Stack } from '@mui/system'
 import React, { useRef, useState } from 'react'
 import UpgradeSharpIcon from '@mui/icons-material/UpgradeSharp';
 // import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { baseUrl } from '../../../Environment';
-import { validateForm, resetClassName } from '../../../FormValidation';
+import { baseUrl } from '../../Environment';
+import { validateForm, resetClassName } from '../../FormValidation';
 import axios from 'axios';
-import SnackbarNotify from '../../SnackbarNotify';
-// import Table from '../../Table';
+import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 
 function Settings() {
     let Url = useRef();
@@ -19,7 +18,8 @@ function Settings() {
     const [validationMsg, setValidationMsg] = useState(false);
     // const [details, setDetails] = useState([]);
 
-    let requiredFields = [Url, Uuid];
+    let requiredFields = [ Uuid];
+    let fields = [Url]
 
     // const submitCopy = () => {
     //     navigator.clipboard.writeText(url);
@@ -45,8 +45,9 @@ function Settings() {
     //     getDetails();
     // }, []);
 
-    const submit = () => {
-        if (validateForm(requiredFields, "error")) {
+    const submit = (e) => {
+        e.preventDefault();
+        if (validateForm(fields,requiredFields, [], [], [], [], "error")) {
             var data = {
                 url:url,
                 uuid:uuid,
@@ -102,29 +103,31 @@ function Settings() {
     // ]
 
     return (
-        <div onClick={resetClassName}>
+        <div >
             <Paper elevation={1} sx={{ padding: '2px', marginTop: "20px", marginBottom: "10px" }}>
                 <SnackbarNotify open={successMsg} close={setSuccessMsg} msg="Details are updated Successfully" severity="success" />
                 <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
                 {/* <SnackbarNotify open={copyMsg} close={setCopyMsg} msg="Copied" severity="success" /> */}
-                <Stack component="div" noValidate spacing={1} sx={{ marginLeft: "15px", marginBottom: "15px" }}>
-                    <Grid container item xs={12} sm={8} md={12} sx={{ marginBottom: '5px', marginTop: "10px" }} >
-                        <Grid item xs={6} sm={6} md={1}><label>URL <span className="importantfield" >*</span>:</label></Grid>
-                        <Grid item xs={6} sm={6} md={10.5}> <input ref={Url} type="text" name="" value={url}
-                            onChange={(e) => setUrl(e.target.value)} />
-                        </Grid>
-                        {/* <Grid item xs={6} sm={6} md={1} >
+                <div onClick={resetClassName}>
+                    <Stack component="div" noValidate spacing={1} sx={{ marginLeft: "15px", marginBottom: "15px" }}>
+                        <Grid container item xs={12} sm={8} md={12} sx={{ marginBottom: '5px', marginTop: "10px" }} >
+                            <Grid item xs={6} sm={6} md={1}><label>URL <span className="importantfield" >*</span>:</label></Grid>
+                            <Grid item xs={6} sm={6} md={10.5}> <input ref={Url} type="text" name="" value={url}
+                                onChange={(e) => setUrl(e.target.value)} />
+                            </Grid>
+                            {/* <Grid item xs={6} sm={6} md={1} >
                             <Button size='small' variant="contained" onClick={submitCopy} startIcon={<ContentCopyIcon />} sx={{ marginLeft: "2px" }}>
                                 Copy
                             </Button>
                         </Grid> */}
-                    </Grid>
-                    <Grid container item xs={12} sm={8} md={12} sx={{ marginBottom: '10px', marginTop: "5px" }} >
-                        <Grid item xs={6} sm={6} md={1}><label>UUID <span className="importantfield" >*</span>:</label></Grid>
-                        <Grid item xs={6} sm={6} md={10.5}> <input ref={Uuid} type="text" name="" value={uuid}
-                            onChange={(e) => setUuid(e.target.value)} /></Grid>
-                    </Grid>
-                </Stack>
+                        </Grid>
+                        <Grid container item xs={12} sm={8} md={12} sx={{ marginBottom: '10px', marginTop: "5px" }} >
+                            <Grid item xs={6} sm={6} md={1}><label>UUID <span className="importantfield" >*</span>:</label></Grid>
+                            <Grid item xs={6} sm={6} md={10.5}> <input ref={Uuid} type="text" name="" value={uuid}
+                                onChange={(e) => setUuid(e.target.value)} /></Grid>
+                        </Grid>
+                    </Stack>
+                </div>
                 <Button variant="contained" onClick={submit} startIcon={<UpgradeSharpIcon />} sx={{ marginLeft: "45%", marginRight: "auto", marginBottom: "10px" }}>
                     Update
                 </Button>

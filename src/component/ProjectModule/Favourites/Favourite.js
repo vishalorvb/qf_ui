@@ -11,7 +11,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import PreviewIcon from '@mui/icons-material/Preview';
-import Table from '../../Table';
+import Table from '../../CustomComponent/Table';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
@@ -52,7 +52,7 @@ function Favourite() {
     })
 
     function getRows() {
-        axios.get(baseUrl + "/ProjectMS/Project/getUserFavouriteProject?userId=" + userId).then(response => {
+        axios.get(baseUrl + "/ProjectsMS/Project/getUserFavouriteProject?userId=" + userId).then(response => {
             setRows(response.data)
             console.log(response.data)
         })
@@ -99,7 +99,7 @@ function Favourite() {
         console.log(projectId + "=======" + userId)
         axios({
             method: 'delete',
-            url: baseUrl + '/ProjectMS/Project/deleteProjectFromUser',
+            url: baseUrl + '/ProjectsMS/Project/deleteProjectFromUser',
             data: {
                 projectId: projectId,
                 userId: userId

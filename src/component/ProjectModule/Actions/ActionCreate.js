@@ -5,7 +5,7 @@ import { Box } from '@mui/system';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
 import { validateForm, resetClassName } from '../../../FormValidation';
-import SnackbarNotify from '../../SnackbarNotify';
+import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 import { getAutomationType, AddProject,updateProject } from '../Api';
 
 

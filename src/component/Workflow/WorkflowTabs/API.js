@@ -1,8 +1,7 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import WorkflowNav from "../WorkflowNav";
-import Table from "../../../../Table";
+import Table from "../../CustomComponent/Table";
 
 export default function API() {
 
@@ -39,14 +38,14 @@ const columns = [
   const [screen,setScreen] = useState([])
 
   const getScreen = () => {
-    axios.get('http://10.11.12.243:8090/ProjectMS/Project/getModulePages?moduleId=79')
+    axios.get('http://10.11.12.243:8090/ProjectsMS/Project/getModulePages?moduleId=79')
     .then((resp)=>{
       setScreen(resp.data);
     })
   }
 
   const getScreenElements = () => {
-    axios.get('http://10.11.12.243:8090/ProjectMS/Project/getModulePagesElements?webscreenId=212')
+    axios.get('http://10.11.12.243:8090/ProjectsMS/Project/getModulePagesElements?webscreenId=212')
     .then((resp)=>{
       setScreenElements(resp.data);
     })
@@ -61,7 +60,6 @@ const columns = [
 
     return(
         <Box sx={{ display: "flex", gap: 1 }}>
-      <WorkflowNav workflowModules={screen} setWorkFlowModuleHead={console.log} navigationHeader={"screen"}/>
       <Box
         component="main"
         sx={{

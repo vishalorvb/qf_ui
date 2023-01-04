@@ -76,12 +76,13 @@ export default function LoginCard() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    postUserDetails({ userName: data.get('email'), password: data.get('password') })
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    navigate("/recent-project");
+    // const data = new FormData(event.currentTarget);
+    // postUserDetails({ userName: data.get('email'), password: data.get('password') })
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
   };
 
   return (
