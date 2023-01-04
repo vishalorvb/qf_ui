@@ -1,16 +1,15 @@
 import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { baseUrl } from "../../../../../Environment"; 
-import WorkflowNav from "../WorkflowNav";
-import Table from "../../../../Table";
+import { baseUrl } from "../../../Environment"; 
+import Table from "../../CustomComponent/Table";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CreateTestcase from "../CreateTestcase";
-import Pillnav from "../../../../../Pillnav";
+import Pillnav from "../Pillnav";
 
 export default function TestCases(props) {
 

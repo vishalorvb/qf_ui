@@ -1,12 +1,12 @@
 import { Autocomplete, Button, Container, Grid, Paper } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react'
-import Table from '../../Table';
+import Table from '../CustomComponent/Table';
 import SearchIcon from '@mui/icons-material/Search';
 import moment from 'moment';
 import axios from 'axios';
-import { baseUrl } from '../../../Environment';
-import { validateForm, resetClassName } from '../../../FormValidation';
-import SnackbarNotify from '../../SnackbarNotify';
+import { baseUrl } from '../../Environment';
+import { validateForm, resetClassName } from '../../FormValidation';
+import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 
 function Report() {
 

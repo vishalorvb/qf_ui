@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Paper, List, Typography, Button } from "@mui/material";
-import NavItem from "./component/ProjectModule/Actions/Workflow/NavItem";
 
 export default function Pillnav(props) {
   const { workflowModules, selectClickedElement } = props;

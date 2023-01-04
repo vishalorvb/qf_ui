@@ -3,11 +3,10 @@ import { Stack } from '@mui/system'
 import React, { useRef, useState } from 'react'
 import UpgradeSharpIcon from '@mui/icons-material/UpgradeSharp';
 // import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { baseUrl } from '../../../Environment';
-import { validateForm, resetClassName } from '../../../FormValidation';
+import { baseUrl } from '../../Environment';
+import { validateForm, resetClassName } from '../../FormValidation';
 import axios from 'axios';
-import SnackbarNotify from '../../SnackbarNotify';
-// import Table from '../../Table';
+import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 
 function Settings() {
     let Url = useRef();

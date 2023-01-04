@@ -1,4 +1,4 @@
-import Table from "../Table";
+import Table from "../CustomComponent/Table";
 
 export default function ExecutionRecent() {
 

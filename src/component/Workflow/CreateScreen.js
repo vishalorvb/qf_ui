@@ -13,9 +13,8 @@ import { useEffect, useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import axios from "axios";
-import WorkflowNav from "./WorkflowNav";
-import Table from "../../../Table";
-import { baseUrl } from "../../../../Environment";
+import Table from "../CustomComponent/Table";
+import { baseUrl } from "../../Environment";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 
 export default function CreateScreen(props) {
@@ -136,15 +135,7 @@ export default function CreateScreen(props) {
       </DialogTitle>
       <DialogContent className="AddUsers" style={{ marginTop: "10px" }}>
         <Box sx={{ display: "flex", gap: 1 }}>
-          {pages.length > 0 ? (
-            <WorkflowNav
-              workflowModules={pages}
-              selectClickedElement={setSelectedPage}
-              navigationHeader={"Pages"}
-            />
-          ) : (
-            "No Pages Found"
-          )}
+         
           <Box
             component="main"
             sx={{
