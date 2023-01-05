@@ -1,11 +1,11 @@
 import { Typography } from "@mui/material";
-import WorkflowElement from "./WorkflowElement";
 import API from "./WorkflowTabs/API";
 import PagesScreen from "./WorkflowTabs/PagesScreen";
 import Screens from "./WorkflowTabs/Screens";
 import TestCases from "./WorkflowTabs/TestCases";
 import TestSets from "./WorkflowTabs/TestSets";
 import Report from "./WorkflowTabs/Report";
+import AccordionTemplate from "../CustomComponent/AccordionTemplate";
 
 export default function Workflows(props) {
   const { project } = props;
@@ -60,10 +60,9 @@ export default function Workflows(props) {
         {tabs
           .filter((item) => item.moduleType.includes(type))
           .map((item) => (
-            <WorkflowElement
-              workflowName={item.label}
-              component={item.component}
-            />
+            <AccordionTemplate name={item.label}>
+              {item.component}
+            </AccordionTemplate>
           ))}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import "../projects.scss";
 
-import { Alert, Button, Paper, Box, Typography, Collapse } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import StarIcon from "@mui/icons-material/Star";
@@ -18,9 +18,8 @@ import { getProjects, DeleteProjectFromFavourite } from "../Api";
 import ActionUsers from "../Actions/ActionUsers";
 import ActionOverview from "../Actions/Overview";
 import Workflows from "../../Workflow/Workflows";
-import { ExpandMore } from "../../CustomComponent/ExpandMore";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WorkflowDropdown from "../../Workflow/WorkflowDropdown";
+import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 
 function Recent() {
   const [showWorkflow, setShowWorkflow] = useState({
@@ -311,47 +310,36 @@ function Recent() {
 
   return (
     <div className="recentProjects">
-      <Paper className="accordion" elevation={1} sx={{ marginTop: "10px" }}>
-        <Box sx={{ backgroundColor: "primary.lightGrey" }}>
-          <ExpandMore
-            expand={collapseProject}
-            onClick={() => setCollapseProject(!collapseProject)}
-            aria-expanded={collapseProject}
-            aria-label="show more"
+      <AccordionTemplate
+        name="Projects"
+        defaultState={true}
+        toggle={collapseProject}
+      >
+        <div className="tableTopSection fd-r">
+          <Button
+            onClick={() => {
+              setCreateProject((pv) => !pv);
+              setAction("CreateProject");
+            }}
+            variant="contained"
+            endIcon={createProject ? <RemoveIcon></RemoveIcon> : <AddIcon />}
           >
-            <ExpandMoreIcon />
-          </ExpandMore>
-          <Typography variant="p" gutterBottom>
-            Projects
-          </Typography>
-        </Box>
-        <Collapse in={collapseProject} timeout="auto" unmountOnExit>
-          <div className="tableTopSection fd-r">
-            <Button
-              onClick={() => {
-                setCreateProject((pv) => !pv);
-                setAction("CreateProject");
-              }}
-              variant="contained"
-              endIcon={createProject ? <RemoveIcon></RemoveIcon> : <AddIcon />}
-            >
-              Create Project{" "}
-            </Button>
-          </div>
-          <Table
-            rows={row.slice(0, 10)}
-            columns={columns}
-            hidefooter={true}
-          ></Table>
-          {showWorkflow.flag && action === "workflow" && (
-            <WorkflowDropdown
-              project={showWorkflow.projectId}
-              setDisplayWorkflow={setDisplayWorkflow}
-              setCollapseProject={setCollapseProject}
-            />
-          )}
-        </Collapse>
-      </Paper>
+            Create Project{" "}
+          </Button>
+        </div>
+        <Table
+          rows={row.slice(0, 10)}
+          columns={columns}
+          hidefooter={true}
+        ></Table>
+        {showWorkflow.flag && action === "workflow" && (
+          <WorkflowDropdown
+            project={showWorkflow.projectId}
+            setDisplayWorkflow={setDisplayWorkflow}
+            setCollapseProject={setCollapseProject}
+          />
+        )}
+      </AccordionTemplate>
 
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
