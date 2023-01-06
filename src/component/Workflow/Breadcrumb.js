@@ -16,9 +16,8 @@ export default function Breadcrumb(props) {
         aria-label="breadcrumb"
         separator={<NavigateNextIcon fontSize="small" />}
       >
-        <Link underline="hover" color="inherit" href="/">
-          {projectName} Workflow
-        </Link>
+        <Typography color="text.secondary">{projectName} Workflow</Typography>
+
         <Typography color="text.primary">{workflowName}</Typography>
       </Breadcrumbs>
     </div>
