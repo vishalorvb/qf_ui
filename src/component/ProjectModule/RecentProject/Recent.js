@@ -163,6 +163,7 @@ function Recent() {
     } else {
       setShowWorkflow((pv) => ({ ...pv, flag: true, projectId: projectId }));
     }
+    setDisplayWorkflow(0);
   };
 
   const columns = [

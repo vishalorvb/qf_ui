@@ -282,9 +282,14 @@ export default function WorkflowDropdown(props) {
 
   const handleViewDetails = () => {
     setDisplayWorkflow((ps) => {
-      return ps.module_id === selectedWorkflow.current?.module_id
+      console.log(ps);
+      console.log(selectedWorkflow);
+
+      return ps?.module_id === selectedWorkflow.current?.module_id
         ? 0
-        : selectedWorkflow.current;
+        : selectedWorkflow?.current === undefined
+        ? 0
+        : selectedWorkflow?.current;
     });
 
     selectedWorkflow.current !== undefined && setCollapseProject(false);
