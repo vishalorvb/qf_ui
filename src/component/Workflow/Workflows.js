@@ -6,45 +6,47 @@ import TestCases from "./WorkflowTabs/TestCases";
 import TestSets from "./WorkflowTabs/TestSets";
 import Report from "./WorkflowTabs/Report";
 import AccordionTemplate from "../CustomComponent/AccordionTemplate";
+import Breadcrumb from "./Breadcrumb";
 
 export default function Workflows(props) {
-  const { project } = props;
+  const { module, project } = props;
 
+  console.table(module);
   const tabs = [
     {
       value: "api",
       label: "API",
-      component: <API module={project} />,
+      component: <API module={module} />,
       moduleType: [1],
     },
     {
       value: "page",
       label: "Pages",
-      component: <PagesScreen module={project} />,
+      component: <PagesScreen module={module} />,
       moduleType: [1, 2],
     },
     {
       value: "screen",
       label: "Screens",
-      component: <Screens module={project} />,
+      component: <Screens module={module} />,
       moduleType: [1, 2],
     },
     {
       value: "testCase",
       label: "TestCases",
-      component: <TestCases module={project} />,
+      component: <TestCases module={module} />,
       moduleType: [1, 2],
     },
     {
       value: "testSet",
       label: "TestSets",
-      component: <TestSets module={project} />,
+      component: <TestSets module={module} />,
       moduleType: [1, 2],
     },
     {
       value: "report",
       label: "Report",
-      component: <Report module={project} />,
+      component: <Report module={module} />,
       moduleType: [1, 2],
     },
   ];
@@ -54,8 +56,12 @@ export default function Workflows(props) {
   return (
     <div className="elementGroup">
       <Typography variant="h5" gutterBottom>
-        {project.module_name}
+        {module.module_name}
       </Typography>
+      <Breadcrumb
+        projectName={project.project_name}
+        workflowName={module.module_name}
+      />
       <div className="accordionParent">
         {tabs
           .filter((item) => item.moduleType.includes(type))

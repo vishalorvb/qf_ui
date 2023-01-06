@@ -11,6 +11,7 @@
 
 # production
 /build
+/qualityFusionQA
 
 # misc
 .DS_Store

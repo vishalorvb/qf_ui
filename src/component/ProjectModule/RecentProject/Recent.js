@@ -379,7 +379,9 @@ function Recent() {
         onConfirm={() => DeleteProjectFromUser(pid, uid)}
       ></ConfirmPop>
       {/* {showWorkflow.flag && action == "workflow" && <Workflow projectId={showWorkflow.projectId} />} */}
-      {displayWorkflow !== 0 && <Workflows project={displayWorkflow} />}
+      {displayWorkflow !== 0 && (
+        <Workflows project={showWorkflow.projectId} module={displayWorkflow} />
+      )}
     </div>
   );
 }
