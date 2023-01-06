@@ -59,8 +59,12 @@ export default function Workflows(props) {
       <div className="accordionParent">
         {tabs
           .filter((item) => item.moduleType.includes(type))
-          .map((item) => (
-            <AccordionTemplate name={item.label}>
+          .map((item, index) => (
+            <AccordionTemplate
+              key={item.label}
+              name={item.label}
+              defaultState={index === 0}
+            >
               {item.component}
             </AccordionTemplate>
           ))}

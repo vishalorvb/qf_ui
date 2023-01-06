@@ -6,7 +6,7 @@ import { ExpandMore } from "./ExpandMore";
 export default function AccordionTemplate(props) {
   const { name, children, defaultState, toggle } = props;
   const [accordionExpanded, setAccordionExpanded] = useState(() =>
-    defaultState === undefined ? false : true
+    defaultState === undefined ? false : defaultState
   );
 
   useEffect(() => {
