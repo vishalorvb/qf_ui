@@ -65,9 +65,9 @@ const mdTheme = createTheme({
   },
   palette: {
     // mode: 'dark',
-    primary: { main: '#00108A', lightGrey: '#E2E7EE'},
+    primary: { main: '#0047ac', lightGrey: '#E2E7EE' },
 
-  
+
     // background: { paper: 'rgba(137,196,244,0.1)' },
   },
   // "& .MuiInputBase-input.MuiOutlinedInput-input.MuiInputBase-inputSizeSmall.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input":{

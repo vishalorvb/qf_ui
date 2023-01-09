@@ -5,6 +5,7 @@ import Table from "../../CustomComponent/Table";
 import { baseUrl } from "../../../Environment";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import Pillnav from "../Pillnav";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function PagesScreen(props) {
   const { module } = props;
@@ -60,7 +61,7 @@ export default function PagesScreen(props) {
     axios
       .get(
         baseUrl +
-          `/ProjectsMS/Project/getModulePages?moduleId=${module?.module_id}`
+        `/ProjectsMS/Project/getModulePages?moduleId=${module?.module_id}`
       )
       .then((resp) => {
         setPages(resp.data);
@@ -72,7 +73,7 @@ export default function PagesScreen(props) {
     axios
       .get(
         baseUrl +
-          `/ProjectsMS/Project/getModulePagesElements?webPageId=${selectedPage?.web_page_id}`
+        `/ProjectsMS/Project/getModulePagesElements?webPageId=${selectedPage?.web_page_id}`
       )
       .then((resp) => {
         setPageElements(resp.data);
@@ -110,7 +111,9 @@ export default function PagesScreen(props) {
     >
       <Pillnav workflowModules={pages} selectClickedElement={setSelectedPage} />
       <div className="tableTopSection fd-r">
-        <Button variant="contained">Create Page</Button>
+        <Button variant="contained" endIcon={<AddIcon />}
+        >
+          Create Page{" "}</Button>
       </div>
 
       <Table

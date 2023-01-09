@@ -176,7 +176,7 @@ function CreateProject(props) {
     }
   }
   return (
-    <div onClick={resetClassName}>
+    <div className="accordionParent" onClick={resetClassName}>
       {props.edit && <h1>This is Edit</h1>}
       <SnackbarNotify
         open={snackbarerror}

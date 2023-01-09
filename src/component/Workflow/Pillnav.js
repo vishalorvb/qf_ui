@@ -17,7 +17,7 @@ export default function Pillnav(props) {
   return (
     <Paper elevation={0}>
       <div className="tableSearch my-2">
-        <input
+        <input type="text" className="inputSearch" placeholder="Search"
           onChange={(e) => setFilterString(e.target.value.toLowerCase())}
         ></input>
       </div>

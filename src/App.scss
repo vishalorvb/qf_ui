@@ -35,10 +35,7 @@ h2#\:r3h\: {
   height: "0.5em";
 }
 
-.MuiInputBase-input
-  .MuiOutlinedInput-input
-  .MuiInputBase-inputSizeSmall
-  .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
+.MuiInputBase-input .MuiOutlinedInput-input .MuiInputBase-inputSizeSmall .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
   height: "0.5em";
 }
 
@@ -163,9 +160,11 @@ h5 {
 .row {
   display: flex;
   gap: 32px;
-  & > * {
+
+  &>* {
     margin-bottom: 15px;
   }
+
   .col-4 {
     width: 33.33%;
   }
@@ -180,12 +179,14 @@ h5 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  height: 120px;
+  height: auto;
+  max-height: 120px;
   overflow-y: scroll;
   background-color: rgba(0, 16, 138, 0.05);
   border: 1px solid rgba(0, 16, 138, 0.3);
   padding: 15px;
   border-radius: 10px;
+
   button {
     align-self: self-start;
   }
@@ -206,6 +207,7 @@ h5 {
   box-shadow: 4px 4px 6px rgba(0, 38, 126, 0.039) !important;
   border: 1px solid #e2e7ee !important;
   overflow: hidden;
+
   .MuiCollapse-root {
     padding: 0 20px 20px;
   }
@@ -214,6 +216,7 @@ h5 {
 .actionIcons {
   button {
     margin-right: 10px;
+
     img {
       height: 20px;
     }
@@ -223,4 +226,42 @@ h5 {
 .btnGroup {
   display: flex;
   gap: 15px;
+}
+
+.inputSearch {
+  padding: 0 10px;
+}
+
+h4 {
+  color: #0047ac;
+}
+
+.workflowDropdown {
+  span {
+    color: #303030;
+    font-size: 0.8em;
+  }
+}
+
+.topSection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  h4 {
+    padding: 0 20px 0 0;
+    border-right: 1px solid #ebebeb;
+  }
+}
+
+.MuiBreadcrumbs-ol {
+  &>*:last-child {
+    p {
+      color: #0047ac;
+    }
+  }
+}
+
+.actions {
+  margin-top: 10px;
 }

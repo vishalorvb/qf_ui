@@ -55,13 +55,15 @@ export default function Workflows(props) {
 
   return (
     <div className="elementGroup">
-      <Typography variant="h5" gutterBottom>
-        {module.module_name}
-      </Typography>
-      <Breadcrumb
-        projectName={project.project_name}
-        workflowName={module.module_name}
-      />
+      <div className="topSection">
+        <Typography variant="h4" gutterBottom>
+          {module.module_name}
+        </Typography>
+        <Breadcrumb
+          projectName={project.project_name}
+          workflowName={module.module_name}
+        />
+      </div>
       <div className="accordionParent">
         {tabs
           .filter((item) => item.moduleType.includes(type))

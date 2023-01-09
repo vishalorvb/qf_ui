@@ -288,8 +288,8 @@ export default function WorkflowDropdown(props) {
       return ps?.module_id === selectedWorkflow.current?.module_id
         ? 0
         : selectedWorkflow?.current === undefined
-        ? 0
-        : selectedWorkflow?.current;
+          ? 0
+          : selectedWorkflow?.current;
     });
 
     selectedWorkflow.current !== undefined && setCollapseProject(false);
@@ -301,8 +301,8 @@ export default function WorkflowDropdown(props) {
 
   return (
     <div className="workflowDetails">
-      <Typography variant="h5" gutterBottom>
-        Workflow-{project.project_name}
+      <Typography className="workflowDropdown" variant="h4" gutterBottom>
+        Workflow<span> - {project.project_name}</span>
       </Typography>
       <div className="row">
         <div className="col-4">

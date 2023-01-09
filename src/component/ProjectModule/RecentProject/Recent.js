@@ -310,7 +310,7 @@ function Recent() {
   }, [user]);
 
   return (
-    <div className="recentProjects">
+    <div className="recentProjects mb-2">
       <AccordionTemplate
         name="Projects"
         defaultState={true}
