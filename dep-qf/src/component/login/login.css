@@ -1,9 +1,0 @@
-.loginParent{
-    height: 100vh;
-    width: 100vw;
-    background-image: url("https://testsigma.com/blog/wp-content/uploads/2019/06/Why-Automated-Testing-Advantages-of-Automated-Testing.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    -webkit-filter: blur(10px); /* Safari 6.0 - 9.0 */
-    filter: blur(10px);
-}
