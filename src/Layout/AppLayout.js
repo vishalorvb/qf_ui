@@ -1,6 +1,9 @@
 import Sidebar from "./Sidebar";
 import PageHead from "./PageHead";
 import AppHeader from "./AppHeader";
+
+import { HeaderProvider } from "../context/HeaderProvider";
+
 import { Outlet } from "react-router-dom";
 
 export default function AppLayout() {
@@ -11,8 +14,10 @@ export default function AppLayout() {
       </div>
       <div className="w-10">
         <AppHeader />
-        <PageHead />
-        <Outlet />
+        <HeaderProvider>
+          <PageHead />
+          <Outlet />
+        </HeaderProvider>
       </div>
     </div>
   );
