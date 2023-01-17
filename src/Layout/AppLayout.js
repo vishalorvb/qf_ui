@@ -5,14 +5,20 @@ import { Outlet } from "react-router-dom";
 
 export default function AppLayout() {
   return (
-    <div className="flex">
-      <div className="w-2 h-screen shadow-3 ">
+    <div className="container">
+      <div className="sidebar">
         <Sidebar />
       </div>
-      <div className="w-10">
+      <div className="header">
         <AppHeader />
-        <PageHead />
-        <Outlet />
+      </div>
+      <div className="content">
+        <div className="pageTitle">
+          <PageHead />
+        </div>
+        <div className="mainContent">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
