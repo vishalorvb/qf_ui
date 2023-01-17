@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { Card } from "primereact/card";
 //navItems
 import { testManagementList, opsManagementList } from "./SidebarNavlist";
 
@@ -31,7 +30,7 @@ export default function Sidebar() {
         <span>Quality Fusion</span>
       </div>
       <div>
-        <Card>QF Admin</Card>
+        <span>QF Admin</span>
         <div>
           <ul>{navigationItemRender(testManagementList)}</ul>
         </div>
