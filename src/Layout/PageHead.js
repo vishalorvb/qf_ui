@@ -1,8 +1,8 @@
 import useHead from "../hooks/useHead";
-import Breadcrumbs from "./Breadcrumbs";
+import BreadcrumbsComponent from "./BreadcrumbsComponent";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { IconButton } from "@mui/material";
+import { IconButton, Grid } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function PageHead() {
@@ -18,7 +18,12 @@ export default function PageHead() {
       {header?.name === "notFound" ? (
         ""
       ) : (
-        <div className="flex justify-content-between">
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <h2>
             {backButtonRender && (
               <IconButton onClick={() => navigate(-1)}>
@@ -33,8 +38,8 @@ export default function PageHead() {
             )}
           </h2>
 
-          <Breadcrumbs />
-        </div>
+          <BreadcrumbsComponent />
+        </Grid>
       )}
     </>
   );
