@@ -4,13 +4,13 @@ import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Link, Outlet } from "react-router-dom";
 
-export default function MobileApp() {
+export default function Pages() {
   const { setHeader } = useHead();
 
-  const applicationColumns = [
+  const pageColumns = [
     {
       field: "name",
-      headerName: "Application Name",
+      headerName: "Pages",
       flex: 3,
       sortable: false,
     },
@@ -39,7 +39,7 @@ export default function MobileApp() {
     },
   ];
 
-  const applications = [
+  const pages = [
     {
       id: 1,
       name: "Application 1",
@@ -64,13 +64,27 @@ export default function MobileApp() {
 
   useEffect(() => {
     setHeader((ps) => {
-      return { ...ps, name: "Mobile" };
+      return {
+        ...ps,
+        name: "Pages",
+        plusButton: true,
+        plusCallback: () => console.log("hurray"),
+      };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   return (
     <>
-      <Table rows={applications} columns={applicationColumns} />
+      <Table rows={pages} columns={pageColumns} />;
       <Outlet />
     </>
   );

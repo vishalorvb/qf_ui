@@ -14,7 +14,7 @@ const routeLister = (rawList) => {
   const routeList = rawList
     .filter((routeItem) => routeItem.accessRole.includes(role))
     .map((routeItem, idx) => {
-      return (
+      return routeItem.subRoute === undefined ? (
         <Route
           key={idx}
           path={routeItem.path}
@@ -23,7 +23,17 @@ const routeLister = (rawList) => {
               <routeItem.element />
             </Suspense>
           }
-        >
+        ></Route>
+      ) : (
+        <Route key={idx} path={routeItem.path}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<>...</>}>
+                <routeItem.element />
+              </Suspense>
+            }
+          ></Route>
           {routeItem.subRoute && routeLister(routeItem.subRoute)}
         </Route>
       );
