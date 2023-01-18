@@ -14,6 +14,8 @@ const Reports = lazy(() => import("../pages/Reports"));
 const Testcase = lazy(() => import("../pages/Testcase"));
 const Testset = lazy(() => import("../pages/Testset"));
 const WebApp = lazy(() => import("../pages/WebApp"));
+const Pages = lazy(() => import("../pages/Pages"));
+const PageElements = lazy(() => import("../pages/PageElements"));
 
 export const Routes = [
   {
@@ -40,6 +42,20 @@ export const Routes = [
     path: "application/mobileApp",
     element: MobileApp,
     accessRole: "",
+    subRoute: [
+      {
+        path: ":id",
+        element: Pages,
+        accessRole: "",
+        subRoute: [
+          {
+            path: ":id",
+            element: PageElements,
+            accessRole: "",
+          },
+        ],
+      },
+    ],
   },
   {
     path: "*",
@@ -85,5 +101,19 @@ export const Routes = [
     path: "application/webApp",
     element: WebApp,
     accessRole: "",
+    subRoute: [
+      {
+        path: ":id",
+        element: Pages,
+        accessRole: "",
+        subRoute: [
+          {
+            path: ":id",
+            element: PageElements,
+            accessRole: "",
+          },
+        ],
+      },
+    ],
   },
 ];
