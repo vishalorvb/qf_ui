@@ -7,8 +7,8 @@ function Projects() {
 
   return (
     <div>
-      {/* <ProjectTable></ProjectTable> */}
-      <CreateProject></CreateProject>
+      <ProjectTable></ProjectTable>
+      {/* <CreateProject></CreateProject> */}
     </div>
   )
 }
