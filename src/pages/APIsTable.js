@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, Outlet } from "react-router-dom";
+import { IconButton } from "@mui/material";
 
-export default function ApiApp() {
+export default function APIsTable() {
   const { setHeader } = useHead();
 
   const pageColumns = [
@@ -17,13 +19,19 @@ export default function ApiApp() {
     {
       field: "description",
       headerName: "Description",
-      flex: 3,
+      flex: 4,
+      sortable: false,
+    },
+    {
+      field: "type",
+      headerName: "Request Type",
+      flex: 1,
       sortable: false,
     },
     {
       field: "Actions",
       headerName: "Actions",
-      flex: 3,
+      flex: 2,
       sortable: false,
       align: "center",
       headerAlign: "center",
@@ -31,8 +39,13 @@ export default function ApiApp() {
         return (
           <div>
             <Link to={String(param.row.id)}>
-              <NearMeOutlinedIcon />
+              <IconButton>
+                <EditIcon />
+              </IconButton>
             </Link>
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
           </div>
         );
       },
@@ -66,14 +79,25 @@ export default function ApiApp() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "API",
+        name: "APIs Table",
+        plusButton: true,
+        plusCallback: () => console.log("hurray"),
       };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   return (
     <>
-      <Table rows={pages} columns={pageColumns} />;
+      <Table rows={pages} columns={pageColumns} />
       <Outlet />
     </>
   );

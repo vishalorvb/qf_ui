@@ -4,7 +4,7 @@ import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Link, Outlet } from "react-router-dom";
 
-export default function ApiApp() {
+export default function Pages() {
   const { setHeader } = useHead();
 
   const pageColumns = [
@@ -66,9 +66,20 @@ export default function ApiApp() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "API",
+        name: "Pages",
+        plusButton: true,
+        plusCallback: () => console.log("hurray"),
       };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   return (
