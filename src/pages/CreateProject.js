@@ -1,12 +1,26 @@
 import { Button, Container, Grid } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
-import { validateForm, resetClassName } from "../CustomComponent/FormValidation";
+import {
+  validateForm,
+  resetClassName,
+} from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import { getAutomationType, AddProject, updateProject } from "../Api";
 import AccordionTemplate from "../CustomComponent/AccordionTemplate";
+import useHead from "../hooks/useHead";
 
 function CreateProject(props) {
+  const { setHeader } = useHead();
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Create Project",
+      };
+    });
+  }, []);
+
   console.table(props.project);
   let userId = 112;
   let date = new Date();
@@ -151,29 +165,29 @@ function CreateProject(props) {
         db_port: portNumber.current.value,
       };
 
-    //   if (props.edit) {
-    //     projectData.project_id = props.project.id;
-    //     DbData.db_id = props.project.db_id;
-    //     updateProject(projectData, DbData).then((res) => {
-    //       console.log(res);
-    //       setSnackbarsuccess(true);
-    //     });
-    //   } else {
-    //     AddProject(projectData, DbData).then((res) => {
-    //       console.log(res);
-    //       setSnackbarsuccess(true);
-    //     });
-    //   }
+      //   if (props.edit) {
+      //     projectData.project_id = props.project.id;
+      //     DbData.db_id = props.project.db_id;
+      //     updateProject(projectData, DbData).then((res) => {
+      //       console.log(res);
+      //       setSnackbarsuccess(true);
+      //     });
+      //   } else {
+      //     AddProject(projectData, DbData).then((res) => {
+      //       console.log(res);
+      //       setSnackbarsuccess(true);
+      //     });
+      //   }
 
-    //   setTimeout(() => {
-    //     setSnackbarsuccess(false);
-    //   }, 2000);
-    // } else {
-    //   setSnackbarerror(true);
-    //   setTimeout(() => {
-    //     setSnackbarerror(false);
-    //   }, 2000);
-      }
+      //   setTimeout(() => {
+      //     setSnackbarsuccess(false);
+      //   }, 2000);
+      // } else {
+      //   setSnackbarerror(true);
+      //   setTimeout(() => {
+      //     setSnackbarerror(false);
+      //   }, 2000);
+    }
   }
   return (
     <div className="accordionParent" onClick={resetClassName}>
