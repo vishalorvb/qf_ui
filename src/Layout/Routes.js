@@ -1,5 +1,4 @@
 import { lazy } from "react";
-
 const Admin = lazy(() => import("../pages/Admin"));
 const ApiApp = lazy(() => import("../pages/ApiApp"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
@@ -16,6 +15,9 @@ const Testset = lazy(() => import("../pages/Testset"));
 const WebApp = lazy(() => import("../pages/WebApp"));
 const Pages = lazy(() => import("../pages/Pages"));
 const PageElements = lazy(() => import("../pages/PageElements"));
+const CreateProject = lazy(() => import("../pages/CreateProject"));
+const APIsTable = lazy(() => import("../pages/APIsTable"));
+const ApiCreateEdit = lazy(() => import("../pages/ApiCreateEdit"));
 
 export const Routes = [
   {
@@ -27,6 +29,20 @@ export const Routes = [
     path: "application/apiApp",
     element: ApiApp,
     accessRole: "",
+    subRoute: [
+      {
+        path: ":id",
+        element: APIsTable,
+        accessRole: "",
+        subRoute: [
+          {
+            path: ":id",
+            element: ApiCreateEdit,
+            accessRole: "",
+          },
+        ],
+      },
+    ],
   },
   {
     path: "dashboard",
@@ -71,6 +87,13 @@ export const Routes = [
     path: "projects",
     element: Projects,
     accessRole: "",
+    subRoute: [
+      {
+        path: "createProject",
+        element: CreateProject,
+        accessRole: "",
+      },
+    ],
   },
   {
     path: "qfAdmin",

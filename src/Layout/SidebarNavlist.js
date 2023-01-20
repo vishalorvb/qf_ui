@@ -1,15 +1,26 @@
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
+import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
+import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
+
 export const testManagementList = [
   {
     name: "Admin",
     route: "admin",
     accessRole: "",
-    icon: "",
+    icon: <AdminPanelSettingsOutlinedIcon />,
   },
   {
     name: "Application",
     route: "application/webApp",
     accessRole: "",
-    icon: "",
+    icon: <AssessmentOutlinedIcon />,
     subList: [
       {
         name: "Web",
@@ -32,37 +43,37 @@ export const testManagementList = [
     name: "Projects",
     route: "projects",
     accessRole: "",
-    icon: "",
+    icon: <AnalyticsOutlinedIcon />,
   },
   {
     name: "Testcases",
     route: "testcase",
     accessRole: "",
-    icon: "",
+    icon: <TaskOutlinedIcon />,
   },
   {
     name: "Testsets",
     route: "testset",
     accessRole: "",
-    icon: "",
+    icon: <DescriptionOutlinedIcon />,
   },
   {
     name: "Execution",
     route: "execution",
     accessRole: "",
-    icon: "",
+    icon: <PlayArrowOutlinedIcon />,
   },
   {
     name: "Reports",
     route: "reports",
     accessRole: "",
-    icon: "",
+    icon: <SummarizeOutlinedIcon />,
   },
   {
     name: "Dashboard",
     route: "dashboard",
     accessRole: "",
-    icon: "",
+    icon: <DashboardOutlinedIcon />,
   },
 ];
 
@@ -71,12 +82,21 @@ export const opsManagementList = [
     name: "Release",
     route: "release",
     accessRole: "",
-    icon: "",
+    icon: <RocketLaunchOutlinedIcon />,
   },
   {
     name: "CI CD Pipeline",
     route: "pipeline",
     accessRole: "",
-    icon: "",
+    icon: <ChangeCircleOutlinedIcon />,
+  },
+];
+
+export const qfAdmin = [
+  {
+    name: "QF Admin",
+    route: "qfAdmin",
+    accessRole: "",
+    icon: <AdminPanelSettingsOutlinedIcon />,
   },
 ];
