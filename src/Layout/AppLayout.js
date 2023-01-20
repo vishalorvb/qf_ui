@@ -1,4 +1,3 @@
-import Sidebar from "./Sidebar";
 import PageHead from "./PageHead";
 import AppHeader from "./AppHeader";
 import MiniDrawer from "./MiniDrawer";
@@ -15,7 +14,15 @@ export default function AppLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <MiniDrawer open={open} />
-      <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 0,
+          background:
+            "transparent linear-gradient(270deg, #FFFFFF 0%, #F5F5F6 100%) 0% 0% no-repeat padding-box",
+        }}
+      >
         <div className="header">
           <AppHeader setOpen={setOpen} />
         </div>
