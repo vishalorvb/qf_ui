@@ -8,8 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddUserPopup from '../UsersPopups/AddUserPopup';
 import EditUserPopup from '../UsersPopups/EditUserPopup';
 import DeleteUserPopup from '../UsersPopups/DeleteUserPopup';
-// import ActiveUserPopup from './ActiveUserPopup';
-// import DeactiveUserPopup from './DeactiveUserPopup';
+import ActiveUserPopup from '../UsersPopups/ActiveUserPopup';
+import DeactiveUserPopup from '../UsersPopups/DeactiveUserPopup';
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
 // import axios from 'axios';
@@ -110,14 +110,15 @@ export default function Admin() {
             <Tooltip title="Delete">
               <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteIcon ></DeleteIcon></IconButton>
             </Tooltip>
-            {param.row.status === 0 ?
+            {/* {param.row.status === 0 ? */}
               <Tooltip title="Inactive">
                 <IconButton onClick={(e) => { activateUserHandler(param.row) }}><PersonOffTwoToneIcon ></PersonOffTwoToneIcon></IconButton>
-              </Tooltip> :
+              </Tooltip> 
+              {/* : */}
               <Tooltip title="Active">
                 <IconButton onClick={(e) => { deactivateUserHandler(param.row) }}><PersonOutlineTwoToneIcon ></PersonOutlineTwoToneIcon></IconButton>
               </Tooltip>
-            }
+            {/* } */}
           </>
         )
       },
@@ -135,8 +136,8 @@ export default function Admin() {
         {open ? <AddUserPopup open={open} setOpen={setOpen}  users={users}  /> : ""}
         {openEdit ? <EditUserPopup object={editObject} openEdit={openEdit} setOpenEdit={setOpenEdit}  /> : ""}
         {openDelete ? <DeleteUserPopup object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete} /> : ""}
-        {/* {openActive ? <ActiveUserPopup object={activeObject} openActive={openActive} setOpenActive={setOpenActive} getUserDetails={getUserDetails} setActSuccessMsg={setActSuccessMsg} /> : ""}
-        {openDeactive ? <DeactiveUserPopup object={deactiveObject} openDeactive={openDeactive} setOpenDeactive={setOpenDeactive} getUserDetails={getUserDetails} setDeactSuccessMsg={setDeactSuccessMsg} /> : ""}  */}
+        {openActive ? <ActiveUserPopup object={activeObject} openActive={openActive} setOpenActive={setOpenActive} /> : ""}
+        {openDeactive ? <DeactiveUserPopup object={deactiveObject} openDeactive={openDeactive} setOpenDeactive={setOpenDeactive} /> : ""} 
         <Table
           columns={columns}
           rows={users}
