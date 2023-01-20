@@ -2,7 +2,7 @@ import useHead from "../hooks/useHead";
 import BreadcrumbsComponent from "./BreadcrumbsComponent";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { IconButton, Grid } from "@mui/material";
+import { IconButton, Grid, Typography, Divider, Chip } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function PageHead() {
@@ -18,28 +18,36 @@ export default function PageHead() {
       {header?.name === "notFound" ? (
         ""
       ) : (
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <h2>
-            {backButtonRender && (
-              <IconButton onClick={() => navigate(-1)}>
-                <ArrowBackIosIcon />
-              </IconButton>
-            )}
-            <span>{header.name}</span>
-            {header.plusButton && (
-              <IconButton onClick={header.plusCallback}>
-                <AddIcon />
-              </IconButton>
-            )}
-          </h2>
+        <>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ height: "55px" }}
+          >
+            <h2>
+              {backButtonRender && (
+                <IconButton onClick={() => navigate(-1)}>
+                  <ArrowBackIosIcon />
+                </IconButton>
+              )}
+              <Typography variant="h6" style={{ fontWeight: 600 }}>
+                {header.name}
+              </Typography>
+              {header.plusButton && (
+                <IconButton onClick={header.plusCallback}>
+                  <AddIcon />
+                </IconButton>
+              )}
+            </h2>
 
-          <BreadcrumbsComponent />
-        </Grid>
+            <BreadcrumbsComponent />
+          </Grid>
+
+          <Divider />
+          <Divider />
+        </>
       )}
     </>
   );
