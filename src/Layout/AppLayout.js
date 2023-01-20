@@ -14,15 +14,7 @@ export default function AppLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <MiniDrawer open={open} />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 0,
-          background:
-            "transparent linear-gradient(270deg, #FFFFFF 0%, #F5F5F6 100%) 0% 0% no-repeat padding-box",
-        }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
         <div className="header">
           <AppHeader setOpen={setOpen} />
         </div>
