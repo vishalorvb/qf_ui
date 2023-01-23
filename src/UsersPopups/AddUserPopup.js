@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import axios from 'axios';
 import { Autocomplete, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import SaveIcon from '@mui/icons-material/Save';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 function AddUserPopup(props) {
 
@@ -48,7 +48,7 @@ function AddUserPopup(props) {
                 <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
                     <Typography sx={{ marginLeft: 1, marginTop: "auto", marginBottom: "auto " }} variant="inherit">Add User </Typography>
                     <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
-                        <ClearIcon sx={{ color: 'white' }} />
+                        <ClearOutlinedIcon sx={{ color: 'white' }} />
                     </IconButton>
                 </Grid>
             </DialogTitle>
@@ -106,7 +106,7 @@ function AddUserPopup(props) {
                 </div>
             </DialogContent>
             <DialogActions style={{ marginTop: "1px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
-                <Button variant="contained" onClick={submit} startIcon={<SaveIcon />}>
+                <Button variant="contained" onClick={submit} startIcon={<SaveOutlinedIcon />}>
                     Save
                 </Button>
             </DialogActions>

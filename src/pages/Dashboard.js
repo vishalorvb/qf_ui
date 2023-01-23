@@ -8,8 +8,8 @@ import { Box } from '@mui/system';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
-import LanguageIcon from '@mui/icons-material/Language';
-import AdbIcon from '@mui/icons-material/Adb';
+import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
+import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
 import AppleIcon from '@mui/icons-material/Apple';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -85,7 +85,7 @@ export default function Dashboard() {
       <div style={{float:"right" }}>
         <Container component={'div'} sx={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }} >
           <Grid container item xs={12} sm={8} md={6}  >
-            <Grid item xs={6} sm={6} md={3}><label>First Name <span className="importantfield" >*</span>:</label></Grid>
+            <Grid item xs={6} sm={6} md={3}><label>Filter by Project and Sprint <span className="importantfield" >*</span>:</label></Grid>
             <Grid item xs={6} sm={6} md={8}>
               <input type="text" name="" placeholder="Enter First Name" />
             </Grid>
@@ -132,10 +132,10 @@ export default function Dashboard() {
             </Avatar>
             {/* <h4>Api</h4> */}
             <Avatar>
-              <LanguageIcon />
+              <LanguageOutlinedIcon />
             </Avatar>
             <Avatar>
-              <AdbIcon />
+              <AdbOutlinedIcon />
             </Avatar>
             <Avatar>
               <AppleIcon />

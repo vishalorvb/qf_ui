@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import Table from "../CustomComponent/Table";
-import EditIcon from '@mui/icons-material/Edit';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddUserPopup from '../UsersPopups/AddUserPopup';
 import EditUserPopup from '../UsersPopups/EditUserPopup';
 import DeleteUserPopup from '../UsersPopups/DeleteUserPopup';
 import ActiveUserPopup from '../UsersPopups/ActiveUserPopup';
 import DeactiveUserPopup from '../UsersPopups/DeactiveUserPopup';
-import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
-import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
 // import axios from 'axios';
 
 export default function Admin() {
@@ -105,18 +105,18 @@ export default function Admin() {
         return (
           <>
             <Tooltip title="Edit">
-              <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditIcon ></EditIcon></IconButton>
+              <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditOutlinedIcon ></EditOutlinedIcon></IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteIcon ></DeleteIcon></IconButton>
+              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteOutlineOutlinedIcon ></DeleteOutlineOutlinedIcon></IconButton>
             </Tooltip>
             {/* {param.row.status === 0 ? */}
               <Tooltip title="Inactive">
-                <IconButton onClick={(e) => { activateUserHandler(param.row) }}><PersonOffTwoToneIcon ></PersonOffTwoToneIcon></IconButton>
+                <IconButton onClick={(e) => { activateUserHandler(param.row) }}><PersonOffOutlinedIcon ></PersonOffOutlinedIcon></IconButton>
               </Tooltip> 
               {/* : */}
               <Tooltip title="Active">
-                <IconButton onClick={(e) => { deactivateUserHandler(param.row) }}><PersonOutlineTwoToneIcon ></PersonOutlineTwoToneIcon></IconButton>
+                <IconButton onClick={(e) => { deactivateUserHandler(param.row) }}><PersonOutlineOutlinedIcon ></PersonOutlineOutlinedIcon></IconButton>
               </Tooltip>
             {/* } */}
           </>
@@ -130,7 +130,7 @@ export default function Admin() {
   return (
     <div>
       <div className="recenttable" style={{ flot: "right", marginBottom: "10px" }}>
-        <Button variant="contained" endIcon={<AddIcon />} onClick={addUserHandler}>Add User</Button>
+        <Button variant="contained" endIcon={<AddOutlinedIcon />} onClick={addUserHandler}>Add User</Button>
       </div>
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? <AddUserPopup open={open} setOpen={setOpen}  users={users}  /> : ""}

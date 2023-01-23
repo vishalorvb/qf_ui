@@ -1,7 +1,7 @@
 import { Autocomplete, Button, Container, Grid, Paper } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react'
 import Table from "../CustomComponent/Table";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 // import moment from 'moment';
 // import axios from 'axios';
 
@@ -257,7 +257,7 @@ function Reports() {
               />
             </Grid>
           </Grid>
-          <Button variant="contained" onClick={submit} startIcon={<SearchIcon />} sx={{ marginLeft: "45%", marginRight: "auto", marginBottom: "10px", marginTop: "25px" }}>
+          <Button variant="contained" onClick={submit} startIcon={<SearchOutlinedIcon />} sx={{ marginLeft: "45%", marginRight: "auto", marginBottom: "10px", marginTop: "25px" }}>
             Search
           </Button>
         </Container>
