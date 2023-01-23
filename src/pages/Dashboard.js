@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import useHead from "../hooks/useHead";
-import { Card, CardActions, CardContent, Typography, IconButton, Autocomplete, Stack, Avatar } from "@mui/material"
+import { Card, CardActions, CardContent, Typography, IconButton, Autocomplete, Stack, Avatar, TextField, Button, Container } from "@mui/material"
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
@@ -45,12 +45,15 @@ export default function Dashboard() {
 
   const crd = (index) => {
     return (
-      <Card sx={{ Width: '100px', display: 'flex' }}>
-        <CardContent>
-          <Typography sx={{ fontSize: 20, backgroundColor: "rgba(137,196,244,1)" }} align='center' color="text.secondary" gutterBottom>
+      <Card sx={{ Width: '100px', display: 'flex',height:"90px" }}>
+        <Box sx={{display: 'flex', flexDirection: 'column'}}>
+          {/* if(index == 0){ */}
+            <Typography sx={{ fontSize: 20, backgroundColor: "rgba(137,196,244,1)",height:"80px" , width:"150px"}} align='center' color="text.secondary" gutterBottom>
             {header[index]}
           </Typography>
-        </CardContent>
+          
+          
+        </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '50px' }}>
           <Typography variant="h3" align='left' component="div">
             {data[index]}
@@ -77,14 +80,29 @@ export default function Dashboard() {
     createData('IOS Testcases', 0)
   ];
 
-
   return <>
     <div>
-      <div style={{ marginLeft: "320px" }}>
-        Filter by Project and Sprint
-        <input type="text" />
-        <input type="text" value={"All"} />
-        <button >Report Portal</button>
+      <div style={{float:"right" }}>
+        <Container component={'div'} sx={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }} >
+          <Grid container item xs={12} sm={8} md={6}  >
+            <Grid item xs={6} sm={6} md={3}><label>First Name <span className="importantfield" >*</span>:</label></Grid>
+            <Grid item xs={6} sm={6} md={8}>
+              <input type="text" name="" placeholder="Enter First Name" />
+            </Grid>
+          </Grid>
+        </Container>
+        {/* Filter by Project and Sprint
+        <TextField
+          id="outlined-required"
+        />
+        <TextField
+          id="outlined-read-only-input"
+          defaultValue="All"
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+        <Button variant="contained">Report Portal</Button> */}
       </div>
       <br />
       <hr />
@@ -101,8 +119,8 @@ export default function Dashboard() {
         </Box>
       </div>
       <div style={{ marginTop: "20px" }}>
-        <Card sx={{ Width: '10px' }}>
-          <CardContent style={{ marginBottom: "20px" }}>
+        <Card sx={{ maxWidth: 600 }}>
+          <CardContent style={{ marginBottom: "20px",maxWidth: 600 }}>
             <HighchartsReact
               highcharts={Highcharts}
               options={options}
@@ -123,8 +141,8 @@ export default function Dashboard() {
               <AppleIcon />
             </Avatar>
           </Stack>
-          <TableContainer component={Paper} style = {{marginTop:"20px"}}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableContainer component={Paper} style = {{marginTop:"20px",marginBottom:"10px"}}>
+            <Table sx={{ minWidth: 600 }} size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
                   <TableCell>Summary</TableCell>
