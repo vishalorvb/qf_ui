@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,IconButton, Typography } from '@mui/material'
 import React from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
-import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 // import axios from 'axios';
 
 function ActiveUserPopup(props) {
@@ -27,7 +27,7 @@ function ActiveUserPopup(props) {
                     <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
                         <Typography sx={{ marginLeft: 1 }} variant="inherit">Activate User </Typography>
                         <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
-                            <ClearIcon sx={{ color: 'white' }} />
+                            <ClearOutlinedIcon sx={{ color: 'white' }} />
                         </IconButton>
                     </Grid>
                 </DialogTitle>
@@ -41,7 +41,7 @@ function ActiveUserPopup(props) {
                     </div>
                 </DialogContent>
                 <DialogActions style={{ marginTop: "5px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
-                    <Button variant="contained" onClick={submit} startIcon={<PersonOutlineTwoToneIcon />}>
+                    <Button variant="contained" onClick={submit} startIcon={<PersonOutlineOutlinedIcon />}>
                         Activate
                     </Button>
                 </DialogActions>

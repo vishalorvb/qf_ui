@@ -1,7 +1,7 @@
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
-import EditIcon from '@mui/icons-material/Edit';
-import ClearIcon from '@mui/icons-material/Clear';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 function EditUserPopup(props) {
     const [fname, setFname] = useState(props.object.fname);
@@ -40,7 +40,7 @@ function EditUserPopup(props) {
                 <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
                     <Typography sx={{ marginLeft: 1 }} variant="inherit">Edit Users </Typography>
                     <IconButton sx={{ marginLeft: "auto"}} onClick={handleClose} className="btn-close ">
-                        <ClearIcon sx={{ color: 'white' }} />
+                        <ClearOutlinedIcon sx={{ color: 'white' }} />
                     </IconButton>
                 </Grid>
             </DialogTitle>
@@ -92,7 +92,7 @@ function EditUserPopup(props) {
                 </div>
             </DialogContent>
             <DialogActions style={{ marginTop: "1px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
-                <Button variant="contained" onClick={submit} startIcon={<EditIcon />}>
+                <Button variant="contained" onClick={submit} startIcon={<EditOutlinedIcon />}>
                     Update
                 </Button>
             </DialogActions>

@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material'
 import React from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
-import PersonOffTwoToneIcon from '@mui/icons-material/PersonOffTwoTone';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
 // import axios from 'axios';
 
 function DeactiveUserPopup(props) {
@@ -27,7 +27,7 @@ function DeactiveUserPopup(props) {
                     <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
                         <Typography sx={{ marginLeft: 1 }} variant="inherit">Deactivate User </Typography>
                         <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
-                            <ClearIcon sx={{ color: 'white' }} />
+                            <ClearOutlinedIcon sx={{ color: 'white' }} />
                         </IconButton>
                     </Grid>
                 </DialogTitle>
@@ -41,7 +41,7 @@ function DeactiveUserPopup(props) {
                     </div>
                 </DialogContent>
                 <DialogActions style={{ marginTop: "5px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
-                    <Button variant="contained" onClick={submit} startIcon={<PersonOffTwoToneIcon />}>
+                    <Button variant="contained" onClick={submit} startIcon={<PersonOffOutlinedIcon />}>
                         Deactivate
                     </Button>
                 </DialogActions>
