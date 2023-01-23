@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ProjectTable from "./ProjectTable";
 import CreateProject from "./CreateProject";
 import { useNavigate, Outlet } from "react-router-dom";
+import Api from "../Components/ApiComponents/Api";
 
 function Projects() {
   const navigate = useNavigate();
@@ -29,9 +30,10 @@ function Projects() {
   }, []);
   return (
     <div>
-      <ProjectTable />
+      {/* <ProjectTable /> */}
       {/* <CreateProject /> */}
-      <Outlet />
+      {/* <Outlet /> */}
+     <Api></Api>
     </div>
   );
 }

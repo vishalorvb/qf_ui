@@ -9,6 +9,8 @@ import Tooltip from '@mui/material/Tooltip';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import { Chip } from '@mui/material';
 import { Stack } from '@mui/system';
+import ConfirmPop from '../CustomComponent/ConfirmPop';
+import CreateProject from './CreateProject';
 
 
 function ProjectTable() {
@@ -18,103 +20,154 @@ function ProjectTable() {
         automation_name: "Selenium",
         description: "This is description of the project",
         favourite: true,
-    
-    
-      }]
-      const columns = [
-    
+
+
+    }]
+    let [popup, setPopup] = useState(false)
+    let [pid, setPid] = useState()
+    let [uid, setUid] = useState()
+    let [edit,setedit] = useState(false)
+    let [editprojectInfo, seteditprojectInfo] = useState({})
+
+    function handleDeletePopup(pid, uid) {
+
+        setPopup(true);
+        setPid(pid)
+        setUid(uid)
+
+    }
+    function DeleteProjectFromUser(projectId, userId) {
+        console.log(projectId + "=======" + userId)
+        setPopup(false)
+
+    }
+
+    function DeleteFromFavourite(projectId, userId) {
+        console.log(projectId + "=======" + userId)
+    }
+    function AddToFavourite(projectId, userId) {
+        console.log(projectId + "=======" + userId)
+      
+    }
+    function handleEdit(project) {
+        setedit(!edit)
+        seteditprojectInfo(project)
+        console.log(project)
+        // setAction("Edit")
+        // if (edit.project == null || edit.project.id == project.id) {
+        //     setEdit((pv) => ({ ...pv, flag: !pv.flag, project: project }))
+        // }
+        // else {
+        //     setEdit((pv) => ({ ...pv, flag: true, project: project }))
+        // }
+console.log(project)
+    }
+
+    const columns = [
+
         {
-          field: 'project_name',
-          headerName: 'Project Name',
-          flex: 3,
-          sortable: false,
-          align: 'left',
-    
+            field: 'project_name',
+            headerName: 'Project Name',
+            flex: 3,
+            sortable: false,
+            align: 'left',
+
         },
         {
-          field: 'description',
-          headerName: 'Description',
-          flex: 3,
-          sortable: false,
-          align: 'left',
-    
+            field: 'description',
+            headerName: 'Description',
+            flex: 3,
+            sortable: false,
+            align: 'left',
+
         },
         {
-          field: " ",
-          headerName: "Type",
-          renderCell: (param) => {
-            if (param.row.automation_name === 'Selenium') {
-              return (
-                <Stack direction="row" spacing={1}>
-                  <Chip label="Selenium" variant="outlined" color="warning" size='small' />
-                </Stack>
-              )
-            }
-            else {
-              return (
-                <Stack direction="row" spacing={1}>    
-                  <Chip label="Chip Outlined" variant="outlined" color="primary" />
-                </Stack>
-              )
-            }
-          },
-          flex: 3,
-          sortable: false,
-          align: 'center',
+            field: " ",
+            headerName: "Type",
+            renderCell: (param) => {
+                if (param.row.automation_name === 'Selenium') {
+                    return (
+                        <Stack direction="row" spacing={1}>
+                            <Chip label="Selenium" variant="outlined" color="warning" size='small' />
+                        </Stack>
+                    )
+                }
+                else {
+                    return (
+                        <Stack direction="row" spacing={1}>
+                            <Chip label="Chip Outlined" variant="outlined" color="primary" />
+                        </Stack>
+                    )
+                }
+            },
+            flex: 3,
+            sortable: false,
+            align: 'center',
         },
         {
-          headerName: 'Favourite',
-          renderCell: (param) => {
-            if (param.row.favourite === true) {
-              return (
-                <Tooltip title='Remove From Favourite'>
-                  <IconButton ><StarIcon ></StarIcon></IconButton>
-                </Tooltip>
-              )
-            }
-            else {
-              return (
-                <Tooltip title='Add to Favourite'>
-                  <IconButton ><StarBorderOutlinedIcon></StarBorderOutlinedIcon></IconButton>
-                </Tooltip>
-              )
-            }
-          },
-          flex: 1,
-          sortable: false,
-          align: 'left',
+            headerName: 'Favourite',
+            renderCell: (param) => {
+                if (param.row.favourite === true) {
+                    return (
+                        <Tooltip title='Remove From Favourite'>
+                            <IconButton onClick={() => { DeleteFromFavourite(param.row.id, param.row.user_id) }}><StarIcon ></StarIcon></IconButton>
+                        </Tooltip>
+                    )
+                }
+                else {
+                    return (
+                        <Tooltip title='Add to Favourite'>
+                            <IconButton  onClick={() => { AddToFavourite(param.row.id, param.row.user_id) }} ><StarBorderOutlinedIcon></StarBorderOutlinedIcon></IconButton>
+                        </Tooltip>
+                    )
+                }
+            },
+            flex: 1,
+            sortable: false,
+            align: 'left',
         },
         {
-          headerName: 'Action',
-          field: "action",
-          renderCell: (param) => {
-            return (
-              <div >
-                <Tooltip title="Edit">
-                  <IconButton ><EditIcon ></EditIcon></IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <IconButton ><DeleteIcon ></DeleteIcon></IconButton>
-                </Tooltip>
-              </div>
-            )
-          },
-          flex: 1,
-          headerAlign: "left",
-          sortable: false,
-          align: 'left',
+            headerName: 'Action',
+            field: "action",
+            renderCell: (param) => {
+                return (
+                    <div >
+                        <Tooltip title="Edit">
+                            <IconButton onClick={() => { handleEdit(param.row) }} ><EditIcon ></EditIcon></IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                            <IconButton onClick={(e) => { handleDeletePopup(param.row.id, param.row.user_id) }} ><DeleteIcon ></DeleteIcon></IconButton>
+                        </Tooltip>
+                    </div>
+                )
+            },
+            flex: 1,
+            headerAlign: "left",
+            sortable: false,
+            align: 'left',
         }
-      ];
-      return (
+    ];
+    return (
         <div>
-          <Table
-            rows={row.slice(0, 10)}
-            columns={columns}
-            hidefooter={true}
-    
-          ></Table>
+            <Table
+                rows={row.slice(0, 10)}
+                columns={columns}
+                hidefooter={true}
+
+            ></Table>
+            {edit && <CreateProject
+            edit = {true}
+            project = {editprojectInfo}
+            ></CreateProject>}
+            <ConfirmPop
+                open={popup}
+                handleClose={() => setPopup(false)}
+                heading={"Delete Project"}
+                message={"Are you sure you want to delete this project"}
+                onConfirm={() => DeleteProjectFromUser(pid, uid)}
+            ></ConfirmPop>
         </div>
-      )
+    )
 }
 
 export default ProjectTable
