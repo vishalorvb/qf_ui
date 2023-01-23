@@ -1,7 +1,9 @@
-import { Paper, Box, Typography, Collapse } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
-import { ExpandMore } from "./ExpandMore";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function AccordionTemplate(props) {
   const { name, children, defaultState, toggle } = props;
@@ -14,23 +16,18 @@ export default function AccordionTemplate(props) {
   }, [toggle]);
 
   return (
-    <Paper className="accordion" elevation={1}>
-      <Box sx={{ backgroundColor: "primary.lightGrey" }}>
-        <ExpandMore
-          expand={accordionExpanded}
-          onClick={() => setAccordionExpanded(!accordionExpanded)}
-          aria-expanded={accordionExpanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-        <Typography variant="p" gutterBottom>
-          {name}
-        </Typography>
-      </Box>
-      <Collapse in={accordionExpanded} timeout="auto" unmountOnExit>
-        {children}
-      </Collapse>
-    </Paper>
+    <Accordion
+      expanded={accordionExpanded}
+      onChange={() => setAccordionExpanded(!accordionExpanded)}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        aria-controls="panel1a-content"
+        id="panel1a-header"
+      >
+        <Typography>{name}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>{children}</AccordionDetails>
+    </Accordion>
   );
 }

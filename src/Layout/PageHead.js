@@ -2,7 +2,14 @@ import useHead from "../hooks/useHead";
 import BreadcrumbsComponent from "./BreadcrumbsComponent";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { IconButton, Grid, Typography, Divider, Chip } from "@mui/material";
+import {
+  IconButton,
+  Grid,
+  Typography,
+  Divider,
+  Chip,
+  Stack,
+} from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function PageHead() {
@@ -26,26 +33,30 @@ export default function PageHead() {
             alignItems="center"
             sx={{ height: "55px" }}
           >
-            <h2>
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={0}
+            >
               {backButtonRender && (
-                <IconButton onClick={() => navigate(-1)}>
-                  <ArrowBackIosIcon />
+                <IconButton size="small" onClick={() => navigate(-1)}>
+                  <ArrowBackIosIcon fontSize="small" />
                 </IconButton>
               )}
               <Typography variant="h6" style={{ fontWeight: 600 }}>
                 {header.name}
               </Typography>
               {header.plusButton && (
-                <IconButton onClick={header.plusCallback}>
-                  <AddIcon />
+                <IconButton size="small" onClick={header.plusCallback}>
+                  <AddIcon fontSize="small" />
                 </IconButton>
               )}
-            </h2>
+            </Stack>
 
             <BreadcrumbsComponent />
           </Grid>
 
-          <Divider />
           <Divider />
         </>
       )}
