@@ -2,9 +2,9 @@ import { Autocomplete, Button, Grid, IconButton, Paper, Tooltip } from '@mui/mat
 import { Container } from '@mui/system';
 import React, { useState } from 'react'
 import Table from '../CustomComponent/Table';
-import AddUserPopup from '../UsersPopups/AddUserPopup';
-import EditUserPopup from '../UsersPopups/EditUserPopup';
-import DeleteUserPopup from '../UsersPopups/DeleteUserPopup';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
   const [open, setOpen] = useState(false);
@@ -72,11 +72,14 @@ function Testset() {
       renderCell: (param) => {
         return (
           <>
-            <Tooltip title="Edit">
-              <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditUserPopup ></EditUserPopup></IconButton>
+            <Tooltip title="Add Testcase">
+              <IconButton onClick={(e) => { addUserHandler(param.row) }}><AddOutlinedIcon ></AddOutlinedIcon></IconButton>
             </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteUserPopup ></DeleteUserPopup></IconButton>
+            <Tooltip title="Edit Testcase">
+              <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditOutlinedIcon ></EditOutlinedIcon></IconButton>
+            </Tooltip>
+            <Tooltip title="Delete Testcase">
+              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteOutlineOutlinedIcon ></DeleteOutlineOutlinedIcon></IconButton>
             </Tooltip>
           </>
         )
@@ -114,10 +117,10 @@ function Testset() {
           </Grid>
         </Container>
       </Paper>
-      {open1 ?
+      {/* {open1 ? */}
       <Paper>
         <div className="recenttable" style={{ flot: "right", marginBottom: "10px" }}>
-          <Button style={{ flot: "right" }} variant="contained" endIcon={<AddUserPopup />} onClick={addUserHandler}>New Testset</Button>
+          <Button style={{ flot: "right" }} variant="contained" endIcon={<AddOutlinedIcon />} onClick={addUserHandler}>Create Testset</Button>
         </div>
         <div className="datatable" style={{ marginTop: "20px" }}>
           <Table
@@ -126,7 +129,8 @@ function Testset() {
           // hidefooter={false}
           />
         </div>
-      </Paper> : ""}
+      </Paper> 
+      {/* : ""} */}
     </div>
   )
 }
