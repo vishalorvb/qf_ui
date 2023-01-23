@@ -167,6 +167,8 @@ export default function MiniDrawer({ open }) {
                     onClick={() => setOpenApplicatiion(!openApplication)}
                     aria-expanded={openApplication}
                     aria-label="show more"
+                    disableFocusRipple
+                    disableRipple
                   >
                     <ExpandMoreIcon sx={{ color: "white" }} />
                   </ExpandMore>

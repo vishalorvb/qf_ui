@@ -7,6 +7,7 @@ import { HeaderProvider } from "../context/HeaderProvider";
 
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
+import { Paper } from "@mui/material";
 
 export default function AppLayout() {
   const [open, setOpen] = useState(false);
@@ -14,26 +15,16 @@ export default function AppLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <MiniDrawer open={open} />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 0,
-          background:
-            "transparent linear-gradient(270deg, #FFFFFF 0%, #F5F5F6 100%) 0% 0% no-repeat padding-box",
-        }}
-      >
-        <div className="header">
-          <AppHeader setOpen={setOpen} />
-        </div>
-        <HeaderProvider>
-          <div className="pageTitle">
+      <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
+        <AppHeader setOpen={setOpen} />
+        <Box m={1}>
+          <HeaderProvider>
             <PageHead />
-          </div>
-          <div className="mainContent">
-            <Outlet />
-          </div>
-        </HeaderProvider>
+            <Paper sx={{ marginTop: 1 }}>
+              <Outlet />
+            </Paper>
+          </HeaderProvider>
+        </Box>
       </Box>
     </Box>
   );
