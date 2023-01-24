@@ -135,6 +135,12 @@ export const Routes = [
     path: "testcase",
     element: Testcase,
     accessRole: "",
+    
+  },
+  {
+    path: "testset",
+    element: Testset,
+    accessRole: "",
     subRoute: [
       {
         path: "AddTestcaseToTestset",
@@ -142,11 +148,6 @@ export const Routes = [
         accessRole: "",
       },
     ],
-  },
-  {
-    path: "testset",
-    element: Testset,
-    accessRole: "",
   },
   {
     path: "application/webApp",

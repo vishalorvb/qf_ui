@@ -5,6 +5,8 @@ import Table from '../CustomComponent/Table';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
+import {Link, useNavigate, Outlet} from 'react-router-dom';
+
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
   const [open, setOpen] = useState(false);
@@ -13,14 +15,17 @@ function Testset() {
   const [openDelete, setOpenDelete] = useState(false);
   const [editObject, setEditObject] = useState([]);
   const [deleteObject, setDeleteObject] = useState([]);
+  const navigate = useNavigate();
 
-  const addUserHandler = () => {
-    setOpen(true);
+  const addUserHandler = (e) => {
+    // setOpen(true);
+    navigate('AddTestcaseToTestset',{state:e});
   }
 
   const editUserHandler = (e) => {
-    setOpenEdit(true);
-    setEditObject(e);
+    // setOpenEdit(true);
+    // setEditObject(e);
+    navigate('AddTestcaseToTestset',{state:e});
   }
 
   const deleteUserHandler = (e) => {
@@ -90,7 +95,7 @@ function Testset() {
   ];
 
   return (
-    <div>
+    <>
       <Paper elevation={1} sx={{ padding: '2px', marginTop: "10px", marginBottom: "10px" }}>
         <Container component={'div'} maxWidth={false} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', marginTop: "10px", justifyContent: 'flex-start' }} >
           <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
@@ -131,7 +136,8 @@ function Testset() {
         </div>
       </Paper> 
       {/* : ""} */}
-    </div>
+      <Outlet/>
+    </>
   )
 }
 
