@@ -25,7 +25,7 @@ import {
 import MuiChip from "@mui/material/Chip";
 import { Collapse, Typography } from "@mui/material";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const drawerTheme = createTheme({
   components: {
@@ -130,14 +130,22 @@ export default function MiniDrawer({ open }) {
       .filter((navItem) => navItem.accessRole.includes(role))
       .map((navItem, index) => {
         return (
-          <ListItem disableGutters sx={{ display: "block" }} key={navItem.name}>
+          <ListItem
+            disableGutters
+            sx={{
+              display: "block",
+              paddingTop: open ? "1px" : "4px",
+              paddingBottom: open ? "1px" : "4px",
+            }}
+            key={navItem.name}
+          >
             <ListItemButton
               onClick={() => navigate(navItem.route)}
               dense
               sx={{
-                minHeight: 30,
                 justifyContent: open ? "initial" : "center",
-                px: 2.5,
+                paddingTop: 0,
+                paddingBottom: 0,
               }}
             >
               {
