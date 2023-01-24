@@ -124,5 +124,3 @@ function addTestcaseToTestset() {
         </div>
     )
 }
-
-export default addTestcaseToTestset

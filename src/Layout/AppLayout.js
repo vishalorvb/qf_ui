@@ -20,9 +20,9 @@ export default function AppLayout() {
         <Box m={1}>
           <HeaderProvider>
             <PageHead />
-            <Paper sx={{ marginTop: 1 }}>
+            <Box sx={{ marginTop: 1 }}>
               <Outlet />
-            </Paper>
+            </Box>
           </HeaderProvider>
         </Box>
       </Box>

@@ -18,6 +18,15 @@ const PageElements = lazy(() => import("../pages/PageElements"));
 const CreateProject = lazy(() => import("../pages/CreateProject"));
 const APIsTable = lazy(() => import("../pages/APIsTable"));
 const ApiCreateEdit = lazy(() => import("../pages/ApiCreateEdit"));
+const CreateInstance = lazy(() =>
+  import("../Components/ReleaseComponents/CreateInstance")
+);
+const CreateAnsibleInstance = lazy(() =>
+  import("../Components/ReleaseComponents/CreateAnsibleInstance")
+);
+const AddTestcaseToTestset = lazy(() =>
+  import("../Components/TestSet/AddTestcaseToTestset")
+);
 
 export const Routes = [
   {
@@ -104,6 +113,18 @@ export const Routes = [
     path: "release",
     element: Release,
     accessRole: "",
+    subRoute: [
+      {
+        path: "CreateInstance",
+        element: CreateInstance,
+        accessRole: "",
+      },
+      {
+        path: "CreateAnsibleInstance",
+        element: CreateAnsibleInstance,
+        accessRole: "",
+      },
+    ],
   },
   {
     path: "reports",
@@ -114,6 +135,13 @@ export const Routes = [
     path: "testcase",
     element: Testcase,
     accessRole: "",
+    subRoute: [
+      {
+        path: "AddTestcaseToTestset",
+        element: AddTestcaseToTestset,
+        accessRole: "",
+      },
+    ],
   },
   {
     path: "testset",

@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import Table from "../CustomComponent/Table";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import AddUserPopup from '../UsersPopups/AddUserPopup';
-import EditUserPopup from '../UsersPopups/EditUserPopup';
-import DeleteUserPopup from '../UsersPopups/DeleteUserPopup';
-import ActiveUserPopup from '../UsersPopups/ActiveUserPopup';
-import DeactiveUserPopup from '../UsersPopups/DeactiveUserPopup';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
+
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import AddUserPopup from "../UsersPopups/AddUserPopup";
+import EditUserPopup from "../UsersPopups/EditUserPopup";
+import DeleteUserPopup from "../UsersPopups/DeleteUserPopup";
+import ActiveUserPopup from "../UsersPopups/ActiveUserPopup";
+import DeactiveUserPopup from "../UsersPopups/DeactiveUserPopup";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 // import axios from 'axios';
 
 export default function Admin() {
@@ -28,116 +29,220 @@ export default function Admin() {
 
   const addUserHandler = () => {
     setOpen(true);
-  }
+  };
 
   const editUserHandler = (e) => {
     setOpenEdit(true);
     setEditObject(e);
-  }
+  };
 
   const deleteUserHandler = (e) => {
     setOpenDelete(true);
     setDeleteObject(e);
-  }
+  };
 
   const activateUserHandler = (e) => {
     setOpenActive(true);
     setActiveObject(e);
-  }
+  };
 
   const deactivateUserHandler = (e) => {
     setOpenDeactive(true);
     setDeactiveObject(e);
-  }
+  };
 
   useEffect(() => {
     setHeader((ps) => {
-      return { ...ps, name: "Admin" };
+      return {
+        ...ps,
+        name: "Admin",
+        plusButton: true,
+        plusCallback: addUserHandler,
+      };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   const users = [
-    { "id":"100", "fname": "Durgarao", "lname": "Akula", "email": "durgarao@gmail.com", "sid": 65 },
-    { "id":"101", "fname": "Abhishek", "lname": "ch", "email": "abhishek@gmail.com", "sid": 72 },
-    { "id":"102", "fname": "Vishal", "lname": "kumar", "email": "vishal@gmail.com", "sid": 79 },
+    {
+      id: "100",
+      fname: "Durgarao",
+      lname: "Akula",
+      email: "durgarao@gmail.com",
+      sid: 65,
+    },
+    {
+      id: "101",
+      fname: "Abhishek",
+      lname: "ch",
+      email: "abhishek@gmail.com",
+      sid: 72,
+    },
+    {
+      id: "102",
+      fname: "Vishal",
+      lname: "kumar",
+      email: "vishal@gmail.com",
+      sid: 79,
+    },
   ];
 
   const columns = [
-    { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
     {
-      field: 'name',
-      headerName: 'Name',
+      headerName: "S.No",
+      field: "sno",
+      valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      align: "center",
+    },
+    {
+      field: "name",
+      headerName: "Name",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left',
+      align: "left",
       renderCell: (params) => {
-        return (
-          <div>
-            {params.row.fname +" "+ params.row.lname}
-          </div>
-        )
-      }
+        return <div>{params.row.fname + " " + params.row.lname}</div>;
+      },
     },
     {
-      field: 'email',
-      headerName: 'Email',
+      field: "email",
+      headerName: "Email",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left'
-
+      align: "left",
     },
     {
-      field: 'sid',
-      headerName: 'User Id',
+      field: "sid",
+      headerName: "User Id",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left'
+      align: "left",
     },
     {
-      field: '',
-      headerName: 'Actions',
+      field: "",
+      headerName: "Actions",
       flex: 3,
       sortable: false,
       renderCell: (param) => {
         return (
           <>
             <Tooltip title="Edit">
-              <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditOutlinedIcon ></EditOutlinedIcon></IconButton>
+              <IconButton
+                onClick={(e) => {
+                  editUserHandler(param.row);
+                }}
+              >
+                <EditOutlinedIcon></EditOutlinedIcon>
+              </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteOutlineOutlinedIcon ></DeleteOutlineOutlinedIcon></IconButton>
+              <IconButton
+                onClick={(e) => {
+                  deleteUserHandler(param.row);
+                }}
+              >
+                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
+              </IconButton>
             </Tooltip>
             {/* {param.row.status === 0 ? */}
-              <Tooltip title="Inactive">
-                <IconButton onClick={(e) => { activateUserHandler(param.row) }}><PersonOffOutlinedIcon ></PersonOffOutlinedIcon></IconButton>
-              </Tooltip> 
-              {/* : */}
-              <Tooltip title="Active">
-                <IconButton onClick={(e) => { deactivateUserHandler(param.row) }}><PersonOutlineOutlinedIcon ></PersonOutlineOutlinedIcon></IconButton>
-              </Tooltip>
+            <Tooltip title="Inactive">
+              <IconButton
+                onClick={(e) => {
+                  activateUserHandler(param.row);
+                }}
+              >
+                <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
+              </IconButton>
+            </Tooltip>
+            {/* : */}
+            <Tooltip title="Active">
+              <IconButton
+                onClick={(e) => {
+                  deactivateUserHandler(param.row);
+                }}
+              >
+                <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
+              </IconButton>
+            </Tooltip>
             {/* } */}
           </>
-        )
+        );
       },
       headerAlign: "center",
-      align: 'center',
+      align: "center",
     },
   ];
 
   return (
     <div>
-      <div className="recenttable" style={{ flot: "right", marginBottom: "10px" }}>
-        <Button variant="contained" endIcon={<AddOutlinedIcon />} onClick={addUserHandler}>Add User</Button>
+      <div
+        className="recenttable"
+        style={{ flot: "right", marginBottom: "10px" }}
+      >
+        <Button
+          variant="contained"
+          endIcon={<AddOutlinedIcon />}
+          onClick={addUserHandler}
+        >
+          Add User
+        </Button>
       </div>
       <div className="datatable" style={{ marginTop: "20px" }}>
-        {open ? <AddUserPopup open={open} setOpen={setOpen}  users={users}  /> : ""}
-        {openEdit ? <EditUserPopup object={editObject} openEdit={openEdit} setOpenEdit={setOpenEdit}  /> : ""}
-        {openDelete ? <DeleteUserPopup object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete} /> : ""}
-        {openActive ? <ActiveUserPopup object={activeObject} openActive={openActive} setOpenActive={setOpenActive} /> : ""}
-        {openDeactive ? <DeactiveUserPopup object={deactiveObject} openDeactive={openDeactive} setOpenDeactive={setOpenDeactive} /> : ""} 
+        {open ? (
+          <AddUserPopup open={open} setOpen={setOpen} users={users} />
+        ) : (
+          ""
+        )}
+        {openEdit ? (
+          <EditUserPopup
+            object={editObject}
+            openEdit={openEdit}
+            setOpenEdit={setOpenEdit}
+          />
+        ) : (
+          ""
+        )}
+        {openDelete ? (
+          <DeleteUserPopup
+            object={deleteObject}
+            openDelete={openDelete}
+            setOpenDelete={setOpenDelete}
+          />
+        ) : (
+          ""
+        )}
+        {openActive ? (
+          <ActiveUserPopup
+            object={activeObject}
+            openActive={openActive}
+            setOpenActive={setOpenActive}
+          />
+        ) : (
+          ""
+        )}
+        {openDeactive ? (
+          <DeactiveUserPopup
+            object={deactiveObject}
+            openDeactive={openDeactive}
+            setOpenDeactive={setOpenDeactive}
+          />
+        ) : (
+          ""
+        )}
         <Table
           columns={columns}
           rows={users}
@@ -145,5 +250,5 @@ export default function Admin() {
         />
       </div>
     </div>
-  )
+  );
 }
