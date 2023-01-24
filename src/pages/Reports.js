@@ -268,7 +268,7 @@ function Reports() {
         <Table
           columns={columns}
           rows={tbData}
-          hidefooter={false}
+          // hidefooter={false}
         />
       </div>
     </div>
