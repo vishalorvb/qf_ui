@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Table from '../CustomComponent/Table';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
   const [open, setOpen] = useState(false);
@@ -78,8 +78,8 @@ function Testset() {
             <Tooltip title="Edit Testcase">
               <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditOutlinedIcon ></EditOutlinedIcon></IconButton>
             </Tooltip>
-            <Tooltip title="Delete Testcase">
-              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteOutlineOutlinedIcon ></DeleteOutlineOutlinedIcon></IconButton>
+            <Tooltip title="Execute">
+              <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><PlayCircleOutlinedIcon ></PlayCircleOutlinedIcon></IconButton>
             </Tooltip>
           </>
         )

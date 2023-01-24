@@ -5,6 +5,66 @@ import Table from '../CustomComponent/Table';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 function addTestcaseToTestset() {
+
+    const columns = [
+        { headerName: "S.No", field: 'sno', valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
+        {
+          field: 'testcase Name',
+          headerName: 'Testcase Name',
+          flex: 3,
+          headerAlign: "center",
+          sortable: false,
+          align: 'left',
+          renderCell: (params) => {
+            return (
+              <div>
+                {params.row.testcase_name}
+              </div>
+            )
+          }
+        },
+        {
+          field: 'description',
+          headerName: 'Description',
+          flex: 3,
+          headerAlign: "center",
+          sortable: false,
+          align: 'left',
+          renderCell: (params) => {
+            return (
+              <div>
+                {params.row.created_at}
+              </div>
+            )
+          }
+        },
+        {
+          field: 'dataset',
+          headerName: 'Dataset',
+          flex: 3,
+          headerAlign: "center",
+          sortable: false,
+          align: 'left'
+        },
+        {
+            field: '',
+            headerName: 'Actions',
+            flex: 3,
+            sortable: false,
+            renderCell: (param) => {
+              return (
+                <>
+                  <Tooltip title="Delete">
+                    <IconButton onClick={(e) => { deleteUserHandler(param.row) }}><DeleteOutlineOutlinedIcon ></DeleteOutlineOutlinedIcon></IconButton>
+                  </Tooltip>
+                </>
+              )
+            },
+            headerAlign: "center",
+            align: 'center',
+          }
+      ];
+
     return (
         <div>
             <Paper elevation={1} sx={{ padding: '2px', marginTop: "10px", marginBottom: "10px" }}>
