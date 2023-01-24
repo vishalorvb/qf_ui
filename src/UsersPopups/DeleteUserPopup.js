@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
 import React from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
-import DeleteIcon from '@mui/icons-material/Delete';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 function DeleteUserPopup(props) {
 
@@ -26,7 +26,7 @@ function DeleteUserPopup(props) {
                     <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
                         <Typography sx={{ marginLeft: 1 }} variant="inherit">Delete Users </Typography>
                         <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
-                            <ClearIcon sx={{ color: 'white' }} />
+                            <ClearOutlinedIcon sx={{ color: 'white' }} />
                         </IconButton>
                     </Grid>
                 </DialogTitle>
@@ -40,7 +40,7 @@ function DeleteUserPopup(props) {
                     </div>
                 </DialogContent>
                 <DialogActions style={{ marginTop: "5px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
-                    <Button variant="contained" onClick={submit} startIcon={<DeleteIcon />}>
+                    <Button variant="contained" onClick={submit} startIcon={<DeleteOutlineOutlinedIcon />}>
                         Delete
                     </Button>
                 </DialogActions>

@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import Table from "../CustomComponent/Table";
-import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddUserPopup from "../UsersPopups/AddUserPopup";
 import EditUserPopup from "../UsersPopups/EditUserPopup";
 import DeleteUserPopup from "../UsersPopups/DeleteUserPopup";
 import ActiveUserPopup from "../UsersPopups/ActiveUserPopup";
 import DeactiveUserPopup from "../UsersPopups/DeactiveUserPopup";
-import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
-import PersonOffTwoToneIcon from "@mui/icons-material/PersonOffTwoTone";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 // import axios from 'axios';
 
 export default function Admin() {
@@ -145,7 +145,7 @@ export default function Admin() {
                   editUserHandler(param.row);
                 }}
               >
-                <EditIcon></EditIcon>
+                <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
@@ -154,7 +154,7 @@ export default function Admin() {
                   deleteUserHandler(param.row);
                 }}
               >
-                <DeleteIcon></DeleteIcon>
+                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
               </IconButton>
             </Tooltip>
             {/* {param.row.status === 0 ? */}
@@ -164,7 +164,7 @@ export default function Admin() {
                   activateUserHandler(param.row);
                 }}
               >
-                <PersonOffTwoToneIcon></PersonOffTwoToneIcon>
+                <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
               </IconButton>
             </Tooltip>
             {/* : */}
@@ -174,7 +174,7 @@ export default function Admin() {
                   deactivateUserHandler(param.row);
                 }}
               >
-                <PersonOutlineTwoToneIcon></PersonOutlineTwoToneIcon>
+                <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
               </IconButton>
             </Tooltip>
             {/* } */}
@@ -191,7 +191,15 @@ export default function Admin() {
       <div
         className="recenttable"
         style={{ flot: "right", marginBottom: "10px" }}
-      ></div>
+      >
+        <Button
+          variant="contained"
+          endIcon={<AddOutlinedIcon />}
+          onClick={addUserHandler}
+        >
+          Add User
+        </Button>
+      </div>
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? (
           <AddUserPopup open={open} setOpen={setOpen} users={users} />
