@@ -24,6 +24,9 @@ const CreateInstance = lazy(() =>
 const CreateAnsibleInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateAnsibleInstance")
 );
+const AddTestcaseToTestset = lazy(() =>
+  import("../Components/TestSet/AddTestcaseToTestset")
+);
 
 export const Routes = [
   {
@@ -132,6 +135,13 @@ export const Routes = [
     path: "testcase",
     element: Testcase,
     accessRole: "",
+    subRoute: [
+      {
+        path: "AddTestcaseToTestset",
+        element: AddTestcaseToTestset,
+        accessRole: "",
+      },
+    ],
   },
   {
     path: "testset",

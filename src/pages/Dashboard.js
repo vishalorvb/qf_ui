@@ -1,23 +1,35 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import useHead from "../hooks/useHead";
-import { Card, CardActions, CardContent, Typography, IconButton, Autocomplete, Stack, Avatar, TextField, Button, Container } from "@mui/material"
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import Grid from '@mui/material/Grid';
-import { Box } from '@mui/system';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
-import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
-import AdbOutlinedIcon from '@mui/icons-material/AdbOutlined';
-import AppleIcon from '@mui/icons-material/Apple';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+  IconButton,
+  Autocomplete,
+  Stack,
+  Avatar,
+  TextField,
+  Button,
+  Container,
+} from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Grid from "@mui/material/Grid";
+import { Box } from "@mui/system";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import BrightnessAutoIcon from "@mui/icons-material/BrightnessAuto";
+import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
+import AdbOutlinedIcon from "@mui/icons-material/AdbOutlined";
+import AppleIcon from "@mui/icons-material/Apple";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 export default function Dashboard() {
   const { setHeader } = useHead();
@@ -92,92 +104,112 @@ export default function Dashboard() {
     createData("IOS Testcases", 0),
   ];
 
-  return <>
-    <div>
-      <div style={{float:"right" }}>
-        <Container component={'div'} sx={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }} >
-          <Grid container item xs={12} sm={8} md={6}  >
-            <Grid item xs={6} sm={6} md={3}><label>Filter by Project and Sprint <span className="importantfield" >*</span>:</label></Grid>
-            <Grid item xs={6} sm={6} md={8}>
-              <input type="text" name="" placeholder="Enter First Name" />
-            </Grid>
-          </Grid>
-        </Container>
-        {/* Filter by Project and Sprint
-        <TextField
-          id="outlined-required"
-        />
-        <TextField
-          id="outlined-read-only-input"
-          defaultValue="All"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <Button variant="contained">Report Portal</Button> */}
-        </div>
-        {/* <br />
-      <hr />
-      <br />
+  return (
+    <>
       <div>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            {Array.from(Array(3)).map((_, index) => (
-              <Grid item xs={2} sm={4} md={4} key={index}>
-                {crd(index)}
+        <div style={{ float: "right" }}>
+          <Container
+            component={"div"}
+            sx={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Grid container item xs={12} sm={8} md={6}>
+              <Grid item xs={6} sm={6} md={3}>
+                <label>
+                  Filter by Project and Sprint{" "}
+                  <span className="importantfield">*</span>:
+                </label>
               </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </div>
-      <div style={{ marginTop: "20px" }}>
-        <Card sx={{ maxWidth: 600 }}>
-          <CardContent style={{ marginBottom: "20px",maxWidth: 600 }}>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={options}
-            />
-          </CardContent>
-          <Stack direction="row" spacing={2} style = {{marginLeft : "20px"}}>
-            <Avatar>
-              <BrightnessAutoIcon />
-            </Avatar>
-            {/* <h4>Api</h4> */}
-            <Avatar>
-              <LanguageOutlinedIcon />
-            </Avatar>
-            <Avatar>
-              <AdbOutlinedIcon />
-            </Avatar>
-            <Avatar>
-              <AppleIcon />
-            </Avatar>
-          </Stack>
-          <TableContainer component={Paper} style = {{marginTop:"20px",marginBottom:"10px"}}>
-            <Table sx={{ minWidth: 600 }} size="small" aria-label="a dense table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Summary</TableCell>
-                  <TableCell align="right">Info</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.summary}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.summary}
-                    </TableCell>
-                    <TableCell align="right">{row.info}</TableCell>
+              <Grid item xs={6} sm={6} md={8}>
+                <input type="text" name="" placeholder="Enter First Name" />
+              </Grid>
+            </Grid>
+          </Container>
+          Filter by Project and Sprint
+          <TextField id="outlined-required" />
+          <TextField
+            id="outlined-read-only-input"
+            defaultValue="All"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <Button variant="contained">Report Portal</Button>
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 4, sm: 8, md: 12 }}
+            >
+              {Array.from(Array(3)).map((_, index) => (
+                <Grid item xs={2} sm={4} md={4} key={index}>
+                  {crd(index)}
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </div>
+        <div style={{ marginTop: "20px" }}>
+          <Card sx={{ maxWidth: 600 }}>
+            <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
+              <HighchartsReact highcharts={Highcharts} options={options} />
+            </CardContent>
+            <Stack direction="row" spacing={2} style={{ marginLeft: "20px" }}>
+              <Avatar>
+                <BrightnessAutoIcon />
+              </Avatar>
+              <h4>Api</h4>
+              <Avatar>
+                <LanguageOutlinedIcon />
+              </Avatar>
+              <Avatar>
+                <AdbOutlinedIcon />
+              </Avatar>
+              <Avatar>
+                <AppleIcon />
+              </Avatar>
+            </Stack>
+            <TableContainer
+              component={Paper}
+              style={{ marginTop: "20px", marginBottom: "10px" }}
+            >
+              <Table
+                sx={{ minWidth: 600 }}
+                size="small"
+                aria-label="a dense table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Summary</TableCell>
+                    <TableCell align="right">Info</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row) => (
+                    <TableRow
+                      key={row.summary}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.summary}
+                      </TableCell>
+                      <TableCell align="right">{row.info}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 }
