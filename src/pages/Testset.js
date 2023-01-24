@@ -1,10 +1,10 @@
-import { Autocomplete, Button, Grid, IconButton, Paper, Tooltip } from '@mui/material';
-import { Container } from '@mui/system';
-import React, { useState } from 'react'
-import Table from '../CustomComponent/Table';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+// export default function Testset() {
+//   return <>Testset</>;
+// }
+import React from 'react'
+// import Testsets from '../Components/TestSet/Testset'
+
+
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
   const [open, setOpen] = useState(false);
@@ -90,48 +90,7 @@ function Testset() {
   ];
 
   return (
-    <div>
-      <Paper elevation={1} sx={{ padding: '2px', marginTop: "10px", marginBottom: "10px" }}>
-        <Container component={'div'} maxWidth={false} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', marginTop: "10px", justifyContent: 'flex-start' }} >
-          <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}><label>Project <span className="importantfield" >*</span>:</label></Grid>
-            <Grid item xs={6} sm={6} md={8} xl={7}>
-              <Autocomplete
-                size="small"
-                options={usersObject}
-                getOptionLabel={(option) => (option.fname) + " " + (option.lname)}
-                onChange={(e, value) => {
-                  // Uid.current = value.id;
-                  // setUserId(value.id) 
-                  onChangeHandler();
-                }}
-                noOptionsText={'User not found'}
-                renderInput={(params) =>
-                  <div ref={params.InputProps.ref}>
-                    <input type="text" name="userAutocomplete" {...params.inputProps}
-                      placeholder="Please Select" />
-                  </div>
-                }
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </Paper>
-      {/* {open1 ? */}
-      <Paper>
-        <div className="recenttable" style={{ flot: "right", marginBottom: "10px" }}>
-          <Button style={{ flot: "right" }} variant="contained" endIcon={<AddOutlinedIcon />} onClick={addUserHandler}>Create Testset</Button>
-        </div>
-        <div className="datatable" style={{ marginTop: "20px" }}>
-          <Table
-            columns={columns}
-            rows={users}
-          // hidefooter={false}
-          />
-        </div>
-      </Paper> 
-      {/* : ""} */}
-    </div>
+    <div>Testset</div>
   )
 }
 
