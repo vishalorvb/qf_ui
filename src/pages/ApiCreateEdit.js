@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useHead from "../hooks/useHead";
-
+import Api from "../Components/ApiComponents/Api";
 export default function ApiCreateEdit() {
   const { setHeader } = useHead();
 
@@ -10,5 +10,7 @@ export default function ApiCreateEdit() {
     });
   }, []);
 
-  return <h1>In development</h1>;
+  return (<div>
+    <Api></Api>
+  </div>);
 }

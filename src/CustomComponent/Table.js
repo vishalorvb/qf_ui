@@ -27,9 +27,10 @@ export default function Table(props) {
     checkboxSelection,
     selectionModel,
     setSelectionModel,
+    getRowId
   } = props;
   const [pagesize, setPagesize] = useState(10);
-
+console.log(getRowId)
   return (
     <div className="tableParent">
       <DataGrid
@@ -37,6 +38,7 @@ export default function Table(props) {
         rows={rows}
         columns={columns}
         pageSize={pagesize}
+        getRowId={getRowId}
         onPageSizeChange={(newPageSize) => setPagesize(newPageSize)}
         rowsPerPageOptions={[10, 20, 30]}
         rowHeight={45}

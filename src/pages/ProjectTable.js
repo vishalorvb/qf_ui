@@ -150,7 +150,7 @@ console.log(project)
     return (
         <div>
             <Table
-                rows={row.slice(0, 10)}
+                rows={row}
                 columns={columns}
                 hidefooter={true}
 

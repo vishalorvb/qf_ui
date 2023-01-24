@@ -7,7 +7,7 @@ function GrowingTable(props) {
         width: "100%", height: "25px"
     }
     const tableRef = useRef()
-    
+
     console.log(tableRef)
     // let lastRow = null
     // let firstCell = null
@@ -60,7 +60,12 @@ function GrowingTable(props) {
         for (let i = 0; i < props.header.length; i++) {
             let cell = row.insertCell(i)
             let placeholder = props.header[i]
-            cell.innerHTML = " <input type=" + "text" + "+placeholder=" + placeholder + ">"
+            cell.innerHTML = " <input type=" + 
+            "text" +
+             "placeholder=" +
+              placeholder +
+              " value=" +
+               ">"
         }
     }
 
