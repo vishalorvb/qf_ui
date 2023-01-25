@@ -3,12 +3,13 @@ import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import SelectCreateInstanceModal from "../Components/ReleaseComponents/SelectCreateInstanceModal";
 
 export default function Release() {
   const { setHeader } = useHead();
   const [createInstate, setCreateInstance] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setHeader((ps) => {
@@ -32,19 +33,19 @@ export default function Release() {
 
   const instanceColumns = [
     {
-      field: "name",
+      field: "release_name",
       headerName: "Name",
       flex: 3,
       sortable: false,
     },
     {
-      field: "description",
+      field: "release_desc",
       headerName: "Description",
       flex: 3,
       sortable: false,
     },
     {
-      field: "lastUpdate",
+      field: "updated_at",
       headerName: "Last Updated",
       flex: 3,
       sortable: false,
@@ -57,11 +58,12 @@ export default function Release() {
       align: "center",
       headerAlign: "center",
       renderCell: (param) => {
+        const row = param.row;
         return (
           <div>
-            <Link to={String(param.row.id)}>
-              <EditOutlinedIcon />
-            </Link>
+            <EditOutlinedIcon
+              onClick={() => navigate("CreateAnsibleInstance", { state: row })}
+            />
             <DeleteOutlinedIcon />
           </div>
         );
@@ -72,23 +74,45 @@ export default function Release() {
   const instances = [
     {
       id: 1,
-      name: "Instance 1",
-      description: "Description 1",
+      release_name: "PipelineAutomation",
+      release_desc: "Gitops - CICD",
+      ansiblereleaseId: 1,
+      webTestsetId: 105,
+      apiTestsetid: 90,
+      code_quality_path: "/sonarconf.properties ",
+      code_quality_project_key: "CodeQuality",
+      unittesttestset_path: "testBDD/unit_testcases/test_classes/demo_test.py",
+      created_at: "2023-01-23T07:49:24.600+00:00",
+      updated_at: "2023-01-23T07:49:24.600+00:00",
+      module_id: 1036,
+      cicd_type: 2,
+      stages: 8,
+      stage_names: null,
+      updated_at_string: null,
+      editUrl: null,
+      deleteUrl: null,
+      clicktodetails: null,
     },
     {
       id: 2,
-      name: "Instance 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Instance 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Instance 4",
-      description: "Description 4",
+      release_name: "CodeConveyPipeline",
+      release_desc: "Code convey Pipeline:EC2 Server Via Jenkins",
+      ansiblereleaseId: 1,
+      webTestsetId: 105,
+      apiTestsetid: 90,
+      code_quality_path: "/sonarconf.properties",
+      code_quality_project_key: "CodeQuality",
+      unittesttestset_path: "testBDD/unit_testcases/test_classes/demo_test.py",
+      created_at: "2022-02-04T10:33:07.417+00:00",
+      updated_at: "2022-02-04T10:33:07.417+00:00",
+      module_id: 1036,
+      cicd_type: 1,
+      stages: 8,
+      stage_names: null,
+      updated_at_string: null,
+      editUrl: null,
+      deleteUrl: null,
+      clicktodetails: null,
     },
   ];
   return (
