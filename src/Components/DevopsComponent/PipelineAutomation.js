@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
 import Table from "../../CustomComponent/Table";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
+import { getPipelinesHistory } from "../../Services/DevopsServices";
 
 export default function PipelineAutomation() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
+    getPipelinesHistory(setHistory, location.state.id);
     setHeader((ps) => {
       return {
         ...ps,
@@ -32,7 +36,7 @@ export default function PipelineAutomation() {
       sortable: false,
     },
     {
-      field: "lastUpdate",
+      field: "created_at_string",
       headerName: "Released at",
       flex: 3,
       sortable: false,
@@ -46,34 +50,18 @@ export default function PipelineAutomation() {
       headerAlign: "center",
       renderCell: (param) => {
         return (
-          <Typography onClick={() => navigate("report")}>Report</Typography>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => navigate("report", { state: { id: param.row.id } })}
+          >
+            Report
+          </Button>
         );
       },
     },
   ];
 
-  const instances = [
-    {
-      id: 1,
-      name: "Instance 1",
-      description: "Description 1",
-    },
-    {
-      id: 2,
-      name: "Instance 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Instance 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Instance 4",
-      description: "Description 4",
-    },
-  ];
   return (
     <>
       <Stack
@@ -91,7 +79,7 @@ export default function PipelineAutomation() {
         <Button variant="contained">Release Now</Button>
       </Stack>
 
-      <Table rows={instances} columns={instanceColumns} />
+      <Table rows={history} columns={instanceColumns} />
       <Outlet />
     </>
   );

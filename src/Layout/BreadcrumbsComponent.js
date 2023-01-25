@@ -5,7 +5,6 @@ import { Link } from "@mui/material";
 
 export default function BreadcrumbsComponent() {
   const location = useLocation();
-  console.log(location);
 
   let currentLocation = ``;
 
@@ -17,7 +16,6 @@ export default function BreadcrumbsComponent() {
     .split("/")
     .filter((crumb) => crumb !== "" && crumb !== "dashboard")
     .map((crumb, idx) => {
-      console.log(crumb);
       currentLocation += `/${crumb}`;
       return (
         <div className="crumb" key={idx}>

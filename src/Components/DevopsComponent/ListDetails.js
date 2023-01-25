@@ -6,7 +6,7 @@ export default function ListDetails(props) {
   const { selectedItemData } = props;
 
   const itemRender = (selectedData) => {
-    const navigationList = selectedData.map((apiItem) => {
+    const navigationList = selectedData?.map((apiItem) => {
       return (
         <ListItem
           sx={{

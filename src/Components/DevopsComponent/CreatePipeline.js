@@ -1,7 +1,8 @@
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
+import { getCreatePipelineData } from "../../Services/DevopsServices";
 import {
   Box,
   FormControl,
@@ -13,10 +14,11 @@ import {
   Typography,
 } from "@mui/material";
 export default function CreatePipeline() {
-  const navigate = useNavigate();
+  const [pipelineData, setPipelineData] = useState({});
   const location = useLocation();
   const { setHeader } = useHead();
   useEffect(() => {
+    getCreatePipelineData(setPipelineData, location.state.id);
     setHeader((ps) => {
       return {
         ...ps,
@@ -24,6 +26,12 @@ export default function CreatePipeline() {
       };
     });
   }, []);
+
+  const cicdTypes = [];
+  for (const key in pipelineData?.cicdTypes) {
+    cicdTypes.push(pipelineData?.cicdTypes[key]);
+  }
+
   return (
     <Box>
       <Typography>Release Info</Typography>
@@ -60,8 +68,9 @@ export default function CreatePipeline() {
             select
             size="small"
           >
-            <MenuItem value="Jenkins">Jenkins</MenuItem>
-            <MenuItem value="Gitops">Gitops</MenuItem>
+            {cicdTypes?.map((type) => (
+              <MenuItem value={type}>{type}</MenuItem>
+            ))}
           </TextField>
         </Grid>
       </Grid>
@@ -82,8 +91,9 @@ export default function CreatePipeline() {
             size="small"
             fullWidth
           >
-            <MenuItem value="Jenkins">Jenkins</MenuItem>
-            <MenuItem value="Gitops">Gitops</MenuItem>
+            {pipelineData?.ansiblereleases?.map((release) => (
+              <MenuItem value={release?.id}>{release?.release_name}</MenuItem>
+            ))}
           </TextField>
         </Grid>
       </Grid>
@@ -104,8 +114,11 @@ export default function CreatePipeline() {
             size="small"
             fullWidth
           >
-            <MenuItem value="Jenkins">Jenkins</MenuItem>
-            <MenuItem value="Gitops">Gitops</MenuItem>
+            {pipelineData?.webtestsets?.map((sets) => (
+              <MenuItem key={sets?.testset_id} value={sets?.testset_id}>
+                {sets?.testset_name}
+              </MenuItem>
+            ))}
           </TextField>
         </Grid>
       </Grid>
@@ -126,8 +139,9 @@ export default function CreatePipeline() {
             size="small"
             fullWidth
           >
-            <MenuItem value="Jenkins">Jenkins</MenuItem>
-            <MenuItem value="Gitops">Gitops</MenuItem>
+            {pipelineData?.apitestsetsList?.map((sets) => (
+              <MenuItem value={sets?.testset_id}>{sets?.testset_name}</MenuItem>
+            ))}
           </TextField>
         </Grid>
       </Grid>

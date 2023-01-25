@@ -5,18 +5,22 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
+import { getPipelines } from "../Services/DevopsServices";
 
 export default function Pipeline() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
 
+  const [instances, setInstances] = useState([]);
+
   useEffect(() => {
+    getPipelines(setInstances);
     setHeader((ps) => {
       return {
         ...ps,
         name: "Pipeline Instances",
         plusButton: true,
-        plusCallback: () => navigate("CreatePipeline"),
+        plusCallback: () => navigate("CreatePipeline", { state: { id: 0 } }),
       };
     });
     return () =>
@@ -32,26 +36,32 @@ export default function Pipeline() {
 
   const instanceColumns = [
     {
-      field: "name",
+      field: "release_name",
       headerName: "Name",
       flex: 3,
       sortable: false,
       renderCell: (param) => {
         return (
-          <Typography onClick={() => navigate("pipelineAutomation")}>
-            {param.row.name}
+          <Typography
+            variant="p"
+            onClick={() =>
+              navigate("pipelineAutomation", { state: { id: param.row.id } })
+            }
+            sx={{ cursor: "pointer" }}
+          >
+            {param.row.release_name}
           </Typography>
         );
       },
     },
     {
-      field: "description",
+      field: "release_desc",
       headerName: "Description",
       flex: 3,
       sortable: false,
     },
     {
-      field: "lastUpdate",
+      field: "updated_at",
       headerName: "Last Updated",
       flex: 3,
       sortable: false,
@@ -66,9 +76,11 @@ export default function Pipeline() {
       renderCell: (param) => {
         return (
           <div>
-            <Link to={String(param.row.id)}>
-              <EditOutlinedIcon />
-            </Link>
+            <EditOutlinedIcon
+              onClick={() =>
+                navigate("CreatePipeline", { state: { id: param.row.id } })
+              }
+            />
             <DeleteOutlinedIcon />
           </div>
         );
@@ -76,28 +88,6 @@ export default function Pipeline() {
     },
   ];
 
-  const instances = [
-    {
-      id: 1,
-      name: "Instance 1",
-      description: "Description 1",
-    },
-    {
-      id: 2,
-      name: "Instance 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Instance 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Instance 4",
-      description: "Description 4",
-    },
-  ];
   return (
     <>
       <Table rows={instances} columns={instanceColumns} />
