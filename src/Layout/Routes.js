@@ -1,4 +1,6 @@
 import { lazy } from "react";
+import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation";
+import Report from "../Components/DevopsComponent/Report";
 const Admin = lazy(() => import("../pages/Admin"));
 const ApiApp = lazy(() => import("../pages/ApiApp"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
@@ -26,6 +28,12 @@ const CreateAnsibleInstance = lazy(() =>
 );
 const AddTestcaseToTestset = lazy(() =>
   import("../Components/TestSet/AddTestcaseToTestset")
+);
+const CreatePipeline = lazy(() =>
+  import("../Components/DevopsComponent/CreatePipeline")
+);
+const CreateTestcase = lazy(() =>
+  import("../Components/DevopsComponent/CreatePipeline")
 );
 
 export const Routes = [
@@ -91,6 +99,25 @@ export const Routes = [
     path: "pipeline",
     element: Pipeline,
     accessRole: "",
+    subRoute: [
+      {
+        path: "CreatePipeline",
+        element: CreatePipeline,
+        accessRole: "",
+      },
+      {
+        path: "pipelineAutomation",
+        element: PipelineAutomation,
+        accessRole: "",
+        subRoute: [
+          {
+            path: "report",
+            element: Report,
+            accessRole: "",
+          },
+        ],
+      },
+    ],
   },
   {
     path: "projects",
@@ -135,7 +162,6 @@ export const Routes = [
     path: "testcase",
     element: Testcase,
     accessRole: "",
-    
   },
   {
     path: "testset",
@@ -145,6 +171,11 @@ export const Routes = [
       {
         path: "AddTestcaseToTestset",
         element: AddTestcaseToTestset,
+        accessRole: "",
+      },
+      {
+        path: "createTestcase",
+        element: CreateTestcase,
         accessRole: "",
       },
     ],
