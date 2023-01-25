@@ -116,7 +116,7 @@ function Testset() {
               <Autocomplete
                 size="small"
                 options={projectObject}
-                getOptionLabel={(option) => (option.result.projects_list.project_name)}
+                getOptionLabel={(option) => (option.project_name)}
                 onChange={(e, value) => {
                   // Uid.current = value.id;
                   setProjectId(value.id) 
