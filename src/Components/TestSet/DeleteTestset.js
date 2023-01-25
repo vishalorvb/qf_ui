@@ -3,11 +3,10 @@ import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-function DeleteUserPopup(props) {
-
+function DeleteTestset(props) {
     const { openDelete, setOpenDelete,object } = props;
-    const user = object.fname + " " + object.lname;
-    const UserId = object.sid;
+    const testcase = object.testcase_name;
+    const UserId = object.testcase_id;
 
     const handleClose = () => {
         setOpenDelete(false);
@@ -16,7 +15,7 @@ function DeleteUserPopup(props) {
     const submit = () => {
 
     }
-    
+
   return (
     <div>
         <Dialog open={openDelete} onClose={handleClose} style={{ marginLeft: "15px", marginTop: "20px" }}>
@@ -25,7 +24,7 @@ function DeleteUserPopup(props) {
                     backgroundColor: "rgba(137,196,244,1)",
                 }}>
                     <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
-                        <Typography sx={{ marginLeft: 1 }} variant="inherit">Delete Users </Typography>
+                        <Typography sx={{ marginLeft: 1 }} variant="inherit">Delete Testcase </Typography>
                         <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
                             <ClearOutlinedIcon sx={{ color: 'white' }} />
                         </IconButton>
@@ -35,7 +34,7 @@ function DeleteUserPopup(props) {
                     <div>
                         <form>
                             <div>
-                                <span>Are you sure you want to delete User {user}</span>
+                                <span>Are you sure you want to delete Testcase {testcase}</span>
                             </div>
                         </form>
                     </div>
@@ -50,4 +49,4 @@ function DeleteUserPopup(props) {
   )
 }
 
-export default DeleteUserPopup
+export default DeleteTestset
