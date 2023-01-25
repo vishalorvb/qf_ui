@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import useHead from "../hooks/useHead";
-import Table from "../CustomComponent/Table";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
+import useHead from "../../hooks/useHead";
+import Table from "../../CustomComponent/Table";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 
-export default function Pipeline() {
+export default function PipelineAutomation() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
 
@@ -14,20 +13,9 @@ export default function Pipeline() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Pipeline Instances",
-        plusButton: true,
-        plusCallback: () => navigate("CreatePipeline"),
+        name: "Pipeline Automation",
       };
     });
-    return () =>
-      setHeader((ps) => {
-        return {
-          ...ps,
-          name: "",
-          plusButton: false,
-          plusCallback: () => console.log("null"),
-        };
-      });
   }, []);
 
   const instanceColumns = [
@@ -36,13 +24,6 @@ export default function Pipeline() {
       headerName: "Name",
       flex: 3,
       sortable: false,
-      renderCell: (param) => {
-        return (
-          <Typography onClick={() => navigate("pipelineAutomation")}>
-            {param.row.name}
-          </Typography>
-        );
-      },
     },
     {
       field: "description",
@@ -52,7 +33,7 @@ export default function Pipeline() {
     },
     {
       field: "lastUpdate",
-      headerName: "Last Updated",
+      headerName: "Released at",
       flex: 3,
       sortable: false,
     },
@@ -65,12 +46,7 @@ export default function Pipeline() {
       headerAlign: "center",
       renderCell: (param) => {
         return (
-          <div>
-            <Link to={String(param.row.id)}>
-              <EditOutlinedIcon />
-            </Link>
-            <DeleteOutlinedIcon />
-          </div>
+          <Typography onClick={() => navigate("report")}>Report</Typography>
         );
       },
     },
@@ -100,6 +76,21 @@ export default function Pipeline() {
   ];
   return (
     <>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={1}
+      >
+        <Typography>
+          Release:
+          <Typography variant="p" sx={{ color: "blue" }}>
+            View Log
+          </Typography>
+        </Typography>
+        <Button variant="contained">Release Now</Button>
+      </Stack>
+
       <Table rows={instances} columns={instanceColumns} />
       <Outlet />
     </>
