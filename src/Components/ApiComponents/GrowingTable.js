@@ -1,12 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 function GrowingTable(props) {
+
+
+    function getTable(){
+        return(
+            <div>
+                 <tr >
+                    {props.header.map(head => <td style={{ border: "1px solid", padding: "4px" }}>
+                        <input type="text" placeholder={head} style={{ width: "100%", height: "25px" }} />
+                    </td>)}
+                </tr>
+            </div>
+        )
+    }
+
     console.log(props.header)
 
     let inputstyle = {
         width: "100%", height: "25px"
     }
     const tableRef = useRef()
+
+
 
     console.log(tableRef)
     // let lastRow = null

@@ -30,7 +30,7 @@ export default function Table(props) {
     getRowId
   } = props;
   const [pagesize, setPagesize] = useState(10);
-console.log(getRowId)
+
   return (
     <div className="tableParent">
       <DataGrid

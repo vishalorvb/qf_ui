@@ -2,9 +2,9 @@ import axios from "axios"
 import { baseUrl } from "../Environment"
 
 
-let userId = 1
+// let userId = 1
 
-export function getProject(callback) {
+export function getProject(callback,userId) {
     // This function except name of state as a callback and set value in that state     
     axios.get(baseUrl + "/projects?user_id=" + userId).then(res => {
         console.log(res.data.result.projects_list)

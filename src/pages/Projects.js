@@ -30,10 +30,8 @@ function Projects() {
   }, []);
   return (
     <div>
-      {/* <ProjectTable /> */}
-      {/* <CreateProject /> */}
-      {/* <Outlet /> */}
-     <Api></Api>
+      <ProjectTable />
+     
     </div>
   );
 }

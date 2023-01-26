@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from '../CustomComponent/Table'
 import StarIcon from '@mui/icons-material/Star';
 import EditIcon from '@mui/icons-material/Edit';
@@ -11,7 +11,7 @@ import { Chip } from '@mui/material';
 import { Stack } from '@mui/system';
 import ConfirmPop from '../CustomComponent/ConfirmPop';
 import CreateProject from './CreateProject';
-
+import { getProject } from '../Services/ProjectService';
 
 function ProjectTable() {
     let row = [{
@@ -28,6 +28,7 @@ function ProjectTable() {
     let [uid, setUid] = useState()
     let [edit,setedit] = useState(false)
     let [editprojectInfo, seteditprojectInfo] = useState({})
+    let [project,setProject] = useState([])
 
     function handleDeletePopup(pid, uid) {
 
@@ -53,13 +54,7 @@ function ProjectTable() {
         setedit(!edit)
         seteditprojectInfo(project)
         console.log(project)
-        // setAction("Edit")
-        // if (edit.project == null || edit.project.id == project.id) {
-        //     setEdit((pv) => ({ ...pv, flag: !pv.flag, project: project }))
-        // }
-        // else {
-        //     setEdit((pv) => ({ ...pv, flag: true, project: project }))
-        // }
+      
 console.log(project)
     }
 
@@ -85,7 +80,7 @@ console.log(project)
             field: " ",
             headerName: "Type",
             renderCell: (param) => {
-                if (param.row.automation_name === 'Selenium') {
+                if (param.row.automation_framework_type == 1) {
                     return (
                         <Stack direction="row" spacing={1}>
                             <Chip label="Selenium" variant="outlined" color="warning" size='small' />
@@ -95,7 +90,7 @@ console.log(project)
                 else {
                     return (
                         <Stack direction="row" spacing={1}>
-                            <Chip label="Chip Outlined" variant="outlined" color="primary" />
+                            <Chip label="Other" variant="outlined" color="primary" />
                         </Stack>
                     )
                 }
@@ -147,13 +142,19 @@ console.log(project)
             align: 'left',
         }
     ];
+
+useEffect(() => {
+
+    getProject(setProject,4)
+}, [])
+    
     return (
         <div>
             <Table
-                rows={row}
+                rows={project}
                 columns={columns}
                 hidefooter={true}
-
+                getRowId={row => row.project_id}
             ></Table>
             {edit && <CreateProject
             edit = {true}
