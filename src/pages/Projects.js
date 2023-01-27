@@ -30,13 +30,7 @@ function Projects() {
   return (
     <div>
       <ProjectTable />
-<<<<<<< HEAD
-      {/* <CreateProject /> */}
-      {/* <Outlet /> */}
-      {/* <Api></Api> */}
-=======
      
->>>>>>> project
     </div>
   );
 }
