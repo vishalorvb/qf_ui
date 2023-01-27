@@ -30,10 +30,6 @@ export default function Table(props) {
     getRowId,
   } = props;
   const [pagesize, setPagesize] = useState(10);
-<<<<<<< HEAD
-
-=======
->>>>>>> e73fe712e6fd60b89d23a8a2aa359ad9bf99728c
   return (
     <div className="tableParent">
       <DataGrid
