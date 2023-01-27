@@ -108,7 +108,7 @@ export default function Dashboard() {
     <>
       <div>
         <div style={{ float: "right" }}>
-          <Container
+          {/* <Container
             component={"div"}
             sx={{
               flexDirection: "row",
@@ -127,21 +127,25 @@ export default function Dashboard() {
                 <input type="text" name="" placeholder="Enter First Name" />
               </Grid>
             </Grid>
-          </Container>
-          Filter by Project and Sprint
-          <TextField id="outlined-required" />
-          <TextField
-            id="outlined-read-only-input"
-            defaultValue="All"
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-          <Button variant="contained">Report Portal</Button>
+          </Container> */}
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={0.5}>
+            Filter by Project and Sprint
+            <TextField id="outlined-required" />
+            <TextField
+              id="outlined-read-only-input"
+              defaultValue="All `"
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <Button variant="contained">Report Portal</Button>
+          </Stack>
+          
         </div>
-        <br />
-        <hr />
-        <br />
         <div>
           <Box sx={{ flexGrow: 1 }}>
             <Grid
@@ -166,7 +170,6 @@ export default function Dashboard() {
               <Avatar>
                 <BrightnessAutoIcon />
               </Avatar>
-              <h4>Api</h4>
               <Avatar>
                 <LanguageOutlinedIcon />
               </Avatar>

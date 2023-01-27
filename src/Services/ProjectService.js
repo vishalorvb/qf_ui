@@ -12,6 +12,16 @@ export function getProject(callback,userId) {
     })
 }
 
+
+
+export function getTestsets(callback, workflowID) {
+    console.log("called")
+    axios.get(baseUrl + "/workflow/" + workflowID + "/api/testsets").then(res => {
+        console.log(res.data.data)
+        callback(res.data.data)
+    })
+}
+
 export function getTestcases(callback, workflowID) {
    
     axios.get(baseUrl + "/api/workflow/" + workflowID + "/api/testcases").then(res => {
