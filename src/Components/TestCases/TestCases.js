@@ -2,6 +2,7 @@ import { Autocomplete, Grid, IconButton, Radio, TextField, Tooltip } from '@mui/
 import React, { useEffect, useState } from 'react'
 import { getProject } from '../../Services/ProjectService'
 import AddIcon from '@mui/icons-material/Add';
+import TestSteps from './TestSteps';
 // import Table from '../CustomComponent/Table'
 import Table from '../../CustomComponent/Table';
 import { getTestcases } from '../../Services/ProjectService';
@@ -17,20 +18,13 @@ function TestCases() {
 
 
     function handleRadio(testcaseId) {
-        console.log(testcaseId)
         setRadio(testcaseId)
-        // Setdatasets(testcases.filter(ts => {
-        //     if (ts.testcase_id == testcaseId) {
-        //         return ts.datasetsList
-        //     }
-        // }))
         let temp = (testcases.filter(ts => {
             if (ts.testcase_id == testcaseId) {
-                console.log(ts)
                 return ts.datasetsList
             }
         }))
-        console.log(temp)
+        Setdatasets(temp[0].datasetsList)
     }
 
     const columns = [
@@ -142,10 +136,11 @@ function TestCases() {
 
     return (
         <div>
-            <h1>This is test case component</h1>
+            
 
             <Grid container>
                 <Grid item>
+                    <h3>Application :</h3>
                     <Autocomplete
                         //   ref={projecid}
                         disablePortal
@@ -178,6 +173,7 @@ function TestCases() {
                 hidefooter={true}
                 getRowId={row => row.testcase_dataset_id}
             ></Table>
+            <TestSteps></TestSteps>
         </div>
     )
 }

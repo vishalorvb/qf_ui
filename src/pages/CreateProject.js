@@ -96,7 +96,7 @@ function CreateProject(props) {
     try {
       project_name.current.value = props.project.project_name;
       project_name.current.disabled = true;
-      description.current.value = props.project.project_description;
+      description.current.value = props.project.description;
       automation_type.current.value = props.project.automation_framework_type;
       console.log(props.project.automation_framework_type);
       console.warn(automation_type);
@@ -164,29 +164,6 @@ function CreateProject(props) {
         db_type: dbUsername.current.value,
         db_port: portNumber.current.value,
       };
-
-      //   if (props.edit) {
-      //     projectData.project_id = props.project.id;
-      //     DbData.db_id = props.project.db_id;
-      //     updateProject(projectData, DbData).then((res) => {
-      //       console.log(res);
-      //       setSnackbarsuccess(true);
-      //     });
-      //   } else {
-      //     AddProject(projectData, DbData).then((res) => {
-      //       console.log(res);
-      //       setSnackbarsuccess(true);
-      //     });
-      //   }
-
-      //   setTimeout(() => {
-      //     setSnackbarsuccess(false);
-      //   }, 2000);
-      // } else {
-      //   setSnackbarerror(true);
-      //   setTimeout(() => {
-      //     setSnackbarerror(false);
-      //   }, 2000);
     }
   }
   return (
