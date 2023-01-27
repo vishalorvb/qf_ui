@@ -13,9 +13,26 @@ export function getProject(callback,userId) {
 }
 
 export function getTestcases(callback, workflowID) {
-    console.log("called")
+   
     axios.get(baseUrl + "/api/workflow/" + workflowID + "/api/testcases").then(res => {
         console.log(res.data.data)
         callback(res.data.data)
+    })
+}
+
+
+export function getWebpages(callback,moduleId){
+    console.log("Calling getWebpages")
+    axios.get(`${baseUrl}/webpages/getWebPagesList?module_id=${moduleId}`).then(res => {
+        console.log(res.data.info)
+        callback(res.data.info)
+    })
+}
+
+export function getWebpagesElementList(callback,web_page_id){
+    console.log("Calling webpage list")
+    axios.get(`${baseUrl}/webpages/getWebPageElementsList?web_page_id=${web_page_id}`).then(res => {
+        console.log(res.data.info)
+        callback(res.data.info)
     })
 }

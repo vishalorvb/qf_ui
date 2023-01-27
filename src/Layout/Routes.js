@@ -126,12 +126,12 @@ export const Routes = [
     accessRole: "",
     subRoute: [
       {
-        path: ":id",
+        path: "pages",
         element: Pages,
         accessRole: "",
         subRoute: [
           {
-            path: ":id",
+            path: "PageElements",
             element: PageElements,
             accessRole: "",
           },

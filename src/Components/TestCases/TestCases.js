@@ -140,7 +140,7 @@ function TestCases() {
 
             <Grid container>
                 <Grid item>
-                    <h3>Projects :</h3>
+                    <h3>Application :</h3>
                     <Autocomplete
                         //   ref={projecid}
                         disablePortal
