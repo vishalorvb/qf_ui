@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { getPipelines } from "../Services/DevopsServices";
 
@@ -81,7 +80,6 @@ export default function Pipeline() {
                 navigate("CreatePipeline", { state: { id: param.row.id } })
               }
             />
-            <DeleteOutlinedIcon />
           </div>
         );
       },

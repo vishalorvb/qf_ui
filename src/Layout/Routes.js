@@ -1,4 +1,9 @@
 import { lazy } from "react";
+
+// loaders
+
+import { getCreatePipelineData } from "../Services/DevopsServices";
+
 import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation";
 import Report from "../Components/DevopsComponent/Report";
 const Admin = lazy(() => import("../pages/Admin"));
@@ -104,6 +109,7 @@ export const Routes = [
         path: "CreatePipeline",
         element: CreatePipeline,
         accessRole: "",
+        loaderFunction: getCreatePipelineData,
       },
       {
         path: "pipelineAutomation",

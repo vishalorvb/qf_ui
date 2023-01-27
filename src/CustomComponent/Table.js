@@ -27,10 +27,9 @@ export default function Table(props) {
     checkboxSelection,
     selectionModel,
     setSelectionModel,
-    getRowId
+    getRowId,
   } = props;
   const [pagesize, setPagesize] = useState(10);
-console.log(getRowId)
   return (
     <div className="tableParent">
       <DataGrid
@@ -77,7 +76,6 @@ console.log(getRowId)
           },
         }}
         onSelectionModelChange={(i) => {
-          console.log(i);
           setSelectionModel(i);
         }}
         selectionModel={selectionModel}

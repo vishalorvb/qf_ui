@@ -4,13 +4,17 @@ import Table from "../../CustomComponent/Table";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { getPipelinesHistory } from "../../Services/DevopsServices";
+import {
+  getPipelinesHistory,
+  executePipeline,
+} from "../../Services/DevopsServices";
 
 export default function PipelineAutomation() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
   const location = useLocation();
   const [history, setHistory] = useState([]);
+  const [executionRes, setExecutionRes] = useState([]);
 
   useEffect(() => {
     getPipelinesHistory(setHistory, location.state.id);
@@ -76,7 +80,12 @@ export default function PipelineAutomation() {
             View Log
           </Typography>
         </Typography>
-        <Button variant="contained">Release Now</Button>
+        <Button
+          variant="contained"
+          onClick={() => executePipeline(setExecutionRes, location.state.id)}
+        >
+          Release Now
+        </Button>
       </Stack>
 
       <Table rows={history} columns={instanceColumns} />
