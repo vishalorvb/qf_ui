@@ -1,14 +1,19 @@
 import { Autocomplete, Button, Grid, IconButton, Paper, Tooltip } from '@mui/material';
 import { Container } from '@mui/system';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from '../CustomComponent/Table';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
 import {Link, useNavigate, Outlet} from 'react-router-dom';
+import {getTestsets} from '../Services/ProjectService';
+import {getProject} from '../Services/ProjectService';
 
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
+  const [testsetObject, setTestsetObject] = useState([]);
+  const [projectObject, setProjectObject] = useState([]);
+  const [projectId, setProjectId] = useState(null);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -37,37 +42,37 @@ function Testset() {
     setOpen1(true);
   }
 
-  const users = [
-    { "id":"100", "tsname": "Durgarao", "tsid": 65 },
-    { "id":"101", "tsname": "Abhishek", "tsid": 72 },
-    { "id":"102", "tsname": "Vishal", "tsid": 79 },
-  ];
+  // const getTestsets = () => {
+  //   axios
+  //     .get(`http://10.11.12.240/qfservice/workflow/1031/api/testsets`)
+  //     .then((Response) => {
+  //       var response = Response.data;
+  //       console.log(response.data);
+  //       setTestsetObject(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     });
+  // };
 
   const columns = [
-    { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
+    // { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
     {
-      field: 'tsid',
-      headerName: 'Testset Id',
-      flex: 3,
-      headerAlign: "center",
-      sortable: false,
-      align: 'left',
-      // renderCell: (params) => {
-      //   return (
-      //     <div>
-      //       {params.row.fname +" "+ params.row.lname}
-      //     </div>
-      //   )
-      // }
-    },
-    {
-      field: 'tsname',
+      field: 'testset_name',
       headerName: 'Testset Name',
       flex: 3,
       headerAlign: "center",
       sortable: false,
       align: 'left'
 
+    },
+    {
+      field: 'testset_desc',
+      headerName: 'Testset Description',
+      flex: 3,
+      headerAlign: "center",
+      sortable: false,
+      align: 'left'
     },
     {
       field: '',
@@ -94,6 +99,13 @@ function Testset() {
     },
   ];
 
+  useEffect(() => {
+    // getTestsets();
+    getProject(setProjectObject);
+    getTestsets(setTestsetObject,1031);
+  }, [])
+  
+
   return (
     <div>
       <Paper elevation={1} sx={{ padding: '2px', marginTop: "10px", marginBottom: "10px" }}>
@@ -103,11 +115,11 @@ function Testset() {
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <Autocomplete
                 size="small"
-                options={usersObject}
-                getOptionLabel={(option) => (option.fname) + " " + (option.lname)}
+                options={projectObject}
+                getOptionLabel={(option) => (option.project_name)}
                 onChange={(e, value) => {
                   // Uid.current = value.id;
-                  // setUserId(value.id) 
+                  setProjectId(value.id) 
                   onChangeHandler();
                 }}
                 noOptionsText={'User not found'}
@@ -130,8 +142,9 @@ function Testset() {
         <div className="datatable" style={{ marginTop: "20px" }}>
           <Table
             columns={columns}
-            rows={users}
-          // hidefooter={false}
+            rows={testsetObject}
+            // hidefooter={false}
+            getRowId={row => row.testset_id}
           />
         </div>
       </Paper> 
