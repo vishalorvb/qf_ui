@@ -33,7 +33,7 @@ const CreatePipeline = lazy(() =>
   import("../Components/DevopsComponent/CreatePipeline")
 );
 const CreateTestcase = lazy(() =>
-  import("../Components/DevopsComponent/CreatePipeline")
+  import("../Components/TestSet/TestsetCreate")
 );
 
 export const Routes = [

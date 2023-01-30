@@ -14,13 +14,7 @@ export function getProject(callback) {
 
 
 
-export function getTestsets(callback, workflowID) {
-    console.log("called")
-    axios.get(baseUrl + "/workflow/" + workflowID + "/api/testsets").then(res => {
-        console.log(res.data.data)
-        callback(res.data.data)
-    })
-}
+
 
 export function getTestcases(callback, workflowID) {
     console.log("called")
@@ -29,3 +23,4 @@ export function getTestcases(callback, workflowID) {
         callback(res.data.data)
     })
 }
+
