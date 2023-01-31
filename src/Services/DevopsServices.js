@@ -113,3 +113,10 @@ export function createPipeline(callback, params, id) {
       callback(res?.data?.data.pipelinehisotory);
     });
 }
+
+export function getReleaseInstances(callback) {
+  axios.get(`${baseUrl}/release-management/${module_id}`).then((res) => {
+    console.log(res?.data?.data);
+    res?.data?.data !== null && callback(res?.data?.data);
+  });
+}
