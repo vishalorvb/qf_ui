@@ -6,7 +6,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined';
 import {Link, useNavigate, Outlet} from 'react-router-dom';
-import {getTestsets} from '../Services/ProjectService';
+import {getTestsets} from '../Services/TestsetService';
 import {getProject} from '../Services/ProjectService';
 
 function Testset() {
@@ -23,6 +23,11 @@ function Testset() {
   const navigate = useNavigate();
 
   const addUserHandler = (e) => {
+    // setOpen(true);
+    navigate('createTestcase',{state:e});
+  }
+
+  const addUser1Handler = (e) => {
     // setOpen(true);
     navigate('AddTestcaseToTestset',{state:e});
   }
@@ -83,7 +88,7 @@ function Testset() {
         return (
           <>
             <Tooltip title="Add Testcase">
-              <IconButton onClick={(e) => { addUserHandler(param.row) }}><AddOutlinedIcon ></AddOutlinedIcon></IconButton>
+              <IconButton onClick={(e) => { addUser1Handler(param.row) }}><AddOutlinedIcon ></AddOutlinedIcon></IconButton>
             </Tooltip>
             <Tooltip title="Edit Testcase">
               <IconButton onClick={(e) => { editUserHandler(param.row) }}><EditOutlinedIcon ></EditOutlinedIcon></IconButton>
