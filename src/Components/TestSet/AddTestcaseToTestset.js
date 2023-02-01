@@ -5,17 +5,27 @@ import Table from "../../CustomComponent/Table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import {useLocation} from 'react-router-dom';
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import {getTestcasesOfTestset} from "../../Services/TestsetService";
 import {getTestcases} from "../../Services/ProjectService";
 import DeleteTestset from "./DeleteTestset";
+import { getTestcaseDetails } from "../../Services/TestsetService";
+import {updateTestset} from "../../Services/TestsetService";
 
 export default function AddTestcaseToTestset() {
 
   const [testcaseObject, setTestcaseObject] = useState([]);
   const [datasetObject, setDatasetObject] = useState([]);
+  const [allTestcases, setAllTestcases] = useState([]);
   const [tbData, setTbData] = useState([]);
   const location = useLocation();
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteObject ,setDeleteObject] = useState([]);
+  const [testcaseId, setTestcaseId] = useState();
+  const [datasetId, setDatasetId] = useState();
+  const [tcObject, setTcObject] = useState([]);
+
+  // console.log(location.state.testset_id);
+  var testsetId = location.state.testset_id;
 
   const columns = [
     // { headerName: "S.No", field: 'sno', valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
@@ -42,44 +52,44 @@ export default function AddTestcaseToTestset() {
       //   )
       // }
     },
-    {
-      field: 'dataset_name_in_testcase',
-      headerName: 'Dataset ',
-      flex: 3,
-      headerAlign: "center",
-      sortable: false,
-      align: 'left',
-      renderCell: (params) => {
-        // console.log(params.row.datasetsList)
-          return (
-            <div>
-              <Autocomplete
-                size="small"
-                options={params.row.datasetsList}
-                getOptionLabel={(option) => option.dataset_name_in_testcase}
-                onChange={(e, value) => {
-                  // console.log(value.testcase_id);
-                  // Uid.current = value.id;
-                  // setUserId(value.id);
-                  // setDatasetObject(testcaseObject.datasetsList.dataset_name_in_testcase);
-                  // handleDataset(value.testcase_id)
-                }}
-                noOptionsText={"Dataset not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="dataAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
-            </div>
-          )
-        }
-    },
+    // {
+    //   field: 'dataset_name_in_testcase',
+    //   headerName: 'Dataset ',
+    //   flex: 3,
+    //   headerAlign: "center",
+    //   sortable: false,
+    //   align: 'left',
+    //   renderCell: (params) => {
+    //     // console.log(params.row.datasetsList)
+    //       return (
+    //         <div>
+    //           <Autocomplete
+    //             size="small"
+    //             options={params.row.datasetsList}
+    //             getOptionLabel={(option) => option.dataset_name_in_testcase}
+    //             onChange={(e, value) => {
+    //               // console.log(value.testcase_id);
+    //               // Uid.current = value.id;
+    //               // setUserId(value.id);
+    //               // setDatasetObject(testcaseObject.datasetsList.dataset_name_in_testcase);
+    //               // handleDataset(value.testcase_id)
+    //             }}
+    //             noOptionsText={"Dataset not found"}
+    //             renderInput={(params) => (
+    //               <div ref={params.InputProps.ref}>
+    //                 <input
+    //                   type="text"
+    //                   name="dataAutocomplete"
+    //                   {...params.inputProps}
+    //                   placeholder="Please Select"
+    //                 />
+    //               </div>
+    //             )}
+    //           />
+    //         </div>
+    //       )
+    //     }
+    // },
     {
       field: "",
       headerName: "Actions",
@@ -115,7 +125,7 @@ export default function AddTestcaseToTestset() {
 
   function handleDataset(testcaseId) { 
     // setRadio(testcaseId) 
-    let temp = (testcaseObject.filter(ts => {
+    let temp = (allTestcases.filter(ts => {
       if (ts.testcase_id == testcaseId) { 
         return ts.datasetsList 
       }
@@ -123,13 +133,42 @@ export default function AddTestcaseToTestset() {
     setDatasetObject(temp[0].datasetsList)
   }
 
+  function filter(){
+    const test = testcaseObject.map(ts => ts.testcase_id)
+    return(allTestcases.filter(ts =>  !test.includes( ts.testcase_id)));
+  }
+
   const submit = (e) => {
     e.preventDefault();
+    console.log(testcaseObject[0]);
+    console.log(tcObject);
+    // var data = {
+    //   "module_id" : 1031,
+    //   "testset_name" : test,
+    //   "testset_desc" : "jhgajd",
+    //   "testcases_list" : [{ "testcase_id" : 142, "testcase_order": 0,
+    //   "testcase_dataset_id" : 162, "selected_testcase_dataset_ids" : [162]},
+    //   { "testcase_id" : 140, "testcase_order": 0,
+    //   "testcase_dataset_id" : 160, "selected_testcase_dataset_ids" : [160]}]
+    // }
+
+    // testcaseObject.push(tcObject);
   }
 
   useEffect(() => {
-    getTestcases(setTestcaseObject,1031);
+    getTestcasesOfTestset(setTestcaseObject,1031,testsetId);
   }, [])
+
+  useEffect(() => {
+    getTestcases(setAllTestcases,1031);
+  }, [testcaseObject])
+  useEffect(() => {
+    // const test = testcaseObject.map(ts => ts.testcase_id)
+    // return(allTestcases.filter(ts =>  !test.includes( ts.testcase_id)));
+    // console.log(allTestcases.filter(ts =>  !test.includes( ts.testcase_id)));
+    filter();
+    getTestcaseDetails(setTcObject,1031,testcaseId);
+  }, [allTestcases,testcaseId,testcaseObject])
   
 
   return (
@@ -166,10 +205,15 @@ export default function AddTestcaseToTestset() {
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <Autocomplete
                 size="small"
-                options={testcaseObject}
+                options={
+                  // const test = testcaseObject.map(ts => ts.testcase_id)
+                  // return(allTestcases.filter(ts =>  test.includes( ts.testcase_id)));
+                  filter()
+                }
                 getOptionLabel={(option) => option.testcase_name}
                 onChange={(e, value) => {
                   console.log(value.testcase_id);
+                  setTestcaseId(value.testcase_id);
                   // Uid.current = value.id;
                   // setUserId(value.id);
                   // setDatasetObject(testcaseObject.datasetsList.dataset_name_in_testcase);
@@ -209,6 +253,7 @@ export default function AddTestcaseToTestset() {
                 options={datasetObject}
                 getOptionLabel={(option) => option.dataset_name_in_testcase}
                 onChange={(e, value) => {
+                  setDatasetId(value.testcase_dataset_id);
                   // Project_Id.current = value.project_id;
                 }}
                 noOptionsText={"Datasets not found"}

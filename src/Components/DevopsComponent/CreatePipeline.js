@@ -5,16 +5,7 @@ import {
   getCreatePipelineData,
   createPipeline,
 } from "../../Services/DevopsServices";
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, MenuItem, Typography } from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

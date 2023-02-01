@@ -79,20 +79,20 @@ export default function BasicTabs() {
           <Tab label="Code Quality Report" {...a11yProps(1)} />
           <Tab label="UnitTestset Report" {...a11yProps(2)} />
           <Tab label="API Automation Report" {...a11yProps(3)} />
-          <Tab label="API Automation Report" {...a11yProps(4)} />
+          <Tab label="Web Automation Report" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <Overview />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ApiAutomation />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
         <CodeQuality />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
         <UnitTest />
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        <ApiAutomation />
       </TabPanel>
       <TabPanel value={value} index={4}>
         <WebAutomation />

@@ -33,14 +33,18 @@ const drawerTheme = createTheme({
       styleOverrides: {
         paper: {
           backgroundColor: "#002980",
+          border: 0,
         },
       },
     },
     MuiChip: {
       styleOverrides: {
         root: {
-          color: "white",
-          fontSize: "0.7rem",
+          color: "rgba(255,255,255,0.4)",
+          fontSize: "11px",
+          border: "1px dashed rgba(255,255,255,0.4)",
+          borderRadius: "5px",
+          padding: "2px",
         },
       },
     },
@@ -215,33 +219,23 @@ export default function MiniDrawer({ open }) {
           )}
         </DrawerHeader>
         <List>{navigationItemRender(qfAdmin)}</List>
-        <Divider
-          textAlign="left"
-          sx={{
-            alignItems: "start",
-            "&::before, &::after": {
-              borderColor: "white",
-            },
-            borderColor: "white",
-          }}
-        >
-          {open && <MuiChip variant="outlined" label="Test management" />}
-        </Divider>
+
+        {open && (
+          <div className="sideNavSections">
+            <span>Test management</span>
+          </div>
+        )}
+
         <List dense disablePadding>
           {navigationItemRender(testManagementList)}
         </List>
-        <Divider
-          textAlign="left"
-          sx={{
-            alignItems: "start",
-            "&::before, &::after": {
-              borderColor: "white",
-            },
-            borderColor: "white",
-          }}
-        >
-          {open && <MuiChip variant="outlined" label="Ops" />}
-        </Divider>
+
+        {open && (
+          <div className="sideNavSections">
+            <span>Ops</span>
+          </div>
+        )}
+
         <List dense disablePadding>
           {navigationItemRender(opsManagementList)}
         </List>

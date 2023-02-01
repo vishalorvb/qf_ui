@@ -38,7 +38,10 @@ const CreatePipeline = lazy(() =>
   import("../Components/DevopsComponent/CreatePipeline")
 );
 const CreateTestcase = lazy(() =>
-  import("../Components/DevopsComponent/CreatePipeline")
+  import("../Components/TestSet/TestsetCreate")
+);
+const Settings = lazy(() =>
+  import("../pages/Settings")
 );
 
 export const Routes = [
@@ -67,7 +70,7 @@ export const Routes = [
     ],
   },
   {
-    path: "dashboard",
+    path: "/",
     element: Dashboard,
     accessRole: "",
   },
@@ -162,6 +165,11 @@ export const Routes = [
   {
     path: "reports",
     element: Reports,
+    accessRole: "",
+  },
+  {
+    path: "settings",
+    element: Settings,
     accessRole: "",
   },
   {

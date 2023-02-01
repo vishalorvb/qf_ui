@@ -5,13 +5,17 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Outlet, useNavigate } from "react-router-dom";
 import SelectCreateInstanceModal from "../Components/ReleaseComponents/SelectCreateInstanceModal";
+import { getReleaseInstances } from "../Services/DevopsServices";
 
 export default function Release() {
   const { setHeader } = useHead();
-  const [createInstate, setCreateInstance] = useState(false);
+  const [createInstance, setCreateInstance] = useState(false);
+  const [instance, setInstance] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    getReleaseInstances(setInstance);
+
     setHeader((ps) => {
       return {
         ...ps,
@@ -64,62 +68,17 @@ export default function Release() {
             <EditOutlinedIcon
               onClick={() => navigate("CreateAnsibleInstance", { state: row })}
             />
-            <DeleteOutlinedIcon />
           </div>
         );
       },
     },
   ];
 
-  const instances = [
-    {
-      id: 1,
-      release_name: "PipelineAutomation",
-      release_desc: "Gitops - CICD",
-      ansiblereleaseId: 1,
-      webTestsetId: 105,
-      apiTestsetid: 90,
-      code_quality_path: "/sonarconf.properties ",
-      code_quality_project_key: "CodeQuality",
-      unittesttestset_path: "testBDD/unit_testcases/test_classes/demo_test.py",
-      created_at: "2023-01-23T07:49:24.600+00:00",
-      updated_at: "2023-01-23T07:49:24.600+00:00",
-      module_id: 1036,
-      cicd_type: 2,
-      stages: 8,
-      stage_names: null,
-      updated_at_string: null,
-      editUrl: null,
-      deleteUrl: null,
-      clicktodetails: null,
-    },
-    {
-      id: 2,
-      release_name: "CodeConveyPipeline",
-      release_desc: "Code convey Pipeline:EC2 Server Via Jenkins",
-      ansiblereleaseId: 1,
-      webTestsetId: 105,
-      apiTestsetid: 90,
-      code_quality_path: "/sonarconf.properties",
-      code_quality_project_key: "CodeQuality",
-      unittesttestset_path: "testBDD/unit_testcases/test_classes/demo_test.py",
-      created_at: "2022-02-04T10:33:07.417+00:00",
-      updated_at: "2022-02-04T10:33:07.417+00:00",
-      module_id: 1036,
-      cicd_type: 1,
-      stages: 8,
-      stage_names: null,
-      updated_at_string: null,
-      editUrl: null,
-      deleteUrl: null,
-      clicktodetails: null,
-    },
-  ];
   return (
     <>
-      <Table rows={instances} columns={instanceColumns} />
+      <Table rows={instance} columns={instanceColumns} />
       <SelectCreateInstanceModal
-        createInstate={createInstate}
+        createInstate={createInstance}
         setCreateInstance={setCreateInstance}
       />
       <Outlet />

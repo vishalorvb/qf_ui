@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseUrl } from "../Environment";
 
 let userId = 1;
-let module_id = 1036;
+let module_id = 1052;
 
 export function getPipelines(callback) {
   // This function except name of state as a callback and set value in that state
@@ -112,4 +112,11 @@ export function createPipeline(callback, params, id) {
       console.log(res?.data?.data.pipelinehisotory);
       callback(res?.data?.data.pipelinehisotory);
     });
+}
+
+export function getReleaseInstances(callback) {
+  axios.get(`${baseUrl}/release-management/${module_id}`).then((res) => {
+    console.log(res?.data?.data);
+    res?.data?.data !== null && callback(res?.data?.data);
+  });
 }

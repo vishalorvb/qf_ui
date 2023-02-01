@@ -1,20 +1,26 @@
-import { Autocomplete, Grid, IconButton, Radio, TextField, Tooltip } from '@mui/material'
+import { Autocomplete, Button, Grid, IconButton, Radio, TextField, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { getProject } from '../../Services/ProjectService'
 import AddIcon from '@mui/icons-material/Add';
 import TestSteps from './TestSteps';
-// import Table from '../CustomComponent/Table'
 import Table from '../../CustomComponent/Table';
 import { getTestcases } from '../../Services/ProjectService';
+import CreateTestCasePopUp from './CreateTestCasePopUp';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
 
 function TestCases() {
     let [project, setproject] = useState([])
     let [testcases, setTestcases] = useState([])
     let [radio, setRadio] = useState(0);
     let [datasets, Setdatasets] = useState([])
+    let [addTestcase, setAddTestcase] = useState()
+    let [popup, setPopup] = useState(false)
+    let [steps, setSteps] = useState(true)
 
-
-
+    console.log(addTestcase)
 
 
     function handleRadio(testcaseId) {
@@ -81,7 +87,15 @@ function TestCases() {
                     <div >
 
                         <Tooltip title="Add Data Set">
-                            <IconButton  ><AddIcon></AddIcon></IconButton>
+                            <IconButton onClick={e => setAddTestcase(true)} ><AddIcon></AddIcon></IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Edit Data Set">
+                            <IconButton  ><EditIcon></EditIcon></IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Delete">
+                            <IconButton  > <DeleteIcon></DeleteIcon> </IconButton>
                         </Tooltip>
                     </div>
                 )
@@ -129,18 +143,18 @@ function TestCases() {
     ]
 
     useEffect(() => {
-        getProject(setproject)
+        getProject(setproject, 4)
         getTestcases(setTestcases, 1031)
-        console.log(testcases)
+
     }, [])
 
     return (
         <div>
-            
+
 
             <Grid container>
                 <Grid item>
-                    <h3>Application :</h3>
+                    <h3>Project Name :</h3>
                     <Autocomplete
                         //   ref={projecid}
                         disablePortal
@@ -158,6 +172,9 @@ function TestCases() {
                         }}
                     />
                 </Grid>
+                <Grid item>
+                    <Button variant="contained" onClick={e => setPopup(true)}>Creat Test Case</Button>
+                </Grid>
             </Grid>
 
             <Table
@@ -173,7 +190,14 @@ function TestCases() {
                 hidefooter={true}
                 getRowId={row => row.testcase_dataset_id}
             ></Table>
-            <TestSteps></TestSteps>
+            <CreateTestCasePopUp
+                open={popup}
+                setOpen={setPopup}
+            ></CreateTestCasePopUp>
+            <TestSteps
+                open={steps}
+                setOpen={() => setSteps(false)}
+            ></TestSteps>
         </div>
     )
 }
