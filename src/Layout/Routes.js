@@ -67,7 +67,7 @@ export const Routes = [
     ],
   },
   {
-    path: "dashboard",
+    path: "/",
     element: Dashboard,
     accessRole: "",
   },

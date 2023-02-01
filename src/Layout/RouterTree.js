@@ -6,6 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import AppLayout from "./AppLayout";
+import AuthLayout from "./AuthLayout";
 import { Routes } from "./Routes";
 
 const role = "";
@@ -43,7 +44,7 @@ const routeLister = (rawList) => {
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<AppLayout />}>
+    <Route path="/" element={<AuthLayout />}>
       {routeLister(Routes)}
     </Route>
   )

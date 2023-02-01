@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseUrl } from "../Environment";
 
 let userId = 1;
-let module_id = 1036;
+let module_id = 1052;
 
 export function getPipelines(callback) {
   // This function except name of state as a callback and set value in that state
