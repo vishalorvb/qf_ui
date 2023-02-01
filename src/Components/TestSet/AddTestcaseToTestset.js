@@ -9,6 +9,7 @@ import {getTestcasesOfTestset} from "../../Services/TestsetService";
 import {getTestcases} from "../../Services/ProjectService";
 import DeleteTestset from "./DeleteTestset";
 import { getTestcaseDetails } from "../../Services/TestsetService";
+import {updateTestset} from "../../Services/TestsetService";
 
 export default function AddTestcaseToTestset() {
 
@@ -19,7 +20,8 @@ export default function AddTestcaseToTestset() {
   const location = useLocation();
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteObject ,setDeleteObject] = useState([]);
-  const [testcaseId, setTestcaseId] = useState(0);
+  const [testcaseId, setTestcaseId] = useState();
+  const [datasetId, setDatasetId] = useState();
   const [tcObject, setTcObject] = useState([]);
 
   // console.log(location.state.testset_id);
@@ -140,7 +142,17 @@ export default function AddTestcaseToTestset() {
     e.preventDefault();
     console.log(testcaseObject[0]);
     console.log(tcObject);
-    testcaseObject.push(tcObject);
+    // var data = {
+    //   "module_id" : 1031,
+    //   "testset_name" : test,
+    //   "testset_desc" : "jhgajd",
+    //   "testcases_list" : [{ "testcase_id" : 142, "testcase_order": 0,
+    //   "testcase_dataset_id" : 162, "selected_testcase_dataset_ids" : [162]},
+    //   { "testcase_id" : 140, "testcase_order": 0,
+    //   "testcase_dataset_id" : 160, "selected_testcase_dataset_ids" : [160]}]
+    // }
+
+    // testcaseObject.push(tcObject);
   }
 
   useEffect(() => {
@@ -241,6 +253,7 @@ export default function AddTestcaseToTestset() {
                 options={datasetObject}
                 getOptionLabel={(option) => option.dataset_name_in_testcase}
                 onChange={(e, value) => {
+                  setDatasetId(value.testcase_dataset_id);
                   // Project_Id.current = value.project_id;
                 }}
                 noOptionsText={"Datasets not found"}
