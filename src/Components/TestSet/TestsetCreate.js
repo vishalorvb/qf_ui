@@ -7,21 +7,26 @@ import { useLocation } from 'react-router-dom';
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { getTestcases } from "../../Services/ProjectService";
 import { getTestcaseDetails } from "../../Services/TestsetService";
+import {createTestset} from "../../Services/TestsetService";
 import DeleteTestset from "./DeleteTestset";
 
 function TestsetCreate() {
     const [testcaseObject, setTestcaseObject] = useState([]);
     const [datasetObject, setDatasetObject] = useState([]);
-    const [Data, setData] = useState([]);
+    // const [Data, setData] = useState([]);
     const [tcObject, setTcObject] = useState([]);
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const [testcaseId, setTestcaseId] = useState();
+    const [datasetId, setDatasetId] = useState();
+    const [testsetName, setTestsetName] = useState("");
+    const [testsetDesc, setTestsetDesc] = useState("");
     const [deleteObject, setDeleteObject] = useState([]);
+    let Data = [];
 
     const columns = [
         {
-            field: 'testcase_name',
+            field: 'tcName',
             headerName: 'Testcase Name',
             flex: 3,
             headerAlign: "center",
@@ -29,7 +34,7 @@ function TestsetCreate() {
             align: 'left'
         },
         {
-            field: 'testcase_desc',
+            field: 'tcDesc',
             headerName: 'Description',
             flex: 3,
             headerAlign: "center",
@@ -59,23 +64,38 @@ function TestsetCreate() {
 
     function add(){
         console.log("data");
+        
         return(
-            tcObject.map(data =>{
-            console.log(data);
-            Data.push(data)
-        })
+        //     tcObject.map(data =>{
+        //     console.log(data);
+        //     Data.push(data)
+        // })
         // tcObject.forEach(data => console.log(data))
+        Data.push(tcObject)
         );
     }
-    // console.log(tcObject.map(data =>{
-    //     console.log(data)}));
+
+    var data = {
+        "module_id" : 1031,
+        "testset_name" : testsetName,
+        "testset_desc" : testsetDesc,
+        "testcases_list" : [{ "testcase_id" : 142, "testcase_order": 0,
+        "testcase_dataset_id" : 162, "selected_testcase_dataset_ids" : [162]},
+        { "testcase_id" : 140, "testcase_order": 0,
+        "testcase_dataset_id" : 160, "selected_testcase_dataset_ids" : [160]}]
+    }
+
     const submit = (e) => {
         e.preventDefault();
+        createTestset(data);
     }
 
     const addHandler = (e) => {
+        console.log(typeof(Data));
         e.preventDefault();
-        add();
+        
+        Data.push({tcId:tcObject.testcase_id, tcName:tcObject.testcase_name, tcDesc:tcObject.testcase_desc, dsId:datasetId});
+        // add();
         // tcObject.map(data =>{Data.push(data)});
         // Data.push(tcObject);
     }
@@ -86,10 +106,12 @@ function TestsetCreate() {
 
     useEffect(() => {
         getTestcaseDetails(setTcObject,1031,testcaseId);
-    }, [testcaseId,Data])
+    }, [testcaseId])
 
     console.log(tcObject);
     console.log(Data);
+    console.log(testcaseId);
+    console.log(datasetId);
 
     return (
         <div>
@@ -170,6 +192,7 @@ function TestsetCreate() {
                     options={datasetObject}
                     getOptionLabel={(option) => option.dataset_name_in_testcase}
                     onChange={(e, value) => {
+                        setDatasetId(value.testcase_dataset_id);
                       // Project_Id.current = value.project_id;
                     }}
                     noOptionsText={"Datasets not found"}
@@ -211,12 +234,12 @@ function TestsetCreate() {
                       <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                         <Grid item xs={6} sm={6} md={3}><label>Testset Name <span className="importantfield" >*</span>:</label></Grid>
                         <Grid item xs={6} sm={6} md={8}>
-                          <input type="text" name="" placeholder="Enter First Name" />
+                          <input type="text" name="" placeholder="Enter First Name" onChange={(e)=>setTestsetName(e.target.value)}/>
                         </Grid>
                       </Grid>
                       <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                         <Grid item xs={6} sm={6} md={3}><label>Testset Description <span className="importantfield" >*</span>:</label></Grid>
-                        <Grid item xs={6} sm={6} md={8}> <input type="text" name="" placeholder="Enter Last Name" /></Grid>
+                        <Grid item xs={6} sm={6} md={8}> <input type="text" name="" placeholder="Enter Last Name" onChange={(e)=>setTestsetDesc(e.target.value)}/></Grid>
                       </Grid>
                       {/* <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }}>
                         <Grid item xs={6} sm={6} md={3}>
