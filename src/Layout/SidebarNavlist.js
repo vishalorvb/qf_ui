@@ -71,7 +71,7 @@ export const testManagementList = [
   },
   {
     name: "Dashboard",
-    route: "dashboard",
+    route: "/",
     accessRole: "",
     icon: <DashboardOutlinedIcon />,
   },

@@ -57,24 +57,24 @@ export default function Login() {
         }
       );
       const token = response?.data?.token;
+      localStorage.setItem("token", token);
 
-      // const userInfo = await axios.post(
-      //   "http://10.11.12.242:8080/qfauthservice/authentication/useInfo",
-      //   "",
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-      // const info = userInfo?.data?.info;
-      // const user = info?.ssoId;
-      // const password = info?.password;
-      // const role = info?.role;
-      const info = {};
-      const user = "Ranga";
-      const password = "Ranga";
-      const role = [2];
+      const userInfo = await axios.get(
+        "http://10.11.12.242:8080/qfauthservice/authentication/userInfo",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const info = userInfo?.data?.info;
+      const user = info?.ssoId;
+      const password = info?.password;
+      const role = [info?.role];
+      // const info = {};
+      // const user = "Ranga";
+      // const password = "Ranga";
+      // const role = [2];
 
       setAuth({
         user: user,

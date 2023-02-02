@@ -8,7 +8,7 @@ import {
 import AppLayout from "./AppLayout";
 import RequireAuth from "./RequireAuth";
 import { Routes } from "./Routes";
-
+import PersistLogin from "./PersistLogin";
 import Login from "./Login";
 import UnAuthorized from "../pages/UnAuthorized";
 import Dashboard from "../pages/Dashboard";
@@ -54,11 +54,13 @@ export const router = createBrowserRouter(
     <>
       <Route path="login" element={<Login />} />
       <Route path="unauthorized" element={<UnAuthorized />} />
-      <Route path="/" element={<AppLayout />}>
-        <Route element={<RequireAuth allowedRoles={[2]} />}>
-          <Route index element={<Dashboard />} />
+      <Route element={<PersistLogin />}>
+        <Route path="/" element={<AppLayout />}>
+          <Route element={<RequireAuth allowedRoles={[4]} />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+          {routeLister(Routes)}
         </Route>
-        {routeLister(Routes)}
       </Route>
     </>
   )

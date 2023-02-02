@@ -40,9 +40,7 @@ const CreatePipeline = lazy(() =>
 const CreateTestcase = lazy(() =>
   import("../Components/TestSet/TestsetCreate")
 );
-const Settings = lazy(() =>
-  import("../pages/Settings")
-);
+const Settings = lazy(() => import("../pages/Settings"));
 
 export const Routes = [
   {
@@ -53,17 +51,17 @@ export const Routes = [
   {
     path: "application/apiApp",
     element: ApiApp,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: ":id",
         element: APIsTable,
-        accessRole: [2],
+        accessRole: [4],
         subRoute: [
           {
             path: ":id",
             element: ApiCreateEdit,
-            accessRole: [2],
+            accessRole: [4],
           },
         ],
       },
@@ -72,27 +70,27 @@ export const Routes = [
   // {
   //   path: "/dashboard",
   //   element: Dashboard,
-  //   accessRole: [2],
+  //   accessRole: [4],
   // },
   {
     path: "execution",
     element: Execution,
-    accessRole: [2],
+    accessRole: [4],
   },
   {
     path: "application/mobileApp",
     element: MobileApp,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: [2],
+        accessRole: [4],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: [2],
+            accessRole: [4],
           },
         ],
       },
@@ -101,28 +99,28 @@ export const Routes = [
   {
     path: "*",
     element: NotFound,
-    accessRole: [2],
+    accessRole: [4],
   },
   {
     path: "pipeline",
     element: Pipeline,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: "CreatePipeline",
         element: CreatePipeline,
-        accessRole: [2],
+        accessRole: [4],
         loaderFunction: getCreatePipelineData,
       },
       {
         path: "pipelineAutomation",
         element: PipelineAutomation,
-        accessRole: [2],
+        accessRole: [4],
         subRoute: [
           {
             path: "report",
             element: Report,
-            accessRole: [2],
+            accessRole: [4],
           },
         ],
       },
@@ -131,12 +129,12 @@ export const Routes = [
   {
     path: "projects",
     element: Projects,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: "createProject",
         element: CreateProject,
-        accessRole: [2],
+        accessRole: [4],
       },
     ],
   },
@@ -148,24 +146,24 @@ export const Routes = [
   {
     path: "release",
     element: Release,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: "CreateInstance",
         element: CreateInstance,
-        accessRole: [2],
+        accessRole: [4],
       },
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
-        accessRole: [2],
+        accessRole: [4],
       },
     ],
   },
   {
     path: "reports",
     element: Reports,
-    accessRole: [2],
+    accessRole: [4],
   },
   {
     path: "settings",
@@ -175,39 +173,39 @@ export const Routes = [
   {
     path: "testcase",
     element: Testcase,
-    accessRole: [2],
+    accessRole: [4],
   },
   {
     path: "testset",
     element: Testset,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: "AddTestcaseToTestset",
         element: AddTestcaseToTestset,
-        accessRole: [2],
+        accessRole: [4],
       },
       {
         path: "createTestcase",
         element: CreateTestcase,
-        accessRole: [2],
+        accessRole: [4],
       },
     ],
   },
   {
     path: "application/webApp",
     element: WebApp,
-    accessRole: [2],
+    accessRole: [4],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: [2],
+        accessRole: [4],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: [2],
+            accessRole: [4],
           },
         ],
       },
