@@ -6,8 +6,11 @@ import { useState } from "react";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Stack } from "@mui/system";
+import useAuth from "../hooks/useAuth";
 
 export default function UserCard() {
+  const { auth, setAuth } = useAuth();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -36,7 +39,7 @@ export default function UserCard() {
           spacing={0.5}
         >
           <Typography sx={{ color: "black", margin: "0px" }}>
-            Welcome Ravi
+            Welcome {auth?.user}
           </Typography>
           <ExpandMore
             expand={open}
@@ -63,7 +66,7 @@ export default function UserCard() {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={() => setAuth({})}>Logout</MenuItem>
       </Menu>
     </div>
   );

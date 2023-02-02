@@ -45,51 +45,51 @@ export const Routes = [
   {
     path: "admin",
     element: Admin,
-    accessRole: "",
+    accessRole: [1],
   },
   {
     path: "application/apiApp",
     element: ApiApp,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: ":id",
         element: APIsTable,
-        accessRole: "",
+        accessRole: [2],
         subRoute: [
           {
             path: ":id",
             element: ApiCreateEdit,
-            accessRole: "",
+            accessRole: [2],
           },
         ],
       },
     ],
   },
-  {
-    path: "/",
-    element: Dashboard,
-    accessRole: "",
-  },
+  // {
+  //   path: "/dashboard",
+  //   element: Dashboard,
+  //   accessRole: [2],
+  // },
   {
     path: "execution",
     element: Execution,
-    accessRole: "",
+    accessRole: [2],
   },
   {
     path: "application/mobileApp",
     element: MobileApp,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: "",
+        accessRole: [2],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: "",
+            accessRole: [2],
           },
         ],
       },
@@ -98,28 +98,28 @@ export const Routes = [
   {
     path: "*",
     element: NotFound,
-    accessRole: "",
+    accessRole: [2],
   },
   {
     path: "pipeline",
     element: Pipeline,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: "CreatePipeline",
         element: CreatePipeline,
-        accessRole: "",
+        accessRole: [2],
         loaderFunction: getCreatePipelineData,
       },
       {
         path: "pipelineAutomation",
         element: PipelineAutomation,
-        accessRole: "",
+        accessRole: [2],
         subRoute: [
           {
             path: "report",
             element: Report,
-            accessRole: "",
+            accessRole: [2],
           },
         ],
       },
@@ -128,78 +128,78 @@ export const Routes = [
   {
     path: "projects",
     element: Projects,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: "createProject",
         element: CreateProject,
-        accessRole: "",
+        accessRole: [2],
       },
     ],
   },
   {
     path: "qfAdmin",
     element: QFAdmin,
-    accessRole: "",
+    accessRole: [1],
   },
   {
     path: "release",
     element: Release,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: "CreateInstance",
         element: CreateInstance,
-        accessRole: "",
+        accessRole: [2],
       },
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
-        accessRole: "",
+        accessRole: [2],
       },
     ],
   },
   {
     path: "reports",
     element: Reports,
-    accessRole: "",
+    accessRole: [2],
   },
   {
     path: "testcase",
     element: Testcase,
-    accessRole: "",
+    accessRole: [2],
   },
   {
     path: "testset",
     element: Testset,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: "AddTestcaseToTestset",
         element: AddTestcaseToTestset,
-        accessRole: "",
+        accessRole: [2],
       },
       {
         path: "createTestcase",
         element: CreateTestcase,
-        accessRole: "",
+        accessRole: [2],
       },
     ],
   },
   {
     path: "application/webApp",
     element: WebApp,
-    accessRole: "",
+    accessRole: [2],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: "",
+        accessRole: [2],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: "",
+            accessRole: [2],
           },
         ],
       },

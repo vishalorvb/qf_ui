@@ -2,12 +2,15 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import useAuth from "../hooks/useAuth";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { useEffect } from "react";
 
 function Copyright(props) {
   return (
@@ -18,7 +21,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
         Prolifics
       </Link>{" "}
       {new Date().getFullYear()}
@@ -30,14 +33,62 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event) => {
+  const { setAuth, auth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    try {
+      const response = await axios.post(
+        "http://10.11.12.242:8080/qfauthservice/authentication/login",
+        {
+          username: data.get("email"),
+          password: data.get("password"),
+        },
+        {
+          headers: {
+            Authorization: "Basic c2FuanU6ZGV2cmFiYml0",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const token = response?.data?.token;
+
+      // const userInfo = await axios.post(
+      //   "http://10.11.12.242:8080/qfauthservice/authentication/useInfo",
+      //   "",
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+      // const info = userInfo?.data?.info;
+      // const user = info?.ssoId;
+      // const password = info?.password;
+      // const role = info?.role;
+      const info = {};
+      const user = "Ranga";
+      const password = "Ranga";
+      const role = [2];
+
+      setAuth({
+        user: user,
+        password: password,
+        roles: role,
+        info: info,
+        token: token,
+      });
+    } catch (err) {}
   };
+
+  useEffect(() => {
+    auth?.user && navigate(from, { replace: true });
+  }, [auth]);
 
   return (
     <ThemeProvider theme={theme}>
