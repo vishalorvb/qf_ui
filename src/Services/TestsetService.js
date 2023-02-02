@@ -25,3 +25,17 @@ export function getTestcaseDetails(callback, workflowID,testcaseId) {
         callback(res.data.data.testcase)
     })
 }
+
+export function createTestset(data) {
+    console.log("called")
+    axios.post("http://10.11.12.240/qfservice/webtestset/createWebTestset",data ).then(res => {
+        console.log("Testset Created Successfully" );
+    })
+}
+
+export function updateTestset(data) {
+    console.log("called")
+    axios.post("http://10.11.12.240/qfservice/webtestset/createWebTestset",data ).then(res => {
+        console.log("Testset Created Successfully" );
+    })
+}
