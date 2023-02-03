@@ -6,10 +6,12 @@ import { useState } from "react";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Stack } from "@mui/system";
+import useLogout from "../hooks/useLogout";
 import useAuth from "../hooks/useAuth";
 
 export default function UserCard() {
-  const { auth, setAuth } = useAuth();
+  const logout = useLogout();
+  const { auth } = useAuth();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -53,7 +55,7 @@ export default function UserCard() {
           </ExpandMore>
         </Stack>
         <Typography variant="caption" sx={{ color: "#728FAD" }}>
-          Test Engineer
+          {auth?.info?.userProfiles[0]?.type}
         </Typography>
       </Grid>
       <Menu
@@ -66,7 +68,7 @@ export default function UserCard() {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={() => setAuth({})}>Logout</MenuItem>
+        <MenuItem onClick={() => logout()}>Logout</MenuItem>
       </Menu>
     </div>
   );

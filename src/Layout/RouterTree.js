@@ -52,9 +52,9 @@ const routeLister = (rawList) => {
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="login" element={<Login />} />
-      <Route path="unauthorized" element={<UnAuthorized />} />
       <Route element={<PersistLogin />}>
+        <Route path="login" element={<Login />} />
+        <Route path="unauthorized" element={<UnAuthorized />} />
         <Route path="/" element={<AppLayout />}>
           <Route element={<RequireAuth allowedRoles={[4]} />}>
             <Route index element={<Dashboard />} />

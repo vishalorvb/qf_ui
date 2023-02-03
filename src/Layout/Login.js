@@ -90,6 +90,10 @@ export default function Login() {
     auth?.user && navigate(from, { replace: true });
   }, [auth]);
 
+  useEffect(() => {
+    auth?.user && navigate(from, { replace: true });
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
