@@ -19,7 +19,6 @@ const PersistLogin = () => {
             },
           }
         );
-        console.log(userInfo);
         const info = userInfo?.data?.info;
         const user = info?.ssoId;
         const password = info?.password;
@@ -40,10 +39,6 @@ const PersistLogin = () => {
 
     !auth?.user ? verifyUser() : setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    console.log(auth);
-  }, [isLoading]);
 
   return <>{isLoading ? <p>...Loading</p> : <Outlet />}</>;
 };
