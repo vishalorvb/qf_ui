@@ -4,12 +4,13 @@ import useAuth from "./useAuth";
 
 const useAxios = () => {
   const { auth } = useAuth();
+  const token = auth?.token ? auth?.token : localStorage.getItem("token");
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.token}`;
+          config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
       },

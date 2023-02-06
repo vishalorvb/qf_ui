@@ -1,12 +1,18 @@
-import React from 'react'
-import TestCases from '../Components/TestCases/TestCases'
+import React, { useEffect } from "react";
+import TestCases from "../Components/TestCases/TestCases";
+import useHead from "../hooks/useHead";
 
 function Testcase() {
-  return (
-    <div>
-      <TestCases></TestCases>
-    </div>
-  )
+  const { setHeader } = useHead();
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "TestCases",
+      };
+    });
+  }, []);
+  return <TestCases />;
 }
 
-export default Testcase
+export default Testcase;

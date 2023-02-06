@@ -8,6 +8,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
+import ProjectsDropdown from "../Components/ProjectsDropdown";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -43,6 +44,7 @@ function a11yProps(index) {
 
 export default function Execution() {
   const { setHeader } = useHead();
+  const [selectedProject, setSelectedProject] = useState([]);
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -57,8 +59,13 @@ export default function Execution() {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    console.log(selectedProject);
+  }, [selectedProject]);
+
   return (
     <Box sx={{ width: "100%" }}>
+      <ProjectsDropdown setSelectedProject={setSelectedProject} />
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -71,13 +78,13 @@ export default function Execution() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Testset />
+        <Testset selectedProject={selectedProject} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Testcase />
+        <Testcase selectedProject={selectedProject} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Pipeline />
+        <Pipeline selectedProject={selectedProject} />
       </TabPanel>
     </Box>
   );

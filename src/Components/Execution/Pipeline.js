@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
-import { getPipelines } from "../../Services/DevopsServices";
+import { Button } from "@mui/material";
+import { executePipeline, getPipelines } from "../../Services/DevopsServices";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
-export default function Pipeline() {
-  const navigate = useNavigate();
-
+export default function Pipeline({ selectedProject }) {
+  const [executionRes, setExecutionRes] = useState();
+  const [msg, setMsg] = useState(false);
   const [instances, setInstances] = useState([]);
 
   useEffect(() => {
-    getPipelines(setInstances);
+    const module_id = selectedProject?.filter(
+      (module) => module.module_type === 20
+    );
+    getPipelines(setInstances, module_id);
   }, []);
+
+  useEffect(() => {
+    setMsg(true);
+  }, [executionRes]);
 
   const instanceColumns = [
     {
@@ -38,12 +44,29 @@ export default function Pipeline() {
       renderCell: (param) => {
         return (
           <div>
-            <EditOutlinedIcon onClick={() => console.log("first")} />
+            <Button
+              size="small"
+              variant="contained"
+              onClick={() => executePipeline(setExecutionRes, param.row.id)}
+            >
+              Execute
+            </Button>
           </div>
         );
       },
     },
   ];
 
-  return <Table rows={instances} columns={instanceColumns} />;
+  return (
+    <>
+      <SnackbarNotify
+        open={msg}
+        close={setMsg}
+        msg={executionRes?.data?.message}
+        severity="success"
+      />
+      {executionRes?.data?.message}
+      <Table rows={instances} columns={instanceColumns} />
+    </>
+  );
 }

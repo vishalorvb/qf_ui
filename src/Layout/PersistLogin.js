@@ -2,22 +2,19 @@ import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import useAxios from "../hooks/useAxios";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { auth, setAuth } = useAuth();
+  const axiosPrivate = useAxios();
   const token = auth?.token ? auth?.token : localStorage.getItem("token");
 
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const userInfo = await axios.get(
-          "http://10.11.12.242:8080/qfauthservice/authentication/userInfo",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const userInfo = await axiosPrivate.get(
+          "/qfauthservice/authentication/userInfo"
         );
         const info = userInfo?.data?.info;
         const user = info?.ssoId;

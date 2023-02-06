@@ -65,7 +65,7 @@ export default function TransferList({ left, setLeft, right, setRight }) {
 
           return (
             <ListItem
-              key={value}
+              key={value.name}
               role="listitem"
               button
               onClick={handleToggle(value)}
@@ -89,7 +89,7 @@ export default function TransferList({ left, setLeft, right, setRight }) {
   );
 
   return (
-    <Grid container spacing={2} justifyContent="center" alignItems="center">
+    <Grid container spacing={2} justifyContent="flex-start" alignItems="center">
       <Grid item>{customList(left)}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
