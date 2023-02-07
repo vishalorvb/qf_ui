@@ -104,7 +104,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(login.JPG)",
+            backgroundImage: "url(login.png)",
             backgroundRepeat: "no-repeat",
             backgroundColor: "white",
             backgroundSize: "60%",

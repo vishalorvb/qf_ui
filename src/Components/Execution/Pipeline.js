@@ -14,7 +14,7 @@ export default function Pipeline({ selectedProject }) {
       (module) => module.module_type === 20
     );
     getPipelines(setInstances, module_id);
-  }, []);
+  }, [selectedProject]);
 
   useEffect(() => {
     setMsg(true);
