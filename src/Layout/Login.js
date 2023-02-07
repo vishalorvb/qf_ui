@@ -12,7 +12,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 
-function Copyright(props) {
+export function Copyright(props) {
   return (
     <Typography
       variant="body2"
@@ -21,7 +21,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" to="https://mui.com/">
+      <Link color="inherit" to="https://prolifics.com/">
         Prolifics
       </Link>{" "}
       {new Date().getFullYear()}

@@ -1,7 +1,10 @@
 import { Button, Grid, Typography } from "@mui/material";
 import TransferList from "../../CustomComponent/TransferList";
 import {
+  CheckboxButtonGroup,
+  MultiSelectElement,
   RadioButtonGroup,
+  SelectElement,
   TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
@@ -11,11 +14,13 @@ import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import axios from "../../api/axios";
 import { Stack } from "@mui/system";
+import RuntimeVar from "./RuntimeVar";
 
 export default function Testset({ selectedProject }) {
   const [webtestSets, setwebTestSets] = useState([]);
   const [apitestSets, setapiTestSets] = useState([]);
   const [mobiletestSets, setmobileTestSets] = useState([]);
+  const [openRuntimeVar, setOpenRuntimeVar] = useState(false);
   // const axiosPrivate = useAxios();
   const schema = yup.object().shape({
     executionName: yup.string().required(),
@@ -124,12 +129,85 @@ export default function Testset({ selectedProject }) {
                   name="description"
                   control={control}
                 />
-                <Button variant="contained" type="submit">
-                  Execute
-                </Button>
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="flex-end"
+                  spacing={1}
+                >
+                  <SelectElement
+                    name="enviroment"
+                    size="small"
+                    fullWidth
+                    control={control}
+                    options={[
+                      {
+                        id: "1",
+                        label: "Local",
+                      },
+                      {
+                        id: "2",
+                        label: "Jenkins",
+                      },
+                      {
+                        id: "3",
+                        label: "Doker",
+                      },
+                    ]}
+                  />
+                  <SelectElement
+                    name="env"
+                    size="small"
+                    fullWidth
+                    sx={{ width: 200 }}
+                    control={control}
+                    options={[
+                      {
+                        id: "1",
+                        label: "Testing",
+                      },
+                    ]}
+                  />
+                </Stack>
+                <MultiSelectElement
+                  label="Browser"
+                  name="basic"
+                  size="small"
+                  fullWidth
+                  control={control}
+                  options={["Chrome", "Edge", "Firefox"]}
+                />
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="flex-end"
+                  spacing={1}
+                >
+                  <CheckboxButtonGroup
+                    name="basic-checkbox-button-group"
+                    control={control}
+                    options={[
+                      {
+                        id: "1",
+                        label: "Regenrate Script",
+                      },
+                    ]}
+                  />
+
+                  <Button variant="contained" type="submit">
+                    Execute
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => setOpenRuntimeVar(true)}
+                  >
+                    Runtime Variable
+                  </Button>
+                </Stack>
               </Stack>
             </Grid>
           </Grid>
+          <RuntimeVar close={setOpenRuntimeVar} open={openRuntimeVar} />
         </form>
       ) : (
         "No Testset Found"

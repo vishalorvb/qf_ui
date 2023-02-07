@@ -11,8 +11,6 @@ export default function ProjectsDropdown({ setSelectedProject }) {
     getProject(setProjectList);
   }, []);
 
-  useEffect(() => {}, []);
-
   return (
     <Stack
       direction="row"

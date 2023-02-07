@@ -11,9 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
 import MuiListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
 //navItems
@@ -22,8 +20,8 @@ import {
   opsManagementList,
   qfAdmin,
 } from "./SidebarNavlist";
-import MuiChip from "@mui/material/Chip";
 import { Collapse, Typography } from "@mui/material";
+import { Copyright } from "./Login";
 
 const drawerWidth = 200;
 
@@ -37,17 +35,7 @@ const drawerTheme = createTheme({
         },
       },
     },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          color: "rgba(255,255,255,0.4)",
-          fontSize: "11px",
-          border: "1px dashed rgba(255,255,255,0.4)",
-          borderRadius: "5px",
-          padding: "2px",
-        },
-      },
-    },
+
     MuiListItemText: {
       styleOverrides: {
         root: {
@@ -239,6 +227,11 @@ export default function MiniDrawer({ open }) {
         <List dense disablePadding>
           {navigationItemRender(opsManagementList)}
         </List>
+        {open && (
+          <Copyright
+            sx={{ position: "fixed", left: 30, bottom: 10, color: "white" }}
+          />
+        )}
       </Drawer>
     </ThemeProvider>
   );

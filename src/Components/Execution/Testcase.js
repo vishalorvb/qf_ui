@@ -1,10 +1,17 @@
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import TransferList from "../../CustomComponent/TransferList";
-import { TextFieldElement, useForm } from "react-hook-form-mui";
+import {
+  CheckboxButtonGroup,
+  MultiSelectElement,
+  SelectElement,
+  TextFieldElement,
+  useForm,
+} from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
+import FeatureMenu from "./FeatureMenu";
 
 export default function Testcase({ selectedProject }) {
   const [left, setLeft] = useState([]);
@@ -116,9 +123,76 @@ export default function Testcase({ selectedProject }) {
                   name="description"
                   control={control}
                 />
-                <Button variant="contained" type="submit">
-                  Execute
-                </Button>
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="flex-end"
+                  spacing={1}
+                >
+                  <SelectElement
+                    name="enviroment"
+                    size="small"
+                    fullWidth
+                    control={control}
+                    options={[
+                      {
+                        id: "1",
+                        label: "Local",
+                      },
+                      {
+                        id: "2",
+                        label: "Jenkins",
+                      },
+                      {
+                        id: "3",
+                        label: "Doker",
+                      },
+                    ]}
+                  />
+                  <SelectElement
+                    name="env"
+                    size="small"
+                    fullWidth
+                    sx={{ width: 200 }}
+                    control={control}
+                    options={[
+                      {
+                        id: "1",
+                        label: "Testing",
+                      },
+                    ]}
+                  />
+                </Stack>
+                <MultiSelectElement
+                  label="Browser"
+                  name="basic"
+                  size="small"
+                  fullWidth
+                  control={control}
+                  options={["Chrome", "Edge", "Firefox"]}
+                />
+                <Stack
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="flex-end"
+                  spacing={1}
+                >
+                  <CheckboxButtonGroup
+                    name="basic-checkbox-button-group"
+                    control={control}
+                    options={[
+                      {
+                        id: "1",
+                        label: "Regenrate Script",
+                      },
+                    ]}
+                  />
+                  <FeatureMenu />
+                  <Button variant="contained" type="submit">
+                    Execute
+                  </Button>
+                </Stack>
+                {/* <Button variant="contained">Generate</Button> */}
               </Stack>
             </Grid>
           </Grid>
