@@ -4,12 +4,15 @@ import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getProject } from "../Services/ProjectService";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 export default function ApiApp() {
   const { setHeader } = useHead();
+  const { auth } = useAuth();
   const navigate = useNavigate();
 
-  let[project,setProject] = useState([])
+  let [project, setProject] = useState([]);
 
   const pageColumns = [
     {
@@ -34,7 +37,11 @@ export default function ApiApp() {
       renderCell: (param) => {
         return (
           <div>
-              <NearMeOutlinedIcon  onClick={()=>navigate("apiRequests",{state:{id:param.row.project_id}})} />
+            <NearMeOutlinedIcon
+              onClick={() =>
+                navigate("apiRequests", { state: { id: param.row.project_id } })
+              }
+            />
           </div>
         );
       },
@@ -74,15 +81,20 @@ export default function ApiApp() {
   }, []);
 
   useEffect(() => {
-  getProject(setProject,4)
-  }, [])
+    // getProject(setProject, 4);
+    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+      console.log(res.data.result.projects_list);
+      setProject(res.data.result.projects_list);
+    });
+  }, []);
 
   return (
     <>
-    <h1>This is project table</h1>
-      <Table rows={project} columns={pageColumns}
-      getRowId={row => row.project_id}
-      />;
+      <Table
+        rows={project}
+        columns={pageColumns}
+        getRowId={(row) => row.project_id}
+      />
       <Outlet />
     </>
   );

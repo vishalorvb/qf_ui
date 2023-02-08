@@ -119,7 +119,7 @@ export function createPipeline(callback, params, id) {
     });
 }
 
-export function getReleaseInstances(callback) {
+export function getReleaseInstances(callback, module_id) {
   axios
     .get(`${baseUrl}/qfservice/release-management/${module_id}`)
     .then((res) => {

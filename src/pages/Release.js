@@ -6,16 +6,16 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Outlet, useNavigate } from "react-router-dom";
 import SelectCreateInstanceModal from "../Components/ReleaseComponents/SelectCreateInstanceModal";
 import { getReleaseInstances } from "../Services/DevopsServices";
+import ProjectsDropdown from "../Components/ProjectsDropdown";
 
 export default function Release() {
   const { setHeader } = useHead();
   const [createInstance, setCreateInstance] = useState(false);
   const [instance, setInstance] = useState([]);
+  const [selectedProject, setSelectedProject] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getReleaseInstances(setInstance);
-
     setHeader((ps) => {
       return {
         ...ps,
@@ -34,6 +34,14 @@ export default function Release() {
         };
       });
   }, []);
+
+  useEffect(() => {
+    const module = selectedProject?.find(
+      (module) => module?.module_type === 21
+    );
+    module?.module_id && getReleaseInstances(setInstance, module?.module_id);
+    console.log(module?.module_type);
+  }, [selectedProject]);
 
   const instanceColumns = [
     {
@@ -76,6 +84,7 @@ export default function Release() {
 
   return (
     <>
+      <ProjectsDropdown setSelectedProject={setSelectedProject} />
       <Table rows={instance} columns={instanceColumns} />
       <SelectCreateInstanceModal
         createInstate={createInstance}
