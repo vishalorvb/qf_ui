@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { Routes, Route, Link, Outlet } from "react-router-dom";
+import { Routes, Route, Link, Outlet, useNavigate } from "react-router-dom";
 
 export default function WebApp() {
   const { setHeader } = useHead();
+  const navigate = useNavigate();
 
   const applicationColumns = [
     {
@@ -30,9 +31,7 @@ export default function WebApp() {
       renderCell: (param) => {
         return (
           <div>
-            <Link to={String(param.row.id)}>
-              <NearMeOutlinedIcon />
-            </Link>
+              <NearMeOutlinedIcon onClick={()=>navigate("pages",{state:{id:param.row.id}})} />
           </div>
         );
       },

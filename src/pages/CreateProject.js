@@ -4,11 +4,14 @@ import SaveIcon from "@mui/icons-material/Save";
 import {
   validateForm,
   resetClassName,
+
 } from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import { getAutomationType, AddProject, updateProject } from "../Api";
 import AccordionTemplate from "../CustomComponent/AccordionTemplate";
 import useHead from "../hooks/useHead";
+import { createProject } from "../Services/ProjectService";
+import { updateProject } from "../Services/ProjectService";
 
 function CreateProject(props) {
   const { setHeader } = useHead();
@@ -21,8 +24,8 @@ function CreateProject(props) {
     });
   }, []);
 
-  console.table(props.project);
-  let userId = 112;
+
+  let userId = 4;
   let date = new Date();
   let [repository, setRepository] = useState(false);
   let [pipeline, setPipeline] = useState(false);
@@ -94,9 +97,12 @@ function CreateProject(props) {
 
   useEffect(() => {
     try {
+      console.log(props.project.project_id);
+      console.log(props.project)
+      console.log(Object.keys(props.project).length)
       project_name.current.value = props.project.project_name;
       project_name.current.disabled = true;
-      description.current.value = props.project.project_description;
+      description.current.value = props.project.description;
       automation_type.current.value = props.project.automation_framework_type;
       console.log(props.project.automation_framework_type);
       console.warn(automation_type);
@@ -123,75 +129,61 @@ function CreateProject(props) {
   function submitHandler() {
     // console.log(automation_type.current.value);
     console.log("Calling submitHandler");
-    if (
-      validateForm(
-        requiredFields,
-        specialcharRefs,
-        passwordRef,
-        onlyAlphabets,
-        onlynumbers,
-        autocompletename,
-        "error"
-      )
+    if (true
+      // validateForm(
+      //   requiredFields,
+      //   specialcharRefs,
+      //   passwordRef,
+      //   onlyAlphabets,
+      //   onlynumbers,
+      //   autocompletename,
+      //   "error"
+      // )
     ) {
-      let projectData = {
-        is_deleted: false,
-        created_by: userId,
-        project_name: project_name.current.value,
-        created_at: date,
-        project_description: description.current.value,
-        id: userId,
+      let data = {
+        projectName: project_name.current.value,
+        projectDesc: description.current.value,
+        issueTrackerType: issueTracker.current.value,
+        jira_project_id: "",
+        sqeProjectId: 0,
+        userId: 4,
+        orgId: 1,
         repository_url: gitUrl.current.value,
+        repository_token: gitAccessToken.current.value,
+        jenkins_token: jenkinsToken.current.value,
         jenkins_url: jenkinsUrl.current.value,
         jenkins_user_name: jenkinsUsername.current.value,
         jenkins_password: jenkinsPassword.current.value,
-        jenkins_token: jenkinsToken.current.value,
         automation_framework_type: automation_type.current.value,
-        repository_token: gitAccessToken.current.value,
-        jira_project_id: "lmldepdmeodjweo",
-        repository_branch: branch.current.value,
-        gitops: true,
-        automatable_tests: 0,
-        defects_opened: 0,
-        total_tests: 0,
-      };
-
-      let DbData = {
-        db_host: hostName.current.value,
-        db_password: dbPassword.current.value,
+        db_type: databaseType.current.value,
         db_name: databaseName.current.value,
         db_user_name: dbUsername.current.value,
-        db_type: dbUsername.current.value,
+        db_password: dbPassword.current.value,
         db_port: portNumber.current.value,
-      };
+        db_host: hostName.current.value,
+        org_name: "",
+        jira_url: url.current.value,
+        jira_password: token.current.value,
+        jira_user_name: userName.current.value,
+        jira_project_key: projects.current.value,
+        user_access_permissions: "[]",
+        gitOps: true
+      }
+      try {
+        data.sqeProjectId = props.project.project_id
+        console.log("inside try block of data")
+        updateProject(data)
+      } catch (error) {
+        console.log(error)
+        createProject(data)
+      }
 
-      //   if (props.edit) {
-      //     projectData.project_id = props.project.id;
-      //     DbData.db_id = props.project.db_id;
-      //     updateProject(projectData, DbData).then((res) => {
-      //       console.log(res);
-      //       setSnackbarsuccess(true);
-      //     });
-      //   } else {
-      //     AddProject(projectData, DbData).then((res) => {
-      //       console.log(res);
-      //       setSnackbarsuccess(true);
-      //     });
-      //   }
-
-      //   setTimeout(() => {
-      //     setSnackbarsuccess(false);
-      //   }, 2000);
-      // } else {
-      //   setSnackbarerror(true);
-      //   setTimeout(() => {
-      //     setSnackbarerror(false);
-      //   }, 2000);
     }
+
   }
   return (
     <div className="accordionParent" onClick={resetClassName}>
-       
+
       {props.edit && <h1>This is Edit</h1>}
       <SnackbarNotify
         open={snackbarerror}
@@ -257,9 +249,9 @@ function CreateProject(props) {
                 style={{ width: "100%", height: "28px" }}
               >
                 <option value="">Select</option>
-                {automation.map((data) => (
-                  <option value={data.id}>{data.name}</option>
-                ))}
+
+                <option value={1}>Selenium</option>
+
               </select>
             </Grid>
           </Grid>
@@ -577,8 +569,18 @@ function CreateProject(props) {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              {" "}
-              <input ref={issueTracker} type="text" name="" />
+              
+              {/* <input ref={issueTracker} type="text" name="" /> */}
+              <select
+                ref={issueTracker}
+                style={{ height: "28px" }}
+              >
+                <option value="">Select</option>
+
+                <option value={1}>Jira</option>
+                <option value={2}>Azure</option>
+
+              </select>
             </Grid>
           </Grid>
           <Grid

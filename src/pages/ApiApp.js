@@ -1,16 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { getProject } from "../Services/ProjectService";
 
 export default function ApiApp() {
   const { setHeader } = useHead();
+  const navigate = useNavigate();
+
+  let[project,setProject] = useState([])
 
   const pageColumns = [
     {
-      field: "name",
-      headerName: "Pages",
+      field: "project_name",
+      headerName: "Project Name",
       flex: 3,
       sortable: false,
     },
@@ -30,9 +34,7 @@ export default function ApiApp() {
       renderCell: (param) => {
         return (
           <div>
-            <Link to={String(param.row.id)}>
-              <NearMeOutlinedIcon />
-            </Link>
+              <NearMeOutlinedIcon  onClick={()=>navigate("apiRequests",{state:{id:param.row.project_id}})} />
           </div>
         );
       },
@@ -42,7 +44,7 @@ export default function ApiApp() {
   const pages = [
     {
       id: 1,
-      name: "Application 1",
+      name: "project 1",
       description: "Description 1",
     },
     {
@@ -71,9 +73,16 @@ export default function ApiApp() {
     });
   }, []);
 
+  useEffect(() => {
+  getProject(setProject,4)
+  }, [])
+
   return (
     <>
-      <Table rows={pages} columns={pageColumns} />;
+    <h1>This is project table</h1>
+      <Table rows={project} columns={pageColumns}
+      getRowId={row => row.project_id}
+      />;
       <Outlet />
     </>
   );
