@@ -67,6 +67,23 @@ body {
 // }
 // }
 
+.loginImg {
+  background: #00143f url(../../public/login-img.png) no-repeat bottom center;
+  background-size: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  .loginLogo {
+    width: 300px;
+    margin-top: 20vh;
+  }
+}
+.loginForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .tableData {
   box-shadow: 1px 1px 10px rgba(107, 134, 164, 0.15);
   border: 1px solid #e5ebf0 !important;

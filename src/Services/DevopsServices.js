@@ -2,11 +2,12 @@ import axios from "axios";
 import { baseUrl } from "../Environment";
 
 let userId = 1;
-let module_id = 1052;
+// let module_id = 1052;
+let module_id = 1036;
 
-export function getPipelines(callback) {
+export function getPipelines(callback, module_id) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${baseUrl}/pipeline/${module_id}`).then((res) => {
+  axios.get(`${baseUrl}/qfservice/pipeline/${module_id}`).then((res) => {
     console.log(res?.data?.data);
     callback(res?.data?.data);
   });
@@ -14,7 +15,7 @@ export function getPipelines(callback) {
 
 export function getPipelinesHistory(callback, id) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${baseUrl}/pipeline/${id}/release`).then((res) => {
+  axios.get(`${baseUrl}/qfservice/pipeline/${id}/release`).then((res) => {
     console.log(res?.data?.data.pipelinehisotory);
     callback(res?.data?.data.pipelinehisotory);
   });
@@ -22,27 +23,29 @@ export function getPipelinesHistory(callback, id) {
 
 export function getCreatePipelineData(callback, setdefaultData, id) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${baseUrl}/module/${module_id}/pipeline/${id}`).then((res) => {
-    const data = res?.data?.data;
-    console.log(data);
-    callback(data);
-    setdefaultData({
-      releaseName: data?.pipelinerelase?.release_name,
-      releaseDesc: data?.pipelinerelase?.release_desc,
-      cicdType: data?.pipelinerelase?.cicd_type,
-      release: data?.pipelinerelase?.ansiblereleaseId,
-      webTest: data?.pipelinerelase?.webTestsetId,
-      ApiTest: data?.pipelinerelase?.apiTestsetid,
-      sonrCubePath: data?.pipelinerelase?.code_quality_path,
-      sonrCubeKey: data?.pipelinerelase?.code_quality_project_key,
-      unitTestPath: data?.pipelinerelase?.unittesttestset_path,
+  axios
+    .get(`${baseUrl}/qfservice/module/${module_id}/pipeline/${id}`)
+    .then((res) => {
+      const data = res?.data?.data;
+      console.log(data);
+      callback(data);
+      setdefaultData({
+        releaseName: data?.pipelinerelase?.release_name,
+        releaseDesc: data?.pipelinerelase?.release_desc,
+        cicdType: data?.pipelinerelase?.cicd_type,
+        release: data?.pipelinerelase?.ansiblereleaseId,
+        webTest: data?.pipelinerelase?.webTestsetId,
+        ApiTest: data?.pipelinerelase?.apiTestsetid,
+        sonrCubePath: data?.pipelinerelase?.code_quality_path,
+        sonrCubeKey: data?.pipelinerelase?.code_quality_project_key,
+        unitTestPath: data?.pipelinerelase?.unittesttestset_path,
+      });
     });
-  });
 }
 
 export function getPipelinesHistoryReport(callback, id, tag) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${baseUrl}/pipeline/report/${id}/${tag}`).then((res) => {
+  axios.get(`${baseUrl}/qfservice/pipeline/report/${id}/${tag}`).then((res) => {
     console.log(res?.data?.data);
     const result = res?.data?.data;
     if (result !== null) {
@@ -83,16 +86,17 @@ export function getPipelinesHistoryReport(callback, id, tag) {
 }
 
 export function executePipeline(callback, id) {
-  // This function except name of state as a callback and set value in that state
-  axios.post(`${baseUrl}/executepipeline?release_id=${id}`).then((res) => {
-    console.log(res);
-    callback(res);
-  });
+  axios
+    .post(`${baseUrl}/qfservice/executepipeline?release_id=${id}&user_id=7`)
+    .then((res) => {
+      console.log(res.data);
+      callback(res);
+    });
 }
 
 export function createPipeline(callback, params, id) {
   axios
-    .post(`${baseUrl}/Createpipeline`, null, {
+    .post(`${baseUrl}/qfservice/Createpipeline`, null, {
       params: {
         module_id: module_id,
         release_name: params.releaseName,
@@ -115,8 +119,10 @@ export function createPipeline(callback, params, id) {
 }
 
 export function getReleaseInstances(callback) {
-  axios.get(`${baseUrl}/release-management/${module_id}`).then((res) => {
-    console.log(res?.data?.data);
-    res?.data?.data !== null && callback(res?.data?.data);
-  });
+  axios
+    .get(`${baseUrl}/qfservice/release-management/${module_id}`)
+    .then((res) => {
+      console.log(res?.data?.data);
+      res?.data?.data !== null && callback(res?.data?.data);
+    });
 }

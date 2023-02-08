@@ -39,51 +39,49 @@ function TestCases() {
         setSteps(true)
     }
 
-    const columns = [
-        {
-            field: "radio",
-            headerName: "Select",
-            renderCell: params => {
-                return (
-                    <div>
-                        <Radio
-                            checked={params.row.testcase_id === radio}
-                            onChange={(e) => handleRadio(params.row.testcase_id)}
+    function handleSteps(para){
+        console.log(para)
+        setSteps(true)
+    }
 
-                            name="radio-buttons"
+  const columns = [
+    {
+      field: "radio",
+      headerName: "Select",
+      renderCell: (params) => {
+        return (
+          <div>
+            <Radio
+              checked={params.row.testcase_id === radio}
+              onChange={(e) => handleRadio(params.row.testcase_id)}
+              name="radio-buttons"
+            ></Radio>
+          </div>
+        );
+      },
+    },
 
-                        >
-                        </Radio>
-                    </div>
-                )
-            }
-        },
-
-        {
-            field: 'testcase_id',
-            headerName: 'Test case ID',
-            flex: 3,
-            sortable: false,
-            align: 'left',
-
-        },
-        {
-            field: 'testcase_name',
-            headerName: 'Test case name',
-            flex: 3,
-            sortable: false,
-            align: 'left',
-
-        },
-        {
-            field: 'testcase_desc',
-            headerName: 'Description',
-            flex: 3,
-            sortable: false,
-            align: 'left',
-
-        },
-
+    {
+      field: "testcase_id",
+      headerName: "Test case ID",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "testcase_name",
+      headerName: "Test case name",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "testcase_desc",
+      headerName: "Description",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
 
         {
             headerName: 'Action',
@@ -115,39 +113,41 @@ function TestCases() {
     ];
 
 
-    let datasetColumn = [
-        {
-            field: "dataset_name_in_testcase",
-            headerName: "Name",
-            flex: 3,
-            sortable: false,
-            align: 'left',
-        },
-        {
-            field: "description",
-            headerName: "Description",
-            flex: 3,
-            sortable: false,
-            align: 'left',
-        },
-        {
-            headerName: 'Action',
-            field: "action",
-            renderCell: (param) => {
-                return (
-                    <div >
-                        <Tooltip title="Add Data Set">
-                            <IconButton  ><AddIcon></AddIcon></IconButton>
-                        </Tooltip>
-                    </div>
-                )
-            },
-            flex: 1,
-            headerAlign: "left",
-            sortable: false,
-            align: 'left',
-        }
-    ]
+  let datasetColumn = [
+    {
+      field: "dataset_name_in_testcase",
+      headerName: "Name",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+    {
+      headerName: "Action",
+      field: "action",
+      renderCell: (param) => {
+        return (
+          <div>
+            <Tooltip title="Add Data Set">
+              <IconButton>
+                <AddIcon></AddIcon>
+              </IconButton>
+            </Tooltip>
+          </div>
+        );
+      },
+      flex: 1,
+      headerAlign: "left",
+      sortable: false,
+      align: "left",
+    },
+  ];
 
     useEffect(() => {
         getProject(setproject, 4)
@@ -184,12 +184,12 @@ function TestCases() {
                 </Grid>
             </Grid>
 
-            <Table
-                rows={testcases}
-                columns={columns}
-                hidefooter={true}
-                getRowId={row => row.testcase_id}
-            ></Table>
+      <Table
+        rows={testcases}
+        columns={columns}
+        hidefooter={true}
+        getRowId={(row) => row.testcase_id}
+      ></Table>
 
             <Table
                 rows={datasets}
@@ -209,4 +209,4 @@ function TestCases() {
     )
 }
 
-export default TestCases
+export default TestCases;

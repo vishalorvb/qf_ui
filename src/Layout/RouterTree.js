@@ -6,16 +6,21 @@ import {
   Route,
 } from "react-router-dom";
 import AppLayout from "./AppLayout";
-import AuthLayout from "./AuthLayout";
+import RequireAuth from "./RequireAuth";
 import { Routes } from "./Routes";
-
-const role = "";
+import PersistLogin from "./PersistLogin";
+import Login from "./Login";
+import UnAuthorized from "../pages/UnAuthorized";
+import Dashboard from "../pages/Dashboard";
 
 const routeLister = (rawList) => {
-  const routeList = rawList
-    .filter((routeItem) => routeItem.accessRole.includes(role))
-    .map((routeItem, idx) => {
-      return routeItem.subRoute === undefined ? (
+  const routeList = rawList.map((routeItem, idx) => {
+    return (
+      <Route
+        key={idx + routeItem.path}
+        element={<RequireAuth allowedRoles={routeItem.accessRole} />}
+      >
+        routeItem.subRoute === undefined ? (
         <Route
           key={idx}
           path={routeItem.path}
@@ -25,7 +30,7 @@ const routeLister = (rawList) => {
             </Suspense>
           }
         ></Route>
-      ) : (
+        ) : (
         <Route key={idx} path={routeItem.path}>
           <Route
             index
@@ -37,15 +42,26 @@ const routeLister = (rawList) => {
           ></Route>
           {routeItem.subRoute && routeLister(routeItem.subRoute)}
         </Route>
-      );
-    });
+        );
+      </Route>
+    );
+  });
   return routeList;
 };
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<AuthLayout />}>
-      {routeLister(Routes)}
-    </Route>
+    <>
+      <Route element={<PersistLogin />}>
+        <Route path="login" element={<Login />} />
+        <Route path="unauthorized" element={<UnAuthorized />} />
+        <Route path="/" element={<AppLayout />}>
+          <Route element={<RequireAuth allowedRoles={[4]} />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+          {routeLister(Routes)}
+        </Route>
+      </Route>
+    </>
   )
 );

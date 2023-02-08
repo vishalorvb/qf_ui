@@ -5,15 +5,16 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { getPipelines } from "../Services/DevopsServices";
+import ProjectsDropdown from "../Components/ProjectsDropdown";
 
 export default function Pipeline() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
 
   const [instances, setInstances] = useState([]);
+  const [selectedProject, setSelectedProject] = useState([]);
 
   useEffect(() => {
-    getPipelines(setInstances);
     setHeader((ps) => {
       return {
         ...ps,
@@ -21,7 +22,8 @@ export default function Pipeline() {
         plusButton: true,
         plusCallback: () => navigate("CreatePipeline", { state: { id: 0 } }),
       };
-    });
+    }, []);
+
     return () =>
       setHeader((ps) => {
         return {
@@ -32,6 +34,13 @@ export default function Pipeline() {
         };
       });
   }, []);
+
+  useEffect(() => {
+    const module_id = selectedProject?.filter(
+      (module) => module.module_type === 20
+    );
+    getPipelines(setInstances, module_id);
+  }, [selectedProject]);
 
   const instanceColumns = [
     {
@@ -88,6 +97,7 @@ export default function Pipeline() {
 
   return (
     <>
+      <ProjectsDropdown setSelectedProject={setSelectedProject} />
       <Table rows={instances} columns={instanceColumns} />
       <Outlet />
     </>

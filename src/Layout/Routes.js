@@ -40,59 +40,57 @@ const CreatePipeline = lazy(() =>
 const CreateTestcase = lazy(() =>
   import("../Components/TestSet/TestsetCreate")
 );
-const Settings = lazy(() =>
-  import("../pages/Settings")
-);
+const Settings = lazy(() => import("../pages/Settings"));
 
 export const Routes = [
   {
     path: "admin",
     element: Admin,
-    accessRole: "",
+    accessRole: [1],
   },
   {
     path: "application/apiApp",
     element: ApiApp,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: "apiRequests",
         element: APIsTable,
-        accessRole: "",
+        accessRole: [4],
         subRoute: [
           {
             path: "create",
             element: ApiCreateEdit,
-            accessRole: "",
+            accessRole: [4],
           },
         ],
       },
     ],
   },
-  {
-    path: "/",
-    element: Dashboard,
-    accessRole: "",
-  },
+  // {
+  //   path: "/dashboard",
+  //   element: Dashboard,
+  //   accessRole: [4],
+  // },
   {
     path: "execution",
     element: Execution,
-    accessRole: "",
+    accessRole: [4],
   },
   {
     path: "application/mobileApp",
     element: MobileApp,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: "",
+        accessRole: [4],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: "",
+            accessRole: [4],
           },
         ],
       },
@@ -101,28 +99,28 @@ export const Routes = [
   {
     path: "*",
     element: NotFound,
-    accessRole: "",
+    accessRole: [4],
   },
   {
     path: "pipeline",
     element: Pipeline,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: "CreatePipeline",
         element: CreatePipeline,
-        accessRole: "",
+        accessRole: [4],
         loaderFunction: getCreatePipelineData,
       },
       {
         path: "pipelineAutomation",
         element: PipelineAutomation,
-        accessRole: "",
+        accessRole: [4],
         subRoute: [
           {
             path: "report",
             element: Report,
-            accessRole: "",
+            accessRole: [4],
           },
         ],
       },
@@ -131,41 +129,41 @@ export const Routes = [
   {
     path: "projects",
     element: Projects,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: "createProject",
         element: CreateProject,
-        accessRole: "",
+        accessRole: [4],
       },
     ],
   },
   {
     path: "qfAdmin",
     element: QFAdmin,
-    accessRole: "",
+    accessRole: [1],
   },
   {
     path: "release",
     element: Release,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: "CreateInstance",
         element: CreateInstance,
-        accessRole: "",
+        accessRole: [4],
       },
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
-        accessRole: "",
+        accessRole: [4],
       },
     ],
   },
   {
     path: "reports",
     element: Reports,
-    accessRole: "",
+    accessRole: [4],
   },
   {
     path: "settings",
@@ -175,39 +173,39 @@ export const Routes = [
   {
     path: "testcase",
     element: Testcase,
-    accessRole: "",
+    accessRole: [4],
   },
   {
     path: "testset",
     element: Testset,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: "AddTestcaseToTestset",
         element: AddTestcaseToTestset,
-        accessRole: "",
+        accessRole: [4],
       },
       {
         path: "createTestcase",
         element: CreateTestcase,
-        accessRole: "",
+        accessRole: [4],
       },
     ],
   },
   {
     path: "application/webApp",
     element: WebApp,
-    accessRole: "",
+    accessRole: [4],
     subRoute: [
       {
         path: "pages",
         element: Pages,
-        accessRole: "",
+        accessRole: [4],
         subRoute: [
           {
             path: "PageElements",
             element: PageElements,
-            accessRole: "",
+            accessRole: [4],
           },
         ],
       },

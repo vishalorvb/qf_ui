@@ -1,12 +1,12 @@
-import { Autocomplete, Button, Container, Grid, Paper } from '@mui/material';
-import React, { useState, useEffect, useRef } from 'react'
+import { Autocomplete, Button, Container, Grid, Paper } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "../CustomComponent/Table";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import useHead from "../hooks/useHead";
 // import moment from 'moment';
 // import axios from 'axios';
 
 function Reports() {
-
   // const [fromDate, setFromDate] = useState(moment().format('YYYY-MM-DD'));
   const [fromDate, setFromDate] = useState("");
   let From_Date = useRef();
@@ -25,57 +25,73 @@ function Reports() {
   const [tbData, setTbData] = useState([]);
   const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
-  let autoComplete = ["userAutocomplete", "projectAutocomplete", "workflowAutocomplete"];
+  let autoComplete = [
+    "userAutocomplete",
+    "projectAutocomplete",
+    "workflowAutocomplete",
+  ];
   let Fields = [];
 
+  const { setHeader } = useHead();
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Reports",
+      };
+    });
+  }, []);
+
   const columns = [
-    { headerName: "S.No", field: 'sno', valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
     {
-      field: 'testcases',
-      headerName: 'Testcase/Testset/Job/Host',
+      headerName: "S.No",
+      field: "sno",
+      valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      align: "center",
+    },
+    {
+      field: "testcases",
+      headerName: "Testcase/Testset/Job/Host",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left',
+      align: "left",
       renderCell: (params) => {
         return (
-          <div>
-            {params.row.testcase_name + "/ " + params.row.testset_name}
-          </div>
-        )
-      }
+          <div>{params.row.testcase_name + "/ " + params.row.testset_name}</div>
+        );
+      },
     },
     {
-      field: 'created_at',
-      headerName: 'Date',
+      field: "created_at",
+      headerName: "Date",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left',
+      align: "left",
       renderCell: (params) => {
-        return (
-          <div>
-            {params.row.created_at}
-          </div>
-        )
-      }
+        return <div>{params.row.created_at}</div>;
+      },
     },
     {
-      field: 'executed_by',
-      headerName: 'Executed By',
+      field: "executed_by",
+      headerName: "Executed By",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left'
+      align: "left",
     },
     {
-      field: 'report_result',
-      headerName: 'Result',
+      field: "report_result",
+      headerName: "Result",
       flex: 3,
       headerAlign: "center",
       sortable: false,
-      align: 'left'
-    }
+      align: "left",
+    },
   ];
 
   const getUsers = () => {
@@ -158,35 +174,76 @@ function Reports() {
     //   }, 2000);
     //   console.log("Invalid form");
     // }
-  }
+  };
 
   return (
     <div>
-      <Paper elevation={1} sx={{ padding: '2px', marginTop: "10px", marginBottom: "10px" }}>
-        <Container component={'div'} maxWidth={false} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', marginTop: "10px", justifyContent: 'flex-start' }} >
-          <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}><label>User <span className="importantfield" >*</span>:</label></Grid>
+      <Paper
+        elevation={1}
+        sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
+      >
+        <Container
+          component={"div"}
+          maxWidth={false}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            marginTop: "10px",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                User <span className="importantfield">*</span>:
+              </label>
+            </Grid>
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <Autocomplete
                 size="small"
                 options={usersObject}
-                getOptionLabel={(option) => (option.fname) + " " + (option.lname)}
+                getOptionLabel={(option) => option.fname + " " + option.lname}
                 onChange={(e, value) => {
                   Uid.current = value.id;
-                  // setUserId(value.id) 
+                  // setUserId(value.id)
                 }}
-                noOptionsText={'User not found'}
-                renderInput={(params) =>
+                noOptionsText={"User not found"}
+                renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
-                    <input type="text" name="userAutocomplete" {...params.inputProps}
-                      placeholder="Please Select" />
+                    <input
+                      type="text"
+                      name="userAutocomplete"
+                      {...params.inputProps}
+                      placeholder="Please Select"
+                    />
                   </div>
-                }
+                )}
               />
             </Grid>
           </Grid>
-          <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}><label>Projects <span className="importantfield" >*</span>:</label></Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                Projects <span className="importantfield">*</span>:
+              </label>
+            </Grid>
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <Autocomplete
                 size="small"
@@ -195,37 +252,71 @@ function Reports() {
                 onChange={(e, value) => {
                   Project_Id.current = value.project_id;
                 }}
-                noOptionsText={'Projects not found'}
-                renderInput={(params) =>
+                noOptionsText={"Projects not found"}
+                renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
-                    <input type="text" name="projectAutocomplete" {...params.inputProps} placeholder="Please Select" />
+                    <input
+                      type="text"
+                      name="projectAutocomplete"
+                      {...params.inputProps}
+                      placeholder="Please Select"
+                    />
                   </div>
-                }
+                )}
               />
             </Grid>
           </Grid>
-          <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}><label>Workflow <span className="importantfield" >*</span>:</label></Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                Workflow <span className="importantfield">*</span>:
+              </label>
+            </Grid>
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <Autocomplete
                 size="small"
                 options={workflowsObject}
                 getOptionLabel={(option) => option.module_name}
                 onChange={(e, value) => {
-                  Workflow_Id.current = value.module_id
+                  Workflow_Id.current = value.module_id;
                 }}
-                noOptionsText={'Workflows not found'}
-                renderInput={(params) =>
+                noOptionsText={"Workflows not found"}
+                renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
-                    <input type="text" name="workflowAutocomplete" {...params.inputProps} placeholder="Please Select" />
+                    <input
+                      type="text"
+                      name="workflowAutocomplete"
+                      {...params.inputProps}
+                      placeholder="Please Select"
+                    />
                   </div>
-                }
+                )}
               />
             </Grid>
           </Grid>
-          <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}><label>From Date <span className="importantfield" >*</span>:</label></Grid>
-            <Grid item xs={6} sm={6} md={8} xl={7} style={{ width: "310px" }} >
+          <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                From Date <span className="importantfield">*</span>:
+              </label>
+            </Grid>
+            <Grid item xs={6} sm={6} md={8} xl={7} style={{ width: "310px" }}>
               <input
                 id="date"
                 type="date"
@@ -235,13 +326,25 @@ function Reports() {
                   // setFromDate(moment(newValue).format('YYYY-MM-DD'));
                 }}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
               />
             </Grid>
           </Grid>
-          <Grid container item xs={12} sm={6} md={4} xl={4} sx={{ marginBottom: '10px' }} >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}><label>To Date  <span className="importantfield" >*</span>:</label></Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                To Date <span className="importantfield">*</span>:
+              </label>
+            </Grid>
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <input
                 id="date"
@@ -252,12 +355,22 @@ function Reports() {
                   // setToDate(moment(newValue).format('YYYY-MM-DD'));
                 }}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
               />
             </Grid>
           </Grid>
-          <Button variant="contained" onClick={submit} startIcon={<SearchOutlinedIcon />} sx={{ marginLeft: "45%", marginRight: "auto", marginBottom: "10px", marginTop: "25px" }}>
+          <Button
+            variant="contained"
+            onClick={submit}
+            startIcon={<SearchOutlinedIcon />}
+            sx={{
+              marginLeft: "45%",
+              marginRight: "auto",
+              marginBottom: "10px",
+              marginTop: "25px",
+            }}
+          >
             Search
           </Button>
         </Container>
@@ -272,7 +385,7 @@ function Reports() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default Reports
+export default Reports;

@@ -3,10 +3,13 @@ import Stack from "@mui/material/Stack";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import { Grid, IconButton, Paper, Typography } from "@mui/material";
 import UserCard from "./UserCard";
+import useAuth from "../hooks/useAuth";
 export default function AppHeader({ setOpen }) {
   const handleDrawerOpen = () => {
     setOpen((open) => !open);
   };
+
+  const { auth } = useAuth();
 
   return (
     <Grid
@@ -37,9 +40,10 @@ export default function AppHeader({ setOpen }) {
         spacing={2}
         mr={2}
       >
-        <Avatar variant="rounded">R</Avatar>
+        <Avatar variant="rounded">
+          {auth?.user?.charAt(0)?.toUpperCase()}
+        </Avatar>
         <UserCard />
-        {/* it should be a card the abova typography with a saperate component */}
       </Stack>
     </Grid>
   );

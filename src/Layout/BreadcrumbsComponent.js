@@ -37,7 +37,7 @@ export default function BreadcrumbsComponent() {
 
   return (
     <Breadcrumbs aria-label="breadcrumb">
-      <LinkRouter to={"dashboard"}>Dashboard</LinkRouter>
+      <LinkRouter to={"/"}>Dashboard</LinkRouter>
       {crumbs}
     </Breadcrumbs>
   );
