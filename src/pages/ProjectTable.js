@@ -27,7 +27,7 @@ function ProjectTable() {
     let [pid, setPid] = useState()
     let [uid, setUid] = useState()
     let [edit,setedit] = useState(false)
-    let [editprojectInfo, seteditprojectInfo] = useState({})
+    let [editprojectInfo, seteditprojectInfo] = useState([])
     let [project,setProject] = useState([])
 
     function handleDeletePopup(pid, uid) {

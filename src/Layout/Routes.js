@@ -56,12 +56,12 @@ export const Routes = [
     accessRole: "",
     subRoute: [
       {
-        path: ":id",
+        path: "apiRequests",
         element: APIsTable,
         accessRole: "",
         subRoute: [
           {
-            path: ":id",
+            path: "create",
             element: ApiCreateEdit,
             accessRole: "",
           },

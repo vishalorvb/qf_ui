@@ -1,6 +1,7 @@
 import { Autocomplete, Button, Grid, IconButton, Radio, TextField, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { getProject } from '../../Services/ProjectService'
+import { getModules } from '../../Services/ProjectService';
 import AddIcon from '@mui/icons-material/Add';
 import TestSteps from './TestSteps';
 import Table from '../../CustomComponent/Table';
@@ -8,7 +9,7 @@ import { getTestcases } from '../../Services/ProjectService';
 import CreateTestCasePopUp from './CreateTestCasePopUp';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 function TestCases() {
@@ -18,7 +19,7 @@ function TestCases() {
     let [datasets, Setdatasets] = useState([])
     let [addTestcase, setAddTestcase] = useState()
     let [popup, setPopup] = useState(false)
-    let [steps, setSteps] = useState(true)
+    let [steps, setSteps] = useState(false)
 
     console.log(addTestcase)
 
@@ -31,6 +32,11 @@ function TestCases() {
             }
         }))
         Setdatasets(temp[0].datasetsList)
+    }
+
+    function handleSteps(para){
+        console.log(para)
+        setSteps(true)
     }
 
     const columns = [
@@ -85,11 +91,12 @@ function TestCases() {
             renderCell: (param) => {
                 return (
                     <div >
-
-                        <Tooltip title="Add Data Set">
-                            <IconButton onClick={e => setAddTestcase(true)} ><AddIcon></AddIcon></IconButton>
+                        <Tooltip title="Add Step">
+                            <IconButton onClick={e => handleSteps(param.row.testcase_id)} ><AddBoxIcon></AddBoxIcon></IconButton>
                         </Tooltip>
-
+                        <Tooltip title="Add Data Set">
+                            <IconButton  ><AddIcon></AddIcon></IconButton>
+                        </Tooltip>
                         <Tooltip title="Edit Data Set">
                             <IconButton  ><EditIcon></EditIcon></IconButton>
                         </Tooltip>
@@ -100,7 +107,7 @@ function TestCases() {
                     </div>
                 )
             },
-            flex: 1,
+            flex: 3,
             headerAlign: "left",
             sortable: false,
             align: 'left',
@@ -145,7 +152,7 @@ function TestCases() {
     useEffect(() => {
         getProject(setproject, 4)
         getTestcases(setTestcases, 1031)
-
+        console.log(testcases)
     }, [])
 
     return (
