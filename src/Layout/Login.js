@@ -21,7 +21,7 @@ export function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" to="https://prolifics.com/">
+      <Link color="inherit" to="https://mui.com/">
         Prolifics
       </Link>{" "}
       {new Date().getFullYear()}
@@ -98,29 +98,19 @@ export default function Login() {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
+        <Grid item xs={false} sm={12} md={7} className="loginImg">
+          <img src="logo-light.png" className="loginLogo" alt="" />
+        </Grid>
         <Grid
           item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: "url(login.png)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: "white",
-            backgroundSize: "60%",
-            backgroundPosition: "center",
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={2} square>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          >
+          xs={12}
+          sm={12}
+          md={5}
+          component={Paper}
+          className="loginForm"
+          square
+        >
+          <Box>
             <Typography component="h1" variant="h3">
               Welcome back
             </Typography>

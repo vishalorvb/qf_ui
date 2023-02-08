@@ -10,10 +10,11 @@ export default function Pipeline({ selectedProject }) {
   const [instances, setInstances] = useState([]);
 
   useEffect(() => {
-    const module_id = selectedProject?.filter(
+    const module = selectedProject?.filter(
       (module) => module.module_type === 20
     );
-    getPipelines(setInstances, module_id);
+    module?.module_id && getPipelines(setInstances, module?.module_id);
+    console.log(module?.module_id);
   }, [selectedProject]);
 
   useEffect(() => {

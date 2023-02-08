@@ -169,7 +169,7 @@ export default function Testcase({ selectedProject }) {
                   size="small"
                   fullWidth
                   control={control}
-                  options={["Chrome", "Edge", "Firefox"]}
+                  options={["Chrome", "Edge", "Firefox", "Safari"]}
                 />
                 <Stack
                   direction="row"
