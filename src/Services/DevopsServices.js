@@ -13,11 +13,12 @@ export function getPipelines(callback, module_id) {
   });
 }
 
-export function getPipelinesHistory(callback, id) {
+export function getPipelinesHistory(callback, release_log, id) {
   // This function except name of state as a callback and set value in that state
   axios.get(`${baseUrl}/qfservice/pipeline/${id}/release`).then((res) => {
     console.log(res?.data?.data.pipelinehisotory);
-    callback(res?.data?.data.pipelinehisotory);
+    callback(res?.data?.data?.pipelinehisotory);
+    release_log(res?.data?.data1);
   });
 }
 

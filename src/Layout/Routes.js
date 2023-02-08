@@ -46,22 +46,22 @@ export const Routes = [
   {
     path: "admin",
     element: Admin,
-    accessRole: [1],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "application/apiApp",
     element: ApiApp,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: ":id",
         element: APIsTable,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
         subRoute: [
           {
             path: ":id",
             element: ApiCreateEdit,
-            accessRole: [4],
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],
       },
@@ -70,27 +70,27 @@ export const Routes = [
   // {
   //   path: "/dashboard",
   //   element: Dashboard,
-  //   accessRole: [4],
+  //   accessRole: [1,2,3,4,5,6,7],
   // },
   {
     path: "execution",
     element: Execution,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "application/mobileApp",
     element: MobileApp,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: [4],
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],
       },
@@ -99,28 +99,28 @@ export const Routes = [
   {
     path: "*",
     element: NotFound,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "pipeline",
     element: Pipeline,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: "CreatePipeline",
         element: CreatePipeline,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
         loaderFunction: getCreatePipelineData,
       },
       {
         path: "pipelineAutomation",
         element: PipelineAutomation,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
         subRoute: [
           {
             path: "report",
             element: Report,
-            accessRole: [4],
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],
       },
@@ -129,83 +129,83 @@ export const Routes = [
   {
     path: "projects",
     element: Projects,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: "createProject",
         element: CreateProject,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
   },
   {
     path: "qfAdmin",
     element: QFAdmin,
-    accessRole: [1],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "release",
     element: Release,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: "CreateInstance",
         element: CreateInstance,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
   },
   {
     path: "reports",
     element: Reports,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "settings",
     element: Settings,
-    accessRole: "",
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "testcase",
     element: Testcase,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
     path: "testset",
     element: Testset,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: "AddTestcaseToTestset",
         element: AddTestcaseToTestset,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         path: "createTestcase",
         element: CreateTestcase,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
   },
   {
     path: "application/webApp",
     element: WebApp,
-    accessRole: [4],
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
         path: ":id",
         element: Pages,
-        accessRole: [4],
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
         subRoute: [
           {
             path: ":id",
             element: PageElements,
-            accessRole: [4],
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],
       },

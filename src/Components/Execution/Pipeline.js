@@ -11,7 +11,7 @@ export default function Pipeline({ selectedProject }) {
 
   useEffect(() => {
     const module = selectedProject?.filter(
-      (module) => module.module_type === 20
+      (module) => module?.module_type === 20
     );
     module?.module_id && getPipelines(setInstances, module?.module_id);
     console.log(module?.module_id);

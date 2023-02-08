@@ -3,12 +3,16 @@ import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
-import { getProject } from "../Services/ProjectService";
+import useAuth from "../hooks/useAuth";
 export default function ProjectsDropdown({ setSelectedProject }) {
   const [projectsList, setProjectList] = useState([]);
+  const { auth } = useAuth();
 
   useEffect(() => {
-    getProject(setProjectList);
+    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+      console.log(res.data.result.projects_list);
+      setProjectList(res.data.result.projects_list);
+    });
   }, []);
 
   return (

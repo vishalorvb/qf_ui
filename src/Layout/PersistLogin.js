@@ -20,10 +20,12 @@ const PersistLogin = () => {
         const user = info?.ssoId;
         const password = info?.password;
         const role = [info?.role];
+        const userId = info?.id;
         setAuth({
           user: user,
           password: password,
           roles: role,
+          userId: userId,
           info: info,
           token: token,
         });

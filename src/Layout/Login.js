@@ -71,15 +71,13 @@ export default function Login() {
       const user = info?.ssoId;
       const password = info?.password;
       const role = [info?.role];
-      // const info = {};
-      // const user = "Ranga";
-      // const password = "Ranga";
-      // const role = [2];
+      const userId = info?.id;
 
       setAuth({
         user: user,
         password: password,
         roles: role,
+        userId: userId,
         info: info,
         token: token,
       });

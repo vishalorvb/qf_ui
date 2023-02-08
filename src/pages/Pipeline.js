@@ -36,10 +36,11 @@ export default function Pipeline() {
   }, []);
 
   useEffect(() => {
-    const module_id = selectedProject?.filter(
-      (module) => module.module_type === 20
+    const module = selectedProject?.find(
+      (module) => module?.module_type === 20
     );
-    getPipelines(setInstances, module_id);
+    module?.module_id && getPipelines(setInstances, module?.module_id);
+    console.log(module?.module_type);
   }, [selectedProject]);
 
   const instanceColumns = [

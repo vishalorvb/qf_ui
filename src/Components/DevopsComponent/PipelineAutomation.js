@@ -8,16 +8,23 @@ import {
   getPipelinesHistory,
   executePipeline,
 } from "../../Services/DevopsServices";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 export default function PipelineAutomation() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
   const location = useLocation();
   const [history, setHistory] = useState([]);
+  const [releaseLog, setReleaseLog] = useState([]);
   const [executionRes, setExecutionRes] = useState([]);
+  const [msg, setMsg] = useState(false);
 
   useEffect(() => {
-    getPipelinesHistory(setHistory, location.state.id);
+    setMsg(true);
+  }, [executionRes]);
+
+  useEffect(() => {
+    getPipelinesHistory(setHistory, setReleaseLog, location.state.id);
     setHeader((ps) => {
       return {
         ...ps,
@@ -68,6 +75,12 @@ export default function PipelineAutomation() {
 
   return (
     <>
+      <SnackbarNotify
+        open={msg}
+        close={setMsg}
+        msg={executionRes?.data?.message}
+        severity="success"
+      />
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -76,9 +89,7 @@ export default function PipelineAutomation() {
       >
         <Typography>
           Release:
-          <Typography variant="p" sx={{ color: "blue" }}>
-            View Log
-          </Typography>
+          <a href={releaseLog}>View Log</a>
         </Typography>
         <Button
           variant="contained"
@@ -87,7 +98,6 @@ export default function PipelineAutomation() {
           Release Now
         </Button>
       </Stack>
-
       <Table rows={history} columns={instanceColumns} />
       <Outlet />
     </>
