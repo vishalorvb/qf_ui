@@ -1,1 +1,1 @@
-export const baseUrl = "http://10.11.12.243:8083/qfservice" 
+export const baseUrl = "http://10.11.12.243:8083";
