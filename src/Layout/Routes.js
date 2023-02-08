@@ -54,12 +54,12 @@ export const Routes = [
     accessRole: [4],
     subRoute: [
       {
-        path: ":id",
+        path: "apiRequests",
         element: APIsTable,
         accessRole: [4],
         subRoute: [
           {
-            path: ":id",
+            path: "create",
             element: ApiCreateEdit,
             accessRole: [4],
           },
@@ -198,12 +198,12 @@ export const Routes = [
     accessRole: [4],
     subRoute: [
       {
-        path: ":id",
+        path: "pages",
         element: Pages,
         accessRole: [4],
         subRoute: [
           {
-            path: ":id",
+            path: "PageElements",
             element: PageElements,
             accessRole: [4],
           },

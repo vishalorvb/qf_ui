@@ -1,10 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-
+import { getWebpagesElementList } from "../Services/ProjectService";
+import { useLocation } from "react-router";
 export default function PageElements() {
   const { setHeader } = useHead();
+  const location = useLocation();
+
+  console.log(location.state.id)
+
+  let[elements,setElements] = useState([])
 
   const elementColumns = [
     {
@@ -12,6 +18,12 @@ export default function PageElements() {
       headerName: "S.no.",
       flex: 1,
       valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
+    },
+    {
+      field: "element_id",
+      headerName: "ElementId",
+      flex: 1,
+     
     },
     {
       field: "name",
@@ -53,6 +65,13 @@ export default function PageElements() {
       return { ...ps, name: "PageElements" };
     });
   }, []);
+  useEffect(() => {
+    getWebpagesElementList(setElements,1801)
+  }, [])
 
-  return <Table rows={[]} columns={elementColumns} />;
+  return <Table 
+  rows={elements} 
+  columns={elementColumns}
+  getRowId={row => row.element_id}
+  />;
 }

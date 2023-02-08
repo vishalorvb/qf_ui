@@ -1,40 +1,49 @@
-import {
-  Autocomplete,
-  Grid,
-  IconButton,
-  Radio,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { getProject } from "../../Services/ProjectService";
-import AddIcon from "@mui/icons-material/Add";
-// import Table from '../CustomComponent/Table'
-import Table from "../../CustomComponent/Table";
-import { getTestcases } from "../../Services/ProjectService";
+import { Autocomplete, Button, Grid, IconButton, Radio, TextField, Tooltip } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { getProject } from '../../Services/ProjectService'
+import { getModules } from '../../Services/ProjectService';
+import AddIcon from '@mui/icons-material/Add';
+import TestSteps from './TestSteps';
+import Table from '../../CustomComponent/Table';
+import { getTestcases } from '../../Services/ProjectService';
+import CreateTestCasePopUp from './CreateTestCasePopUp';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
 
 function TestCases() {
-  let [project, setproject] = useState([]);
-  let [testcases, setTestcases] = useState([]);
-  let [radio, setRadio] = useState(0);
-  let [datasets, Setdatasets] = useState([]);
+    let [project, setproject] = useState([])
+    let [testcases, setTestcases] = useState([])
+    let [radio, setRadio] = useState(0);
+    let [datasets, Setdatasets] = useState([])
+    let [addTestcase, setAddTestcase] = useState()
+    let [popup, setPopup] = useState(false)
+    let [steps, setSteps] = useState(true)
 
-  function handleRadio(testcaseId) {
-    console.log(testcaseId);
-    setRadio(testcaseId);
-    // Setdatasets(testcases.filter(ts => {
-    //     if (ts.testcase_id == testcaseId) {
-    //         return ts.datasetsList
-    //     }
-    // }))
-    let temp = testcases.filter((ts) => {
-      if (ts.testcase_id == testcaseId) {
-        console.log(ts);
-        return ts.datasetsList;
-      }
-    });
-    console.log(temp);
-  }
+
+
+    function handleRadio(testcaseId) {
+        console.log(testcaseId)
+        setRadio(testcaseId)
+        // Setdatasets(testcases.filter(ts => {
+        //     if (ts.testcase_id == testcaseId) {
+        //         return ts.datasetsList
+        //     }
+        // }))
+        let temp = (testcases.filter(ts => {
+            if (ts.testcase_id == testcaseId) {
+                console.log(ts)
+                return ts.datasetsList
+            }
+        }))
+        console.log(temp)
+    }
+
+    function handleSteps(para){
+        console.log(para)
+        setSteps(true)
+    }
 
   const columns = [
     {
@@ -75,26 +84,28 @@ function TestCases() {
       align: "left",
     },
 
-    {
-      headerName: "Action",
-      field: "action",
-      renderCell: (param) => {
-        return (
-          <div>
-            <Tooltip title="Add Data Set">
-              <IconButton>
-                <AddIcon></AddIcon>
-              </IconButton>
-            </Tooltip>
-          </div>
-        );
-      },
-      flex: 1,
-      headerAlign: "left",
-      sortable: false,
-      align: "left",
-    },
-  ];
+        {
+            headerName: 'Action',
+            field: "action",
+            renderCell: (param) => {
+                return (
+                    <div >
+                        <Tooltip title="Add Step">
+                            <IconButton onClick={e => handleSteps(param.row.testcase_id)} ><AddBoxIcon></AddBoxIcon></IconButton>
+                        </Tooltip>
+                        <Tooltip title="Add Data Set">
+                            <IconButton  ><AddIcon></AddIcon></IconButton>
+                        </Tooltip>
+                    </div>
+                )
+            },
+            flex: 3,
+            headerAlign: "left",
+            sortable: false,
+            align: 'left',
+        }
+    ];
+
 
   let datasetColumn = [
     {
@@ -132,34 +143,36 @@ function TestCases() {
     },
   ];
 
-  useEffect(() => {
-    getProject(setproject);
-    getTestcases(setTestcases, 1031);
-    console.log(testcases);
-  }, []);
+    useEffect(() => {
+        getProject(setproject)
+        getTestcases(setTestcases, 1031)
+        console.log(testcases)
+    }, [])
 
-  return (
-    <div>
-      <Grid container>
-        <Grid item>
-          <Autocomplete
-            //   ref={projecid}
-            disablePortal
-            id="project_id"
-            options={project}
-            getOptionLabel={(option) => option.project_name}
-            sx={{ width: "100%" }}
-            renderInput={(params) => (
-              <div ref={params.InputProps.ref}>
-                <input type="text" {...params.inputProps} />
-              </div>
-            )}
-            onChange={(e, value) => {
-              console.log(value);
-            }}
-          />
-        </Grid>
-      </Grid>
+    return (
+        <div>
+            <h1>This is test case component</h1>
+
+            <Grid container>
+                <Grid item>
+                    <Autocomplete
+                        //   ref={projecid}
+                        disablePortal
+                        id="project_id"
+                        options={project}
+                        getOptionLabel={(option) => option.project_name}
+                        sx={{ width: "100%" }}
+                        renderInput={(params) => (
+                            <div ref={params.InputProps.ref}>
+                                <input type="text" {...params.inputProps} />
+                            </div>
+                        )}
+                        onChange={(e, value) => {
+                            console.log(value)
+                        }}
+                    />
+                </Grid>
+            </Grid>
 
       <Table
         rows={testcases}
@@ -168,14 +181,14 @@ function TestCases() {
         getRowId={(row) => row.testcase_id}
       ></Table>
 
-      <Table
-        rows={datasets}
-        columns={datasetColumn}
-        hidefooter={true}
-        getRowId={(row) => row.testcase_dataset_id}
-      ></Table>
-    </div>
-  );
+            <Table
+                rows={datasets}
+                columns={datasetColumn}
+                hidefooter={true}
+                getRowId={row => row.testcase_dataset_id}
+            ></Table>
+        </div>
+    )
 }
 
 export default TestCases;
