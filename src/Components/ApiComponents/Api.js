@@ -1,78 +1,87 @@
-import React, { createContext, useState } from 'react'
-import { Grid, MenuItem, Select, TextField } from '@mui/material'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { Button, Grid, MenuItem, Select, TextField } from '@mui/material'
 import ApiTabs from './ApiTabs'
-// import Item from './Item'
+import { createAPI } from '../../Services/ProjectService';
+import { getApiModuleId } from '../../Services/ProjectService';
+import CreateApiContext from '../../context/CreateApiProvider';
+import { CreateApi } from '../../context/CreateApiProvider';
+import useCreateApi from '../../hooks/useCreateApi';
+// export let CreateApi = createContext();
 
-export let CreateApi = createContext();
-// console.log(location.state.id)
 
-function Api() {
 
-    const [data, setData] = useState(
-        {
-            "api_url": "",
-            "api_name": "",
-            "module_id": 0,
-            "request_type": 0,
-            "body_type": 0,
-            "api_description": "",
-            "params_list": [
-                {
-                    "param_key": "id",
-                    "param_value": "1",
-                    "param_desc": "id1"
-                },
-                {
-                    "param_key": "name",
-                    "param_value": "name",
-                    "param_desc": "name1"
-                }
-            ],
-            "apiLinkProperties": [
-                {
-                    "key": "id",
-                    "value": "1",
-                    "description": "id1"
-                },
-                {
-                    "key": "name",
-                    "value": "name",
-                    "description": "name1"
-                }
-            ],
-            "successResponseProperties": [
-                {
-                    "key": "id",
-                    "value": "1",
-                    "description": "id1"
-                },
-                {
-                    "key": "name",
-                    "value": "name",
-                    "description": "name1"
-                }
-            ],
-            "body_form_data_list": [],
-            "body_form_url_encoded_list": [],
-            "body_raw": {
-                "raw_text": "{\n \"api\" : 1,\n \"api-name\":\"api1\"\n}",
-                "raw_type_id": 3
-            },
-            "auth": {
-                "auth_data": "{\"authtype\":\"bearertoken\",\"basicauth\":{\"username\":\"\",\"password\":\"\"},\"apikey\":{\"key\":\"\",\"value\":\"\",\"addto\":\"header\"},\"bearertoken\":{\"token\":\"qwert\"},\"oauth2\":{\"tokenurl\":\"\",\"clientid\":\"\",\"clientsecret\":\"\"}}"
-            }
-        }
-    )
 
+
+function Api({ projectId }) {
+
+    console.log("Api")
+    console.log(projectId)
+    // let { data, setData } = useContext(CreateApi);
+    // let  [data, setData] = useState({}) ;
+    const { data, setData } = useCreateApi();
+
+    function handleSave(e) {
+        createAPI(data)
+    }
+
+    let [moduleid, setModuleid] = useState()
+
+    useEffect(() => {
+        getApiModuleId(projectId, setModuleid)
+    }, [])
+
+    useEffect(() => {
+        console.log(moduleid)
+        setData(pv => ({
+            ...pv, ["module_id"]: moduleid
+        }))
+    }, [moduleid])
+
+
+
+    useEffect(() => {
+        console.log(data)
+    }, [data])
     return (
-        <CreateApi.Provider value={{data,setData}}>
+
+
         <div style={{ marginTop: "20px", marginLeft: "10px", paddingLeft: "10px", paddingRight: "10px" }}>
+
+            <Grid
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={1}
+            >
+                <Grid item md={1}>
+
+                    <Button onClick={handleSave} variant="contained">Save</Button>
+                </Grid>
+
+            </Grid>
+
+
+
             <Grid container spacing={1} >
                 <Grid item md={4}>
-                    <TextField fullWidth placeholder='API Name' variant="outlined" size='small' />
+                    <TextField fullWidth placeholder='API Name' variant="outlined" size='small'
+                        onChange={e => {
+                            setData(pv => ({
+                                // ...pv,"mynamename":e.target.value
+                                ...pv, ["api_name"]: e.target.value
+                            }))
+                        }}
+                    />
                 </Grid>
                 <Grid item md={8}>
-                    <TextField item fullWidth placeholder='Description' size='small' />
+                    <TextField item fullWidth placeholder='Description' size='small'
+                        onChange={e => {
+                            setData(pv => ({
+                                ...pv, ["api_description"]: e.target.value
+                            }))
+                        }}
+                    />
                 </Grid>
                 <Grid item md={2}>
                     <Select
@@ -80,7 +89,11 @@ function Api() {
                         displayEmpty
                         inputProps={{ "aria-label": "Without label" }}
                         fullWidth
-                        onChange={e => console.log(e.target.value)}
+                        onChange={e => {
+                            setData(pv => ({
+                                ...pv, ["request_type"]: e.target.value
+                            }))
+                        }}
                     >
                         <MenuItem value=""></MenuItem>
                         <MenuItem value={1}>Post</MenuItem>
@@ -90,7 +103,13 @@ function Api() {
                     </Select>
                 </Grid>
                 <Grid item md={4}>
-                    <TextField fullWidth size='small' />
+                    <TextField fullWidth size='small' placeholder='URL'
+                        onChange={e => {
+                            setData(pv => ({
+                                ...pv, ["api_url"]: e.target.value
+                            }))
+                        }}
+                    />
                 </Grid>
                 <Grid item md={6}>
                     <TextField fullWidth placeholder='Resource' size='small' />
@@ -98,7 +117,7 @@ function Api() {
             </Grid>
             <ApiTabs></ApiTabs>
         </div>
-        </CreateApi.Provider>
+
     )
 }
 
