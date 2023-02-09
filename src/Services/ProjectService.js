@@ -77,6 +77,29 @@ export function getModules(callback, projectid) {
 }
 
 export async function getApis(projectid, callback) {
+    console.log("calling getApis")
+    let module
+    let moduleid
+    await axios.get(`${baseUrl}/getprojectmodules/${projectid}`).then(res => {
+        console.log(res.data.data)
+        module = res.data.data
+    })
+    console.log(module)
+    await module.forEach(element => {
+        console.log("Inside for each")
+        if (element.module_name == "API") {
+            moduleid = element.module_id;
+            console.log(element.module_id)
+        }
+    });
+    console.log(moduleid)
+    axios.get(`${baseUrl}/${moduleid}/apis`).then(res => {
+        console.log(res.data.data.apisList)
+        callback(res.data.data.apisList)
+    })
+}
+
+export async function getApiModuleId(projectid, callback) {
     let module
     let moduleid
     await axios.get(`${baseUrl}/getprojectmodules/${projectid}`).then(res => {
@@ -85,19 +108,21 @@ export async function getApis(projectid, callback) {
     module.forEach(element => {
         if (element.module_name == "API") {
             moduleid = element.module_id;
+            console.log(element.module_id)
+            callback(moduleid)
             return
         }
     });
-    axios.get(`${baseUrl}/${moduleid}/apis`).then(res => {
-       console.log(res.data.data.apisList)
-       callback(res.data.data.apisList)
+
+}
+
+export function createAPI(data) {
+    axios({
+        method: 'post',
+        url: `${baseUrl}/createapi`,
+        data: data
     })
+
 }
-
-export async function getApiModuleId(projectid){
-    
-}
-
-
 
 
