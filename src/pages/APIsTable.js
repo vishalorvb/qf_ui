@@ -11,7 +11,7 @@ export default function APIsTable() {
   const { setHeader } = useHead();
   const location = useLocation()
   const navigate = useNavigate();
-  console.log(location.state.id)
+ 
 
   let[apis,setApis] = useState([])
 
@@ -56,28 +56,28 @@ export default function APIsTable() {
     },
   ];
 
-  const pages = [
-    {
-      id: 1,
-      name: "Application 1",
-      description: "Description 1",
-    },
-    {
-      id: 2,
-      name: "Application 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Application 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Application 4",
-      description: "Description 4",
-    },
-  ];
+  // const pages = [
+  //   {
+  //     id: 1,
+  //     name: "Application 1",
+  //     description: "Description 1",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Application 2",
+  //     description: "Description 2",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Application 3",
+  //     description: "Description 3",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Application 4",
+  //     description: "Description 4",
+  //   },
+  // ];
 
   useEffect(() => {
     setHeader((ps) => {
