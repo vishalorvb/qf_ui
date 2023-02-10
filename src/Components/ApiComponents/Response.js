@@ -11,7 +11,6 @@ function Response() {
 
   return (
     <div>
-      <h1>This is response</h1>
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleResponseData}

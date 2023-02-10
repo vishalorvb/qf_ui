@@ -10,7 +10,6 @@ function handleLinkData(tabdata){
 }
   return (
     <div>
-      <h1>Api link param</h1>
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleLinkData}

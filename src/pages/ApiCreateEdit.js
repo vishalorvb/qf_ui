@@ -16,7 +16,6 @@ export default function ApiCreateEdit() {
   // const navigate = useNavigate();
   console.log(location.state.id)
   return (<div>
-    <h1>Api create Edit</h1>
     <Api
     projectId = {location.state.id}
     ></Api>

@@ -11,9 +11,6 @@ function Header() {
 
   return (
     <div>
-      <h1>This is header</h1>
-      
-
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleHeaderData}

@@ -62,14 +62,14 @@ function Api({ projectId }) {
 
             <Grid container spacing={1} >
                 <Grid item md={4}>
-                    <TextField fullWidth placeholder='API Name' variant="outlined" size='small' defaultValue={Apidata.api_name} name="apiname"
+                    <input type="text" style={{width:"100%",height:"35px"}} placeholder='API Name'  defaultValue={Apidata.api_name} name="apiname"
                         onChange={e => {
                             Apidata.api_name = e.target.value
                         }}
                     />
                 </Grid>
                 <Grid item md={8}>
-                    <TextField item fullWidth placeholder='Description' size='small' name="apidesc"
+                    <input type='text' style={{width:"100%",height:"35px"}} placeholder='Description'  name="apidesc"
                         onChange={e => {
                             console.log("caling api description")
                             Apidata.api_description = e.target.value

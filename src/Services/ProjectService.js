@@ -139,6 +139,8 @@ export async function getApiModuleId(projectid, callback) {
 }
 
 export function createAPI(data) {
+  console.log("calling create api")
+  console.log(data)
     axios({
         method: 'post',
         url: `${baseUrl}/qfservice/createapi`,
