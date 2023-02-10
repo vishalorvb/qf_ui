@@ -60,18 +60,10 @@ function CreateProject(props) {
 
   let requiredFields = [
     description,
-    gitUrl,
-    jenkinsUrl,
-    jenkinsToken,
-    gitAccessToken,
-    branch,
-    jenkinsUsername,
-    jenkinsToken,
-    databaseName,
-    hostName,
-    dbUsername,
-    portNumber,
-    databaseType,
+    project_name,
+    automation_type,
+    issueTracker
+
   ];
   let specialcharRefs = [];
   let passwordRef = [];
@@ -81,8 +73,8 @@ function CreateProject(props) {
     passwordRef.push(dbPassword);
   }
   // let passwordRef = [jenkinsPassword, dbPassword]
-  let onlyAlphabets = [project_name];
-  let onlynumbers = [automation_type];
+  let onlyAlphabets = [];
+  let onlynumbers = [];
   let autocompletename = [];
 
   useEffect(() => {
@@ -130,16 +122,16 @@ function CreateProject(props) {
   function submitHandler() {
     // console.log(automation_type.current.value);
     console.log("Calling submitHandler");
-    if (true
-      // validateForm(
-      //   requiredFields,
-      //   specialcharRefs,
-      //   passwordRef,
-      //   onlyAlphabets,
-      //   onlynumbers,
-      //   autocompletename,
-      //   "error"
-      // )
+    if (
+      validateForm(
+        requiredFields,
+        specialcharRefs,
+        passwordRef,
+        onlyAlphabets,
+        onlynumbers,
+        autocompletename,
+        "error"
+      )
     ) {
       let data = {
         projectName: project_name.current.value,
@@ -189,7 +181,8 @@ function CreateProject(props) {
       }
 
     }
-
+    console.log("error in form")
+    setSnackbarerror(true)
   }
   return (
     <div className="accordionParent" onClick={resetClassName}>
@@ -580,7 +573,7 @@ function CreateProject(props) {
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
               
-              {/* <input ref={issueTracker} type="text" name="" /> */}
+           
               <select
                 ref={issueTracker}
                 style={{ height: "28px" }}
