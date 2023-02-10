@@ -3,9 +3,9 @@ import { async } from "q"
 import { baseUrl } from "../Environment"
 
 
+const userid = 4
 
-
-export function getProject(callback, userId) {
+export function getProject(callback, userId=userid) {
     // This function except name of state as a callback and set value in that state     
     axios.get(baseUrl + "/projects?user_id=" + userId).then(res => {
         console.log(res.data.result.projects_list)
@@ -14,11 +14,19 @@ export function getProject(callback, userId) {
 }
 
 export async function createProject(data) {
+    console.log("calling createProject")
     let res = await axios({
         method: 'post',
         url: `${baseUrl}/createProject`,
         data: data
+    }).then(response=>{
+        return response.data.status
     })
+    .catch(err => {
+        return "error"
+    })
+    console.log(res)
+    // console.log(res.data.status)
     return res
 }
 
@@ -31,6 +39,14 @@ export async function updateProject(data) {
     return res
 }
 
+export async function deleteProject(projectid,userid=userid,gid){
+   let res = await axios.delete(`${baseUrl}/deleteProject?projectId=${projectid}&userId=${userid}&orgId=${gid}`).then(res=>{
+        console.log(res.data.status)
+        return res.data.status
+    })
+    console.log(res)
+    return res
+}
 
 
 export function getTestcases(callback, workflowID) {
@@ -124,5 +140,7 @@ export function createAPI(data) {
     })
 
 }
+
+
 
 
