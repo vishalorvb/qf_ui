@@ -3,8 +3,6 @@ import { Button, Grid, MenuItem, Select, TextField } from '@mui/material'
 import ApiTabs from './ApiTabs'
 import { createAPI } from '../../Services/ProjectService';
 import { getApiModuleId } from '../../Services/ProjectService';
-import CreateApiContext from '../../context/CreateApiProvider';
-import { CreateApi } from '../../context/CreateApiProvider';
 import useCreateApi from '../../hooks/useCreateApi';
 // export let CreateApi = createContext();
 
