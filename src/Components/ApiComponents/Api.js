@@ -3,8 +3,8 @@ import { Button, Grid, MenuItem, Select, TextField } from '@mui/material'
 import ApiTabs from './ApiTabs'
 import { createAPI } from '../../Services/ProjectService';
 import { getApiModuleId } from '../../Services/ProjectService';
-import useCreateApi from '../../hooks/useCreateApi';
-// export let CreateApi = createContext();
+
+
 
 
 
@@ -14,9 +14,8 @@ function Api({ projectId }) {
 
     console.log("Api")
     console.log(projectId)
-    // let { data, setData } = useContext(CreateApi);
-    // let  [data, setData] = useState({}) ;
-    const { data, setData } = useCreateApi();
+
+   let [data,setData]= useState({})
 
     function handleSave(e) {
         createAPI(data)
