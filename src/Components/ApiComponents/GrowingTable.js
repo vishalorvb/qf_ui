@@ -155,9 +155,9 @@ function GrowingTable(props) {
         // console.log(table)
     }, [tableRef])
 
-useEffect(() => {
-console.log(tableData)
-}, [tableData])
+    useEffect(() => {
+        console.log(tableData)
+    }, [tableData])
 
 
     return (

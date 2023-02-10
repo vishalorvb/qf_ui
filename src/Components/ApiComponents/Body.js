@@ -1,12 +1,21 @@
 import { FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, Select } from '@mui/material'
 import React, { useState } from 'react'
 import GrowingTable from './GrowingTable'
-
+import { Apidata } from './Data'
 
 
 function Body() {
 
   let [selected, setSelected] = useState("")
+
+  function handleFormData(tabdata){
+    console.log("table data from body")
+    console.log(tabdata)
+    Apidata.body_form_data_list = tabdata
+  }
+   function handleEncoderData(tabdata){
+    Apidata.body_form_url_encoded_list = tabdata
+   }
 
 
 
@@ -18,17 +27,22 @@ function Body() {
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="female"
           name="radio-buttons-group"
-          onChange={e => setSelected(e.target.value)}
+          onChange={e => {
+            setSelected(e.target.value)
+            Apidata.body_type = e.target.value
+          }}
         >
-          <FormControlLabel value="none" control={<Radio />} label="none" />
-          <FormControlLabel value="formdata" control={<Radio />} label="form-data" />
-          <FormControlLabel value="urlencoded" control={<Radio />} label="x-www-form-urlencoded" />
-          <FormControlLabel value="raw" control={<Radio />} label="raw" />
-          {selected == "raw" &&<Select
+          <FormControlLabel value="1" control={<Radio />} label="none" />
+          <FormControlLabel value="2" control={<Radio />} label="form-data" />
+          <FormControlLabel value="3" control={<Radio />} label="x-www-form-urlencoded" />
+          <FormControlLabel value="4" control={<Radio />} label="raw" />
+          {selected == "4" &&<Select
             size='small'
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
-
+            onChange={e=>{
+              Apidata.body_raw.raw_type_id = e.target.value;
+            }}
           >
             <MenuItem value="1">Text</MenuItem>
             <MenuItem value="2">Text (plain/text)</MenuItem>
@@ -42,21 +56,27 @@ function Body() {
           </Select>}
         </RadioGroup>
       </FormControl>
-      {selected == "none" && <div style={{ marginTop: "20px", marginLeft: "10px", paddingLeft: "10px", paddingRight: "10px" }}>
+      {selected == "1" && <div style={{ marginTop: "20px", marginLeft: "10px", paddingLeft: "10px", paddingRight: "10px" }}>
         <p>This request does not have a body</p>
       </div>}
-      {selected == "formdata" && <div>
+      {selected == "2" && <div>
         <GrowingTable
           header={["Key", "Value", "Description"]}
+          TableData = {handleFormData}
         ></GrowingTable>
       </div>}
-      {selected == "urlencoded" && <div>
+      {selected == "3" && <div>
         <GrowingTable
           header={["Key", "Value", "Description"]}
+          TableData ={handleEncoderData}
         ></GrowingTable>
       </div>}
-      { selected == "raw" && <div style={{marginTop:"10px"}}>
-        <textarea rows="12" cols="150"></textarea>
+      { selected == "4" && <div style={{marginTop:"10px"}}>
+        <textarea 
+        onChange={e=>{
+          Apidata.body_raw.raw_text = e.target.value;
+        }}
+        rows="12" cols="150"></textarea>
       </div>}
     </div>
   )
