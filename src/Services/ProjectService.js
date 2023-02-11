@@ -5,29 +5,29 @@ import { baseUrl } from "../Environment"
 
 const userid = 4
 
-export function getProject(callback, userId=userid) {
-    // This function except name of state as a callback and set value in that state     
-    axios.get(baseUrl + "/qfservice/projects?user_id=" + userId).then(res => {
-        console.log(res.data.result.projects_list)
-        callback(res.data.result.projects_list)
-    })
+export function getProject(callback, userId = userid) {
+  // This function except name of state as a callback and set value in that state     
+  axios.get(baseUrl + "/qfservice/projects?user_id=" + userId).then(res => {
+    console.log(res.data.result.projects_list)
+    callback(res.data.result.projects_list)
+  })
 }
 
 export async function createProject(data) {
-    console.log("calling createProject")
-    let res = await axios({
-        method: 'post',
-        url: `${baseUrl}/qfservice/createProject`,
-        data: data
-    }).then(response=>{
-        return response.data.status
-    })
+  console.log("calling createProject")
+  let res = await axios({
+    method: 'post',
+    url: `${baseUrl}/qfservice/createProject`,
+    data: data
+  }).then(response => {
+    return response.data.status
+  })
     .catch(err => {
-        return "error"
+      return "error"
     })
-    console.log(res)
-    // console.log(res.data.status)
-    return res
+  console.log(res)
+  // console.log(res.data.status)
+  return res
 }
 
 export async function updateProject(data) {
@@ -39,13 +39,13 @@ export async function updateProject(data) {
   return res;
 }
 
-export async function deleteProject(projectid,userid=userid,gid){
-   let res = await axios.delete(`${baseUrl}/qfservice/deleteProject?projectId=${projectid}&userId=${userid}&orgId=${gid}`).then(res=>{
-        console.log(res.data.status)
-        return res.data.status
-    })
-    console.log(res)
-    return res
+export async function deleteProject(projectid, userid = userid, gid) {
+  let res = await axios.delete(`${baseUrl}/qfservice/deleteProject?projectId=${projectid}&userId=${userid}&orgId=${gid}`).then(res => {
+    console.log(res.data.status)
+    return res.data.status
+  })
+  console.log(res)
+  return res
 }
 
 
@@ -99,56 +99,82 @@ export function getModules(callback, projectid) {
 }
 
 export async function getApis(projectid, callback) {
-    console.log("calling getApis")
-    let module
-    let moduleid
-    await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`).then(res => {
-        console.log(res.data.data)
-        module = res.data.data
-    })
-    console.log(module)
-    await module.forEach(element => {
-        console.log("Inside for each")
-        if (element.module_name == "API") {
-            moduleid = element.module_id;
-            console.log(element.module_id)
-        }
-    });
-    console.log(moduleid)
-    axios.get(`${baseUrl}/qfservice/${moduleid}/apis`).then(res => {
-        console.log(res.data.data.apisList)
-        callback(res.data.data.apisList)
-    })
+  console.log("calling getApis")
+  let module
+  let moduleid
+  await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`).then(res => {
+    console.log(res.data.data)
+    module = res.data.data
+  })
+
+  await module.forEach(element => {
+    console.log("Inside for each")
+    if (element.module_name == "API") {
+      moduleid = element.module_id;
+      console.log(element.module_id)
+    }
+  });
+
+  axios.get(`${baseUrl}/qfservice/${moduleid}/apis`).then(res => {
+    console.log(res.data.data.apisList)
+    callback(res.data.data.apisList)
+  })
 }
 
 export async function getApiModuleId(projectid, callback) {
-    let module
-    let moduleid
-    await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`).then(res => {
-        module = res.data.data
-    })
-    module.forEach(element => {
-        if (element.module_name == "API") {
-            moduleid = element.module_id;
-            console.log(element.module_id)
-            callback(moduleid)
-            return
-        }
-    });
+  let module
+  let moduleid
+  await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`).then(res => {
+    module = res.data.data
+  })
+  module.forEach(element => {
+    if (element.module_name == "API") {
+      moduleid = element.module_id;
+      console.log(element.module_id)
+      callback(moduleid)
+      return
+    }
+  });
 
 }
 
-export function createAPI(data) {
-  console.log("calling create api")
-  console.log(data)
-    axios({
-        method: 'post',
-        url: `${baseUrl}/qfservice/createapi`,
-        data: data
-    })
-
+export async function createAPI(data) {
+  let res = await axios({
+    method: 'post',
+    url: `${baseUrl}/qfservice/createapi`,
+    data: data
+  }).then(response => {
+    return response.data.error
+  }).catch(err => {
+    console.log(err)
+  })
+  return res
 }
 
+export async function updateAPI(data) {
+  let res = await axios({
+    method: 'post',
+    url: `${baseUrl}/qfservice/updateapi`,
+    data: data
+  }).then(response => {
+    return response.data.error
+  }).catch(err => {
+    console.log(err)
+  })
+  return res
+}
 
+export function getApibyid(moduleid, callback) {
+  axios.post(`${baseUrl}/qfservice/getapibyid?api_id=${moduleid}`).then(res => {
+    console.log(res.data.data)
+    callback(res.data.data)
+  })
+}
 
-
+export async function deleteApi(apiid) {
+  let x = axios.post(`${baseUrl}/qfservice/deleteapi?api_id=${apiid}`).then(res => {
+    console.log(res.data.error)
+    return res.data.error
+  })
+  return x
+}

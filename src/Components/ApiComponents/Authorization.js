@@ -1,11 +1,14 @@
 import { Divider, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { authdata } from './Data'
+
 
 function Authorization() {
 
   let [type, setType] = useState("")
   function handleChange(e) {
     console.log(e.target.value)
+    authdata.authtype = e.target.value
     setType(e.target.value)
   }
 
@@ -24,11 +27,11 @@ function Authorization() {
             onChange={handleChange}
           >
             <MenuItem value=""></MenuItem>
-            <MenuItem value={'No Auth'}>No Auth</MenuItem>
-            <MenuItem value={'Basic Auth'}>Basic Auth</MenuItem>
-            <MenuItem value={"API Key"}>API Key</MenuItem>
-            <MenuItem value={'Bearer Token'}>Bearer Token</MenuItem>
-            <MenuItem value={'OAuth 2.0'}>OAuth 2.0</MenuItem>
+            <MenuItem value={'noauth'}>No Auth</MenuItem>
+            <MenuItem value={'basicauth'}>Basic Auth</MenuItem>
+            <MenuItem value={"apikey"}>API Key</MenuItem>
+            <MenuItem value={'bearertoken'}>Bearer Token</MenuItem>
+            <MenuItem value={'oauth2'}>OAuth 2.0</MenuItem>
           </Select>
           <Typography variant='p' gutterBottom>
             The authorization header will be automatically generated when you send the request.
@@ -36,39 +39,47 @@ function Authorization() {
         </Grid>
         <Divider orientation="vertical" variant='middle' flexItem />
         <Grid item md={8}>
-          {type == "No Auth" && <Typography variant='p' gutterBottom align='center'>
+          {type == "noauth" && <Typography variant='p' gutterBottom align='center'>
             This request does not use any authorization.
           </Typography>}
 
-          {type == "Basic Auth" && <Grid container alignItems="center" spacing={4}>
+          {type == "basicauth" && <Grid container alignItems="center" spacing={4}>
             <Grid item md={2}>
               <label for="">UserName</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Username' size='small' />
+              <TextField fullWidth placeholder='Username' size='small'
+              onChange={e=>authdata.username = e.target.value}
+              />
             </Grid>
             <Grid item md={2}>
               <label for="">Password</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth type="password" placeholder='Password' size='small' />
+              <TextField fullWidth type="password" placeholder='Password' size='small'
+              onChange={e=>authdata.password = e.target.value}
+              />
             </Grid>
           </Grid>}
 
 
 
-         {type == "API Key" && <Grid container alignItems="center" spacing={4}>
+         {type == "apikey" && <Grid container alignItems="center" spacing={4}>
             <Grid item md={2}>
               <label for="">Key</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Key' size='small' />
+              <TextField fullWidth placeholder='Key' size='small'
+              onChange={e=>authdata.key = e.target.value}
+              />
             </Grid>
             <Grid item md={2}>
               <label for="">Value</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth type="password" placeholder='Value' size='small' />
+              <TextField fullWidth type="password" placeholder='Value' size='small' 
+              onChange={e=>authdata.value = e.target.value}
+              />
             </Grid>
             <Grid item md={2}>
               <label for="">Add To</label>
@@ -78,43 +89,52 @@ function Authorization() {
                 size='small'
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
-                fullWidth               
+                fullWidth  
+                onChange={e=>authdata.addto = e.target.value}             
               >
                 <MenuItem value=""></MenuItem>
-                <MenuItem value={'Header'}>No Auth</MenuItem>
-                <MenuItem value={'Query Param'}>Basic Auth</MenuItem>
+                <MenuItem value={'Header'}>Header</MenuItem>
+                <MenuItem value={'Query Param'}>Query Param</MenuItem>
               </Select>
             </Grid>
           </Grid>}
 
-          {type == "Bearer Token" && <Grid container alignItems="center" spacing={4}>
+          {type == "bearertoken" && <Grid container alignItems="center" spacing={4}>
             <Grid item md={2}>
               <label for="">Token</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Token' size='small' />
+              <TextField fullWidth placeholder='Token' size='small' 
+              onChange={e=>authdata.token = e.target.value}
+              />
             </Grid>
             
           </Grid>}
 
-          {type == "OAuth 2.0" && <Grid container alignItems="center" spacing={4}>
+          {type == "oauth2" && <Grid container alignItems="center" spacing={4}>
             <Grid item md={2}>
               <label for="">Token URL</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Token URL' size='small' />
+              <TextField fullWidth placeholder='Token URL' size='small' 
+              onChange={e=>authdata.tokenurl = e.target.value}
+              />
             </Grid>
             <Grid item md={2}>
               <label for="">Client Id</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Client Id' size='small' />
+              <TextField fullWidth placeholder='Client Id' size='small' 
+              onChange={e=>authdata.clientid = e.target.value}
+              />
             </Grid>
             <Grid item md={2}>
               <label for="">Client Secret</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth type='password' placeholder='Client Secret' size='small' />
+              <TextField fullWidth type='password' placeholder='Client Secret' size='small'
+              onChange={e=>authdata.password = e.target.value}
+              />
             </Grid>
           </Grid>}
 

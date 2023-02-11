@@ -14,10 +14,11 @@ export default function ApiCreateEdit() {
   }, []);
   const location = useLocation()
   // const navigate = useNavigate();
-  console.log(location.state.id)
+  console.log(location.state.projectid)
   return (<div>
     <Api
-    projectId = {location.state.id}
+    projectId = {location.state.projectid}
+    moduleId = {location.state.moduleid}
     ></Api>
   </div>);
 }
