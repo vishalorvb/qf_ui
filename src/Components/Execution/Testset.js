@@ -15,17 +15,23 @@ import useAxios from "../../hooks/useAxios";
 import axios from "../../api/axios";
 import { Stack } from "@mui/system";
 import RuntimeVar from "./RuntimeVar";
+import useAuth from "../../hooks/useAuth";
 
 export default function Testset({ selectedProject }) {
   const [webtestSets, setwebTestSets] = useState([]);
   const [apitestSets, setapiTestSets] = useState([]);
   const [mobiletestSets, setmobileTestSets] = useState([]);
   const [openRuntimeVar, setOpenRuntimeVar] = useState(false);
+  const [selectedTestcase, setSelectedTestcase] = useState([]);
   // const axiosPrivate = useAxios();
+  const { auth } = useAuth();
   const schema = yup.object().shape({
     executionName: yup.string().required(),
     description: yup.string().required(),
     TestSet: yup.string().required(),
+    enviroment: yup.string().required(),
+    env: yup.string().required(),
+    browser: yup.array().min(1),
   });
   const {
     control,
@@ -86,7 +92,38 @@ export default function Testset({ selectedProject }) {
   }, [selectedProject]);
 
   const onSubmitHandler = (data) => {
+    console.log(auth?.userId);
     console.log({ data });
+    const executionData = {
+      user_id: auth?.userId,
+      module_id: selectedTestcase?.module_id,
+      is_execute: true,
+      is_generate: true,
+      testset_id: parseInt(data?.TestSet),
+      browser_type: data?.browser,
+      testcase_overwrite: true,
+      build_environment_name: data?.enviroment,
+      execution_location: data?.env,
+      repository_commit_message: "",
+      config_id: null,
+      config_name: null,
+      mobile_platform: "ios",
+      web_testcases_list_to_execute: [
+        {
+          testcase_id: 642,
+          selected_testcase_dataset_ids: [819],
+        },
+        {
+          testcase_id: 643,
+          selected_testcase_dataset_ids: [820],
+        },
+      ],
+      client_timezone_id: "Asia/Calcutta",
+      build_environment_id: 578,
+    };
+    //   axios.post(`http://10.11.12.242:8080/qfservice/webtestset/ExecuteWebTestset`,executionData).then((resp)=>{
+    //     console.log(resp)
+    //   })
   };
 
   return (
@@ -100,6 +137,17 @@ export default function Testset({ selectedProject }) {
                 label=""
                 name="TestSet"
                 control={control}
+                onChange={(e) => {
+                  console.log(e);
+                  axios
+                    .get(
+                      `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${e}`
+                    )
+                    .then((resp) => {
+                      console.log(resp?.data?.info);
+                      setSelectedTestcase(resp?.data?.info);
+                    });
+                }}
                 options={[...webtestSets, ...apitestSets, ...mobiletestSets]}
               />
             </Grid>
@@ -163,7 +211,7 @@ export default function Testset({ selectedProject }) {
                     control={control}
                     options={[
                       {
-                        id: "1",
+                        id: "Testing",
                         label: "Testing",
                       },
                     ]}
@@ -171,7 +219,7 @@ export default function Testset({ selectedProject }) {
                 </Stack>
                 <MultiSelectElement
                   label="Browser"
-                  name="basic"
+                  name="browser"
                   size="small"
                   fullWidth
                   control={control}
@@ -184,7 +232,7 @@ export default function Testset({ selectedProject }) {
                   spacing={1}
                 >
                   <CheckboxButtonGroup
-                    name="basic-checkbox-button-group"
+                    name="regenerateScript"
                     control={control}
                     options={[
                       {

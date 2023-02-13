@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SelectCreateInstanceModal(props) {
   const navigate = useNavigate();
-  const { createInstate, setCreateInstance } = props;
+  const { createInstate, setCreateInstance, module } = props;
   const handleClose = () => {
     setCreateInstance(false);
   };
@@ -22,13 +22,13 @@ export default function SelectCreateInstanceModal(props) {
   const handleNo = () => {
     setCreateInstance(false);
     navigate("/release/createInstance", {
-      state: { id: 1, name: "createInstance" },
+      state: module,
     });
   };
   const handleYes = () => {
     setCreateInstance(false);
     navigate("/release/createAnsibleInstance", {
-      state: { id: 1, name: "createAnsibleInstance" },
+      state: module,
     });
   };
 

@@ -25,10 +25,10 @@ export default function UserCard() {
   return (
     <div>
       <Grid
+        container
         direction="column"
         justifyContent="center"
-        alignItems="center"
-        spacing={0}
+        alignItems="flex-start"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
@@ -36,8 +36,8 @@ export default function UserCard() {
       >
         <Stack
           direction="row"
-          justifyContent="center"
-          alignItems="center"
+          justifyContent="flex-start"
+          alignItems="flex-start"
           spacing={0.5}
         >
           <Typography sx={{ color: "black", margin: "0px" }}>

@@ -52,7 +52,7 @@ export function getWebpagesElementList(callback, web_page_id) {
   console.log("Calling webpage list");
   axios
     .get(
-      `${baseUrl}/webpages/getWebPageElementsList?web_page_id=${web_page_id}`
+      `${baseUrl}qfservice/webpages/getWebPageElementsList?web_page_id=${web_page_id}`
     )
     .then((res) => {
       console.log(res.data.info);

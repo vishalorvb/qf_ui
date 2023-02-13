@@ -1,15 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 export default function MobileApp() {
   const { setHeader } = useHead();
+  const { auth } = useAuth();
+  const navigate = useNavigate();
+  const [project, setProject] = useState([]);
 
   const applicationColumns = [
     {
-      field: "name",
+      field: "project_name",
       headerName: "Application Name",
       flex: 3,
       sortable: false,
@@ -30,9 +35,11 @@ export default function MobileApp() {
       renderCell: (param) => {
         return (
           <div>
-            <Link to={String(param.row.id)}>
-              <NearMeOutlinedIcon />
-            </Link>
+            <NearMeOutlinedIcon
+              onClick={() =>
+                navigate("pages", { state: { id: param.row.project_id } })
+              }
+            />
           </div>
         );
       },
@@ -63,6 +70,11 @@ export default function MobileApp() {
   ];
 
   useEffect(() => {
+    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+      console.log(res.data.result.projects_list);
+      setProject(res.data.result.projects_list);
+    });
+
     setHeader((ps) => {
       return { ...ps, name: "Mobile" };
     });
@@ -70,7 +82,11 @@ export default function MobileApp() {
 
   return (
     <>
-      <Table rows={applications} columns={applicationColumns} />
+      <Table
+        rows={project}
+        columns={applicationColumns}
+        getRowId={(row) => row.project_id}
+      />
       <Outlet />
     </>
   );

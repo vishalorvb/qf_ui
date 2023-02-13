@@ -7,12 +7,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SelectCreateInstanceModal from "../Components/ReleaseComponents/SelectCreateInstanceModal";
 import { getReleaseInstances } from "../Services/DevopsServices";
 import ProjectsDropdown from "../Components/ProjectsDropdown";
+import { IconButton } from "@mui/material";
+import axios from "../api/axios";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 
 export default function Release() {
   const { setHeader } = useHead();
   const [createInstance, setCreateInstance] = useState(false);
   const [instance, setInstance] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
+  const [msg, setMsg] = useState(false);
+  const [module, setmodule] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +25,7 @@ export default function Release() {
       return {
         ...ps,
         name: "Release Instances",
-        plusButton: true,
+        plusButton: module ? true : false,
         plusCallback: () => setCreateInstance(true),
       };
     });
@@ -33,15 +38,33 @@ export default function Release() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, []);
+  }, [module]);
 
-  useEffect(() => {
+  const getReleaseInstancesfromModule = () => {
     const module = selectedProject?.find(
       (module) => module?.module_type === 21
     );
-    module?.module_id && getReleaseInstances(setInstance, module?.module_id);
-    console.log(module?.module_type);
+    setmodule(module);
+    module?.module_id
+      ? getReleaseInstances(setInstance, module?.module_id)
+      : setInstance([]);
+  };
+
+  useEffect(() => {
+    getReleaseInstancesfromModule();
   }, [selectedProject]);
+
+  const deleteRelease = (row) => {
+    axios
+      .delete(
+        `qfservice/DeleteRelease?release_id=${row?.id}&module_id=${row?.module_id}`
+      )
+      .then((resp) => {
+        console.log(resp);
+        setMsg(resp?.data?.message);
+        resp?.data?.message && getReleaseInstancesfromModule();
+      });
+  };
 
   const instanceColumns = [
     {
@@ -73,9 +96,14 @@ export default function Release() {
         const row = param.row;
         return (
           <div>
-            <EditOutlinedIcon
+            <IconButton
               onClick={() => navigate("CreateAnsibleInstance", { state: row })}
-            />
+            >
+              <EditOutlinedIcon />
+            </IconButton>
+            <IconButton onClick={() => deleteRelease(row)}>
+              <DeleteOutlinedIcon />
+            </IconButton>
           </div>
         );
       },
@@ -84,11 +112,18 @@ export default function Release() {
 
   return (
     <>
+      <SnackbarNotify
+        open={msg && true}
+        close={setMsg}
+        msg={msg}
+        severity="success"
+      />
       <ProjectsDropdown setSelectedProject={setSelectedProject} />
       <Table rows={instance} columns={instanceColumns} />
       <SelectCreateInstanceModal
         createInstate={createInstance}
         setCreateInstance={setCreateInstance}
+        module={module}
       />
       <Outlet />
     </>

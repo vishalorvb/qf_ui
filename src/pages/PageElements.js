@@ -4,26 +4,18 @@ import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { getWebpagesElementList } from "../Services/ProjectService";
 import { useLocation } from "react-router";
+import axios from "../api/axios";
 export default function PageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
 
-  console.log(location.state.id)
-
-  let[elements,setElements] = useState([])
+  let [elements, setElements] = useState([]);
 
   const elementColumns = [
-    {
-      field: "id",
-      headerName: "S.no.",
-      flex: 1,
-      valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
-    },
     {
       field: "element_id",
       headerName: "ElementId",
       flex: 1,
-     
     },
     {
       field: "name",
@@ -61,17 +53,24 @@ export default function PageElements() {
   ];
 
   useEffect(() => {
+    axios
+      .get(
+        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
+      )
+      .then((res) => {
+        res?.data?.info && setElements(res?.data?.info);
+      });
+
     setHeader((ps) => {
       return { ...ps, name: "PageElements" };
     });
   }, []);
-  useEffect(() => {
-    getWebpagesElementList(setElements,1801)
-  }, [])
 
-  return <Table 
-  rows={elements} 
-  columns={elementColumns}
-  getRowId={row => row.element_id}
-  />;
+  return (
+    <Table
+      rows={elements}
+      columns={elementColumns}
+      getRowId={(row) => row.element_id}
+    />
+  );
 }
