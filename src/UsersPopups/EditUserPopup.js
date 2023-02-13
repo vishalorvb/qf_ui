@@ -4,16 +4,16 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 function EditUserPopup(props) {
-    const [fname, setFname] = useState(props.object.fname);
+    const [fname, setFname] = useState(props.object.firstName);
     let first_name = useRef();
-    const [lname, setLname] = useState(props.object.lname);
+    const [lname, setLname] = useState(props.object.lastName);
     let last_name = useRef();
     const [email, setEmail] = useState(props.object.email);
     let Email = useRef();
     const [password, setPassword] = useState(props.object.password);
     let Password = useRef();
     const values = {
-        uid: props.object.sid
+        uid: props.object.ssoId
     }
 
     const { openEdit, setOpenEdit } = props;

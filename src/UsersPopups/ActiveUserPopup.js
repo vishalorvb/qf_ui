@@ -7,7 +7,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 function ActiveUserPopup(props) {
 
     const { openActive, setOpenActive, object } = props;
-    const  user  = object.fname+" "+object.lname;
+    const  user  = object.firstName+" "+object.lastName;
 
     const handleClose = () => {
         setOpenActive(false);

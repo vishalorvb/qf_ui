@@ -2,19 +2,32 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconBu
 import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import axios from '../api/axios';
 
 function DeleteUserPopup(props) {
 
-    const { openDelete, setOpenDelete,object } = props;
-    const user = object.fname + " " + object.lname;
-    const UserId = object.sid;
+    const { openDelete, setOpenDelete,object,loggedInId } = props;
+    const user = object.firstName + " " + object.lastName;
+    console.log(object.id);
+    const UserId = object.id;
+    const loggedInUserId = loggedInId;
+    const token  = localStorage.getItem("token");
 
     const handleClose = () => {
         setOpenDelete(false);
     };
 
     const submit = () => {
-
+        axios.delete(`/qfauthservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`,
+        {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }).then(
+            res =>{
+                console.log(res);
+            }
+        )
     }
     
   return (
