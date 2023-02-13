@@ -13,14 +13,16 @@ export default function Pipeline() {
 
   const [instances, setInstances] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
+  const [moduleId, setModuleId] = useState(0);
 
   useEffect(() => {
     setHeader((ps) => {
       return {
         ...ps,
         name: "Pipeline Instances",
-        plusButton: true,
-        plusCallback: () => navigate("CreatePipeline", { state: { id: 0 } }),
+        plusButton: moduleId === 0 ? false : true,
+        plusCallback: () =>
+          navigate("CreatePipeline", { state: { id: 0, module: moduleId } }),
       };
     }, []);
 
@@ -33,13 +35,16 @@ export default function Pipeline() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, []);
+  }, [moduleId]);
 
   useEffect(() => {
     const module = selectedProject?.find(
       (module) => module?.module_type === 20
     );
-    module?.module_id && getPipelines(setInstances, module?.module_id);
+    module?.module_id
+      ? getPipelines(setInstances, module?.module_id)
+      : setInstances([]);
+    module?.module_id ? setModuleId(module?.module_id) : setModuleId(0);
     console.log(module?.module_type);
   }, [selectedProject]);
 

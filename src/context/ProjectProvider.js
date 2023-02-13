@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 const ProjectContext = createContext({});
 
 export const ProjectProvider = ({ children }) => {
-  const [project, setProject] = useState({});
+  const [project, setProject] = useState({ project_name: "select Project" });
   const [projectModules, setprojectModules] = useState([]);
 
   return (
