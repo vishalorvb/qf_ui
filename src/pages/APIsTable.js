@@ -6,14 +6,25 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { getApis } from "../Services/ProjectService";
+import { deleteApi } from "../Services/ProjectService";
+import ConfirmPop from "../CustomComponent/ConfirmPop";
 
 export default function APIsTable() {
   const { setHeader } = useHead();
   const location = useLocation()
   const navigate = useNavigate();
-  console.log(location.state.id)
+  let [apis, setApis] = useState([])
+  let [popup, setPopup] = useState(false)
+  let [apiid,setApiid] = useState()
 
-  let[apis,setApis] = useState([])
+  function handleDelete(apiid){
+    deleteApi(apiid).then(res=>{
+      if (res == null){
+        getApis(location.state.id, setApis)
+      }
+    })
+    setPopup(false)
+  }
 
   const pageColumns = [
     {
@@ -44,10 +55,16 @@ export default function APIsTable() {
       renderCell: (param) => {
         return (
           <div>
-            <IconButton onClick={() => navigate("create", { state: { id: param.row.id } })}>
+            <IconButton onClick={(e) => navigate("create", { state: { projectid: location.state.id, moduleid: param.row.api_id } })}>
               <EditIcon />
             </IconButton>
-            <IconButton>
+            <IconButton
+              // onClick={e => console.log(param.row.api_id)}
+              onClick={e =>{
+                setApiid(param.row.api_id)
+                setPopup(true)
+              }}
+            >
               <DeleteIcon />
             </IconButton>
           </div>
@@ -56,28 +73,6 @@ export default function APIsTable() {
     },
   ];
 
-  const pages = [
-    {
-      id: 1,
-      name: "Application 1",
-      description: "Description 1",
-    },
-    {
-      id: 2,
-      name: "Application 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Application 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Application 4",
-      description: "Description 4",
-    },
-  ];
 
   useEffect(() => {
     setHeader((ps) => {
@@ -85,7 +80,7 @@ export default function APIsTable() {
         ...ps,
         name: "API Requests",
         plusButton: true,
-        plusCallback: () => navigate("create",{state:{id:location.state.id}}),
+        plusCallback: () => navigate("create", { state: { projectid: location.state.id, moduleid: null } }),
       };
     });
     return () =>
@@ -99,17 +94,23 @@ export default function APIsTable() {
       });
   }, []);
 
-useEffect(() => {
-getApis(location.state.id,setApis)
-}, [])
+  useEffect(() => {
+    getApis(location.state.id, setApis)
+  }, [])
 
   return (
     <>
-    <h1>This is Api List</h1>
       <Table rows={apis} columns={pageColumns}
-      getRowId={row => row.api_id}
+        getRowId={row => row.api_id}
       />
       <Outlet />
+      <ConfirmPop
+                open={popup}
+                handleClose={(e) => setPopup(false)}
+                heading={"Delete API"}
+                message={"Are you sure you want to delete this API"}
+                onConfirm={(e) => handleDelete(apiid)}
+            ></ConfirmPop>
     </>
   );
 }

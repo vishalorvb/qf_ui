@@ -1,19 +1,19 @@
 import React, { useContext } from 'react'
 import GrowingTable from './GrowingTable'
-import { CreateApi } from './Api';
+import { Apidata } from './Data'
 
 
 function Header() {
 
-  const {data,setData} = useContext(CreateApi);
-  console.log(data)
+ function handleHeaderData(tabdata){
+  Apidata.headers_list = tabdata
+ }
+
   return (
     <div>
-      <h1>This is header</h1>
-      
-
       <GrowingTable
       header={["Key","Value","Description"]}
+      TableData = {handleHeaderData}
       ></GrowingTable>
     </div>
   )

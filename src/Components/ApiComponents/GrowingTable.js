@@ -2,111 +2,62 @@ import React, { useEffect, useRef, useState } from 'react'
 
 function GrowingTable(props) {
 
+    let [rows, setRows] = useState([<GetRow />])
+    let [tableData, setTableData] = useState([])
 
-    function getTable(){
-        return(
-            <div>
-                 <tr >
-                    {props.header.map(head => <td style={{ border: "1px solid", padding: "4px" }}>
-                        <input type="text" placeholder={head} style={{ width: "100%", height: "25px" }} />
-                    </td>)}
-                </tr>
-            </div>
+    function GetRow() {
+        return (
+            <tr >
+                {props.header.map(head => <td style={{ border: "1px solid", padding: "4px" }}>
+                    <input type="text" placeholder={head} style={{ width: "100%", height: "25px" }} />
+                </td>)}
+            </tr>
         )
     }
 
-    console.log(props.header)
-
-    let inputstyle = {
-        width: "100%", height: "25px"
-    }
-    const tableRef = useRef()
-
-
-
-    console.log(tableRef)
-    // let lastRow = null
-    // let firstCell = null
-    // if (tableRef.current != null) {
-    //     console.log(tableRef.current)
-    //     console.log("Not null")
-    //     lastRow = tableRef.current.lastChild
-    //     firstCell = lastRow.firstChild
-    //     console.log(firstCell)
-    //     firstCell.onclick = { handleClick }
-    // }
-
-
-
-
-
-    // let[temp,setTemp]=useState(["vishal"])
-    function handleClick(e) {
-
-        // var x = document.createElement("INPUT");
-        // x.setAttribute("type", "text");
-        // console.log(x)
+    function handleOnChange(e) {
+        console.log("Calling onChange")
         let table = document.getElementById("mytable");
-        // let row = table.insertRow(0);
-        // let cell1 = row.insertCell(0);
-        // var cell2 = row.insertCell(1);
-        // cell1.appendChild = x.value;
-        // cell2.innerHTML = "<input type="
-        //     + "text" 
+        let data = []
+        for (let i = 1; i < table.rows.length; i++) {
+            let key = table.rows[i].cells[0].childNodes[0].value
+            let value = table.rows[i].cells[1].childNodes[0].value
+            let description = table.rows[i].cells[2].childNodes[0].value
 
-        //     + " />";
-
-        // console.log(e.target.parentNode)
-        // console.log(table.rows[table.rows.length - 1])
-        // console.log(table.rows[1])
-        // let lastrow = table.rows[1]
-        // console.log(lastrow.getElementsByTagName("td")[0])
-        console.log("calling handle click")
-    }
-    function appendRow() {
-        console.log("calling append row")
-        let table = document.getElementById("mytable");
-        // getting last row of table
-        let lastrow = table.rows[table.rows.length - 1]
-
-        // To insert row ar end of table 
-        let row = table.insertRow(- 1)
-        row.setAttribute('style', "border : 1px solid, padding :4px")
-
-        for (let i = 0; i < props.header.length; i++) {
-            let cell = row.insertCell(i)
-            let placeholder = props.header[i]
-            cell.innerHTML = " <input type=" + 
-            "text" +
-             "placeholder=" +
-              placeholder +
-              " value=" +
-               ">"
+            let tempdata = {
+                "key": key,
+                "value": value,
+                "description": description
+            }
+            data.push(tempdata)
+        }
+        console.log(data)
+        // setTableData(data)
+        try {
+            props.TableData(data)
+        } catch (error) {
+            console.log(error)
         }
     }
 
-    // useEffect(() => {
-    //     console.log(tableRef)
-    //     const lastRow = tableRef.current.lastChild.lastChild
-    //     const firstCell = lastRow.firstChild
-    //     // firstCell.onClick = {e=>console.log("click")}
-    //     firstCell.addEventListener('click', handleClick)
-    //     console.log(firstCell)
-    // }, [tableRef])
+    function appendRow(e) {
+        if(e.target.parentElement.parentElement.nextSibling == null){
+            setRows([...rows, <GetRow />])
+        }
+    }
+  
+    useEffect(() => {
+        console.log(tableData)
+    }, [tableData])
+
 
     return (
         <div>
-            This is Growing Table
-            <table ref={tableRef} id='mytable' style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
+            <table  id='mytable' onFocus={appendRow} onChange={handleOnChange} style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
                 <tr >
                     {props.header.map(head => <th style={{ border: "1px solid", padding: "4px" }}>{head}</th>)}
                 </tr>
-                <tr >
-                    {props.header.map(head => <td style={{ border: "1px solid", padding: "4px" }}>
-                        <input type="text" placeholder={head} style={{ width: "100%", height: "25px" }} />
-                    </td>)}
-                </tr>
-                {/* {temp.map(t=>appendRow())} */}
+                {rows}
             </table>
         </div>
     )

@@ -19,25 +19,24 @@ function TestCases() {
     let [datasets, Setdatasets] = useState([])
     let [addTestcase, setAddTestcase] = useState()
     let [popup, setPopup] = useState(false)
-    let [steps, setSteps] = useState(true)
+    let [steps, setSteps] = useState(false)
 
+    console.log(addTestcase)
 
 
     function handleRadio(testcaseId) {
-        console.log(testcaseId)
         setRadio(testcaseId)
-        // Setdatasets(testcases.filter(ts => {
-        //     if (ts.testcase_id == testcaseId) {
-        //         return ts.datasetsList
-        //     }
-        // }))
         let temp = (testcases.filter(ts => {
             if (ts.testcase_id == testcaseId) {
-                console.log(ts)
                 return ts.datasetsList
             }
         }))
-        console.log(temp)
+        Setdatasets(temp[0].datasetsList)
+    }
+
+    function handleSteps(para){
+        console.log(para)
+        setSteps(true)
     }
 
     function handleSteps(para){
@@ -96,6 +95,13 @@ function TestCases() {
                         <Tooltip title="Add Data Set">
                             <IconButton  ><AddIcon></AddIcon></IconButton>
                         </Tooltip>
+                        <Tooltip title="Edit Data Set">
+                            <IconButton  ><EditIcon></EditIcon></IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Delete">
+                            <IconButton  > <DeleteIcon></DeleteIcon> </IconButton>
+                        </Tooltip>
                     </div>
                 )
             },
@@ -144,17 +150,18 @@ function TestCases() {
   ];
 
     useEffect(() => {
-        getProject(setproject)
+        getProject(setproject, 4)
         getTestcases(setTestcases, 1031)
         console.log(testcases)
     }, [])
 
     return (
         <div>
-            <h1>This is test case component</h1>
+
 
             <Grid container>
                 <Grid item>
+                    <h3>Project Name :</h3>
                     <Autocomplete
                         //   ref={projecid}
                         disablePortal
@@ -172,6 +179,9 @@ function TestCases() {
                         }}
                     />
                 </Grid>
+                <Grid item>
+                    <Button variant="contained" onClick={e => setPopup(true)}>Creat Test Case</Button>
+                </Grid>
             </Grid>
 
       <Table
@@ -187,6 +197,14 @@ function TestCases() {
                 hidefooter={true}
                 getRowId={row => row.testcase_dataset_id}
             ></Table>
+            <CreateTestCasePopUp
+                open={popup}
+                setOpen={setPopup}
+            ></CreateTestCasePopUp>
+            <TestSteps
+                open={steps}
+                setOpen={() => setSteps(false)}
+            ></TestSteps>
         </div>
     )
 }
