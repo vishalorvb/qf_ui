@@ -24,6 +24,7 @@ function Api({ projectId, moduleId }) {
 
     function handleSave(e) {
         console.log(Apidata)
+        console.log("handle submit")
         if (validateForm(
             [], [], [], [], [], namelist, "error"
         )) {
@@ -66,7 +67,7 @@ function Api({ projectId, moduleId }) {
             console.log("create new")
             Apidata.api_url = " "
             Apidata.api_name = "  "
-            Apidata.module_id = " "
+            Apidata.module_id = moduleid
             Apidata.request_type = " "
             Apidata.body_type = " "
             Apidata.api_description = " "
