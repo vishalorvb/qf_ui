@@ -4,6 +4,7 @@ import MiniDrawer from "./MiniDrawer";
 import { Box } from "@mui/system";
 
 import { HeaderProvider } from "../context/HeaderProvider";
+import { ProjectProvider } from "../context/ProjectProvider";
 
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
@@ -21,7 +22,9 @@ export default function AppLayout() {
           <HeaderProvider>
             <PageHead />
             <Box sx={{ marginTop: 1 }}>
-              <Outlet />
+              <ProjectProvider>
+                <Outlet />
+              </ProjectProvider>
             </Box>
           </HeaderProvider>
         </Box>

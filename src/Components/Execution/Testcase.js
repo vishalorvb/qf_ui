@@ -12,18 +12,32 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import FeatureMenu from "./FeatureMenu";
+import useAuth from "../../hooks/useAuth";
+import ExecutionProcessBox from "./ExecutionProcessBox";
 
 export default function Testcase({ selectedProject }) {
   const [left, setLeft] = useState([]);
   const [right, setRight] = useState([]);
+  const { auth } = useAuth();
 
   const [webtestcase, setwebTestcase] = useState([]);
+  const [webtestcaseDs, setwebTestcaseDs] = useState([]);
   const [apitestcase, setapiTestcase] = useState([]);
+  const [apitestcaseDs, setapiTestcaseDs] = useState([]);
   const [mobiletestcase, setmobileTestcase] = useState([]);
+  const [mobiletestcaseDs, setmobileTestcaseDs] = useState([]);
+
+  const [webBuildenv, setWebBuildenv] = useState([]);
+
+  const [executionStart, setExectutionStart] = useState(false);
+  const [executionSpin, setexecutionSpin] = useState(false);
+  const [executionResult, setExecutionResult] = useState([]);
 
   const schema = yup.object().shape({
     executionName: yup.string().required(),
     description: yup.string().required(),
+    buildenvName: yup.string().required(),
+    executionLoc: yup.string().required(),
   });
   const {
     control,
@@ -73,18 +87,119 @@ export default function Testcase({ selectedProject }) {
     mobile
       ? getTestcase(setmobileTestcase, mobile?.module_id, mobile?.project_id)
       : setmobileTestcase([]);
+
+    axios.get(`/qfservice/build-environment/${web?.module_id}`).then((resp) => {
+      const buildEnv = resp?.data?.data?.map((b) => {
+        return { id: b.id + "," + b.name, label: b.name };
+      });
+      setWebBuildenv(buildEnv);
+    });
   }, [selectedProject]);
 
   useEffect(() => {
-    setLeft([...webtestcase, ...apitestcase, ...mobiletestcase]);
-  }, [webtestcase, apitestcase, mobiletestcase]);
+    setwebTestcaseDs([]);
+    webtestcase.map((tc) => {
+      axios
+        .get(
+          `qfservice/webtestcase/api/v1/projects/${selectedProject[0]?.project_id}/workflow/${tc?.module_id}/web/testcases/${tc?.testcase_id}/datasets`
+        )
+        .then((resp) => {
+          const datasetArray = resp?.data?.result;
+          tc.datasetArray = datasetArray;
+          setwebTestcaseDs((ps) => {
+            return [...ps, tc];
+          });
+        });
+    });
+  }, [webtestcase]);
 
-  const onSubmitHandler = (data) => {
-    console.log({ data });
+  useEffect(() => {
+    setapiTestcaseDs([]);
+    apitestcase.map((tc) => {
+      axios
+        .get(
+          `qfservice/webtestcase/api/v1/projects/${selectedProject[0]?.project_id}/workflow/${tc?.module_id}/web/testcases/${tc?.testcase_id}/datasets`
+        )
+        .then((resp) => {
+          const datasetArray = resp?.data?.result;
+          tc.datasetArray = datasetArray;
+          setapiTestcaseDs((ps) => {
+            return [...ps, tc];
+          });
+        });
+    });
+  }, [apitestcase]);
+
+  useEffect(() => {
+    setmobileTestcaseDs([]);
+    mobiletestcase.map((tc) => {
+      axios
+        .get(
+          `qfservice/webtestcase/api/v1/projects/${selectedProject[0]?.project_id}/workflow/${tc?.module_id}/web/testcases/${tc?.testcase_id}/datasets`
+        )
+        .then((resp) => {
+          const datasetArray = resp?.data?.result;
+          tc.datasetArray = datasetArray;
+          setmobileTestcaseDs((ps) => {
+            return [...ps, tc];
+          });
+        });
+    });
+  }, [mobiletestcase]);
+
+  useEffect(() => {
+    setLeft([...webtestcaseDs, ...apitestcaseDs, ...mobiletestcaseDs]);
+  }, [webtestcaseDs, apitestcaseDs, mobiletestcaseDs]);
+
+  const onSubmitHandler = async (data) => {
+    if (right.length > 0) {
+      setExectutionStart(true);
+      setexecutionSpin(true);
+      const execution = right.map(async (tc) => {
+        const postReq = {
+          testcase_id: tc?.testcase_id,
+          testcase_datasets_ids_list: tc?.datasetArray?.map(
+            (ds) => ds?.dataset_id
+          ),
+          user_id: auth?.userId,
+          browser_type: data?.browser.toString(),
+          build_environment_name: data?.buildenvName?.split(",")[1],
+          execution_location: data?.executionLoc,
+          repository_commit_message: "",
+          testcase_overwrite: false,
+          mobile_platform: "ios",
+          config_id: null,
+          config_name: null,
+          build_environment_id: data?.buildenvName?.split(",")[0],
+          is_execute: true,
+          is_generate:
+            data?.regenerateScript !== undefined &&
+            data?.regenerateScript?.length === 1,
+          client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        };
+        const res = await axios.post(
+          `/qfservice/webtestcase/ExecuteWebTestcase`,
+          postReq
+        );
+        return res?.data;
+      });
+      const results = await Promise.all(execution);
+      setexecutionSpin(false);
+      setExecutionResult(results);
+      console.log(results);
+    } else {
+      console.log("select testcase");
+    }
   };
 
   return (
     <>
+      <ExecutionProcessBox
+        open={executionStart}
+        close={setExectutionStart}
+        executionspin={executionSpin}
+        executionResult={executionResult}
+      />
       {[...webtestcase, ...apitestcase, ...mobiletestcase].length > 0 ? (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <Grid container>
@@ -130,42 +245,39 @@ export default function Testcase({ selectedProject }) {
                   spacing={1}
                 >
                   <SelectElement
-                    name="enviroment"
+                    name="executionLoc"
+                    label="Execution Location"
                     size="small"
                     fullWidth
                     control={control}
                     options={[
                       {
-                        id: "1",
+                        id: "Local",
                         label: "Local",
                       },
                       {
-                        id: "2",
+                        id: "Jenkins",
                         label: "Jenkins",
                       },
                       {
-                        id: "3",
+                        id: "Doker",
                         label: "Doker",
                       },
                     ]}
                   />
                   <SelectElement
-                    name="env"
+                    name="buildenvName"
+                    label="build env. Name"
                     size="small"
                     fullWidth
                     sx={{ width: 200 }}
                     control={control}
-                    options={[
-                      {
-                        id: "1",
-                        label: "Testing",
-                      },
-                    ]}
+                    options={webBuildenv}
                   />
                 </Stack>
                 <MultiSelectElement
                   label="Browser"
-                  name="basic"
+                  name="browser"
                   size="small"
                   fullWidth
                   control={control}
@@ -178,7 +290,7 @@ export default function Testcase({ selectedProject }) {
                   spacing={1}
                 >
                   <CheckboxButtonGroup
-                    name="basic-checkbox-button-group"
+                    name="regenerateScript"
                     control={control}
                     options={[
                       {
