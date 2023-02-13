@@ -139,11 +139,14 @@ export async function getApiModuleId(projectid, callback) {
 }
 
 export async function createAPI(data) {
+  console.log("Creating API service")
   let res = await axios({
     method: 'post',
     url: `${baseUrl}/qfservice/createapi`,
     data: data
   }).then(response => {
+    console.log("api called")
+    console.log(response.data.error)
     return response.data.error
   }).catch(err => {
     console.log(err)
@@ -152,6 +155,7 @@ export async function createAPI(data) {
 }
 
 export async function updateAPI(data) {
+  console.log("Update API service")
   let res = await axios({
     method: 'post',
     url: `${baseUrl}/qfservice/updateapi`,
