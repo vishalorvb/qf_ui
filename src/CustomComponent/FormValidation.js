@@ -44,6 +44,7 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
         try {
             if (element.current.value.trim() === "" || element.current === undefined) {
                 element.current.className = cname;
+                console.log("error in required fiels")
                 status = false;
             }
             else if (/EMAIL/.test(element.current.name.toUpperCase())) {
@@ -51,10 +52,12 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
                 if (!ValidateEmail(element.current.value)) {
                     element.current.className = cname;
                     status = false;
+                    console.log("error in required fiels")
                 }
             }
         } catch (error) {
             status = false;
+            console.log("error in required fiels")
         }
 
 
@@ -65,10 +68,13 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
             if (containsSpecialChars(element.current.value) || element.current.value.trim() == "" || element.current.value.trim() == undefined) {
                 element.current.className = cname;
                 status = false;
+                console.log("error in special char fiels")
             }
 
         } catch (error) {
             status = false;
+            console.log("error in special char fiels")
+
         }
 
     });
@@ -77,9 +83,12 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
             if (!containUpperCase(element.current.value) || !containsSpecialChars(element.current.value) || !containLowerCase(element.current.value) || !containsNumber(element.current.value) || element.current.value.length < 8) {
                 element.current.className = cname;
                 status = false;
+                console.log("error in password fiels")
             }
         } catch (error) {
             status = false;
+            console.log("error in password fiels")
+
         }
     });
     onlyalphabets.forEach(element => {
@@ -89,9 +98,12 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
                 console.error("Error in alphabet")
                 element.current.className = cname;
                 status = false;
+                console.log("error in Alphabets fiels")
             }
         } catch (error) {
             status = false;
+            console.log("error in Alphabets fiels")
+
         }
     });
     onlynumbers.forEach(element => {
@@ -99,9 +111,12 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
             if (onlyNumber(element.current.value)) {
                 element.current.className = cname;
                 status = false;
+                console.log("error in Number fiels")
             }
         } catch (error) {
             status = false;
+            console.log("error in Number fiels")
+
         }
     });
 
@@ -112,6 +127,7 @@ export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabet
             if (collection[i].value.trim() == "") {
                 collection[i].className = cname
                 status = false;
+                console.log("error in Autocomplete fiels")
             }
         }
     });

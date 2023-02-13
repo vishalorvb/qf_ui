@@ -1,16 +1,18 @@
-import { Autocomplete, Button, Grid, IconButton, Radio, TextField, Tooltip } from '@mui/material'
+import { Autocomplete, Button, Grid, IconButton, Radio, Snackbar, TextField, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { getProject } from '../../Services/ProjectService'
-import { getModules } from '../../Services/ProjectService';
+
 import AddIcon from '@mui/icons-material/Add';
 import TestSteps from './TestSteps';
 import Table from '../../CustomComponent/Table';
-import { getTestcases } from '../../Services/ProjectService';
+// import { getTestcases } from '../../Services/ProjectService';
 import CreateTestCasePopUp from './CreateTestCasePopUp';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-
+import { getWebTestCase } from '../../Services/ProjectService';
+// import ConfirmPop from '../../CustomComponent/ConfirmPop';
+import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 
 function TestCases() {
     let [project, setproject] = useState([])
@@ -20,6 +22,7 @@ function TestCases() {
     let [addTestcase, setAddTestcase] = useState()
     let [popup, setPopup] = useState(false)
     let [steps, setSteps] = useState(false)
+    let [snack,setSnack] = useState(false)
 
     console.log(addTestcase)
 
@@ -69,14 +72,14 @@ function TestCases() {
       align: "left",
     },
     {
-      field: "testcase_name",
+      field: "name",
       headerName: "Test case name",
       flex: 3,
       sortable: false,
       align: "left",
     },
     {
-      field: "testcase_desc",
+      field: "description",
       headerName: "Description",
       flex: 3,
       sortable: false,
@@ -150,14 +153,20 @@ function TestCases() {
   ];
 
     useEffect(() => {
-        getProject(setproject, 4)
-        getTestcases(setTestcases, 1031)
-        console.log(testcases)
+        getProject(setproject)
+   
     }, [])
 
     return (
         <div>
-
+<SnackbarNotify
+open={snack}
+close ={()=>{
+  setSnack(false)
+}}
+msg = "Test Case Created SuccessFully"
+severity = "success"
+></SnackbarNotify>
 
             <Grid container>
                 <Grid item>
@@ -176,6 +185,8 @@ function TestCases() {
                         )}
                         onChange={(e, value) => {
                             console.log(value)
+                            // setProjectid(value.project_id)
+                            getWebTestCase(setTestcases,value.project_id)
                         }}
                     />
                 </Grid>
@@ -200,6 +211,7 @@ function TestCases() {
             <CreateTestCasePopUp
                 open={popup}
                 setOpen={setPopup}
+                snackbar={setSnack}
             ></CreateTestCasePopUp>
             <TestSteps
                 open={steps}

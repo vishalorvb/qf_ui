@@ -67,6 +67,7 @@ function CreateProject(props) {
   ];
   let specialcharRefs = [];
   let passwordRef = [];
+  console.log(props.edit)
   if (props.edit) {
   } else {
     passwordRef.push(jenkinsPassword);
