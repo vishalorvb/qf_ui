@@ -11,6 +11,22 @@ export function getProject(callback, userId = userid) {
     callback(res.data.result.projects_list);
   });
 }
+async function getModuleId(projectId, modulename) {
+console.log(projectId)
+let moduleId = null;
+  let allmodules = await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectId}`).then((res) => {
+    console.log(res.data.data)
+    return res.data.data
+  })
+   allmodules.forEach(e => {
+    if (e.module_name == modulename) {
+      console.log(e.module_id)
+      moduleId =e.module_id
+      return e.module_id
+    }
+  })
+  return moduleId
+}
 
 export async function createProject(data) {
   console.log("calling createProject");
@@ -61,6 +77,20 @@ export function getTestcases(callback, workflowID) {
     });
 }
 
+export async function getWebTestCase(callback, projectId) {
+
+  let mid = await getModuleId(projectId, "WEB").then(res=>{
+    console.log(res)
+    return res
+  })
+  console.log(mid)
+  await axios.get(`${baseUrl}/qfservice/webtestcase//api/v1/projects/${projectId}/workflow/${mid}/web/testcases`).then(res => {
+    console.log(res.data.result)
+    callback(res.data.result)
+  })
+
+}
+
 export function getWebpages(callback, moduleId) {
   console.log("Calling getWebpages");
   axios
@@ -103,6 +133,8 @@ export function getModules(callback, projectid) {
     });
 }
 
+
+
 export async function getApis(projectid, callback) {
   console.log("calling getApis");
   let module;
@@ -129,14 +161,13 @@ export async function getApis(projectid, callback) {
 }
 
 export async function getApiModuleId(projectid, callback) {
-  let module;
-  let moduleid;
-  await axios
-    .get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`)
-    .then((res) => {
-      module = res.data.data;
-    });
-  module.forEach((element) => {
+  let module
+  let moduleid
+  await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`).then(res => {
+    console.log(res.data.data)
+    module = res.data.data
+  })
+  module.forEach(element => {
     if (element.module_name == "API") {
       moduleid = element.module_id;
       console.log(element.module_id);
@@ -202,3 +233,5 @@ export async function deleteApi(apiid) {
     });
   return x;
 }
+
+
