@@ -7,7 +7,7 @@ import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
 function DeactiveUserPopup(props) {
 
     const { openDeactive, setOpenDeactive, object } = props;
-    const user = object.fname + " " + object.lname;
+    const user = object.firstName + " " + object.lastName;
 
     const handleClose = () => {
         setOpenDeactive(false);
