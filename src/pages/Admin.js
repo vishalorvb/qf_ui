@@ -13,7 +13,6 @@ import ActiveUserPopup from "../UsersPopups/ActiveUserPopup";
 import DeactiveUserPopup from "../UsersPopups/DeactiveUserPopup";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
-// import axios from 'axios';
 
 export default function Admin() {
   const { setHeader } = useHead();
@@ -146,7 +145,7 @@ export default function Admin() {
                   editUserHandler(param.row);
                 }}
               >
-                <EditOutlinedIcon></EditOutlinedIcon>
+                <EditOutlinedIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
@@ -155,30 +154,27 @@ export default function Admin() {
                   deleteUserHandler(param.row);
                 }}
               >
-                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
+                <DeleteOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>
-            {/* {param.row.status === 0 ? */}
             <Tooltip title="Inactive">
               <IconButton
                 onClick={(e) => {
                   activateUserHandler(param.row);
                 }}
               >
-                <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
+                <PersonOffOutlinedIcon />
               </IconButton>
             </Tooltip>
-            {/* : */}
             <Tooltip title="Active">
               <IconButton
                 onClick={(e) => {
                   deactivateUserHandler(param.row);
                 }}
               >
-                <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
+                <PersonOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>
-            {/* } */}
           </>
         );
       },
@@ -188,67 +184,34 @@ export default function Admin() {
   ];
 
   return (
-    <div>
-      <div
-        className="recenttable"
-        style={{ flot: "right", marginBottom: "10px" }}
-      >
-        <Button
-          variant="contained"
-          endIcon={<AddOutlinedIcon />}
-          onClick={addUserHandler}
-        >
-          Add User
-        </Button>
-      </div>
-      <div className="datatable" style={{ marginTop: "20px" }}>
-        {open ? (
-          <AddUserPopup open={open} setOpen={setOpen} users={users} />
-        ) : (
-          ""
-        )}
-        {openEdit ? (
-          <EditUserPopup
-            object={editObject}
-            openEdit={openEdit}
-            setOpenEdit={setOpenEdit}
-          />
-        ) : (
-          ""
-        )}
-        {openDelete ? (
-          <DeleteUserPopup
-            object={deleteObject}
-            openDelete={openDelete}
-            setOpenDelete={setOpenDelete}
-          />
-        ) : (
-          ""
-        )}
-        {openActive ? (
-          <ActiveUserPopup
-            object={activeObject}
-            openActive={openActive}
-            setOpenActive={setOpenActive}
-          />
-        ) : (
-          ""
-        )}
-        {openDeactive ? (
-          <DeactiveUserPopup
-            object={deactiveObject}
-            openDeactive={openDeactive}
-            setOpenDeactive={setOpenDeactive}
-          />
-        ) : (
-          ""
-        )}
-        <Table
-          columns={columns}
-          rows={users}
-          // hidefooter={false}
-        />
-      </div>
-    </div>
+    <>
+      <AddUserPopup open={open} setOpen={setOpen} users={users} />
+
+      <EditUserPopup
+        object={editObject}
+        openEdit={openEdit}
+        setOpenEdit={setOpenEdit}
+      />
+
+      <DeleteUserPopup
+        object={deleteObject}
+        openDelete={openDelete}
+        setOpenDelete={setOpenDelete}
+      />
+
+      <ActiveUserPopup
+        object={activeObject}
+        openActive={openActive}
+        setOpenActive={setOpenActive}
+      />
+
+      <DeactiveUserPopup
+        object={deactiveObject}
+        openDeactive={openDeactive}
+        setOpenDeactive={setOpenDeactive}
+      />
+
+      <Table columns={columns} rows={users} />
+    </>
   );
 }
