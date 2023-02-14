@@ -13,11 +13,14 @@ import ActiveUserPopup from "../UsersPopups/ActiveUserPopup";
 import DeactiveUserPopup from "../UsersPopups/DeactiveUserPopup";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
-// import axios from 'axios';
+import useAxios from "../hooks/useAxios";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
 
 export default function Admin() {
   const { setHeader } = useHead();
   const [open, setOpen] = useState(false);
+  const [users, setUsers] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openActive, setOpenActive] = useState(false);
@@ -26,6 +29,12 @@ export default function Admin() {
   const [deleteObject, setDeleteObject] = useState([]);
   const [activeObject, setActiveObject] = useState([]);
   const [deactiveObject, setDeactiveObject] = useState([]);
+
+  const axiosPrivate = useAxios();
+  const {auth} = useAuth();
+  console.log(auth.info)
+  const token  = localStorage.getItem("token");
+  const loggedInId = auth.info.id;
 
   const addUserHandler = () => {
     setOpen(true);
@@ -71,29 +80,16 @@ export default function Admin() {
       });
   }, []);
 
-  const users = [
-    {
-      id: "100",
-      fname: "Durgarao",
-      lname: "Akula",
-      email: "durgarao@gmail.com",
-      sid: 65,
-    },
-    {
-      id: "101",
-      fname: "Abhishek",
-      lname: "ch",
-      email: "abhishek@gmail.com",
-      sid: 72,
-    },
-    {
-      id: "102",
-      fname: "Vishal",
-      lname: "kumar",
-      email: "vishal@gmail.com",
-      sid: 79,
-    },
-  ];
+  useEffect(() => {
+    axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(res => {
+        setUsers(res.data.info);
+      })
+  }, []);
 
   const columns = [
     {
@@ -113,7 +109,7 @@ export default function Admin() {
       sortable: false,
       align: "left",
       renderCell: (params) => {
-        return <div>{params.row.fname + " " + params.row.lname}</div>;
+        return <div>{params.row.firstName + " " + params.row.lastName}</div>;
       },
     },
     {
@@ -125,7 +121,7 @@ export default function Admin() {
       align: "left",
     },
     {
-      field: "sid",
+      field: "ssoId",
       headerName: "User Id",
       flex: 3,
       headerAlign: "center",
@@ -158,7 +154,7 @@ export default function Admin() {
                 <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
               </IconButton>
             </Tooltip>
-            {/* {param.row.status === 0 ? */}
+            {param.row.user_status === 0 ?
             <Tooltip title="Inactive">
               <IconButton
                 onClick={(e) => {
@@ -168,7 +164,7 @@ export default function Admin() {
                 <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
               </IconButton>
             </Tooltip>
-            {/* : */}
+             : 
             <Tooltip title="Active">
               <IconButton
                 onClick={(e) => {
@@ -178,7 +174,7 @@ export default function Admin() {
                 <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
               </IconButton>
             </Tooltip>
-            {/* } */}
+            } 
           </>
         );
       },
@@ -189,7 +185,7 @@ export default function Admin() {
 
   return (
     <div>
-      <div
+      {/* <div
         className="recenttable"
         style={{ flot: "right", marginBottom: "10px" }}
       >
@@ -200,7 +196,7 @@ export default function Admin() {
         >
           Add User
         </Button>
-      </div>
+      </div> */}
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? (
           <AddUserPopup open={open} setOpen={setOpen} users={users} />
@@ -221,6 +217,7 @@ export default function Admin() {
             object={deleteObject}
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
+            loggedInId={loggedInId}
           />
         ) : (
           ""
