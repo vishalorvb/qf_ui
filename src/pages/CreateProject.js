@@ -4,10 +4,8 @@ import SaveIcon from "@mui/icons-material/Save";
 import {
   validateForm,
   resetClassName,
-
 } from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-// import { getAutomationType, AddProject, updateProject } from "../Api";
 import AccordionTemplate from "../CustomComponent/AccordionTemplate";
 import useHead from "../hooks/useHead";
 import { createProject } from "../Services/ProjectService";
@@ -25,15 +23,12 @@ function CreateProject(props) {
     });
   }, []);
 
-
-  let date = new Date();
   let [repository, setRepository] = useState(false);
   let [pipeline, setPipeline] = useState(false);
   let [database, setDatabase] = useState(false);
   let [collaboration, setCollaboration] = useState(false);
   let [snackbarerror, setSnackbarerror] = useState(false);
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-  let [automation, setAutomation] = useState([]);
   const navigate = useNavigate();
 
   let project_name = useRef();
@@ -68,7 +63,7 @@ function CreateProject(props) {
   let specialcharRefs = [];
   let passwordRef = [];
   console.log(props.edit)
-  if (props.edit) {
+  if (props.edit == true) {
   } else {
     passwordRef.push(jenkinsPassword);
     passwordRef.push(dbPassword);
