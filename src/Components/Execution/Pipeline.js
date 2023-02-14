@@ -17,10 +17,6 @@ export default function Pipeline({ selectedProject }) {
     console.log(module?.module_id);
   }, [selectedProject]);
 
-  useEffect(() => {
-    setMsg(true);
-  }, [executionRes]);
-
   const instanceColumns = [
     {
       field: "release_name",
@@ -48,7 +44,7 @@ export default function Pipeline({ selectedProject }) {
             <Button
               size="small"
               variant="contained"
-              onClick={() => executePipeline(setExecutionRes, param.row.id)}
+              onClick={() => executePipeline(setMsg, param.row.id)}
             >
               Execute
             </Button>
@@ -61,9 +57,9 @@ export default function Pipeline({ selectedProject }) {
   return (
     <>
       <SnackbarNotify
-        open={msg}
+        open={msg && true}
         close={setMsg}
-        msg={executionRes?.data?.message}
+        msg={msg}
         severity="success"
       />
       {executionRes?.data?.message}
