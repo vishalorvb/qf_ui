@@ -2,11 +2,18 @@ import Table from "../../CustomComponent/Table";
 import { getPipelinesHistoryReport } from "../../Services/DevopsServices";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Alert } from "@mui/material";
 export default function UnitTest() {
   const [result, setResult] = useState([]);
+  const [error, setError] = useState("");
   const location = useLocation();
   useEffect(() => {
-    getPipelinesHistoryReport(setResult, location.state.id, "UNITTEST");
+    getPipelinesHistoryReport(
+      setResult,
+      setError,
+      location.state.id,
+      "UNITTEST"
+    );
   }, []);
 
   const applicationColumns = [
@@ -36,13 +43,13 @@ export default function UnitTest() {
     },
   ];
 
-  return (
-    <>
-      <Table
-        rows={result}
-        columns={applicationColumns}
-        getRowId={(row) => row.message + row.testcaseName + row.result}
-      />
-    </>
+  return result.length > 0 ? (
+    <Table
+      rows={result}
+      columns={applicationColumns}
+      getRowId={(row) => row.message + row.testcaseName + row.result}
+    />
+  ) : (
+    <Alert severity="error">{error}</Alert>
   );
 }
