@@ -1,12 +1,12 @@
 
 import React, { useEffect, useState } from 'react'
 import Table from '../CustomComponent/Table'
-import StarIcon from '@mui/icons-material/Star';
+// import StarIcon from '@mui/icons-material/Star';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
+// import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import { Chip } from '@mui/material';
 import { Stack } from '@mui/system';
 import ConfirmPop from '../CustomComponent/ConfirmPop';
@@ -17,18 +17,18 @@ import { useNavigate } from 'react-router-dom';
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 
 function ProjectTable() {
-    let row = [{
-        id: "1",
-        project_name: "My Projects",
-        automation_name: "Selenium",
-        description: "This is description of the project",
-        favourite: true,
+    // let row = [{
+    //     id: "1",
+    //     project_name: "My Projects",
+    //     automation_name: "Selenium",
+    //     description: "This is description of the project",
+    //     favourite: true,
 
 
-    }]
+    // }]
     let [popup, setPopup] = useState(false)
     let [pid, setPid] = useState()
-    let [uid, setUid] = useState()
+    // let [uid, setUid] = useState()
     let [edit, setedit] = useState(false)
     let [editprojectInfo, seteditprojectInfo] = useState([])
     let [project, setProject] = useState([])
@@ -58,13 +58,13 @@ function ProjectTable() {
 
     }
 
-    function DeleteFromFavourite(projectId, userId) {
-        console.log(projectId + "=======" + userId)
-    }
-    function AddToFavourite(projectId, userId) {
-        console.log(projectId + "=======" + userId)
+    // function DeleteFromFavourite(projectId, userId) {
+    //     console.log(projectId + "=======" + userId)
+    // }
+    // function AddToFavourite(projectId, userId) {
+    //     console.log(projectId + "=======" + userId)
 
-    }
+    // }
     function handleEdit(project) {
         setedit(!edit)
         seteditprojectInfo(project)
@@ -114,28 +114,28 @@ function ProjectTable() {
             sortable: false,
             align: 'center',
         },
-        {
-            headerName: 'Favourite',
-            renderCell: (param) => {
-                if (param.row.favourite === true) {
-                    return (
-                        <Tooltip title='Remove From Favourite'>
-                            <IconButton onClick={() => { DeleteFromFavourite(param.row.project_id) }}><StarIcon ></StarIcon></IconButton>
-                        </Tooltip>
-                    )
-                }
-                else {
-                    return (
-                        <Tooltip title='Add to Favourite'>
-                            <IconButton onClick={() => { AddToFavourite(param.row.id, param.row.user_id) }} ><StarBorderOutlinedIcon></StarBorderOutlinedIcon></IconButton>
-                        </Tooltip>
-                    )
-                }
-            },
-            flex: 1,
-            sortable: false,
-            align: 'left',
-        },
+        // {
+        //     headerName: 'Favourite',
+        //     renderCell: (param) => {
+        //         if (param.row.favourite === true) {
+        //             return (
+        //                 <Tooltip title='Remove From Favourite'>
+        //                     <IconButton onClick={() => { DeleteFromFavourite(param.row.project_id) }}><StarIcon ></StarIcon></IconButton>
+        //                 </Tooltip>
+        //             )
+        //         }
+        //         else {
+        //             return (
+        //                 <Tooltip title='Add to Favourite'>
+        //                     <IconButton onClick={() => { AddToFavourite(param.row.id, param.row.user_id) }} ><StarBorderOutlinedIcon></StarBorderOutlinedIcon></IconButton>
+        //                 </Tooltip>
+        //             )
+        //         }
+        //     },
+        //     flex: 1,
+        //     sortable: false,
+        //     align: 'left',
+        // },
         {
             headerName: 'Action',
             field: "action",
