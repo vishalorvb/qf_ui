@@ -123,8 +123,9 @@ export default function MiniDrawer({ open }) {
       .filter((navItem) => navItem.accessRole.includes(role))
       .map((navItem, index) => {
         return (
-          <ListItem disableGutters key={navItem.name}>
+          <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton
+              //  className="navListButton"
               onClick={() =>
                 navItem.subList
                   ? setOpenApplicatiion(!openApplication)
@@ -133,10 +134,17 @@ export default function MiniDrawer({ open }) {
               dense
               className="navItems"
             >
-              {<MuiListItemIcon>{navItem.icon}</MuiListItemIcon>}
-              <MuiListItemText primary={navItem.name} />
+              {
+                <MuiListItemIcon className="navListIconItem">
+                  {navItem.icon}
+                </MuiListItemIcon>
+              }
+              <MuiListItemText
+                primary={navItem.name}
+                className="navListItemText"
+              />
               {navItem.subList && open && (
-                <MuiListItemIcon>
+                <MuiListItemIcon className="navListIconItem">
                   <ExpandMore
                     expand={openApplication}
                     // onClick={() => setOpenApplicatiion(!openApplication)}
@@ -165,13 +173,13 @@ export default function MiniDrawer({ open }) {
 
   return (
     <ThemeProvider className="sidebar" theme={drawerTheme}>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+      <Drawer variant="permanent" open={open} className="drawer">
+        <DrawerHeader className="drawerHeader">
           <Logo>QF</Logo>
           {open && <Typography>Quality Fusion</Typography>}
         </DrawerHeader>
         <div className="menu">
-          <List>{navigationItemRender(qfAdmin)}</List>
+          <List className="menuList">{navigationItemRender(qfAdmin)}</List>
 
           {open && (
             <div className="sideNavSections">
@@ -179,7 +187,7 @@ export default function MiniDrawer({ open }) {
             </div>
           )}
 
-          <List dense disablePadding>
+          <List className="menuList">
             {navigationItemRender(testManagementList)}
           </List>
 
@@ -189,7 +197,7 @@ export default function MiniDrawer({ open }) {
             </div>
           )}
 
-          <List dense disablePadding>
+          <List className="menuList">
             {navigationItemRender(opsManagementList)}
           </List>
         </div>
