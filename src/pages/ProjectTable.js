@@ -15,25 +15,23 @@ import { getProject } from '../Services/ProjectService';
 import { deleteProject } from '../Services/ProjectService';
 import { useNavigate } from 'react-router-dom';
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
+import useAuth from '../hooks/useAuth';
 
 function ProjectTable() {
-    // let row = [{
-    //     id: "1",
-    //     project_name: "My Projects",
-    //     automation_name: "Selenium",
-    //     description: "This is description of the project",
-    //     favourite: true,
 
-
-    // }]
     let [popup, setPopup] = useState(false)
     let [pid, setPid] = useState()
-    // let [uid, setUid] = useState()
+
     let [edit, setedit] = useState(false)
     let [editprojectInfo, seteditprojectInfo] = useState([])
     let [project, setProject] = useState([])
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     const navigate = useNavigate();
+    const {auth} = useAuth();
+    console.log(auth.info)
+    const usertoken  = localStorage.getItem("token");
+    const loggedInId = auth.info.id;
+    console.log(loggedInId)
 
     function handleDeletePopup(pid) {
         console.log(pid)
@@ -44,27 +42,21 @@ function ProjectTable() {
     }
     function DeleteProjectFromUser(projectId) {
         console.log(projectId)
-        deleteProject(projectId, 4, 1).then(res => {
+        deleteProject(projectId, loggedInId, auth.info.grafana_role).then(res => {
             console.log(res)
             if (res == 'SUCCESS') {
                 console.log("dletred")
                 setSnackbarsuccess(true)
-                getProject(setProject)
+                getProject(setProject,loggedInId)
 
             }
         })
-        // navigate("/projects")
+     
         setPopup(false)
 
     }
 
-    // function DeleteFromFavourite(projectId, userId) {
-    //     console.log(projectId + "=======" + userId)
-    // }
-    // function AddToFavourite(projectId, userId) {
-    //     console.log(projectId + "=======" + userId)
-
-    // }
+  
     function handleEdit(project) {
         setedit(!edit)
         seteditprojectInfo(project)
@@ -114,28 +106,7 @@ function ProjectTable() {
             sortable: false,
             align: 'center',
         },
-        // {
-        //     headerName: 'Favourite',
-        //     renderCell: (param) => {
-        //         if (param.row.favourite === true) {
-        //             return (
-        //                 <Tooltip title='Remove From Favourite'>
-        //                     <IconButton onClick={() => { DeleteFromFavourite(param.row.project_id) }}><StarIcon ></StarIcon></IconButton>
-        //                 </Tooltip>
-        //             )
-        //         }
-        //         else {
-        //             return (
-        //                 <Tooltip title='Add to Favourite'>
-        //                     <IconButton onClick={() => { AddToFavourite(param.row.id, param.row.user_id) }} ><StarBorderOutlinedIcon></StarBorderOutlinedIcon></IconButton>
-        //                 </Tooltip>
-        //             )
-        //         }
-        //     },
-        //     flex: 1,
-        //     sortable: false,
-        //     align: 'left',
-        // },
+    
         {
             headerName: 'Action',
             field: "action",
@@ -160,7 +131,7 @@ function ProjectTable() {
 
     useEffect(() => {
 
-        getProject(setProject, 4)
+        getProject(setProject, loggedInId)
     }, [])
 
     return (

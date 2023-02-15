@@ -1,4 +1,4 @@
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Checkbox, Container, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import {
@@ -11,9 +11,18 @@ import useHead from "../hooks/useHead";
 import { createProject } from "../Services/ProjectService";
 import { updateProject } from "../Services/ProjectService";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
+import { MultiSelectElement } from "react-hook-form-mui";
+
 
 function CreateProject(props) {
   const { setHeader } = useHead();
+  const { auth } = useAuth();
+  console.log(auth.info)
+  const usertoken = localStorage.getItem("token");
+  const loggedInId = auth.info.id;
+  console.log(loggedInId)
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -23,12 +32,16 @@ function CreateProject(props) {
     });
   }, []);
 
+
   let [repository, setRepository] = useState(false);
   let [pipeline, setPipeline] = useState(false);
   let [database, setDatabase] = useState(false);
   let [collaboration, setCollaboration] = useState(false);
   let [snackbarerror, setSnackbarerror] = useState(false);
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
+  const [users, setUsers] = useState([]);
+  let [selectedUsers, setSelectedUsers] = useState([])
+
   const navigate = useNavigate();
 
   let project_name = useRef();
@@ -68,7 +81,7 @@ function CreateProject(props) {
     passwordRef.push(jenkinsPassword);
     passwordRef.push(dbPassword);
   }
-  // let passwordRef = [jenkinsPassword, dbPassword]
+ 
   let onlyAlphabets = [];
   let onlynumbers = [];
   let autocompletename = [];
@@ -80,8 +93,7 @@ function CreateProject(props) {
       setDatabase(true);
       setCollaboration(true);
     }
-    // getAutomationType(setAutomation);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, []);
 
   useEffect(() => {
@@ -102,21 +114,21 @@ function CreateProject(props) {
       jenkinsUrl.current.value = props.project.jenkins_url;
       jenkinsToken.current.value = props.project.jenkins_token;
       jenkinsUsername.current.value = props.project.jenkins_user_name;
-      // jenkinsPassword.current.value = props.project.jenkins_password
+     
       databaseType.current.value = props.project.db_type;
       databaseName.current.value = props.project.db_name;
       hostName.current.value = props.project.db_host;
       dbUsername.current.value = props.project.db_user_name;
       portNumber.current.value = props.project.db_port;
-      // dbPassword.current.value = props.project.db_password
+
     } catch (error) {
       console.warn(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [props, repository, pipeline, database, collaboration]);
 
   function submitHandler() {
-    // console.log(automation_type.current.value);
+   
     console.log("Calling submitHandler");
     if (
       validateForm(
@@ -164,13 +176,13 @@ function CreateProject(props) {
         updateProject(data)
       } catch (error) {
         console.log(error)
-        createProject(data).then(res=>{
+        createProject(data).then(res => {
           if (res == 'SUCCESS') {
             setSnackbarsuccess(true)
             navigate("/projects")
           }
-            else {
-              console.log("not create project")
+          else {
+            console.log("not create project")
             setSnackbarerror(true)
           }
         })
@@ -179,7 +191,24 @@ function CreateProject(props) {
     }
     console.log("error in form")
     setSnackbarerror(true)
+
   }
+
+
+  useEffect(() => {
+    axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+        },
+      }).then(res => {
+        // console.log(res.data.info)
+        setUsers(res.data.info);
+      })
+  }, []);
+  useEffect(() => {
+  console.log(selectedUsers)
+  }, [selectedUsers])
   return (
     <div className="accordionParent" onClick={resetClassName}>
 
@@ -568,8 +597,8 @@ function CreateProject(props) {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              
-           
+
+
               <select
                 ref={issueTracker}
                 style={{ height: "28px" }}
@@ -662,11 +691,50 @@ function CreateProject(props) {
               </Button>
             </Grid>
           </Grid>
-          {/* <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} justifyContent="space-around" >
-                            <Button size='small'  variant="contained"  >Verify </Button>
-                        </Grid> */}
         </Container>
       </AccordionTemplate>
+
+      <AccordionTemplate name="Add User">
+        <Container
+          component={"div"}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-around",
+          }}
+        >
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={2}>
+              <label>
+                Select User:
+              </label>
+            </Grid>
+            <Grid item xs={6} sm={6} md={10}>
+          <select
+          onChange={e=>{
+            setSelectedUsers(pv=>[...pv,e.target.value])
+          }}
+          multiple
+          >
+            <option value="">Select user</option>
+            {users.map(user=><option value={user.id}>{user.firstName}</option>)}
+            {/* {users} */}
+          </select>
+             
+
+            </Grid>
+          </Grid>
+        </Container>
+      </AccordionTemplate>
+
       <Grid
         container
         item
