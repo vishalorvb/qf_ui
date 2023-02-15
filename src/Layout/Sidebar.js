@@ -24,7 +24,7 @@ export default function Sidebar() {
   };
 
   return (
-    <>
+    <div className="sidebar">
       <div>
         <span>QF</span>
         <span>Quality Fusion</span>
@@ -38,6 +38,6 @@ export default function Sidebar() {
           <ul>{navigationItemRender(opsManagementList)}</ul>
         </div>
       </div>
-    </>
+    </div>
   );
 }
