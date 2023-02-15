@@ -31,7 +31,7 @@ function onlyNumber(str) {
 
 }
 
-export function validateForm(refs , specialcharRefs , passwordRef , onlyalphabets , onlynumbers , autocompletename , cname) {
+export function validateForm(refs, specialcharRefs, passwordRef, onlyalphabets, onlynumbers, autocompletename, cname) {
 
     let status = true;
     console.log(refs)
@@ -155,6 +155,20 @@ export function NumberValidation(ref, length, cname) {
     return numstatus;
 }
 
+export function validateFormbyName(names,cname) {
+    let status = true
+    names.forEach(element => {
+        let collection = document.getElementsByName(element)
+        for (let i = 0; i < collection.length; i++) {
+            console.log(collection[i].value)
+            if (collection[i].value.trim() == "") {
+                collection[i].className = cname
+                status = false;
+                console.log("error "+element)
+            }
+        }
+    });
+}
 
 
 

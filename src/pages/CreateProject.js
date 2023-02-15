@@ -19,10 +19,8 @@ import { MultiSelectElement } from "react-hook-form-mui";
 function CreateProject(props) {
   const { setHeader } = useHead();
   const { auth } = useAuth();
-  console.log(auth.info)
   const usertoken = localStorage.getItem("token");
   const loggedInId = auth.info.id;
-  console.log(loggedInId)
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -39,8 +37,9 @@ function CreateProject(props) {
   let [collaboration, setCollaboration] = useState(false);
   let [snackbarerror, setSnackbarerror] = useState(false);
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-  const [users, setUsers] = useState([]);
-  let [selectedUsers, setSelectedUsers] = useState([])
+  let [users, setUsers] = useState([]);
+  let [leftuser, setLeftuser] = useState([])
+  let [rigthtuser, setRightuser] = useState([])
 
   const navigate = useNavigate();
 
@@ -75,13 +74,13 @@ function CreateProject(props) {
   ];
   let specialcharRefs = [];
   let passwordRef = [];
-  console.log(props.edit)
+
   if (props.edit == true) {
   } else {
     passwordRef.push(jenkinsPassword);
     passwordRef.push(dbPassword);
   }
- 
+
   let onlyAlphabets = [];
   let onlynumbers = [];
   let autocompletename = [];
@@ -93,7 +92,7 @@ function CreateProject(props) {
       setDatabase(true);
       setCollaboration(true);
     }
-   
+
   }, []);
 
   useEffect(() => {
@@ -114,7 +113,7 @@ function CreateProject(props) {
       jenkinsUrl.current.value = props.project.jenkins_url;
       jenkinsToken.current.value = props.project.jenkins_token;
       jenkinsUsername.current.value = props.project.jenkins_user_name;
-     
+
       databaseType.current.value = props.project.db_type;
       databaseName.current.value = props.project.db_name;
       hostName.current.value = props.project.db_host;
@@ -124,11 +123,11 @@ function CreateProject(props) {
     } catch (error) {
       console.warn(error);
     }
-   
+
   }, [props, repository, pipeline, database, collaboration]);
 
   function submitHandler() {
-   
+
     console.log("Calling submitHandler");
     if (
       validateForm(
@@ -193,6 +192,43 @@ function CreateProject(props) {
     setSnackbarerror(true)
 
   }
+  function handleSelect(event) {
+    console.log("calling handle select")
+    let e = document.getElementById("left")
+    let remaining = leftuser
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        console.log(e.options[i].value)
+        let temp = users.filter(user => user.id == e.options[i].value)
+        console.log(temp)
+        remaining = remaining.filter(user => user.id != e.options[i].value)
+        if (temp.length > 0 ){
+          setRightuser(pv => [...pv, temp[0]])
+
+        }
+      }
+      setLeftuser(remaining)
+    }
+  }
+
+  function handleUnselect(event){
+    console.log("calling handle unselect")
+    let e = document.getElementById("right")
+    let remaining = rigthtuser
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        console.log(e.options[i].value)
+        let temp = users.filter(user => user.id == e.options[i].value)
+        console.log(temp[0])
+        remaining = remaining.filter(user => user.id != e.options[i].value)
+        if (temp.length > 0 ){
+          console.log("inside if")
+          setLeftuser(pv => [...pv, temp[0]])
+        }
+      }
+      setRightuser(remaining)
+    }
+  }
 
 
   useEffect(() => {
@@ -202,17 +238,14 @@ function CreateProject(props) {
           Authorization: `Bearer ${usertoken}`,
         },
       }).then(res => {
-        // console.log(res.data.info)
+        console.log(res.data.info)
         setUsers(res.data.info);
+        setLeftuser(res.data.info)
       })
   }, []);
-  useEffect(() => {
-  console.log(selectedUsers)
-  }, [selectedUsers])
+
   return (
     <div className="accordionParent" onClick={resetClassName}>
-
-      {props.edit && <h1>This is Edit</h1>}
       <SnackbarNotify
         open={snackbarerror}
         close={setSnackbarerror}
@@ -712,26 +745,44 @@ function CreateProject(props) {
             md={12}
             sx={{ marginBottom: "10px" }}
           >
-            <Grid item xs={6} sm={6} md={2}>
+            <Grid item xs={2} sm={2} md={2}>
               <label>
                 Select User:
               </label>
             </Grid>
-            <Grid item xs={6} sm={6} md={10}>
-          <select
-          onChange={e=>{
-            setSelectedUsers(pv=>[...pv,e.target.value])
-          }}
-          multiple
-          >
-            <option value="">Select user</option>
-            {users.map(user=><option value={user.id}>{user.firstName}</option>)}
-            {/* {users} */}
-          </select>
-             
-
+            <Grid item xs={3} sm={3} md={3}>
+              <select
+                id="left"
+                multiple
+              >
+                <option value="0">Select user</option>
+                {leftuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+              </select>
+            </Grid>
+            <Grid item xs={1} sm={1} md={1}>
+              <button type=""
+                onClick={handleSelect}
+              > {">>"} </button>
+              <button type=""
+              onClick={handleUnselect}
+              > {"<<"} </button>
+            </Grid>
+            <Grid item xs={2} sm={2} md={2}>
+              <label>
+                Select User:
+              </label>
+            </Grid>
+            <Grid item xs={3} sm={3} md={3}>
+              <select
+              id="right"
+                multiple
+              >
+                <option value="">Select user</option>
+                {rigthtuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+              </select>
             </Grid>
           </Grid>
+
         </Container>
       </AccordionTemplate>
 

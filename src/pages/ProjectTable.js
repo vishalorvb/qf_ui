@@ -26,7 +26,6 @@ function ProjectTable() {
     let [editprojectInfo, seteditprojectInfo] = useState([])
     let [project, setProject] = useState([])
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-    const navigate = useNavigate();
     const {auth} = useAuth();
     console.log(auth.info)
     const usertoken  = localStorage.getItem("token");

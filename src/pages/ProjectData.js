@@ -1,0 +1,63 @@
+
+
+let createformData = {
+    "projectName": "",
+    "projectDesc": "",
+    "issueTrackerType": "",
+    "jira_project_id": "",
+    "sqeProjectId": "",
+    "userId": "",
+    "orgId": "",
+    "repository_url": "",
+    "repository_token": "",
+    "jenkins_token": "",
+    "jenkins_url": "",
+    "jenkins_user_name": "",
+    "jenkins_password": "",
+    "automation_framework_type": "",
+    "db_type": "",
+    "db_name": "",
+    "db_user_name": "",
+    "db_password": "",
+    "db_port": "",
+    "db_host": "",
+    "org_name": "",
+    "jira_url": "",
+    "jira_password": "",
+    "jira_user_name": "",
+    "jira_project_key": "",
+    "user_access_permissions": [],
+    "gitOps": true
+}
+
+export function clearProjectData(){
+     createformData = {
+        "projectName": "",
+        "projectDesc": "",
+        "issueTrackerType": "",
+        "jira_project_id": "",
+        "sqeProjectId": 0,
+        "userId": "",
+        "orgId": "",
+        "repository_url": "",
+        "repository_token": "",
+        "jenkins_token": "",
+        "jenkins_url": "",
+        "jenkins_user_name": "",
+        "jenkins_password": "",
+        "automation_framework_type": "",
+        "db_type": "",
+        "db_name": "",
+        "db_user_name": "",
+        "db_password": "",
+        "db_port": "",
+        "db_host": "",
+        "org_name": "",
+        "jira_url": "",
+        "jira_password": "",
+        "jira_user_name": "",
+        "jira_project_key": "",
+        "user_access_permissions": [],
+        "gitOps": true
+    }
+}
