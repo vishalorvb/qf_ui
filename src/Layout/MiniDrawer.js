@@ -125,7 +125,11 @@ export default function MiniDrawer({ open }) {
         return (
           <ListItem disableGutters key={navItem.name}>
             <ListItemButton
-              onClick={() => navigate(navItem.route)}
+              onClick={() =>
+                navItem.subList
+                  ? setOpenApplicatiion(!openApplication)
+                  : navigate(navItem.route)
+              }
               dense
               className="navItems"
             >
@@ -135,7 +139,7 @@ export default function MiniDrawer({ open }) {
                 <MuiListItemIcon>
                   <ExpandMore
                     expand={openApplication}
-                    onClick={() => setOpenApplicatiion(!openApplication)}
+                    // onClick={() => setOpenApplicatiion(!openApplication)}
                     aria-expanded={openApplication}
                     aria-label="show more"
                     disableFocusRipple
