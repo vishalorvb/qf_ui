@@ -123,42 +123,16 @@ export default function MiniDrawer({ open }) {
       .filter((navItem) => navItem.accessRole.includes(role))
       .map((navItem, index) => {
         return (
-          <ListItem
-            disableGutters
-            sx={{
-              display: "block",
-              paddingTop: open ? "1px" : "4px",
-              paddingBottom: open ? "1px" : "4px",
-            }}
-            key={navItem.name}
-          >
+          <ListItem disableGutters key={navItem.name}>
             <ListItemButton
               onClick={() => navigate(navItem.route)}
               dense
               className="navItems"
             >
-              {
-                <MuiListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {navItem.icon}
-                </MuiListItemIcon>
-              }
-              <MuiListItemText
-                primary={navItem.name}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
+              {<MuiListItemIcon>{navItem.icon}</MuiListItemIcon>}
+              <MuiListItemText primary={navItem.name} />
               {navItem.subList && open && (
-                <MuiListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: "center",
-                  }}
-                >
+                <MuiListItemIcon>
                   <ExpandMore
                     expand={openApplication}
                     onClick={() => setOpenApplicatiion(!openApplication)}
@@ -167,7 +141,7 @@ export default function MiniDrawer({ open }) {
                     disableFocusRipple
                     disableRipple
                   >
-                    <ExpandMoreIcon sx={{ color: "white" }} />
+                    <ExpandMoreIcon />
                   </ExpandMore>
                 </MuiListItemIcon>
               )}
@@ -190,18 +164,7 @@ export default function MiniDrawer({ open }) {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <Logo>QF</Logo>
-          {open && (
-            <Typography
-              sx={{
-                color: "black",
-                fontSize: "1.2rem",
-                paddingLeft: "10px",
-                fontWeight: "400",
-              }}
-            >
-              Quality Fusion
-            </Typography>
-          )}
+          {open && <Typography>Quality Fusion</Typography>}
         </DrawerHeader>
         <div className="menu">
           <List>{navigationItemRender(qfAdmin)}</List>
@@ -226,9 +189,9 @@ export default function MiniDrawer({ open }) {
             {navigationItemRender(opsManagementList)}
           </List>
         </div>
-        {open && (
-          <Copyright sx={{ position: "sticky", bottom: 10, color: "white" }} />
-        )}
+        {/* {open && (
+          // <Copyright sx={{ position: "sticky", bottom: 10, color: "white" }} />
+        )} */}
       </Drawer>
     </ThemeProvider>
   );
