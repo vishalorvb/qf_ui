@@ -51,7 +51,11 @@ export async function updateProject(data) {
     method: "post",
     url: `${baseUrl}/qfservice/updateProject`,
     data: data,
-  });
+  }).then((response) => {
+    return response.data.status;
+  }).catch((err) => {
+    return null
+  })
   return res;
 }
 
@@ -235,3 +239,15 @@ export async function deleteApi(apiid) {
 }
 
 
+export function getUsers(callback,orgid,ssoid,token){
+  axios.get(`${baseUrl}/qfauthservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(res => {
+    console.log(res.data.info)
+    callback(res.data.info);
+    // setLeftuser(res.data.info)
+  })
+}
