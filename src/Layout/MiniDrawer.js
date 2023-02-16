@@ -32,6 +32,7 @@ const drawerTheme = createTheme({
         paper: {
           backgroundColor: "#002980",
           border: 0,
+          display: "flex",
         },
       },
     },
@@ -134,11 +135,7 @@ export default function MiniDrawer({ open }) {
             <ListItemButton
               onClick={() => navigate(navItem.route)}
               dense
-              sx={{
-                justifyContent: open ? "initial" : "center",
-                paddingTop: 0,
-                paddingBottom: 0,
-              }}
+              className="navItems"
             >
               {
                 <MuiListItemIcon
@@ -189,7 +186,7 @@ export default function MiniDrawer({ open }) {
   };
 
   return (
-    <ThemeProvider theme={drawerTheme}>
+    <ThemeProvider className="sidebar" theme={drawerTheme}>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <Logo>QF</Logo>
@@ -206,31 +203,31 @@ export default function MiniDrawer({ open }) {
             </Typography>
           )}
         </DrawerHeader>
-        <List>{navigationItemRender(qfAdmin)}</List>
+        <div className="menu">
+          <List>{navigationItemRender(qfAdmin)}</List>
 
+          {open && (
+            <div className="sideNavSections">
+              <span>Test management</span>
+            </div>
+          )}
+
+          <List dense disablePadding>
+            {navigationItemRender(testManagementList)}
+          </List>
+
+          {open && (
+            <div className="sideNavSections">
+              <span>Ops</span>
+            </div>
+          )}
+
+          <List dense disablePadding>
+            {navigationItemRender(opsManagementList)}
+          </List>
+        </div>
         {open && (
-          <div className="sideNavSections">
-            <span>Test management</span>
-          </div>
-        )}
-
-        <List dense disablePadding>
-          {navigationItemRender(testManagementList)}
-        </List>
-
-        {open && (
-          <div className="sideNavSections">
-            <span>Ops</span>
-          </div>
-        )}
-
-        <List dense disablePadding>
-          {navigationItemRender(opsManagementList)}
-        </List>
-        {open && (
-          <Copyright
-            sx={{ position: "fixed", left: 30, bottom: 10, color: "white" }}
-          />
+          <Copyright sx={{ position: "sticky", bottom: 10, color: "white" }} />
         )}
       </Drawer>
     </ThemeProvider>

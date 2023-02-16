@@ -92,7 +92,9 @@ export default function Pipeline() {
           <div>
             <EditOutlinedIcon
               onClick={() =>
-                navigate("CreatePipeline", { state: { id: param.row.id } })
+                navigate("CreatePipeline", {
+                  state: { id: param.row.id, module: moduleId },
+                })
               }
             />
           </div>

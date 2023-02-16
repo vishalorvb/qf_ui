@@ -31,9 +31,9 @@ export default function Admin() {
   const [deactiveObject, setDeactiveObject] = useState([]);
 
   const axiosPrivate = useAxios();
-  const {auth} = useAuth();
-  console.log(auth.info)
-  const token  = localStorage.getItem("token");
+  const { auth } = useAuth();
+  console.log(auth.info);
+  const token = localStorage.getItem("token");
   const loggedInId = auth.info.id;
 
   const addUserHandler = () => {
@@ -81,14 +81,18 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(res => {
+    axios
+      .get(
+        `/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
         setUsers(res.data.info);
-      })
+      });
   }, []);
 
   const columns = [
@@ -142,7 +146,7 @@ export default function Admin() {
                   editUserHandler(param.row);
                 }}
               >
-                <EditOutlinedIcon></EditOutlinedIcon>
+                <EditOutlinedIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
@@ -151,30 +155,30 @@ export default function Admin() {
                   deleteUserHandler(param.row);
                 }}
               >
-                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
+                <DeleteOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>
-            {param.row.user_status === 0 ?
-            <Tooltip title="Inactive">
-              <IconButton
-                onClick={(e) => {
-                  activateUserHandler(param.row);
-                }}
-              >
-                <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-             : 
-            <Tooltip title="Active">
-              <IconButton
-                onClick={(e) => {
-                  deactivateUserHandler(param.row);
-                }}
-              >
-                <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            } 
+            {param.row.user_status === 0 ? (
+              <Tooltip title="Inactive">
+                <IconButton
+                  onClick={(e) => {
+                    activateUserHandler(param.row);
+                  }}
+                >
+                  <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Active">
+                <IconButton
+                  onClick={(e) => {
+                    deactivateUserHandler(param.row);
+                  }}
+                >
+                  <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
+                </IconButton>
+              </Tooltip>
+            )}
           </>
         );
       },

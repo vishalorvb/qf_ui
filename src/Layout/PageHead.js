@@ -48,7 +48,11 @@ export default function PageHead() {
                 {header.name}
               </Typography>
               {header.plusButton && (
-                <IconButton size="small" onClick={header.plusCallback}>
+                <IconButton
+                  size="small"
+                  onClick={header.plusCallback}
+                  className="addIcon"
+                >
                   <AddIcon fontSize="small" />
                 </IconButton>
               )}

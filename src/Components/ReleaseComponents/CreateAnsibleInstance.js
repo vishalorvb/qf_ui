@@ -1,7 +1,7 @@
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, Stack, TextField } from "@mui/material";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
@@ -92,14 +92,14 @@ export default function CreateAnsibleInstance() {
         const respMsg = resp?.data?.message;
         const info = resp?.data?.info;
         setMsg(respMsg);
-        info && reset();
+        info !== null && reset();
       });
   };
 
   return (
     <>
       <SnackbarNotify
-        open={msg && true}
+        open={msg !== false && true}
         close={setMsg}
         msg={msg}
         severity="success"
@@ -224,9 +224,11 @@ export default function CreateAnsibleInstance() {
             </Grid>
           </Grid>
         </AccordionTemplate>
-        <Button type="submit" variant="contained">
-          Save
-        </Button>
+        <Stack direction="row" justifyContent="center" alignItems="center">
+          <Button type="submit" variant="contained">
+            Save
+          </Button>
+        </Stack>
       </form>
     </>
   );

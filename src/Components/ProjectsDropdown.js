@@ -25,6 +25,7 @@ export default function ProjectsDropdown({ setSelectedProject }) {
       justifyContent="flex-end"
       alignItems="center"
       spacing={2}
+      mb={1}
     >
       <Typography variant="subtitle1">Project:</Typography>
       <Autocomplete

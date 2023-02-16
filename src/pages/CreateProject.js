@@ -57,8 +57,7 @@ function CreateProject(props) {
     description,
     project_name,
     automation_type,
-    issueTracker
-
+    issueTracker,
   ];
   let specialcharRefs = [];
   let passwordRef = [];
@@ -87,8 +86,8 @@ function CreateProject(props) {
   useEffect(() => {
     try {
       console.log(props.project.project_id);
-      console.log(props.project)
-      console.log(Object.keys(props.project).length)
+      console.log(props.project);
+      console.log(Object.keys(props.project).length);
       project_name.current.value = props.project.project_name;
       project_name.current.disabled = true;
       description.current.value = props.project.description;
@@ -156,33 +155,30 @@ function CreateProject(props) {
         jira_user_name: userName.current.value,
         jira_project_key: projects.current.value,
         user_access_permissions: "[]",
-        gitOps: true
-      }
+        gitOps: true,
+      };
       try {
-        data.sqeProjectId = props.project.project_id
-        console.log("inside try block of data")
-        updateProject(data)
+        data.sqeProjectId = props.project.project_id;
+        console.log("inside try block of data");
+        updateProject(data);
       } catch (error) {
-        console.log(error)
-        createProject(data).then(res=>{
-          if (res == 'SUCCESS') {
-            setSnackbarsuccess(true)
-            navigate("/projects")
+        console.log(error);
+        createProject(data).then((res) => {
+          if (res == "SUCCESS") {
+            setSnackbarsuccess(true);
+            navigate("/projects");
+          } else {
+            console.log("not create project");
+            setSnackbarerror(true);
           }
-            else {
-              console.log("not create project")
-            setSnackbarerror(true)
-          }
-        })
+        });
       }
-
     }
-    console.log("error in form")
-    setSnackbarerror(true)
+    console.log("error in form");
+    setSnackbarerror(true);
   }
   return (
     <div className="accordionParent" onClick={resetClassName}>
-
       {props.edit && <h1>This is Edit</h1>}
       <SnackbarNotify
         open={snackbarerror}
@@ -199,6 +195,7 @@ function CreateProject(props) {
       <AccordionTemplate name="Project Information">
         <Container
           component={"div"}
+          maxWidth={false}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -206,14 +203,7 @@ function CreateProject(props) {
             justifyContent: "space-around",
           }}
         >
-          <Grid
-            container
-            item
-            xs={12}
-            sm={8}
-            md={6}
-            sx={{ marginBottom: "10px" }}
-          >
+          <Grid container item md={6} sx={{ marginBottom: "10px" }}>
             <Grid item xs={6} sm={6} md={4}>
               <label>
                 Project Name <span className="importantfield">*</span>:
@@ -250,7 +240,6 @@ function CreateProject(props) {
                 <option value="">Select</option>
 
                 <option value={1}>Selenium</option>
-
               </select>
             </Grid>
           </Grid>
@@ -277,6 +266,7 @@ function CreateProject(props) {
       <AccordionTemplate name="Repository">
         <Container
           component={"div"}
+          maxWidth={false}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -342,6 +332,7 @@ function CreateProject(props) {
       <AccordionTemplate name="CICD Pipeline">
         <Container
           component={"div"}
+          maxWidth={false}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -426,6 +417,7 @@ function CreateProject(props) {
       <AccordionTemplate name="Database">
         <Container
           component={"div"}
+          maxWidth={false}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -547,6 +539,7 @@ function CreateProject(props) {
       <AccordionTemplate name="Collaboration">
         <Container
           component={"div"}
+          maxWidth={false}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -568,17 +561,11 @@ function CreateProject(props) {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              
-           
-              <select
-                ref={issueTracker}
-                style={{ height: "28px" }}
-              >
+              <select ref={issueTracker} style={{ height: "28px" }}>
                 <option value="">Select</option>
 
                 <option value={1}>Jira</option>
                 <option value={2}>Azure</option>
-
               </select>
             </Grid>
           </Grid>

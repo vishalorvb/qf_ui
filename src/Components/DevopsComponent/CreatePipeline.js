@@ -43,9 +43,9 @@ export default function CreatePipeline() {
   const location = useLocation();
 
   const onSubmitHandler = (params) => {
-    console.log({ params });
     const id = location.state.id;
     const moduleId = location.state.module;
+    console.log(location.state);
     // createPipeline(setSaveRes, data, location.state.id);
     axios
       .post(`/qfservice/Createpipeline`, null, {

@@ -44,10 +44,11 @@ export function getCreatePipelineData(callback, setdefaultData, id) {
     });
 }
 
-export function getPipelinesHistoryReport(callback, id, tag) {
+export function getPipelinesHistoryReport(callback, setError, id, tag) {
   // This function except name of state as a callback and set value in that state
   axios.get(`${baseUrl}/qfservice/pipeline/report/${id}/${tag}`).then((res) => {
-    console.log(res?.data?.data);
+    console.log(res?.data);
+    setError(res?.data?.error?.description);
     const result = res?.data?.data;
     if (result !== null) {
       const unittestset = result?.unittestset;
@@ -91,7 +92,7 @@ export function executePipeline(callback, id) {
     .post(`${baseUrl}/qfservice/executepipeline?release_id=${id}&user_id=7`)
     .then((res) => {
       console.log(res.data);
-      callback(res);
+      callback(res?.data?.message);
     });
 }
 

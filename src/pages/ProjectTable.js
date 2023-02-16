@@ -35,28 +35,24 @@ function ProjectTable() {
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     const navigate = useNavigate();
 
-    function handleDeletePopup(pid) {
-        console.log(pid)
-        setPopup(true);
-        setPid(pid)
-
-
-    }
-    function DeleteProjectFromUser(projectId) {
-        console.log(projectId)
-        deleteProject(projectId, 4, 1).then(res => {
-            console.log(res)
-            if (res == 'SUCCESS') {
-                console.log("dletred")
-                setSnackbarsuccess(true)
-                getProject(setProject)
-
-            }
-        })
-        // navigate("/projects")
-        setPopup(false)
-
-    }
+  function handleDeletePopup(pid) {
+    console.log(pid);
+    setPopup(true);
+    setPid(pid);
+  }
+  function DeleteProjectFromUser(projectId) {
+    console.log(projectId);
+    deleteProject(projectId, 4, 1).then((res) => {
+      console.log(res);
+      if (res == "SUCCESS") {
+        console.log("dletred");
+        setSnackbarsuccess(true);
+        getProject(setProject);
+      }
+    });
+    // navigate("/projects")
+    setPopup(false);
+  }
 
     // function DeleteFromFavourite(projectId, userId) {
     //     console.log(projectId + "=======" + userId)
@@ -70,8 +66,8 @@ function ProjectTable() {
         seteditprojectInfo(project)
         console.log(project)
 
-        console.log(project)
-    }
+    console.log(project);
+  }
 
     const columns = [
 
@@ -158,38 +154,36 @@ function ProjectTable() {
         }
     ];
 
-    useEffect(() => {
+  useEffect(() => {
+    getProject(setProject, 4);
+  }, []);
 
-        getProject(setProject, 4)
-    }, [])
-
-    return (
-        <div>
-            <SnackbarNotify
-                open={snackbarsuccess}
-                close={setSnackbarsuccess}
-                msg="Deleted Succesfully"
-                severity="success"
-            />
-            <Table
-                rows={project}
-                columns={columns}
-                hidefooter={true}
-                getRowId={row => row.project_id}
-            ></Table>
-            {edit && <CreateProject
-                edit={true}
-                project={editprojectInfo}
-            ></CreateProject>}
-            <ConfirmPop
-                open={popup}
-                handleClose={() => setPopup(false)}
-                heading={"Delete Project"}
-                message={"Are you sure you want to delete this project"}
-                onConfirm={() => DeleteProjectFromUser(pid)}
-            ></ConfirmPop>
-        </div>
-    )
+  return (
+    <div>
+      <SnackbarNotify
+        open={snackbarsuccess}
+        close={setSnackbarsuccess}
+        msg="Deleted Succesfully"
+        severity="success"
+      />
+      <Table
+        rows={project}
+        columns={columns}
+        hidefooter={true}
+        getRowId={(row) => row.project_id}
+      ></Table>
+      {edit && (
+        <CreateProject edit={true} project={editprojectInfo}></CreateProject>
+      )}
+      <ConfirmPop
+        open={popup}
+        handleClose={() => setPopup(false)}
+        heading={"Delete Project"}
+        message={"Are you sure you want to delete this project"}
+        onConfirm={() => DeleteProjectFromUser(pid)}
+      ></ConfirmPop>
+    </div>
+  );
 }
 
-export default ProjectTable
+export default ProjectTable;

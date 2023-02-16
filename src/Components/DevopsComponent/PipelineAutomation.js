@@ -16,12 +16,7 @@ export default function PipelineAutomation() {
   const location = useLocation();
   const [history, setHistory] = useState([]);
   const [releaseLog, setReleaseLog] = useState([]);
-  const [executionRes, setExecutionRes] = useState([]);
   const [msg, setMsg] = useState(false);
-
-  useEffect(() => {
-    setMsg(true);
-  }, [executionRes]);
 
   useEffect(() => {
     getPipelinesHistory(setHistory, setReleaseLog, location.state.id);
@@ -76,9 +71,9 @@ export default function PipelineAutomation() {
   return (
     <>
       <SnackbarNotify
-        open={msg}
+        open={msg && true}
         close={setMsg}
-        msg={executionRes?.data?.message}
+        msg={msg}
         severity="success"
       />
       <Stack
@@ -93,7 +88,7 @@ export default function PipelineAutomation() {
         </Typography>
         <Button
           variant="contained"
-          onClick={() => executePipeline(setExecutionRes, location.state.id)}
+          onClick={() => executePipeline(setMsg, location.state.id)}
         >
           Release Now
         </Button>

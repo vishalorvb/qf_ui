@@ -1,6 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { Grid, IconButton, Paper, Typography } from "@mui/material";
 import UserCard from "./UserCard";
 import useAuth from "../hooks/useAuth";
@@ -12,26 +12,14 @@ export default function AppHeader({ setOpen }) {
   const { auth } = useAuth();
 
   return (
-    <Grid
-      component={Paper}
-      elevation={0}
-      container
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      sx={{
-        background:
-          "transparent linear-gradient(270deg, #FFFFFF 0%, #F5F5F6 100%) 0% 0% no-repeat padding-box",
-        height: "65px",
-      }}
-    >
+    <Grid component={Paper} elevation={0} container className="header">
       <IconButton
         color="inherit"
         aria-label="open drawer"
         onClick={handleDrawerOpen}
         edge="end"
       >
-        <FormatAlignLeftIcon />
+        <MenuOutlinedIcon />
       </IconButton>
       <Stack
         direction="row"

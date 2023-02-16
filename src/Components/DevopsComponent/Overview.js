@@ -7,13 +7,15 @@ import { SettingsInputComponent } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getPipelinesHistoryReport } from "../../Services/DevopsServices";
+import { Alert } from "@mui/material";
 
 export default function Overview() {
   const [result, setResult] = useState({});
   const [resultRender, setResultRender] = useState([]);
+  const [error, setError] = useState("");
   const location = useLocation();
   useEffect(() => {
-    getPipelinesHistoryReport(setResult, location.state.id, "INFO");
+    getPipelinesHistoryReport(setResult, setError, location.state.id, "INFO");
   }, []);
 
   useEffect(() => {
@@ -22,17 +24,22 @@ export default function Overview() {
         setResultRender((ps) => [...ps, { name: key, status: result[key] }]);
       }
     }
+    console.log(result);
   }, [result]);
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Stepper orientation="vertical">
-        {resultRender?.map((label) => (
-          <Step completed={label.status} key={label.name}>
-            <StepLabel>{label.name}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+      {resultRender.length > 0 ? (
+        <Stepper orientation="vertical">
+          {resultRender?.map((label) => (
+            <Step completed={label.status} key={label.name}>
+              <StepLabel>{label.name}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      ) : (
+        <Alert severity="error">{error}</Alert>
+      )}
     </Box>
   );
 }
