@@ -135,8 +135,19 @@ function Testset() {
       return {
         ...ps,
         name: "Testset",
+        plusButton: true,
+        plusCallback: addUserHandler,
       };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   useEffect(() => {
@@ -207,16 +218,7 @@ function Testset() {
         <div
           className="recenttable"
           style={{ flot: "right", marginBottom: "10px" }}
-        >
-          <Button
-            style={{ flot: "right" }}
-            variant="contained"
-            endIcon={<AddOutlinedIcon />}
-            onClick={addUserHandler}
-          >
-            Create Testset
-          </Button>
-        </div>
+        ></div>
         <div className="datatable" style={{ marginTop: "20px" }}>
           <Table
             columns={columns}
