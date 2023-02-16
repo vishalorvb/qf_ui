@@ -16,6 +16,7 @@ import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 
 export default function Admin() {
   const { setHeader } = useHead();
@@ -29,6 +30,13 @@ export default function Admin() {
   const [deleteObject, setDeleteObject] = useState([]);
   const [activeObject, setActiveObject] = useState([]);
   const [deactiveObject, setDeactiveObject] = useState([]);
+  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
+  const [addErrorMsg, setAddErrorMsg] = useState(false);
+  const [editSuccessMsg, setEditSuccessMsg] = useState(false);
+  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+  const [actSuccessMsg, setActSuccessMsg] = useState(false);
+  const [deactSuccessMsg, setDeactSuccessMsg] = useState(false);
+  const [validationMsg, setValidationMsg] = useState(false);
 
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
@@ -80,20 +88,23 @@ export default function Admin() {
       });
   }, []);
 
+  const getUsers = () => {
+    axiosPrivate.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`).then(res => {
+      setUsers(res.data.info);
+    })
+  }
+
   useEffect(() => {
-    axios
-      .get(
-        `/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
+    axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(res => {
         setUsers(res.data.info);
-      });
+      })
   }, []);
+
 
   const columns = [
     {
@@ -158,27 +169,27 @@ export default function Admin() {
                 <DeleteOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>
-            {param.row.user_status === 0 ? (
-              <Tooltip title="Inactive">
-                <IconButton
-                  onClick={(e) => {
-                    activateUserHandler(param.row);
-                  }}
-                >
-                  <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Active">
-                <IconButton
-                  onClick={(e) => {
-                    deactivateUserHandler(param.row);
-                  }}
-                >
-                  <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
-                </IconButton>
-              </Tooltip>
-            )}
+            {param.row.user_status === 0 ?
+            <Tooltip title="Inactive">
+              <IconButton
+                onClick={(e) => {
+                  activateUserHandler(param.row);
+                }}
+              >
+                <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
+              </IconButton>
+            </Tooltip>
+             : 
+            <Tooltip title="Active">
+              <IconButton
+                onClick={(e) => {
+                  deactivateUserHandler(param.row);
+                }}
+              >
+                <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
+              </IconButton>
+            </Tooltip>
+            } 
           </>
         );
       },
@@ -189,21 +200,9 @@ export default function Admin() {
 
   return (
     <div>
-      {/* <div
-        className="recenttable"
-        style={{ flot: "right", marginBottom: "10px" }}
-      >
-        <Button
-          variant="contained"
-          endIcon={<AddOutlinedIcon />}
-          onClick={addUserHandler}
-        >
-          Add User
-        </Button>
-      </div> */}
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? (
-          <AddUserPopup open={open} setOpen={setOpen} users={users} />
+          <AddUserPopup open={open} setOpen={setOpen} users={users} getUsers={getUsers} setAddSuccessMsg={setAddSuccessMsg}/>
         ) : (
           ""
         )}
@@ -212,6 +211,8 @@ export default function Admin() {
             object={editObject}
             openEdit={openEdit}
             setOpenEdit={setOpenEdit}
+            getUsers={getUsers}
+            setEditSuccessMsg={setEditSuccessMsg}
           />
         ) : (
           ""
@@ -222,6 +223,8 @@ export default function Admin() {
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             loggedInId={loggedInId}
+            getUsers={getUsers}
+            setDelSuccessMsg={setDelSuccessMsg}
           />
         ) : (
           ""
@@ -231,6 +234,8 @@ export default function Admin() {
             object={activeObject}
             openActive={openActive}
             setOpenActive={setOpenActive}
+            getUsers={getUsers}
+            setActSuccessMsg={setActSuccessMsg}
           />
         ) : (
           ""
@@ -240,14 +245,23 @@ export default function Admin() {
             object={deactiveObject}
             openDeactive={openDeactive}
             setOpenDeactive={setOpenDeactive}
+            getUsers={getUsers}
+            setDeactSuccessMsg={setDeactSuccessMsg}
           />
         ) : (
           ""
         )}
+        <SnackbarNotify open={addSuccessMsg} close={setAddSuccessMsg} msg="User added successfully" severity="success" />
+        <SnackbarNotify open={editSuccessMsg} close={setEditSuccessMsg} msg="Changes are updated" severity="success" />
+        <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="User deleted successfully" severity="success" />
+        <SnackbarNotify open={actSuccessMsg} close={setActSuccessMsg} msg="User is active" severity="success" />
+        <SnackbarNotify open={deactSuccessMsg} close={setDeactSuccessMsg} msg="User is inactive" severity="success" />
+        <SnackbarNotify open={addErrorMsg} close={setAddErrorMsg} msg="User is already exist with this id, Please select another id" severity="error" />
+        <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
         <Table
           columns={columns}
           rows={users}
-          // hidefooter={false}
+        // hidefooter={false}
         />
       </div>
     </div>
