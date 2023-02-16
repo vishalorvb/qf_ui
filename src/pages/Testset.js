@@ -17,6 +17,8 @@ import { getTestsets } from "../Services/TestsetService";
 import { getProject } from "../Services/ProjectService";
 import useHead from "../hooks/useHead";
 import { getModules } from "../Services/ProjectService";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { axiosPrivate } from "../api/axios";
 
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
@@ -153,11 +155,20 @@ console.log(projectId);
       });
   }, []);
 
+  const submit = () => {
+    // getTestsets(setTestsetObject, projectId, workflowId);
+    axiosPrivate.get(`qfservice/webtestset/api/v1/projects/${projectId}/workflow/${workflowId}/web/testsets`).then(res => {
+      console.log(res.data.data)
+      setTestsetObject(res.data.data)
+  })
+  }
+
   useEffect(() => {
-    // getTestsets();
     getProject(setProjectObject);
+  }, []);
+
+  useEffect(() => {
     getModules(setWorkflowsObject,projectId);
-    getTestsets(setTestsetObject, projectId, workflowId);
   }, [projectId,workflowId]);
 
   return (
@@ -252,6 +263,19 @@ console.log(projectId);
               />
             </Grid>
           </Grid>
+          <Button
+            variant="contained"
+            onClick={submit}
+            startIcon={<SearchOutlinedIcon />}
+            // sx={{
+            //   marginLeft: "45%",
+            //   marginRight: "auto",
+            //   marginBottom: "10px",
+            //   marginTop: "25px",
+            // }}
+          >
+            Search
+          </Button>
         </Container>
       </Paper>
       {/* {open1 ? */}
