@@ -13,6 +13,7 @@ function ActiveUserPopup(props) {
     const axiosPrivate = useAxios();
     const { auth } = useAuth();
     const loggedInId = auth.info.id;
+    const id = object.id;
 
     const handleClose = () => {
         setOpenActive(false);
