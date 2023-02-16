@@ -1,20 +1,28 @@
-import { Button, Container, Grid } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { Button, Container, Grid, } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import {
-  validateForm,
   resetClassName,
 } from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-// import { getAutomationType, AddProject, updateProject } from "../Api";
 import AccordionTemplate from "../CustomComponent/AccordionTemplate";
 import useHead from "../hooks/useHead";
 import { createProject } from "../Services/ProjectService";
 import { updateProject } from "../Services/ProjectService";
+import useAuth from "../hooks/useAuth";
+import { createformData } from "./ProjectData";
+import { clearProjectData } from "./ProjectData";
+import { validateFormbyName } from "../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
+import { getUsers } from "../Services/ProjectService";
 
-function CreateProject(props) {
+function CreateProject() {
   const { setHeader } = useHead();
+  const { auth } = useAuth();
+  const usertoken = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -24,165 +32,117 @@ function CreateProject(props) {
     });
   }, []);
 
-  let date = new Date();
-  let [repository, setRepository] = useState(false);
-  let [pipeline, setPipeline] = useState(false);
-  let [database, setDatabase] = useState(false);
-  let [collaboration, setCollaboration] = useState(false);
+
   let [snackbarerror, setSnackbarerror] = useState(false);
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-  let [automation, setAutomation] = useState([]);
-  const navigate = useNavigate();
+  let [users, setUsers] = useState([]);
+  let [leftuser, setLeftuser] = useState([])
+  let [rigthtuser, setRightuser] = useState([])
 
-  let project_name = useRef();
-  let automation_type = useRef();
-  let description = useRef();
-  let gitUrl = useRef();
-  let gitAccessToken = useRef();
-  let branch = useRef();
-  let jenkinsUrl = useRef();
-  let jenkinsToken = useRef();
-  let jenkinsUsername = useRef();
-  let jenkinsPassword = useRef();
-  let databaseType = useRef();
-  let databaseName = useRef();
-  let hostName = useRef();
-  let dbUsername = useRef();
-  let portNumber = useRef();
-  let dbPassword = useRef();
-  let issueTracker = useRef();
-  let url = useRef();
-  let userName = useRef();
-  let token = useRef();
-  let projects = useRef();
 
-  let requiredFields = [
-    description,
-    project_name,
-    automation_type,
-    issueTracker,
-  ];
-  let specialcharRefs = [];
-  let passwordRef = [];
-  console.log(props.edit);
-  if (props.edit) {
-  } else {
-    passwordRef.push(jenkinsPassword);
-    passwordRef.push(dbPassword);
+
+  function getUserlist() {
+    let userlist = []
+    rigthtuser.forEach(user => {
+      let temp = {
+        "user_id": user.id,
+        "grafana_role": user.grafana_role
+      }
+      userlist.push(temp)
+    })
+    return userlist;
   }
-  // let passwordRef = [jenkinsPassword, dbPassword]
-  let onlyAlphabets = [];
-  let onlynumbers = [];
-  let autocompletename = [];
-
-  useEffect(() => {
-    if (props.edit) {
-      setRepository(true);
-      setPipeline(true);
-      setDatabase(true);
-      setCollaboration(true);
-    }
-    // getAutomationType(setAutomation);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    try {
-      console.log(props.project.project_id);
-      console.log(props.project);
-      console.log(Object.keys(props.project).length);
-      project_name.current.value = props.project.project_name;
-      project_name.current.disabled = true;
-      description.current.value = props.project.description;
-      automation_type.current.value = props.project.automation_framework_type;
-      console.log(props.project.automation_framework_type);
-      console.warn(automation_type);
-      console.warn(automation_type.current.value);
-      gitUrl.current.value = props.project.repository_url;
-      branch.current.value = props.project.repository_branch;
-      gitAccessToken.current.value = props.project.repository_token;
-      jenkinsUrl.current.value = props.project.jenkins_url;
-      jenkinsToken.current.value = props.project.jenkins_token;
-      jenkinsUsername.current.value = props.project.jenkins_user_name;
-      // jenkinsPassword.current.value = props.project.jenkins_password
-      databaseType.current.value = props.project.db_type;
-      databaseName.current.value = props.project.db_name;
-      hostName.current.value = props.project.db_host;
-      dbUsername.current.value = props.project.db_user_name;
-      portNumber.current.value = props.project.db_port;
-      // dbPassword.current.value = props.project.db_password
-    } catch (error) {
-      console.warn(error);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props, repository, pipeline, database, collaboration]);
 
   function submitHandler() {
-    // console.log(automation_type.current.value);
-    console.log("Calling submitHandler");
-    if (
-      validateForm(
-        requiredFields,
-        specialcharRefs,
-        passwordRef,
-        onlyAlphabets,
-        onlynumbers,
-        autocompletename,
-        "error"
-      )
-    ) {
-      let data = {
-        projectName: project_name.current.value,
-        projectDesc: description.current.value,
-        issueTrackerType: issueTracker.current.value,
-        jira_project_id: "",
-        sqeProjectId: 0,
-        userId: 4,
-        orgId: 1,
-        repository_url: gitUrl.current.value,
-        repository_token: gitAccessToken.current.value,
-        jenkins_token: jenkinsToken.current.value,
-        jenkins_url: jenkinsUrl.current.value,
-        jenkins_user_name: jenkinsUsername.current.value,
-        jenkins_password: jenkinsPassword.current.value,
-        automation_framework_type: automation_type.current.value,
-        db_type: databaseType.current.value,
-        db_name: databaseName.current.value,
-        db_user_name: dbUsername.current.value,
-        db_password: dbPassword.current.value,
-        db_port: portNumber.current.value,
-        db_host: hostName.current.value,
-        org_name: "",
-        jira_url: url.current.value,
-        jira_password: token.current.value,
-        jira_user_name: userName.current.value,
-        jira_project_key: projects.current.value,
-        user_access_permissions: "[]",
-        gitOps: true,
-      };
-      try {
-        data.sqeProjectId = props.project.project_id;
-        console.log("inside try block of data");
-        updateProject(data);
-      } catch (error) {
-        console.log(error);
-        createProject(data).then((res) => {
+    let x = getUserlist()
+    createformData.user_access_permissions = x
+    createformData.userId = auth.info.id
+
+    if (validateFormbyName(["projectname", "automation_framework_type", "desc", "issueTracker"], "error") == true) {
+
+      if (createformData.sqeProjectId == 0) {
+        createProject(createformData).then(res => {
           if (res == "SUCCESS") {
-            setSnackbarsuccess(true);
-            navigate("/projects");
-          } else {
-            console.log("not create project");
-            setSnackbarerror(true);
+            setSnackbarsuccess(true)
+            setTimeout(() => {
+              navigate("/projects")
+            }, 1000);
           }
-        });
+          else {
+            setSnackbarerror(true)
+          }
+        })
+      }
+      else {
+        updateProject(createformData).then(res => {
+          if (res == "SUCCESS") {
+            setSnackbarsuccess(true)
+            setTimeout(() => {
+              navigate("/projects")
+            }, 1000);
+          }
+          else {
+            setSnackbarerror(true)
+          }
+        })
+
       }
     }
-    console.log("error in form");
-    setSnackbarerror(true);
+    else {
+      setSnackbarerror(true)
+    }
   }
+
+
+
+
+  function handleSelect(event) {
+    let e = document.getElementById("left")
+    let remaining = leftuser
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        let temp = users.filter(user => user.id == e.options[i].value)
+        remaining = remaining.filter(user => user.id != e.options[i].value)
+        if (temp.length > 0) {
+          setRightuser(pv => [...pv, temp[0]])
+        }
+      }
+      setLeftuser(remaining)
+    }
+  }
+
+  function handleUnselect(event) {
+    let e = document.getElementById("right")
+    let remaining = rigthtuser
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        let temp = users.filter(user => user.id == e.options[i].value)
+        remaining = remaining.filter(user => user.id != e.options[i].value)
+        if (temp.length > 0) {
+          setLeftuser(pv => [...pv, temp[0]])
+        }
+      }
+      setRightuser(remaining)
+    }
+  }
+
+
+  useEffect(() => {
+    getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken)
+    getUsers(setLeftuser, auth.info.organization_id, auth.info.ssoId, usertoken)
+
+  }
+
+    , []);
+  useEffect(() => {
+    return () => {
+      clearProjectData()
+    }
+
+  }, []);
+
   return (
     <div className="accordionParent" onClick={resetClassName}>
-      {props.edit && <h1>This is Edit</h1>}
       <SnackbarNotify
         open={snackbarerror}
         close={setSnackbarerror}
@@ -214,10 +174,12 @@ function CreateProject(props) {
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               <input
-                ref={project_name}
-                value={props.project_name}
+                defaultValue={createformData.projectName}
                 type="text"
-                name=""
+                name="projectname"
+                onChange={e => {
+                  createformData.projectName = e.target.value;
+                }}
               />
             </Grid>
           </Grid>
@@ -237,12 +199,14 @@ function CreateProject(props) {
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               <select
-                ref={automation_type}
-                style={{ width: "100%", height: "28px" }}
+                onChange={e => {
+                  createformData.automation_framework_type = e.target.value;
+                }}
+                name="automation_framework_type"
               >
                 <option value="">Select</option>
-
-                <option value={1}>Selenium</option>
+                <option selected={createformData.automation_framework_type
+                  == 1 ? true : false} value={1}>Selenium</option>
               </select>
             </Grid>
           </Grid>
@@ -260,7 +224,11 @@ function CreateProject(props) {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              <input ref={description} type="text" name="" />
+              <input
+                onChange={e => {
+                  createformData.projectDesc = e.target.value;
+                }}
+                defaultValue={createformData.projectDesc} type="text" name="desc" />
             </Grid>
           </Grid>
         </Container>
@@ -287,11 +255,15 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={2}>
               <label>
-                Git URL <span className="importantfield">*</span>:
+                Git URL :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              <input ref={gitUrl} type="text" name="" />
+              <input defaultValue={createformData.repository_url} type="text" name=""
+                onChange={e => {
+                  createformData.repository_url = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -304,11 +276,15 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                Git Access Token <span className="importantfield">*</span>:
+                Git Access Token :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
-              <input ref={gitAccessToken} type="text" name="" />
+              <input defaultValue={createformData.repository_token} type="text" name=""
+                onChange={e => {
+                  createformData.repository_token = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -321,12 +297,14 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                Branch <span className="importantfield">*</span>:
+                Branch :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={branch} type="text" name="" />
+              <input type="text" name=""
+
+              />
             </Grid>
           </Grid>
         </Container>
@@ -353,12 +331,16 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                Jenkins URL <span className="importantfield">*</span>:
+                Jenkins URL :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input ref={jenkinsUrl} type="text" name="" />
+              <input defaultValue={createformData.jenkins_url} type="text" name=""
+                onChange={e => {
+                  createformData.jenkins_url = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -371,12 +353,16 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                Jenkins Token <span className="importantfield">*</span>:
+                Jenkins Token :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={jenkinsToken} type="text" name="" />
+              <input defaultValue={createformData.jenkins_token} type="text" name=""
+                onChange={e => {
+                  createformData.jenkins_token = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -389,11 +375,15 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                Jenkins UserName <span className="importantfield">*</span>:
+                Jenkins UserName :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
-              <input ref={jenkinsUsername} type="text" name="" />
+              <input defaultValue={createformData.jenkins_user_name} type="text" name=""
+                onChange={e => {
+                  createformData.jenkins_user_name = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -406,12 +396,16 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                Jenkins Password <span className="importantfield">*</span>:
+                Jenkins Password :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={jenkinsPassword} type="text" name="" />
+              <input defaultValue={createformData.jenkins_password} type="password" name=""
+                onChange={e => {
+                  createformData.jenkins_password = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
         </Container>
@@ -438,12 +432,16 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                Database Type <span className="importantfield">*</span>:
+                Database Type :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input ref={databaseType} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.db_type = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -456,12 +454,16 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                Database Name <span className="importantfield">*</span>:
+                Database Name :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={databaseName} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.db_name = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -474,12 +476,16 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                Host Name <span className="importantfield">*</span>:
+                Host Name :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input ref={hostName} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.db_name = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -492,12 +498,16 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                DB UserName <span className="importantfield">*</span>:
+                DB UserName :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={dbUsername} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.db_user_name = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -510,12 +520,16 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                Port Number <span className="importantfield">*</span>:
+                Port Number :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input ref={portNumber} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.db_port = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -528,12 +542,16 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                DB Password <span className="importantfield">*</span>:
+                DB Password :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={dbPassword} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.db_password = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
         </Container>
@@ -564,10 +582,16 @@ function CreateProject(props) {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              <select ref={issueTracker} style={{ height: "28px" }}>
-                <option value="">Select</option>
 
-                <option value={1}>Jira</option>
+
+              <select
+                onChange={e => {
+                  createformData.issueTrackerType = e.target.value;
+                }}
+                name="issueTracker"
+              >
+                <option value="">Select</option>
+                <option selected={createformData.issueTrackerType == 1 ? true : false} value={1}>Jira</option>
                 <option value={2}>Azure</option>
               </select>
             </Grid>
@@ -582,11 +606,15 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={2}>
               <label>
-                URL <span className="importantfield">*</span>:
+                URL :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              <input ref={url} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.jenkins_url = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -599,12 +627,16 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={4}>
               <label>
-                User Name <span className="importantfield">*</span>:
+                User Name :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input ref={userName} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.jenkins_user_name = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -617,12 +649,16 @@ function CreateProject(props) {
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
               <label>
-                Token <span className="importantfield">*</span>:
+                Token :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input ref={token} type="text" name="" />
+              <input type="text" name=""
+                onChange={e => {
+                  createformData.jenkins_token = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
           <Grid
@@ -635,14 +671,16 @@ function CreateProject(props) {
           >
             <Grid item xs={6} sm={6} md={2}>
               <label>
-                Projects <span className="importantfield">*</span>:
+                Projects :
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7.5}>
               {" "}
-              <input ref={projects} type="text" name="" />
+              <input type="text" name=""
+
+              />
             </Grid>
-            <Grid item xs={6} sm={6} md={2} alignItems="end">
+            {/* <Grid item xs={6} sm={6} md={2} alignItems="end">
               <Button
                 size="small"
                 variant="contained"
@@ -650,13 +688,70 @@ function CreateProject(props) {
               >
                 Verify{" "}
               </Button>
-            </Grid>
+            </Grid> */}
           </Grid>
-          {/* <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} justifyContent="space-around" >
-                            <Button size='small'  variant="contained"  >Verify </Button>
-                        </Grid> */}
         </Container>
       </AccordionTemplate>
+
+      <AccordionTemplate name="Add User">
+        <Container
+          component={"div"}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-around",
+          }}
+        >
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={2} sm={2} md={2}>
+              <label>
+                Select User:
+              </label>
+            </Grid>
+            <Grid item xs={3} sm={3} md={3}>
+              <select
+                id="left"
+                multiple
+              >
+                <option value="0">Select user</option>
+                {leftuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+              </select>
+            </Grid>
+            <Grid item xs={1} sm={1} md={1}>
+              <button type=""
+                onClick={handleSelect}
+              > {">>"} </button>
+              <button type=""
+                onClick={handleUnselect}
+              > {"<<"} </button>
+            </Grid>
+            <Grid item xs={2} sm={2} md={2}>
+              <label>
+                Select User:
+              </label>
+            </Grid>
+            <Grid item xs={3} sm={3} md={3}>
+              <select
+                id="right"
+                multiple
+              >
+                <option value="">Select user</option>
+                {rigthtuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+              </select>
+            </Grid>
+          </Grid>
+
+        </Container>
+      </AccordionTemplate>
+
       <Grid
         container
         item
