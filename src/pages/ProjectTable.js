@@ -1,43 +1,39 @@
 
 import React, { useEffect, useState } from 'react'
 import Table from '../CustomComponent/Table'
-// import StarIcon from '@mui/icons-material/Star';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-// import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import { Chip } from '@mui/material';
 import { Stack } from '@mui/system';
 import ConfirmPop from '../CustomComponent/ConfirmPop';
-import CreateProject from './CreateProject';
+
 import { getProject } from '../Services/ProjectService';
 import { deleteProject } from '../Services/ProjectService';
 import { useNavigate } from 'react-router-dom';
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 import useAuth from '../hooks/useAuth';
+import { createformData } from './ProjectData';
+
+
 
 function ProjectTable() {
 
     let [popup, setPopup] = useState(false)
     let [pid, setPid] = useState()
-
-    let [edit, setedit] = useState(false)
-    let [editprojectInfo, seteditprojectInfo] = useState([])
+    const navigate = useNavigate();
     let [project, setProject] = useState([])
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     const {auth} = useAuth();
-    console.log(auth.info)
-    const usertoken  = localStorage.getItem("token");
     const loggedInId = auth.info.id;
+    console.log(auth.info)
     console.log(loggedInId)
 
     function handleDeletePopup(pid) {
         console.log(pid)
         setPopup(true);
         setPid(pid)
-
-
     }
     function DeleteProjectFromUser(projectId) {
         console.log(projectId)
@@ -57,11 +53,18 @@ function ProjectTable() {
 
   
     function handleEdit(project) {
-        setedit(!edit)
-        seteditprojectInfo(project)
-        console.log(project)
-
-        console.log(project)
+        createformData.projectName = project.project_name
+        createformData.projectDesc = project.description
+        createformData.jira_project_id = project.jira_project_key
+        createformData.sqeProjectId = project.project_id
+        createformData.userId = auth.info.id
+        createformData.orgId = 1
+        createformData.jenkins_token = project.jenkins_token
+        createformData.jenkins_user_name = project.jenkins_user_name
+        createformData.jenkins_password  =project.jenkins_password
+        createformData.automation_framework_type =project.automation_framework_type
+        createformData.gitOps = true
+        navigate("createProject")
     }
 
     const columns = [
@@ -147,10 +150,6 @@ function ProjectTable() {
                 hidefooter={true}
                 getRowId={row => row.project_id}
             ></Table>
-            {edit && <CreateProject
-                edit={true}
-                project={editprojectInfo}
-            ></CreateProject>}
             <ConfirmPop
                 open={popup}
                 handleClose={() => setPopup(false)}

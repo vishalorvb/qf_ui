@@ -168,6 +168,7 @@ export function validateFormbyName(names,cname) {
             }
         }
     });
+    return status;
 }
 
 
