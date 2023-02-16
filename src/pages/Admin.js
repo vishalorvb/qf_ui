@@ -15,7 +15,6 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 
 export default function Admin() {
@@ -41,7 +40,6 @@ export default function Admin() {
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
   console.log(auth.info);
-  const token = localStorage.getItem("token");
   const loggedInId = auth.info.id;
 
   const addUserHandler = () => {
@@ -95,14 +93,15 @@ export default function Admin() {
   }
 
   useEffect(() => {
-    axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(res => {
-        setUsers(res.data.info);
-      })
+    getUsers();
+    // axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }).then(res => {
+    //     setUsers(res.data.info);
+    //   })
   }, []);
 
 
