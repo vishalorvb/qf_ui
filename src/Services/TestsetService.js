@@ -1,9 +1,9 @@
 import axios from "axios"
 import { baseUrl } from "../Environment"
 
-export function getTestsets(callback, workflowID) {
+export function getTestsets(callback, projectId,workflowID) {
     console.log("called")
-    axios.get(baseUrl + "/workflow/" + workflowID + "/api/testsets").then(res => {
+    axios.get(baseUrl + "qfservice/webtestset/api/v1/projects/"+projectId+"/workflow/"+workflowID+"/web/testsets").then(res => {
         console.log(res.data.data)
         callback(res.data.data)
     })

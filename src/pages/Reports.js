@@ -3,34 +3,38 @@ import React, { useState, useEffect, useRef } from "react";
 import Table from "../CustomComponent/Table";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import useHead from "../hooks/useHead";
-// import moment from 'moment';
-// import axios from 'axios';
+import { getProject } from "../Services/ProjectService";
+import { getModules } from "../Services/ProjectService";
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
+import { baseUrl } from "../Environment";
+import moment from "moment/moment";
 
 function Reports() {
   // const [fromDate, setFromDate] = useState(moment().format('YYYY-MM-DD'));
   const [fromDate, setFromDate] = useState("");
-  let From_Date = useRef();
-  // const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD'));
+  // let From_Date = useRef();
+  // const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD')); 
   const [toDate, setToDate] = useState("");
-  let To_Date = useRef();
   const [usersObject, setUsersObject] = useState([]);
   const [projectsObject, setProjectsObject] = useState([]);
   const [workflowsObject, setWorkflowsObject] = useState([]);
-  // const [userId, setUserId] = useState(0);
-  let Uid = useRef();
-  // const [projectId, setProjectId] = useState(0);
-  let Project_Id = useRef();
-  // const [workflowId, setWorkflowId] = useState(0);
-  let Workflow_Id = useRef();
+  const [userId, setUserId] = useState(0);
+  const [projectId, setProjectId] = useState(0);
+  const [workflowId, setWorkflowId] = useState(0);
   const [tbData, setTbData] = useState([]);
-  const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
-  const [validationMsg, setValidationMsg] = useState(false);
-  let autoComplete = [
-    "userAutocomplete",
-    "projectAutocomplete",
-    "workflowAutocomplete",
-  ];
-  let Fields = [];
+  // const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
+  // const [validationMsg, setValidationMsg] = useState(false);
+  const {auth} = useAuth();
+  const token  = localStorage.getItem("token");
+  const loggedInId = auth.info.id;
+
+  // let autoComplete = [
+  //   "userAutocomplete",
+  //   "projectAutocomplete",
+  //   "workflowAutocomplete",
+  // ];
+  // let Fields = [];
 
   const { setHeader } = useHead();
   useEffect(() => {
@@ -95,6 +99,14 @@ function Reports() {
   ];
 
   const getUsers = () => {
+    axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(res => {
+      setUsersObject(res.data.info);
+    })
     // axios
     //   .get(baseUrl + `/OrganisationMS/Users/getAllUsers`)
     //   .then((Response) => {
@@ -106,8 +118,8 @@ function Reports() {
     //   });
   };
 
-  const getProjects = () => {
-    console.log(Uid.current);
+  // const getProjects = () => {
+    // console.log(Uid.current);
     // axios
     //   .get(baseUrl + `/ProjectMS/Project/getProject?userId=${Uid}`)
     //   .then((Response) => {
@@ -120,9 +132,9 @@ function Reports() {
     //   .catch((error) => {
     //     console.log(error)
     //   });
-  };
+  // };
 
-  const getWorkflows = () => {
+  // const getWorkflows = () => {
     // axios
     //   .get(baseUrl + `/ProjectMS/Project/getProjectWorkflows?projectId=${Project_Id.current}`)
     //   .then((Response) => {
@@ -138,35 +150,32 @@ function Reports() {
     //   .catch((error) => {
     //     console.log(error)
     //   });
-  };
+  // };
 
   useEffect(() => {
     getUsers();
-    getProjects();
-    getWorkflows();
-  }, [Uid, Project_Id, Workflow_Id]);
-
+    getProject(setProjectsObject);
+    getModules(setWorkflowsObject,projectId);
+  }, [userId, projectId, workflowId,fromDate,toDate]);
+  console.log(projectId);
   const submit = (e) => {
     e.preventDefault();
     // if (validateForm([], [], [], [], [], [autoComplete], "error")) {
-    //   console.log(Uid);
-    //   console.log(Project_Id);
-    //   console.log(Workflow_Id);
-    //   var data = {
-    //     workflowId: Workflow_Id.current,
-    //     fromDate: fromDate + " 00:00:00",
-    //     toDate: toDate + " 00:00:00"
-    //   }
-    //   axios
-    //     .post(baseUrl + "/OrganisationMS/Reports/getAllReports", data)
-    //     .then((Response) => {
-    //       setTbData(Response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error)
-    //     });
+      console.log(userId);
+      console.log(projectId);
+      console.log(workflowId);
+      console.log(fromDate);
+      console.log(toDate);
+      axios
+        .post(baseUrl + `/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`)
+        .then((Response) => {
+          setTbData(Response.data);
+        })
+        .catch((error) => {
+          console.log(error)
+        });
     //   console.log("Valid Form")
-    // }
+    };
     // else {
     //   setValidationMsg(true);
     //   setTimeout(() => {
@@ -174,7 +183,7 @@ function Reports() {
     //   }, 2000);
     //   console.log("Invalid form");
     // }
-  };
+  // };
 
   return (
     <div>
@@ -211,10 +220,10 @@ function Reports() {
               <Autocomplete
                 size="small"
                 options={usersObject}
-                getOptionLabel={(option) => option.fname + " " + option.lname}
+                getOptionLabel={(option) => option.firstName + " " + option.lastName}
                 onChange={(e, value) => {
-                  Uid.current = value.id;
-                  // setUserId(value.id)
+                  // Uid.current = value.id;
+                  setUserId(value.id)
                 }}
                 noOptionsText={"User not found"}
                 renderInput={(params) => (
@@ -250,7 +259,8 @@ function Reports() {
                 options={projectsObject}
                 getOptionLabel={(option) => option.project_name}
                 onChange={(e, value) => {
-                  Project_Id.current = value.project_id;
+                  // Project_Id.current = value.project_id;
+                  setProjectId(value.project_id);
                 }}
                 noOptionsText={"Projects not found"}
                 renderInput={(params) => (
@@ -286,7 +296,8 @@ function Reports() {
                 options={workflowsObject}
                 getOptionLabel={(option) => option.module_name}
                 onChange={(e, value) => {
-                  Workflow_Id.current = value.module_id;
+                  // Workflow_Id.current = value.module_id;
+                  setWorkflowId(value.module_id);
                 }}
                 noOptionsText={"Workflows not found"}
                 renderInput={(params) => (
@@ -323,7 +334,9 @@ function Reports() {
                 defaultValue={fromDate}
                 sx={{ width: 158 }}
                 onChange={(newValue) => {
-                  // setFromDate(moment(newValue).format('YYYY-MM-DD'));
+                  console.log(newValue.target.value);
+                  // setFromDate(moment(newValue.target.value).format('YYYY-MM-DD'));
+                  setFromDate(newValue.target.value);
                 }}
                 InputLabelProps={{
                   shrink: true,
@@ -352,7 +365,8 @@ function Reports() {
                 defaultValue={toDate}
                 sx={{ width: 158 }}
                 onChange={(newValue) => {
-                  // setToDate(moment(newValue).format('YYYY-MM-DD'));
+                  // setToDate(moment(newValue.target.value).format('YYYY-MM-DD'));
+                  setToDate(newValue.target.value);
                 }}
                 InputLabelProps={{
                   shrink: true,

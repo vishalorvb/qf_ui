@@ -2,19 +2,34 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid,IconBut
 import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
 // import axios from 'axios';
 
 function ActiveUserPopup(props) {
 
-    const { openActive, setOpenActive, object } = props;
+    const { openActive, setOpenActive, object, getUsers, setActSuccessMsg } = props;
     const  user  = object.firstName+" "+object.lastName;
+    const axiosPrivate = useAxios();
+    const { auth } = useAuth();
+    const loggedInId = auth.info.id;
 
     const handleClose = () => {
         setOpenActive(false);
     };
 
     const submit = () => {
-
+        axiosPrivate.post(`qfauthservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=1`).then(
+            res => {
+                console.log(res.message);
+                setActSuccessMsg(true);
+                getUsers();
+                setTimeout(() => {
+                    setActSuccessMsg(false)
+                }, 2000);
+            }
+        )
+        handleClose();
     }
 
     return (
