@@ -5,12 +5,14 @@ import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import CreateApplication from "../Components/CreateApplication";
 
 export default function MobileApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [project, setProject] = useState([]);
+  const [openCreate, setOpenCreate] = useState(false);
 
   const applicationColumns = [
     {
@@ -76,12 +78,32 @@ export default function MobileApp() {
     });
 
     setHeader((ps) => {
-      return { ...ps, name: "Mobile" };
+      return {
+        ...ps,
+        name: "Mobile",
+        plusButton: true,
+        plusCallback: () => setOpenCreate(true),
+      };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   return (
     <>
+      <CreateApplication
+        open={openCreate}
+        close={setOpenCreate}
+        type="mobile"
+      />
+
       <Table
         rows={project}
         columns={applicationColumns}

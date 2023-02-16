@@ -6,11 +6,13 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getProject } from "../Services/ProjectService";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import CreateApplication from "../Components/CreateApplication";
 
 export default function ApiApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const [openCreate, setOpenCreate] = useState(false);
 
   let [project, setProject] = useState([]);
 
@@ -76,8 +78,19 @@ export default function ApiApp() {
       return {
         ...ps,
         name: "API",
+        plusButton: true,
+        plusCallback: () => setOpenCreate(true),
       };
     });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
   }, []);
 
   useEffect(() => {
@@ -90,6 +103,7 @@ export default function ApiApp() {
 
   return (
     <>
+      <CreateApplication open={openCreate} close={setOpenCreate} type="api" />
       <Table
         rows={project}
         columns={pageColumns}
