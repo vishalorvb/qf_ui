@@ -72,7 +72,7 @@ function Testset() {
   //       console.log(error)
   //     });
   // };
-console.log(projectId);
+  console.log(projectId);
   const columns = [
     // { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
     {
@@ -157,19 +157,23 @@ console.log(projectId);
 
   const submit = () => {
     // getTestsets(setTestsetObject, projectId, workflowId);
-    axiosPrivate.get(`qfservice/webtestset/api/v1/projects/${projectId}/workflow/${workflowId}/web/testsets`).then(res => {
-      console.log(res.data.data)
-      setTestsetObject(res.data.data)
-  })
-  }
+    axiosPrivate
+      .get(
+        `qfservice/webtestset/api/v1/projects/${projectId}/workflow/${workflowId}/web/testsets`
+      )
+      .then((res) => {
+        console.log(res.data.data);
+        setTestsetObject(res.data.result);
+      });
+  };
 
   useEffect(() => {
     getProject(setProjectObject);
   }, []);
 
   useEffect(() => {
-    getModules(setWorkflowsObject,projectId);
-  }, [projectId,workflowId]);
+    getModules(setWorkflowsObject, projectId);
+  }, [projectId, workflowId]);
 
   return (
     <div>
