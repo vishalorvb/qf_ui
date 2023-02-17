@@ -106,7 +106,7 @@ return ()=>{
                             Apidata.request_type = e.target.value
                         }}
                     >
-                        <option value="">Select</option>
+                       
                         <option selected ={Apidata.request_type == 1?true:false} value={1}>Get</option>
                         <option selected ={Apidata.request_type == 2?true:false} value={2}>Post</option>
                         <option selected ={Apidata.request_type == 3?true:false} value={3}>Put</option>
