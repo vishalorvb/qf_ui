@@ -117,7 +117,7 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer({ open }) {
   const { auth } = useAuth();
   const role = auth?.roles;
-  const [openApplication, setOpenApplicatiion] = useState(false);
+  const [opensubNav, setOpensubNav] = useState([]);
   const navigate = useNavigate();
   const navigationItemRender = (rawList) => {
     const navigationList = rawList
@@ -161,9 +161,15 @@ export default function MiniDrawer({ open }) {
                   }}
                 >
                   <ExpandMore
-                    expand={openApplication}
-                    onClick={() => setOpenApplicatiion(!openApplication)}
-                    aria-expanded={openApplication}
+                    expand={opensubNav.includes(navItem.name)}
+                    onClick={() =>
+                      setOpensubNav((ps) => {
+                        return ps.includes(navItem.name)
+                          ? ps.filter((item) => item !== navItem.name)
+                          : [...ps, navItem.name];
+                      })
+                    }
+                    aria-expanded={opensubNav.includes(navItem.name)}
                     aria-label="show more"
                     disableFocusRipple
                     disableRipple
@@ -173,7 +179,7 @@ export default function MiniDrawer({ open }) {
                 </MuiListItemIcon>
               )}
             </ListItemButton>
-            <Collapse in={openApplication}>
+            <Collapse in={opensubNav.includes(navItem.name)}>
               {navItem.subList && (
                 <List dense disablePadding>
                   {navigationItemRender(navItem.subList)}
