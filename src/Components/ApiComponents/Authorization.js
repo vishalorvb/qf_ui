@@ -19,20 +19,20 @@ function Authorization() {
           <Typography variant='h6' gutterBottom>
             Type
           </Typography>
-          <Select
+          <select
             size='small'
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             fullWidth
             onChange={handleChange}
           >
-            <MenuItem value=""></MenuItem>
-            <MenuItem value={'noauth'}>No Auth</MenuItem>
-            <MenuItem value={'basicauth'}>Basic Auth</MenuItem>
-            <MenuItem value={"apikey"}>API Key</MenuItem>
-            <MenuItem value={'bearertoken'}>Bearer Token</MenuItem>
-            <MenuItem value={'oauth2'}>OAuth 2.0</MenuItem>
-          </Select>
+            <option value="">Select</option>
+            <option value={'noauth'}>No Auth</option>
+            <option value={'basicauth'}>Basic Auth</option>
+            <option value={"apikey"}>API Key</option>
+            <option value={'bearertoken'}>Bearer Token</option>
+            <option value={'oauth2'}>OAuth 2.0</option>
+          </select>
           <Typography variant='p' gutterBottom>
             The authorization header will be automatically generated when you send the request.
           </Typography>
@@ -48,7 +48,7 @@ function Authorization() {
               <label for="">UserName</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Username' size='small'
+              <input 
               onChange={e=>authdata.username = e.target.value}
               />
             </Grid>
@@ -56,7 +56,7 @@ function Authorization() {
               <label for="">Password</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth type="password" placeholder='Password' size='small'
+              <input
               onChange={e=>authdata.password = e.target.value}
               />
             </Grid>
@@ -69,7 +69,7 @@ function Authorization() {
               <label for="">Key</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Key' size='small'
+              <input
               onChange={e=>authdata.key = e.target.value}
               />
             </Grid>
@@ -77,7 +77,7 @@ function Authorization() {
               <label for="">Value</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth type="password" placeholder='Value' size='small' 
+              <input
               onChange={e=>authdata.value = e.target.value}
               />
             </Grid>
@@ -104,7 +104,7 @@ function Authorization() {
               <label for="">Token</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Token' size='small' 
+              <input 
               onChange={e=>authdata.token = e.target.value}
               />
             </Grid>
@@ -116,7 +116,7 @@ function Authorization() {
               <label for="">Token URL</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Token URL' size='small' 
+              <input 
               onChange={e=>authdata.tokenurl = e.target.value}
               />
             </Grid>
@@ -124,7 +124,7 @@ function Authorization() {
               <label for="">Client Id</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth placeholder='Client Id' size='small' 
+              <input 
               onChange={e=>authdata.clientid = e.target.value}
               />
             </Grid>
@@ -132,7 +132,7 @@ function Authorization() {
               <label for="">Client Secret</label>
             </Grid>
             <Grid item md={10}>
-              <TextField fullWidth type='password' placeholder='Client Secret' size='small'
+              <input
               onChange={e=>authdata.password = e.target.value}
               />
             </Grid>
