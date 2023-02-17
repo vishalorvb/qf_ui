@@ -18,7 +18,6 @@ export default function ApiCreateEdit() {
   return (<div>
     <Api
     projectId = {location.state.projectid}
-    moduleId = {location.state.moduleid}
     ></Api>
   </div>);
 }
