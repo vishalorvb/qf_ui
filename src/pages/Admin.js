@@ -20,7 +20,7 @@ import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 export default function Admin() {
   const { setHeader } = useHead();
   const [open, setOpen] = useState(false);
-  const [users, setUsers] = useState(false);
+  const [users, setUsers] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openActive, setOpenActive] = useState(false);
@@ -201,7 +201,8 @@ export default function Admin() {
     <div>
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? (
-          <AddUserPopup open={open} setOpen={setOpen} users={users} getUsers={getUsers} setAddSuccessMsg={setAddSuccessMsg}/>
+          <AddUserPopup open={open} setOpen={setOpen} users={users} getUsers={getUsers} setAddSuccessMsg={setAddSuccessMsg}
+          addErrorMsg={addErrorMsg} setAddErrorMsg={setAddErrorMsg} setValidationMsg={setValidationMsg} />
         ) : (
           ""
         )}
@@ -212,6 +213,7 @@ export default function Admin() {
             setOpenEdit={setOpenEdit}
             getUsers={getUsers}
             setEditSuccessMsg={setEditSuccessMsg}
+            setValidationMsg={setValidationMsg}
           />
         ) : (
           ""
