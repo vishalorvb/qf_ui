@@ -22,6 +22,10 @@ function TestsetCreate() {
     const [testsetName, setTestsetName] = useState("");
     const [testsetDesc, setTestsetDesc] = useState("");
     const [deleteObject, setDeleteObject] = useState([]);
+    const [projectObject, setProjectObject] = useState([]);
+    const [workflowsObject, setWorkflowsObject] = useState([]);
+    const [workflowId, setWorkflowId] = useState(0);
+    const [projectId, setProjectId] = useState(null);
     let Data = [];
 
     const columns = [
@@ -130,6 +134,81 @@ function TestsetCreate() {
                 justifyContent: "flex-start",
               }}
             >
+              <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                Project <span className="importantfield">*</span>:
+              </label>
+            </Grid>
+            <Grid item xs={6} sm={6} md={8} xl={7}>
+              <Autocomplete
+                size="small"
+                options={projectObject}
+                getOptionLabel={(option) => option.project_name}
+                onChange={(e, value) => {
+                  // Uid.current = value.id;
+                  setProjectId(value.project_id);
+                  // onChangeHandler();
+                }}
+                noOptionsText={"User not found"}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input
+                      type="text"
+                      name="userAutocomplete"
+                      {...params.inputProps}
+                      placeholder="Please Select"
+                    />
+                  </div>
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            xl={4}
+            sx={{ marginBottom: "10px" }}
+          >
+            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+              <label>
+                Workflow <span className="importantfield">*</span>:
+              </label>
+            </Grid>
+            <Grid item xs={6} sm={6} md={8} xl={7}>
+              <Autocomplete
+                size="small"
+                options={workflowsObject}
+                getOptionLabel={(option) => option.module_name}
+                onChange={(e, value) => {
+                  // Workflow_Id.current = value.module_id;
+                  setWorkflowId(value.module_id);
+                }}
+                noOptionsText={"Workflows not found"}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input
+                      type="text"
+                      name="workflowAutocomplete"
+                      {...params.inputProps}
+                      placeholder="Please Select"
+                    />
+                  </div>
+                )}
+              />
+            </Grid>
+          </Grid>
               <Grid
                 container
                 item
