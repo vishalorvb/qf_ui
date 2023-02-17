@@ -134,7 +134,7 @@ export default function MiniDrawer({ open }) {
             key={navItem.name}
           >
             <ListItemButton
-              onClick={() => navigate(navItem.route)}
+              onClick={() => navItem?.route !== "" && navigate(navItem.route)}
               dense
               className="navItems"
             >

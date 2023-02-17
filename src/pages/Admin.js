@@ -70,7 +70,7 @@ export default function Admin() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Admin",
+        name: "Admin-Users Settings",
         plusButton: true,
         plusCallback: addUserHandler,
       };
@@ -87,10 +87,14 @@ export default function Admin() {
   }, []);
 
   const getUsers = () => {
-    axiosPrivate.get(`/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`).then(res => {
-      setUsers(res.data.info);
-    })
-  }
+    axiosPrivate
+      .get(
+        `/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
+      )
+      .then((res) => {
+        setUsers(res.data.info);
+      });
+  };
 
   useEffect(() => {
     getUsers();
@@ -103,7 +107,6 @@ export default function Admin() {
     //     setUsers(res.data.info);
     //   })
   }, []);
-
 
   const columns = [
     {
@@ -168,27 +171,27 @@ export default function Admin() {
                 <DeleteOutlineOutlinedIcon />
               </IconButton>
             </Tooltip>
-            {param.row.user_status === 0 ?
-            <Tooltip title="Inactive">
-              <IconButton
-                onClick={(e) => {
-                  activateUserHandler(param.row);
-                }}
-              >
-                <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-             : 
-            <Tooltip title="Active">
-              <IconButton
-                onClick={(e) => {
-                  deactivateUserHandler(param.row);
-                }}
-              >
-                <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            } 
+            {param.row.user_status === 0 ? (
+              <Tooltip title="Inactive">
+                <IconButton
+                  onClick={(e) => {
+                    activateUserHandler(param.row);
+                  }}
+                >
+                  <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Active">
+                <IconButton
+                  onClick={(e) => {
+                    deactivateUserHandler(param.row);
+                  }}
+                >
+                  <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
+                </IconButton>
+              </Tooltip>
+            )}
           </>
         );
       },
@@ -201,7 +204,13 @@ export default function Admin() {
     <div>
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? (
-          <AddUserPopup open={open} setOpen={setOpen} users={users} getUsers={getUsers} setAddSuccessMsg={setAddSuccessMsg}/>
+          <AddUserPopup
+            open={open}
+            setOpen={setOpen}
+            users={users}
+            getUsers={getUsers}
+            setAddSuccessMsg={setAddSuccessMsg}
+          />
         ) : (
           ""
         )}
@@ -250,17 +259,52 @@ export default function Admin() {
         ) : (
           ""
         )}
-        <SnackbarNotify open={addSuccessMsg} close={setAddSuccessMsg} msg="User added successfully" severity="success" />
-        <SnackbarNotify open={editSuccessMsg} close={setEditSuccessMsg} msg="Changes are updated" severity="success" />
-        <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="User deleted successfully" severity="success" />
-        <SnackbarNotify open={actSuccessMsg} close={setActSuccessMsg} msg="User is active" severity="success" />
-        <SnackbarNotify open={deactSuccessMsg} close={setDeactSuccessMsg} msg="User is inactive" severity="success" />
-        <SnackbarNotify open={addErrorMsg} close={setAddErrorMsg} msg="User is already exist with this id, Please select another id" severity="error" />
-        <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
+        <SnackbarNotify
+          open={addSuccessMsg}
+          close={setAddSuccessMsg}
+          msg="User added successfully"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={editSuccessMsg}
+          close={setEditSuccessMsg}
+          msg="Changes are updated"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={delSuccessMsg}
+          close={setDelSuccessMsg}
+          msg="User deleted successfully"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={actSuccessMsg}
+          close={setActSuccessMsg}
+          msg="User is active"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={deactSuccessMsg}
+          close={setDeactSuccessMsg}
+          msg="User is inactive"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={addErrorMsg}
+          close={setAddErrorMsg}
+          msg="User is already exist with this id, Please select another id"
+          severity="error"
+        />
+        <SnackbarNotify
+          open={validationMsg}
+          close={setValidationMsg}
+          msg="Fill all the required fields"
+          severity="error"
+        />
         <Table
           columns={columns}
           rows={users}
-        // hidefooter={false}
+          // hidefooter={false}
         />
       </div>
     </div>

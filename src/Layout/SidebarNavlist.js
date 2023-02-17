@@ -12,9 +12,21 @@ import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 export const testManagementList = [
   {
     name: "Admin",
-    route: "admin",
+    route: "",
     accessRole: [2],
     icon: <AdminPanelSettingsOutlinedIcon />,
+    subList: [
+      {
+        name: "Users",
+        route: "users",
+        accessRole: [2],
+      },
+      {
+        name: "Settings",
+        route: "settings",
+        accessRole: [2],
+      },
+    ],
   },
   {
     name: "Application",
