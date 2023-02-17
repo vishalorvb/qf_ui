@@ -22,6 +22,7 @@ import {
 } from "./SidebarNavlist";
 import { Collapse, Typography } from "@mui/material";
 import { Copyright } from "./Login";
+import useAuth from "../hooks/useAuth";
 
 const drawerWidth = 200;
 
@@ -113,9 +114,9 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const role = "";
-
 export default function MiniDrawer({ open }) {
+  const { auth } = useAuth();
+  const role = auth?.roles;
   const [openApplication, setOpenApplicatiion] = useState(false);
   const navigate = useNavigate();
   const navigationItemRender = (rawList) => {

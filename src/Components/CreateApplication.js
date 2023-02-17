@@ -11,9 +11,16 @@ import {
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 
 export default function CreateApplication(props) {
+  const { open, close, type } = props;
+  const handleClose = () => {
+    close(false);
+  };
+
   const schema = yup.object().shape({
     name: yup.string().required(),
+    baseUrl: yup.string().url().required(),
   });
+
   const {
     control,
     handleSubmit,
@@ -22,11 +29,18 @@ export default function CreateApplication(props) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmitHandler = () => {};
-  const { open, close, type } = props;
-  const handleClose = () => {
-    close(false);
+
+  const onSubmitHandler = (data) => {
+    // console.log(data);
+    // console.log(type);
+    console.log({
+      name: data.name,
+      baseUrl: data.baseUrl,
+      type: type,
+      desc: data.description,
+    });
   };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle className="dialogTitle">Create Application</DialogTitle>
@@ -41,6 +55,17 @@ export default function CreateApplication(props) {
                 size="small"
                 fullWidth
                 name="name"
+                control={control}
+              />
+            </Grid>
+            <Grid item md={12}>
+              <TextFieldElement
+                id="application-baseUrl"
+                label="base URL"
+                variant="outlined"
+                size="small"
+                fullWidth
+                name="baseUrl"
                 control={control}
               />
             </Grid>
