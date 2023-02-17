@@ -6,13 +6,20 @@ import useAuth from "../hooks/useAuth";
 import axios from 'axios';
 import { baseUrl } from '../Environment';
 import useAxios from '../hooks/useAxios';
+import { validateForm, resetClassName } from '../CustomComponent/FormValidation';
 
 function EditUserPopup(props) {
-    const [fname, setFname] = useState(props.object.firstName);
-    const [lname, setLname] = useState(props.object.lastName);
-    const [email, setEmail] = useState(props.object.email);
-    const [password, setPassword] = useState(props.object.password);
-    const [roleId, setRoleId] = useState(props.object.role);
+    const { object, openEdit, setOpenEdit, getUsers, setEditSuccessMsg, setValidationMsg } = props; 
+    const [fname, setFname] = useState(object.firstName);
+    const first_name = useRef();
+    const [lname, setLname] = useState(object.lastName);
+    const last_name = useRef();
+    const [email, setEmail] = useState(object.email);
+    const Email = useRef();
+    const [password, setPassword] = useState(object.password);
+    const Password = useRef();
+    const [roleId, setRoleId] = useState(object.role);
+    const role_id = useRef();
     const {auth} = useAuth();
     // const token  = localStorage.getItem("token");
     const loggedInId = auth.info.id;
@@ -21,8 +28,12 @@ function EditUserPopup(props) {
         id: props.object.id,
     }
     console.log(props.object);
-    const { openEdit, setOpenEdit, getUsers, setEditSuccessMsg } = props;
+    
     const axiosPrivate = useAxios();
+
+    let requiredsFields = [Email,Password];
+    let requiredOnlyAlphabets = [first_name,last_name];
+    let autoComplete = ["roleAutocomplete"];
 
     const handleClose = () => {
         setOpenEdit(false);
@@ -33,26 +44,36 @@ function EditUserPopup(props) {
     };
 
     const submit = (e) => {
-        var data = {
-            "ssoId" : values.uid,
-            "password" : password,
-            "firstName" : fname,
-            "lastName" : lname,
-            "email" : email,
-            "role" : roleId,
-            "id" : values.id,
-            "current_user_id" : loggedInId
+        if ( validateForm(requiredsFields,[],[],requiredOnlyAlphabets,[],autoComplete,"error")) 
+        {
+            var data = {
+                "ssoId" : values.uid,
+                "password" : password,
+                "firstName" : fname,
+                "lastName" : lname,
+                "email" : email,
+                "role" : roleId,
+                "id" : values.id,
+                "current_user_id" : loggedInId
+            }
+    
+            axiosPrivate.post(baseUrl + `/qfauthservice/user/updateUser`, data).then(res => {
+                console.log(res.data.info);
+                setEditSuccessMsg(true);
+                getUsers();
+                setTimeout(() => {
+                    setEditSuccessMsg(false)
+                }, 2000);
+            })
+            handleClose();
         }
-
-        axiosPrivate.post(baseUrl + `/qfauthservice/user/updateUser`, data).then(res => {
-            console.log(res.data.info);
-            setEditSuccessMsg(true);
-            getUsers();
+        else {
+            setValidationMsg(true);
             setTimeout(() => {
-                setEditSuccessMsg(false)
+                setValidationMsg(false)
             }, 2000);
-        })
-        handleClose();
+            console.log("Invalid form");
+        }
     }
 
   return (
@@ -72,26 +93,26 @@ function EditUserPopup(props) {
             <DialogContent className="EditUsers" style={{ marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
                 <div>
                     <form>
-                        <div>
+                        <div onClick={resetClassName}>
                             <Container component={'div'} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start' }} >
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>First Name <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={8} sm={6} md={8}>
-                                        <input value={fname} onChange={(e) => { setFname(e.target.value) }}  placeholder="Enter First Name"
+                                        <input value={fname} ref={first_name} onChange={(e) => { setFname(e.target.value) }}  placeholder="Enter First Name"
                                         ></input>
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Last Name <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={8} sm={6} md={8}>
-                                        <input value={lname} onChange={(e) => { setLname(e.target.value) }}  placeholder="Enter Last Name"
+                                        <input value={lname} ref={last_name} onChange={(e) => { setLname(e.target.value) }}  placeholder="Enter Last Name"
                                         ></input>
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Email <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="Enter Email"
+                                        <input name="email" ref={Email} value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="Enter Email"
                                         />
                                     </Grid>
                                 </Grid>
@@ -108,14 +129,14 @@ function EditUserPopup(props) {
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Password <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input value={password} onChange={(e) => { setPassword(e.target.value) }} placeholder="Enter atleast 8 Characters" />
+                                        <input value={password} ref={Password} onChange={(e) => { setPassword(e.target.value) }} placeholder="Enter atleast 8 Characters" />
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Role <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                    <select name="selectList" id="selectList" onChange={(e) => setRoleId(e.target.value)}>
-                                            <option value="0">Select Role...</option>
+                                    <select name="roleAutocomplete" id="selectList" onChange={(e) => setRoleId(e.target.value)}>
+                                            <option value="">Select Role...</option>
                                             <option selected = {roleId == 1?true : false} value="1">AUTOMATION ENGINEER</option>
                                             <option selected = {roleId == 2?true : false} value="2">ADMIN</option>
                                             <option selected = {roleId == 3?true : false} value="3">DBA</option>

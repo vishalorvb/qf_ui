@@ -132,7 +132,7 @@ function ProjectTable() {
     ];
 
   useEffect(() => {
-    getProject(setProject, 4);
+    getProject(setProject, loggedInId);
   }, []);
 
   

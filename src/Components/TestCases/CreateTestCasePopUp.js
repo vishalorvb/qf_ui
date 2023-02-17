@@ -37,12 +37,12 @@ function CreateTestCasePopUp(props) {
             [testName, description], [], [], [], [], ["moduleid"], "error"
         )) {
             console.log("Valid form")
-            createWebTestCase(data).then(res=>{
+            createWebTestCase(data).then(res => {
                 console.log(res)
-                if (res == "SUCCESS"){
+                if (res == "SUCCESS") {
                     props.snackbar(true)
                     props.setOpen(false)
-                    
+
                 }
             })
         }
@@ -59,20 +59,20 @@ function CreateTestCasePopUp(props) {
     }, [data])
 
     useEffect(() => {
-    console.log("Props open changed")
-    setData({
-        "module_id": 0,
-        "testcase_name": "",
-        "testcase_description": "",
-        "testcase_id": 0,
-        "testcase_sprints": [
+        console.log("Props open changed")
+        setData({
+            "module_id": 0,
+            "testcase_name": "",
+            "testcase_description": "",
+            "testcase_id": 0,
+            "testcase_sprints": [
 
-        ],
-        "screens_in_testcase": [
+            ],
+            "screens_in_testcase": [
 
-        ]
-    })
-    setModules([])
+            ]
+        })
+        setModules([])
     }, [props.open])
     return (
         <div>
@@ -83,10 +83,11 @@ function CreateTestCasePopUp(props) {
                 }}>
                     <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
                         <Typography sx={{ marginLeft: 1, marginTop: "auto", marginBottom: "auto " }} variant="inherit">Create Test Case </Typography>
-                        <IconButton sx={{ marginLeft: "auto" }} className="btn-close " onClick={e => {props.setOpen(false)
-                       
+                        <IconButton sx={{ marginLeft: "auto" }} className="btn-close " onClick={e => {
+                            props.setOpen(false)
+
                         }
-                        
+
                         }>
                             <ClearOutlinedIcon sx={{ color: 'white' }} />
                         </IconButton>

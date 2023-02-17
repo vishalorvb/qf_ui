@@ -13,6 +13,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { getWebTestCase } from '../../Services/ProjectService';
 // import ConfirmPop from '../../CustomComponent/ConfirmPop';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
+import useAuth from '../../hooks/useAuth';
 
 function TestCases() {
     let [project, setproject] = useState([])
@@ -23,7 +24,7 @@ function TestCases() {
     let [popup, setPopup] = useState(false)
     let [steps, setSteps] = useState(false)
     let [snack,setSnack] = useState(false)
-
+    const {auth} = useAuth();
     console.log(addTestcase)
 
 
@@ -153,7 +154,7 @@ function TestCases() {
   ];
 
     useEffect(() => {
-        getProject(setproject)
+        getProject(setproject,auth.info.id)
    
     }, [])
 

@@ -50,28 +50,6 @@ export default function ApiApp() {
     },
   ];
 
-  const pages = [
-    {
-      id: 1,
-      name: "project 1",
-      description: "Description 1",
-    },
-    {
-      id: 2,
-      name: "Application 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Application 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Application 4",
-      description: "Description 4",
-    },
-  ];
 
   useEffect(() => {
     setHeader((ps) => {
@@ -94,11 +72,11 @@ export default function ApiApp() {
   }, []);
 
   useEffect(() => {
-    // getProject(setProject, 4);
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      console.log(res.data.result.projects_list);
-      setProject(res.data.result.projects_list);
-    });
+    // axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+    //   console.log(res.data.result.projects_list);
+    //   setProject(res.data.result.projects_list);
+    // });
+    getProject(setProject,auth.info.id)
   }, []);
 
   return (

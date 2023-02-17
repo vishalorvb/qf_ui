@@ -4,10 +4,11 @@ import Table from "../CustomComponent/Table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { IconButton } from "@mui/material";
-import { getApis } from "../Services/ProjectService";
+import { IconButton, Tooltip } from "@mui/material";
+import { getApiModuleId, getApis } from "../Services/ProjectService";
 import { deleteApi } from "../Services/ProjectService";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
+import { Apidata } from "../Components/ApiComponents/Data";
 
 export default function APIsTable() {
   const { setHeader } = useHead();
@@ -15,17 +16,34 @@ export default function APIsTable() {
   const navigate = useNavigate();
   let [apis, setApis] = useState([])
   let [popup, setPopup] = useState(false)
-  let [apiid,setApiid] = useState()
-
-  function handleDelete(apiid){
-    deleteApi(apiid).then(res=>{
-      if (res == null){
+  let [apiid, setApiid] = useState()
+  let [moduleid, setModuleid] = useState(0)
+  function handleDelete(apiid) {
+    deleteApi(apiid).then(res => {
+      if (res == null) {
         getApis(location.state.id, setApis)
       }
     })
     setPopup(false)
   }
 
+
+  function handleEdit(row) {
+    Apidata.api_id = row.api_id
+    Apidata.api_name = row.api_name
+    Apidata.api_description = row.api_description
+    Apidata.api_url = row.api_url
+    Apidata.request_type = row.request_type
+    Apidata.body_type = row.body_type
+  }
+  useEffect(() => {
+    Apidata.module_id = moduleid
+  }, [moduleid])
+  useEffect(() => {
+    getApiModuleId(location.state.id, setModuleid)
+  }, [])
+
+  let requests =[" ","Get", "Post", "Put", "Delete"]
   const pageColumns = [
     {
       field: "api_name",
@@ -40,8 +58,14 @@ export default function APIsTable() {
       sortable: false,
     },
     {
-      field: "request_type",
+      field: "reque",
       headerName: "Request Type",
+      renderCell: param =>{
+        let x = param.row.request_type
+        return(
+          requests[x]
+        )
+      },
       flex: 1,
       sortable: false,
     },
@@ -55,18 +79,26 @@ export default function APIsTable() {
       renderCell: (param) => {
         return (
           <div>
-            <IconButton onClick={(e) => navigate("create", { state: { projectid: location.state.id, moduleid: param.row.api_id } })}>
+            <Tooltip title="Edit">
+            <IconButton onClick={(e) => {
+              handleEdit(param.row)
+              navigate("create", { state: { projectid: location.state.id } })
+
+            }
+            }>
               <EditIcon />
             </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
             <IconButton
-              // onClick={e => console.log(param.row.api_id)}
-              onClick={e =>{
+              onClick={e => {
                 setApiid(param.row.api_id)
                 setPopup(true)
               }}
             >
               <DeleteIcon />
             </IconButton>
+            </Tooltip>
           </div>
         );
       },
@@ -80,7 +112,7 @@ export default function APIsTable() {
         ...ps,
         name: "API Requests",
         plusButton: true,
-        plusCallback: () => navigate("create", { state: { projectid: location.state.id, moduleid: null } }),
+        plusCallback: () => navigate("create", { state: { projectid: location.state.id } }),
       };
     });
     return () =>
@@ -105,12 +137,12 @@ export default function APIsTable() {
       />
       <Outlet />
       <ConfirmPop
-                open={popup}
-                handleClose={(e) => setPopup(false)}
-                heading={"Delete API"}
-                message={"Are you sure you want to delete this API"}
-                onConfirm={(e) => handleDelete(apiid)}
-            ></ConfirmPop>
+        open={popup}
+        handleClose={(e) => setPopup(false)}
+        heading={"Delete API"}
+        message={"Are you sure you want to delete this API"}
+        onConfirm={(e) => handleDelete(apiid)}
+      ></ConfirmPop>
     </>
   );
 }
