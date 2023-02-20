@@ -44,9 +44,14 @@ const Settings = lazy(() => import("../pages/Settings"));
 
 export const Routes = [
   {
-    path: "admin",
+    path: "users",
     element: Admin,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [2],
+  },
+  {
+    path: "settings",
+    element: Settings,
+    accessRole: [2],
   },
   {
     path: "application/apiApp",
@@ -163,11 +168,6 @@ export const Routes = [
   {
     path: "reports",
     element: Reports,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "settings",
-    element: Settings,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {

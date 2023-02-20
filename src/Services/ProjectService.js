@@ -4,7 +4,7 @@ import { baseUrl } from "../Environment";
 
 const userid = 4;
 
-export function getProject(callback, userId = userid) {
+export function getProject(callback, userId ) {
   // This function except name of state as a callback and set value in that state
   axios.get(baseUrl + "/qfservice/projects?user_id=" + userId).then((res) => {
     console.log(res.data.result.projects_list);
@@ -51,7 +51,11 @@ export async function updateProject(data) {
     method: "post",
     url: `${baseUrl}/qfservice/updateProject`,
     data: data,
-  });
+  }).then((response) => {
+    return response.data.status;
+  }).catch((err) => {
+    return null
+  })
   return res;
 }
 
@@ -68,9 +72,9 @@ export async function deleteProject(projectid, userid = userid, gid) {
   return res;
 }
 
-export function getTestcases(callback, workflowID) {
+export function getTestcases(callback, moduleId) {
   axios
-    .get(baseUrl + "/qfservice/api/workflow/" + workflowID + "/api/testcases")
+    .get(baseUrl + "/qfservice/api/workflow/" + moduleId + "/api/testcases")
     .then((res) => {
       console.log(res.data.data);
       callback(res.data.data);
@@ -164,7 +168,6 @@ export async function getApiModuleId(projectid, callback) {
   let module
   let moduleid
   await axios.get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`).then(res => {
-    console.log(res.data.data)
     module = res.data.data
   })
   module.forEach(element => {
@@ -235,3 +238,15 @@ export async function deleteApi(apiid) {
 }
 
 
+export function getUsers(callback,orgid,ssoid,token){
+  axios.get(`${baseUrl}/qfauthservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(res => {
+    console.log(res.data.info)
+    callback(res.data.info);
+    // setLeftuser(res.data.info)
+  })
+}

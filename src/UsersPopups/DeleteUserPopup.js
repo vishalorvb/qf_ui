@@ -3,31 +3,34 @@ import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import axios from '../api/axios';
+import { baseUrl } from '../Environment';
+import useAxios from '../hooks/useAxios';
 
 function DeleteUserPopup(props) {
 
-    const { openDelete, setOpenDelete,object,loggedInId } = props;
+    const { openDelete, setOpenDelete,object,loggedInId, getUsers, setDelSuccessMsg } = props;
     const user = object.firstName + " " + object.lastName;
-    console.log(object.id);
     const UserId = object.id;
     const loggedInUserId = loggedInId;
     const token  = localStorage.getItem("token");
+    const axiosPrivate = useAxios();
 
     const handleClose = () => {
         setOpenDelete(false);
     };
-
+    
     const submit = () => {
-        axios.delete(`/qfauthservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`,
-        {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }).then(
-            res =>{
-                console.log(res);
+        axiosPrivate.post(`/qfauthservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`).then(
+            res => {
+                console.log(res.message);
+                setDelSuccessMsg(true);
+                getUsers();
+                setTimeout(() => {
+                    setDelSuccessMsg(false)
+                }, 3000);
             }
         )
+        handleClose();
     }
     
   return (

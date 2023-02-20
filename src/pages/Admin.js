@@ -15,12 +15,12 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 
 export default function Admin() {
   const { setHeader } = useHead();
   const [open, setOpen] = useState(false);
-  const [users, setUsers] = useState(false);
+  const [users, setUsers] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openActive, setOpenActive] = useState(false);
@@ -29,11 +29,17 @@ export default function Admin() {
   const [deleteObject, setDeleteObject] = useState([]);
   const [activeObject, setActiveObject] = useState([]);
   const [deactiveObject, setDeactiveObject] = useState([]);
+  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
+  const [addErrorMsg, setAddErrorMsg] = useState(false);
+  const [editSuccessMsg, setEditSuccessMsg] = useState(false);
+  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+  const [actSuccessMsg, setActSuccessMsg] = useState(false);
+  const [deactSuccessMsg, setDeactSuccessMsg] = useState(false);
+  const [validationMsg, setValidationMsg] = useState(false);
 
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
   console.log(auth.info);
-  const token = localStorage.getItem("token");
   const loggedInId = auth.info.id;
 
   const addUserHandler = () => {
@@ -64,7 +70,7 @@ export default function Admin() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Admin",
+        name: "Admin-Users Settings",
         plusButton: true,
         plusCallback: addUserHandler,
       };
@@ -80,19 +86,26 @@ export default function Admin() {
       });
   }, []);
 
-  useEffect(() => {
-    axios
+  const getUsers = () => {
+    axiosPrivate
       .get(
-        `/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
       )
       .then((res) => {
         setUsers(res.data.info);
       });
+  };
+
+  useEffect(() => {
+    getUsers();
+    // axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   }).then(res => {
+    //     setUsers(res.data.info);
+    //   })
   }, []);
 
   const columns = [
@@ -189,21 +202,18 @@ export default function Admin() {
 
   return (
     <div>
-      {/* <div
-        className="recenttable"
-        style={{ flot: "right", marginBottom: "10px" }}
-      >
-        <Button
-          variant="contained"
-          endIcon={<AddOutlinedIcon />}
-          onClick={addUserHandler}
-        >
-          Add User
-        </Button>
-      </div> */}
       <div className="datatable" style={{ marginTop: "20px" }}>
         {open ? (
-          <AddUserPopup open={open} setOpen={setOpen} users={users} />
+          <AddUserPopup
+            open={open}
+            setOpen={setOpen}
+            users={users}
+            getUsers={getUsers}
+            setAddSuccessMsg={setAddSuccessMsg}
+            addErrorMsg={addErrorMsg}
+            setAddErrorMsg={setAddErrorMsg}
+            setValidationMsg={setValidationMsg}
+          />
         ) : (
           ""
         )}
@@ -212,6 +222,9 @@ export default function Admin() {
             object={editObject}
             openEdit={openEdit}
             setOpenEdit={setOpenEdit}
+            getUsers={getUsers}
+            setEditSuccessMsg={setEditSuccessMsg}
+            setValidationMsg={setValidationMsg}
           />
         ) : (
           ""
@@ -222,6 +235,8 @@ export default function Admin() {
             openDelete={openDelete}
             setOpenDelete={setOpenDelete}
             loggedInId={loggedInId}
+            getUsers={getUsers}
+            setDelSuccessMsg={setDelSuccessMsg}
           />
         ) : (
           ""
@@ -231,6 +246,8 @@ export default function Admin() {
             object={activeObject}
             openActive={openActive}
             setOpenActive={setOpenActive}
+            getUsers={getUsers}
+            setActSuccessMsg={setActSuccessMsg}
           />
         ) : (
           ""
@@ -240,10 +257,54 @@ export default function Admin() {
             object={deactiveObject}
             openDeactive={openDeactive}
             setOpenDeactive={setOpenDeactive}
+            getUsers={getUsers}
+            setDeactSuccessMsg={setDeactSuccessMsg}
           />
         ) : (
           ""
         )}
+        <SnackbarNotify
+          open={addSuccessMsg}
+          close={setAddSuccessMsg}
+          msg="User added successfully"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={editSuccessMsg}
+          close={setEditSuccessMsg}
+          msg="Changes are updated"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={delSuccessMsg}
+          close={setDelSuccessMsg}
+          msg="User deleted successfully"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={actSuccessMsg}
+          close={setActSuccessMsg}
+          msg="User is active"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={deactSuccessMsg}
+          close={setDeactSuccessMsg}
+          msg="User is inactive"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={addErrorMsg}
+          close={setAddErrorMsg}
+          msg="User is already exist with this id, Please select another id"
+          severity="error"
+        />
+        <SnackbarNotify
+          open={validationMsg}
+          close={setValidationMsg}
+          msg="Fill all the required fields"
+          severity="error"
+        />
         <Table
           columns={columns}
           rows={users}

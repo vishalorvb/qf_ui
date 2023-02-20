@@ -20,3 +20,17 @@ export async function createWebTestCase(data) {
         })
     return res
 }
+
+export async function createApitestcase(data){
+    let res = await axios({
+        method: 'post',
+        url: `${baseUrl}/qfservice/CreateNewTestcase`,
+        data: data
+    }).then(response => {
+        return response.data.status
+    })
+        .catch(err => {
+            return "error"
+        })
+    return res
+}

@@ -2,19 +2,35 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconBu
 import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
+import useAuth from "../hooks/useAuth";
+import useAxios from "../hooks/useAxios";
 // import axios from 'axios';
 
 function DeactiveUserPopup(props) {
 
-    const { openDeactive, setOpenDeactive, object } = props;
+    const { openDeactive, setOpenDeactive, object, getUsers, setDeactSuccessMsg } = props;
     const user = object.firstName + " " + object.lastName;
+    const id = object.id;
+    const axiosPrivate = useAxios();
+    const { auth } = useAuth();
+    const loggedInId = auth.info.id;
 
     const handleClose = () => {
         setOpenDeactive(false);
     };
 
     const submit = () => {
-
+        axiosPrivate.post(`qfauthservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=0`).then(
+            res => {
+                console.log(res.message);
+                setDeactSuccessMsg(true);
+                getUsers();
+                setTimeout(() => {
+                    setDeactSuccessMsg(false)
+                }, 3000);
+            }
+        )
+        handleClose();
     }
 
     return (

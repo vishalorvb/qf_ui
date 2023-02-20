@@ -22,6 +22,7 @@ import {
 } from "./SidebarNavlist";
 import { Collapse, Typography } from "@mui/material";
 import { Copyright } from "./Login";
+import useAuth from "../hooks/useAuth";
 
 const drawerWidth = 200;
 
@@ -113,10 +114,10 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-const role = "";
-
 export default function MiniDrawer({ open }) {
-  const [openApplication, setOpenApplicatiion] = useState(false);
+  const { auth } = useAuth();
+  const role = auth?.roles;
+  const [opensubNav, setOpensubNav] = useState([]);
   const navigate = useNavigate();
   const navigationItemRender = (rawList) => {
     const navigationList = rawList
@@ -125,12 +126,7 @@ export default function MiniDrawer({ open }) {
         return (
           <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton
-              //  className="navListButton"
-              onClick={() =>
-                navItem.subList
-                  ? setOpenApplicatiion(!openApplication)
-                  : navigate(navItem.route)
-              }
+              onClick={() => navItem?.route !== "" && navigate(navItem.route)}
               dense
               className="navItems"
             >
@@ -146,9 +142,15 @@ export default function MiniDrawer({ open }) {
               {navItem.subList && open && (
                 <MuiListItemIcon className="navListIconItem">
                   <ExpandMore
-                    expand={openApplication}
-                    // onClick={() => setOpenApplicatiion(!openApplication)}
-                    aria-expanded={openApplication}
+                    expand={opensubNav.includes(navItem.name)}
+                    onClick={() =>
+                      setOpensubNav((ps) => {
+                        return ps.includes(navItem.name)
+                          ? ps.filter((item) => item !== navItem.name)
+                          : [...ps, navItem.name];
+                      })
+                    }
+                    aria-expanded={opensubNav.includes(navItem.name)}
                     aria-label="show more"
                     disableFocusRipple
                     disableRipple
@@ -158,7 +160,7 @@ export default function MiniDrawer({ open }) {
                 </MuiListItemIcon>
               )}
             </ListItemButton>
-            <Collapse in={openApplication}>
+            <Collapse in={opensubNav.includes(navItem.name)}>
               {navItem.subList && (
                 <List dense disablePadding>
                   {navigationItemRender(navItem.subList)}

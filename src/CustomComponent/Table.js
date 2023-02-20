@@ -43,7 +43,7 @@ export default function Table(props) {
         rowHeight={45}
         autoHeight={true}
         disableColumnMenu
-        hideFooter={rows.length < 11 ? true : false}
+        hideFooter={rows?.length < 11 ? true : false}
         showCellRightBorder
         showColumnRightBorder
         disableSelectionOnClick
