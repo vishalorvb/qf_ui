@@ -3,11 +3,12 @@
 export let createformData = {
     "projectName": "",
     "projectDesc": "",
+    "applicationsProjectMapping":[],
     "issueTrackerType": 1,
     "jira_project_id": "",
     "sqeProjectId": 0,
     "userId": 0,
-    "orgId": "",
+    "orgId": 1,
     "repository_url": "",
     "repository_token": "",
     "jenkins_token": "",
@@ -31,9 +32,11 @@ export let createformData = {
 }
 
 export function clearProjectData(){
+    console.log("clearing project data")
      createformData = {
         "projectName": "",
         "projectDesc": "",
+        "applicationsProjectMapping":[],
         "issueTrackerType": 1,
         "jira_project_id": "",
         "sqeProjectId": 0,
@@ -61,35 +64,3 @@ export function clearProjectData(){
         "gitOps": true
     }
 }
-
-
-// {
-//     "project_id": 806,
-//     "project_name": "React10",
-//     "description": "ProjectDescription",
-//     "is_deleted": false,
-//     "created_at": "2023-02-14T17:09:29.362+00:00",
-//     "created_by": 4,
-//     "jenkins_url": null,
-//     "jenkins_user_name": null,
-//     "jenkins_password": null,
-//     "jenkins_token": null,
-//     "gitops": true,
-//     "jira_project_id": "",
-//     "automation_framework_type": 1,
-//     "is_default": false,
-//     "is_selected": false,
-//     "favourite": false,
-//     "modules": [],
-//     "testdata_db_config": null,
-//     "jira_project": null,
-//     "repository_url": null,
-//     "repository_token": null,
-//     "repository_branch": null,
-//     "sqeProjectId": 0,
-//     "stepsCount": 0,
-//     "stepsCompleted": 0,
-//     "userAccessPermissions": null,
-//     "gitDetailsConfigured": false,
-//     "jenkinsDetailsConfigured": false
-// }

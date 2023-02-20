@@ -15,6 +15,7 @@ import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../Services/ProjectService";
+import { getApplication } from "../Services/TestCaseService";
 
 function CreateProject() {
   const { setHeader } = useHead();
@@ -38,7 +39,9 @@ function CreateProject() {
   let [users, setUsers] = useState([]);
   let [leftuser, setLeftuser] = useState([])
   let [rigthtuser, setRightuser] = useState([])
-
+  let [leftApplication, setLeftApplication] = useState([])
+  let [rightApplication, setRightApplication] = useState([])
+  let [applications, setApplications] = useState([])
 
 
   function getUserlist() {
@@ -52,10 +55,20 @@ function CreateProject() {
     })
     return userlist;
   }
-
+  function getApplicationlist() {
+    let applist = []
+    rightApplication.forEach(app => {
+      console.log(app.application_id)
+      applist.push(app.application_id)
+    })
+    return applist
+  }
   function submitHandler() {
     let x = getUserlist()
+    let app = getApplicationlist()
+    app = app.toString()
     createformData.user_access_permissions = x
+    createformData.applicationsProjectMapping = "[" + app + "]"
     createformData.userId = auth.info.id
 
     if (validateFormbyName(["projectname", "automation_framework_type", "desc", "issueTracker"], "error") == true) {
@@ -125,21 +138,52 @@ function CreateProject() {
       setRightuser(remaining)
     }
   }
-
+  function handleSelectApp(event) {
+    let e = document.getElementById("leftapp")
+    let remaining = leftApplication
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        let temp = applications.filter(app => app.application_id == e.options[i].value)
+        remaining = remaining.filter(user => user.application_id != e.options[i].value)
+        if (temp.length > 0) {
+          setRightApplication(pv => [...pv, temp[0]])
+        }
+      }
+      setLeftApplication(remaining)
+    }
+  }
+  function handleUnSelectApp(event) {
+    let e = document.getElementById("rightapp")
+    let remaining = rightApplication
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        let temp = applications.filter(app => app.application_id == e.options[i].value)
+        remaining = remaining.filter(app => app.application_id != e.options[i].value)
+        if (temp.length > 0) {
+          setLeftApplication(pv => [...pv, temp[0]])
+        }
+      }
+      setRightApplication(remaining)
+    }
+  }
 
   useEffect(() => {
     getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken)
     getUsers(setLeftuser, auth.info.organization_id, auth.info.ssoId, usertoken)
-
-  }
-
-    , []);
+    getApplication(setApplications)
+    getApplication(setLeftApplication)
+  }, []);
   useEffect(() => {
     return () => {
       clearProjectData()
     }
 
   }, []);
+
+  useEffect(() => {
+    console.log(applications)
+  }, [applications])
+
 
   return (
     <div className="accordionParent" onClick={resetClassName}>
@@ -680,15 +724,6 @@ function CreateProject() {
 
               />
             </Grid>
-            {/* <Grid item xs={6} sm={6} md={2} alignItems="end">
-              <Button
-                size="small"
-                variant="contained"
-                sx={{ marginLeft: "5px" }}
-              >
-                Verify{" "}
-              </Button>
-            </Grid> */}
           </Grid>
         </Container>
       </AccordionTemplate>
@@ -710,41 +745,120 @@ function CreateProject() {
             sm={12}
             md={12}
             sx={{ marginBottom: "10px" }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            <Grid item xs={2} sm={2} md={2}>
+            <Grid item xs={4} sm={4} md={4}>
               <label>
                 Select User:
               </label>
-            </Grid>
-            <Grid item xs={3} sm={3} md={3}>
               <select
                 id="left"
                 multiple
               >
-                <option value="0">Select user</option>
                 {leftuser.map(user => <option value={user.id}>{user.firstName}</option>)}
               </select>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
-              <button type=""
+              <Button
+                sx={{ my: 0.5 }}
+                variant="outlined"
+                size="small"
                 onClick={handleSelect}
-              > {">>"} </button>
-              <button type=""
+                aria-label="move all right"
+              >
+                ≫
+              </Button>
+              <Button
+                sx={{ my: 0.5 }}
+                variant="outlined"
+                size="small"
                 onClick={handleUnselect}
-              > {"<<"} </button>
+                aria-label="move all right"
+              >
+                ≪
+              </Button>
             </Grid>
-            <Grid item xs={2} sm={2} md={2}>
+            <Grid item xs={4} sm={4} md={4}>
               <label>
                 Select User:
               </label>
-            </Grid>
-            <Grid item xs={3} sm={3} md={3}>
               <select
                 id="right"
                 multiple
               >
                 <option value="">Select user</option>
                 {rigthtuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+              </select>
+            </Grid>
+          </Grid>
+
+        </Container>
+      </AccordionTemplate>
+
+      <AccordionTemplate name="Add Application">
+        <Container
+          component={"div"}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "space-around",
+          }}
+        >
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid item xs={4} sm={4} md={4}>
+            <label>
+                Select Application:
+              </label>
+              <select
+                id="leftapp"
+                multiple
+              >
+                {leftApplication.map(app => <option value={app.application_id}>{app.application_name}</option>)}
+              </select>
+            </Grid>
+            <Grid item xs={1} sm={1} md={1}>
+              <Button
+                sx={{ my: 0.5 }}
+                variant="outlined"
+                size="small"
+                onClick={handleSelectApp}
+                aria-label="move all right"
+              >
+                ≫
+              </Button>
+              <Button
+                sx={{ my: 0.5 }}
+                variant="outlined"
+                size="small"
+                onClick={handleUnSelectApp}
+                aria-label="move all right"
+              >
+                ≪
+              </Button>
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+            <label>
+                Select User:
+              </label>
+              <select
+                id="rightapp"
+                multiple
+              >
+
+                {rightApplication.map(app => <option value={app.application_id}>{app.application_name}</option>)}
               </select>
             </Grid>
           </Grid>
