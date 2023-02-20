@@ -104,6 +104,7 @@ function Reports() {
   const getUsers = () => {
     axiosPrivate.get(`/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`).then(res => {
       setUsersObject(res.data.info);
+      console.log(res.data.info);
     })
       .catch((error) => {
         console.log(error)
