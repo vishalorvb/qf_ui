@@ -48,10 +48,10 @@ function EditUserPopup(props) {
         {
             var data = {
                 "ssoId" : values.uid,
-                "password" : password,
-                "firstName" : fname,
-                "lastName" : lname,
-                "email" : email,
+                "password" : password.trim(),
+                "firstName" : fname.trim(),
+                "lastName" : lname.trim(),
+                "email" : email.trim(),
                 "role" : roleId,
                 "id" : values.id,
                 "current_user_id" : loggedInId
@@ -63,7 +63,7 @@ function EditUserPopup(props) {
                 getUsers();
                 setTimeout(() => {
                     setEditSuccessMsg(false)
-                }, 2000);
+                }, 3000);
             })
             handleClose();
         }
@@ -71,7 +71,7 @@ function EditUserPopup(props) {
             setValidationMsg(true);
             setTimeout(() => {
                 setValidationMsg(false)
-            }, 2000);
+            }, 3000);
             console.log("Invalid form");
         }
     }

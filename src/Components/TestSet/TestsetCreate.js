@@ -5,10 +5,11 @@ import Table from "../../CustomComponent/Table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useLocation } from 'react-router-dom';
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { getTestcases } from "../../Services/ProjectService";
+import { getModules, getProject, getTestcases } from "../../Services/ProjectService";
 import { getTestcaseDetails } from "../../Services/TestsetService";
 import {createTestset} from "../../Services/TestsetService";
 import DeleteTestset from "./DeleteTestset";
+import { axiosPrivate } from "../../api/axios";
 
 function TestsetCreate() {
     const [testcaseObject, setTestcaseObject] = useState([]);
@@ -26,6 +27,7 @@ function TestsetCreate() {
     const [workflowsObject, setWorkflowsObject] = useState([]);
     const [workflowId, setWorkflowId] = useState(0);
     const [projectId, setProjectId] = useState(null);
+    const [testsetObject, setTestsetObject] = useState([]);
     let Data = [];
 
     const columns = [
@@ -104,13 +106,27 @@ function TestsetCreate() {
         // Data.push(tcObject);
     }
 
+    const getTestsets = () => {
+      axiosPrivate
+        .get(
+          `qfservice/webtestset/api/v1/projects/${projectId}/workflow/${workflowId}/web/testsets`
+        )
+        .then((res) => {
+          console.log(res.data.data);
+          setTestsetObject(res.data.result);
+        });
+    };
+
     useEffect(() => {
-        getTestcases(setTestcaseObject, 1031);
+      getProject(setProjectObject);
+      getModules(setWorkflowsObject, projectId);
+      getTestsets();
+      getTestcases(setTestcaseObject, workflowId);
     }, [])
 
     useEffect(() => {
-        getTestcaseDetails(setTcObject,1031,testcaseId);
-    }, [testcaseId])
+        getTestcaseDetails(setTcObject,workflowId,testcaseId);
+    }, [testcaseId,workflowId])
 
     console.log(tcObject);
     console.log(Data);
@@ -149,21 +165,20 @@ function TestsetCreate() {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={8} xl={7}>
-              <Autocomplete
+            <Autocomplete
                 size="small"
                 options={projectObject}
                 getOptionLabel={(option) => option.project_name}
                 onChange={(e, value) => {
-                  // Uid.current = value.id;
+                  // Project_Id.current = value.project_id;
                   setProjectId(value.project_id);
-                  // onChangeHandler();
                 }}
-                noOptionsText={"User not found"}
+                noOptionsText={"Projects not found"}
                 renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
                     <input
                       type="text"
-                      name="userAutocomplete"
+                      name="projectAutocomplete"
                       {...params.inputProps}
                       placeholder="Please Select"
                     />
