@@ -43,12 +43,12 @@ function AddUserPopup(props) {
         if ( validateForm(requiredsFields,[],[],requiredOnlyAlphabets,[],autoComplete,"error")) 
         {
             var data = {
-                "firstName": fName,
-                "lastName": lName,
-                "ssoId": ssoId,
-                "password": password,
-                "email": email,
-                "role": roleId
+                "firstName": fName.trim(),
+                "lastName": lName.trim(),
+                "ssoId": ssoId.trim(),
+                "password": password.trim(),
+                "email": email.trim(),
+                "role": roleId.trim()
             }
 
             users.forEach(element => {
@@ -57,7 +57,7 @@ function AddUserPopup(props) {
                     getUsers();
                     setTimeout(() => {
                         setAddErrorMsg(false)
-                    }, 2000);
+                    }, 3000);
                 }
             });
     
@@ -67,7 +67,7 @@ function AddUserPopup(props) {
                 getUsers();
                 setTimeout(() => {
                     setAddSuccessMsg(false)
-                }, 2000);
+                }, 3000);
             })
             handleClose();
         }
@@ -75,7 +75,7 @@ function AddUserPopup(props) {
             setValidationMsg(true);
             setTimeout(() => {
                 setValidationMsg(false)
-            }, 2000);
+            }, 3000);
             console.log("Invalid form");
         }
     }
@@ -102,34 +102,34 @@ function AddUserPopup(props) {
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>First Name <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input type="text" ref={first_name} onChange={(e) => setFName(e.target.value)} name="firstName" placeholder="Enter First Name" />
+                                        <input type="text" ref={first_name} onChange={(e) => setFName(e.target.value)} name="firstName" placeholder=" Enter First Name" />
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Last Name <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input type="text" ref={last_name} onChange={(e) => setLName(e.target.value)} name="lastName" placeholder="Enter Last Name" /></Grid>
+                                        <input type="text" ref={last_name} onChange={(e) => setLName(e.target.value)} name="lastName" placeholder=" Enter Last Name" /></Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>User Id <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input type="text" ref={sso_id} onChange={(e) => setSsoId(e.target.value)} name="userId" placeholder="Enter 4 digit number only" /></Grid>
+                                        <input type="text" ref={sso_id} onChange={(e) => setSsoId(e.target.value)} name="userId" placeholder=" Enter Unique Id only" /></Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Password <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input type="text" ref={Password} onChange={(e) => setPassword(e.target.value)} name="password" placeholder="Enter atleast 8 Characters" /></Grid>
+                                        <input type="text" ref={Password} onChange={(e) => setPassword(e.target.value)} name="password" placeholder=" Enter password " /></Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Email Id <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
-                                        <input name="email" ref={Email} type="text" onChange={(e) => setEmail(e.target.value)} placeholder="Enter Email" /></Grid>
+                                        <input name="email" ref={Email} type="text" onChange={(e) => setEmail(e.target.value)} placeholder=" Enter Email" /></Grid>
                                 </Grid>
                                 <Grid container item xs={12} sm={8} md={6} sx={{ marginBottom: '10px' }} >
                                     <Grid item xs={6} sm={6} md={3}><label>Role  <span className="importantfield" >*</span>:</label></Grid>
                                     <Grid item xs={6} sm={6} md={8}>
                                         <select ref={role_id} name="roleAutocomplete" id="selectList" onChange={(e) => setRoleId(e.target.value)}>
-                                            <option value="">Select Role...</option>
+                                            <option value="">...Select Role...</option>
                                             <option value="1">AUTOMATION ENGINEER</option>
                                             <option value="2">ADMIN</option>
                                             <option value="3">DBA</option>

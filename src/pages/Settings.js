@@ -3,45 +3,54 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 import UpgradeSharpIcon from "@mui/icons-material/UpgradeSharp";
 import useHead from "../hooks/useHead";
+import { baseUrl } from "../Environment";
 // import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-// import { validateForm, resetClassName } from '../../../FormValidation';
-// import axios from 'axios';
-// import SnackbarNotify from '../../SnackbarNotify';
+import { validateForm, resetClassName } from '../CustomComponent/FormValidation';
+import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 // import Table from '../../Table';
+import useAxios from "../hooks/useAxios";
+import useAuth from "../hooks/useAuth";
 
 function Settings() {
   let Url = useRef();
   let Uuid = useRef();
   const [uuid, setUuid] = useState("");
   const [url, setUrl] = useState("");
-  // const [successMsg, setSuccessMsg] = useState(false);
-  // const [validationMsg, setValidationMsg] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(false);
+  const [validationMsg, setValidationMsg] = useState(false);
+  const axiosPrivate = useAxios();
+  const { auth } = useAuth();
+  console.log(auth.info);
+  const loggedInId = auth.info;
+
+  let requiredsFields = [Url, Uuid];
 
   const submit = () => {
-    // if (validateForm(requiredFields, "error")) {
-    // var data = {
-    //     url:url,
-    //     uuid:uuid,
-    //     organizationId:1
-    // }
-    // axios.post( baseUrl+'/OrganisationMS/Users/settings', data)
-    //     .then(response => {
-    //         if (response.data) {
-    //             setSuccessMsg(true);
-    //             setTimeout(() => {
-    //                 setSuccessMsg(false)
-    //             }, 2000);
-    //         }
-    //     })
-    //     setUrl("");
-    //     setUuid("");
-    // }
-    // else {
-    // setValidationMsg(true);
-    // setTimeout(() => {
-    //     setValidationMsg(false)
-    // }, 2000);
-    // }
+    if (validateForm(requiredsFields,[],[],[],[],[], "error")) {
+    var data = {
+        url:url,
+        uuid:uuid,
+        organizationId:1
+    }
+    axiosPrivate.post('/qfservice/updateOrganisationSettings', data)
+        .then(response => {
+            if (response.data) {
+                console.log(response)
+                setSuccessMsg(true);
+                setTimeout(() => {
+                    setSuccessMsg(false)
+                }, 2000);
+            }
+        })
+        setUrl("");
+        setUuid("");
+    }
+    else {
+    setValidationMsg(true);
+    setTimeout(() => {
+        setValidationMsg(false)
+    }, 2000);
+    }
   };
 
   const { setHeader } = useHead();
@@ -56,13 +65,13 @@ function Settings() {
   }, []);
 
   return (
-    <div>
+    <div onClick={resetClassName}>
       <Paper
         elevation={1}
         sx={{ padding: "2px", marginTop: "20px", marginBottom: "10px" }}
       >
-        {/* <SnackbarNotify open={successMsg} close={setSuccessMsg} msg="Details are updated Successfully" severity="success" />
-                <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" /> */}
+        <SnackbarNotify open={successMsg} close={setSuccessMsg} msg="Details are updated Successfully" severity="success" />
+        <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
         {/* <SnackbarNotify open={copyMsg} close={setCopyMsg} msg="Copied" severity="success" /> */}
         <Stack
           component="div"
@@ -89,6 +98,7 @@ function Settings() {
                 type="text"
                 name=""
                 value={url}
+                ref={Url}
                 onChange={(e) => setUrl(e.target.value)}
               />
             </Grid>
@@ -117,6 +127,7 @@ function Settings() {
                 type="text"
                 name=""
                 value={uuid}
+                ref={Uuid}
                 onChange={(e) => setUuid(e.target.value)}
               />
             </Grid>

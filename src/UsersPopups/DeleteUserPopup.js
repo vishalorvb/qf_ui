@@ -27,7 +27,7 @@ function DeleteUserPopup(props) {
                 getUsers();
                 setTimeout(() => {
                     setDelSuccessMsg(false)
-                }, 2000);
+                }, 3000);
             }
         )
         handleClose();

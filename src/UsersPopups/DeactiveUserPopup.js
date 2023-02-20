@@ -27,7 +27,7 @@ function DeactiveUserPopup(props) {
                 getUsers();
                 setTimeout(() => {
                     setDeactSuccessMsg(false)
-                }, 2000);
+                }, 3000);
             }
         )
         handleClose();

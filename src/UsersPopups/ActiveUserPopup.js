@@ -27,7 +27,7 @@ function ActiveUserPopup(props) {
                 getUsers();
                 setTimeout(() => {
                     setActSuccessMsg(false)
-                }, 2000);
+                }, 3000);
             }
         )
         handleClose();
