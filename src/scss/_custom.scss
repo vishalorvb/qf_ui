@@ -211,3 +211,7 @@ select {
   border-radius: 5px;
   border: 1px solid #d0d0d0;
 }
+
+.error {
+  border: 1px solid $red;
+}
