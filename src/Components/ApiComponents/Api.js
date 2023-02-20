@@ -7,7 +7,7 @@ import { validateForm } from '../../CustomComponent/FormValidation';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 import { useNavigate } from 'react-router-dom';
 import { updateAPI } from '../../Services/ProjectService';
-
+import { validateFormbyName } from '../../CustomComponent/FormValidation';
 
 
 
@@ -18,9 +18,7 @@ function Api({ projectId }) {
     let navigate = useNavigate()
 
     function handleSave(e) {
-        if (validateForm(
-            [], [], [], [], [], namelist, "error"
-        )) {
+        if (validateFormbyName(namelist, "error")) {
             console.log("Form submited")
             if (Apidata.hasOwnProperty("api_id") == false) {
                 createAPI(Apidata).then(res => {
