@@ -21,25 +21,30 @@ function Settings() {
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
   console.log(auth.info);
-  const loggedInId = auth.info;
+  const organizationId = auth.info.organization_id;
 
   let requiredsFields = [Url, Uuid];
 
   const submit = () => {
     if (validateForm(requiredsFields,[],[],[],[],[], "error")) {
-    var data = {
-        url:url,
-        uuid:uuid,
-        organizationId:1
-    }
-    axiosPrivate.post('/qfservice/updateOrganisationSettings', data)
-        .then(response => {
+    var bodyFormData = new FormData();
+    bodyFormData.append('report_portal_url', url.trim());
+    bodyFormData.append('report_portal_uuid', uuid.trim());
+    bodyFormData.append('organization_id', organizationId);
+
+    axiosPrivate(
+        {
+            method: "post",
+            url: `/qfservice/updateOrganisationSettings`,
+            data: bodyFormData,
+            headers: { "Content-Type": "multipart/form-data" },
+          }).then(response => {
             if (response.data) {
                 console.log(response)
                 setSuccessMsg(true);
                 setTimeout(() => {
                     setSuccessMsg(false)
-                }, 2000);
+                }, 3000);
             }
         })
         setUrl("");
