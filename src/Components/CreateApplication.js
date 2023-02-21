@@ -9,6 +9,7 @@ import {
   Grid,
 } from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
+import axios from "../api/axios";
 
 export default function CreateApplication(props) {
   const { open, close, type } = props;
@@ -38,6 +39,23 @@ export default function CreateApplication(props) {
       baseUrl: data.baseUrl,
       type: type,
       desc: data.description,
+    });
+
+    axios.post(`qfservice/saveApplicationDetails`, {
+      application_id: "",
+      application_name: data.name,
+      application_desc: data.description,
+      deleted: false,
+      base_url: data.baseUrl,
+      application_type: type,
+      is_api_application: false,
+      apk_name: "",
+      bundle_id: "0",
+      module_name: data.name,
+      module_desc: data.description,
+      module_type: type,
+      parent_module_id: 0,
+      sub_module_type: 0,
     });
   };
 

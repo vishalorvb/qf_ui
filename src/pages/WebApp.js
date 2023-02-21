@@ -75,7 +75,7 @@ export default function WebApp() {
 
   return (
     <>
-      <CreateApplication open={openCreate} close={setOpenCreate} type="web" />
+      <CreateApplication open={openCreate} close={setOpenCreate} type={1} />
       <Table
         rows={project}
         columns={applicationColumns}
