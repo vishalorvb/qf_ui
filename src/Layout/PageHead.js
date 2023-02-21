@@ -11,8 +11,14 @@ import {
   Stack,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { SelectElement, useForm } from "react-hook-form-mui";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function PageHead() {
+  const { control } = useForm({
+    resolver: yupResolver(),
+  });
+
   const navigate = useNavigate();
   const location = useLocation();
   const backButtonRender =
@@ -56,6 +62,27 @@ export default function PageHead() {
                   <AddIcon fontSize="small" />
                 </IconButton>
               )}
+              <SelectElement
+                name="browser"
+                label="Browser"
+                size="small"
+                fullWidth
+                control={control}
+                options={[
+                  {
+                    id: "Custom",
+                    label: "Custom",
+                  },
+                  {
+                    id: "Chrome",
+                    label: "Chrome",
+                  },
+                  {
+                    id: "Mozilla",
+                    label: "Mozilla",
+                  },
+                ]}
+              />
             </Stack>
 
             <BreadcrumbsComponent />

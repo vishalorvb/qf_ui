@@ -146,7 +146,7 @@ export const Routes = [
   {
     path: "qfAdmin",
     element: QFAdmin,
-    accessRole: [1],
+    accessRole: [1, 2],
   },
   {
     path: "release",
