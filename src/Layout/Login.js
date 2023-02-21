@@ -70,7 +70,7 @@ export default function Login() {
       const info = userInfo?.data?.info;
       const user = info?.ssoId;
       const password = info?.password;
-      const role = [info?.role];
+      const role = info?.role;
       const userId = info?.id;
 
       setAuth({
