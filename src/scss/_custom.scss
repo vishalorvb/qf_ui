@@ -10,10 +10,12 @@
 html,
 body {
   font-family: "Roboto", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 300;
 }
-
+body {
+  background: #f7f9ff;
+}
 a {
   color: #00143f;
 }
@@ -158,6 +160,7 @@ a {
     color: rgba($white, 0.4);
     border-radius: 5px;
     margin-left: 10px;
+    font-size: 13px;
   }
 }
 
@@ -210,4 +213,121 @@ select {
   width: 100%;
   border-radius: 5px;
   border: 1px solid #d0d0d0;
+}
+
+.menuList {
+  margin-top: 20px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  .MuiTypography-root {
+    font-weight: 300 !important;
+    letter-spacing: 0.5px;
+  }
+  & > li {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    flex-direction: column;
+    & > div:first-child {
+      width: 100%;
+      padding: 8px 10px 8px 16px !important;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      *:last-child {
+        svg {
+          color: $white;
+        }
+      }
+      & > div:nth-child(3) {
+        width: 20px;
+        button {
+          padding: 4px;
+          margin-left: auto;
+          margin-right: 0;
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+    & > div:nth-child(2) {
+      width: 100%;
+      padding-left: 10px;
+      .navListIconItem {
+        display: none;
+      }
+      .navListItemText {
+        position: relative;
+        padding-left: 20px;
+        &::before {
+          content: "";
+          color: white;
+          position: absolute;
+          top: 50%;
+          left: -2px;
+          transform: translateY(-50%);
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background-color: #0097ec;
+        }
+      }
+    }
+    .navListIconItem:first-child {
+      min-width: 40px;
+      .qf {
+        font-size: 16px;
+      }
+    }
+    &:has(.MuiCollapse-entered) {
+      background-color: #00236b;
+      border-radius: 10px;
+      & > div:first-child {
+        background-color: #001c56;
+        border-radius: 10px 10px 0 0;
+      }
+    }
+  }
+}
+
+.menuList.qf-admin {
+  & > li {
+    border-radius: 10px;
+    background: linear-gradient(90deg, #2255ce 0%, #555de1 100%) 0% 0% no-repeat;
+  }
+}
+
+.customDivider {
+  position: relative;
+  border-bottom: 1px solid #ebebeb;
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 30px;
+    border-radius: 5px;
+    background-color: #009fee;
+  }
+}
+
+.mainContent {
+  padding: 8px 30px;
+  .content {
+    margin-top: 30px;
+    padding: 15px 20px;
+    border-radius: 16px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 1px 1px 10px #6b86a426;
+    border: 1px solid #d2dce5;
+  }
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center !important;
+  gap: 10px;
+  padding: 0 18px !important;
 }

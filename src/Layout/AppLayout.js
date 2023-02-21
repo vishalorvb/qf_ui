@@ -18,12 +18,14 @@ export default function AppLayout() {
       <MiniDrawer open={open} />
       <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
         <AppHeader setOpen={setOpen} />
-        <Box m={1}>
+        <Box className="mainContent">
           <HeaderProvider>
             <PageHead />
-            <Box sx={{ marginTop: 1 }}>
+            <Box>
               <ProjectProvider>
-                <Outlet />
+                <div className="content">
+                  <Outlet />
+                </div>
               </ProjectProvider>
             </Box>
           </HeaderProvider>

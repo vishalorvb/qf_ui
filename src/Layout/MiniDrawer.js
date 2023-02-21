@@ -24,7 +24,7 @@ import { Collapse, Typography } from "@mui/material";
 import { Copyright } from "./Login";
 import useAuth from "../hooks/useAuth";
 
-const drawerWidth = 200;
+const drawerWidth = 250;
 
 const drawerTheme = createTheme({
   components: {
@@ -181,7 +181,9 @@ export default function MiniDrawer({ open }) {
           {open && <Typography>Quality Fusion</Typography>}
         </DrawerHeader>
         <div className="menu">
-          <List className="menuList">{navigationItemRender(qfAdmin)}</List>
+          <List className="menuList qf-admin">
+            {navigationItemRender(qfAdmin)}
+          </List>
 
           {open && (
             <div className="sideNavSections">
@@ -203,9 +205,16 @@ export default function MiniDrawer({ open }) {
             {navigationItemRender(opsManagementList)}
           </List>
         </div>
-        {/* {open && (
-          // <Copyright sx={{ position: "sticky", bottom: 10, color: "white" }} />
-        )} */}
+        {open && (
+          <Copyright
+            sx={{
+              position: "sticky",
+              bottom: 10,
+              color: "rgba(255,255,255,0.5)",
+              fontWeight: "300",
+            }}
+          />
+        )}
       </Drawer>
     </ThemeProvider>
   );
