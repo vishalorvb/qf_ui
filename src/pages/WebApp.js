@@ -6,31 +6,39 @@ import { Outlet, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/CreateApplication";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 
 export default function WebApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const [project, setProject] = useState([]);
+  const [application, setApplication] = useState([]);
   const [openCreate, setOpenCreate] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const applicationColumns = [
     {
-      field: "project_name",
+      field: "application_name",
       headerName: "Application Name",
       flex: 3,
       sortable: false,
     },
     {
-      field: "description",
+      field: "application_desc",
       headerName: "Description",
+      flex: 3,
+      sortable: false,
+    },
+    {
+      field: "base_url",
+      headerName: "Base URL",
       flex: 3,
       sortable: false,
     },
     {
       field: "Actions",
       headerName: "Actions",
-      flex: 3,
+      flex: 1,
       sortable: false,
       align: "center",
       headerAlign: "center",
@@ -39,7 +47,7 @@ export default function WebApp() {
           <div>
             <NearMeOutlinedIcon
               onClick={() =>
-                navigate("pages", { state: { id: param.row.project_id } })
+                navigate("pages", { state: { id: param.row.application_id } })
               }
             />
           </div>
@@ -49,11 +57,6 @@ export default function WebApp() {
   ];
 
   useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      console.log(res.data.result.projects_list);
-      setProject(res.data.result.projects_list);
-    });
-
     setHeader((ps) => {
       return {
         ...ps,
@@ -73,13 +76,31 @@ export default function WebApp() {
       });
   }, []);
 
+  useEffect(() => {
+    axios.get(`qfservice/getApplicationDetails`).then((res) => {
+      console.log(res.data);
+      setApplication(res.data);
+    });
+  }, [msg]);
+
   return (
     <>
-      <CreateApplication open={openCreate} close={setOpenCreate} type={1} />
+      <SnackbarNotify
+        open={msg && true}
+        close={setMsg}
+        msg={msg}
+        severity="success"
+      />
+      <CreateApplication
+        open={openCreate}
+        close={setOpenCreate}
+        type={1}
+        setMsg={setMsg}
+      />
       <Table
-        rows={project}
+        rows={application}
         columns={applicationColumns}
-        getRowId={(row) => row.project_id}
+        getRowId={(row) => row.application_id}
       />
       <Outlet />
     </>
