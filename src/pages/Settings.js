@@ -65,7 +65,7 @@ function Settings() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Organisation",
+        name: "Admin Organisation Settings",
       };
     });
   }, []);
