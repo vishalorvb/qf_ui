@@ -91,7 +91,7 @@ export default function PageHead() {
             <BreadcrumbsComponent />
           </Grid>
 
-          <Divider />
+          <div className="customDivider"></div>
         </>
       )}
     </>

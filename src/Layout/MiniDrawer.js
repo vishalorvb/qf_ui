@@ -24,7 +24,7 @@ import { Collapse, Typography } from "@mui/material";
 import { Copyright } from "./Login";
 import useAuth from "../hooks/useAuth";
 
-const drawerWidth = 200;
+const drawerWidth = 250;
 
 const drawerTheme = createTheme({
   components: {
@@ -132,15 +132,7 @@ export default function MiniDrawer({ open }) {
       .filter((navItem) => navItem.accessRole.includes(role))
       .map((navItem, index) => {
         return (
-          <ListItem
-            disableGutters
-            sx={{
-              display: "block",
-              paddingTop: open ? "1px" : "4px",
-              paddingBottom: open ? "1px" : "4px",
-            }}
-            key={navItem.name}
-          >
+          <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton
               onClick={() =>
                 navItem?.route === ""
@@ -151,27 +143,16 @@ export default function MiniDrawer({ open }) {
               className="navItems"
             >
               {
-                <MuiListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
+                <MuiListItemIcon className="navListIconItem">
                   {navItem.icon}
                 </MuiListItemIcon>
               }
               <MuiListItemText
                 primary={navItem.name}
-                sx={{ opacity: open ? 1 : 0 }}
+                className="navListItemText"
               />
               {navItem.subList && open && (
-                <MuiListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: "center",
-                  }}
-                >
+                <MuiListItemIcon className="navListIconItem">
                   <ExpandMore
                     expand={opensubNav.includes(navItem.name)}
                     onClick={() => openSubNavigationHandle(navItem)}
@@ -180,7 +161,7 @@ export default function MiniDrawer({ open }) {
                     disableFocusRipple
                     disableRipple
                   >
-                    <ExpandMoreIcon sx={{ color: "white" }} />
+                    <ExpandMoreIcon />
                   </ExpandMore>
                 </MuiListItemIcon>
               )}
@@ -200,24 +181,15 @@ export default function MiniDrawer({ open }) {
 
   return (
     <ThemeProvider className="sidebar" theme={drawerTheme}>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
+      <Drawer variant="permanent" open={open} className="drawer">
+        <DrawerHeader className="drawerHeader">
           <Logo>QF</Logo>
-          {open && (
-            <Typography
-              sx={{
-                color: "black",
-                fontSize: "1.2rem",
-                paddingLeft: "10px",
-                fontWeight: "400",
-              }}
-            >
-              Quality Fusion
-            </Typography>
-          )}
+          {open && <Typography>Quality Fusion</Typography>}
         </DrawerHeader>
         <div className="menu">
-          <List>{navigationItemRender(qfAdmin)}</List>
+          <List className="menuList qf-admin">
+            {navigationItemRender(qfAdmin)}
+          </List>
 
           {open && (
             <div className="sideNavSections">
@@ -225,7 +197,7 @@ export default function MiniDrawer({ open }) {
             </div>
           )}
 
-          <List dense disablePadding>
+          <List className="menuList">
             {navigationItemRender(testManagementList)}
           </List>
 
@@ -235,12 +207,19 @@ export default function MiniDrawer({ open }) {
             </div>
           )}
 
-          <List dense disablePadding>
+          <List className="menuList">
             {navigationItemRender(opsManagementList)}
           </List>
         </div>
         {open && (
-          <Copyright sx={{ position: "sticky", bottom: 10, color: "white" }} />
+          <Copyright
+            sx={{
+              position: "sticky",
+              bottom: 10,
+              color: "rgba(255,255,255,0.5)",
+              fontWeight: "300",
+            }}
+          />
         )}
       </Drawer>
     </ThemeProvider>
