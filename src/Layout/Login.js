@@ -11,6 +11,7 @@ import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
+import { baseUrl } from "../Environment";
 
 export function Copyright(props) {
   return (
@@ -38,13 +39,14 @@ export default function Login() {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     try {
       const response = await axios.post(
-        "http://10.11.12.243:8083/qfauthservice/authentication/login",
+        baseUrl+"/qfauthservice/authentication/login",
         {
           username: data.get("email"),
           password: data.get("password"),
@@ -60,7 +62,7 @@ export default function Login() {
       localStorage.setItem("token", token);
 
       const userInfo = await axios.get(
-        "http://10.11.12.243:8083/qfauthservice/authentication/userInfo",
+        baseUrl+"/qfauthservice/authentication/userInfo",
         {
           headers: {
             Authorization: `Bearer ${token}`,
