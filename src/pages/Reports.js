@@ -197,7 +197,7 @@ function Reports() {
                       type="text"
                       name="userAutocomplete"
                       {...params.inputProps}
-                      placeholder="Please Select"
+                      placeholder=" Please Select"
                     />
                   </div>
                 )}
@@ -234,7 +234,7 @@ function Reports() {
                       type="text"
                       name="projectAutocomplete"
                       {...params.inputProps}
-                      placeholder="Please Select"
+                      placeholder=" Please Select"
                     />
                   </div>
                 )}
@@ -271,7 +271,7 @@ function Reports() {
                       type="text"
                       name="workflowAutocomplete"
                       {...params.inputProps}
-                      placeholder="Please Select"
+                      placeholder=" Please Select"
                     />
                   </div>
                 )}

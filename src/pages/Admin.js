@@ -70,7 +70,7 @@ export default function Admin() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Admin-Users Settings",
+        name: "Admin-Users",
         plusButton: true,
         plusCallback: addUserHandler,
       };
