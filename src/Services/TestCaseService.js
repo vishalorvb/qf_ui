@@ -37,7 +37,25 @@ export async function createApitestcase(data){
 
 export function getApplication(callback){
     axios.get(`${baseUrl}/qfservice/getApplicationDetails`).then(res=>{
-        console.log(res.data)
         callback(res.data)
     })
+}
+
+export async function createNewtestCase(data){
+    let pid = data.project_id
+    let aid = data.application_id
+    delete data.application_id
+    delete data.project_id
+    let res =  axios({
+        method: 'post',
+        url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
+        data: data
+    }).then(response => {
+        console.log(response.data.status)
+        return response.data.status
+    })
+        .catch(err => {
+            return "error"
+        })
+   return res
 }

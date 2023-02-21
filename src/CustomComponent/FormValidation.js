@@ -160,11 +160,11 @@ export function validateFormbyName(names,cname) {
     names.forEach(element => {
         let collection = document.getElementsByName(element)
         for (let i = 0; i < collection.length; i++) {
-            console.log(collection[i].value)
-            if (collection[i].value.trim() == "") {
+            if (collection[i].value == undefined || collection[i].value.trim() == "") {
                 collection[i].className = cname
                 status = false;
-                console.log("error "+element)
+                console.log("error")
+                console.log(element.value)
             }
         }
     });

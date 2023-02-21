@@ -756,6 +756,7 @@ function CreateProject() {
               <select
                 id="left"
                 multiple
+                style={{padding:"10px"}}
               >
                 {leftuser.map(user => <option value={user.id}>{user.firstName}</option>)}
               </select>
@@ -787,6 +788,7 @@ function CreateProject() {
               <select
                 id="right"
                 multiple
+                style={{padding:"10px"}}
               >
                 <option value="">Select user</option>
                 {rigthtuser.map(user => <option value={user.id}>{user.firstName}</option>)}
@@ -825,6 +827,7 @@ function CreateProject() {
               <select
                 id="leftapp"
                 multiple
+                style={{padding:"10px"}}
               >
                 {leftApplication.map(app => <option value={app.application_id}>{app.application_name}</option>)}
               </select>
@@ -856,6 +859,7 @@ function CreateProject() {
               <select
                 id="rightapp"
                 multiple
+                style={{padding:"10px"}}
               >
 
                 {rightApplication.map(app => <option value={app.application_id}>{app.application_name}</option>)}
