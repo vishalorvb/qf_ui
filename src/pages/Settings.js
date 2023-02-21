@@ -5,8 +5,11 @@ import UpgradeSharpIcon from "@mui/icons-material/UpgradeSharp";
 import useHead from "../hooks/useHead";
 import { baseUrl } from "../Environment";
 // import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { validateForm, resetClassName } from '../CustomComponent/FormValidation';
-import SnackbarNotify from '../CustomComponent/SnackbarNotify';
+import {
+  validateForm,
+  resetClassName,
+} from "../CustomComponent/FormValidation";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import Table from '../../Table';
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
@@ -26,30 +29,30 @@ function Settings() {
   let requiredsFields = [Url, Uuid];
 
   const submit = () => {
-    if (validateForm(requiredsFields,[],[],[],[],[], "error")) {
-    var data = {
-        url:url,
-        uuid:uuid,
-        organizationId:1
-    }
-    axiosPrivate.post('/qfservice/updateOrganisationSettings', data)
-        .then(response => {
-            if (response.data) {
-                console.log(response)
-                setSuccessMsg(true);
-                setTimeout(() => {
-                    setSuccessMsg(false)
-                }, 2000);
-            }
-        })
-        setUrl("");
-        setUuid("");
-    }
-    else {
-    setValidationMsg(true);
-    setTimeout(() => {
-        setValidationMsg(false)
-    }, 2000);
+    if (validateForm(requiredsFields, [], [], [], [], [], "error")) {
+      var data = {
+        url: url,
+        uuid: uuid,
+        organizationId: 1,
+      };
+      axiosPrivate
+        .post("/qfservice/updateOrganisationSettings", data)
+        .then((response) => {
+          if (response.data) {
+            console.log(response);
+            setSuccessMsg(true);
+            setTimeout(() => {
+              setSuccessMsg(false);
+            }, 2000);
+          }
+        });
+      setUrl("");
+      setUuid("");
+    } else {
+      setValidationMsg(true);
+      setTimeout(() => {
+        setValidationMsg(false);
+      }, 2000);
     }
   };
 
@@ -59,7 +62,7 @@ function Settings() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Admin-Organisation Settings",
+        name: "Organisation",
       };
     });
   }, []);
@@ -70,8 +73,18 @@ function Settings() {
         elevation={1}
         sx={{ padding: "2px", marginTop: "20px", marginBottom: "10px" }}
       >
-        <SnackbarNotify open={successMsg} close={setSuccessMsg} msg="Details are updated Successfully" severity="success" />
-        <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
+        <SnackbarNotify
+          open={successMsg}
+          close={setSuccessMsg}
+          msg="Details are updated Successfully"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={validationMsg}
+          close={setValidationMsg}
+          msg="Fill all the required fields"
+          severity="error"
+        />
         {/* <SnackbarNotify open={copyMsg} close={setCopyMsg} msg="Copied" severity="success" /> */}
         <Stack
           component="div"

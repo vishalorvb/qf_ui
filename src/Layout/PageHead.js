@@ -43,7 +43,7 @@ export default function PageHead() {
               direction="row"
               justifyContent="flex-start"
               alignItems="center"
-              spacing={0}
+              spacing={0.5}
             >
               {backButtonRender && (
                 <IconButton size="small" onClick={() => navigate(-1)}>
@@ -62,27 +62,30 @@ export default function PageHead() {
                   <AddIcon fontSize="small" />
                 </IconButton>
               )}
-              <SelectElement
-                name="browser"
-                label="Browser"
-                size="small"
-                fullWidth
-                control={control}
-                options={[
-                  {
-                    id: "Custom",
-                    label: "Custom",
-                  },
-                  {
-                    id: "Chrome",
-                    label: "Chrome",
-                  },
-                  {
-                    id: "Mozilla",
-                    label: "Mozilla",
-                  },
-                ]}
-              />
+              {header?.name === "Pages" && (
+                <SelectElement
+                  name="browser"
+                  label="Browser"
+                  size="small"
+                  fullWidth
+                  sx={{ width: 100 }}
+                  control={control}
+                  options={[
+                    {
+                      id: "Custom",
+                      label: "Custom",
+                    },
+                    {
+                      id: "Chrome",
+                      label: "Chrome",
+                    },
+                    {
+                      id: "Mozilla",
+                      label: "Mozilla",
+                    },
+                  ]}
+                />
+              )}
             </Stack>
 
             <BreadcrumbsComponent />
