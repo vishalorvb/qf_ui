@@ -31,7 +31,7 @@ export const testManagementList = [
   },
   {
     name: "Application",
-    route: "application/webApp",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-applications"></i>,
     subList: [

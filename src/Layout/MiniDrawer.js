@@ -118,6 +118,14 @@ export default function MiniDrawer({ open }) {
   const { auth } = useAuth();
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState([]);
+
+  const openSubNavigationHandle = (navItem) => {
+    setOpensubNav((ps) => {
+      return ps.includes(navItem.name)
+        ? ps.filter((item) => item !== navItem.name)
+        : [...ps, navItem.name];
+    });
+  };
   const navigate = useNavigate();
   const navigationItemRender = (rawList) => {
     const navigationList = rawList
@@ -126,7 +134,11 @@ export default function MiniDrawer({ open }) {
         return (
           <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton
-              onClick={() => navItem?.route !== "" && navigate(navItem.route)}
+              onClick={() =>
+                navItem?.route === ""
+                  ? openSubNavigationHandle(navItem)
+                  : navigate(navItem.route)
+              }
               dense
               className="navItems"
             >
@@ -143,13 +155,7 @@ export default function MiniDrawer({ open }) {
                 <MuiListItemIcon className="navListIconItem">
                   <ExpandMore
                     expand={opensubNav.includes(navItem.name)}
-                    onClick={() =>
-                      setOpensubNav((ps) => {
-                        return ps.includes(navItem.name)
-                          ? ps.filter((item) => item !== navItem.name)
-                          : [...ps, navItem.name];
-                      })
-                    }
+                    onClick={() => openSubNavigationHandle(navItem)}
                     aria-expanded={opensubNav.includes(navItem.name)}
                     aria-label="show more"
                     disableFocusRipple

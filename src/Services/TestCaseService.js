@@ -34,3 +34,10 @@ export async function createApitestcase(data){
         })
     return res
 }
+
+export function getApplication(callback){
+    axios.get(`${baseUrl}/qfservice/getApplicationDetails`).then(res=>{
+        console.log(res.data)
+        callback(res.data)
+    })
+}
