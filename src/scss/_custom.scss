@@ -342,13 +342,6 @@ select {
   color: #009fee;
 }
 
-.editIcon {
-  color: #004fc0;
-}
-
-.deleteIcon {
-  color: #d01111;
-}
 .copyright {
   position: sticky;
   bottom: 0;
@@ -368,4 +361,10 @@ select {
 }
 [aria-label="Active"] {
   color: $accent !important;
+}
+
+// abhishek
+
+.dialogTitle {
+  background-color: #e8f2fd;
 }

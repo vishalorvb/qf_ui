@@ -99,9 +99,9 @@ function ProjectTable() {
           );
         }
       },
-      flex: 3,
+      flex: 2,
       sortable: false,
-      align: "center",
+      align: "flex-start",
     },
 
     {

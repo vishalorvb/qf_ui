@@ -178,7 +178,7 @@ function Testset() {
   return (
     <div>
       <Paper
-        elevation={1}
+        elevation={0}
         sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
       >
         <Container
@@ -283,20 +283,18 @@ function Testset() {
         </Container>
       </Paper>
       {/* {open1 ? */}
-      <Paper>
-        <div
-          className="recenttable"
-          style={{ flot: "right", marginBottom: "10px" }}
-        ></div>
-        <div className="datatable" style={{ marginTop: "20px" }}>
-          <Table
-            columns={columns}
-            rows={testsetObject}
-            // hidefooter={false}
-            getRowId={(row) => row.testset_id}
-          />
-        </div>
-      </Paper>
+      <div
+        className="recenttable"
+        style={{ flot: "right", marginBottom: "10px" }}
+      ></div>
+      <div className="datatable" style={{ marginTop: "20px" }}>
+        <Table
+          columns={columns}
+          rows={testsetObject}
+          // hidefooter={false}
+          getRowId={(row) => row.testset_id}
+        />
+      </div>
       {/* : ""} */}
     </div>
   );

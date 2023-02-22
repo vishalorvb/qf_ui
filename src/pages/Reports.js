@@ -10,14 +10,17 @@ import axios from "../api/axios";
 import useAxios from "../hooks/useAxios";
 import { baseUrl } from "../Environment";
 import moment from "moment/moment";
-import { resetClassName, validateForm } from "../CustomComponent/FormValidation";
+import {
+  resetClassName,
+  validateForm,
+} from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 
 function Reports() {
   const [fromDate, setFromDate] = useState("");
-  const From_Date = useRef(); 
+  const From_Date = useRef();
   const [toDate, setToDate] = useState("");
-  const to_Date = useRef(); 
+  const to_Date = useRef();
   const [usersObject, setUsersObject] = useState([]);
   const [projectsObject, setProjectsObject] = useState([]);
   const [workflowsObject, setWorkflowsObject] = useState([]);
@@ -102,49 +105,56 @@ function Reports() {
   ];
 
   const getUsers = () => {
-    axiosPrivate.get(`/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`).then(res => {
-      setUsersObject(res.data.info);
-      console.log(res.data.info);
-    })
+    axiosPrivate
+      .get(
+        `/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
+      )
+      .then((res) => {
+        setUsersObject(res.data.info);
+        console.log(res.data.info);
+      })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
       });
   };
 
   useEffect(() => {
     getUsers();
-    getProject(setProjectsObject,userId);
-    getModules(setWorkflowsObject,projectId);
-  }, [userId, projectId, workflowId,fromDate,toDate]);
+    getProject(setProjectsObject, userId);
+    getModules(setWorkflowsObject, projectId);
+  }, [userId, projectId, workflowId, fromDate, toDate]);
   console.log(projectId);
 
   const submit = (e) => {
     e.preventDefault();
-    if (validateForm(requiredsFields, [], [], [], [], [autoComplete], "error")) {
+    if (
+      validateForm(requiredsFields, [], [], [], [], [autoComplete], "error")
+    ) {
       console.log(userId);
       console.log(projectId);
       console.log(workflowId);
       console.log(fromDate);
       console.log(toDate);
       axiosPrivate
-        .post(`qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`)
+        .post(
+          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`
+        )
         .then((Response) => {
           setTbData(Response.data.info);
           console.log(Response.data.info);
           setReportSuccessMsg(true);
           setTimeout(() => {
-            setReportSuccessMsg(false)
+            setReportSuccessMsg(false);
           }, 3000);
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
         });
-      console.log("Valid Form")
-    }
-    else {
+      console.log("Valid Form");
+    } else {
       setValidationMsg(true);
       setTimeout(() => {
-        setValidationMsg(false)
+        setValidationMsg(false);
       }, 3000);
       console.log("Invalid form");
     }
@@ -153,7 +163,7 @@ function Reports() {
   return (
     <div onClick={resetClassName}>
       <Paper
-        elevation={1}
+        elevation={0}
         sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
       >
         <Container
@@ -185,10 +195,12 @@ function Reports() {
               <Autocomplete
                 size="small"
                 options={usersObject}
-                getOptionLabel={(option) => option.firstName + " " + option.lastName}
+                getOptionLabel={(option) =>
+                  option.firstName + " " + option.lastName
+                }
                 onChange={(e, value) => {
                   // Uid.current = value.id;
-                  setUserId(value.id)
+                  setUserId(value.id);
                 }}
                 noOptionsText={"User not found"}
                 renderInput={(params) => (
@@ -356,8 +368,18 @@ function Reports() {
           </Button>
         </Container>
       </Paper>
-      <SnackbarNotify open={reportSuccessMsg} close={setReportSuccessMsg} msg="We got the report successfully" severity="success" />
-      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error" />
+      <SnackbarNotify
+        open={reportSuccessMsg}
+        close={setReportSuccessMsg}
+        msg="We got the report successfully"
+        severity="success"
+      />
+      <SnackbarNotify
+        open={validationMsg}
+        close={setValidationMsg}
+        msg="Fill all the required fields"
+        severity="error"
+      />
       <div className="datatable" style={{ marginTop: "15px" }}>
         <Table
           columns={columns}

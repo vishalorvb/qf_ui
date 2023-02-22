@@ -23,6 +23,7 @@ import { getWebTestCase } from "../../Services/ProjectService";
 // import ConfirmPop from '../../CustomComponent/ConfirmPop';
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useAuth from "../../hooks/useAuth";
+import useHead from "../../hooks/useHead";
 
 function TestCases() {
   let [project, setproject] = useState([]);
@@ -173,6 +174,27 @@ function TestCases() {
     getProject(setproject, auth.info.id);
   }, []);
 
+  const { setHeader } = useHead();
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Testcases",
+        plusButton: true,
+        plusCallback: () => setPopup(true),
+      };
+    });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
+  }, []);
+
   return (
     <div>
       <SnackbarNotify
@@ -205,11 +227,6 @@ function TestCases() {
               getWebTestCase(setTestcases, value.project_id);
             }}
           />
-        </Grid>
-        <Grid item>
-          <Button variant="contained" onClick={(e) => setPopup(true)}>
-            Creat Test Case
-          </Button>
         </Grid>
       </Grid>
 
