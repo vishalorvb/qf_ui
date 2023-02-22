@@ -108,32 +108,13 @@ export default function Dashboard() {
     <>
       <div>
         <div style={{ float: "right" }}>
-          {/* <Container
-            component={"div"}
-            sx={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-            }}
-          >
-            <Grid container item xs={12} sm={8} md={6}>
-              <Grid item xs={6} sm={6} md={3}>
-                <label>
-                  Filter by Project and Sprint{" "}
-                  <span className="importantfield">*</span>:
-                </label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={8}>
-                <input type="text" name="" placeholder="Enter First Name" />
-              </Grid>
-            </Grid>
-          </Container> */}
           <Stack
             direction="row"
             justifyContent="flex-end"
             alignItems="center"
-            spacing={0.5}>
-            Filter by Project and Sprint
+            spacing={0.5}
+          >
+            <Typography>Filter by Project and Sprint</Typography>
             <TextField id="outlined-required" />
             <TextField
               id="outlined-read-only-input"
@@ -144,7 +125,6 @@ export default function Dashboard() {
             />
             <Button variant="contained">Report Portal</Button>
           </Stack>
-          
         </div>
         <div>
           <Box sx={{ flexGrow: 1 }}>
@@ -162,7 +142,7 @@ export default function Dashboard() {
           </Box>
         </div>
         <div style={{ marginTop: "20px" }}>
-          <Card sx={{ maxWidth: 600 }}>
+          <Card sx={{ maxWidth: 600 }} elevation={0}>
             <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
               <HighchartsReact highcharts={Highcharts} options={options} />
             </CardContent>
