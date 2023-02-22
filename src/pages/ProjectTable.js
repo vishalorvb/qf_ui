@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlined from "@mui/icons-material/DeleteOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { Chip } from "@mui/material";
@@ -116,7 +116,7 @@ function ProjectTable() {
                   handleEdit(param.row);
                 }}
               >
-                <EditIcon className="editIcon"></EditIcon>
+                <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
@@ -125,7 +125,7 @@ function ProjectTable() {
                   handleDeletePopup(param.row.project_id);
                 }}
               >
-                <DeleteIcon></DeleteIcon>
+                <DeleteOutlined></DeleteOutlined>
               </IconButton>
             </Tooltip>
           </div>

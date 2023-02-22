@@ -213,16 +213,7 @@ export default function MiniDrawer({ open }) {
             {navigationItemRender(opsManagementList)}
           </List>
         </div>
-        {open && (
-          <Copyright
-            sx={{
-              position: "sticky",
-              bottom: 10,
-              color: "rgba(255,255,255,0.5)",
-              fontWeight: "300",
-            }}
-          />
-        )}
+        {open && <Copyright className="copyright" />}
       </Drawer>
     </ThemeProvider>
   );

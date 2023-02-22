@@ -22,7 +22,7 @@ export function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" to="https://mui.com/">
+      <Link color="inherit" to="https://prolifics.com/">
         Prolifics
       </Link>{" "}
       {new Date().getFullYear()}
