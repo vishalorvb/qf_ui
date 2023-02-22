@@ -4,7 +4,7 @@ const HeadContext = createContext({});
 
 export const HeaderProvider = ({ children }) => {
   const [header, setHeader] = useState({
-    name: "aa",
+    name: "",
     plusButton: false,
     plusCallback: () => console.log("null"),
   });

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -119,11 +119,13 @@ export default function MiniDrawer({ open }) {
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState([]);
 
+  useEffect(() => {
+    !open && setOpensubNav([]);
+  }, [open]);
+
   const openSubNavigationHandle = (navItem) => {
     setOpensubNav((ps) => {
-      return ps.includes(navItem.name)
-        ? ps.filter((item) => item !== navItem.name)
-        : [...ps, navItem.name];
+      return ps.includes(navItem.name) ? [] : [navItem.name];
     });
   };
   const navigate = useNavigate();

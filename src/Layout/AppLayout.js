@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Paper } from "@mui/material";
 
 export default function AppLayout() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <Box sx={{ display: "flex" }}>
