@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
@@ -37,7 +37,8 @@ export default function MobileApp() {
       renderCell: (param) => {
         return (
           <div>
-            <NearMeOutlinedIcon
+            <VisibilityOutlinedIcon
+              className="eyeIcon"
               onClick={() =>
                 navigate("pages", { state: { id: param.row.project_id } })
               }

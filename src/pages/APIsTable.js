@@ -12,38 +12,37 @@ import { Apidata } from "../Components/ApiComponents/Data";
 
 export default function APIsTable() {
   const { setHeader } = useHead();
-  const location = useLocation()
+  const location = useLocation();
   const navigate = useNavigate();
-  let [apis, setApis] = useState([])
-  let [popup, setPopup] = useState(false)
-  let [apiid, setApiid] = useState()
-  let [moduleid, setModuleid] = useState(0)
+  let [apis, setApis] = useState([]);
+  let [popup, setPopup] = useState(false);
+  let [apiid, setApiid] = useState();
+  let [moduleid, setModuleid] = useState(0);
   function handleDelete(apiid) {
-    deleteApi(apiid).then(res => {
+    deleteApi(apiid).then((res) => {
       if (res == null) {
-        getApis(location.state.id, setApis)
+        getApis(location.state.id, setApis);
       }
-    })
-    setPopup(false)
+    });
+    setPopup(false);
   }
-
 
   function handleEdit(row) {
-    Apidata.api_id = row.api_id
-    Apidata.api_name = row.api_name
-    Apidata.api_description = row.api_description
-    Apidata.api_url = row.api_url
-    Apidata.request_type = row.request_type
-    Apidata.body_type = row.body_type
+    Apidata.api_id = row.api_id;
+    Apidata.api_name = row.api_name;
+    Apidata.api_description = row.api_description;
+    Apidata.api_url = row.api_url;
+    Apidata.request_type = row.request_type;
+    Apidata.body_type = row.body_type;
   }
   useEffect(() => {
-    Apidata.module_id = moduleid
-  }, [moduleid])
+    Apidata.module_id = moduleid;
+  }, [moduleid]);
   useEffect(() => {
-    getApiModuleId(location.state.id, setModuleid)
-  }, [])
+    getApiModuleId(location.state.id, setModuleid);
+  }, []);
 
-  let requests =[" ","Get", "Post", "Put", "Delete"]
+  let requests = [" ", "Get", "Post", "Put", "Delete"];
   const pageColumns = [
     {
       field: "api_name",
@@ -60,11 +59,9 @@ export default function APIsTable() {
     {
       field: "reque",
       headerName: "Request Type",
-      renderCell: param =>{
-        let x = param.row.request_type
-        return(
-          requests[x]
-        )
+      renderCell: (param) => {
+        let x = param.row.request_type;
+        return requests[x];
       },
       flex: 1,
       sortable: false,
@@ -80,24 +77,26 @@ export default function APIsTable() {
         return (
           <div>
             <Tooltip title="Edit">
-            <IconButton onClick={(e) => {
-              handleEdit(param.row)
-              navigate("create", { state: { projectid: location.state.id } })
-
-            }
-            }>
-              <EditIcon />
-            </IconButton>
+              <IconButton
+                onClick={(e) => {
+                  handleEdit(param.row);
+                  navigate("create", {
+                    state: { projectid: location.state.id },
+                  });
+                }}
+              >
+                <EditIcon className="editIcon" />
+              </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-            <IconButton
-              onClick={e => {
-                setApiid(param.row.api_id)
-                setPopup(true)
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+              <IconButton
+                onClick={(e) => {
+                  setApiid(param.row.api_id);
+                  setPopup(true);
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
             </Tooltip>
           </div>
         );
@@ -105,14 +104,14 @@ export default function APIsTable() {
     },
   ];
 
-
   useEffect(() => {
     setHeader((ps) => {
       return {
         ...ps,
         name: "API Requests",
         plusButton: true,
-        plusCallback: () => navigate("create", { state: { projectid: location.state.id } }),
+        plusCallback: () =>
+          navigate("create", { state: { projectid: location.state.id } }),
       };
     });
     return () =>
@@ -127,14 +126,12 @@ export default function APIsTable() {
   }, []);
 
   useEffect(() => {
-    getApis(location.state.id, setApis)
-  }, [])
+    getApis(location.state.id, setApis);
+  }, []);
 
   return (
     <>
-      <Table rows={apis} columns={pageColumns}
-        getRowId={row => row.api_id}
-      />
+      <Table rows={apis} columns={pageColumns} getRowId={(row) => row.api_id} />
       <Outlet />
       <ConfirmPop
         open={popup}

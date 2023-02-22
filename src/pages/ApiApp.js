@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getProject } from "../Services/ProjectService";
 import useAuth from "../hooks/useAuth";
@@ -38,18 +38,16 @@ export default function ApiApp() {
       headerAlign: "center",
       renderCell: (param) => {
         return (
-          <div>
-            <NearMeOutlinedIcon
-              onClick={() =>
-                navigate("apiRequests", { state: { id: param.row.project_id } })
-              }
-            />
-          </div>
+          <VisibilityOutlinedIcon
+            className="eyeIcon"
+            onClick={() =>
+              navigate("apiRequests", { state: { id: param.row.project_id } })
+            }
+          />
         );
       },
     },
   ];
-
 
   useEffect(() => {
     setHeader((ps) => {
@@ -76,7 +74,7 @@ export default function ApiApp() {
     //   console.log(res.data.result.projects_list);
     //   setProject(res.data.result.projects_list);
     // });
-    getProject(setProject,auth.info.id)
+    getProject(setProject, auth.info.id);
   }, []);
 
   return (

@@ -73,7 +73,7 @@ function Settings() {
   return (
     <div onClick={resetClassName}>
       <Paper
-        elevation={1}
+        elevation={0}
         sx={{ padding: "2px", marginTop: "20px", marginBottom: "10px" }}
       >
         <SnackbarNotify

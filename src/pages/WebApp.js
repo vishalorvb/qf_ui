@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+// import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Outlet, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
@@ -45,7 +46,8 @@ export default function WebApp() {
       renderCell: (param) => {
         return (
           <div>
-            <NearMeOutlinedIcon
+            <VisibilityOutlinedIcon
+              className="eyeIcon"
               onClick={() =>
                 navigate("pages", { state: { id: param.row.application_id } })
               }
