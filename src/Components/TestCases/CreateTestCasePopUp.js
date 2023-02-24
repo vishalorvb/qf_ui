@@ -3,77 +3,64 @@ import { Container } from '@mui/system'
 import React, { useEffect, useRef, useState } from 'react'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import { getModules, getProject } from '../../Services/ProjectService';
-import { validateForm } from '../../CustomComponent/FormValidation';
-import { createWebTestCase } from '../../Services/TestCaseService';
+import { getApplication } from '../../Services/TestCaseService';
+import { validateFormbyName } from '../../CustomComponent/FormValidation';
+import { createNewtestCase } from '../../Services/TestCaseService';
+export let testcaseData = {
+    "application_id": "",
+    "project_id": "",
+    "testcase_name": "",
+    "testcase_description": "",
+    "testcase_id": 0,
+    "testcase_sprints": [
 
+    ],
+    "screens_in_testcase": [
 
+    ]
+}
+export function resetTestCaseData() {
+    testcaseData = {
+        "application_id": "",
+        // "project_id": "",
+        "testcase_name": "",
+        "testcase_description": "",
+        "testcase_id": 0,
+        "testcase_sprints": [
+
+        ],
+        "screens_in_testcase": [
+
+        ]
+    }
+}
 
 function CreateTestCasePopUp(props) {
 
-    let [projects, setProejcts] = useState([])
-    let [modules, setModules] = useState([])
-    let [data, setData] = useState(
-        {
-            "module_id": 0,
-            "testcase_name": "",
-            "testcase_description": "",
-            "testcase_id": 0,
-            "testcase_sprints": [
-
-            ],
-            "screens_in_testcase": [
-
-            ]
-        }
-    )
-    let testName = useRef()
-    let description = useRef()
+    let [application, setApplication] = useState([])
 
 
     function handleSave(e) {
-        console.log("Handle save")
-        if (validateForm(
-            [testName, description], [], [], [], [], ["moduleid"], "error"
-        )) {
+        if (validateFormbyName(["testName", "appid"], "error") && testcaseData.project_id != "") {
             console.log("Valid form")
-            createWebTestCase(data).then(res => {
-                console.log(res)
-                if (res == "SUCCESS") {
-                    props.snackbar(true)
-                    props.setOpen(false)
-
-                }
-            })
+            // console.log(testcaseData)
+            createNewtestCase(testcaseData)
         }
         else {
-            console.log("Error in form")
+            console.log("invalid form")
+            console.log(testcaseData)
         }
     }
 
     useEffect(() => {
-        getProject(setProejcts)
+        console.log(testcaseData)
+        getApplication(setApplication)
+        return () => {
+            console.log(testcaseData)
+            console.log("clean up create testcase")
+        }
     }, [])
-    useEffect(() => {
-        console.log(data)
-    }, [data])
 
-    useEffect(() => {
-        console.log("Props open changed")
-        setData({
-            "module_id": 0,
-            "testcase_name": "",
-            "testcase_description": "",
-            "testcase_id": 0,
-            "testcase_sprints": [
-
-            ],
-            "screens_in_testcase": [
-
-            ]
-        })
-        setModules([])
-    }, [props.open])
     return (
         <div>
             <Dialog open={props.open} maxWidth='md'>
@@ -101,38 +88,20 @@ function CreateTestCasePopUp(props) {
                                 <Container component={'div'} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }} >
                                     <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} spacing={2} >
                                         <Grid item xs={3} sm={3} md={3}>
-                                            <label for="">Select Project:</label>
+                                            <label for="">Select Application:</label>
                                             <select
                                                 size='small'
                                                 displayEmpty
                                                 inputProps={{ "aria-label": "Without label" }}
                                                 fullWidth
-                                                name='projectid'
+                                                name='appid'
                                                 onChange={e => {
-                                                    getModules(setModules, e.target.value)
-
+                                                    testcaseData.application_id = e.target.value;
                                                 }}
-                                            >
-                                                <option value="0">Select</option>
-                                                {projects.map(val => <option value={val.project_id}>{val.project_name}</option>)}
 
-                                            </select>
-                                        </Grid>
-                                        <Grid item xs={3} sm={3} md={3}>
-                                            <label for="">Type:</label>
-                                            <select
-                                                size='small'
-                                                displayEmpty
-                                                inputProps={{ "aria-label": "Without label" }}
-                                                fullWidth
-                                                name='moduleid'
-                                                onChange={e => {
-                                                    console.log(e.target)
-                                                    setData((ps) => { return { ...ps, module_id: e.target.value } })
-                                                }}
                                             >
-                                                <option value="0">Select</option>
-                                                {modules.map(val => <option value={val.module_id}>{val.module_name}</option>)}
+                                                <option value="">Select</option>
+                                                {application.map(val => <option value={val.application_id}>{val.application_name}</option>)}
 
                                             </select>
                                         </Grid>
@@ -140,9 +109,9 @@ function CreateTestCasePopUp(props) {
                                     <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} >
                                         <Grid item xs={12} sm={12} md={12}><label>Test Case Name <span className="importantfield" >*</span>:</label></Grid>
                                         <Grid item xs={12} sm={12} md={12}>
-                                            <input ref={testName} type="text" name="testName" placeholder="Enter test case name"
+                                            <input type="text" name="testName" placeholder="  Enter test case name"
                                                 onChange={e => {
-                                                    setData((ps) => { return { ...ps, testcase_name: e.target.value } })
+                                                    testcaseData.testcase_name = e.target.value;
                                                 }}
                                             />
                                         </Grid>
@@ -150,9 +119,10 @@ function CreateTestCasePopUp(props) {
                                     <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} >
                                         <Grid item xs={12} sm={12} md={12}><label>Description <span className="importantfield" >*</span>:</label></Grid>
                                         <Grid item xs={12} sm={12} md={12}>
-                                            <textarea ref={description} rows="3" cols="20" name='description'
+                                            <textarea rows="3" cols="20" name="description"
                                                 onChange={e => {
-                                                    setData((ps) => { return { ...ps, testcase_description: e.target.value } })
+                                                    testcaseData.testcase_description = e.target.value;
+                                                    console.log(e.target.value);
                                                 }}
                                             ></textarea>
                                         </Grid>
