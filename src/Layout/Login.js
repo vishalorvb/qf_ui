@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { baseUrl } from "../Environment";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { Alert } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export function Copyright(props) {
   return (
@@ -38,6 +39,7 @@ const theme = createTheme();
 export default function Login() {
   const [loginErr, setLoginErr] = React.useState(false);
   const [fieldsErr, setfieldsErr] = React.useState({ email: "", password: "" });
+  const [loading, setLoading] = React.useState(false);
   const { setAuth, auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -50,6 +52,7 @@ export default function Login() {
     const email = data.get("email").trim();
     const password = data.get("password").trim();
     if (email && password) {
+      setLoading(true);
       try {
         const response = await axios.post(
           baseUrl + "/qfauthservice/authentication/login",
@@ -90,6 +93,7 @@ export default function Login() {
           info: info,
           token: token,
         });
+        setLoading(false);
       } catch (err) {
         console.log(err?.response?.data);
         const error = err?.response?.data;
@@ -104,6 +108,7 @@ export default function Login() {
           status: error?.status,
         });
       }
+      setLoading(false);
     } else {
       !email &&
         setfieldsErr((ps) => {
@@ -188,14 +193,15 @@ export default function Login() {
                 helperText={fieldsErr?.password}
               />
 
-              <Button
+              <LoadingButton
                 type="submit"
                 fullWidth
                 variant="contained"
+                loading={loading}
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
-              </Button>
+              </LoadingButton>
 
               <Copyright sx={{ mt: 5 }} />
             </Box>
