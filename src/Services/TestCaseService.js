@@ -21,7 +21,7 @@ export async function createWebTestCase(data) {
     return res
 }
 
-export async function createApitestcase(data){
+export async function createApitestcase(data) {
     let res = await axios({
         method: 'post',
         url: `${baseUrl}/qfservice/CreateNewTestcase`,
@@ -35,18 +35,18 @@ export async function createApitestcase(data){
     return res
 }
 
-export function getApplication(callback){
-    axios.get(`${baseUrl}/qfservice/getApplicationDetails`).then(res=>{
+export function getApplication(callback) {
+    axios.get(`${baseUrl}/qfservice/getApplicationDetails`).then(res => {
         callback(res.data)
     })
 }
 
-export async function createNewtestCase(data){
+export async function createNewtestCase(data) {
     let pid = data.project_id
     let aid = data.application_id
     delete data.application_id
     delete data.project_id
-    let res =  axios({
+    let res = axios({
         method: 'post',
         url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
         data: data
@@ -57,5 +57,14 @@ export async function createNewtestCase(data){
         .catch(err => {
             return "error"
         })
-   return res
+    return res
+}
+
+
+export function getTestcase(callback, project_id) {
+    axios.get(`${baseUrl}/qfservice/webtestcase/getWebTestcasesInModule?project_id=${project_id}`).then(res => {
+        console.log(res.data.info)
+        callback(res.data.info)
+        // callback(res.data)
+    })
 }

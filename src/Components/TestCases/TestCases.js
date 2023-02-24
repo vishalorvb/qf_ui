@@ -1,7 +1,7 @@
 import { Autocomplete, Button, Grid, IconButton, Radio, Snackbar, TextField, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { getProject } from '../../Services/ProjectService'
-
+import { getTestcase } from '../../Services/TestCaseService';
 import AddIcon from '@mui/icons-material/Add';
 import TestSteps from './TestSteps';
 import Table from '../../CustomComponent/Table';
@@ -185,7 +185,7 @@ function TestCases() {
             )}
             onChange={(e, value) => {
               testcaseData.project_id = value.project_id
-              getWebTestCase(setTestcases, value.project_id)
+              getTestcase(setTestcases, value.project_id)
             }}
           />
         </Grid>
