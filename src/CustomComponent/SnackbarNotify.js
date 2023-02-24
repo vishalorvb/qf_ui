@@ -6,7 +6,7 @@ export default function SnackbarNotify(props) {
   return (
     <Snackbar
       open={open}
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       autoHideDuration={severity === "success" ? 3000 : 6000}
       onClose={() => close(false)}
     >

@@ -100,7 +100,7 @@ export default function Login() {
         //   });
         setLoginErr({
           state: true,
-          message: error ? error?.message : "Somthing went wrong !!",
+          message: error ? error?.message : "Network Error !!",
           status: error?.status,
         });
       }
