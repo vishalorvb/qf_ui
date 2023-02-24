@@ -12,6 +12,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import { baseUrl } from "../Environment";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { Alert } from "@mui/material";
 
 export function Copyright(props) {
   return (
@@ -22,7 +24,7 @@ export function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" to="https://prolifics.com/">
+      <Link color="inherit" to="//https://prolifics.com/">
         Prolifics
       </Link>{" "}
       {new Date().getFullYear()}
@@ -34,56 +36,84 @@ export function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const [loginErr, setLoginErr] = React.useState(false);
+  const [fieldsErr, setfieldsErr] = React.useState({ email: "", password: "" });
   const { setAuth, auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-
   const handleSubmit = async (event) => {
+    setfieldsErr({ email: "", password: "" });
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    try {
-      const response = await axios.post(
-        baseUrl+"/qfauthservice/authentication/login",
-        {
-          username: data.get("email"),
-          password: data.get("password"),
-        },
-        {
-          headers: {
-            Authorization: "Basic c2FuanU6ZGV2cmFiYml0",
-            "Content-Type": "application/json",
+    const email = data.get("email").trim();
+    const password = data.get("password").trim();
+    if (email && password) {
+      try {
+        const response = await axios.post(
+          baseUrl + "/qfauthservice/authentication/login",
+          {
+            username: data.get("email"),
+            password: data.get("password"),
           },
-        }
-      );
-      const token = response?.data?.token;
-      localStorage.setItem("token", token);
+          {
+            headers: {
+              Authorization: "Basic c2FuanU6ZGV2cmFiYml0",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response);
+        const token = response?.data?.token;
+        localStorage.setItem("token", token);
 
-      const userInfo = await axios.get(
-        baseUrl+"/qfauthservice/authentication/userInfo",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const info = userInfo?.data?.info;
-      const user = info?.ssoId;
-      const password = info?.password;
-      const role = info?.role;
-      const userId = info?.id;
+        const userInfo = await axios.get(
+          baseUrl + "/qfauthservice/authentication/userInfo",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const info = userInfo?.data?.info;
+        const user = info?.ssoId;
+        const password = info?.password;
+        const role = info?.role;
+        const userId = info?.id;
 
-      setAuth({
-        user: user,
-        password: password,
-        roles: role,
-        userId: userId,
-        info: info,
-        token: token,
-      });
-    } catch (err) {}
+        setAuth({
+          user: user,
+          password: password,
+          roles: role,
+          userId: userId,
+          info: info,
+          token: token,
+        });
+      } catch (err) {
+        console.log(err?.response?.data);
+        const error = err?.response?.data;
+        // error?.status === 401 &&
+        //   setfieldsErr({
+        //     email: "please check username",
+        //     password: "please check password",
+        //   });
+        setLoginErr({
+          state: true,
+          message: error ? error?.message : "Somthing went wrong !!",
+          status: error?.status,
+        });
+      }
+    } else {
+      !email &&
+        setfieldsErr((ps) => {
+          return { ...ps, email: "username is required" };
+        });
+      !password &&
+        setfieldsErr((ps) => {
+          return { ...ps, password: "password is required" };
+        });
+    }
   };
 
   useEffect(() => {
@@ -96,6 +126,12 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={theme}>
+      <SnackbarNotify
+        open={loginErr?.state}
+        close={setLoginErr}
+        msg={loginErr?.message}
+        severity="error"
+      />
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid item xs={false} sm={12} md={7} className="loginImg">
@@ -124,6 +160,9 @@ export default function Login() {
               onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
+              {loginErr?.status === 401 && (
+                <Alert severity="warning">Credentials are wrong !!</Alert>
+              )}
               <TextField
                 margin="normal"
                 required
@@ -133,6 +172,8 @@ export default function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                error={fieldsErr?.email || loginErr?.status === 401}
+                helperText={fieldsErr?.email}
               />
               <TextField
                 margin="normal"
@@ -143,6 +184,8 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={fieldsErr?.password || loginErr?.status === 401}
+                helperText={fieldsErr?.password}
               />
 
               <Button
