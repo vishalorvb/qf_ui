@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import useAxios from "../hooks/useAxios";
+import PersistingLoading from "./PersistingLoading";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +40,7 @@ const PersistLogin = () => {
     !auth?.user ? verifyUser() : setIsLoading(false);
   }, []);
 
-  return <>{isLoading ? <p>...Loading</p> : <Outlet />}</>;
+  return <>{isLoading ? <PersistingLoading /> : <Outlet />}</>;
 };
 
 export default PersistLogin;
