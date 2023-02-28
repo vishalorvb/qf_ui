@@ -4,7 +4,6 @@ import { async } from "q"
 import { baseUrl } from "../Environment"
 
 
-const userid = 4
 
 
 export async function createWebTestCase(data) {
@@ -64,7 +63,10 @@ export async function createNewtestCase(data) {
 export function getTestcase(callback, project_id) {
     axios.get(`${baseUrl}/qfservice/webtestcase/getWebTestcasesInModule?project_id=${project_id}`).then(res => {
         console.log(res.data.info)
-        callback(res.data.info)
+        if(res.data.info != null){
+            callback(res.data.info)
+        }
+        
         // callback(res.data)
     })
 }

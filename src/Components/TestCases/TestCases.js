@@ -24,18 +24,20 @@ import { getWebTestCase } from "../../Services/ProjectService";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
+import { testcaseData } from "./CreateTestCasePopUp";
+import { getTestcase } from "../../Services/TestCaseService";
 
 function TestCases() {
   let [project, setproject] = useState([]);
   let [testcases, setTestcases] = useState([]);
   let [radio, setRadio] = useState(0);
   let [datasets, Setdatasets] = useState([]);
-  let [addTestcase, setAddTestcase] = useState();
+  // let [addTestcase, setAddTestcase] = useState();
   let [popup, setPopup] = useState(false);
   let [steps, setSteps] = useState(false);
   let [snack, setSnack] = useState(false);
   const { auth } = useAuth();
-  console.log(addTestcase);
+ 
 
   function handleRadio(testcaseId) {
     setRadio(testcaseId);
@@ -222,9 +224,9 @@ function TestCases() {
               </div>
             )}
             onChange={(e, value) => {
-              console.log(value);
-              // setProjectid(value.project_id)
-              getWebTestCase(setTestcases, value.project_id);
+              console.log(value.project_id);
+              testcaseData.project_id = value.project_id;
+              getTestcase(setTestcases, value.project_id);
             }}
           />
         </Grid>

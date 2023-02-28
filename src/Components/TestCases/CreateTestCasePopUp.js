@@ -6,9 +6,11 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import { getApplication } from '../../Services/TestCaseService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
 import { createNewtestCase } from '../../Services/TestCaseService';
+import useAuth from '../../hooks/useAuth';
 export let testcaseData = {
     "application_id": "",
     "project_id": "",
+    "user_id":0,
     "testcase_name": "",
     "testcase_description": "",
     "testcase_id": 0,
@@ -23,6 +25,7 @@ export function resetTestCaseData() {
     testcaseData = {
         "application_id": "",
         // "project_id": "",
+        "user_id":0,
         "testcase_name": "",
         "testcase_description": "",
         "testcase_id": 0,
@@ -38,13 +41,20 @@ export function resetTestCaseData() {
 function CreateTestCasePopUp(props) {
 
     let [application, setApplication] = useState([])
-
+    const { auth } = useAuth();
 
     function handleSave(e) {
+        console.log(auth.userId)
+        testcaseData.user_id  = auth.userId
         if (validateFormbyName(["testName", "appid"], "error") && testcaseData.project_id != "") {
             console.log("Valid form")
-            // console.log(testcaseData)
-            createNewtestCase(testcaseData)
+            console.log(testcaseData)
+            createNewtestCase(testcaseData).then(res=>{
+                console.log(res)
+                if (res == "SUCCESS"){
+                    props.setOpen(false)
+                }
+            })
         }
         else {
             console.log("invalid form")
@@ -54,6 +64,7 @@ function CreateTestCasePopUp(props) {
 
     useEffect(() => {
         console.log(testcaseData)
+        
         getApplication(setApplication)
         return () => {
             console.log(testcaseData)
