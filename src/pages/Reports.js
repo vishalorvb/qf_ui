@@ -117,7 +117,7 @@ function Reports() {
         console.log(error);
       });
   };
-
+  console.log(projectId);
   useEffect(() => {
     getUsers();
     getProject(setProjectsObject, userId);
@@ -136,9 +136,7 @@ function Reports() {
       console.log(fromDate);
       console.log(toDate);
       axiosPrivate
-        .post(
-          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`
-        )
+        .post(`qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`)
         .then((Response) => {
           setTbData(Response.data.info);
           console.log(Response.data.info);
@@ -177,7 +175,7 @@ function Reports() {
             justifyContent: "flex-start",
           }}
         >
-          <Grid
+          {/* <Grid
             container
             item
             xs={12}
@@ -215,7 +213,7 @@ function Reports() {
                 )}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid
             container
             item
