@@ -19,6 +19,7 @@ import useHead from "../hooks/useHead";
 import { getModules } from "../Services/ProjectService";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { axiosPrivate } from "../api/axios";
+import useAuth from "../hooks/useAuth";
 
 function Testset() {
   const [usersObject, setUsersObject] = useState([]);
@@ -34,6 +35,9 @@ function Testset() {
   const [editObject, setEditObject] = useState([]);
   const [deleteObject, setDeleteObject] = useState([]);
   const navigate = useNavigate();
+  const { auth } = useAuth();
+  console.log(auth.info);
+  const loggedInId = auth.info.id;
 
   const addUserHandler = (e) => {
     // setOpen(true);
@@ -159,7 +163,7 @@ function Testset() {
     // getTestsets(setTestsetObject, projectId, workflowId);
     axiosPrivate
       .get(
-        `qfservice/webtestset/api/v1/projects/${projectId}/workflow/${workflowId}/web/testsets`
+        `qfservice/webtestset/api/v1/projects/${projectId}/web/testsets`
       )
       .then((res) => {
         console.log(res.data.data);
@@ -168,12 +172,12 @@ function Testset() {
   };
 
   useEffect(() => {
-    getProject(setProjectObject);
+    getProject(setProjectObject,loggedInId);
   }, []);
 
-  useEffect(() => {
-    getModules(setWorkflowsObject, projectId);
-  }, [projectId, workflowId]);
+  // useEffect(() => {
+  //   getModules(setWorkflowsObject, projectId);
+  // }, [projectId, workflowId]);
 
   return (
     <div>
@@ -230,7 +234,7 @@ function Testset() {
               />
             </Grid>
           </Grid>
-          <Grid
+          {/* <Grid
             container
             item
             xs={12}
@@ -266,7 +270,7 @@ function Testset() {
                 )}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           <Button
             variant="contained"
             onClick={submit}
