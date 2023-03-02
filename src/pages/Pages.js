@@ -3,7 +3,6 @@ import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { getWebpages } from "../Services/ProjectService";
 import axios from "../api/axios";
 
 export default function Pages() {
