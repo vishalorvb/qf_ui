@@ -120,7 +120,7 @@ export function getWebpagesElementList(callback, web_page_id) {
 export function getScreen(callback, moduleId) {
   console.log("calling getScreen");
   axios
-    .get(`${baseUrl}/qfservice/screen/getScreensList?module_id=${moduleId}`)
+    .get(`http://10.11.12.242:8080/qfservice/screen/getScreensList?module_id=${moduleId}`)
     .then((res) => {
       console.log(res.data.info);
       callback(res.data.info);

@@ -26,7 +26,7 @@ import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { testcaseData } from "./CreateTestCasePopUp";
 import { getTestcase } from "../../Services/TestCaseService";
-
+import { Navigate, useNavigate } from "react-router";
 function TestCases() {
   let [project, setproject] = useState([]);
   let [testcases, setTestcases] = useState([]);
@@ -37,7 +37,7 @@ function TestCases() {
   let [steps, setSteps] = useState(false);
   let [snack, setSnack] = useState(false);
   const { auth } = useAuth();
- 
+  const navigate = useNavigate();
 
   function handleRadio(testcaseId) {
     setRadio(testcaseId);
@@ -110,7 +110,12 @@ function TestCases() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Add Data Set">
-              <IconButton>
+              <IconButton
+              onClick={e=>{
+                console.log("Clicked")
+                navigate("AddTestSteps");
+              }}
+              >
                 <AddIcon></AddIcon>
               </IconButton>
             </Tooltip>
@@ -250,7 +255,7 @@ function TestCases() {
         setOpen={setPopup}
         snackbar={setSnack}
       ></CreateTestCasePopUp>
-      <TestSteps open={steps} setOpen={() => setSteps(false)}></TestSteps>
+      {/* <TestSteps open={steps} setOpen={() => setSteps(false)}></TestSteps> */}
     </div>
   );
 }

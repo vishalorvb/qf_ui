@@ -1,96 +1,66 @@
-import { Button, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Grid } from '@mui/material'
+import { Container } from '@mui/system'
 import React, { useState } from 'react'
-import MastPop from '../../CustomComponent/MastPop'
-
-function TestSteps(props) {
-
-
-  let [rows, setRows] = useState([<GetRow />])
-  let appname = ["app1", "app5", "app4", "app3", "app2"]
-  let pagename = ["page1", "page2", "page3", "page4", "page5", "page6"]
-  let fieldname = ["field1", "field2", "field3", "field4", "field5"]
-  let fieldtype = ["field1", "field2", "field3", "field"]
+import PersistentDrawerRight from './PersistentDrawerRight'
+import Table from '../../CustomComponent/Table'
 
 
 
-  function GetRow() {
-    function print() {
-      console.log("This is print function")
-    }
-    return (
-
-
-
-
-      <tr>
-        <td>
-          <select>
-            <MenuItem value=""></MenuItem>
-            {appname.map(val => <MenuItem value={val}>{val}</MenuItem>)}
-          </select>
-        </td>
-        <td>
-          <select>
-            <MenuItem value=""></MenuItem>
-            {pagename.map(val => <MenuItem value={val}>{val}</MenuItem>)}
-          </select>
-        </td>
-        <td>
-          <select>
-            <MenuItem value=""></MenuItem>
-            {fieldname.map(val => <MenuItem value={val}>{val}</MenuItem>)}
-          </select>
-        </td>
-        <td>
-          <select>
-            <MenuItem value=""></MenuItem>
-            {fieldtype.map(val => <MenuItem value={val}>{val}</MenuItem>)}
-          </select>
-        </td>
-        <td>
-          <select>
-            <MenuItem value=""></MenuItem>
-            {appname.map(val => <MenuItem value={val}>{val}</MenuItem>)}
-          </select>
-        </td>
-      </tr>
-    )
-  }
-  function updateRow(e) {
-    setRows([...rows, <GetRow />])
-  }
-
-  function handleSubmit(e) {
-    console.log(rows)
-  }
-
-
+function TestSteps() {
+  let [selectedScreen,setSelectedScreen]= useState([])
   return (
-    <MastPop open={props.open} setOpen={props.setOpen}>
-      <div >
-        {/* <h2 onClick={updateRow}>This is test steps</h2> */}
-        <h1>Add Test Steps</h1>
-        <Button variant="contained" onClick={updateRow}>Add Step</Button>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Steps</TableCell>
-                <TableCell align="left">App Name</TableCell>
-                <TableCell align="left">Page Name</TableCell>
-                <TableCell align="left">Field Name</TableCell>
-                <TableCell align="left">Field Type</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Button variant="contained" onClick={handleSubmit}>Save</Button>
-
+    <div>
+      <h1>Test steps</h1>
+      <div style={{height:"200px"}}>
+        <form>
+          <div>
+            <Container component={'div'} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }} >
+              <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} spacing={2} >
+                <Grid item xs={3} sm={3} md={3}>
+                  <label for="">Select Application:</label>
+                  <select
+                    size='small'
+                    displayEmpty
+                    inputProps={{ "aria-label": "Without label" }}
+                    fullWidth
+                  >
+                   <option value="wf">Application1</option>
+                  </select>
+                </Grid>
+              </Grid>
+              <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} >
+                <Grid item xs={12} sm={12} md={12}><label>Test Case Name <span className="importantfield" >*</span>:</label></Grid>
+                <Grid item xs={12} sm={12} md={12}>
+                  <input type="text" name="testName" placeholder="  Enter test case name"
+                  />
+                </Grid>
+              </Grid>
+              <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} >
+                <Grid item xs={12} sm={12} md={12}><label>Description <span className="importantfield" >*</span>:</label></Grid>
+                <Grid item xs={12} sm={12} md={12}>
+                  <textarea rows="3" cols="20" name="description"
+                  ></textarea>
+                </Grid>
+              </Grid>
+            </Container>
+          </div>
+        </form>
       </div>
-    </MastPop>
+      <PersistentDrawerRight
+      selectedScreen = {selectedScreen}
+      setSelectedScreen = {setSelectedScreen}
+      ></PersistentDrawerRight>
+      <div>
+        <h4>Screen list</h4>
+        {selectedScreen.map(s=>{return(
+          <div>
+            <h1>{s.name}</h1>
+            <p>{s.description}</p>
+          </div>
+        )})}
+      </div>
+     
+    </div>
   )
 }
 
