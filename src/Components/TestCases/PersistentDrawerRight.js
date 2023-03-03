@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { Button } from '@mui/material';
+import { Button, Grid, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { getScreen } from '../../Services/ProjectService';
@@ -61,7 +61,8 @@ export default function PersistentDrawerRight({ selectedScreen, setSelectedScree
         <h6>List of screens</h6>
         {screen.map(s => {
           return (
-            <div
+            <Grid component={Paper} elevation={0} container className="header" draggable={true}>
+            <div className="sidebar"
               onClick={e => {
                 handleClick(s)
               }}
@@ -69,11 +70,13 @@ export default function PersistentDrawerRight({ selectedScreen, setSelectedScree
                 console.log(s.screen_id)
               }}
               draggable={true}
+              
             >
               <h5>{s.name}</h5>
               <p>{s.description}</p>
               <Divider />
             </div>
+            </Grid>
           )
         })}
 

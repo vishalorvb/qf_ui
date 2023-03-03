@@ -50,7 +50,6 @@ export async function createNewtestCase(data) {
         url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
         data: data
     }).then(response => {
-        console.log(response.data.status)
         return response.data.status
     })
         .catch(err => {
@@ -62,11 +61,15 @@ export async function createNewtestCase(data) {
 
 export function getTestcase(callback, project_id) {
     axios.get(`${baseUrl}/qfservice/webtestcase/getWebTestcasesInModule?project_id=${project_id}`).then(res => {
-        console.log(res.data.info)
         if(res.data.info != null){
             callback(res.data.info)
         }
         
-        // callback(res.data)
+    })
+}
+
+export function getElementsList(callback,screenId){
+    axios.get(`http://10.11.12.242:8080/qfservice/screen/getScreenElementsList?screen_id=${screenId}`).then(res=>{
+        callback(res.data.info)
     })
 }

@@ -27,6 +27,7 @@ import useHead from "../../hooks/useHead";
 import { testcaseData } from "./CreateTestCasePopUp";
 import { getTestcase } from "../../Services/TestCaseService";
 import { Navigate, useNavigate } from "react-router";
+import { teststepData } from "./TestSteps";
 function TestCases() {
   let [project, setproject] = useState([]);
   let [testcases, setTestcases] = useState([]);
@@ -105,17 +106,21 @@ function TestCases() {
         return (
           <div>
             <Tooltip title="Add Step">
-              <IconButton onClick={(e) => handleSteps(param.row.testcase_id)}>
+              <IconButton  onClick={e=>{
+                
+                console.log(param.row)
+                teststepData.application_id =param.row.application_id
+                teststepData.application_name = param.row.application_name
+                teststepData.testcase_id = param.row.testcase_id
+                teststepData.testcase_name = param.row.name
+                teststepData.desccription = param.row.description
+                navigate("AddTestSteps");
+              }}>
                 <AddBoxIcon></AddBoxIcon>
               </IconButton>
             </Tooltip>
             <Tooltip title="Add Data Set">
-              <IconButton
-              onClick={e=>{
-                console.log("Clicked")
-                navigate("AddTestSteps");
-              }}
-              >
+              <IconButton>
                 <AddIcon></AddIcon>
               </IconButton>
             </Tooltip>
