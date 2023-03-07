@@ -1,0 +1,96 @@
+$startcolor: #00143f;
+$endcolor: #24d3fb;
+$size: 4vw;
+$duration: 1.5s;
+
+.loaderContainer {
+  height: 900px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+}
+
+.loader {
+  width: 7 * $size;
+  height: $size;
+  position: relative;
+  background: white;
+  &:after {
+    content: "";
+    position: absolute;
+    top: $size * -1.5;
+    right: $size * -0.5;
+    bottom: $size * -0.5;
+    left: $size * -0.5;
+    background-image: linear-gradient(to right, $startcolor 0%, $endcolor 100%);
+    mix-blend-mode: screen;
+  }
+}
+.square {
+  width: $size;
+  height: $size;
+  background: black;
+  border-radius: 0.2 * $size;
+  position: absolute;
+  bottom: 0;
+  transform-origin: $size * -0.25 50%;
+  &:nth-child(1) {
+    left: 0;
+    animation: slide $duration alternate cubic-bezier(0.7, 0, 0.3, 1) infinite;
+  }
+  @for $i from 2 through 5 {
+    &:nth-child(#{$i}) {
+      left: $size * ($i - 1) * 1.5;
+      animation: flip-#{$i} $duration * 2 linear infinite;
+    }
+  }
+}
+
+@keyframes slide {
+  100% {
+    transform: translateX($size * 6);
+  }
+}
+
+@for $i from 2 through 5 {
+  $j: 5;
+  @keyframes flip-#{$i} {
+    0% {
+      transform: rotate(0deg);
+    }
+    #{($j*$i) * 1%} {
+      transform: rotate(0deg);
+    }
+    #{($j*$i+5) * 1%} {
+      transform: translateY(-100%);
+    }
+    #{($j*$i+15) * 1%} {
+      transform: rotate(-180deg);
+    }
+    #{($j*$i+20) * 1%} {
+      transform: rotate(-180deg) scaleY(0.5) scaleX(1.5) translateY(-50%)
+        translateX(-25%);
+    }
+    #{($j*$i+25) * 1%} {
+      transform: rotate(-180deg) scaleY(1) scaleX(1);
+    }
+    #{85 - $j*$i * 1%} {
+      transform: rotate(-180deg);
+    }
+    #{95 - $j*$i * 1%} {
+      transform: translateY(-100%);
+    }
+    #{100- $j*$i * 1%} {
+      transform: rotate(0deg);
+    }
+    #{105- $j*$i * 1%} {
+      transform: rotate(0deg) scaleY(0.5) scaleX(1.5) translateY(50%)
+        translateX(-25%);
+    }
+    #{110- $j*$i * 1%} {
+      transform: rotate(0deg) scaleY(1) scaleX(1);
+    }
+  }
+}

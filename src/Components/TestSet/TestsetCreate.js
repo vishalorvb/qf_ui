@@ -10,6 +10,7 @@ import { getTestcaseDetails } from "../../Services/TestsetService";
 import {createTestset} from "../../Services/TestsetService";
 import DeleteTestset from "./DeleteTestset";
 import { axiosPrivate } from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
 
 function TestsetCreate() {
     const [testcaseObject, setTestcaseObject] = useState([]);
@@ -28,6 +29,10 @@ function TestsetCreate() {
     const [workflowId, setWorkflowId] = useState(0);
     const [projectId, setProjectId] = useState(null);
     const [testsetObject, setTestsetObject] = useState([]);
+    const { auth } = useAuth();
+    console.log(auth.info);
+    const loggedInId = auth.info.id;
+
     let Data = [];
 
     const columns = [
@@ -118,7 +123,7 @@ function TestsetCreate() {
     };
 
     useEffect(() => {
-      getProject(setProjectObject);
+      getProject(setProjectObject,loggedInId);
       getModules(setWorkflowsObject, projectId);
       getTestsets();
       getTestcases(setTestcaseObject, workflowId);
@@ -187,7 +192,7 @@ function TestsetCreate() {
               />
             </Grid>
           </Grid>
-          <Grid
+          {/* <Grid
             container
             item
             xs={12}
@@ -223,7 +228,7 @@ function TestsetCreate() {
                 )}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
               <Grid
                 container
                 item

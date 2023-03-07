@@ -12,6 +12,7 @@ import PersistLogin from "./PersistLogin";
 import Login from "./Login";
 import UnAuthorized from "../pages/UnAuthorized";
 import Dashboard from "../pages/Dashboard";
+import Skeleton from "./Skeleton";
 
 const routeLister = (rawList) => {
   const routeList = rawList.map((routeItem, idx) => {
@@ -20,29 +21,29 @@ const routeLister = (rawList) => {
         key={idx + routeItem.path}
         element={<RequireAuth allowedRoles={routeItem.accessRole} />}
       >
-        routeItem.subRoute === undefined ? (
-        <Route
-          key={idx}
-          path={routeItem.path}
-          element={
-            <Suspense fallback={<>...</>}>
-              <routeItem.element />
-            </Suspense>
-          }
-        ></Route>
-        ) : (
-        <Route key={idx} path={routeItem.path}>
+        {routeItem.subRoute === undefined ? (
           <Route
-            index
+            key={idx}
+            path={routeItem.path}
             element={
-              <Suspense fallback={<>...</>}>
+              <Suspense fallback={<Skeleton />}>
                 <routeItem.element />
               </Suspense>
             }
           ></Route>
-          {routeItem.subRoute && routeLister(routeItem.subRoute)}
-        </Route>
-        );
+        ) : (
+          <Route key={idx} path={routeItem.path}>
+            <Route
+              index
+              element={
+                <Suspense fallback={<Skeleton />}>
+                  <routeItem.element />
+                </Suspense>
+              }
+            ></Route>
+            {routeItem.subRoute && routeLister(routeItem.subRoute)}
+          </Route>
+        )}
       </Route>
     );
   });
