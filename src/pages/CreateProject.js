@@ -70,10 +70,10 @@ function CreateProject() {
     createformData.user_access_permissions = x
     createformData.applicationsProjectMapping = "[" + app + "]"
     createformData.userId = auth.info.id
-
+    console.log(createformData)
     if (validateFormbyName(["projectname", "automation_framework_type", "desc", "issueTracker"], "error") == true) {
-
-      if (createformData.sqeProjectId == 0) {
+    
+      if (createformData.sqeProjectId == "") {
         createProject(createformData).then(res => {
           if (res == "SUCCESS") {
             setSnackbarsuccess(true)
@@ -380,7 +380,7 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input defaultValue={createformData.jenkins_url} type="text" name=""
+              <input defaultValue={createformData.jenkins_url} type="text" name="" autocomplete="off"
                 onChange={e => {
                   createformData.jenkins_url = e.target.value;
                 }}
@@ -402,7 +402,7 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input defaultValue={createformData.jenkins_token} type="text" name=""
+              <input defaultValue={createformData.jenkins_token} type="text" name="jenkins_token" autocomplete="off"
                 onChange={e => {
                   createformData.jenkins_token = e.target.value;
                 }}
@@ -423,7 +423,7 @@ function CreateProject() {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
-              <input defaultValue={createformData.jenkins_user_name} type="text" name=""
+              <input defaultValue={createformData.jenkins_user_name} type="text" name="" autocomplete="off"
                 onChange={e => {
                   createformData.jenkins_user_name = e.target.value;
                 }}
