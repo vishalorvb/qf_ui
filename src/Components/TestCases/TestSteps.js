@@ -3,6 +3,7 @@ import { Container } from '@mui/system'
 import React, { useState } from 'react'
 import PersistentDrawerRight from './PersistentDrawerRight'
 import ElementsTable from './ElementsTable'
+import { selected_screen } from './PersistentDrawerRight'
 
 export let teststepData = {
   testcase_id: "",
@@ -16,6 +17,16 @@ export let teststepData = {
 
 function TestSteps() {
   let [selectedScreen, setSelectedScreen] = useState([])
+
+
+  function handleDrop(e) {
+    let temp = [...selectedScreen]
+    temp.push(selected_screen)
+    setSelectedScreen(temp)
+   
+  }
+
+
   return (
     <div>
       <h1>Test steps</h1>
@@ -54,11 +65,12 @@ function TestSteps() {
         selectedScreen={selectedScreen}
         setSelectedScreen={setSelectedScreen}
       ></PersistentDrawerRight>
-      <div onDrop={e => console.log("Dropped")}>
-        <h2>Screen list</h2>
+      <div onDrop={handleDrop} 
+      onDragOver={e => { e.preventDefault() }}>
+        <h2 draggable={true}>Screen list</h2>
         {selectedScreen.map(s => {
           return (
-            <div>
+            <div >
               <div>
                 <Chip label={s.name} color="primary" />
                 <ElementsTable

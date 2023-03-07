@@ -10,7 +10,7 @@ import { getScreen } from '../../Services/ProjectService';
 
 
 const drawerWidth = 240;
-
+export let selected_screen;
 
 export default function PersistentDrawerRight({ selectedScreen, setSelectedScreen }) {
   const [open, setOpen] = useState(false);
@@ -23,12 +23,7 @@ export default function PersistentDrawerRight({ selectedScreen, setSelectedScree
     setOpen(false);
   };
 
-  function handleClick(screen) {
-    console.log(selectedScreen)
-    let temp = [...selectedScreen]
-    temp.push(screen)
-    setSelectedScreen(temp)
-  }
+
   useEffect(() => {
     getScreen(setScreen, 768)
   }, [])
@@ -62,20 +57,16 @@ export default function PersistentDrawerRight({ selectedScreen, setSelectedScree
         {screen.map(s => {
           return (
             <Grid component={Paper} elevation={0} container className="header" draggable={true}>
-            <div className="sidebar"
-              onClick={e => {
-                handleClick(s)
-              }}
-              onDragOver={e => {
-                console.log(s.screen_id)
-              }}
-              draggable={true}
-              
-            >
-              <h5>{s.name}</h5>
-              <p>{s.description}</p>
-              <Divider />
-            </div>
+              <div className="sidebar"
+               onDragOver={e=>{
+                selected_screen= s
+               }}
+
+              >
+                <h5>{s.name}</h5>
+                <p>{s.description}</p>
+                <Divider />
+              </div>
             </Grid>
           )
         })}
