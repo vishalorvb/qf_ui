@@ -15,7 +15,7 @@ import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../Services/ProjectService";
-import { getApplication } from "../Services/TestCaseService";
+import { getApplication } from "../Services/Application";
 
 function CreateProject() {
   const { setHeader } = useHead();
@@ -58,8 +58,8 @@ function CreateProject() {
   function getApplicationlist() {
     let applist = []
     rightApplication.forEach(app => {
-      console.log(app.application_id)
-      applist.push(app.application_id)
+      console.log(app.module_id)
+      applist.push(app.module_id)
     })
     return applist
   }
@@ -72,7 +72,7 @@ function CreateProject() {
     createformData.userId = auth.info.id
     console.log(createformData)
     if (validateFormbyName(["projectname", "automation_framework_type", "desc", "issueTracker"], "error") == true) {
-    
+      
       if (createformData.sqeProjectId == "") {
         createProject(createformData).then(res => {
           if (res == "SUCCESS") {
@@ -102,6 +102,7 @@ function CreateProject() {
       }
     }
     else {
+      console.log("Invalid form")
       setSnackbarerror(true)
     }
   }
@@ -143,8 +144,8 @@ function CreateProject() {
     let remaining = leftApplication
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = applications.filter(app => app.application_id == e.options[i].value)
-        remaining = remaining.filter(user => user.application_id != e.options[i].value)
+        let temp = applications.filter(app => app.module_id == e.options[i].value)
+        remaining = remaining.filter(user => user.module_id != e.options[i].value)
         if (temp.length > 0) {
           setRightApplication(pv => [...pv, temp[0]])
         }
@@ -157,8 +158,8 @@ function CreateProject() {
     let remaining = rightApplication
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = applications.filter(app => app.application_id == e.options[i].value)
-        remaining = remaining.filter(app => app.application_id != e.options[i].value)
+        let temp = applications.filter(app => app.module_id == e.options[i].value)
+        remaining = remaining.filter(app => app.module_id != e.options[i].value)
         if (temp.length > 0) {
           setLeftApplication(pv => [...pv, temp[0]])
         }
@@ -829,7 +830,7 @@ function CreateProject() {
                 multiple
                 style={{padding:"10px"}}
               >
-                {leftApplication.map(app => <option value={app.application_id}>{app.application_name}</option>)}
+                {leftApplication.map(app => <option value={app.module_id}>{app.module_name}</option>)}
               </select>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
@@ -854,7 +855,7 @@ function CreateProject() {
             </Grid>
             <Grid item xs={4} sm={4} md={4}>
             <label>
-                Select User:
+                Selected Application:
               </label>
               <select
                 id="rightapp"
@@ -862,7 +863,7 @@ function CreateProject() {
                 style={{padding:"10px"}}
               >
 
-                {rightApplication.map(app => <option value={app.application_id}>{app.application_name}</option>)}
+                {rightApplication.map(app => <option value={app.module_id}>{app.module_name}</option>)}
               </select>
             </Grid>
           </Grid>

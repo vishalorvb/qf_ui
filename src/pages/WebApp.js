@@ -8,7 +8,7 @@ import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-
+import { getApplication } from "../Services/Application";
 export default function WebApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -19,13 +19,13 @@ export default function WebApp() {
 
   const applicationColumns = [
     {
-      field: "application_name",
+      field: "module_name",
       headerName: "Application Name",
       flex: 3,
       sortable: false,
     },
     {
-      field: "application_desc",
+      field: "module_desc",
       headerName: "Description",
       flex: 3,
       sortable: false,
@@ -49,8 +49,10 @@ export default function WebApp() {
             <VisibilityOutlinedIcon
               className="eyeIcon"
               onClick={() =>
-                navigate("pages", { state: { id: param.row.application_id } })
-              }
+                {
+                
+                navigate("pages", { state: { id: param.row.module_id } })
+              }}
             />
           </div>
         );
@@ -81,12 +83,15 @@ export default function WebApp() {
   useEffect(() => {
     axios.get(`qfservice/getApplicationDetails`).then((res) => {
       console.log(res.data);
-      setApplication(res.data);
+      // setApplication(res.data);
     });
   }, [msg]);
-
+useEffect(() => {
+  getApplication(setApplication)
+}, [])
   return (
     <>
+
       <SnackbarNotify
         open={msg && true}
         close={setMsg}
@@ -102,7 +107,7 @@ export default function WebApp() {
       <Table
         rows={application}
         columns={applicationColumns}
-        getRowId={(row) => row.application_id}
+        getRowId={(row) => row.module_id}
       />
       <Outlet />
     </>

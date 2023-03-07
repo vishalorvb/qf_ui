@@ -10,8 +10,21 @@ import {
 } from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import axios from "../api/axios";
+import { useEffect } from "react";
+import { validateFormbyName } from "../CustomComponent/FormValidation";
+import { createApplication } from "../Services/Application";
+import useAuth from "../hooks/useAuth";
+export let moduledata = {
+  "module_name": "",
+  "base_url": "",
+  "module_desc": "",
+  "is_deleted": false,
+  "module_type": 0
+}
+
 export default function CreateApplication(props) {
   const { open, close, type, setMsg } = props;
+  const { auth } = useAuth();
   const handleClose = () => {
     close(false);
   };
@@ -63,7 +76,19 @@ export default function CreateApplication(props) {
         reset();
       });
   };
-
+  function submitHandler(e){
+    if(validateFormbyName(["appname","url","desc"],"error")){
+      console.log("valid form")
+      createApplication(moduledata,auth.info.id)
+    }
+    else{
+      console.log("Invalid form")
+    }
+  }
+  useEffect(() => {
+  moduledata.module_type = type
+  }, [])
+  console.log(type)
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle className="dialogTitle">Create Application</DialogTitle>
@@ -71,7 +96,7 @@ export default function CreateApplication(props) {
         <DialogContent className="dialogContent">
           <Grid container spacing={1}>
             <Grid item md={12}>
-              <TextFieldElement
+              {/* <TextFieldElement
                 id="application-name"
                 label="Name"
                 variant="outlined"
@@ -79,10 +104,19 @@ export default function CreateApplication(props) {
                 fullWidth
                 name="name"
                 control={control}
+                onChange={e=>{
+                  
+                }}
+              /> */}
+              <input type="text" name="appname" 
+              placeholder="Application Name"
+              onChange={e=>{
+                  moduledata.module_name = e.target.value;
+              }}
               />
             </Grid>
             <Grid item md={12}>
-              <TextFieldElement
+              {/* <TextFieldElement
                 id="application-baseUrl"
                 label="base URL"
                 variant="outlined"
@@ -90,10 +124,16 @@ export default function CreateApplication(props) {
                 fullWidth
                 name="baseUrl"
                 control={control}
+              /> */}
+              <input type="text" name="url" 
+              placeholder="URL"
+              onChange={e=>{
+                  moduledata.base_url = e.target.value;
+              }}
               />
             </Grid>
             <Grid item md={12}>
-              <TextFieldElement
+              {/* <TextFieldElement
                 id="application-desc"
                 label="Description"
                 variant="outlined"
@@ -101,12 +141,18 @@ export default function CreateApplication(props) {
                 fullWidth
                 name="description"
                 control={control}
+              /> */}
+              <input type="text" name="desc" 
+              placeholder="Description"
+              onChange={e=>{
+                  moduledata.module_desc = e.target.value;
+              }}
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button size="small" variant="contained" type="submit">
+          <Button size="small" variant="contained" type="submit" onClick={submitHandler}>
             Save
           </Button>
         </DialogActions>
