@@ -15,8 +15,8 @@ import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../Services/ProjectService";
-import { getApplication } from "../Services/Application";
-
+import { getApplication } from "../Services/ApplicationService";
+import { getApplicationOfProject } from "../Services/ApplicationService";
 function CreateProject() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -171,8 +171,9 @@ function CreateProject() {
   useEffect(() => {
     getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken)
     getUsers(setLeftuser, auth.info.organization_id, auth.info.ssoId, usertoken)
-    getApplication(setApplications)
-    getApplication(setLeftApplication)
+    getApplication(setApplications,auth.info.id)
+    getApplication(setLeftApplication,auth.info.id)
+    getApplicationOfProject(setRightApplication,createformData.sqeProjectId)
   }, []);
   useEffect(() => {
     return () => {

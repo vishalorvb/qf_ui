@@ -12,7 +12,7 @@ import { TextFieldElement, useForm } from "react-hook-form-mui";
 import axios from "../api/axios";
 import { useEffect } from "react";
 import { validateFormbyName } from "../CustomComponent/FormValidation";
-import { createApplication } from "../Services/Application";
+import { createApplication } from "../Services/ApplicationService";
 import useAuth from "../hooks/useAuth";
 export let moduledata = {
   "module_name": "",
@@ -20,6 +20,16 @@ export let moduledata = {
   "module_desc": "",
   "is_deleted": false,
   "module_type": 0
+}
+export function resetModuledata(){
+ moduledata = {
+  "module_name": "",
+  "base_url": "",
+  "module_desc": "",
+  "is_deleted": false,
+  "module_type": 0
+}
+  
 }
 
 export default function CreateApplication(props) {
@@ -79,7 +89,12 @@ export default function CreateApplication(props) {
   function submitHandler(e){
     if(validateFormbyName(["appname","url","desc"],"error")){
       console.log("valid form")
-      createApplication(moduledata,auth.info.id)
+      createApplication(moduledata,auth.info.id).then(res=>{
+        if (res){
+          resetModuledata()
+          close(false)
+        }
+      })
     }
     else{
       console.log("Invalid form")
@@ -88,7 +103,7 @@ export default function CreateApplication(props) {
   useEffect(() => {
   moduledata.module_type = type
   }, [])
-  console.log(type)
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle className="dialogTitle">Create Application</DialogTitle>
@@ -110,6 +125,7 @@ export default function CreateApplication(props) {
               /> */}
               <input type="text" name="appname" 
               placeholder="Application Name"
+              defaultValue={moduledata.module_name}
               onChange={e=>{
                   moduledata.module_name = e.target.value;
               }}
@@ -127,6 +143,7 @@ export default function CreateApplication(props) {
               /> */}
               <input type="text" name="url" 
               placeholder="URL"
+              defaultValue={moduledata.base_url}
               onChange={e=>{
                   moduledata.base_url = e.target.value;
               }}
@@ -144,6 +161,7 @@ export default function CreateApplication(props) {
               /> */}
               <input type="text" name="desc" 
               placeholder="Description"
+              defaultValue={moduledata.module_desc}
               onChange={e=>{
                   moduledata.module_desc = e.target.value;
               }}

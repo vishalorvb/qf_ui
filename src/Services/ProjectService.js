@@ -2,12 +2,11 @@ import axios from "axios";
 import { async } from "q";
 import { baseUrl } from "../Environment";
 
-const userid = 4;
+
 
 export function getProject(callback, userId ) {
   // This function except name of state as a callback and set value in that state
   axios.get(baseUrl + "/qfservice/projects?user_id=" + userId).then((res) => {
-    console.log(res.data.result.projects_list);
     callback(res.data.result.projects_list);
   });
 }
@@ -59,16 +58,21 @@ export async function updateProject(data) {
   return res;
 }
 
-export async function deleteProject(projectid, userid = userid, gid) {
-  let res = await axios
-    .delete(
-      `${baseUrl}/qfservice/deleteProject?projectId=${projectid}&userId=${userid}&orgId=${gid}`
-    )
-    .then((res) => {
-      console.log(res.data.status);
-      return res.data.status;
-    });
-  console.log(res);
+export async function deleteProject(projectid, userid , gid) {
+  // let res = await axios
+  //   .delete(
+  //     `${baseUrl}/qfservice/deleteProject?projectId=${projectid}&userId=${userid}&orgId=${gid}`
+  //   )
+  //   .then((res) => {
+  //     console.log(res.data.status);
+  //     return res.data.status;
+  //   });
+  // console.log(res);
+  // return res;
+  let res = await axios.put(`${baseUrl}/qfservice/SoftDelete?project_id=${projectid}&user_id=${userid}`).then(r=>{
+    console.log(r.data.status);
+    return r.data.status
+  })
   return res;
 }
 

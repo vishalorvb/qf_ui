@@ -34,11 +34,11 @@ export async function createApitestcase(data) {
     return res
 }
 
-export function getApplication(callback) {
-    axios.get(`${baseUrl}/qfservice/getApplicationDetails`).then(res => {
-        callback(res.data)
-    })
-}
+// export function getApplication(callback) {
+//     axios.get(`${baseUrl}/qfservice/getApplicationDetails`).then(res => {
+//         callback(res.data)
+//     })
+// }
 
 export async function createNewtestCase(data) {
     let pid = data.project_id

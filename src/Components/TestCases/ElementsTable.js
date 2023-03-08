@@ -23,7 +23,7 @@ const columns = [
     },
 ]
 useEffect(() => {
-getElementsList(setElements,1181)
+getElementsList(setElements,screenId)
 }, [])
 
   return (

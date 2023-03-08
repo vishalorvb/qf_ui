@@ -4,7 +4,7 @@ import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import { getPages } from "../Services/Application";
+import { getPages } from "../Services/ApplicationService";
 export default function Pages() {
   const { setHeader } = useHead();
   const location = useLocation();

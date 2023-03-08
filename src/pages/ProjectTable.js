@@ -23,8 +23,7 @@ function ProjectTable() {
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-  console.log(auth.info);
-  console.log(loggedInId);
+
 
   function handleDeletePopup(pid) {
     console.log(pid);
@@ -33,7 +32,7 @@ function ProjectTable() {
   }
   function DeleteProjectFromUser(projectId) {
     console.log(projectId);
-    deleteProject(projectId, loggedInId, auth.info.grafana_role).then((res) => {
+    deleteProject(projectId, loggedInId).then((res) => {
       console.log(res);
       if (res == "SUCCESS") {
         console.log("dletred");

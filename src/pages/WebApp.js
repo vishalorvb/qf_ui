@@ -8,7 +8,7 @@ import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import { getApplication } from "../Services/Application";
+import { getApplication } from "../Services/ApplicationService";
 export default function WebApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -87,7 +87,10 @@ export default function WebApp() {
     });
   }, [msg]);
 useEffect(() => {
-  getApplication(setApplication)
+  getApplication(setApplication,auth.info.id)
+}, [])
+useEffect(() => {
+console.log("webPage rendered")
 }, [])
   return (
     <>
@@ -101,7 +104,7 @@ useEffect(() => {
       <CreateApplication
         open={openCreate}
         close={setOpenCreate}
-        type={1}
+        type={2}
         setMsg={setMsg}
       />
       <Table

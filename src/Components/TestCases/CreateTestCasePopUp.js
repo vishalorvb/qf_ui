@@ -3,10 +3,10 @@ import { Container } from '@mui/system'
 import React, { useEffect, useRef, useState } from 'react'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import { getApplication } from '../../Services/TestCaseService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
 import { createNewtestCase } from '../../Services/TestCaseService';
 import useAuth from '../../hooks/useAuth';
+import { getApplication } from '../../Services/ApplicationService';
 export let testcaseData = {
     "application_id": "",
     "project_id": "",
@@ -112,7 +112,7 @@ function CreateTestCasePopUp(props) {
 
                                             >
                                                 <option value="">Select</option>
-                                                {application.map(val => <option value={val.application_id}>{val.application_name}</option>)}
+                                                {application.map(val => <option value={val.module_id}>{val.module_name}</option>)}
 
                                             </select>
                                         </Grid>

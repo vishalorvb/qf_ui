@@ -260,7 +260,6 @@ function TestCases() {
         setOpen={setPopup}
         snackbar={setSnack}
       ></CreateTestCasePopUp>
-      {/* <TestSteps open={steps} setOpen={() => setSteps(false)}></TestSteps> */}
     </div>
   );
 }
