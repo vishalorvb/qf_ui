@@ -2,13 +2,21 @@ import { baseUrl } from "../Environment";
 import axios from "axios";
 
 export function getApplication(callback,userId) {
-    // http://localhost:8060/qfservice/users/applications?user_id=73
     axios.get(`${baseUrl}/qfservice/users/applications?user_id=${userId}`).then(res => {
-        console.log(res.data.data)
         callback(res.data.data)
     })
 }
-
+export function getWebApplication(callback,userId,apptype) {
+    axios.get(`${baseUrl}/qfservice/users/applications?user_id=${userId}`).then(res => {
+        let webapp = res.data.data.filter(app=>{
+            if(app.module_type == apptype){
+                return app
+            }
+        })
+        console.table(webapp)
+        callback(webapp)
+    })
+}
 
 
 export async function createApplication(data, userId) {

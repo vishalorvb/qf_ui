@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { getUsers } from "../Services/ProjectService";
 import { getApplication } from "../Services/ApplicationService";
 import { getApplicationOfProject } from "../Services/ApplicationService";
+import { getUserOfProject } from "../Services/ProjectService";
 function CreateProject() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -174,6 +175,7 @@ function CreateProject() {
     getApplication(setApplications,auth.info.id)
     getApplication(setLeftApplication,auth.info.id)
     getApplicationOfProject(setRightApplication,createformData.sqeProjectId)
+    getUserOfProject(setRightuser,createformData.sqeProjectId)
   }, []);
   useEffect(() => {
     return () => {

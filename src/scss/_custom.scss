@@ -372,3 +372,10 @@ select {
 .error{
   border-color: $red
 }
+.intable{
+  display: inline-block;
+  width: 190px;
+  position: absolute;
+  translate: 708px 24px;
+  z-index: 1;
+}
