@@ -3,12 +3,13 @@ import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 // import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import { getApplication } from "../Services/ApplicationService";
+import { getWebApplication } from "../Services/ApplicationService";
+import { ApplicationNav } from "./ApplicationNav";
 export default function WebApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -16,6 +17,7 @@ export default function WebApp() {
   const [application, setApplication] = useState([]);
   const [openCreate, setOpenCreate] = useState(false);
   const [msg, setMsg] = useState("");
+  const location = useLocation();
 
   const applicationColumns = [
     {
@@ -39,7 +41,7 @@ export default function WebApp() {
     {
       field: "Actions",
       headerName: "Actions",
-      flex: 1,
+      flex: 3,
       sortable: false,
       align: "center",
       headerAlign: "center",
@@ -83,20 +85,34 @@ export default function WebApp() {
       });
   }, []);
 
+  // useEffect(() => {
+  //   axios.get(`qfservice/getApplicationDetails`).then((res) => {
+  //     console.log(res.data);
+  //     // setApplication(res.data);
+  //   });
+  // }, [msg]);
   useEffect(() => {
-    axios.get(`qfservice/getApplicationDetails`).then((res) => {
-      console.log(res.data);
-      // setApplication(res.data);
-    });
-  }, [msg]);
-  useEffect(() => {
-    getApplication(setApplication, auth.info.id);
+    getWebApplication(setApplication, auth.info.id, 2);
   }, []);
-  useEffect(() => {
-    console.log("webPage rendered");
-  }, []);
+
   return (
     <>
+      <div className="intable">
+        <select
+          onChange={(e) => {
+            navigate(e.target.value);
+          }}
+        >
+          {ApplicationNav.map((el) => (
+            <option
+              selected={location.pathname == el.url ? true : false}
+              value={el.url}
+            >
+              {el.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <SnackbarNotify
         open={msg && true}
         close={setMsg}

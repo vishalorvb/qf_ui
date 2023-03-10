@@ -254,3 +254,10 @@ export function getUsers(callback,orgid,ssoid,token){
     // setLeftuser(res.data.info)
   })
 }
+
+export function getUserOfProject(callback,projectId){
+  axios.get(`${baseUrl}/qfservice/projects/getUsersDetailsByProjectId?project_id=${projectId}`).then(res=>{
+    console.log(res.data.data)
+    callback(res.data.data);
+  })
+}

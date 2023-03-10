@@ -2,28 +2,38 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import CreateApplication from "../Components/CreateApplication";
-
+import { ApplicationNav } from "./ApplicationNav";
+import { getWebApplication } from "../Services/ApplicationService";
 export default function MobileApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const [project, setProject] = useState([]);
+  const [application, setApplication] = useState([]);
   const [openCreate, setOpenCreate] = useState(false);
+  const location = useLocation()
+
+
 
   const applicationColumns = [
     {
-      field: "project_name",
+      field: "module_name",
       headerName: "Application Name",
       flex: 3,
       sortable: false,
     },
     {
-      field: "description",
+      field: "module_desc",
       headerName: "Description",
+      flex: 3,
+      sortable: false,
+    },
+    {
+      field: "base_url",
+      headerName: "Base URL",
       flex: 3,
       sortable: false,
     },
@@ -39,9 +49,9 @@ export default function MobileApp() {
           <div>
             <VisibilityOutlinedIcon
               className="eyeIcon"
-              onClick={() =>
-                navigate("pages", { state: { id: param.row.project_id } })
-              }
+              onClick={() => {
+                navigate("pages", { state: { id: param.row.module_id } })
+              }}
             />
           </div>
         );
@@ -49,35 +59,8 @@ export default function MobileApp() {
     },
   ];
 
-  const applications = [
-    {
-      id: 1,
-      name: "Application 1",
-      description: "Description 1",
-    },
-    {
-      id: 2,
-      name: "Application 2",
-      description: "Description 2",
-    },
-    {
-      id: 3,
-      name: "Application 3",
-      description: "Description 3",
-    },
-    {
-      id: 4,
-      name: "Application 4",
-      description: "Description 4",
-    },
-  ];
-
+ 
   useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      console.log(res.data.result.projects_list);
-      setProject(res.data.result.projects_list);
-    });
-
     setHeader((ps) => {
       return {
         ...ps,
@@ -97,8 +80,19 @@ export default function MobileApp() {
       });
   }, []);
 
+  useEffect(() => {
+    getWebApplication(setApplication, auth.info.id,3)
+  }, [])
+
   return (
     <>
+      <div className="intable">
+        <select onChange={e => {
+          navigate(e.target.value)
+        }}>
+          {ApplicationNav.map(el => <option selected={location.pathname == el.url?true:false} value={el.url}>{el.name}</option>)}
+        </select>
+      </div>
       <CreateApplication
         open={openCreate}
         close={setOpenCreate}
@@ -106,9 +100,9 @@ export default function MobileApp() {
       />
 
       <Table
-        rows={project}
+        rows={application}
         columns={applicationColumns}
-        getRowId={(row) => row.project_id}
+        getRowId={(row) => row.module_id}
       />
       <Outlet />
     </>

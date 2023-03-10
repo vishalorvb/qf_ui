@@ -1,13 +1,4 @@
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
-import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
-import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
-import SummarizeOutlinedIcon from "@mui/icons-material/SummarizeOutlined";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
-import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
+
 import "../scss/navicons.scss";
 
 export const testManagementList = [
@@ -31,26 +22,26 @@ export const testManagementList = [
   },
   {
     name: "Application",
-    route: "",
+    route: "application/webApp",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-applications"></i>,
-    subList: [
-      {
-        name: "Web",
-        route: "application/webApp",
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        name: "Mobile",
-        route: "application/mobileApp",
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        name: "API",
-        route: "application/apiApp",
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-    ],
+    // subList: [
+    //   {
+    //     name: "Web",
+    //     route: "application/webApp",
+    //     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    //   },
+    //   {
+    //     name: "Mobile",
+    //     route: "application/mobileApp",
+    //     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    //   },
+    //   {
+    //     name: "API",
+    //     route: "application/apiApp",
+    //     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    //   },
+    // ],
   },
   {
     name: "Projects",

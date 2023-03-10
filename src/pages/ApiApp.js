@@ -2,30 +2,38 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { getProject } from "../Services/ProjectService";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
 import CreateApplication from "../Components/CreateApplication";
-
+import { ApplicationNav } from "./ApplicationNav";
+import { getWebApplication } from "../Services/ApplicationService";
 export default function ApiApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [openCreate, setOpenCreate] = useState(false);
+  const location = useLocation();
+  let [application, setApplication] = useState([]);
 
-  let [project, setProject] = useState([]);
 
   const pageColumns = [
     {
-      field: "project_name",
-      headerName: "Project Name",
+      field: "module_name",
+      headerName: "Application Name",
       flex: 3,
       sortable: false,
     },
     {
-      field: "description",
+      field: "module_desc",
       headerName: "Description",
+      flex: 3,
+      sortable: false,
+    },
+    {
+      field: "base_url",
+      headerName: "Base URL",
       flex: 3,
       sortable: false,
     },
@@ -69,21 +77,25 @@ export default function ApiApp() {
       });
   }, []);
 
+
   useEffect(() => {
-    // axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-    //   console.log(res.data.result.projects_list);
-    //   setProject(res.data.result.projects_list);
-    // });
-    getProject(setProject, auth.info.id);
-  }, []);
+    getWebApplication(setApplication, auth.info.id,1)
+  }, [])
 
   return (
     <>
+      <div className="intable">
+        <select onChange={e => {
+          navigate(e.target.value)
+        }}>
+          {ApplicationNav.map(el => <option selected={location.pathname == el.url?true:false} value={el.url}>{el.name}</option>)}
+        </select>
+      </div>
       <CreateApplication open={openCreate} close={setOpenCreate} type="api" />
       <Table
-        rows={project}
+        rows={application}
         columns={pageColumns}
-        getRowId={(row) => row.project_id}
+        getRowId={(row) => row.module_id}
       />
       <Outlet />
     </>
