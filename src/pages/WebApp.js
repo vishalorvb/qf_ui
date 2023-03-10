@@ -48,10 +48,13 @@ export default function WebApp() {
           <div>
             <VisibilityOutlinedIcon
               className="eyeIcon"
-              onClick={() =>
-                {
-                
-                navigate("pages", { state: { id: param.row.module_id } })
+              onClick={() => {
+                navigate("pages", {
+                  state: {
+                    id: param.row.module_id,
+                    base_url: param.row.base_url,
+                  },
+                });
               }}
             />
           </div>
@@ -86,15 +89,14 @@ export default function WebApp() {
       // setApplication(res.data);
     });
   }, [msg]);
-useEffect(() => {
-  getApplication(setApplication,auth.info.id)
-}, [])
-useEffect(() => {
-console.log("webPage rendered")
-}, [])
+  useEffect(() => {
+    getApplication(setApplication, auth.info.id);
+  }, []);
+  useEffect(() => {
+    console.log("webPage rendered");
+  }, []);
   return (
     <>
-
       <SnackbarNotify
         open={msg && true}
         close={setMsg}
