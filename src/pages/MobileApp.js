@@ -8,6 +8,8 @@ import axios from "../api/axios";
 import CreateApplication from "../Components/CreateApplication";
 import { ApplicationNav } from "./ApplicationNav";
 import { getWebApplication } from "../Services/ApplicationService";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { moduledata } from "../Components/CreateApplication";
 export default function MobileApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -96,7 +98,7 @@ export default function MobileApp() {
       <CreateApplication
         open={openCreate}
         close={setOpenCreate}
-        type="mobile"
+        type={3}
       />
 
       <Table

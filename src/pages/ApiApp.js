@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { getProject } from "../Services/ProjectService";
+import {  Outlet, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
 import CreateApplication from "../Components/CreateApplication";
 import { ApplicationNav } from "./ApplicationNav";
 import { getWebApplication } from "../Services/ApplicationService";
+import { IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { moduledata } from "../Components/CreateApplication";
 export default function ApiApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -16,7 +17,7 @@ export default function ApiApp() {
   const [openCreate, setOpenCreate] = useState(false);
   const location = useLocation();
   let [application, setApplication] = useState([]);
-
+  let [popup, setPopup] = useState(false);
 
   const pageColumns = [
     {
@@ -46,12 +47,28 @@ export default function ApiApp() {
       headerAlign: "center",
       renderCell: (param) => {
         return (
-          <VisibilityOutlinedIcon
-            className="eyeIcon"
-            onClick={() =>
-              navigate("apiRequests", { state: { id: param.row.project_id } })
-            }
-          />
+          <div>
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={e => {
+                  moduledata.module_id = param.row.module_id
+                  moduledata.module_name = param.row.module_name
+                  moduledata.module_desc = param.row.module_desc
+                  moduledata.base_url = param.row.base_url
+                  setPopup(true)
+                }}
+
+              >
+                <EditOutlinedIcon ></EditOutlinedIcon>
+              </IconButton>
+            </Tooltip>
+            <VisibilityOutlinedIcon
+              className="eyeIcon"
+              onClick={() =>
+                navigate("apiRequests", { state: { id: param.row.project_id } })
+              }
+            />
+          </div>
         );
       },
     },
@@ -79,7 +96,7 @@ export default function ApiApp() {
 
 
   useEffect(() => {
-    getWebApplication(setApplication, auth.info.id,1)
+    getWebApplication(setApplication, auth.info.id, 1)
   }, [])
 
   return (
@@ -88,10 +105,13 @@ export default function ApiApp() {
         <select onChange={e => {
           navigate(e.target.value)
         }}>
-          {ApplicationNav.map(el => <option selected={location.pathname == el.url?true:false} value={el.url}>{el.name}</option>)}
+          {ApplicationNav.map(el => <option selected={location.pathname == el.url ? true : false} value={el.url}>{el.name}</option>)}
         </select>
       </div>
-      <CreateApplication open={openCreate} close={setOpenCreate} type="api" />
+      {popup && <CreateApplication
+        close={popup}
+        type={1}
+      />}
       <Table
         rows={application}
         columns={pageColumns}

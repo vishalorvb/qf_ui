@@ -1,14 +1,18 @@
 export let ApplicationNav=[
     {
-        "url":"/application/webApp",
-        "name":"WEB"
+        "url":"/application/apiRequests",
+        "name":"API",
+        "type":1
     },
     {
-        "url":"/application/apiApp",
-        "name":"API"
+        "url":"/application/webApp/pages",
+        "name":"WEB",
+        "type":2
     },
     {
-        "url":"/application/mobileApp",
-        "name":"MOBILE"
+        "url":"/application/mobileApp/pages",
+        "name":"MOBILE",
+        "type":3
+
     }
 ]

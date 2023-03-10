@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
-// import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import { getWebApplication } from "../Services/ApplicationService";
+import { getWebApplication, getApplication } from "../Services/ApplicationService";
 import { ApplicationNav } from "./ApplicationNav";
+import { IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { moduledata } from "../Components/CreateApplication";
+import { resetModuledata } from "../Components/CreateApplication";
+import ScreenshotMonitorIcon from '@mui/icons-material/ScreenshotMonitor';
+
 export default function WebApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [application, setApplication] = useState([]);
-  const [openCreate, setOpenCreate] = useState(false);
   const [msg, setMsg] = useState("");
   const location = useLocation()
-
+  let [popup, setPopup] = useState(false)
+  let [type, setType] = useState(2)
+  let [name, setName] = useState("WEB")
   const applicationColumns = [
     {
       field: "module_name",
@@ -48,26 +53,67 @@ export default function WebApp() {
       renderCell: (param) => {
         return (
           <div>
-            <VisibilityOutlinedIcon
-              className="eyeIcon"
-              onClick={() => {
+            {type == 2 && <Tooltip title="Screen">
+              <IconButton
+                onClick={e => console.log("Navigate to screen")}
+              >
+                <ScreenshotMonitorIcon ></ScreenshotMonitorIcon>
+              </IconButton>
+            </Tooltip>}
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={e => {
+                  moduledata.module_id = param.row.module_id
+                  moduledata.module_name = param.row.module_name
+                  moduledata.module_desc = param.row.module_desc
+                  moduledata.base_url = param.row.base_url
+                  setPopup(true)
+                }}
 
-                navigate("pages", { state: { id: param.row.module_id } })
-              }}
-            />
+              >
+                <EditOutlinedIcon ></EditOutlinedIcon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit">
+              <IconButton>
+                <VisibilityOutlinedIcon
+                  className="eyeIcon"
+
+                  onClick={() => {
+                    let url = ApplicationNav.filter(ele => {
+                      if (ele.type == type) {
+                        return ele.url
+                      }
+                    })
+                    navigate(url[0].url, { state: { id: param.row.module_id } })
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
           </div>
         );
       },
     },
   ];
 
+  function handleSelect(e) {
+    setType(e.target.value)
+    let n = ApplicationNav.filter(el => {
+      if (el.type == e.target.value) {
+        return el.name
+      }
+    })
+    setName(n[0].name)
+
+  }
+
   useEffect(() => {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Web",
+        name: name,
         plusButton: true,
-        plusCallback: () => setOpenCreate(true),
+        plusCallback: () => setPopup(true),
       };
     });
     return () =>
@@ -79,26 +125,20 @@ export default function WebApp() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, []);
+  }, [name]);
 
-  // useEffect(() => {
-  //   axios.get(`qfservice/getApplicationDetails`).then((res) => {
-  //     console.log(res.data);
-  //     // setApplication(res.data);
-  //   });
-  // }, [msg]);
+
   useEffect(() => {
-    getWebApplication(setApplication, auth.info.id,2)
+    getApplication(setApplication, auth.info.id)
   }, [])
+
 
 
   return (
     <>
       <div className="intable">
-        <select onChange={e => {
-          navigate(e.target.value)
-        }}>
-          {ApplicationNav.map(el => <option selected={location.pathname == el.url?true:false} value={el.url}>{el.name}</option>)}
+        <select onChange={handleSelect}>
+          {ApplicationNav.map(el => <option selected={el.type == type ? true : false} value={el.type}>{el.name}</option>)}
         </select>
       </div>
       <SnackbarNotify
@@ -107,14 +147,17 @@ export default function WebApp() {
         msg={msg}
         severity="success"
       />
-      <CreateApplication
-        open={openCreate}
-        close={setOpenCreate}
-        type={2}
+      {popup && <CreateApplication
+        close={setPopup}
+        type={type}
         setMsg={setMsg}
-      />
+      />}
       <Table
-        rows={application}
+        rows={application.filter(e => {
+          if (e.module_type == type) {
+            return e
+          }
+        })}
         columns={applicationColumns}
         getRowId={(row) => row.module_id}
       />

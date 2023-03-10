@@ -21,21 +21,21 @@ export let moduledata = {
   "is_deleted": false,
   "module_type": 0
 }
-export function resetModuledata(){
- moduledata = {
-  "module_name": "",
-  "base_url": "",
-  "module_desc": "",
-  "is_deleted": false,
-  "module_type": 0
-}
-  
+export function resetModuledata() {
+  moduledata = {
+    "module_name": "",
+    "base_url": "",
+    "module_desc": "",
+    "is_deleted": false,
+    "module_type": 0
+  }
+
 }
 
 export default function CreateApplication(props) {
-  const { open, close, type, setMsg } = props;
+  const { close, type, setMsg } = props;
   const { auth } = useAuth();
-  const handleClose = () => {
+  function handleClose(e) {
     close(false);
   };
   const schema = yup.object().shape({
@@ -86,95 +86,87 @@ export default function CreateApplication(props) {
         reset();
       });
   };
-  function submitHandler(e){
-    if(validateFormbyName(["appname","url","desc"],"error")){
+  function submitHandler(e) {
+    if (validateFormbyName(["appname", "url", "desc"], "error")) {
       console.log("valid form")
-      createApplication(moduledata,auth.info.id).then(res=>{
-        if (res){
+      createApplication(moduledata, auth.info.id).then(res => {
+        if (res) {
           resetModuledata()
           close(false)
         }
       })
     }
-    else{
+    else {
       console.log("Invalid form")
     }
   }
   useEffect(() => {
-  moduledata.module_type = type
+    moduledata.module_type = type
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      resetModuledata()
+    }
   }, [])
 
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle className="dialogTitle">Create Application</DialogTitle>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <DialogContent className="dialogContent">
-          <Grid container spacing={1}>
-            <Grid item md={12}>
-              {/* <TextFieldElement
-                id="application-name"
-                label="Name"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="name"
-                control={control}
-                onChange={e=>{
-                  
-                }}
-              /> */}
-              <input type="text" name="appname" 
-              placeholder="Application Name"
-              defaultValue={moduledata.module_name}
-              onChange={e=>{
-                  moduledata.module_name = e.target.value;
-              }}
-              />
+    <div>
+
+      <h4>This is cretae app pop up</h4>
+      <Dialog open={true} >
+        <DialogTitle className="dialogTitle">Create Application</DialogTitle>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <DialogContent className="dialogContent">
+            <Grid container spacing={1}>
+              <Grid item md={12}>
+                <input type="text" name="appname"
+                  placeholder="Application Name"
+                  defaultValue={moduledata.module_name}
+                  onChange={e => {
+                    moduledata.module_name = e.target.value;
+                  }}
+                />
+              </Grid>
+              <Grid item md={12}>
+                <input type="text" name="url"
+                  placeholder="URL"
+                  defaultValue={moduledata.base_url}
+                  onChange={e => {
+                    moduledata.base_url = e.target.value;
+                  }}
+                />
+              </Grid>
+              <Grid item md={12}>
+                <input type="text" name="desc"
+                  placeholder="Description"
+                  defaultValue={moduledata.module_desc}
+                  onChange={e => {
+                    moduledata.module_desc = e.target.value;
+                  }}
+                />
+              </Grid>
+              {type == 3 && <Grid item md={12}>
+                <input type="text" name="apk_name"
+                  placeholder="Apk Name"
+                  defaultValue={moduledata.apk_name}
+                  onChange={e => {
+                    moduledata.apk_name = e.target.value;
+                  }}
+                />
+              </Grid>}
             </Grid>
-            <Grid item md={12}>
-              {/* <TextFieldElement
-                id="application-baseUrl"
-                label="base URL"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="baseUrl"
-                control={control}
-              /> */}
-              <input type="text" name="url" 
-              placeholder="URL"
-              defaultValue={moduledata.base_url}
-              onChange={e=>{
-                  moduledata.base_url = e.target.value;
-              }}
-              />
-            </Grid>
-            <Grid item md={12}>
-              {/* <TextFieldElement
-                id="application-desc"
-                label="Description"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="description"
-                control={control}
-              /> */}
-              <input type="text" name="desc" 
-              placeholder="Description"
-              defaultValue={moduledata.module_desc}
-              onChange={e=>{
-                  moduledata.module_desc = e.target.value;
-              }}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button size="small" variant="contained" type="submit" onClick={submitHandler}>
-            Save
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button size="small" variant="contained" type="submit" onClick={submitHandler}>
+              Save
+            </Button>
+            <Button size="small" variant="outlined" type="submit" onClick={handleClose}>
+              Cancel
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </div>
   );
 }
