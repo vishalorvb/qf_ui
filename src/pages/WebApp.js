@@ -6,24 +6,25 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import { getWebApplication, getApplication } from "../Services/ApplicationService";
+import {  getApplication } from "../Services/ApplicationService";
 import { ApplicationNav } from "./ApplicationNav";
 import { IconButton, Tooltip } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { moduledata } from "../Components/CreateApplication";
-import { resetModuledata } from "../Components/CreateApplication";
 import ScreenshotMonitorIcon from '@mui/icons-material/ScreenshotMonitor';
-
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { deleteApplication } from "../Services/ApplicationService";
 export default function WebApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [application, setApplication] = useState([]);
-  const [msg, setMsg] = useState("");
-  const location = useLocation()
+  
   let [popup, setPopup] = useState(false)
   let [type, setType] = useState(2)
   let [name, setName] = useState("WEB")
+  let [snackbarsuccess, setSnackbarsuccess] = useState(false);
+
   const applicationColumns = [
     {
       field: "module_name",
@@ -63,10 +64,14 @@ export default function WebApp() {
             <Tooltip title="Edit">
               <IconButton
                 onClick={e => {
+                  console.log(param.row)
                   moduledata.module_id = param.row.module_id
                   moduledata.module_name = param.row.module_name
                   moduledata.module_desc = param.row.module_desc
                   moduledata.base_url = param.row.base_url
+                  if(param.row.apk_name != null){
+                    moduledata.apk_name = param.row.apk_name
+                  }
                   setPopup(true)
                 }}
 
@@ -74,7 +79,7 @@ export default function WebApp() {
                 <EditOutlinedIcon ></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
-            <Tooltip title="Edit">
+            <Tooltip title="View">
               <IconButton>
                 <VisibilityOutlinedIcon
                   className="eyeIcon"
@@ -88,6 +93,20 @@ export default function WebApp() {
                     navigate(url[0].url, { state: { id: param.row.module_id } })
                   }}
                 />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton
+              onClick={e=>{
+                console.log(param.row.module_id)
+                deleteApplication(param.row.module_id,auth.info.id).then(res=>{
+                  if (res){
+                    getApplication(setApplication, auth.info.id)
+                  }
+                })
+              }}
+              >
+              <DeleteOutlineIcon></DeleteOutlineIcon>
               </IconButton>
             </Tooltip>
           </div>
@@ -106,7 +125,12 @@ export default function WebApp() {
     setName(n[0].name)
 
   }
+function handleSnackbar(){
+  setSnackbarsuccess(true)
+  getApplication(setApplication, auth.info.id)
+  setSnackbarsuccess(true)
 
+}
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -141,16 +165,17 @@ export default function WebApp() {
           {ApplicationNav.map(el => <option selected={el.type == type ? true : false} value={el.type}>{el.name}</option>)}
         </select>
       </div>
-      <SnackbarNotify
-        open={msg && true}
-        close={setMsg}
-        msg={msg}
+     <SnackbarNotify
+        open={snackbarsuccess}
+        close={setSnackbarsuccess}
+        msg="Opration Succesfull"
         severity="success"
       />
       {popup && <CreateApplication
         close={setPopup}
         type={type}
-        setMsg={setMsg}
+        handleSnackbar={handleSnackbar}
+      
       />}
       <Table
         rows={application.filter(e => {
