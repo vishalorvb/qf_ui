@@ -137,10 +137,8 @@ export default function WebApp() {
   return (
     <>
       <div className="intable">
-        <select onChange={e => {
-          navigate(e.target.value)
-        }}>
-          {ApplicationNav.map(el => <option selected={location.pathname == el.url?true:false} value={el.url}>{el.name}</option>)}
+        <select onChange={handleSelect}>
+          {ApplicationNav.map(el => <option selected={el.type == type ? true : false} value={el.type}>{el.name}</option>)}
         </select>
       </div>
       <SnackbarNotify
