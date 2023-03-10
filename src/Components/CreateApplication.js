@@ -1,5 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+
 import {
   Button,
   Dialog,
@@ -8,8 +7,7 @@ import {
   DialogTitle,
   Grid,
 } from "@mui/material";
-import { TextFieldElement, useForm } from "react-hook-form-mui";
-import axios from "../api/axios";
+
 import { useEffect } from "react";
 import { validateFormbyName } from "../CustomComponent/FormValidation";
 import { createApplication } from "../Services/ApplicationService";
@@ -33,65 +31,22 @@ export function resetModuledata() {
 }
 
 export default function CreateApplication(props) {
-  const { close, type, setMsg } = props;
+  const { close, type,handleSnackbar} = props;
   const { auth } = useAuth();
+  
   function handleClose(e) {
     close(false);
   };
-  const schema = yup.object().shape({
-    name: yup.string().required(),
-    baseUrl: yup.string().url().required(),
-  });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
 
-  const onSubmitHandler = (data) => {
-    // console.log(data);
-    // console.log(type);
-    console.log({
-      name: data.name,
-      baseUrl: data.baseUrl,
-      type: type,
-      desc: data.description,
-    });
 
-    axios
-      .post(`qfservice/saveApplicationDetails`, {
-        application_id: "",
-        application_name: data.name,
-        application_desc: data.description,
-        deleted: false,
-        base_url: data.baseUrl,
-        application_type: type,
-        is_api_application: false,
-        apk_name: "",
-        bundle_id: "0",
-        module_name: data.name,
-        module_desc: data.description,
-        module_type: type,
-        parent_module_id: 0,
-        sub_module_type: 0,
-      })
-      .then((resp) => {
-        console.log(resp);
-        resp.data.message === "success" && handleClose();
-        setMsg(resp.data.message);
-        reset();
-      });
-  };
   function submitHandler(e) {
-    if (validateFormbyName(["appname", "url", "desc"], "error")) {
+    if (validateFormbyName(["appname", "url", "desc","apk_name"], "error")) {
       console.log("valid form")
       createApplication(moduledata, auth.info.id).then(res => {
         if (res) {
           resetModuledata()
+          handleSnackbar()
           close(false)
         }
       })
@@ -116,7 +71,6 @@ export default function CreateApplication(props) {
       <h4>This is cretae app pop up</h4>
       <Dialog open={true} >
         <DialogTitle className="dialogTitle">Create Application</DialogTitle>
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
           <DialogContent className="dialogContent">
             <Grid container spacing={1}>
               <Grid item md={12}>
@@ -165,7 +119,7 @@ export default function CreateApplication(props) {
               Cancel
             </Button>
           </DialogActions>
-        </form>
+       
       </Dialog>
     </div>
   );

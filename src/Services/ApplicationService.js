@@ -26,7 +26,7 @@ export async function createApplication(data, userId) {
         url: `${baseUrl}/qfservice/savemodule.do?user_id=${userId}`
     }).then(res => {
         console.log(res.data.message)
-        if(res.data.message == "Module Created Successfully"){
+        if(res.data.message == "Module Created Successfully" || res.data.message == "Module Updated Successfully"){
             return true
         }
         else{
@@ -59,5 +59,16 @@ export function getElementsDetails(callback,element_id){
 export function getApplicationOfProject(callback,project_id){
     axios.get(`${baseUrl}/qfservice/projects/applications?project_id=${project_id}`).then(res=>{
         callback(res.data.data)
+    })
+}
+
+export async function deleteApplication(applicationId,userId){
+    console.log(applicationId)
+    return await axios.put(`${baseUrl}/qfservice/Application/Delete?app_id=${applicationId}&user_id=${userId}`).then(res=>{
+        console.log(res.data.status)
+        if(res.data.status =="SUCCESS"){
+            return true
+        }
+        return false
     })
 }
