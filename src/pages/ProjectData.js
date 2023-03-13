@@ -32,7 +32,6 @@ export let createformData = {
 }
 
 export function clearProjectData(){
-    console.log("clearing project data")
      createformData = {
         "projectName": "",
         "projectDesc": "",
