@@ -160,7 +160,7 @@ export default function WebApp() {
   }, []);
 
   return (
-    <>
+    <div id="apptable">
       <div className="intable">
         <select onChange={handleSelect}>
           {ApplicationNav.map((el) => (
@@ -193,6 +193,6 @@ export default function WebApp() {
         getRowId={(row) => row.module_id}
       />
       <Outlet />
-    </>
+    </div>
   );
 }
