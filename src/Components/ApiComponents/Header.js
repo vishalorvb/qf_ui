@@ -14,6 +14,7 @@ function Header() {
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleHeaderData}
+      keypair ={["key","value","description"]}
       ></GrowingTable>
     </div>
   )

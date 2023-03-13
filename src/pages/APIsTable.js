@@ -5,11 +5,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { IconButton, Tooltip } from "@mui/material";
-import { getApiModuleId, getApis } from "../Services/ProjectService";
-import { deleteApi } from "../Services/ProjectService";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
 import { Apidata } from "../Components/ApiComponents/Data";
-
+import { getApis } from "../Services/ApiService";
+import { deleteApiRequest } from "../Services/ApiService";
 export default function APIsTable() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -17,30 +16,42 @@ export default function APIsTable() {
   let [apis, setApis] = useState([]);
   let [popup, setPopup] = useState(false);
   let [apiid, setApiid] = useState();
-  let [moduleid, setModuleid] = useState(0);
+ 
   function handleDelete(apiid) {
-    deleteApi(apiid).then((res) => {
-      if (res == null) {
-        getApis(location.state.id, setApis);
+    // deleteApi(apiid).then((res) => {
+    //   if (res == null) {
+    //     getApis(location.state.id, setApis);
+    //   }
+    // });
+    // setPopup(false);
+    deleteApiRequest(apiid).then(res=>{
+      if(res){
+        getApis(setApis, location.state.id);
       }
-    });
-    setPopup(false);
+      setPopup(false);
+    })
   }
 
   function handleEdit(row) {
-    Apidata.api_id = row.api_id;
-    Apidata.api_name = row.api_name;
-    Apidata.api_description = row.api_description;
-    Apidata.api_url = row.api_url;
-    Apidata.request_type = row.request_type;
-    Apidata.body_type = row.body_type;
+    Apidata.api_url = row.api_url
+    Apidata.api_name = row.api_name
+    Apidata.module_id = row.module_id
+    Apidata.request_type = row.request_type
+    Apidata.body_type = row.body_type
+    Apidata.api_description = row.api_description
+    Apidata.api_id = row.api_id
   }
+
+
+
+
   useEffect(() => {
-    Apidata.module_id = moduleid;
-  }, [moduleid]);
-  useEffect(() => {
-    getApiModuleId(location.state.id, setModuleid);
+    getApis(setApis, location.state.id);
   }, []);
+
+  useEffect(() => {
+    Apidata.module_id = location.state.id
+  }, [])
 
   let requests = [" ", "Get", "Post", "Put", "Delete"];
   const pageColumns = [
@@ -63,7 +74,7 @@ export default function APIsTable() {
         let x = param.row.request_type;
         return requests[x];
       },
-      flex: 1,
+      flex: 2,
       sortable: false,
     },
     {
@@ -80,9 +91,7 @@ export default function APIsTable() {
               <IconButton
                 onClick={(e) => {
                   handleEdit(param.row);
-                  navigate("create", {
-                    state: { projectid: location.state.id },
-                  });
+                  navigate("create");
                 }}
               >
                 <EditIcon className="editIcon" />
@@ -111,7 +120,7 @@ export default function APIsTable() {
         name: "API Requests",
         plusButton: true,
         plusCallback: () =>
-          navigate("create", { state: { projectid: location.state.id } }),
+          navigate("create",{ state: { id: location.state.id }}),
       };
     });
     return () =>

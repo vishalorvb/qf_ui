@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 function GrowingTable(props) {
 
     let [rows, setRows] = useState([<GetRow />])
-    let [tableData, setTableData] = useState([])
 
     function GetRow() {
         return (
@@ -24,15 +23,15 @@ function GrowingTable(props) {
             let value = table.rows[i].cells[1].childNodes[0].value
             let description = table.rows[i].cells[2].childNodes[0].value
 
-            let tempdata = {
-                "key": key,
-                "value": value,
-                "description": description
-            }
+
+            let tempdata ={}
+            tempdata[props.keypair[0]] = key 
+            tempdata[props.keypair[1]] = value 
+            tempdata[props.keypair[2]] = description 
             data.push(tempdata)
         }
         console.log(data)
-        // setTableData(data)
+
         try {
             props.TableData(data)
         } catch (error) {
@@ -46,9 +45,6 @@ function GrowingTable(props) {
         }
     }
   
-    useEffect(() => {
-        console.log(tableData)
-    }, [tableData])
 
 
     return (

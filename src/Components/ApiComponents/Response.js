@@ -14,6 +14,7 @@ function Response() {
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleResponseData}
+      keypair ={["key","value","description"]}
       ></GrowingTable>
     </div>
   )
