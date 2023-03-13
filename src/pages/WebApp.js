@@ -159,7 +159,7 @@ function handleSnackbar(){
 
 
   return (
-    <>
+    <div id="apptable">
       <div className="intable">
         <select onChange={handleSelect}>
           {ApplicationNav.map(el => <option selected={el.type == type ? true : false} value={el.type}>{el.name}</option>)}
@@ -187,6 +187,6 @@ function handleSnackbar(){
         getRowId={(row) => row.module_id}
       />
       <Outlet />
-    </>
+    </div>
   );
 }
