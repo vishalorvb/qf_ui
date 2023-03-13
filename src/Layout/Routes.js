@@ -6,6 +6,7 @@ import { getCreatePipelineData } from "../Services/DevopsServices";
 
 import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation";
 import Report from "../Components/DevopsComponent/Report";
+
 const Admin = lazy(() => import("../pages/Admin"));
 const ApiApp = lazy(() => import("../pages/ApiApp"));
 const Dashboard = lazy(() => import("../pages/Dashboard"));
@@ -43,6 +44,12 @@ const CreateTestcase = lazy(() =>
 );
 const Settings = lazy(() => import("../pages/Settings"));
 const Screen = lazy(() => import("../pages/Screen"));
+const CreateScreen = lazy(() => import(`../pages/CreateScreen`));
+const SelectedPageElements = lazy(() =>
+  import("../Components/Application/SelectedPageElements")
+);
+
+const ScreenElements = lazy(() => import("../pages/ScreenElements"));
 
 export const Routes = [
   {
@@ -218,11 +225,30 @@ export const Routes = [
           },
         ],
       },
+      {
+        path: "screen",
+        element: Screen,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "createscreen",
+            element: CreateScreen,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            subRoute: [
+              {
+                path: "SelectElements",
+                element: SelectedPageElements,
+                accessRole: [1, 2, 3, 4, 5, 6, 7],
+              },
+            ],
+          },
+          {
+            path: "screenelements",
+            element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
     ],
-  },
-  {
-    path: "screen",
-    element: Screen,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
 ];

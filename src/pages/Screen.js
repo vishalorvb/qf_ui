@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import { getPages } from "../Services/ApplicationService";
-import useAuth from "../hooks/useAuth";
+import { IconButton, Tooltip } from "@mui/material";
+import ConfirmPop from "../CustomComponent/ConfirmPop";
 export default function Screens() {
   const { setHeader } = useHead();
-  const { auth } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
-
-  let [page, setPage] = useState([]);
+  const location = useLocation();
+  const [page, setPage] = useState([]);
+  const [popup, setPopup] = useState(false);
+  const [screenId, setscreenId] = useState();
 
   const pageColumns = [
     {
@@ -37,18 +39,41 @@ export default function Screens() {
       renderCell: (param) => {
         return (
           <div>
-            <NearMeOutlinedIcon
-              onClick={() =>
-                navigate("PageElements", {
-                  state: { id: param.row.web_page_id },
-                })
-              }
-            />
+            <Tooltip title="View">
+              <IconButton
+                onClick={() =>
+                  navigate("screenelements", {
+                    state: { id: param.row.web_page_id },
+                  })
+                }
+              >
+                <VisibilityOutlinedIcon className="eyeIcon" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton
+                onClick={(e) => {
+                  console.log(param.row.screen_id);
+                  setscreenId(param.row.screen_id);
+                  setPopup(true);
+                }}
+              >
+                <DeleteOutlineIcon></DeleteOutlineIcon>
+              </IconButton>
+            </Tooltip>
           </div>
         );
       },
     },
   ];
+
+  const handleDelete = (id) => {
+    axios
+      .post(`/qfservice/screen/deleteScreen?screen_id=${id}`)
+      .then((resp) => {
+        console.log(resp);
+      });
+  };
 
   useEffect(() => {
     setHeader((ps) => {
@@ -56,7 +81,8 @@ export default function Screens() {
         ...ps,
         name: "Screens",
         plusButton: true,
-        plusCallback: "",
+        plusCallback: () =>
+          navigate("createscreen", { state: { id: location?.state?.id } }),
       };
     });
     return () =>
@@ -72,10 +98,11 @@ export default function Screens() {
 
   useEffect(() => {
     axios
-      .get(`/qfservice/screen/getScreensList?module_id=1025`)
+      .get(`/qfservice/screen/getScreensList?module_id=${location?.state?.id}`)
       .then((resp) => {
         console.log(resp?.data?.info);
-        setPage(resp?.data?.info);
+        const data = resp?.data?.info;
+        setPage(data ? data : []);
       });
   }, []);
   return (
@@ -83,9 +110,16 @@ export default function Screens() {
       <Table
         rows={page}
         columns={pageColumns}
-        getRowId={(row) => row.web_page_id}
+        getRowId={(row) => row.screen_id}
       />
       <Outlet />
+      <ConfirmPop
+        open={popup}
+        handleClose={() => setPopup(false)}
+        heading={"Delete Screen"}
+        message={"Are you sure you want to delete this Screen"}
+        onConfirm={() => handleDelete(screenId)}
+      ></ConfirmPop>
     </>
   );
 }
