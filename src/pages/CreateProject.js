@@ -228,6 +228,7 @@ function CreateProject() {
                 onChange={e => {
                   createformData.projectName = e.target.value;
                 }}
+                disabled ={createformData.sqeProjectId==""?false:true}
               />
             </Grid>
           </Grid>

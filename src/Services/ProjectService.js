@@ -43,9 +43,9 @@ export async function updateProject(data) {
   return res;
 }
 
-export async function deleteProject(projectid, userid , gid) {
+export async function deleteProject(projectid, userid ) {
 
-  let res = await axios.put(`${baseUrl}/qfservice/SoftDelete?project_id=${projectid}&user_id=${userid}`).then(r=>{
+  let res = await axios.put(`${baseUrl}/qfservice/projects/Delete?project_id=${projectid}&user_id=${userid}`).then(r=>{
     console.log(r.data.status);
     return r.data.status
   })
