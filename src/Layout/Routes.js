@@ -26,6 +26,7 @@ const CreateProject = lazy(() => import("../pages/CreateProject"));
 const APIsTable = lazy(() => import("../pages/APIsTable"));
 const ApiCreateEdit = lazy(() => import("../pages/ApiCreateEdit"));
 const TestSteps = lazy(()=> import("../Components/TestCases/TestSteps"))
+const Api = lazy(()=> import("../Components/ApiComponents/Api"))
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
 );
@@ -66,7 +67,7 @@ export const Routes = [
         subRoute: [
           {
             path: "create",
-            element: ApiCreateEdit,
+            element: Api,
             accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],

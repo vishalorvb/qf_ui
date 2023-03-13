@@ -1,57 +1,45 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Button, Grid, MenuItem, Select, TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Button, Grid } from '@mui/material'
 import ApiTabs from './ApiTabs'
-import { createAPI } from '../../Services/ProjectService';
 import { Apidata, resetApiData } from './Data';
-import { validateForm } from '../../CustomComponent/FormValidation';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 import { useNavigate } from 'react-router-dom';
-import { updateAPI } from '../../Services/ProjectService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
+import { createApiRequest } from '../../Services/ApiService';
 
 
 
-function Api({ projectId }) {
+function Api() {
 
     let namelist = ["apiname", "apidesc", "apiurl"]
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     let navigate = useNavigate()
 
     function handleSave(e) {
+        console.log(Apidata)
+
         if (validateFormbyName(namelist, "error")) {
+            console.log(Apidata)
             console.log("Form submited")
-            if (Apidata.hasOwnProperty("api_id") == false) {
-                createAPI(Apidata).then(res => {
-                    if (res == null) {
-                        setSnackbarsuccess(true)
-                        setTimeout(() => {
-                            navigate("/application/apiApp/apiRequests", { state: { id: projectId } })
-                        }, 1000);
-                    }
-                })
-            }
-            else{
-                updateAPI(Apidata).then(res => {
-                    if (res == null) {
-                        setSnackbarsuccess(true)
-                        setTimeout(() => {
-                            navigate("/application/apiApp/apiRequests", { state: { id: projectId } })
-                        }, 1000);
-                    }
-                })
-            }
-           
+            createApiRequest(Apidata).then(res => {
+                if (res) {
+                    setSnackbarsuccess(true)
+                    setTimeout(() => {
+                        navigate("/application/apiApp/apiRequests", { state: { id: Apidata.module_id } })
+                    }, 1000);
+                }
+            })
         }
         else {
             console.log("requird field")
         }
     }
-useEffect(() => {
-console.log(Apidata)
-return ()=>{
-    resetApiData()
-}
-}, [])
+    useEffect(() => {
+        console.log(Apidata)
+        return () => {
+            resetApiData()
+        }
+    }, [])
     return (
 
 
@@ -104,11 +92,11 @@ return ()=>{
                             Apidata.request_type = e.target.value
                         }}
                     >
-                       
-                        <option selected ={Apidata.request_type == 1?true:false} value={1}>Get</option>
-                        <option selected ={Apidata.request_type == 2?true:false} value={2}>Post</option>
-                        <option selected ={Apidata.request_type == 3?true:false} value={3}>Put</option>
-                        <option selected ={Apidata.request_type == 4?true:false} value={4}>Delete</option>
+
+                        <option selected={Apidata.request_type == 1 ? true : false} value={1}>Get</option>
+                        <option selected={Apidata.request_type == 2 ? true : false} value={2}>Post</option>
+                        <option selected={Apidata.request_type == 3 ? true : false} value={3}>Put</option>
+                        <option selected={Apidata.request_type == 4 ? true : false} value={4}>Delete</option>
                     </select>
                 </Grid>
                 <Grid item md={4}>
@@ -119,7 +107,7 @@ return ()=>{
                     />
                 </Grid>
                 <Grid item md={6}>
-                    <input  placeholder='Resource'  />
+                    <input placeholder='Resource' />
                 </Grid>
             </Grid>
             <ApiTabs></ApiTabs>

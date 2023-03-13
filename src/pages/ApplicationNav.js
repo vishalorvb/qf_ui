@@ -1,6 +1,6 @@
 export let ApplicationNav=[
     {
-        "url":"/application/apiRequests",
+        "url":"/application/apiApp/apiRequests",
         "name":"API",
         "type":1
     },
