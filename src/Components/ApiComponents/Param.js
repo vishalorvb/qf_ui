@@ -13,6 +13,7 @@ function handleParamData(tabdata){
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleParamData}
+      keypair ={["param_key","param_value","param_desc"]}
       ></GrowingTable>
     </div>
   )

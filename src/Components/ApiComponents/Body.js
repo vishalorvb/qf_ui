@@ -2,7 +2,8 @@ import { FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioG
 import React, { useState } from 'react'
 import GrowingTable from './GrowingTable'
 import { Apidata } from './Data'
-
+import { authdata } from './Data'
+import { getAuthData } from './Data'
 
 function Body() {
 
@@ -63,12 +64,14 @@ function Body() {
         <GrowingTable
           header={["Key", "Value", "Description"]}
           TableData = {handleFormData}
+          keypair ={["key", "value", "description"]}
         ></GrowingTable>
       </div>}
       {selected == "3" && <div>
         <GrowingTable
           header={["Key", "Value", "Description"]}
           TableData ={handleEncoderData}
+          keypair ={["key", "value", "description"]}
         ></GrowingTable>
       </div>}
       { selected == "4" && <div style={{marginTop:"10px"}}>

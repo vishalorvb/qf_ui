@@ -13,6 +13,7 @@ function handleLinkData(tabdata){
       <GrowingTable
       header={["Key","Value","Description"]}
       TableData = {handleLinkData}
+      keypair ={["key","value","description"]}
       ></GrowingTable>
     </div>
   )
