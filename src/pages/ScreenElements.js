@@ -22,7 +22,7 @@ export default function ScreenElements() {
   useEffect(() => {
     axios
       .get(
-        `http://10.11.12.243:8083/qfservice/screen/getScreenElementsList?screen_id=1181`
+        `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.id}`
       )
       .then((resp) => {
         console.log(resp?.data?.info);
@@ -32,21 +32,26 @@ export default function ScreenElements() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Screens",
-        plusButton: true,
-        plusCallback: () => console.log("hurray"),
+        name: "Screen Elements",
+        plusButton: false,
       };
     });
-    return () =>
-      setHeader((ps) => {
-        return {
-          ...ps,
-          name: "",
-          plusButton: false,
-          plusCallback: () => console.log("null"),
-        };
-      });
   }, []);
+
+  const updateScreenOrder = () => {
+    axios
+      .post(`qfservice/screen/updateOrderOfScreenElements`, {
+        screenId: location?.state?.id,
+        screen_element_ids: order,
+      })
+      .then((resp) => {
+        console.log(resp);
+      });
+  };
+
+  useEffect(() => {
+    updateScreenOrder();
+  }, [order]);
 
   const columns = useMemo(
     //column definitions...
@@ -107,7 +112,7 @@ export default function ScreenElements() {
               );
               setData([...data]);
               setOrder(() => {
-                return data.map((d) => d.element_id);
+                return data.map((d) => d.screen_element_id);
               });
               console.log(data);
             }

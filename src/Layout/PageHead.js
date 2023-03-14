@@ -9,10 +9,15 @@ import {
   Divider,
   Chip,
   Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { SelectElement, useForm } from "react-hook-form-mui";
+import { FormContainer, SelectElement, useForm } from "react-hook-form-mui";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 
 export default function PageHead() {
   const { control } = useForm({
@@ -25,7 +30,8 @@ export default function PageHead() {
     location.pathname
       .split("/")
       .filter((path) => path !== "" && path !== "application").length > 1;
-  const { header } = useHead();
+  const { header, setHeader } = useHead();
+
   return (
     <>
       {header?.name === "notFound" ? (
@@ -63,28 +69,24 @@ export default function PageHead() {
                 </IconButton>
               )}
               {header?.name === "Pages" && (
-                <SelectElement
-                  name="browser"
-                  label="Browser"
-                  size="small"
-                  fullWidth
-                  sx={{ width: 100 }}
-                  control={control}
-                  options={[
-                    {
-                      id: "Custom",
-                      label: "Custom",
-                    },
-                    {
-                      id: "Chrome",
-                      label: "Chrome",
-                    },
-                    {
-                      id: "Mozilla",
-                      label: "Mozilla",
-                    },
-                  ]}
-                />
+                <FormControl fullWidth>
+                  <InputLabel id="browser">Browser</InputLabel>
+                  <Select
+                    labelId="Browser"
+                    id="Browser"
+                    value={header?.browser}
+                    label="Browser"
+                    onChange={(e) => {
+                      setHeader((ps) => {
+                        return { ...ps, browser: e.target.value };
+                      });
+                    }}
+                  >
+                    <MenuItem value={"custom"}>Custom</MenuItem>
+                    <MenuItem value={"chrome"}>Chrome</MenuItem>
+                    <MenuItem value={"mozilla"}>Mozilla</MenuItem>
+                  </Select>
+                </FormControl>
               )}
             </Stack>
 

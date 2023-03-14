@@ -93,7 +93,10 @@ export default function WebApp() {
                       }
                     });
                     navigate(url[0].url, {
-                      state: { id: param.row.module_id },
+                      state: {
+                        id: param.row.module_id,
+                        base_url: param.row.base_url,
+                      },
                     });
                   }}
                 />

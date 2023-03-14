@@ -7,6 +7,7 @@ export const HeaderProvider = ({ children }) => {
     name: "",
     plusButton: false,
     plusCallback: () => console.log("null"),
+    browser: "custom",
   });
 
   return (

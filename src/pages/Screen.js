@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -43,11 +43,28 @@ export default function Screens() {
               <IconButton
                 onClick={() =>
                   navigate("screenelements", {
-                    state: { id: param.row.web_page_id },
+                    state: { id: param.row.screen_id },
                   })
                 }
               >
                 <VisibilityOutlinedIcon className="eyeIcon" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={() =>
+                  navigate("UpdateScreen", {
+                    state: {
+                      screenId: param.row.screen_id,
+                      pageId: param.row.web_page_id,
+                      name: param.row.name,
+                      desc: param.row.description,
+                      applicationId: location?.state?.id,
+                    },
+                  })
+                }
+              >
+                <EditOutlinedIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
@@ -69,9 +86,11 @@ export default function Screens() {
 
   const handleDelete = (id) => {
     axios
-      .post(`/qfservice/screen/deleteScreen?screen_id=${id}`)
+      .delete(`/qfservice/screen/deleteScreen?screen_id=${id}`)
       .then((resp) => {
         console.log(resp);
+        resp?.data?.status === "SUCCESS" && getScreens();
+        resp?.data?.status === "SUCCESS" && setPopup(false);
       });
   };
 
@@ -96,7 +115,7 @@ export default function Screens() {
       });
   }, []);
 
-  useEffect(() => {
+  const getScreens = () => {
     axios
       .get(`/qfservice/screen/getScreensList?module_id=${location?.state?.id}`)
       .then((resp) => {
@@ -104,6 +123,10 @@ export default function Screens() {
         const data = resp?.data?.info;
         setPage(data ? data : []);
       });
+  };
+
+  useEffect(() => {
+    getScreens();
   }, []);
   return (
     <>

@@ -50,6 +50,9 @@ const SelectedPageElements = lazy(() =>
 );
 
 const ScreenElements = lazy(() => import("../pages/ScreenElements"));
+const UpdateScreen = lazy(() =>
+  import("../Components/Application/UpdateScreen")
+);
 
 export const Routes = [
   {
@@ -245,6 +248,11 @@ export const Routes = [
           {
             path: "screenelements",
             element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "updateScreen",
+            element: UpdateScreen,
             accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],

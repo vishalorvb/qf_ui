@@ -12,7 +12,8 @@ import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 
 export default function CreateScreenPop(props) {
-  const { elementsList, open, close, applicationId, pageId } = props;
+  const { elementsList, open, close, applicationId, pageId, screenName } =
+    props;
   console.log(props);
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -20,7 +21,9 @@ export default function CreateScreenPop(props) {
     close(false);
   };
 
-  const [screenData, setScreenData] = useState({ name: "", desc: "" });
+  const [screenData, setScreenData] = useState(() => {
+    return { name: screenName?.name, desc: screenName?.desc };
+  });
   const saveScreen = () => {
     const screendata = {
       screen_name: screenData.name,
@@ -49,6 +52,7 @@ export default function CreateScreenPop(props) {
               type="text"
               name="screenName"
               placeholder="Screen Name"
+              value={screenData.name}
               onChange={(e) => {
                 console.log(e);
                 setScreenData((ps) => {
@@ -62,6 +66,7 @@ export default function CreateScreenPop(props) {
               type="text"
               name="description"
               placeholder="Description"
+              value={screenData.desc}
               onChange={(e) => {
                 console.log(e);
                 setScreenData((ps) => {
@@ -85,7 +90,7 @@ export default function CreateScreenPop(props) {
           size="small"
           variant="outlined"
           type="submit"
-          //   onClick={handleClose}
+          onClick={handleClose}
         >
           Cancel
         </Button>
