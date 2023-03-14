@@ -27,9 +27,7 @@ export default function PageHead() {
   const navigate = useNavigate();
   const location = useLocation();
   const backButtonRender =
-    location.pathname
-      .split("/")
-      .filter((path) => path !== "" && path !== "application").length > 1;
+    location.pathname.split("/").filter((path) => path !== "").length > 1;
   const { header, setHeader } = useHead();
 
   return (

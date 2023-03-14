@@ -1,15 +1,10 @@
 import { lazy } from "react";
 
-// loaders
-
-import { getCreatePipelineData } from "../Services/DevopsServices";
-
 import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation";
 import Report from "../Components/DevopsComponent/Report";
 
 const Admin = lazy(() => import("../pages/Admin"));
 const ApiApp = lazy(() => import("../pages/ApiApp"));
-const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Execution = lazy(() => import("../pages/Execution"));
 const MobileApp = lazy(() => import("../pages/MobileApp"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -25,7 +20,6 @@ const Pages = lazy(() => import("../pages/Pages"));
 const PageElements = lazy(() => import("../pages/PageElements"));
 const CreateProject = lazy(() => import("../pages/CreateProject"));
 const APIsTable = lazy(() => import("../pages/APIsTable"));
-const ApiCreateEdit = lazy(() => import("../pages/ApiCreateEdit"));
 const TestSteps = lazy(() => import("../Components/TestCases/TestSteps"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const CreateInstance = lazy(() =>
@@ -54,8 +48,17 @@ const ScreenElements = lazy(() => import("../pages/ScreenElements"));
 const UpdateScreen = lazy(() =>
   import("../Components/Application/UpdateScreen")
 );
+const ApiTestcase = lazy(() => import("../pages/ApiTestcase"));
+const WebTestcase = lazy(() =>
+  import("../Components/Application/webTestcase/WebTestcase")
+);
 
 export const Routes = [
+  {
+    path: "ApiTestcase",
+    element: ApiTestcase,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
   {
     path: "users",
     element: Admin,
@@ -85,11 +88,6 @@ export const Routes = [
       },
     ],
   },
-  // {
-  //   path: "/dashboard",
-  //   element: Dashboard,
-  //   accessRole: [1,2,3,4,5,6,7],
-  // },
   {
     path: "execution",
     element: Execution,
@@ -128,7 +126,6 @@ export const Routes = [
         path: "CreatePipeline",
         element: CreatePipeline,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
-        loaderFunction: getCreatePipelineData,
       },
       {
         path: "pipelineAutomation",
@@ -257,6 +254,11 @@ export const Routes = [
             accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
         ],
+      },
+      {
+        path: "Testcase",
+        element: WebTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
   },
