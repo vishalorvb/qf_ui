@@ -28,14 +28,14 @@ export function getTestcaseDetails(callback, workflowID,testcaseId) {
 
 export function createTestset(data) {
     console.log("called")
-    axios.post("http://10.11.12.240/qfservice/webtestset/createWebTestset",data ).then(res => {
+    axios.post("http://10.11.12.243/qfservice/webtestset/createWebTestset",data ).then(res => {
         console.log("Testset Created Successfully" );
     })
 }
 
 export function updateTestset(data) {
     console.log("called")
-    axios.post("http://10.11.12.240/qfservice/webtestset/createWebTestset",data ).then(res => {
+    axios.post("http://10.11.12.243/qfservice/webtestset/createWebTestset",data ).then(res => {
         console.log("Testset Created Successfully" );
     })
 }

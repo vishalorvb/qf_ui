@@ -1,39 +1,34 @@
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  IconButton,
-  Paper,
-  Tooltip,
-} from "@mui/material";
+import {Autocomplete, Button, Grid, IconButton, Paper, Tooltip} from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+// import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
-import { Link, useNavigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getTestsets } from "../Services/TestsetService";
 import { getProject } from "../Services/ProjectService";
 import useHead from "../hooks/useHead";
-import { getModules } from "../Services/ProjectService";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { axiosPrivate } from "../api/axios";
 import useAuth from "../hooks/useAuth";
+import DeleteTestset from "../Components/TestSet/DeleteTestset";
+import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 
 function Testset() {
-  const [usersObject, setUsersObject] = useState([]);
   const [testsetObject, setTestsetObject] = useState([]);
   const [projectObject, setProjectObject] = useState([]);
-  const [workflowsObject, setWorkflowsObject] = useState([]);
-  const [workflowId, setWorkflowId] = useState(0);
   const [projectId, setProjectId] = useState(null);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openExecute, setOpenExecute] = useState(false);
   const [editObject, setEditObject] = useState([]);
   const [deleteObject, setDeleteObject] = useState([]);
+  const [executeObject, setExecuteObject] = useState([]);
+  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
   const navigate = useNavigate();
   const { auth } = useAuth();
   console.log(auth.info);
@@ -44,11 +39,6 @@ function Testset() {
     navigate("createTestcase", { state: e });
   };
 
-  const addUser1Handler = (e) => {
-    // setOpen(true);
-    navigate("AddTestcaseToTestset", { state: e });
-  };
-
   const editUserHandler = (e) => {
     // setOpenEdit(true);
     // setEditObject(e);
@@ -56,27 +46,20 @@ function Testset() {
   };
 
   const deleteUserHandler = (e) => {
+    console.log(e.testset_id);
     setOpenDelete(true);
     setDeleteObject(e);
+  };
+
+  const executeHandler = (e) => {
+    setOpenExecute(true);
+    setExecuteObject(e);
   };
 
   const onChangeHandler = () => {
     setOpen1(true);
   };
-
-  // const getTestsets = () => {
-  //   axios
-  //     .get(`http://10.11.12.240/qfservice/workflow/1031/api/testsets`)
-  //     .then((Response) => {
-  //       var response = Response.data;
-  //       console.log(response.data);
-  //       setTestsetObject(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     });
-  // };
-  console.log(projectId);
+  
   const columns = [
     // { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
     {
@@ -103,13 +86,13 @@ function Testset() {
       renderCell: (param) => {
         return (
           <>
-            <Tooltip title="Add Testcase">
+            <Tooltip title="Delete">
               <IconButton
                 onClick={(e) => {
-                  addUser1Handler(param.row);
+                  deleteUserHandler(param.row);
                 }}
               >
-                <AddOutlinedIcon></AddOutlinedIcon>
+                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
               </IconButton>
             </Tooltip>
             <Tooltip title="Edit Testcase">
@@ -124,7 +107,7 @@ function Testset() {
             <Tooltip title="Execute">
               <IconButton
                 onClick={(e) => {
-                  deleteUserHandler(param.row);
+                  executeHandler(param.row);
                 }}
               >
                 <PlayCircleOutlinedIcon></PlayCircleOutlinedIcon>
@@ -160,24 +143,19 @@ function Testset() {
   }, []);
 
   const submit = () => {
-    // getTestsets(setTestsetObject, projectId, workflowId);
     axiosPrivate
       .get(
-        `qfservice/webtestset/api/v1/projects/${projectId}/web/testsets`
+        `qfservice/webtestset/getWebTestsetInfoByProjectId?project_id=${projectId}`
       )
       .then((res) => {
-        console.log(res.data.data);
-        setTestsetObject(res.data.result);
+        console.log(res.data.info);
+        setTestsetObject(res.data.info);
       });
   };
 
   useEffect(() => {
     getProject(setProjectObject,loggedInId);
   }, []);
-
-  // useEffect(() => {
-  //   getModules(setWorkflowsObject, projectId);
-  // }, [projectId, workflowId]);
 
   return (
     <div>
@@ -286,12 +264,13 @@ function Testset() {
           </Button>
         </Container>
       </Paper>
-      {/* {open1 ? */}
+      <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="Testset deleted successfully" severity="success"/>
       <div
         className="recenttable"
         style={{ flot: "right", marginBottom: "10px" }}
       ></div>
       <div className="datatable" style={{ marginTop: "20px" }}>
+      {openDelete ? <DeleteTestset object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete}  setDelSuccessMsg={setDelSuccessMsg} getTestsets={submit}/> : ""}
         <Table
           columns={columns}
           rows={testsetObject}
