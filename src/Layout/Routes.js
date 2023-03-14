@@ -27,7 +27,7 @@ const CreateProject = lazy(() => import("../pages/CreateProject"));
 const APIsTable = lazy(() => import("../pages/APIsTable"));
 const ApiCreateEdit = lazy(() => import("../pages/ApiCreateEdit"));
 const TestSteps = lazy(() => import("../Components/TestCases/TestSteps"));
-const Api = lazy(()=> import("../Components/ApiComponents/Api"))
+const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
 );
@@ -213,7 +213,7 @@ export const Routes = [
     ],
   },
   {
-    path: "application/webApp",
+    path: "application",
     element: WebApp,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
