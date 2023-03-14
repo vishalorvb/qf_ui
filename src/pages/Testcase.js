@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import TestCases from "../Components/TestCases/TestCases";
-import useHead from "../hooks/useHead";
+// import React, { useEffect } from "react";
+// import TestCases from "../Components/TestCases/TestCases";
+// import useHead from "../hooks/useHead";
 
-function Testcase() {
-  return <TestCases />;
-}
+// function Testcase() {
+//   return <TestCases />;
+// }
 
-export default Testcase;
+// export default Testcase;

@@ -19,6 +19,7 @@ const QFAdmin = lazy(() => import("../pages/QFAdmin"));
 const Release = lazy(() => import("../pages/Release"));
 const Reports = lazy(() => import("../pages/Reports"));
 const Testcase = lazy(() => import("../pages/Testcase"));
+const TestCases = lazy(() => import("../Components/TestCases/TestCases"))
 const Testset = lazy(() => import("../pages/Testset"));
 const WebApp = lazy(() => import("../pages/WebApp"));
 const Pages = lazy(() => import("../pages/Pages"));
@@ -27,6 +28,7 @@ const CreateProject = lazy(() => import("../pages/CreateProject"));
 const APIsTable = lazy(() => import("../pages/APIsTable"));
 const ApiCreateEdit = lazy(() => import("../pages/ApiCreateEdit"));
 const TestSteps = lazy(() => import("../Components/TestCases/TestSteps"));
+const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
@@ -185,7 +187,7 @@ export const Routes = [
   },
   {
     path: "testcase",
-    element: Testcase,
+    element: TestCases,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
@@ -193,6 +195,11 @@ export const Routes = [
         element: TestSteps,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
+      {
+        path: "datasets",
+        element: Dataset,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
     ],
   },
   {
