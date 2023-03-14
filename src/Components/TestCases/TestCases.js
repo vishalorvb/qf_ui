@@ -28,11 +28,17 @@ import { testcaseData } from "./CreateTestCasePopUp";
 import { getTestcase } from "../../Services/TestCaseService";
 import { Navigate, useNavigate } from "react-router";
 import { teststepData } from "./TestSteps";
+import { getApplication } from "../../Services/ApplicationService";
+
+
+
+
 function TestCases() {
   let [project, setproject] = useState([]);
   let [testcases, setTestcases] = useState([]);
   let [radio, setRadio] = useState(0);
   let [datasets, Setdatasets] = useState([]);
+  let [application,setApplication] = useState([]);
   // let [addTestcase, setAddTestcase] = useState();
   let [popup, setPopup] = useState(false);
   let [steps, setSteps] = useState(false);
@@ -183,7 +189,8 @@ function TestCases() {
   ];
 
   useEffect(() => {
-    getProject(setproject, auth.info.id);
+    // getProject(setproject, auth.info.id);
+    getApplication(setApplication, auth.info.id)
   }, []);
 
   const { setHeader } = useHead();
@@ -220,13 +227,13 @@ function TestCases() {
 
       <Grid container>
         <Grid item>
-          <h3>Project Name :</h3>
+          <h3>Application Name :</h3>
           <Autocomplete
             //   ref={projecid}
             disablePortal
-            id="project_id"
-            options={project}
-            getOptionLabel={(option) => option.project_name}
+            id="module_id"
+            options={application}
+            getOptionLabel={(option) => option.module_name}
             sx={{ width: "100%" }}
             renderInput={(params) => (
               <div ref={params.InputProps.ref}>
@@ -234,9 +241,8 @@ function TestCases() {
               </div>
             )}
             onChange={(e, value) => {
-              console.log(value.project_id);
-              testcaseData.project_id = value.project_id;
-              getTestcase(setTestcases, value.project_id);
+              // testcaseData.project_id = value.project_id;
+              getTestcase(setTestcases, value.module_id);
             }}
           />
         </Grid>
