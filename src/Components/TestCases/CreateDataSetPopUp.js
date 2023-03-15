@@ -2,7 +2,8 @@ import { Button, Divider, Grid } from '@mui/material'
 import React from 'react'
 import MastPop from '../../CustomComponent/MastPop'
 import { validateFormbyName } from '../../CustomComponent/FormValidation'
-
+import { CreateDataset } from '../../Services/TestCaseService'
+import { Datasetdata } from './DatasetData'
 
 
 function CreateDataSetPopUp({ close }) {
@@ -10,6 +11,8 @@ function CreateDataSetPopUp({ close }) {
 function handleSubmit(e){
     console.log("calling handle submit")
    if (validateFormbyName(["name","desc"],"error")){
+    console.log(Datasetdata)
+    CreateDataset(Datasetdata)
     console.log("Valid form")
    }
 
@@ -20,6 +23,7 @@ function handleSubmit(e){
         <div>
             <MastPop open={true} setOpen={() => close(false)}>
             <h4>Create Data Set</h4>
+
             <Divider></Divider>
             <br/>
                 <Grid container columnSpacing={2}  justifyContent="flex-start">
@@ -32,12 +36,29 @@ function handleSubmit(e){
                             <option value="2">DB</option>
                         </select>
                     </Grid>
+                    <Grid item xs={2} sm={2} md={2}>
+                    <label for="">Select screen</label>
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={4}>
+                        <select>
+                            <option value="1">Regular</option>
+                            <option value="2">DB</option>
+                        </select>
+                    </Grid>
                 </Grid>
                 <div>
                     <label for="">Dataset Name</label>
-                    <input type="text" name='name'/>
+                    <input type="text" name='name'
+                    onChange={e=>{
+                        Datasetdata.datasets_list[0].name = e.target.value
+                    }}
+                    />
                     <label for="">Dataset Description</label>
-                    <input type="text" name='desc'/>
+                    <input type="text" name='desc'
+                     onChange={e=>{
+                        Datasetdata.datasets_list[0].description = e.target.value
+                    }}
+                    />
                 </div>
                 <br/>
                 <Grid container columnSpacing={2}  justifyContent="center">
