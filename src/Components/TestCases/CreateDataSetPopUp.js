@@ -41,8 +41,8 @@ function handleSubmit(e){
                     </Grid>
                     <Grid item xs={4} sm={4} md={4}>
                         <select>
-                            <option value="1">Regular</option>
-                            <option value="2">DB</option>
+                            <option value="1">Test case 1</option>
+                            <option value="2">Test case 2</option>
                         </select>
                     </Grid>
                 </Grid>
