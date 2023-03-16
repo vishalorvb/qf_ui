@@ -1,12 +1,15 @@
 import { Button, Divider, Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MastPop from '../../CustomComponent/MastPop'
 import { validateFormbyName } from '../../CustomComponent/FormValidation'
 import { CreateDataset } from '../../Services/TestCaseService'
 import { Datasetdata } from './DatasetData'
-
+import { getScreen } from '../../Services/pageService'
 
 function CreateDataSetPopUp({ close }) {
+
+
+let [screen,setScreen]  = useState([])
 
 function handleSubmit(e){
     console.log("calling handle submit")
@@ -15,10 +18,13 @@ function handleSubmit(e){
     CreateDataset(Datasetdata)
     console.log("Valid form")
    }
-
 }
 
+useEffect(() => {
+    getScreen(setScreen,768)
+}, [])
 
+try {
     return (
         <div>
             <MastPop open={true} setOpen={() => close(false)}>
@@ -41,8 +47,7 @@ function handleSubmit(e){
                     </Grid>
                     <Grid item xs={4} sm={4} md={4}>
                         <select>
-                            <option value="1">Test case 1</option>
-                            <option value="2">Test case 2</option>
+                            {screen.map(s=><option value={s.screen_id}>{s.name}</option>)}
                         </select>
                     </Grid>
                 </Grid>
@@ -73,6 +78,15 @@ function handleSubmit(e){
             </MastPop>
         </div>
     )
+} catch (error) {
+    console.log(error)
+    return(
+        <div>
+            <h1>Hello </h1>
+        </div>
+    )
+}
+   
 }
 
 export default CreateDataSetPopUp
