@@ -13,7 +13,6 @@ const Projects = lazy(() => import("../pages/Projects"));
 const QFAdmin = lazy(() => import("../pages/QFAdmin"));
 const Release = lazy(() => import("../pages/Release"));
 const Reports = lazy(() => import("../pages/Reports"));
-const Testcase = lazy(() => import("../pages/Testcase"));
 const TestCases = lazy(() => import("../Components/TestCases/TestCases"));
 const Testset = lazy(() => import("../pages/Testset"));
 const WebApp = lazy(() => import("../pages/WebApp"));
@@ -55,6 +54,9 @@ const ApiTestcase = lazy(() =>
 );
 const WebTestcase = lazy(() =>
   import("../Components/Application/webTestcase/WebTestcase")
+);
+const CreateWebTestcase = lazy(() =>
+  import("../Components/Application/webTestcase/CreateWebTestcase")
 );
 
 export const Routes = [
@@ -199,6 +201,11 @@ export const Routes = [
         element: Dataset,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
+      {
+        path: "CreateTestcase",
+        element: CreateWebTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
     ],
   },
   {
@@ -268,6 +275,13 @@ export const Routes = [
         path: "Testcase",
         element: WebTestcase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "CreateTestcase",
+            element: CreateWebTestcase,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
       },
     ],
   },
