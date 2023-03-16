@@ -1,88 +1,48 @@
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  IconButton,
-  Radio,
-  Snackbar,
-  TextField,
-  Tooltip,
-} from "@mui/material";
+import { Autocomplete, Grid, IconButton, Radio, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getProject } from "../../Services/ProjectService";
-
 import AddIcon from "@mui/icons-material/Add";
-import TestSteps from "./TestSteps";
 import Table from "../../CustomComponent/Table";
-// import { getTestcases } from '../../Services/ProjectService';
 import CreateTestCasePopUp from "./CreateTestCasePopUp";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import { getWebTestCase } from "../../Services/ProjectService";
-// import ConfirmPop from '../../CustomComponent/ConfirmPop';
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
-import { testcaseData } from "./CreateTestCasePopUp";
 import { getTestcase } from "../../Services/TestCaseService";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { teststepData } from "./TestSteps";
 import { getApplication } from "../../Services/ApplicationService";
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
+import axios from "../../api/axios";
 
+export default function TestCases() {
+  const [testcases, setTestcases] = useState([]);
+  const [radio, setRadio] = useState(0);
+  const [datasets, Setdatasets] = useState([]);
+  const [application, setApplication] = useState([]);
+  const [popup, setPopup] = useState(false);
+  const [snack, setSnack] = useState(false);
 
-
-
-function TestCases() {
-  let [project, setproject] = useState([]);
-  let [testcases, setTestcases] = useState([]);
-  let [radio, setRadio] = useState(0);
-  let [datasets, Setdatasets] = useState([]);
-  let [application,setApplication] = useState([]);
-  // let [addTestcase, setAddTestcase] = useState();
-  let [popup, setPopup] = useState(false);
-  let [steps, setSteps] = useState(false);
-  let [snack, setSnack] = useState(false);
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [selectedApplication, setSelectedApplication] = useState({});
   const { auth } = useAuth();
   const navigate = useNavigate();
 
-  function handleRadio(testcaseId) {
+  const handleRadio = (testcaseId) => {
     setRadio(testcaseId);
-    let temp = testcases.filter((ts) => {
+    const temp = testcases.filter((ts) => {
       if (ts.testcase_id == testcaseId) {
         return ts.datasetsList;
       }
     });
     Setdatasets(temp[0].datasetsList);
-  }
-
-  function handleSteps(para) {
-    console.log(para);
-    setSteps(true);
-  }
-
-  function handleSteps(para) {
-    console.log(para);
-    setSteps(true);
-  }
+  };
 
   const columns = [
-    {
-      field: "radio",
-      headerName: "Select",
-      renderCell: (params) => {
-        return (
-          <div>
-            <Radio
-              checked={params.row.testcase_id === radio}
-              onChange={(e) => handleRadio(params.row.testcase_id)}
-              name="radio-buttons"
-            ></Radio>
-          </div>
-        );
-      },
-    },
-
     {
       field: "testcase_id",
       headerName: "Test case ID",
@@ -110,39 +70,24 @@ function TestCases() {
       field: "action",
       renderCell: (param) => {
         return (
-          <div>
-            <Tooltip title="Add Step">
-              <IconButton  onClick={e=>{
-                
-                console.log(param.row)
-                teststepData.application_id =param.row.application_id
-                teststepData.application_name = param.row.application_name
-                teststepData.testcase_id = param.row.testcase_id
-                teststepData.testcase_name = param.row.name
-                teststepData.desccription = param.row.description
-                navigate("AddTestSteps");
-              }}>
-                <AddBoxIcon></AddBoxIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Add Data Set">
-              <IconButton>
-                <AddIcon></AddIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit Data Set">
-              <IconButton>
-                <EditIcon className="editIcon"></EditIcon>
-              </IconButton>
-            </Tooltip>
-
+          <>
             <Tooltip title="Delete">
               <IconButton>
-                {" "}
-                <DeleteIcon className=""></DeleteIcon>{" "}
+                <DeleteIcon className=""></DeleteIcon>
               </IconButton>
             </Tooltip>
-          </div>
+            <Tooltip title="Screen">
+              <IconButton
+                onClick={() =>
+                  navigate("CreateTestcase", {
+                    state: { applicationId: param.row.module_id },
+                  })
+                }
+              >
+                <ScreenshotMonitorIcon />
+              </IconButton>
+            </Tooltip>
+          </>
         );
       },
       flex: 3,
@@ -152,7 +97,7 @@ function TestCases() {
     },
   ];
 
-  let datasetColumn = [
+  const datasetColumn = [
     {
       field: "dataset_name_in_testcase",
       headerName: "Name",
@@ -189,8 +134,7 @@ function TestCases() {
   ];
 
   useEffect(() => {
-    // getProject(setproject, auth.info.id);
-    getApplication(setApplication, auth.info.id)
+    getApplication(setApplication, auth.info.id);
   }, []);
 
   const { setHeader } = useHead();
@@ -214,6 +158,18 @@ function TestCases() {
       });
   }, []);
 
+  useEffect(() => {
+    selectedApplication?.module_id &&
+      axios
+        .get(
+          `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
+        )
+        .then((resp) => {
+          const testcases = resp?.data?.info ? resp?.data?.info : [];
+          setTestcases(testcases);
+        });
+  }, [selectedApplication]);
+
   return (
     <div>
       <SnackbarNotify
@@ -224,29 +180,12 @@ function TestCases() {
         msg="Test Case Created SuccessFully"
         severity="success"
       ></SnackbarNotify>
-
-      <Grid container>
-        <Grid item>
-          <h3>Application Name :</h3>
-          <Autocomplete
-            //   ref={projecid}
-            disablePortal
-            id="module_id"
-            options={application}
-            getOptionLabel={(option) => option.module_name}
-            sx={{ width: "100%" }}
-            renderInput={(params) => (
-              <div ref={params.InputProps.ref}>
-                <input type="text" {...params.inputProps} />
-              </div>
-            )}
-            onChange={(e, value) => {
-              // testcaseData.project_id = value.project_id;
-              getTestcase(setTestcases, value.module_id);
-            }}
-          />
-        </Grid>
-      </Grid>
+      <ProjectnApplicationSelector
+        selectedProject={selectedProject}
+        setSelectedProject={setSelectedProject}
+        selectedApplication={selectedApplication}
+        setSelectedApplication={setSelectedApplication}
+      />
 
       <Table
         rows={testcases}
@@ -254,20 +193,20 @@ function TestCases() {
         hidefooter={true}
         getRowId={(row) => row.testcase_id}
       ></Table>
-
+      {/* 
       <Table
         rows={datasets}
         columns={datasetColumn}
         hidefooter={true}
         getRowId={(row) => row.testcase_dataset_id}
-      ></Table>
+      ></Table> */}
       <CreateTestCasePopUp
         open={popup}
-        setOpen={setPopup}
+        close={setPopup}
         snackbar={setSnack}
+        projectId={selectedProject?.project_id}
+        applicationId={selectedApplication?.module_id}
       ></CreateTestCasePopUp>
     </div>
   );
 }
-
-export default TestCases;

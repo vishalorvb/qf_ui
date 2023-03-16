@@ -1,161 +1,80 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material'
-import { Container } from '@mui/system'
-import React, { useEffect, useRef, useState } from 'react'
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import { validateFormbyName } from '../../CustomComponent/FormValidation';
-import { createNewtestCase } from '../../Services/TestCaseService';
-import useAuth from '../../hooks/useAuth';
-import { getApplication } from '../../Services/ApplicationService';
-export let testcaseData = {
-    "application_id": "",
-    "project_id": "",
-    "user_id":0,
-    "testcase_name": "",
-    "testcase_description": "",
-    "testcase_id": 0,
-    "testcase_sprints": [
-
-    ],
-    "screens_in_testcase": [
-
-    ]
-}
-export function resetTestCaseData() {
-    testcaseData = {
-        "application_id": "",
-        // "project_id": "",
-        "user_id":0,
-        "testcase_name": "",
-        "testcase_description": "",
-        "testcase_id": 0,
-        "testcase_sprints": [
-
-        ],
-        "screens_in_testcase": [
-
-        ]
-    }
-}
+import { yupResolver } from "@hookform/resolvers/yup";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { Stack } from "@mui/system";
+import { useEffect, useState } from "react";
+import { TextFieldElement, useForm } from "react-hook-form-mui";
+import * as yup from "yup";
+import axios from "../../api/axios";
 
 function CreateTestCasePopUp(props) {
+  const { projectId, applicationId, open, close } = props;
+  console.log(props);
+  const schema = yup.object().shape({ testcaseName: yup.string().required() });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const handleClose = () => {
+    close(false);
+  };
 
-    let [application, setApplication] = useState([])
-    const { auth } = useAuth();
-
-    function handleSave(e) {
-        console.log(auth.userId)
-        testcaseData.user_id  = auth.userId
-        if (validateFormbyName(["testName", "appid"], "error") && testcaseData.project_id != "") {
-            console.log("Valid form")
-            console.log(testcaseData)
-            createNewtestCase(testcaseData).then(res=>{
-                console.log(res)
-                if (res == "SUCCESS"){
-                    props.setOpen(false)
-                }
-            })
-        }
-        else {
-            console.log("invalid form")
-            console.log(testcaseData)
-        }
-    }
-
-    useEffect(() => {
-        console.log(testcaseData)
-        
-        getApplication(setApplication)
-        return () => {
-            console.log(testcaseData)
-            console.log("clean up create testcase")
-        }
-    }, [])
-
-    return (
-        <div>
-            <Dialog open={props.open} maxWidth='md'>
-                <DialogTitle id="alert-dialog-title" className="dialogTitle border-bottom" sx={{
-                    padding: 0.5,
-                    backgroundColor: "rgba(137,196,244,1)",
-                }}>
-                    <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
-                        <Typography sx={{ marginLeft: 1, marginTop: "auto", marginBottom: "auto " }} variant="inherit">Create Test Case </Typography>
-                        <IconButton sx={{ marginLeft: "auto" }} className="btn-close " onClick={e => {
-                            props.setOpen(false)
-
-                        }
-
-                        }>
-                            <ClearOutlinedIcon sx={{ color: 'white' }} />
-                        </IconButton>
-                    </Grid>
-                </DialogTitle>
-                <DialogContent className="AddUsers" style={{ marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
-                    <div >
-                        <form>
-                            <div>
-
-                                <Container component={'div'} sx={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }} >
-                                    <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} spacing={2} >
-                                        <Grid item xs={3} sm={3} md={3}>
-                                            <label for="">Select Application:</label>
-                                            <select
-                                                size='small'
-                                                displayEmpty
-                                                inputProps={{ "aria-label": "Without label" }}
-                                                fullWidth
-                                                name='appid'
-                                                onChange={e => {
-                                                    testcaseData.application_id = e.target.value;
-                                                }}
-
-                                            >
-                                                <option value="">Select</option>
-                                                {application.map(val => <option value={val.module_id}>{val.module_name}</option>)}
-
-                                            </select>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} >
-                                        <Grid item xs={12} sm={12} md={12}><label>Test Case Name <span className="importantfield" >*</span>:</label></Grid>
-                                        <Grid item xs={12} sm={12} md={12}>
-                                            <input type="text" name="testName" placeholder="  Enter test case name"
-                                                onChange={e => {
-                                                    testcaseData.testcase_name = e.target.value;
-                                                }}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container item xs={12} sm={12} md={12} sx={{ marginBottom: '10px' }} >
-                                        <Grid item xs={12} sm={12} md={12}><label>Description <span className="importantfield" >*</span>:</label></Grid>
-                                        <Grid item xs={12} sm={12} md={12}>
-                                            <textarea rows="3" cols="20" name="description"
-                                                onChange={e => {
-                                                    testcaseData.testcase_description = e.target.value;
-                                                    console.log(e.target.value);
-                                                }}
-                                            ></textarea>
-                                        </Grid>
-                                    </Grid>
-
-
-                                </Container>
-                            </div>
-                        </form>
-                    </div>
-                </DialogContent>
-                <DialogActions style={{ marginTop: "1px", marginBottom: "5px", marginLeft: "auto", marginRight: "auto" }}>
-                    <Button variant="contained" startIcon={<SaveOutlinedIcon />}
-                        onClick={handleSave}
-                    >
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-        </div>
-    )
+  const onSubmitHandler = (params) => {
+    console.log(params);
+    console.log({ projectId, applicationId });
+    const data = {
+      module_id: applicationId,
+      testcase_name: params.testcaseName,
+      testcase_description: params.testcasedesc,
+      project_id: projectId,
+    };
+    axios.post(`/qfservice/webtestcase/CreateWebTestCase`, data).then((res) => {
+      console.log(res);
+    });
+  };
+  return (
+    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle>Create Test Case</DialogTitle>
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <DialogContent>
+          <Stack spacing={1} mt={1}>
+            <TextFieldElement
+              id="testcase-name"
+              label="Name"
+              variant="outlined"
+              size="small"
+              fullWidth
+              name="testcaseName"
+              control={control}
+            />
+            <TextFieldElement
+              id="testcase-desc"
+              label="Description"
+              variant="outlined"
+              size="small"
+              fullWidth
+              name="testcasedesc"
+              control={control}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" type="submit">
+            Save
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
 }
 
-export default CreateTestCasePopUp
+export default CreateTestCasePopUp;
