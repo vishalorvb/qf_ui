@@ -69,3 +69,13 @@ export function getElementsList(callback,screenId){
 }
 
 
+export function CreateDataset(data) {
+    console.log("calling create datasets")
+    axios({
+        method:'post',
+        data:data,
+        url:`${baseUrl}/qfservice/webdataset/web-createDataset`
+    }).then(res=>{
+        console.log(res)
+    })
+}
