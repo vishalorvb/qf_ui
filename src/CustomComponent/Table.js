@@ -28,6 +28,7 @@ export default function Table(props) {
     selectionModel,
     setSelectionModel,
     getRowId,
+    hideSearch,
   } = props;
   const [pagesize, setPagesize] = useState(10);
   return (
@@ -79,7 +80,7 @@ export default function Table(props) {
           setSelectionModel(i);
         }}
         selectionModel={selectionModel}
-        components={{ Toolbar: QuickSearchToolbar }}
+        components={{ Toolbar: !hideSearch && QuickSearchToolbar }}
       />
     </div>
   );
