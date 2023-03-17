@@ -18,11 +18,6 @@ export default function SelectedPageElements() {
 
   const elementColumns = [
     {
-      field: "element_id",
-      headerName: "ElementId",
-      flex: 2,
-    },
-    {
       field: "name",
       headerName: "Field Name",
       flex: 3,

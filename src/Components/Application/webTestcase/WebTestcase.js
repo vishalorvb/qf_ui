@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import Table from "../../../CustomComponent/Table";
+import useHead from "../../../hooks/useHead";
 export default function WebTestcase() {
   const navigate = useNavigate();
-
+  const { setHeader, header } = useHead();
   let [page, setPage] = useState([]);
 
   const pageColumns = [
     {
       field: "name",
-      headerName: "Pages",
+      headerName: "Testcase",
       flex: 3,
       sortable: false,
     },
@@ -52,7 +53,25 @@ export default function WebTestcase() {
     },
   ];
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Testcase",
+        plusButton: true,
+        plusCallback: () => navigate("CreateTestcase"),
+      };
+    });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
+  }, []);
   return (
     <>
       <Table

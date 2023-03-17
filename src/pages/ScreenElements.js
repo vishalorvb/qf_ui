@@ -96,7 +96,7 @@ export default function ScreenElements() {
         columns={columns}
         data={data}
         enableColumnActions={false}
-        initialState={{ showGlobalFilter: true }}
+        initialState={{ showGlobalFilter: true, density: "compact" }}
         enableToolbarInternalActions={false}
         muiTableBodyRowProps={{ hover: false }}
         enableRowOrdering
@@ -118,6 +118,9 @@ export default function ScreenElements() {
             }
           },
         })}
+        muiTablePaperProps={{
+          elevation: 0,
+        }}
       />
     </>
   );

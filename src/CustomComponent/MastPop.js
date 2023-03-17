@@ -9,7 +9,10 @@ function MastPop(props) {
         <div>
             <IconButton sx={{float:"right"}} onClick={props.setOpen}><CloseIcon ></CloseIcon></IconButton>
         </div>
+        <div style={{padding:"10px"}}>
         {props.children}
+        </div>
+        
     </Dialog>
   )
 }

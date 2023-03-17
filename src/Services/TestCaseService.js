@@ -69,3 +69,20 @@ export function getElementsList(callback,screenId){
 }
 
 
+export function CreateDataset(data) {
+    console.log("calling create datasets")
+    axios({
+        method:'post',
+        data:data,
+        url:`${baseUrl}/qfservice/webdataset/web-createDataset`
+    }).then(res=>{
+        console.log(res)
+    })
+}
+
+export function getDataset(callback,projectId,moduleId){
+    axios.get(`http://10.11.12.242:8080/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/644/datasets`).then(res=>{
+        console.log(res.data.result)
+        callback(res.data.result)
+    })
+}

@@ -103,7 +103,7 @@ export default function WebApp() {
                 />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Testcase">
+            {/* <Tooltip title="Testcase">
               <IconButton
                 onClick={() => {
                   navigate("Testcase");
@@ -111,7 +111,7 @@ export default function WebApp() {
               >
                 <AssignmentOutlinedIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Delete">
               <IconButton
                 onClick={(e) => {
