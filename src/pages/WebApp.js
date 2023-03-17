@@ -13,6 +13,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { moduledata } from "../Components/CreateApplication";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import { deleteApplication } from "../Services/ApplicationService";
 export default function WebApp() {
   const { setHeader } = useHead();
@@ -82,7 +83,7 @@ export default function WebApp() {
                 <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
-            <Tooltip title="View">
+            <Tooltip title="Pages">
               <IconButton>
                 <VisibilityOutlinedIcon
                   className="eyeIcon"
@@ -102,6 +103,15 @@ export default function WebApp() {
                 />
               </IconButton>
             </Tooltip>
+            {/* <Tooltip title="Testcase">
+              <IconButton
+                onClick={() => {
+                  navigate("Testcase");
+                }}
+              >
+                <AssignmentOutlinedIcon />
+              </IconButton>
+            </Tooltip> */}
             <Tooltip title="Delete">
               <IconButton
                 onClick={(e) => {

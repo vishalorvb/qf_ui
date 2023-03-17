@@ -36,7 +36,7 @@ export default function CreateScreenPop(props) {
     axios.post(`/qfservice/screen/createScreen`, screendata).then((resp) => {
       console.log(resp);
       resp?.data?.status === "SUCCESS" &&
-        navigate("/application/webApp/screen", {
+        navigate("/application/screen", {
           state: { id: applicationId },
         });
     });

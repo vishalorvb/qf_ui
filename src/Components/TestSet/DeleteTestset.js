@@ -2,18 +2,29 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconBu
 import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { axiosPrivate } from "../../api/axios";
 
 function DeleteTestset(props) {
-    const { openDelete, setOpenDelete,object } = props;
-    const testcase = object.testcase_name;
-    const UserId = object.testcase_id;
+    const { openDelete, setOpenDelete,object,setDelSuccessMsg,getTestsets } = props;
+    const tsName = object.testset_name;
+    const tsId = object.testset_id;
 
     const handleClose = () => {
         setOpenDelete(false);
     };
 
     const submit = () => {
-
+        axiosPrivate.post(`/qfservice/webtestset/deleteWebTestset?testset_id=${tsId}`).then(
+            res => {
+                console.log(res.message);
+                setDelSuccessMsg(true);
+                getTestsets();
+                setTimeout(() => {
+                    setDelSuccessMsg(false)
+                }, 3000);
+            }
+        )
+        handleClose();
     }
 
   return (
@@ -24,7 +35,7 @@ function DeleteTestset(props) {
                     backgroundColor: "rgba(137,196,244,1)",
                 }}>
                     <Grid container direction="row" justify="space-between" alignItems="center" className="poptitle">
-                        <Typography sx={{ marginLeft: 1 }} variant="inherit">Delete Testcase </Typography>
+                        <Typography sx={{ marginLeft: 1 }} variant="inherit">Delete Testset </Typography>
                         <IconButton sx={{ marginLeft: "auto" }} onClick={handleClose} className="btn-close ">
                             <ClearOutlinedIcon sx={{ color: 'white' }} />
                         </IconButton>
@@ -34,7 +45,7 @@ function DeleteTestset(props) {
                     <div>
                         <form>
                             <div>
-                                <span>Are you sure you want to delete Testcase {testcase}</span>
+                                <span>Are you sure you want to delete Testset {tsName}</span>
                             </div>
                         </form>
                     </div>
