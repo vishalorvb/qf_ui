@@ -1,18 +1,19 @@
 import { CheckBox } from '@mui/icons-material';
-import { Button, Divider, Grid } from '@mui/material'
+import { Alert, Button, Divider, Grid } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Table from '../../../CustomComponent/Table'
 import { getApis } from '../../../Services/ApiService';
-import ApiTestCasePopUp from './ApiTestCasePopUp';
 import axios from '../../../api/axios';
 import { useNavigate } from "react-router-dom";
+import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
+import { useLocation } from "react-router-dom";
 
 export let testcasedata = {
-  "module_id": 1031,
+  "module_id": "",
   "testcase_name": "",
   "testcase_desc": "",
-  "testcase_id": 0,
+  "testcase_id": "",
   "testcase_sprints":
     [
       {
@@ -24,9 +25,7 @@ export let testcasedata = {
 
   "apis_list":
     [
-      {
-        "api_id": 0,
-      }
+      
     ]
 }
 
@@ -35,7 +34,7 @@ export function resetTestCaseData() {
     "module_id": "",
     "testcase_name": "",
     "testcase_desc": "",
-    "testcase_id": 0,
+    "testcase_id": "",
     "testcase_sprints":
       [
         {
@@ -47,9 +46,7 @@ export function resetTestCaseData() {
 
     "apis_list":
       [
-        {
-          "api_id": 0,
-        }
+       
       ]
   }
 }
@@ -60,8 +57,10 @@ function ApiTestcase() {
   const [api, setApi] = useState([]);
   let [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   let elementsList = {};
   
+
   const columns = [
     {
       field: "api_name",
@@ -81,24 +80,45 @@ function ApiTestcase() {
   ]
 
   function createTestcase() {
+    console.log("api called")
     elementsList = preSelectedElement.map((id) => {
       return { api_id: id };
     })
+    testcasedata.testcase_name = location.state.name;
+    testcasedata.testcase_desc = location.state.desc;
+    testcasedata.module_id = location.state.applicationId;
     testcasedata.apis_list = elementsList;
+    testcasedata.testcase_id = location.state.testcaseId;
     axios.post(`/qfservice/CreateNewTestcase`, testcasedata).then((resp) => {
       console.log(resp);
       resp?.data?.status === "SUCCESS" &&
         navigate("http://localhost:3000/ApiTestcase", {
         });
-        setOpen(false);
+      setOpen(false);
     });
 
   }
 
+  const moduleId = location.state.module;
+  console.log(location.state);
   useEffect(() => {
-    getApis(setApi, 774)
+    getApis(setApi, location.state.applicationId)
   }, []);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
+  function handleClick() {
+    if (preSelectedElement.length === 0) {
+      setError(true)
+      return;
+    }
+    else {
+      setSuccess(true)
+
+      createTestcase()
+    }
+  }
+  console.log(preSelectedElement)
   return (
     <div>
       <div>
@@ -125,14 +145,6 @@ function ApiTestcase() {
             </select>
           </Grid>
         </Grid>
-      </div> <br /><br />
-      <div>
-        <Grid container justifyContent="space-between" columnSpacing={2}>
-          <Grid item xs={3} md={3} lg={3}>
-            <Button variant="contained" onClick={e =>(elementsList == null?console.log("empty"):setOpen(true))}>Create Testcase</Button>
-            {console.log(typeof(elementsList))}
-          </Grid>
-        </Grid>
       </div>
       <Table
         rows={api}
@@ -143,60 +155,26 @@ function ApiTestcase() {
         selectionModel={preSelectedElement}
         setSelectionModel={setPreSelectedElement}
       ></Table>
-      <div style={{ width: "200px" }}>
-        <ApiTestCasePopUp
-          heading={"Create Testcase"}
-          open={open}
-          setOpen={() => setOpen(false)}
-        >
-          <Divider></Divider>
-          <div style={{ padding: "10px" }}>
-
-            <div>
-              <label htmlFor="">Name</label>
-              <br />
-              <div>
-                <div className="row">
-                  <div className="col-sm-2" style={{ paddingRight: "0px" }}>
-                    <input type="text" placeholder="TC_" readOnly />
-                  </div>
-                  <div className="col-sm-10" style={{ paddingLeft: "0px" }}>
-                    <input
-                      type="text"
-                      placeholder="Testcase Name"
-                      onChange={e => { testcasedata.testcase_name = "TC_"+e.target.value }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <br />
-              <div >
-                <label htmlFor="">Description</label>
-                <br />
-                <input
-                  type="text"
-                  placeholder="Testcase Description"
-                  onChange={e => { testcasedata.testcase_desc = e.target.value }}
-
-                />
-              </div>
-              <br /><br />
-              <Divider></Divider>
-              <br />
-              <div>
-                <Grid container justifyContent="flex-end" columnSpacing={2}>
-                  <Grid item xs={2} md={2} lg={2}>
-                    <Button variant="outlined" type="button" style={{ Color: "grey" }}>Close</Button>
-                  </Grid>
-                  <Grid item xs={2} md={2} lg={2}>
-                    <Button variant="outlined" type="button" onClick={createTestcase}>Save</Button>
-                  </Grid>
-                </Grid>
-              </div>
-            </div>
-          </div>
-        </ApiTestCasePopUp>
+      <br /><br />
+      <div>
+        <Grid container justifyContent="center" columnSpacing={2}>
+          <Grid item xs={3} md={3} lg={3}>
+            <Button variant="contained" onClick={handleClick}>Save</Button>
+          </Grid>
+        </Grid>
       </div>
+      <SnackbarNotify
+        open={error}
+        close={setError}
+        msg={"Please select atleast one API!"}
+        severity="error"
+      />
+      <SnackbarNotify
+        open={success}
+        close={setSuccess}
+        msg={"Testcase created successfully."}
+        severity="success"
+      />
     </div>
   )
 }
