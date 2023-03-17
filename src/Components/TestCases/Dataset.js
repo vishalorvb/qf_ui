@@ -38,6 +38,59 @@ function Dataset() {
       sortable: false,
       align: "left",
     },
+    {
+      field: "tagname",
+      headerName: "Tag Name",
+      renderCell: (param) => {
+        return (
+          <div>
+            <h5>{param.row.web_page_elements.input_type}</h5>
+          </div>
+        )
+      },
+      flex: 2,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "Datasets",
+      headerName: "DataSets",
+      renderCell: (param) => {
+        return (
+          <div>
+            { param.row.web_page_elements.input_type== "InputText"?<input type="text"/>:<div>
+              
+            <label for="">click</label> <input type="checkbox" /></div>}
+          </div>
+        )
+      },
+      flex: 2,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "elements",
+      headerName: "Elements",
+      renderCell: (param) => {
+        return (
+          <div>
+            <select>
+              <option value="1">Validate</option>
+              <option value="1">Custom Code</option>
+              <option value="1">Displayed</option>
+              <option value="1">Element Wait</option>
+              <option value="1">Scroll Up</option>
+              <option value="1">Scroll Down</option>
+              <option value="1">Random</option>
+              <option value="1">Enter</option>
+            </select>
+          </div>
+        )
+      },
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
 
   ]
   let column = [
@@ -127,7 +180,7 @@ function Dataset() {
     try {
       setScreens(data.screens_in_testcase)
     } catch (error) {
-      console.log(error)
+
     }
   }, [data])
 
@@ -138,15 +191,15 @@ function Dataset() {
       })
       setScreeninfo(x)
     } catch (error) {
-      console.log(error)
+
     }
   }, [screens])
 
 
   useEffect(() => {
     console.log(screens)
-    console.log(screens.screen_elements)
-  }, [screens])
+    console.log(selectedScreenIds)
+  }, [screens,selectedScreenIds])
 
   return (
     <div>
@@ -164,6 +217,8 @@ function Dataset() {
             {drawer &&
               <PersistentDrawerRight
                 screen={screeninfo}
+                screenId = {selectedScreenIds}
+                setScreenId = {setSelectedScreenIds}
               ></PersistentDrawerRight>
             }
           </Grid>
@@ -190,10 +245,11 @@ function Dataset() {
             <div>
               <h5>{s.screeninfo.name}</h5>
               <Table
+              hideSearch ={true}
               rows={s.screen_elements[0]}
               columns={elementcol}
               hidefooter={true}
-              getRowId={(row) => row.screen_id}
+              getRowId={(row) => row.element_id}
               ></Table>
             </div>
           )

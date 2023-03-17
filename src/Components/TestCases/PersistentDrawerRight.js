@@ -13,7 +13,7 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 const drawerWidth = 240;
 export let selected_screen;
 
-export default function PersistentDrawerRight({screen}) {
+export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
   const [open, setOpen] = useState(true);
   // let [screen, setScreen] = useState([])
   const handleDrawerOpen = () => {
@@ -24,12 +24,30 @@ export default function PersistentDrawerRight({screen}) {
     setOpen(false);
   };
 
+  function handleClick(e){
+    if(screenId.includes(e.target.value)){
+      console.log("includes")
+      let temp = screenId.filter(s=>{
+        console.log(s)
+        console.log(e.target.value)
+        if(s.screen_id != e.target.value){
+          return s
+        }
+      })
+      console.log(temp)
+      setScreenId(temp)
+    }
+    else{
+      let temp = screenId
+      temp.push(e.target.value)
+      setScreenId(temp)
+    }
+  }
 
   useEffect(() => {
-    // getScreen(setScreen, 768)
-    // getData_for_createDataset(setScreen,618)
     console.log(screen)
-  }, [screen])
+    console.log(screenId)
+  }, [screen,screenId])
   return (
     <Box sx={{ display: 'flex' }}>
       <IconButton
@@ -58,18 +76,16 @@ export default function PersistentDrawerRight({screen}) {
         <Divider />
         <h6>List of screens</h6>
         {screen.map(s => {
-          console.log(s)
           return (
             <Grid component={Paper} elevation={0} container className="header" draggable={true}>
               <div className="sidebar"
                onDragOver={e=>{
                 selected_screen= s
                }}
-               onClick={e=>console.log(s)}
               >
                 <h5>{s.name}</h5>
                 <p>{s.description}</p>
-               
+               <input onChange={handleClick} checked={screenId.includes(s.screen_id)} type="checkbox" value={s.screen_id}/>
                 <Divider />
               </div>
             </Grid>
