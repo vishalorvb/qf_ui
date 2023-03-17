@@ -15,7 +15,6 @@ function GrowingTable(props) {
     }
 
     function handleOnChange(e) {
-        console.log("Calling onChange")
         let table = document.getElementById("mytable");
         let data = []
         for (let i = 1; i < table.rows.length; i++) {
