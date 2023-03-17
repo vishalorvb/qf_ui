@@ -67,6 +67,8 @@ export default function TestCases() {
                       state: {
                         applicationId: param.row.module_id,
                         testcaseId: param.row.testcase_id,
+                        name: param.row.name,
+                        desc: param.row.description,
                       },
                     })
                   }
