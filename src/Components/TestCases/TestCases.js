@@ -81,7 +81,11 @@ export default function TestCases() {
                 <IconButton
                   onClick={() =>
                     navigate("CreateTestcase", {
-                      state: { applicationId: param.row.module_id },
+                      state: {
+                        applicationId: param.row.module_id,
+                        testcaseId: param.row.testcase_id,
+                        projectId: selectedProject?.project_id,
+                      },
                     })
                   }
                 >
