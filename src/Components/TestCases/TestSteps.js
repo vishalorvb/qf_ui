@@ -23,7 +23,7 @@ function TestSteps() {
     let temp = [...selectedScreen]
     temp.push(selected_screen)
     setSelectedScreen(temp)
-   
+
   }
 
 
@@ -65,8 +65,8 @@ function TestSteps() {
         selectedScreen={selectedScreen}
         setSelectedScreen={setSelectedScreen}
       ></PersistentDrawerRight>
-      <div onDrop={handleDrop} 
-      onDragOver={e => { e.preventDefault() }}>
+      <div onDrop={handleDrop}
+        onDragOver={e => { e.preventDefault() }}>
         <h2 draggable={true}>Screen list</h2>
         {selectedScreen.map(s => {
           return (

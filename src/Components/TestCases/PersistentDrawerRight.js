@@ -6,15 +6,16 @@ import IconButton from '@mui/material/IconButton';
 import { Button, Grid, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import { getScreen } from '../../Services/ProjectService';
+// import { getScreen } from '../../Services/ProjectService';
+// import { getData_for_createDataset } from '../../Services/TestCaseService';
 
 
 const drawerWidth = 240;
 export let selected_screen;
 
-export default function PersistentDrawerRight({ selectedScreen, setSelectedScreen }) {
-  const [open, setOpen] = useState(false);
-  let [screen, setScreen] = useState([])
+export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
+  const [open, setOpen] = useState(true);
+  // let [screen, setScreen] = useState([])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -23,16 +24,36 @@ export default function PersistentDrawerRight({ selectedScreen, setSelectedScree
     setOpen(false);
   };
 
+  function handleClick(e){
+    if(screenId.includes(e.target.value)){
+      console.log("includes")
+      let temp = screenId.filter(s=>{
+        console.log(s)
+        console.log(e.target.value)
+        if(s.screen_id != e.target.value){
+          return s
+        }
+      })
+      console.log(temp)
+      setScreenId(temp)
+    }
+    else{
+      let temp = screenId
+      temp.push(e.target.value)
+      setScreenId(temp)
+    }
+  }
 
   useEffect(() => {
-    getScreen(setScreen, 768)
-  }, [])
+    console.log(screen)
+    console.log(screenId)
+  }, [screen,screenId])
   return (
     <Box sx={{ display: 'flex' }}>
       <IconButton
         onClick={handleDrawerOpen}
       >
-        <Button variant="contained">Add Step</Button>
+        <Button variant="contained">Show Screen</Button>
       </IconButton>
       <Drawer
         sx={{
@@ -61,10 +82,10 @@ export default function PersistentDrawerRight({ selectedScreen, setSelectedScree
                onDragOver={e=>{
                 selected_screen= s
                }}
-
               >
                 <h5>{s.name}</h5>
                 <p>{s.description}</p>
+               <input onChange={handleClick} checked={screenId.includes(s.screen_id)} type="checkbox" value={s.screen_id}/>
                 <Divider />
               </div>
             </Grid>

@@ -201,6 +201,11 @@ export const Routes = [
         element: CreateWebTestcase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
+      {
+        path: "datasets",
+        element: Dataset,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
     ],
   },
   {
