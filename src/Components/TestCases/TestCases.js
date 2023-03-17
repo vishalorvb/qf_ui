@@ -15,13 +15,13 @@ import { teststepData } from "./TestSteps";
 import { getApplication } from "../../Services/ApplicationService";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
+import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
 import axios from "../../api/axios";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
   const [radio, setRadio] = useState(0);
   const [datasets, Setdatasets] = useState([]);
-  const [application, setApplication] = useState([]);
   const [popup, setPopup] = useState(false);
   const [snack, setSnack] = useState(false);
 
@@ -32,24 +32,7 @@ export default function TestCases() {
   const { auth } = useAuth();
   const navigate = useNavigate();
 
-  const handleRadio = (testcaseId) => {
-    setRadio(testcaseId);
-    const temp = testcases.filter((ts) => {
-      if (ts.testcase_id == testcaseId) {
-        return ts.datasetsList;
-      }
-    });
-    Setdatasets(temp[0].datasetsList);
-  };
-
   const columns = [
-    {
-      field: "testcase_id",
-      headerName: "Test case ID",
-      flex: 3,
-      sortable: false,
-      align: "left",
-    },
     {
       field: "name",
       headerName: "Test case name",
@@ -76,17 +59,34 @@ export default function TestCases() {
                 <DeleteIcon className=""></DeleteIcon>
               </IconButton>
             </Tooltip>
-            <Tooltip title="Screen">
-              <IconButton
-                onClick={() =>
-                  navigate("CreateTestcase", {
-                    state: { applicationId: param.row.module_id },
-                  })
-                }
-              >
-                <ScreenshotMonitorIcon />
-              </IconButton>
-            </Tooltip>
+            {selectedApplication?.module_type === 1 ? (
+              <Tooltip title="Update APIs ">
+                <IconButton
+                  onClick={() =>
+                    navigate("CreateApiTestcase", {
+                      state: {
+                        applicationId: param.row.module_id,
+                        testcaseId: param.row.testcase_id,
+                      },
+                    })
+                  }
+                >
+                  <ApiOutlinedIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Update Screens ">
+                <IconButton
+                  onClick={() =>
+                    navigate("CreateTestcase", {
+                      state: { applicationId: param.row.module_id },
+                    })
+                  }
+                >
+                  <ScreenshotMonitorIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </>
         );
       },
@@ -96,46 +96,6 @@ export default function TestCases() {
       align: "left",
     },
   ];
-
-  const datasetColumn = [
-    {
-      field: "dataset_name_in_testcase",
-      headerName: "Name",
-      flex: 3,
-      sortable: false,
-      align: "left",
-    },
-    {
-      field: "description",
-      headerName: "Description",
-      flex: 3,
-      sortable: false,
-      align: "left",
-    },
-    {
-      headerName: "Action",
-      field: "action",
-      renderCell: (param) => {
-        return (
-          <div>
-            <Tooltip title="Add Data Set">
-              <IconButton>
-                <AddIcon></AddIcon>
-              </IconButton>
-            </Tooltip>
-          </div>
-        );
-      },
-      flex: 1,
-      headerAlign: "left",
-      sortable: false,
-      align: "left",
-    },
-  ];
-
-  useEffect(() => {
-    getApplication(setApplication, auth.info.id);
-  }, []);
 
   const { setHeader } = useHead();
   useEffect(() => {
@@ -168,10 +128,10 @@ export default function TestCases() {
           const testcases = resp?.data?.info ? resp?.data?.info : [];
           setTestcases(testcases);
         });
-  }, [selectedApplication]);
+  }, [selectedApplication, popup]);
 
   return (
-    <div>
+    <>
       <SnackbarNotify
         open={snack}
         close={() => {
@@ -193,20 +153,15 @@ export default function TestCases() {
         hidefooter={true}
         getRowId={(row) => row.testcase_id}
       ></Table>
-      {/* 
-      <Table
-        rows={datasets}
-        columns={datasetColumn}
-        hidefooter={true}
-        getRowId={(row) => row.testcase_dataset_id}
-      ></Table> */}
+
       <CreateTestCasePopUp
         open={popup}
         close={setPopup}
         snackbar={setSnack}
         projectId={selectedProject?.project_id}
         applicationId={selectedApplication?.module_id}
+        setSnack={setSnack}
       ></CreateTestCasePopUp>
-    </div>
+    </>
   );
 }

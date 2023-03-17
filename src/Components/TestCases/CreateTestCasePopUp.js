@@ -13,7 +13,7 @@ import * as yup from "yup";
 import axios from "../../api/axios";
 
 function CreateTestCasePopUp(props) {
-  const { projectId, applicationId, open, close } = props;
+  const { projectId, applicationId, open, close, setSnack } = props;
   console.log(props);
   const schema = yup.object().shape({ testcaseName: yup.string().required() });
   const {
@@ -25,6 +25,7 @@ function CreateTestCasePopUp(props) {
     resolver: yupResolver(schema),
   });
   const handleClose = () => {
+    reset();
     close(false);
   };
 
@@ -39,6 +40,8 @@ function CreateTestCasePopUp(props) {
     };
     axios.post(`/qfservice/webtestcase/CreateWebTestCase`, data).then((res) => {
       console.log(res);
+      res?.data?.status === "SUCCESS" && setSnack(true);
+      res?.data?.status === "SUCCESS" && handleClose();
     });
   };
   return (

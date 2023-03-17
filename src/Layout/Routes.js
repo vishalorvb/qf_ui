@@ -49,7 +49,7 @@ const ScreenElements = lazy(() => import("../pages/ScreenElements"));
 const UpdateScreen = lazy(() =>
   import("../Components/Application/UpdateScreen")
 );
-const ApiTestcase = lazy(() =>
+const CreateApiTestcase = lazy(() =>
   import("../Components/Application/apiTestcase/ApiTestcase")
 );
 const WebTestcase = lazy(() =>
@@ -62,7 +62,7 @@ const CreateWebTestcase = lazy(() =>
 export const Routes = [
   {
     path: "ApiTestcase",
-    element: ApiTestcase,
+    element: CreateApiTestcase,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -192,13 +192,8 @@ export const Routes = [
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
-        path: "AddTestSteps",
-        element: TestSteps,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        path: "datasets",
-        element: Dataset,
+        path: "CreateAPiTestcase",
+        element: CreateApiTestcase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {

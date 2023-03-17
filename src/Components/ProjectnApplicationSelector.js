@@ -17,10 +17,15 @@ export default function ProjectnApplicationSelector({
   const { auth } = useAuth();
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      console.log(res.data.result.projects_list);
-      setProjectList(res.data.result.projects_list);
+      const projects = res?.data?.result?.projects_list;
+      setProjectList(projects);
+      setSelectedProject(projects[0]);
     });
   }, []);
+
+  useEffect(() => {
+    setSelectedApplication(applicationList[0]);
+  }, [applicationList]);
 
   useEffect(() => {
     setSelectedApplication({ module_name: "Select Project first" });
