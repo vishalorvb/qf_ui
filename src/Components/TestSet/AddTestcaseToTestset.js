@@ -1,175 +1,130 @@
-import { Autocomplete, Button, Grid, IconButton, Paper, Tooltip } from "@mui/material";
+import {Autocomplete,Button,Grid,Paper} from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import Table from "../../CustomComponent/Table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import {useLocation} from 'react-router-dom';
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {getTestcasesOfTestset} from "../../Services/TestsetService";
-import {getTestcases} from "../../Services/ProjectService";
+import { useLocation } from "react-router-dom";
+import { getTestcasesInProjects, getTestcasesOfTestset } from "../../Services/TestsetService";
 import DeleteTestset from "./DeleteTestset";
-import { getTestcaseDetails } from "../../Services/TestsetService";
-import {updateTestset} from "../../Services/TestsetService";
+import { axiosPrivate } from "../../api/axios";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import useHead from "../../hooks/useHead";
 
 export default function AddTestcaseToTestset() {
-
   const [testcaseObject, setTestcaseObject] = useState([]);
-  const [datasetObject, setDatasetObject] = useState([]);
-  const [allTestcases, setAllTestcases] = useState([]);
-  const [tbData, setTbData] = useState([]);
   const location = useLocation();
   const [openDelete, setOpenDelete] = useState(false);
-  const [deleteObject ,setDeleteObject] = useState([]);
-  const [testcaseId, setTestcaseId] = useState();
-  const [datasetId, setDatasetId] = useState();
-  const [tcObject, setTcObject] = useState([]);
+  const [deleteObject, setDeleteObject] = useState([]);
+  const [testsetName, setTestsetName] = useState(location.state.param1.testset_name);
+  const [testsetDesc, setTestsetDesc] = useState(location.state.param1.testset_desc);
+  const [leftTestcase, setLeftTestcase] = useState([]);
+  const [rightTestcase, setRightTestcase] = useState([]);
+  const [TSUpdateSuccessMsg, setTSUpdateSuccessMsg] = useState(false);
 
-  // console.log(location.state.testset_id);
-  var testsetId = location.state.testset_id;
+  console.log(location.state.param1);
+  console.log(location.state.param2);
+  var testsetId = location.state.param1.testset_id;
+  var projectId = location.state.param2;
+  var applicationId = location.state.param3;
 
-  const columns = [
-    // { headerName: "S.No", field: 'sno', valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
-    {
-      field: 'testcase_name',
-      headerName: 'Testcase Name',
-      flex: 3,
-      headerAlign: "center",
-      sortable: false,
-      align: 'left'
-    },
-    {
-      field: 'testcase_desc',
-      headerName: 'Description',
-      flex: 3,
-      headerAlign: "center",
-      sortable: false,
-      align: 'left',
-      // renderCell: (params) => {
-      //   return (
-      //     <div>
-      //       {params.row.created_at}
-      //     </div>
-      //   )
-      // }
-    },
-    // {
-    //   field: 'dataset_name_in_testcase',
-    //   headerName: 'Dataset ',
-    //   flex: 3,
-    //   headerAlign: "center",
-    //   sortable: false,
-    //   align: 'left',
-    //   renderCell: (params) => {
-    //     // console.log(params.row.datasetsList)
-    //       return (
-    //         <div>
-    //           <Autocomplete
-    //             size="small"
-    //             options={params.row.datasetsList}
-    //             getOptionLabel={(option) => option.dataset_name_in_testcase}
-    //             onChange={(e, value) => {
-    //               // console.log(value.testcase_id);
-    //               // Uid.current = value.id;
-    //               // setUserId(value.id);
-    //               // setDatasetObject(testcaseObject.datasetsList.dataset_name_in_testcase);
-    //               // handleDataset(value.testcase_id)
-    //             }}
-    //             noOptionsText={"Dataset not found"}
-    //             renderInput={(params) => (
-    //               <div ref={params.InputProps.ref}>
-    //                 <input
-    //                   type="text"
-    //                   name="dataAutocomplete"
-    //                   {...params.inputProps}
-    //                   placeholder="Please Select"
-    //                 />
-    //               </div>
-    //             )}
-    //           />
-    //         </div>
-    //       )
-    //     }
-    // },
-    {
-      field: "",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      renderCell: (param) => {
-        return (
-          <><Tooltip title="Delete">
-          <IconButton
-            onClick={(e) => {
-              deleteUserHandler(param.row);
-            }}
-          >
-            <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
-          </IconButton>
-        </Tooltip>
-        </>
-        );
-      },
-      headerAlign: "center",
-      align: "center",
-    }
-  ];
-
-  console.log(testcaseObject);
-
-  const deleteUserHandler = (e) => {
-    console.log("first")
-    console.log(e);
-    setOpenDelete(true);
-    setDeleteObject(e);
-  };
-
-  function handleDataset(testcaseId) { 
-    // setRadio(testcaseId) 
-    let temp = (allTestcases.filter(ts => {
-      if (ts.testcase_id == testcaseId) { 
-        return ts.datasetsList 
+  function handleSelect(event) {
+    let e = document.getElementById("left");
+    let remaining = leftTestcase.filter(ts =>ts.datasets != null);
+    for (let i = 0; i < e.options.length; i++) {
+      console.log(e.options[i].selected);
+      if (e.options[i].selected) {
+        let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
+        remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
+        if (temp.length > 0) {
+          setRightTestcase(pv => [...pv, temp[0]])
+        }
       }
-    }))
-    setDatasetObject(temp[0].datasetsList)
+      setLeftTestcase(remaining)
+    }
   }
 
-  function filter(){
-    const test = testcaseObject.map(ts => ts.testcase_id)
-    return(allTestcases.filter(ts =>  !test.includes( ts.testcase_id)));
+  function handleUnselect(event) {
+    let e = document.getElementById("right");
+    let remaining = rightTestcase.filter(ts =>ts.datasets != null);
+    for (let i = 0; i < e.options.length; i++) {
+      if (e.options[i].selected) {
+        let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
+        remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
+        if (temp.length > 0) {
+          setLeftTestcase(pv => [...pv, temp[0]])
+        }
+      }
+      setRightTestcase(remaining)
+    }
   }
+
+  const { setHeader } = useHead();
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Update Testset",
+        plusButton: false,
+        // plusCallback: addUserHandler,
+      };
+    });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+          plusButton: false,
+          plusCallback: () => console.log("null"),
+        };
+      });
+  }, []);
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(testcaseObject[0]);
-    console.log(tcObject);
-    // var data = {
-    //   "module_id" : 1031,
-    //   "testset_name" : test,
-    //   "testset_desc" : "jhgajd",
-    //   "testcases_list" : [{ "testcase_id" : 142, "testcase_order": 0,
-    //   "testcase_dataset_id" : 162, "selected_testcase_dataset_ids" : [162]},
-    //   { "testcase_id" : 140, "testcase_order": 0,
-    //   "testcase_dataset_id" : 160, "selected_testcase_dataset_ids" : [160]}]
-    // }
+    const tcList = [];
+    for (let i = 0; i < rightTestcase.length; i++) {
+      console.log(rightTestcase[i].datasets);
+      if (rightTestcase[i].datasets != null) {
+        for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
+          tcList.push({
+            testcase_id: rightTestcase[i].testcase_id,
+            testcase_order: rightTestcase[i].tc_order,
+            testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
+          });
+        }
+      }
+    }
+    var data = {
+      "testset_name": testsetName,
+      "testset_desc": testsetDesc,
+      "project_id": projectId,
+      "testset_id": testsetId,
+      "module_id": applicationId,
+      "testcases_list": tcList
+    }
+    console.log(data);
 
-    // testcaseObject.push(tcObject);
-  }
+    axiosPrivate
+      .post(`qfservice/webtestset/createWebTestset`, data)
+      .then((res) => {
+        console.log(res.data.message);
+        // setTestsetObject(res.data.message);
+        setTSUpdateSuccessMsg(true);
+        setTimeout(() => {
+          setTSUpdateSuccessMsg(false);
+        }, 3000);
+      });
+  };
 
   useEffect(() => {
-    getTestcasesOfTestset(setTestcaseObject,1031,testsetId);
-  }, [])
+    console.log(getTestcasesInProjects(setTestcaseObject, projectId));
+    getTestcasesInProjects(setTestcaseObject, projectId);
+    getTestcasesInProjects(setLeftTestcase, projectId);
+    getTestcasesOfTestset(setRightTestcase, testsetId);
+  }, []);
 
-  useEffect(() => {
-    getTestcases(setAllTestcases,1031);
-  }, [testcaseObject])
-  useEffect(() => {
-    // const test = testcaseObject.map(ts => ts.testcase_id)
-    // return(allTestcases.filter(ts =>  !test.includes( ts.testcase_id)));
-    // console.log(allTestcases.filter(ts =>  !test.includes( ts.testcase_id)));
-    filter();
-    getTestcaseDetails(setTcObject,1031,testcaseId);
-  }, [allTestcases,testcaseId,testcaseObject])
-  
+  console.log(testcaseObject);
+  console.log(leftTestcase);
+  console.log(rightTestcase);
 
   return (
     <div>
@@ -192,82 +147,105 @@ export default function AddTestcaseToTestset() {
             container
             item
             xs={12}
-            sm={6}
-            md={4}
-            xl={4}
+            sm={8}
+            md={6}
             sx={{ marginBottom: "10px" }}
           >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+            <Grid item xs={6} sm={6} md={3}>
               <label>
-                Test Cases <span className="importantfield">*</span>:
+                Testset Name <span className="importantfield">*</span>:
               </label>
             </Grid>
-            <Grid item xs={6} sm={6} md={8} xl={7}>
-              <Autocomplete
-                size="small"
-                options={
-                  // const test = testcaseObject.map(ts => ts.testcase_id)
-                  // return(allTestcases.filter(ts =>  test.includes( ts.testcase_id)));
-                  filter()
-                }
-                getOptionLabel={(option) => option.testcase_name}
-                onChange={(e, value) => {
-                  console.log(value.testcase_id);
-                  setTestcaseId(value.testcase_id);
-                  // Uid.current = value.id;
-                  // setUserId(value.id);
-                  // setDatasetObject(testcaseObject.datasetsList.dataset_name_in_testcase);
-                  handleDataset(value.testcase_id)
+            <Grid item xs={8} sm={6} md={8}>
+              <input
+                value={testsetName}
+                // ref={first_name}
+                onChange={(e) => {
+                  setTestsetName(e.target.value);
                 }}
-                noOptionsText={"User not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="userAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
+                placeholder="Enter First Name"
+              ></input>
             </Grid>
           </Grid>
           <Grid
             container
             item
             xs={12}
-            sm={6}
-            md={4}
-            xl={4}
+            sm={8}
+            md={6}
             sx={{ marginBottom: "10px" }}
           >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}>
+            <Grid item xs={6} sm={6} md={3}>
               <label>
-                Datasets <span className="importantfield">*</span>:
+              Testset Description <span className="importantfield">*</span>:
               </label>
             </Grid>
-            <Grid item xs={6} sm={6} md={8} xl={7}>
-              <Autocomplete
-                size="small"
-                options={datasetObject}
-                getOptionLabel={(option) => option.dataset_name_in_testcase}
-                onChange={(e, value) => {
-                  setDatasetId(value.testcase_dataset_id);
-                  // Project_Id.current = value.project_id;
+            <Grid item xs={8} sm={6} md={8}>
+              <input
+                value={testsetDesc}
+                // ref={last_name}
+                onChange={(e) => {
+                  setTestsetDesc(e.target.value);
                 }}
-                noOptionsText={"Datasets not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="DatasetAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
+                placeholder="Enter Last Name"
+              ></input>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Grid item xs={4} sm={4} md={4}>
+              <label>
+                Select Testcase:
+              </label>
+              <select
+                id="left"
+                multiple
+                style={{padding:"10px"}}
+              >
+                {leftTestcase.length > 0 ? leftTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : ""}
+              </select>
+            </Grid>
+            <Grid item xs={1} sm={1} md={1}>
+              <Button
+                sx={{ my: 0.5 }}
+                variant="outlined"
+                size="small"
+                onClick={handleSelect}
+                aria-label="move all right"
+              >
+                ≫
+              </Button>
+              <Button
+                sx={{ my: 0.5 }}
+                variant="outlined"
+                size="small"
+                onClick={handleUnselect}
+                aria-label="move all right"
+              >
+                ≪
+              </Button>
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>
+                Select Testcase:
+              </label>
+              <select
+                id="right"
+                multiple
+                style={{padding:"10px"}}
+              >
+                <option value="">Select Testcase</option>
+                {rightTestcase.length > 0 ? rightTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : ""}
+              </select>
             </Grid>
           </Grid>
           <Button
@@ -281,12 +259,13 @@ export default function AddTestcaseToTestset() {
               marginTop: "25px",
             }}
           >
-            Add
+            Update
           </Button>
         </Container>
       </Paper>
       <div className="datatable" style={{ marginTop: "15px" }}>
-      {openDelete ? (
+      <SnackbarNotify open={TSUpdateSuccessMsg} close={setTSUpdateSuccessMsg} msg="Testset Updated successfully" severity="success"/>
+        {openDelete ? (
           <DeleteTestset
             object={deleteObject}
             openDelete={openDelete}
@@ -295,12 +274,6 @@ export default function AddTestcaseToTestset() {
         ) : (
           ""
         )}
-        <Table
-          columns={columns}
-          rows={testcaseObject}
-          //   hidefooter={false}
-          getRowId={row => row.testcase_id}
-        />
       </div>
     </div>
   );
