@@ -56,12 +56,19 @@ export default function CreateWebTestcase() {
   useEffect(() => {
     axios
       .get(
-        `/qfservice/webtestcase/getScreensInTestcase?module_id=940&project_id=837&testcase_id=938`
+        `/qfservice/webtestcase/getScreensInTestcase?module_id=${location?.state?.applicationId}&project_id=${location?.state?.projectId}&testcase_id=${location?.state?.testcaseId}`
       )
       .then((resp) => {
         const data = resp?.data?.info;
         const webpagesList = data[0]?.webpagesList;
         setPagesnScreens(webpagesList);
+        const object = {};
+        webpagesList.map((page) => {
+          object[page.name] = page.screens_list.map(
+            (screen) => screen?.screen_id
+          );
+        });
+        reset(object);
         console.log(data);
       });
 

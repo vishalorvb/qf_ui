@@ -1,88 +1,96 @@
-
-import axios from "axios"
-import { async } from "q"
-import { baseUrl } from "../Environment"
-
-
-
+import axios from "axios";
+import { async } from "q";
+import { baseUrl } from "../Environment";
 
 export async function createWebTestCase(data) {
-    let res = await axios({
-        method: 'post',
-        url: `${baseUrl}/qfservice/webtestcase/web-createTestcase`,
-        data: data
-    }).then(response => {
-        return response.data.status
+  let res = await axios({
+    method: "post",
+    url: `${baseUrl}/qfservice/webtestcase/web-createTestcase`,
+    data: data,
+  })
+    .then((response) => {
+      return response.data.status;
     })
-        .catch(err => {
-            return "error"
-        })
-    return res
+    .catch((err) => {
+      return "error";
+    });
+  return res;
 }
 
 export async function createApitestcase(data) {
-    let res = await axios({
-        method: 'post',
-        url: `${baseUrl}/qfservice/CreateNewTestcase`,
-        data: data
-    }).then(response => {
-        return response.data.status
+  let res = await axios({
+    method: "post",
+    url: `${baseUrl}/qfservice/CreateNewTestcase`,
+    data: data,
+  })
+    .then((response) => {
+      return response.data.status;
     })
-        .catch(err => {
-            return "error"
-        })
-    return res
+    .catch((err) => {
+      return "error";
+    });
+  return res;
 }
 
 export async function createNewtestCase(data) {
-    let pid = data.project_id
-    let aid = data.application_id
-    delete data.application_id
-    delete data.project_id
-    let res = axios({
-        method: 'post',
-        url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
-        data: data
-    }).then(response => {
-        return response.data.status
+  let pid = data.project_id;
+  let aid = data.application_id;
+  delete data.application_id;
+  delete data.project_id;
+  let res = axios({
+    method: "post",
+    url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
+    data: data,
+  })
+    .then((response) => {
+      return response.data.status;
     })
-        .catch(err => {
-            return "error"
-        })
-    return res
+    .catch((err) => {
+      return "error";
+    });
+  return res;
 }
-
 
 export function getTestcase(callback, project_id) {
-    axios.get(`${baseUrl}/qfservice/webtestcase/getWebTestcasesInModule?project_id=${project_id}`).then(res => {
-        if(res.data.info != null){
-            callback(res.data.info)
-        }
-        
-    })
+  axios
+    .get(
+      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInModule?project_id=${project_id}`
+    )
+    .then((res) => {
+      if (res.data.info != null) {
+        callback(res.data.info);
+      }
+    });
 }
 
-export function getElementsList(callback,screenId){
-    axios.get(`http://10.11.12.242:8080/qfservice/screen/getScreenElementsList?screen_id=${screenId}`).then(res=>{
-        callback(res.data.info)
-    })
+export function getElementsList(callback, screenId) {
+  axios
+    .get(
+      `http://10.11.12.242:8080/qfservice/screen/getScreenElementsList?screen_id=${screenId}`
+    )
+    .then((res) => {
+      callback(res.data.info);
+    });
 }
-
 
 export function CreateDataset(data) {
-    console.log("calling create datasets")
-    axios({
-        method:'post',
-        data:data,
-        url:`${baseUrl}/qfservice/webdataset/web-createDataset`
-    }).then(res=>{
-        console.log(res)
-    })
+  console.log("calling create datasets");
+  axios({
+    method: "post",
+    data: data,
+    url: `${baseUrl}/qfservice/webdataset/web-createDataset`,
+  }).then((res) => {
+    console.log(res);
+  });
 }
 
-export function getDataset(callback,projectId,moduleId){
-    axios.get(`http://10.11.12.242:8080/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/644/datasets`).then(res=>{
-        console.log(res.data.result)
-        callback(res.data.result)
-    })
+export function getDataset(callback, projectId, moduleId, testcaseId) {
+  axios
+    .get(
+      `http://10.11.12.242:8080/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/644/datasets`
+    )
+    .then((res) => {
+      console.log(res.data.result);
+      callback(res.data.result);
+    });
 }

@@ -9,6 +9,7 @@ import { ProjectProvider } from "../context/ProjectProvider";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { Paper } from "@mui/material";
+import { ProjectnApplicationProvider } from "../context/ProjectnApplicationProvider";
 
 export default function AppLayout() {
   const [open, setOpen] = useState(true);
@@ -23,9 +24,11 @@ export default function AppLayout() {
             <PageHead />
             <Box>
               <ProjectProvider>
-                <div className="content">
-                  <Outlet />
-                </div>
+                <ProjectnApplicationProvider>
+                  <div className="content">
+                    <Outlet />
+                  </div>
+                </ProjectnApplicationProvider>
               </ProjectProvider>
             </Box>
           </HeaderProvider>

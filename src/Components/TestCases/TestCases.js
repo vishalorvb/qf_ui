@@ -20,8 +20,7 @@ import axios from "../../api/axios";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
-  const [radio, setRadio] = useState(0);
-  const [datasets, Setdatasets] = useState([]);
+
   const [popup, setPopup] = useState(false);
   const [snack, setSnack] = useState(false);
 
@@ -29,7 +28,7 @@ export default function TestCases() {
     project_name: "Project",
   });
   const [selectedApplication, setSelectedApplication] = useState({});
-  const { auth } = useAuth();
+
   const navigate = useNavigate();
 
   const columns = [
@@ -59,6 +58,7 @@ export default function TestCases() {
                 <DeleteIcon className=""></DeleteIcon>
               </IconButton>
             </Tooltip>
+
             {selectedApplication?.module_type === 1 ? (
               <Tooltip title="Update APIs ">
                 <IconButton
