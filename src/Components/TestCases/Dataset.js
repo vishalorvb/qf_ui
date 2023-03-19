@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { getScreen } from '../../Services/pageService'
+// import { getScreen } from '../../Services/pageService'
 import Table from "../../CustomComponent/Table";
 import CreateDataSetPopUp from './CreateDataSetPopUp';
 import { Button, Chip, Grid, IconButton, Tooltip } from '@mui/material';
-import { Stack } from 'immutable';
+// import { Stack } from 'immutable';
 import { DeleteOutlined } from '@mui/icons-material';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { getDataset } from '../../Services/TestCaseService';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import PersistentDrawerRight from './PersistentDrawerRight';
 import { getData_for_createDataset } from '../../Services/TestCaseService';
-
+// import { DatasetRequest } from './DatasetHelper';
+import { updateDataset } from './DatasetHelper';
+export let DatasetRequest
 
 function Dataset() {
 
@@ -18,9 +20,13 @@ function Dataset() {
   let [datasets, setDatasets] = useState([])
   let [drawer, setDrawer] = useState(false)
   let [screens, setScreens] = useState([])
+  let [selectedScreen, setSelectedScreen] = useState([])
   let [screeninfo, setScreeninfo] = useState(false)
   let [data, setData] = useState()
   let [selectedScreenIds, setSelectedScreenIds] = useState([])
+
+
+
 
 
   let elementcol = [
@@ -57,10 +63,26 @@ function Dataset() {
       headerName: "DataSets",
       renderCell: (param) => {
         return (
-          <div>
-            { param.row.web_page_elements.input_type== "InputText"?<input type="text"/>:<div>
-              
-            <label for="">click</label> <input type="checkbox" /></div>}
+          <div >
+            {/* {param.row.web_page_elements.input_type == "InputText" ? <input type="text" /> : <div>
+              <label for="">click</label> <input type="checkbox" /></div>} */}
+            {param.row.web_page_elements.input_type == "InputText" && <input type="text"
+              onChange={e => {
+                updateDataset(param.row.element_id, "input_value", e.target.value)
+              }}
+            />}
+            {param.row.web_page_elements.input_type == "Link" && <input type="checkbox"
+              onChange={e => {
+                // console.log(e.target.checked)
+                // updateDataset(param.row.element_id, "is_click",e.target.value)
+              }}
+            />}
+            {param.row.web_page_elements.input_type == "Button" && <input type="checkbox"
+              onChange={e => {
+                // console.log(e.target.checked)
+                updateDataset(param.row.element_id, "is_click", e.target.checked)
+              }}
+            />}
           </div>
         )
       },
@@ -74,7 +96,7 @@ function Dataset() {
       renderCell: (param) => {
         return (
           <div>
-            <select>
+            <select multiple>
               <option value="1">Validate</option>
               <option value="1">Custom Code</option>
               <option value="1">Displayed</option>
@@ -116,8 +138,15 @@ function Dataset() {
       align: "left",
     },
     {
+      field: "description",
+      headerName: "Description",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+    {
       field: "dgn",
-      headerName: "DataSet Name",
+      headerName: "DataSet Type",
       renderCell: (param) => {
         if (!param.row.is_db_dataset) {
           return (
@@ -177,6 +206,9 @@ function Dataset() {
   }, [])
 
   useEffect(() => {
+
+    DatasetRequest = [data]
+    console.log(data)
     try {
       setScreens(data.screens_in_testcase)
     } catch (error) {
@@ -197,9 +229,13 @@ function Dataset() {
 
 
   useEffect(() => {
-    console.log(screens)
-    console.log(selectedScreenIds)
-  }, [screens,selectedScreenIds])
+    let temp = screens.filter(s => {
+      if (selectedScreenIds.includes(s.screen_id.toString())) {
+        return s
+      }
+    })
+    setSelectedScreen([...temp])
+  }, [selectedScreenIds])
 
   return (
     <div>
@@ -208,17 +244,26 @@ function Dataset() {
           <Grid item xs={2} md={2}>
             <Button variant="outlined"
               onClick={e => {
-                // setCreatepopup(true)
                 setDrawer(!drawer)
               }}
-            >Add Datset</Button>
+            >
+              Add Datset
+            </Button>
+          </Grid>
+          <Grid item xs={2} md={2}>
+            <Button 
+            variant="outlined"
+            onClick={e=>setCreatepopup(true)}
+            >
+              Save
+            </Button>
           </Grid>
           <Grid item xs={2} md={2}>
             {drawer &&
               <PersistentDrawerRight
                 screen={screeninfo}
-                screenId = {selectedScreenIds}
-                setScreenId = {setSelectedScreenIds}
+                screenId={selectedScreenIds}
+                setScreenId={setSelectedScreenIds}
               ></PersistentDrawerRight>
             }
           </Grid>
@@ -239,17 +284,17 @@ function Dataset() {
         close={setCreatepopup}
       ></CreateDataSetPopUp> </div >}
 
-{  screens != undefined &&    <div>
-        {screens.map(s=>{
-          return(
+      {selectedScreen != undefined && drawer && <div>
+        {selectedScreen.map(s => {
+          return (
             <div>
               <h5>{s.screeninfo.name}</h5>
               <Table
-              hideSearch ={true}
-              rows={s.screen_elements[0]}
-              columns={elementcol}
-              hidefooter={true}
-              getRowId={(row) => row.element_id}
+                hideSearch={true}
+                rows={s.screen_elements[0]}
+                columns={elementcol}
+                hidefooter={true}
+                getRowId={(row) => row.element_id}
               ></Table>
             </div>
           )
