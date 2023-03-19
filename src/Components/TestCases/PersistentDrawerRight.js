@@ -26,28 +26,26 @@ export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
 
   function handleClick(e){
     if(screenId.includes(e.target.value)){
-      console.log("includes")
       let temp = screenId.filter(s=>{
-        console.log(s)
-        console.log(e.target.value)
-        if(s.screen_id != e.target.value){
+        if(s!= e.target.value){
           return s
         }
       })
-      console.log(temp)
-      setScreenId(temp)
+
+      setScreenId([...temp])
     }
     else{
       let temp = screenId
       temp.push(e.target.value)
-      setScreenId(temp)
+
+      setScreenId([...temp])
     }
   }
 
   useEffect(() => {
-    console.log(screen)
-    console.log(screenId)
+
   }, [screen,screenId])
+
   return (
     <Box sx={{ display: 'flex' }}>
       <IconButton
@@ -85,7 +83,8 @@ export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
               >
                 <h5>{s.name}</h5>
                 <p>{s.description}</p>
-               <input onChange={handleClick} checked={screenId.includes(s.screen_id)} type="checkbox" value={s.screen_id}/>
+                {/* checked={screenId.includes(s.screen_id)} */}
+               <input onChange={handleClick}  type="checkbox" value={s.screen_id}/>
                 <Divider />
               </div>
             </Grid>

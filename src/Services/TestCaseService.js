@@ -81,7 +81,7 @@ export function CreateDataset(data) {
 }
 
 export function getDataset(callback,projectId,moduleId){
-    axios.get(`http://10.11.12.242:8080/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/644/datasets`).then(res=>{
+    axios.get(`${baseUrl}/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/618/datasets`).then(res=>{
         callback(res.data.result)
     })
 }
