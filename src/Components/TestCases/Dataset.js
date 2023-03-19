@@ -1,22 +1,120 @@
 import React, { useEffect, useState } from 'react'
-import { getScreen } from '../../Services/pageService'
+// import { getScreen } from '../../Services/pageService'
 import Table from "../../CustomComponent/Table";
 import CreateDataSetPopUp from './CreateDataSetPopUp';
-import { Button, Chip, IconButton, Tooltip } from '@mui/material';
-import { Stack } from 'immutable';
+import { Button, Chip, Grid, IconButton, Tooltip } from '@mui/material';
+// import { Stack } from 'immutable';
 import { DeleteOutlined } from '@mui/icons-material';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { getDataset } from '../../Services/TestCaseService';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-
-
+import PersistentDrawerRight from './PersistentDrawerRight';
+import { getData_for_createDataset } from '../../Services/TestCaseService';
+// import { DatasetRequest } from './DatasetHelper';
+import { updateDataset } from './DatasetHelper';
+export let DatasetRequest
 
 function Dataset() {
 
   let [createpopup, setCreatepopup] = useState(false)
   let [datasets, setDatasets] = useState([])
+  let [drawer, setDrawer] = useState(false)
+  let [screens, setScreens] = useState([])
+  let [selectedScreen, setSelectedScreen] = useState([])
+  let [screeninfo, setScreeninfo] = useState(false)
+  let [data, setData] = useState()
+  let [selectedScreenIds, setSelectedScreenIds] = useState([])
 
 
+
+
+
+  let elementcol = [
+    {
+      field: "fieldname",
+      headerName: "Filed Name",
+      renderCell: (param) => {
+        return (
+          <div>
+            <h5>{param.row.web_page_elements.name}</h5>
+          </div>
+        )
+      },
+      flex: 2,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "tagname",
+      headerName: "Tag Name",
+      renderCell: (param) => {
+        return (
+          <div>
+            <h5>{param.row.web_page_elements.input_type}</h5>
+          </div>
+        )
+      },
+      flex: 2,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "Datasets",
+      headerName: "DataSets",
+      renderCell: (param) => {
+        return (
+          <div >
+            {/* {param.row.web_page_elements.input_type == "InputText" ? <input type="text" /> : <div>
+              <label for="">click</label> <input type="checkbox" /></div>} */}
+            {param.row.web_page_elements.input_type == "InputText" && <input type="text"
+              onChange={e => {
+                updateDataset(param.row.element_id, "input_value", e.target.value)
+              }}
+            />}
+            {param.row.web_page_elements.input_type == "Link" && <input type="checkbox"
+              onChange={e => {
+                // console.log(e.target.checked)
+                // updateDataset(param.row.element_id, "is_click",e.target.value)
+              }}
+            />}
+            {param.row.web_page_elements.input_type == "Button" && <input type="checkbox"
+              onChange={e => {
+                // console.log(e.target.checked)
+                updateDataset(param.row.element_id, "is_click", e.target.checked)
+              }}
+            />}
+          </div>
+        )
+      },
+      flex: 2,
+      sortable: false,
+      align: "left",
+    },
+    {
+      field: "elements",
+      headerName: "Elements",
+      renderCell: (param) => {
+        return (
+          <div>
+            <select multiple>
+              <option value="1">Validate</option>
+              <option value="1">Custom Code</option>
+              <option value="1">Displayed</option>
+              <option value="1">Element Wait</option>
+              <option value="1">Scroll Up</option>
+              <option value="1">Scroll Down</option>
+              <option value="1">Random</option>
+              <option value="1">Enter</option>
+            </select>
+          </div>
+        )
+      },
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+
+  ]
   let column = [
     {
       field: " ",
@@ -40,8 +138,15 @@ function Dataset() {
       align: "left",
     },
     {
+      field: "description",
+      headerName: "Description",
+      flex: 3,
+      sortable: false,
+      align: "left",
+    },
+    {
       field: "dgn",
-      headerName: "DataSet Name",
+      headerName: "DataSet Type",
       renderCell: (param) => {
         if (!param.row.is_db_dataset) {
           return (
@@ -97,27 +202,104 @@ function Dataset() {
 
   useEffect(() => {
     getDataset(setDatasets)
+    getData_for_createDataset(setData, 618)
   }, [])
 
+  useEffect(() => {
+
+    DatasetRequest = [data]
+    console.log(data)
+    try {
+      setScreens(data.screens_in_testcase)
+    } catch (error) {
+
+    }
+  }, [data])
+
+  useEffect(() => {
+    try {
+      let x = screens.map(s => {
+        return s.screeninfo
+      })
+      setScreeninfo(x)
+    } catch (error) {
+
+    }
+  }, [screens])
+
+
+  useEffect(() => {
+    let temp = screens.filter(s => {
+      if (selectedScreenIds.includes(s.screen_id.toString())) {
+        return s
+      }
+    })
+    setSelectedScreen([...temp])
+  }, [selectedScreenIds])
 
   return (
     <div>
       <div>
-        <Button variant="outlined"
-          onClick={e => setCreatepopup(true)}
-        >Add Datset</Button>
+        <Grid container columnSpacing={2}>
+          <Grid item xs={2} md={2}>
+            <Button variant="outlined"
+              onClick={e => {
+                setDrawer(!drawer)
+              }}
+            >
+              Add Datset
+            </Button>
+          </Grid>
+          <Grid item xs={2} md={2}>
+            <Button 
+            variant="outlined"
+            onClick={e=>setCreatepopup(true)}
+            >
+              Save
+            </Button>
+          </Grid>
+          <Grid item xs={2} md={2}>
+            {drawer &&
+              <PersistentDrawerRight
+                screen={screeninfo}
+                screenId={selectedScreenIds}
+                setScreenId={setSelectedScreenIds}
+              ></PersistentDrawerRight>
+            }
+          </Grid>
+        </Grid>
+
+
+
       </div>
-      <div>
+      {drawer == false && <div>
         <Table
           rows={datasets}
           columns={column}
           hidefooter={true}
           getRowId={(row) => row.dataset_id}
         ></Table>
-      </div>
-      {createpopup && <CreateDataSetPopUp
+      </div>}
+      {createpopup && <div> <CreateDataSetPopUp
         close={setCreatepopup}
-      ></CreateDataSetPopUp>}
+      ></CreateDataSetPopUp> </div >}
+
+      {selectedScreen != undefined && drawer && <div>
+        {selectedScreen.map(s => {
+          return (
+            <div>
+              <h5>{s.screeninfo.name}</h5>
+              <Table
+                hideSearch={true}
+                rows={s.screen_elements[0]}
+                columns={elementcol}
+                hidefooter={true}
+                getRowId={(row) => row.element_id}
+              ></Table>
+            </div>
+          )
+        })}
+      </div>}
     </div>
   )
 }

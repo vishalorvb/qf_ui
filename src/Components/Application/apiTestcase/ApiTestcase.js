@@ -1,5 +1,4 @@
-import { CheckBox } from '@mui/icons-material';
-import { Alert, Button, Divider, Grid } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Table from '../../../CustomComponent/Table'
@@ -29,33 +28,13 @@ export let testcasedata = {
     ]
 }
 
-export function resetTestCaseData() {
-  testcasedata = {
-    "module_id": "",
-    "testcase_name": "",
-    "testcase_desc": "",
-    "testcase_id": "",
-    "testcase_sprints":
-      [
-        {
-          "sprint_id": "",
-          "sprint_name": "",
-          "issue_id": "",
-        }
-      ],
-
-    "apis_list":
-      [
-       
-      ]
-  }
-}
-
-function ApiTestcase() {
-
+function ApiTestcase() 
+{
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [api, setApi] = useState([]);
   let [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   let elementsList = {};
@@ -79,33 +58,30 @@ function ApiTestcase() {
 
   ]
 
+  useEffect(() => {
+    getApis(setApi, location.state.applicationId)
+  }, []);
+ 
+
   function createTestcase() {
-    console.log("api called")
     elementsList = preSelectedElement.map((id) => {
       return { api_id: id };
     })
     testcasedata.testcase_name = location.state.name;
     testcasedata.testcase_desc = location.state.desc;
     testcasedata.module_id = location.state.applicationId;
-    testcasedata.apis_list = elementsList;
     testcasedata.testcase_id = location.state.testcaseId;
+    testcasedata.apis_list = elementsList;
+    
     axios.post(`/qfservice/CreateNewTestcase`, testcasedata).then((resp) => {
-      console.log(resp);
       resp?.data?.status === "SUCCESS" &&
-        navigate("http://localhost:3000/ApiTestcase", {
+        navigate("", {
         });
       setOpen(false);
     });
 
   }
-
-  const moduleId = location.state.module;
-  console.log(location.state);
-  useEffect(() => {
-    getApis(setApi, location.state.applicationId)
-  }, []);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
+  
 
   function handleClick() {
     if (preSelectedElement.length === 0) {
@@ -114,11 +90,9 @@ function ApiTestcase() {
     }
     else {
       setSuccess(true)
-
       createTestcase()
     }
   }
-  console.log(preSelectedElement)
   return (
     <div>
       <div>
@@ -157,8 +131,8 @@ function ApiTestcase() {
       ></Table>
       <br /><br />
       <div>
-        <Grid container justifyContent="center" columnSpacing={2}>
-          <Grid item xs={3} md={3} lg={3}>
+        <Grid container justifyContent="flex-end" >
+          <Grid item xs={3} md={2} lg={1.2}>
             <Button variant="contained" onClick={handleClick}>Save</Button>
           </Grid>
         </Grid>

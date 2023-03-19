@@ -84,13 +84,22 @@ export function CreateDataset(data) {
   });
 }
 
-export function getDataset(callback, projectId, moduleId, testcaseId) {
+export function getDataset(callback, projectId, moduleId) {
   axios
     .get(
-      `http://10.11.12.242:8080/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/644/datasets`
+      `${baseUrl}/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/618/datasets`
     )
     .then((res) => {
-      console.log(res.data.result);
       callback(res.data.result);
+    });
+}
+
+export function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
+  axios
+    .get(
+      `${baseUrl}/qfservice/webdataset/getScreensAndElementsInTestcaseByTestcaseIdorDatasetId?testcase_id=${testcaseId}&dataset_id=${datasetId}`
+    )
+    .then((res) => {
+      callback(res.data.info);
     });
 }

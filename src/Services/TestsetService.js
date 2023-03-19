@@ -9,12 +9,12 @@ export function getTestsets(callback, projectId,workflowID) {
     })
 }
 
-export function getTestcasesOfTestset(callback, workflowID,testsetId) {
+export function getTestcasesOfTestset(callback,testsetId) {
     console.log("called")
     console.log(testsetId);
-    axios.get(baseUrl + "/workflow/" + workflowID + "/api/testsets/"+ testsetId +"/testcases").then(res => {
-        console.log(res.data.data)
-        callback(res.data.data)
+    axios.get(baseUrl + `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`).then(res => {
+        console.log(res.data.info);
+        callback(res.data.info);
     })
 }
 
@@ -25,6 +25,14 @@ export function getTestcaseDetails(callback, workflowID,testcaseId) {
         callback(res.data.data.testcase)
     })
 }
+
+export function getTestcasesInProjects(callback,projectId) {
+    console.log("called")
+    axios.get(baseUrl + `/qfservice/webtestcase/getWebTestcasesInfoByProject?project_id=${projectId}`).then(res => {
+        console.log(res.data.info);
+        callback(res.data.info);
+    })
+} 
 
 export function createTestset(data) {
     console.log("called")

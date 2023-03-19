@@ -15,11 +15,14 @@ import { axiosPrivate } from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
+import { getApplicationOfProject } from "../Services/ApplicationService";
 
 function Testset() {
   const [testsetObject, setTestsetObject] = useState([]);
   const [projectObject, setProjectObject] = useState([]);
+  const [workflowObject, setWorkflowObject] = useState([]);
   const [projectId, setProjectId] = useState(null);
+  const [applicationId, setApplicationId] = useState(null);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -42,7 +45,8 @@ function Testset() {
   const editUserHandler = (e) => {
     // setOpenEdit(true);
     // setEditObject(e);
-    navigate("AddTestcaseToTestset", { state: e });
+    console.log(e);
+    navigate("AddTestcaseToTestset", { state: { param1: e, param2: projectId, param3: applicationId}});
   };
 
   const deleteUserHandler = (e) => {
@@ -145,7 +149,7 @@ function Testset() {
   const submit = () => {
     axiosPrivate
       .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectId?project_id=${projectId}`
+        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
       )
       .then((res) => {
         console.log(res.data.info);
@@ -156,6 +160,10 @@ function Testset() {
   useEffect(() => {
     getProject(setProjectObject,loggedInId);
   }, []);
+
+  useEffect(() => {
+    getApplicationOfProject(setWorkflowObject,projectId)
+  }, [projectId])
 
   return (
     <div>
@@ -212,7 +220,7 @@ function Testset() {
               />
             </Grid>
           </Grid>
-          {/* <Grid
+          <Grid
             container
             item
             xs={12}
@@ -223,24 +231,24 @@ function Testset() {
           >
             <Grid item xs={6} sm={6} md={3.5} xl={4}>
               <label>
-                Workflow <span className="importantfield">*</span>:
+                Application <span className="importantfield">*</span>:
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={8} xl={7}>
               <Autocomplete
                 size="small"
-                options={workflowsObject}
+                options={workflowObject}
                 getOptionLabel={(option) => option.module_name}
                 onChange={(e, value) => {
                   // Workflow_Id.current = value.module_id;
-                  setWorkflowId(value.module_id);
+                  setApplicationId(value.module_id);
                 }}
-                noOptionsText={"Workflows not found"}
+                noOptionsText={"Applications not found"}
                 renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
                     <input
                       type="text"
-                      name="workflowAutocomplete"
+                      name="applicationAutocomplete"
                       {...params.inputProps}
                       placeholder="Please Select"
                     />
@@ -248,7 +256,7 @@ function Testset() {
                 )}
               />
             </Grid>
-          </Grid> */}
+          </Grid>
           <Button
             variant="contained"
             onClick={submit}
