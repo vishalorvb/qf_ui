@@ -212,7 +212,7 @@ a {
   margin: 0 !important;
 }
 
-input,
+input [type=text],
 select {
   min-height: 35px;
   line-height: 35px;
@@ -220,6 +220,7 @@ select {
   border-radius: 5px;
   border: 1px solid #d0d0d0;
 }
+
 
 .menuList {
   margin-top: 20px !important;
