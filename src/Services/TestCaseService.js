@@ -34,23 +34,23 @@ export async function createApitestcase(data) {
     return res
 }
 
-export async function createNewtestCase(data) {
-    let pid = data.project_id
-    let aid = data.application_id
-    delete data.application_id
-    delete data.project_id
-    let res = axios({
-        method: 'post',
-        url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
-        data: data
-    }).then(response => {
-        return response.data.status
-    })
-        .catch(err => {
-            return "error"
-        })
-    return res
-}
+// export async function createNewtestCase(data) {
+//     let pid = data.project_id
+//     let aid = data.application_id
+//     delete data.application_id
+//     delete data.project_id
+//     let res = axios({
+//         method: 'post',
+//         url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
+//         data: data
+//     }).then(response => {
+//         return response.data.status
+//     })
+//         .catch(err => {
+//             return "error"
+//         })
+//     return res
+// }
 
 
 export function getTestcase(callback, project_id) {
@@ -69,19 +69,26 @@ export function getElementsList(callback,screenId){
 }
 
 
-export function CreateDataset(data) {
+export async function CreateDataset(data) {
     console.log("calling create datasets")
-    axios({
+    let x = axios({
         method:'post',
         data:data,
         url:`${baseUrl}/qfservice/webdataset/web-createDataset`
     }).then(res=>{
         console.log(res)
+        if(res.data.status === 'success'){
+            return true
+        }
+        else{
+            return false
+        }
     })
+    return x
 }
 
-export function getDataset(callback,projectId,moduleId){
-    axios.get(`${baseUrl}/qfservice/webtestcase/api/v1/projects/467/workflow/768/web/testcases/618/datasets`).then(res=>{
+export function getDataset(callback,projectId,applicationId,testcaseId){
+    axios.get(`${baseUrl}/qfservice/webtestcase/api/v1/projects/${projectId}/workflow/${applicationId}/web/testcases/${testcaseId}/datasets`).then(res=>{
         callback(res.data.result)
     })
 }
