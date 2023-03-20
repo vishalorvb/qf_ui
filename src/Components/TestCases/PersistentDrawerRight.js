@@ -21,9 +21,10 @@ export default function PersistentDrawerRight({ screen, screenId, setScreenId })
   };
 
   function handleClick(e) {
-    if (screenId.includes(e.target.value)) {
+    let val = parseInt(e.target.value)
+    if (screenId.includes(val)) {
       let temp = screenId.filter(s => {
-        if (s != e.target.value) {
+        if (s != val) {
           return s
         }
       })
@@ -32,7 +33,7 @@ export default function PersistentDrawerRight({ screen, screenId, setScreenId })
     }
     else {
       let temp = screenId
-      temp.push(e.target.value)
+      temp.push(val)
 
       setScreenId([...temp])
     }
@@ -42,7 +43,7 @@ export default function PersistentDrawerRight({ screen, screenId, setScreenId })
   }, [screenId])
 
   useEffect(() => {
-  setScreenId([screen[0].screen_id])
+    setScreenId([screen[0].screen_id])
   }, [screen])
 
   return (

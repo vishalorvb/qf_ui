@@ -234,10 +234,8 @@ function Dataset() {
 
 
   useEffect(() => {
-    console.log("selected screen update coz idlist updated")
-    console.log(selectedScreenIds)
     let temp = screens.filter(s => {
-      if (selectedScreenIds.includes(s.screen_id.toString())) {
+      if (selectedScreenIds.includes(s.screen_id)) {
         return s
       }
     })
@@ -245,7 +243,6 @@ function Dataset() {
   }, [selectedScreenIds])
 
   useEffect(() => {
-    console.log("selected screen update")
   }, [selectedScreen])
 
   useEffect(() => {
@@ -301,7 +298,6 @@ function Dataset() {
 
       {selectedScreen != undefined && drawer && <div>
         {selectedScreen.map(s => {
-          console.log(s)
           return (
             <div>
               <h5>{s.screeninfo.name}</h5>
