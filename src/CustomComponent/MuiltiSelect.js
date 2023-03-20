@@ -19,52 +19,22 @@ const MenuProps = {
   }
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder"
-];
-
-let options =[
-  {
-    id:1,
-    val:"vishal"
-  },
-  {
-    id:2,
-    val:"vishal"
-  },
-  {
-    id:3,
-    val:"vishal"
-  },
-  {
-    id:4,
-    val:"vishal"
-  },
-]
 
 
-function MuiltiSelect() {
+
+function MuiltiSelect({options, id, value , stateList}) {
 
     let [selectedval,setSelectedval] = useState([])
     const handleChange = (event) => {
-        console.log(event.target)
-        let temp = selectedval
-        temp.push(event.target.value[0])
-        setSelectedval([...temp])
-        
+      const {
+        target: { value },
+      } = event;
+      setSelectedval(value);
     };
 
     useEffect(() => {
-    // console.log(selectedval)
+      // console.log(selectedval)
+      stateList([...selectedval])
     }, [selectedval])
 
   return (
@@ -78,16 +48,17 @@ function MuiltiSelect() {
           value={selectedval}
           onChange={handleChange}
           input={<OutlinedInput label="" />}
-          renderValue={(selected) =>{console.log(selected)}}
+          renderValue={(selected) => selected.map((value) => value.val + ",")}
           MenuProps={MenuProps}
         >
           {options.map((opt) => {
-            // console.log()
+
             return(
-            <MenuItem key={opt.id} value={opt.id}>
-                {/* checked={selectedval.indexOf(opt.id) > -1} */}
-              <Checkbox  />
-              <ListItemText primary={opt.val} />
+            <MenuItem key={opt[id]} value={opt}>
+              <Checkbox 
+               checked={selectedval.indexOf(opt) > -1}
+              />
+              <ListItemText primary={opt[value]} />
             </MenuItem>
           )})}
         </Select>
