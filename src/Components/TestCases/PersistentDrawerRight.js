@@ -6,16 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import { Button, Grid, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-// import { getScreen } from '../../Services/ProjectService';
-// import { getData_for_createDataset } from '../../Services/TestCaseService';
-
 
 const drawerWidth = 240;
 export let selected_screen;
 
-export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
+export default function PersistentDrawerRight({ screen, screenId, setScreenId }) {
   const [open, setOpen] = useState(true);
-  // let [screen, setScreen] = useState([])
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -24,17 +20,17 @@ export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
     setOpen(false);
   };
 
-  function handleClick(e){
-    if(screenId.includes(e.target.value)){
-      let temp = screenId.filter(s=>{
-        if(s!= e.target.value){
+  function handleClick(e) {
+    if (screenId.includes(e.target.value)) {
+      let temp = screenId.filter(s => {
+        if (s != e.target.value) {
           return s
         }
       })
 
       setScreenId([...temp])
     }
-    else{
+    else {
       let temp = screenId
       temp.push(e.target.value)
 
@@ -43,8 +39,11 @@ export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
   }
 
   useEffect(() => {
+  }, [screenId])
 
-  }, [screen,screenId])
+  useEffect(() => {
+  setScreenId([screen[0].screen_id])
+  }, [screen])
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -75,16 +74,11 @@ export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
         <h6>List of screens</h6>
         {screen.map(s => {
           return (
-            <Grid component={Paper} elevation={0} container className="header" draggable={true}>
-              <div className="sidebar"
-               onDragOver={e=>{
-                selected_screen= s
-               }}
-              >
+            <Grid component={Paper} elevation={0} container className="header" >
+              <div className="sidebar">
                 <h5>{s.name}</h5>
                 <p>{s.description}</p>
-                {/* checked={screenId.includes(s.screen_id)} */}
-               <input onChange={handleClick}  type="checkbox" value={s.screen_id}/>
+                <input onChange={handleClick} type="checkbox" checked={screenId.includes(s.screen_id)} value={s.screen_id} />
                 <Divider />
               </div>
             </Grid>

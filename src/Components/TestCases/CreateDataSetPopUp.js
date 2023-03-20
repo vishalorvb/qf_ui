@@ -3,16 +3,10 @@ import React, { useEffect, useState } from 'react'
 import MastPop from '../../CustomComponent/MastPop'
 import { validateFormbyName } from '../../CustomComponent/FormValidation'
 import { CreateDataset } from '../../Services/TestCaseService'
-// import { Datasetdata } from './DatasetData'
-// import { getScreen } from '../../Services/pageService'
 import { datasetinfo } from './DatasetHelper'
 import { DatasetRequest } from './Dataset'
 
 function CreateDataSetPopUp({ close }) {
-
-
-// let [screen,setScreen]  = useState([])
-
 function handleSubmit(e){
    
    if (validateFormbyName(["name","desc"],"error")){
@@ -22,9 +16,6 @@ function handleSubmit(e){
    }
 }
 
-useEffect(() => {
-    // getScreen(setScreen,768)
-}, [])
 
 try {
     return (
@@ -46,24 +37,16 @@ try {
                             <option value={true}>DB</option>
                         </select>
                     </Grid>
-                    {/* <Grid item xs={2} sm={2} md={2}>
-                    <label for="">Select screen</label>
-                    </Grid> */}
-                    {/* <Grid item xs={4} sm={4} md={4}>
-                        <select>
-                            {screen.map(s=><option value={s.screen_id}>{s.name}</option>)}
-                        </select>
-                    </Grid> */}
                 </Grid>
                 <div>
                     <label for="">Dataset Name</label>
-                    <input type="text" name='name'
+                    <input type="text" name='name' defaultValue={datasetinfo.name}
                     onChange={e=>{
                         datasetinfo.name = e.target.value;
                     }}
                     />
                     <label for="">Dataset Description</label>
-                    <input type="text" name='desc'
+                    <input type="text" name='desc' defaultValue={datasetinfo.description}
                      onChange={e=>{
                         datasetinfo.description = e.target.value;
                     }}
@@ -86,7 +69,7 @@ try {
     console.log(error)
     return(
         <div>
-            <h1>Hello </h1>
+            <h1>Error in createDatasetPopUp </h1>
         </div>
     )
 }

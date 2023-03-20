@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
-// import { getScreen } from '../../Services/pageService'
 import Table from "../../CustomComponent/Table";
 import CreateDataSetPopUp from './CreateDataSetPopUp';
 import { Button, Chip, Grid, IconButton, Tooltip } from '@mui/material';
-// import { Stack } from 'immutable';
 import { DeleteOutlined } from '@mui/icons-material';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { getDataset } from '../../Services/TestCaseService';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import PersistentDrawerRight from './PersistentDrawerRight';
 import { getData_for_createDataset } from '../../Services/TestCaseService';
-// import { DatasetRequest } from './DatasetHelper';
 import { updateDataset } from './DatasetHelper';
+import { clearDatasetinfo } from './DatasetHelper';
+import { datasetinfo } from './DatasetHelper';
+import MuiltiSelect from '../../CustomComponent/MuiltiSelect';
+
+
+
 export let DatasetRequest
 
 function Dataset() {
@@ -64,8 +67,6 @@ function Dataset() {
       renderCell: (param) => {
         return (
           <div >
-            {/* {param.row.web_page_elements.input_type == "InputText" ? <input type="text" /> : <div>
-              <label for="">click</label> <input type="checkbox" /></div>} */}
             {param.row.web_page_elements.input_type == "InputText" && <input type="text"
               onChange={e => {
                 updateDataset(param.row.element_id, "input_value", e.target.value)
@@ -73,13 +74,11 @@ function Dataset() {
             />}
             {param.row.web_page_elements.input_type == "Link" && <input type="checkbox"
               onChange={e => {
-                // console.log(e.target.checked)
-                // updateDataset(param.row.element_id, "is_click",e.target.value)
+                updateDataset(param.row.element_id, "is_click", e.target.checked)
               }}
             />}
             {param.row.web_page_elements.input_type == "Button" && <input type="checkbox"
               onChange={e => {
-                // console.log(e.target.checked)
                 updateDataset(param.row.element_id, "is_click", e.target.checked)
               }}
             />}
@@ -126,7 +125,7 @@ function Dataset() {
           </div>
         )
       },
-      flex: 0.5,
+      flex: 1,
       sortable: false,
       align: "left",
     },
@@ -181,7 +180,15 @@ function Dataset() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Edit">
-              <IconButton>
+              <IconButton
+                onClick={e => {
+                  getData_for_createDataset(setData,param.row.testcase_id,param.row.module_id)
+                  setDrawer(!drawer)
+                  datasetinfo.name = param.row.name
+                  datasetinfo.description = param.row.description
+                  datasetinfo.dataset_id = param.row.dataset_id
+                }}
+              >
                 <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
@@ -193,7 +200,7 @@ function Dataset() {
           </div>
         );
       },
-      flex: 1,
+      flex: 2,
       headerAlign: "center",
       sortable: false,
       align: "center",
@@ -201,14 +208,12 @@ function Dataset() {
   ]
 
   useEffect(() => {
-    getDataset(setDatasets)
+    getDataset(setDatasets, 467, 768, 618)
     getData_for_createDataset(setData, 618)
   }, [])
 
   useEffect(() => {
-
     DatasetRequest = [data]
-    console.log(data)
     try {
       setScreens(data.screens_in_testcase)
     } catch (error) {
@@ -229,6 +234,8 @@ function Dataset() {
 
 
   useEffect(() => {
+    console.log("selected screen update coz idlist updated")
+    console.log(selectedScreenIds)
     let temp = screens.filter(s => {
       if (selectedScreenIds.includes(s.screen_id.toString())) {
         return s
@@ -237,8 +244,19 @@ function Dataset() {
     setSelectedScreen([...temp])
   }, [selectedScreenIds])
 
+  useEffect(() => {
+    console.log("selected screen update")
+  }, [selectedScreen])
+
+  useEffect(() => {
+    return () => {
+      clearDatasetinfo()
+    };
+  }, [])
+
   return (
     <div>
+      {/* <MuiltiSelect></MuiltiSelect> */}
       <div>
         <Grid container columnSpacing={2}>
           <Grid item xs={2} md={2}>
@@ -247,16 +265,16 @@ function Dataset() {
                 setDrawer(!drawer)
               }}
             >
-              Add Datset
+              {drawer ? "Cancel" : "Add DataSet"}
             </Button>
           </Grid>
           <Grid item xs={2} md={2}>
-            <Button 
-            variant="outlined"
-            onClick={e=>setCreatepopup(true)}
+            {drawer && <Button
+              variant="outlined"
+              onClick={e => setCreatepopup(true)}
             >
               Save
-            </Button>
+            </Button>}
           </Grid>
           <Grid item xs={2} md={2}>
             {drawer &&
@@ -268,9 +286,6 @@ function Dataset() {
             }
           </Grid>
         </Grid>
-
-
-
       </div>
       {drawer == false && <div>
         <Table
@@ -286,6 +301,7 @@ function Dataset() {
 
       {selectedScreen != undefined && drawer && <div>
         {selectedScreen.map(s => {
+          console.log(s)
           return (
             <div>
               <h5>{s.screeninfo.name}</h5>
