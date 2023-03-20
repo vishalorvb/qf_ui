@@ -27,18 +27,18 @@ import { Stack } from "@mui/system";
 export let DatasetRequest;
 
 function Dataset() {
-  let [createpopup, setCreatepopup] = useState(false)
-  let [datasets, setDatasets] = useState([])
-  let [drawer, setDrawer] = useState(false)
-  let [screens, setScreens] = useState([])
-  let [selectedScreen, setSelectedScreen] = useState([])
-  let [screeninfo, setScreeninfo] = useState(false)
-  let [data, setData] = useState()
-  let [selectedScreenIds, setSelectedScreenIds] = useState([])
-  let [dropdown, setDropdown] = useState([])
+  let [createpopup, setCreatepopup] = useState(false);
+  let [datasets, setDatasets] = useState([]);
+  let [drawer, setDrawer] = useState(false);
+  let [screens, setScreens] = useState([]);
+  let [selectedScreen, setSelectedScreen] = useState([]);
+  let [screeninfo, setScreeninfo] = useState(false);
+  let [data, setData] = useState();
+  let [selectedScreenIds, setSelectedScreenIds] = useState([]);
+  let [dropdown, setDropdown] = useState([]);
 
-  let location = useLocation()
-  let navigate = useNavigate()
+  let location = useLocation();
+  let navigate = useNavigate();
   try {
     let projectId = location.state.projectId;
     let applicationId = location.state.applicationId;
@@ -79,9 +79,9 @@ function Dataset() {
         return (
           <div>
             {param.row.web_page_elements.input_type == "InputText" && (
-              <TextField
+              <input
                 type="text"
-                size="small"
+                className="datasetInput"
                 defaultValue={param.row.dataset_values.input_value}
                 onChange={(e) => {
                   updateDataset(
@@ -132,55 +132,68 @@ function Dataset() {
         let opt = [
           {
             id: "custom_code",
-            val: "Custom Code"
+            val: "Custom Code",
           },
           {
             id: "displayed",
-            val: "Displayed"
+            val: "Displayed",
           },
           {
             id: "element_wait",
-            val: "Element Wait"
+            val: "Element Wait",
           },
           {
             id: "scrollup",
-            val: "Scroll Up"
+            val: "Scroll Up",
           },
           {
             id: "scrolldown",
-            val: "Scroll Down"
+            val: "Scroll Down",
           },
           {
             id: "is_random",
-            val: "Random"
+            val: "Random",
           },
           {
             id: "is_enter",
-            val: "Random"
-          }
-        ]
-        let alllist = ["custom_code", "displayed", "element_wait", "scrollup", "scrolldown", "is_random", "is_enter"]
+            val: "Random",
+          },
+        ];
+        let alllist = [
+          "custom_code",
+          "displayed",
+          "element_wait",
+          "scrollup",
+          "scrolldown",
+          "is_random",
+          "is_enter",
+        ];
         return (
           <div>
             <MuiltiSelect
-              preselect={opt.filter(e=>{
-                if(param.row.dataset_values[e.id]){
-                  return e
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
+                  {
+                    border: "none",
+                  },
+              }}
+              preselect={opt.filter((e) => {
+                if (param.row.dataset_values[e.id]) {
+                  return e;
                 }
               })}
               options={opt}
               value="val"
               id="id"
-              stateList={list => {
-                let templist = list.map(obj => obj["id"])
-                alllist.forEach(l => {
+              stateList={(list) => {
+                let templist = list.map((obj) => obj["id"]);
+                alllist.forEach((l) => {
                   if (templist.includes(l)) {
-                    updateDataset(param.row.element_id, l, true)
+                    updateDataset(param.row.element_id, l, true);
+                  } else {
+                    updateDataset(param.row.element_id, l, false);
                   }
-                  else {
-                    updateDataset(param.row.element_id, l, false)
-                  }
-                })
+                });
               }}
             ></MuiltiSelect>
           </div>
@@ -307,7 +320,7 @@ function Dataset() {
     return () => {
       clearDatasetinfo();
     };
-  }, [])
+  }, []);
 
   return (
     <div>
