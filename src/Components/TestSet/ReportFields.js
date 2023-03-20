@@ -12,6 +12,8 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import Table from "../../CustomComponent/Table";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+
 export default function ReportFields({
   setSelectedProject,
   selectedProject,
@@ -31,7 +33,7 @@ export default function ReportFields({
   let requiredsFields = [From_Date, to_Date];
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-
+  const navigate = useNavigate();
   //   let autoComplete = [
 //     "userAutocomplete",
 //     "projectAutocomplete",
@@ -99,6 +101,21 @@ export default function ReportFields({
           );
       }
     },
+    {
+        
+        headerName: "Actions",
+        flex: 3,
+        headerAlign: "center",
+        align: "center",
+        renderCell:(params) => {
+            return (
+        <Button variant="contained" onClick={navigate("ViewReport", {
+            state: { id: ""},})}>View Report</Button>
+            )
+        }
+    
+      },
+   
   ];
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
