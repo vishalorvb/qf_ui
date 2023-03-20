@@ -22,24 +22,37 @@ const MenuProps = {
 
 
 
-function MuiltiSelect({options, id, value , stateList}) {
+function MuiltiSelect({ options, id, value, stateList, preselect }) {
 
-    let [selectedval,setSelectedval] = useState([])
-    const handleChange = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setSelectedval(value);
-    };
+  let [selectedval, setSelectedval] = useState([])
+  let [checkbox,setCheckbox] = useState([])
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedval(value);
+  };
 
-    useEffect(() => {
-      // console.log(selectedval)
-      stateList([...selectedval])
-    }, [selectedval])
+  useEffect(() => {
+    let t = []
+    selectedval.forEach(val=>{
+      t.push(val[id])
+    })
+    setCheckbox([...t])
+    stateList([...selectedval])
+  }, [selectedval])
+
+
+
+
+  useEffect(() => {
+    console.log(preselect)
+    setSelectedval(preselect)
+  }, [])
 
   return (
     <div>
-        <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-checkbox-label"></InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -48,19 +61,20 @@ function MuiltiSelect({options, id, value , stateList}) {
           value={selectedval}
           onChange={handleChange}
           input={<OutlinedInput label="" />}
-          renderValue={(selected) => selected.map((value) => value + ",")}
+          renderValue={(selected) => selected.map((value) => value.val + ",")}
           MenuProps={MenuProps}
         >
           {options.map((opt) => {
 
-            return(
-            <MenuItem key={opt[id]} value={opt[value]}>
-              <Checkbox 
-               checked={selectedval.indexOf(opt[value]) > -1}
-              />
-              <ListItemText primary={opt[value]} />
-            </MenuItem>
-          )})}
+            return (
+              <MenuItem key={opt[id]} value={opt}>
+                <Checkbox
+                  checked={checkbox.indexOf(opt[id]) > -1}
+                />
+                <ListItemText primary={opt[value]} />
+              </MenuItem>
+            )
+          })}
         </Select>
       </FormControl>
     </div>

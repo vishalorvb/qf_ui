@@ -7,12 +7,17 @@ import { datasetinfo } from './DatasetHelper'
 import { DatasetRequest } from './Dataset'
 
 function CreateDataSetPopUp({ close }) {
+
+    
 function handleSubmit(e){
-   
    if (validateFormbyName(["name","desc"],"error")){
     DatasetRequest[0].datasets_list = [datasetinfo]
     console.log(DatasetRequest)
-    CreateDataset(DatasetRequest[0])
+    CreateDataset(DatasetRequest[0]).then(res=>{
+        if (res){
+
+        }
+    })
    }
 }
 
