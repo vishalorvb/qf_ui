@@ -16,12 +16,12 @@ import { getApplication } from "../../Services/ApplicationService";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
+import DataObjectOutlinedIcon from "@mui/icons-material/DataObjectOutlined";
 import axios from "../../api/axios";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
-  const [radio, setRadio] = useState(0);
-  const [datasets, Setdatasets] = useState([]);
+
   const [popup, setPopup] = useState(false);
   const [snack, setSnack] = useState(false);
 
@@ -29,7 +29,7 @@ export default function TestCases() {
     project_name: "Project",
   });
   const [selectedApplication, setSelectedApplication] = useState({});
-  const { auth } = useAuth();
+
   const navigate = useNavigate();
 
   const columns = [
@@ -59,6 +59,22 @@ export default function TestCases() {
                 <DeleteIcon className=""></DeleteIcon>
               </IconButton>
             </Tooltip>
+            <Tooltip title="Dataset">
+              <IconButton
+                onClick={() =>
+                  navigate("datasets", {
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
+                }
+              >
+                <DataObjectOutlinedIcon />
+              </IconButton>
+            </Tooltip>
+
             {selectedApplication?.module_type === 1 ? (
               <Tooltip title="Update APIs ">
                 <IconButton
