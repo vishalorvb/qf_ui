@@ -55,7 +55,7 @@ export default function DatasetSelectAndExecute({
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
-      <DialogTitle>Execution Progress</DialogTitle>
+      <DialogTitle>Execution</DialogTitle>
       <DialogContent>
         <ExecutionToolbar
           projectId={projectId}

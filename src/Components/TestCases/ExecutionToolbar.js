@@ -6,6 +6,7 @@ import {
   CheckboxButtonGroup,
   MultiSelectElement,
   SelectElement,
+  TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
 import axios from "../../api/axios";
@@ -24,10 +25,13 @@ export default function ExecutionToolbar({
   const [execEnvList, setExecEnvList] = useState([]);
   const [clientInactive, setClientInactive] = useState(false);
   const [jarConnected, setJarConnected] = useState(false);
+  const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
+  const [execLoc, setExecLoc] = useState("local");
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
     browser: yup.array().required(),
+    commitMsg: execLoc !== "local" && yup.string().required(),
   });
   const {
     control,
@@ -63,19 +67,21 @@ export default function ExecutionToolbar({
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.info);
-        axios
-          .postForm(`http://127.0.0.1:8765/connect`, {
-            data: resp?.data?.info,
-            jarName: `code`,
-          })
-          .then((resp) => {
-            console.log(resp);
-            setJarConnected(true);
-          })
-          .catch((err) => {
-            console.log(err.message);
-            err.message === "Network Error" && setClientInactive(true);
-          });
+        data?.executionLoc === "local"
+          ? axios
+              .postForm(`http://127.0.0.1:8765/connect`, {
+                data: resp?.data?.info,
+                jarName: `code`,
+              })
+              .then((resp) => {
+                console.log(resp);
+                setJarConnected(true);
+              })
+              .catch((err) => {
+                console.log(err.message);
+                err.message === "Network Error" && setClientInactive(true);
+              })
+          : setRemoteExecutionsuccess(true);
       });
   };
   const onSubmitGenerate = (data) => {
@@ -103,19 +109,21 @@ export default function ExecutionToolbar({
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.info);
-        axios
-          .postForm(`http://127.0.0.1:8765/connect`, {
-            data: resp?.data?.info,
-            jarName: `code`,
-          })
-          .then((resp) => {
-            console.log(resp);
-            setJarConnected(true);
-          })
-          .catch((err) => {
-            console.log(err.message);
-            err.message === "Network Error" && setClientInactive(true);
-          });
+        data?.executionLoc === "local"
+          ? axios
+              .postForm(`http://127.0.0.1:8765/connect`, {
+                data: resp?.data?.info,
+                jarName: `code`,
+              })
+              .then((resp) => {
+                console.log(resp);
+                setJarConnected(true);
+              })
+              .catch((err) => {
+                console.log(err.message);
+                err.message === "Network Error" && setClientInactive(true);
+              })
+          : setRemoteExecutionsuccess(true);
       });
   };
   useEffect(() => {
@@ -159,7 +167,13 @@ export default function ExecutionToolbar({
         open={jarConnected}
         close={setJarConnected}
         msg={"Local Client Jar Launched!"}
-        severity="Success"
+        severity="success"
+      />
+      <SnackbarNotify
+        open={remoteExecutionsuccess}
+        close={setRemoteExecutionsuccess}
+        msg={"Scripts Executed Successfully"}
+        severity="success"
       />
       <Stack spacing={1} direction="row" justifyContent="flex-start" mt={1}>
         <SelectElement
@@ -168,6 +182,7 @@ export default function ExecutionToolbar({
           size="small"
           sx={{ width: 200 }}
           control={control}
+          onChange={(e) => setExecLoc(e)}
           options={execEnvList}
         />
         <SelectElement
@@ -211,6 +226,18 @@ export default function ExecutionToolbar({
           </>
         )}
       </Stack>
+      {execLoc !== "local" && (
+        <Stack mt={1}>
+          <TextFieldElement
+            label="Commit message"
+            variant="outlined"
+            size="small"
+            fullWidth
+            name="commitMsg"
+            control={control}
+          />
+        </Stack>
+      )}
     </form>
   );
 }
