@@ -27,17 +27,18 @@ import { Stack } from "@mui/system";
 export let DatasetRequest;
 
 function Dataset() {
-  let [createpopup, setCreatepopup] = useState(false);
-  let [datasets, setDatasets] = useState([]);
-  let [drawer, setDrawer] = useState(false);
-  let [screens, setScreens] = useState([]);
-  let [selectedScreen, setSelectedScreen] = useState([]);
-  let [screeninfo, setScreeninfo] = useState(false);
-  let [data, setData] = useState();
-  let [selectedScreenIds, setSelectedScreenIds] = useState([]);
+  let [createpopup, setCreatepopup] = useState(false)
+  let [datasets, setDatasets] = useState([])
+  let [drawer, setDrawer] = useState(false)
+  let [screens, setScreens] = useState([])
+  let [selectedScreen, setSelectedScreen] = useState([])
+  let [screeninfo, setScreeninfo] = useState(false)
+  let [data, setData] = useState()
+  let [selectedScreenIds, setSelectedScreenIds] = useState([])
+  let [dropdown, setDropdown] = useState([])
 
-  let location = useLocation();
-  let navigate = useNavigate();
+  let location = useLocation()
+  let navigate = useNavigate()
   try {
     let projectId = location.state.projectId;
     let applicationId = location.state.applicationId;
@@ -128,27 +129,64 @@ function Dataset() {
       field: "elements",
       headerName: "Elements",
       renderCell: (param) => {
+        let opt = [
+          {
+            id: "custom_code",
+            val: "Custom Code"
+          },
+          {
+            id: "displayed",
+            val: "Displayed"
+          },
+          {
+            id: "element_wait",
+            val: "Element Wait"
+          },
+          {
+            id: "scrollup",
+            val: "Scroll Up"
+          },
+          {
+            id: "scrolldown",
+            val: "Scroll Down"
+          },
+          {
+            id: "is_random",
+            val: "Random"
+          },
+          {
+            id: "is_enter",
+            val: "Random"
+          }
+        ]
+        let alllist = ["custom_code", "displayed", "element_wait", "scrollup", "scrolldown", "is_random", "is_enter"]
         return (
           <div>
-            <select
-              multiple
-              // onChange={e=>console.log(e.target.value)}
-            >
-              <option onClick={(e) => console.log("clicked")} value="1">
-                Validate
-              </option>
-              <option value="2">Custom Code</option>
-              <option value="3">Displayed</option>
-              <option value="4">Element Wait</option>
-              <option value="5">Scroll Up</option>
-              <option value="6">Scroll Down</option>
-              <option value="7">Random</option>
-              <option value="8">Enter</option>
-            </select>
+            <MuiltiSelect
+              preselect={opt.filter(e=>{
+                if(param.row.dataset_values[e.id]){
+                  return e
+                }
+              })}
+              options={opt}
+              value="val"
+              id="id"
+              stateList={list => {
+                let templist = list.map(obj => obj["id"])
+                alllist.forEach(l => {
+                  if (templist.includes(l)) {
+                    updateDataset(param.row.element_id, l, true)
+                  }
+                  else {
+                    updateDataset(param.row.element_id, l, false)
+                  }
+                })
+              }}
+            ></MuiltiSelect>
           </div>
         );
       },
-      flex: 3,
+      flex: 2,
       sortable: false,
       align: "left",
     },
@@ -269,7 +307,7 @@ function Dataset() {
     return () => {
       clearDatasetinfo();
     };
-  }, []);
+  }, [])
 
   return (
     <div>
