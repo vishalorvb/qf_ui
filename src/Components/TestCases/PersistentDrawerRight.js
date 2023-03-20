@@ -21,28 +21,30 @@ export default function PersistentDrawerRight({ screen, screenId, setScreenId })
   };
 
   function handleClick(e) {
-    if (screenId.includes(e.target.value)) {
-      let temp = screenId.filter(s => {
-        if (s != e.target.value) {
-          return s
-        }
-      })
+    let val = parseInt(e.target.value)
+    // if (screenId.includes(val)) {
+    //   let temp = screenId.filter(s => {
+    //     if (s != val) {
+    //       return s
+    //     }
+    //   })
 
-      setScreenId([...temp])
-    }
-    else {
-      let temp = screenId
-      temp.push(e.target.value)
+    //   setScreenId([...temp])
+    // }
+    // else {
+    //   let temp = screenId
+    //   temp.push(val)
 
-      setScreenId([...temp])
-    }
+    //   setScreenId([...temp])
+    // }
+    setScreenId([val])
   }
 
   useEffect(() => {
   }, [screenId])
 
   useEffect(() => {
-  setScreenId([screen[0].screen_id])
+    setScreenId([screen[0].screen_id])
   }, [screen])
 
   return (
