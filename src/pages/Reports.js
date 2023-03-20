@@ -15,8 +15,10 @@ import {
   validateForm,
 } from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function Reports() {
+  const navigate = useNavigate();
   const [fromDate, setFromDate] = useState("");
   const From_Date = useRef();
   const [toDate, setToDate] = useState("");
@@ -136,7 +138,9 @@ function Reports() {
       console.log(fromDate);
       console.log(toDate);
       axiosPrivate
-        .post(`qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`)
+        .post(
+          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${workflowId}&user_id=${userId}`
+        )
         .then((Response) => {
           setTbData(Response.data.info);
           console.log(Response.data.info);
@@ -164,6 +168,9 @@ function Reports() {
         elevation={0}
         sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
       >
+        <Button onClick={() => navigate("viewReport", { state: { id: "" } })}>
+          here
+        </Button>
         <Container
           component={"div"}
           maxWidth={false}
@@ -385,6 +392,7 @@ function Reports() {
           // hidefooter={false}
         />
       </div>
+      <Outlet />
     </div>
   );
 }
