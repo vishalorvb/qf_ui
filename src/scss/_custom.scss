@@ -212,7 +212,7 @@ a {
   margin: 0 !important;
 }
 
-input,
+input [type=text],
 select {
   min-height: 35px;
   line-height: 35px;
