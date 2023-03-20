@@ -39,10 +39,13 @@ function Dataset() {
 
   let location = useLocation()
   let navigate = useNavigate()
+  let projectId
+  let applicationId
+  let testcaseId
   try {
-    let projectId = location.state.projectId;
-    let applicationId = location.state.applicationId;
-    let testcaseId = location.state.testcaseId;
+     projectId = location.state.projectId;
+     applicationId = location.state.applicationId;
+     testcaseId = location.state.testcaseId;
   } catch (error) {
     console.warn(
       "Fist from testcase, This page need projectId, applicationId and testcaseId"
@@ -272,8 +275,8 @@ function Dataset() {
   ];
 
   useEffect(() => {
-    getDataset(setDatasets, 467, 768, 618);
-    getData_for_createDataset(setData, 618);
+    getDataset(setDatasets,projectId , applicationId, testcaseId);
+    getData_for_createDataset(setData, testcaseId);
   }, []);
 
   useEffect(() => {
