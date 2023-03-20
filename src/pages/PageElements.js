@@ -101,6 +101,7 @@ export default function PageElements() {
         selectionModel={preSelectedElement}
         setSelectionModel={setPreSelectedElement}
         setNewchangedElement={setNewchangedElement}
+        hideheaderCheckbox={true}
       />
       {popup && (
         <ElementsDetails

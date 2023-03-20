@@ -30,6 +30,7 @@ export default function Table(props) {
     getRowId,
     hideSearch,
     setNewchangedElement,
+    hideheaderCheckbox,
   } = props;
   const [pagesize, setPagesize] = useState(10);
   return (
@@ -70,7 +71,7 @@ export default function Table(props) {
             },
           "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
             {
-              display: "none",
+              display: hideheaderCheckbox && "none",
             },
         }}
         initialState={{
