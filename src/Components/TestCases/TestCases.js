@@ -16,6 +16,7 @@ import { getApplication } from "../../Services/ApplicationService";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
+import DataObjectOutlinedIcon from "@mui/icons-material/DataObjectOutlined";
 import axios from "../../api/axios";
 
 export default function TestCases() {
@@ -56,6 +57,21 @@ export default function TestCases() {
             <Tooltip title="Delete">
               <IconButton>
                 <DeleteIcon className=""></DeleteIcon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Dataset">
+              <IconButton
+                onClick={() =>
+                  navigate("datasets", {
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
+                }
+              >
+                <DataObjectOutlinedIcon />
               </IconButton>
             </Tooltip>
 

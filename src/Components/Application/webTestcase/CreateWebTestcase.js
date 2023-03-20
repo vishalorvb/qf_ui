@@ -6,16 +6,19 @@ import {
   TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import useHead from "../../../hooks/useHead";
 import * as yup from "yup";
 import { Stack } from "@mui/system";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
 export default function CreateWebTestcase() {
   const { setHeader } = useHead();
   const location = useLocation();
+  const navigate = useNavigate();
   const [pagesnScreens, setPagesnScreens] = useState([]);
+  const [screenUpdated, setScreenUpdated] = useState(false);
   const {
     control,
     handleSubmit,
@@ -49,6 +52,10 @@ export default function CreateWebTestcase() {
       .post(`/qfservice/webtestcase/ScreensMapping`, screensData)
       .then((resp) => {
         console.log(resp);
+        resp?.data?.status === "SUCCESS" && setScreenUpdated(true);
+        setTimeout(() => {
+          resp?.data?.status === "SUCCESS" && navigate(-1);
+        }, 1000);
       });
 
     console.log(screens);
@@ -64,9 +71,11 @@ export default function CreateWebTestcase() {
         setPagesnScreens(webpagesList);
         const object = {};
         webpagesList.map((page) => {
-          object[page.name] = page.screens_list.map(
-            (screen) => screen?.screen_id
-          );
+          object[page.name] = page.screens_list
+            .filter((screen) => {
+              return screen?.is_select === true;
+            })
+            .map((screen) => screen?.screen_id);
         });
         reset(object);
         console.log(data);
@@ -92,6 +101,12 @@ export default function CreateWebTestcase() {
   }, []);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <SnackbarNotify
+        open={screenUpdated}
+        close={setScreenUpdated}
+        msg={"Screens Updated Successfully"}
+        severity="success"
+      />
       {/* <TextFieldElement
         id="sprint"
         label="Sprint"
