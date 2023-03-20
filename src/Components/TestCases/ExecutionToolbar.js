@@ -38,7 +38,7 @@ export default function ExecutionToolbar({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmitExecute = (data) => {
     console.log(data);
     console.log(testcaseId);
     const executionData = {
@@ -54,7 +54,47 @@ export default function ExecutionToolbar({
       testcase_overwrite: false,
       runtimevariables: data?.buildenvName?.split("&")[2],
       is_execute: true,
-      is_generate: false,
+      is_generate: data?.regenerateScript?.length > 0,
+      client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      user_id: auth?.userId,
+    };
+    axios
+      .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
+      .then((resp) => {
+        console.log(resp);
+        console.log(resp?.data?.info);
+        axios
+          .postForm(`http://127.0.0.1:8765/connect`, {
+            data: resp?.data?.info,
+            jarName: `code`,
+          })
+          .then((resp) => {
+            console.log(resp);
+            setJarConnected(true);
+          })
+          .catch((err) => {
+            console.log(err.message);
+            err.message === "Network Error" && setClientInactive(true);
+          });
+      });
+  };
+  const onSubmitGenerate = (data) => {
+    console.log(data);
+    console.log(testcaseId);
+    const executionData = {
+      testcase_id: testcaseId,
+      testcase_datasets_ids_list: selectedDatasets,
+      config_id: null,
+      config_name: null,
+      build_environment_name: data?.buildenvName?.split("&")[1],
+      build_environment_id: data?.buildenvName?.split("&")[0],
+      browser_type: data?.browser?.toString(),
+      execution_location: data?.executionLoc,
+      repository_commit_message: "",
+      testcase_overwrite: false,
+      runtimevariables: data?.buildenvName?.split("&")[2],
+      is_execute: false,
+      is_generate: true,
       client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
       user_id: auth?.userId,
     };
@@ -108,7 +148,7 @@ export default function ExecutionToolbar({
       });
   }, [applicationId]);
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form>
       <SnackbarNotify
         open={clientInactive}
         close={setClientInactive}
@@ -158,9 +198,17 @@ export default function ExecutionToolbar({
         />
         <FeatureMenu />
         {selectedDatasets.length > 0 && (
-          <Button variant="contained" type="submit">
-            Execute
-          </Button>
+          <>
+            <Button variant="contained" onClick={handleSubmit(onSubmitExecute)}>
+              Execute
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleSubmit(onSubmitGenerate)}
+            >
+              Generate
+            </Button>
+          </>
         )}
       </Stack>
     </form>

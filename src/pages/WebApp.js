@@ -55,6 +55,26 @@ export default function WebApp() {
       renderCell: (param) => {
         return (
           <div>
+            <Tooltip title="Pages">
+              <IconButton>
+                <VisibilityOutlinedIcon
+                  className="eyeIcon"
+                  onClick={() => {
+                    let url = ApplicationNav.filter((ele) => {
+                      if (ele.type == type) {
+                        return ele.url;
+                      }
+                    });
+                    navigate(url[0].url, {
+                      state: {
+                        id: param.row.module_id,
+                        base_url: param.row.base_url,
+                      },
+                    });
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
             {type == 2 && (
               <Tooltip title="Screen">
                 <IconButton
@@ -81,26 +101,6 @@ export default function WebApp() {
                 }}
               >
                 <EditOutlinedIcon></EditOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Pages">
-              <IconButton>
-                <VisibilityOutlinedIcon
-                  className="eyeIcon"
-                  onClick={() => {
-                    let url = ApplicationNav.filter((ele) => {
-                      if (ele.type == type) {
-                        return ele.url;
-                      }
-                    });
-                    navigate(url[0].url, {
-                      state: {
-                        id: param.row.module_id,
-                        base_url: param.row.base_url,
-                      },
-                    });
-                  }}
-                />
               </IconButton>
             </Tooltip>
             {/* <Tooltip title="Testcase">
