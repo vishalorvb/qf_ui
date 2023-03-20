@@ -84,7 +84,7 @@ export function getTestcase(callback, project_id) {
 export function getElementsList(callback, screenId) {
   axios
     .get(
-      `http://10.11.12.242:8080/qfservice/screen/getScreenElementsList?screen_id=${screenId}`
+      `${baseUrl}/qfservice/screen/getScreenElementsList?screen_id=${screenId}`
     )
     .then((res) => {
       callback(res.data.info);
