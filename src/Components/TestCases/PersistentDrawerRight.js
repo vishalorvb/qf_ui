@@ -81,6 +81,7 @@ export default function PersistentDrawerRight({
               ml={1}
               sx={{
                 backgroundColor: screenId.includes(s.screen_id) && "#e8edf2",
+                cursor: "pointer",
               }}
               onClick={() => handleClick(s.screen_id)}
             >
