@@ -385,3 +385,10 @@ select {
 
   z-index: 1;
 }
+
+.datasetInput:focus {
+  outline: none;
+}
+.datasetInput {
+  border: none;
+}

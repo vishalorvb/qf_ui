@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 // import * as React from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,18 +14,14 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+      width: 250,
+    },
+  },
 };
 
-
-
-
 function MuiltiSelect({ options, id, value, stateList, preselect }) {
-
-  let [selectedval, setSelectedval] = useState([])
-  let [checkbox,setCheckbox] = useState([])
+  let [selectedval, setSelectedval] = useState([]);
+  let [checkbox, setCheckbox] = useState([]);
   const handleChange = (event) => {
     const {
       target: { value },
@@ -34,21 +30,18 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   };
 
   useEffect(() => {
-    let t = []
-    selectedval.forEach(val=>{
-      t.push(val[id])
-    })
-    setCheckbox([...t])
-    stateList([...selectedval])
-  }, [selectedval])
-
-
-
+    let t = [];
+    selectedval.forEach((val) => {
+      t.push(val[id]);
+    });
+    setCheckbox([...t]);
+    stateList([...selectedval]);
+  }, [selectedval]);
 
   useEffect(() => {
-    console.log(preselect)
-    setSelectedval(preselect)
-  }, [])
+    console.log(preselect);
+    setSelectedval(preselect);
+  }, []);
 
   return (
     <div>
@@ -65,20 +58,17 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
           MenuProps={MenuProps}
         >
           {options.map((opt) => {
-
             return (
               <MenuItem key={opt[id]} value={opt}>
-                <Checkbox
-                  checked={checkbox.indexOf(opt[id]) > -1}
-                />
+                <Checkbox checked={checkbox.indexOf(opt[id]) > -1} />
                 <ListItemText primary={opt[value]} />
               </MenuItem>
-            )
+            );
           })}
         </Select>
       </FormControl>
     </div>
-  )
+  );
 }
 
-export default MuiltiSelect
+export default MuiltiSelect;
