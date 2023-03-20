@@ -212,7 +212,7 @@ a {
   margin: 0 !important;
 }
 
-input [type=text],
+input,
 select {
   min-height: 35px;
   line-height: 35px;
@@ -220,7 +220,6 @@ select {
   border-radius: 5px;
   border: 1px solid #d0d0d0;
 }
-
 
 .menuList {
   margin-top: 20px !important;
@@ -370,19 +369,19 @@ select {
   background-color: #e8f2fd;
 }
 
-.error{
-  border-color: $red
+.error {
+  border-color: $red;
 }
 
-#apptable{
+#apptable {
   position: relative;
 }
-.intable{
+.intable {
   display: inline-block;
   width: 190px;
   position: absolute;
   left: 300px;
   top: 5px;
- 
+
   z-index: 1;
 }
