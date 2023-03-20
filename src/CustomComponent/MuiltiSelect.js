@@ -48,15 +48,15 @@ function MuiltiSelect({options, id, value , stateList}) {
           value={selectedval}
           onChange={handleChange}
           input={<OutlinedInput label="" />}
-          renderValue={(selected) => selected.map((value) => value.val + ",")}
+          renderValue={(selected) => selected.map((value) => value + ",")}
           MenuProps={MenuProps}
         >
           {options.map((opt) => {
 
             return(
-            <MenuItem key={opt[id]} value={opt}>
+            <MenuItem key={opt[id]} value={opt[value]}>
               <Checkbox 
-               checked={selectedval.indexOf(opt) > -1}
+               checked={selectedval.indexOf(opt[value]) > -1}
               />
               <ListItemText primary={opt[value]} />
             </MenuItem>
