@@ -77,7 +77,6 @@ function Dataset() {
       field: "Datasets",
       headerName: "DataSets",
       renderCell: (param) => {
-        console.log(param.row)
         return (
           <div >
             {param.row.web_page_elements.input_type == "InputText" && <input type="text"
@@ -111,15 +110,17 @@ function Dataset() {
       renderCell: (param) => {
         return (
           <div>
-            <select multiple>
-              <option value="1">Validate</option>
-              <option value="1">Custom Code</option>
-              <option value="1">Displayed</option>
-              <option value="1">Element Wait</option>
-              <option value="1">Scroll Up</option>
-              <option value="1">Scroll Down</option>
-              <option value="1">Random</option>
-              <option value="1">Enter</option>
+            <select multiple 
+            // onChange={e=>console.log(e.target.value)}
+            >
+              <option onClick={e=>console.log("clicked")} value="1">Validate</option>
+              <option value="2">Custom Code</option>
+              <option value="3">Displayed</option>
+              <option value="4">Element Wait</option>
+              <option value="5">Scroll Up</option>
+              <option value="6">Scroll Down</option>
+              <option value="7">Random</option>
+              <option value="8">Enter</option>
             </select>
           </div>
         )
