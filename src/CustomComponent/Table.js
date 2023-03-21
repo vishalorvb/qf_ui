@@ -29,6 +29,8 @@ export default function Table(props) {
     setSelectionModel,
     getRowId,
     hideSearch,
+    setNewchangedElement,
+    hideheaderCheckbox,
   } = props;
   const [pagesize, setPagesize] = useState(10);
   return (
@@ -67,6 +69,10 @@ export default function Table(props) {
             {
               outline: "none",
             },
+          "& .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderTitleContainer":
+            {
+              display: hideheaderCheckbox && "none",
+            },
         }}
         initialState={{
           filter: {
@@ -77,7 +83,19 @@ export default function Table(props) {
           },
         }}
         onSelectionModelChange={(i) => {
-          setSelectionModel(i);
+          setSelectionModel((ps) => {
+            if (setNewchangedElement) {
+              const changedElement =
+                i.length > ps.length
+                  ? i.find((e) => !ps.includes(e))
+                  : ps.find((e) => !i.includes(e));
+              setNewchangedElement({
+                id: changedElement,
+                added: i.length > ps.length,
+              });
+            }
+            return i;
+          });
         }}
         selectionModel={selectionModel}
         components={{ Toolbar: !hideSearch && QuickSearchToolbar }}

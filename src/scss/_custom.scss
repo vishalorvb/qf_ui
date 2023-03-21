@@ -369,19 +369,26 @@ select {
   background-color: #e8f2fd;
 }
 
-.error{
-  border-color: $red
+.error {
+  border-color: $red;
 }
 
-#apptable{
+#apptable {
   position: relative;
 }
-.intable{
+.intable {
   display: inline-block;
   width: 190px;
   position: absolute;
   left: 300px;
   top: 5px;
- 
+
   z-index: 1;
+}
+
+.datasetInput:focus {
+  outline: none;
+}
+.datasetInput {
+  border: none;
 }

@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import ProjectsDropdown from "../Components/ProjectsDropdown";
+import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -44,7 +45,10 @@ function a11yProps(index) {
 
 export default function Execution() {
   const { setHeader } = useHead();
-  const [selectedProject, setSelectedProject] = useState([]);
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [selectedApplication, setSelectedApplication] = useState({});
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -65,23 +69,32 @@ export default function Execution() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <ProjectsDropdown setSelectedProject={setSelectedProject} />
+      {/* <ProjectsDropdown setSelectedProject={setSelectedProject} /> */}
+      <ProjectnApplicationSelector
+        selectedProject={selectedProject}
+        setSelectedProject={setSelectedProject}
+        selectedApplication={selectedApplication}
+        setSelectedApplication={setSelectedApplication}
+      />
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Testset" {...a11yProps(0)} />
-          <Tab label="Testcase" {...a11yProps(1)} />
+          <Tab label="Testcase" {...a11yProps(0)} />
+          <Tab label="Testset" {...a11yProps(1)} />
           <Tab label="Pipeline" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Testset selectedProject={selectedProject} />
+        <Testcase
+          selectedProject={selectedProject}
+          selectedApplication={selectedApplication}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Testcase selectedProject={selectedProject} />
+        <Testset selectedProject={selectedProject} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Pipeline selectedProject={selectedProject} />

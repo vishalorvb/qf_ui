@@ -20,7 +20,7 @@ export function updateDataset(elementId, tagname, value) {
             console.log(error)
         }
     });
-    console.log(DatasetRequest)
+  
 }
 
 

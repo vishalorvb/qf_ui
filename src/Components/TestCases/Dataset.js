@@ -1,44 +1,65 @@
-import React, { useEffect, useState } from 'react'
-// import { getScreen } from '../../Services/pageService'
+import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
-import CreateDataSetPopUp from './CreateDataSetPopUp';
-import { Button, Chip, Grid, IconButton, Tooltip } from '@mui/material';
-// import { Stack } from 'immutable';
-import { DeleteOutlined } from '@mui/icons-material';
+import CreateDataSetPopUp from "./CreateDataSetPopUp";
+import {
+  Button,
+  Chip,
+  Grid,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { DeleteOutlined } from "@mui/icons-material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { getDataset } from '../../Services/TestCaseService';
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import PersistentDrawerRight from './PersistentDrawerRight';
-import { getData_for_createDataset } from '../../Services/TestCaseService';
-// import { DatasetRequest } from './DatasetHelper';
-import { updateDataset } from './DatasetHelper';
-export let DatasetRequest
+import { deleteDataset, getDataset } from "../../Services/TestCaseService";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import PersistentDrawerRight from "./PersistentDrawerRight";
+import { getData_for_createDataset } from "../../Services/TestCaseService";
+import { updateDataset } from "./DatasetHelper";
+import { clearDatasetinfo } from "./DatasetHelper";
+import { datasetinfo } from "./DatasetHelper";
+import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
+import { useLocation, useNavigate } from "react-router";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import { Stack } from "@mui/system";
+
+export let DatasetRequest;
 
 function Dataset() {
+  let [createpopup, setCreatepopup] = useState(false);
+  let [datasets, setDatasets] = useState([]);
+  let [drawer, setDrawer] = useState(false);
+  let [screens, setScreens] = useState([]);
+  let [selectedScreen, setSelectedScreen] = useState([]);
+  let [screeninfo, setScreeninfo] = useState(false);
+  let [data, setData] = useState();
+  let [selectedScreenIds, setSelectedScreenIds] = useState([]);
+  let [dropdown, setDropdown] = useState([]);
 
-  let [createpopup, setCreatepopup] = useState(false)
-  let [datasets, setDatasets] = useState([])
-  let [drawer, setDrawer] = useState(false)
-  let [screens, setScreens] = useState([])
-  let [selectedScreen, setSelectedScreen] = useState([])
-  let [screeninfo, setScreeninfo] = useState(false)
-  let [data, setData] = useState()
-  let [selectedScreenIds, setSelectedScreenIds] = useState([])
-
-
-
-
+  let location = useLocation()
+  let navigate = useNavigate()
+  let projectId
+  let applicationId
+  let testcaseId
+  try {
+     projectId = location.state.projectId;
+     applicationId = location.state.applicationId;
+     testcaseId = location.state.testcaseId;
+  } catch (error) {
+    console.warn(
+      "Fist from testcase, This page need projectId, applicationId and testcaseId"
+    );
+    navigate("/testcase");
+  }
 
   let elementcol = [
     {
       field: "fieldname",
       headerName: "Filed Name",
       renderCell: (param) => {
-        return (
-          <div>
-            <h5>{param.row.web_page_elements.name}</h5>
-          </div>
-        )
+        console.log(param.row);
+        return <p>{param.row.web_page_elements.name}</p>;
       },
       flex: 2,
       sortable: false,
@@ -48,11 +69,7 @@ function Dataset() {
       field: "tagname",
       headerName: "Tag Name",
       renderCell: (param) => {
-        return (
-          <div>
-            <h5>{param.row.web_page_elements.input_type}</h5>
-          </div>
-        )
+        return <p>{param.row.web_page_elements.input_type}</p>;
       },
       flex: 2,
       sortable: false,
@@ -63,28 +80,49 @@ function Dataset() {
       headerName: "DataSets",
       renderCell: (param) => {
         return (
-          <div >
-            {/* {param.row.web_page_elements.input_type == "InputText" ? <input type="text" /> : <div>
-              <label for="">click</label> <input type="checkbox" /></div>} */}
-            {param.row.web_page_elements.input_type == "InputText" && <input type="text"
-              onChange={e => {
-                updateDataset(param.row.element_id, "input_value", e.target.value)
-              }}
-            />}
-            {param.row.web_page_elements.input_type == "Link" && <input type="checkbox"
-              onChange={e => {
-                // console.log(e.target.checked)
-                // updateDataset(param.row.element_id, "is_click",e.target.value)
-              }}
-            />}
-            {param.row.web_page_elements.input_type == "Button" && <input type="checkbox"
-              onChange={e => {
-                // console.log(e.target.checked)
-                updateDataset(param.row.element_id, "is_click", e.target.checked)
-              }}
-            />}
+          <div>
+            {param.row.web_page_elements.input_type == "InputText" && (
+              <input
+                type="text"
+                className="datasetInput"
+                defaultValue={param.row.dataset_values.input_value}
+                onChange={(e) => {
+                  updateDataset(
+                    param.row.element_id,
+                    "input_value",
+                    e.target.value
+                  );
+                }}
+              />
+            )}
+            {param.row.web_page_elements.input_type == "Link" && (
+              <input
+                type="checkbox"
+                checked={param.row.dataset_values.is_click}
+                onChange={(e) => {
+                  updateDataset(
+                    param.row.element_id,
+                    "is_click",
+                    e.target.checked
+                  );
+                }}
+              />
+            )}
+            {param.row.web_page_elements.input_type == "Button" && (
+              <input
+                type="checkbox"
+                checked={param.row.dataset_values.is_click}
+                onChange={(e) => {
+                  updateDataset(
+                    param.row.element_id,
+                    "is_click",
+                    e.target.checked
+                  );
+                }}
+              />
+            )}
           </div>
-        )
+        );
       },
       flex: 2,
       sortable: false,
@@ -94,42 +132,82 @@ function Dataset() {
       field: "elements",
       headerName: "Elements",
       renderCell: (param) => {
+        let opt = [
+          {
+            id: "custom_code",
+            val: "Custom Code",
+          },
+          {
+            id: "displayed",
+            val: "Displayed",
+          },
+          {
+            id: "element_wait",
+            val: "Element Wait",
+          },
+          {
+            id: "scrollup",
+            val: "Scroll Up",
+          },
+          {
+            id: "scrolldown",
+            val: "Scroll Down",
+          },
+          {
+            id: "is_random",
+            val: "Random",
+          },
+          {
+            id: "is_enter",
+            val: "Random",
+          },
+        ];
+        let alllist = [
+          "custom_code",
+          "displayed",
+          "element_wait",
+          "scrollup",
+          "scrolldown",
+          "is_random",
+          "is_enter",
+        ];
         return (
           <div>
-            <select multiple>
-              <option value="1">Validate</option>
-              <option value="1">Custom Code</option>
-              <option value="1">Displayed</option>
-              <option value="1">Element Wait</option>
-              <option value="1">Scroll Up</option>
-              <option value="1">Scroll Down</option>
-              <option value="1">Random</option>
-              <option value="1">Enter</option>
-            </select>
+            <MuiltiSelect
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
+                  {
+                    border: "none",
+                  },
+              }}
+              preselect={opt.filter((e) => {
+                if (param.row.dataset_values[e.id]) {
+                  return e;
+                }
+              })}
+              options={opt}
+              value="val"
+              id="id"
+              stateList={(list) => {
+                let templist = list.map((obj) => obj["id"]);
+                alllist.forEach((l) => {
+                  if (templist.includes(l)) {
+                    updateDataset(param.row.element_id, l, true);
+                  } else {
+                    updateDataset(param.row.element_id, l, false);
+                  }
+                });
+              }}
+            ></MuiltiSelect>
           </div>
-        )
+        );
       },
-      flex: 3,
+      flex: 2,
       sortable: false,
       align: "left",
     },
-
-  ]
+  ];
   let column = [
-    {
-      field: " ",
-      headerName: "Select",
-      renderCell: (param) => {
-        return (
-          <div>
-            <input type="radio" name="radio" />
-          </div>
-        )
-      },
-      flex: 0.5,
-      sortable: false,
-      align: "left",
-    },
     {
       field: "name",
       headerName: "DataSet Name",
@@ -153,16 +231,13 @@ function Dataset() {
             <div>
               <h4>Regular</h4>
             </div>
-          )
-        }
-        else {
+          );
+        } else {
           return (
             <div>
-
               <h4>DB DataSet</h4>
-
             </div>
-          )
+          );
         }
       },
       flex: 3,
@@ -181,114 +256,132 @@ function Dataset() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Edit">
-              <IconButton>
+              <IconButton
+                onClick={(e) => {
+                  getData_for_createDataset(
+                    setData,
+                    param.row.testcase_id,
+                    param.row.dataset_id
+                  );
+                  setDrawer(!drawer);
+                  datasetinfo.name = param.row.name;
+                  datasetinfo.description = param.row.description;
+                  datasetinfo.dataset_id = param.row.dataset_id;
+                }}
+              >
                 <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton>
+              <IconButton
+              onClick={e=>{
+                console.log(param.row.dataset_id)
+                deleteDataset(param.row.dataset_id)
+              }}
+              >
                 <DeleteOutlined></DeleteOutlined>
               </IconButton>
             </Tooltip>
           </div>
         );
       },
-      flex: 1,
+      flex: 2,
       headerAlign: "center",
       sortable: false,
       align: "center",
-    }
-  ]
+    },
+  ];
 
   useEffect(() => {
-    getDataset(setDatasets)
-    getData_for_createDataset(setData, 618)
-  }, [])
+    getDataset(setDatasets,projectId , applicationId, testcaseId);
+    getData_for_createDataset(setData, testcaseId);
+  }, []);
 
   useEffect(() => {
-
-    DatasetRequest = [data]
-    console.log(data)
+    DatasetRequest = [data];
     try {
-      setScreens(data.screens_in_testcase)
-    } catch (error) {
-
-    }
-  }, [data])
+      setScreens(data.screens_in_testcase);
+    } catch (error) {}
+  }, [data]);
 
   useEffect(() => {
     try {
-      let x = screens.map(s => {
-        return s.screeninfo
-      })
-      setScreeninfo(x)
-    } catch (error) {
-
-    }
-  }, [screens])
-
+      let x = screens.map((s) => {
+        return s.screeninfo;
+      });
+      setScreeninfo(x);
+    } catch (error) {}
+  }, [screens]);
 
   useEffect(() => {
-    let temp = screens.filter(s => {
-      if (selectedScreenIds.includes(s.screen_id.toString())) {
-        return s
+    let temp = screens.filter((s) => {
+      if (selectedScreenIds.includes(s.screen_id)) {
+        return s;
       }
-    })
-    setSelectedScreen([...temp])
-  }, [selectedScreenIds])
+    });
+    setSelectedScreen([...temp]);
+  }, [selectedScreenIds]);
+
+  useEffect(() => {}, [selectedScreen]);
+
+  useEffect(() => {
+    return () => {
+      clearDatasetinfo();
+    };
+  }, []);
 
   return (
     <div>
-      <div>
-        <Grid container columnSpacing={2}>
-          <Grid item xs={2} md={2}>
-            <Button variant="outlined"
-              onClick={e => {
-                setDrawer(!drawer)
-              }}
-            >
-              Add Datset
-            </Button>
-          </Grid>
-          <Grid item xs={2} md={2}>
-            <Button 
-            variant="outlined"
-            onClick={e=>setCreatepopup(true)}
-            >
-              Save
-            </Button>
-          </Grid>
-          <Grid item xs={2} md={2}>
-            {drawer &&
-              <PersistentDrawerRight
-                screen={screeninfo}
-                screenId={selectedScreenIds}
-                setScreenId={setSelectedScreenIds}
-              ></PersistentDrawerRight>
-            }
-          </Grid>
-        </Grid>
-
-
-
-      </div>
-      {drawer == false && <div>
-        <Table
-          rows={datasets}
-          columns={column}
-          hidefooter={true}
-          getRowId={(row) => row.dataset_id}
-        ></Table>
-      </div>}
-      {createpopup && <div> <CreateDataSetPopUp
-        close={setCreatepopup}
-      ></CreateDataSetPopUp> </div >}
-
-      {selectedScreen != undefined && drawer && <div>
-        {selectedScreen.map(s => {
+      <Stack spacing={1} direction="row">
+        <Button
+          variant="contained"
+          size="small"
+          onClick={(e) => {
+            setDrawer(!drawer);
+          }}
+        >
+          {drawer ? "Cancel" : "Add DataSet"}
+        </Button>
+        {drawer && (
+          <Button
+            variant="contained"
+            size="small"
+            onClick={(e) => setCreatepopup(true)}
+          >
+            Save
+          </Button>
+        )}
+        {drawer && (
+          <PersistentDrawerRight
+            screen={screeninfo}
+            screenId={selectedScreenIds}
+            setScreenId={setSelectedScreenIds}
+          ></PersistentDrawerRight>
+        )}
+      </Stack>
+      {drawer == false && (
+        <div>
+          <Table
+            rows={datasets}
+            columns={column}
+            hidefooter={true}
+            getRowId={(row) => row.dataset_id}
+          ></Table>
+        </div>
+      )}
+      {createpopup && (
+        <div>
+          <CreateDataSetPopUp close={setCreatepopup} />
+        </div>
+      )}
+      {selectedScreen != undefined &&
+        drawer &&
+        selectedScreen.map((s) => {
           return (
-            <div>
-              <h5>{s.screeninfo.name}</h5>
+            <>
+              <Typography mt={4} mb={-2}>
+                {s.screeninfo.name}
+              </Typography>
               <Table
                 hideSearch={true}
                 rows={s.screen_elements[0]}
@@ -296,12 +389,11 @@ function Dataset() {
                 hidefooter={true}
                 getRowId={(row) => row.element_id}
               ></Table>
-            </div>
-          )
+            </>
+          );
         })}
-      </div>}
     </div>
-  )
+  );
 }
 
-export default Dataset
+export default Dataset;

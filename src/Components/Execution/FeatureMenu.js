@@ -16,7 +16,7 @@ export default function FeatureMenu() {
   };
 
   return (
-    <div>
+    <>
       <Button
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
@@ -42,6 +42,6 @@ export default function FeatureMenu() {
         <MenuItem onClick={handleClose}>Feature File</MenuItem>
       </Menu>
       <RuntimeVar open={openRuntimeVar} close={setOpenRuntimeVar} />
-    </div>
+    </>
   );
 }

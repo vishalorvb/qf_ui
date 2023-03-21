@@ -1,63 +1,65 @@
-
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import { Button, Grid, Paper } from '@mui/material';
-import { useEffect, useState } from 'react';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-// import { getScreen } from '../../Services/ProjectService';
-// import { getData_for_createDataset } from '../../Services/TestCaseService';
-
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import { Button, Grid, Paper, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+import { Stack } from "@mui/system";
 
 const drawerWidth = 240;
 export let selected_screen;
 
-export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
+export default function PersistentDrawerRight({
+  screen,
+  screenId,
+  setScreenId,
+}) {
   const [open, setOpen] = useState(true);
-  // let [screen, setScreen] = useState([])
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen(!open);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  function handleClick(e){
-    if(screenId.includes(e.target.value)){
-      let temp = screenId.filter(s=>{
-        if(s!= e.target.value){
-          return s
-        }
-      })
+  function handleClick(e) {
+    // let val = parseInt(e.target.value);
+    // if (screenId.includes(val)) {
+    //   let temp = screenId.filter(s => {
+    //     if (s != val) {
+    //       return s
+    //     }
+    //   })
 
-      setScreenId([...temp])
-    }
-    else{
-      let temp = screenId
-      temp.push(e.target.value)
+    //   setScreenId([...temp])
+    // }
+    // else {
+    //   let temp = screenId
+    //   temp.push(val)
 
-      setScreenId([...temp])
-    }
+    //   setScreenId([...temp])
+    // }
+    setScreenId([e]);
   }
 
-  useEffect(() => {
+  useEffect(() => {}, [screenId]);
 
-  }, [screen,screenId])
+  useEffect(() => {
+    setScreenId([screen[0].screen_id]);
+  }, [screen]);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <IconButton
-        onClick={handleDrawerOpen}
-      >
-        <Button variant="contained">Show Screen</Button>
-      </IconButton>
+    <>
+      <Button variant="contained" onClick={handleDrawerOpen}>
+        {open ? "Hide Screens" : "Show Screens"}
+      </Button>
       <Drawer
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
             width: drawerWidth,
           },
         }}
@@ -65,33 +67,38 @@ export default function PersistentDrawerRight({screen,screenId,setScreenId}) {
         anchor="right"
         open={open}
       >
-
-
-        <IconButton onClick={handleDrawerClose}>
-          <Button variant="outlined">Screens</Button>
+        <IconButton size="small" onClick={handleDrawerClose}>
           <DoubleArrowIcon></DoubleArrowIcon>
         </IconButton>
         <Divider />
-        <h6>List of screens</h6>
-        {screen.map(s => {
+        <Typography align="center" m={2}>
+          List of screens
+        </Typography>
+        {screen.map((s) => {
           return (
-            <Grid component={Paper} elevation={0} container className="header" draggable={true}>
-              <div className="sidebar"
-               onDragOver={e=>{
-                selected_screen= s
-               }}
-              >
-                <h5>{s.name}</h5>
-                <p>{s.description}</p>
-                {/* checked={screenId.includes(s.screen_id)} */}
-               <input onChange={handleClick}  type="checkbox" value={s.screen_id}/>
-                <Divider />
-              </div>
-            </Grid>
-          )
+            <Stack
+              mt={1}
+              ml={1}
+              sx={{
+                backgroundColor: screenId.includes(s.screen_id) && "#e8edf2",
+                cursor: "pointer",
+              }}
+              onClick={() => handleClick(s.screen_id)}
+            >
+              <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                {s.name}
+              </Typography>
+              <Typography variant="caption">{s.description}</Typography>
+              {/* <input
+                onChange={handleClick}
+                type="checkbox"
+                checked={screenId.includes(s.screen_id)}
+              /> */}
+              <Divider />
+            </Stack>
+          );
         })}
-
       </Drawer>
-    </Box>
+    </>
   );
 }

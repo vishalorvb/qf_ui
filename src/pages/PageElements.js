@@ -11,19 +11,16 @@ export default function PageElements() {
   const location = useLocation();
 
   let [elements, setElements] = useState([]);
-  let [elementid,setElementid] = useState(0)
-  let[popup,setPopup] = useState(false)
+  let [elementid, setElementid] = useState(0);
+  let [popup, setPopup] = useState(false);
+  const [preSelectedElement, setPreSelectedElement] = useState([]);
+  const [newchangedElement, setNewchangedElement] = useState({});
 
   const elementColumns = [
     {
-      field: "element_id",
-      headerName: "ElementId",
-      flex: 2,
-    },
-    {
       field: "name",
       headerName: "Field Name",
-      flex: 3,
+      flex: 4,
       sortable: false,
     },
     {
@@ -35,25 +32,24 @@ export default function PageElements() {
     {
       field: "tag_name",
       headerName: "Fields Tag",
-      flex: 3,
+      flex: 2,
       sortable: false,
     },
     {
       field: "Actions",
       headerName: "Actions",
-      flex: 3,
+      flex: 1,
       sortable: false,
       align: "center",
       headerAlign: "center",
       renderCell: (param) => {
         return (
           <div
-            onClick={e => {
-              console.log(param.row.element_id)
-              setElementid(param.row.element_id)
-              setPopup(true)
+            onClick={(e) => {
+              console.log(param.row.element_id);
+              setElementid(param.row.element_id);
+              setPopup(true);
             }}
-            
           >
             <NearMeOutlinedIcon />
           </div>
@@ -69,6 +65,15 @@ export default function PageElements() {
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);
+        res?.data?.info &&
+          setPreSelectedElement(() => {
+            const data = res?.data?.info;
+            const selectedData = data
+              .filter((item) => item.is_selected === true)
+              .map((item) => item.element_id);
+            console.log(selectedData);
+            return selectedData;
+          });
       });
 
     setHeader((ps) => {
@@ -76,18 +81,34 @@ export default function PageElements() {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(newchangedElement);
+    axios
+      .post(
+        `/qfservice/webpages/updatePageElement?web_element_id=${newchangedElement?.id}&status=${newchangedElement?.added}`
+      )
+      .then((resp) => {
+        console.log(resp);
+      });
+  }, [newchangedElement]);
   return (
     <div>
       <Table
         rows={elements}
         columns={elementColumns}
         getRowId={(row) => row.element_id}
+        checkboxSelection={true}
+        selectionModel={preSelectedElement}
+        setSelectionModel={setPreSelectedElement}
+        setNewchangedElement={setNewchangedElement}
+        hideheaderCheckbox={true}
       />
-      {popup &&<ElementsDetails
-      ElementId = {elementid}
-      setPopup = {setPopup}
-      ></ElementsDetails>}
+      {popup && (
+        <ElementsDetails
+          ElementId={elementid}
+          setPopup={setPopup}
+        ></ElementsDetails>
+      )}
     </div>
-
   );
 }
