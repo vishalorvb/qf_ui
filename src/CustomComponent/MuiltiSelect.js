@@ -39,9 +39,11 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   }, [selectedval]);
 
   useEffect(() => {
-    console.log(preselect);
-    setSelectedval(preselect);
-  }, []);
+
+    if(preselect.length !== 0) {
+      setSelectedval(preselect);
+    }
+  }, [preselect]);
 
   return (
     <div>

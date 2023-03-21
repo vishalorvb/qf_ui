@@ -126,6 +126,14 @@ export function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
 }
 
 
-export function deleteDataset(datasetId){
-  axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`)
+export async function deleteDataset(datasetId){
+  let x = axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`).then(res=>{
+    if(res.data.status == "SUCCESS"){
+      return true
+    }
+    else{
+      return false
+    }
+  })
+  return x
 }
