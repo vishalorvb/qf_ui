@@ -59,6 +59,8 @@ const CreateWebTestcase = lazy(() =>
   import("../Components/Application/webTestcase/CreateWebTestcase")
 );
 
+const ViewReport = lazy(() => import("../pages/ViewReport"));
+
 export const Routes = [
   {
     path: "ApiTestcase",
@@ -185,6 +187,13 @@ export const Routes = [
     path: "reports",
     element: Reports,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: "viewReport",
+        element: ViewReport,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     path: "testcase",

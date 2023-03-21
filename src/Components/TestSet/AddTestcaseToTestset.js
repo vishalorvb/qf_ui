@@ -1,6 +1,6 @@
 import {Autocomplete,Button,Grid,Paper} from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useLocation } from "react-router-dom";
 import { getTestcasesInProjects, getTestcasesOfTestset } from "../../Services/TestsetService";
@@ -8,6 +8,7 @@ import DeleteTestset from "./DeleteTestset";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
+import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
 
 export default function AddTestcaseToTestset() {
   const [testcaseObject, setTestcaseObject] = useState([]);
@@ -16,15 +17,19 @@ export default function AddTestcaseToTestset() {
   const [deleteObject, setDeleteObject] = useState([]);
   const [testsetName, setTestsetName] = useState(location.state.param1.testset_name);
   const [testsetDesc, setTestsetDesc] = useState(location.state.param1.testset_desc);
+  const testset_name = useRef();
+  const testset_desc = useRef();
   const [leftTestcase, setLeftTestcase] = useState([]);
   const [rightTestcase, setRightTestcase] = useState([]);
   const [TSUpdateSuccessMsg, setTSUpdateSuccessMsg] = useState(false);
+  const [validationMsg, setValidationMsg] = useState(false);
 
-  console.log(location.state.param1);
+  console.log(location.state.param3);
   console.log(location.state.param2);
   var testsetId = location.state.param1.testset_id;
   var projectId = location.state.param2;
   var applicationId = location.state.param3;
+  let requiredOnlyAlphabets = [testset_name,testset_desc];
 
   function handleSelect(event) {
     let e = document.getElementById("left");
@@ -46,7 +51,9 @@ export default function AddTestcaseToTestset() {
     let e = document.getElementById("right");
     let remaining = rightTestcase.filter(ts =>ts.datasets != null);
     for (let i = 0; i < e.options.length; i++) {
+      console.log(e.options[i].selected);
       if (e.options[i].selected) {
+        console.log(testcaseObject.filter(ts => ts.testcase_id == e.options[i].value));
         let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
         remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
         if (temp.length > 0) {
@@ -79,40 +86,48 @@ export default function AddTestcaseToTestset() {
   }, []);
 
   const submit = (e) => {
-    e.preventDefault();
-    const tcList = [];
-    for (let i = 0; i < rightTestcase.length; i++) {
-      console.log(rightTestcase[i].datasets);
-      if (rightTestcase[i].datasets != null) {
-        for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
-          tcList.push({
-            testcase_id: rightTestcase[i].testcase_id,
-            testcase_order: rightTestcase[i].tc_order,
-            testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
-          });
+    if (validateForm([], [], [], requiredOnlyAlphabets, [], [], "error")) {
+      e.preventDefault();
+      const tcList = [];
+      for (let i = 0; i < rightTestcase.length; i++) {
+        console.log(rightTestcase[i].datasets);
+        if (rightTestcase[i].datasets != null) {
+          for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
+            tcList.push({
+              testcase_id: rightTestcase[i].testcase_id,
+              testcase_order: rightTestcase[i].tc_order,
+              testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
+            });
+          }
         }
       }
-    }
-    var data = {
-      "testset_name": testsetName,
-      "testset_desc": testsetDesc,
-      "project_id": projectId,
-      "testset_id": testsetId,
-      "module_id": applicationId,
-      "testcases_list": tcList
-    }
-    console.log(data);
+      var data = {
+        testset_name: testsetName,
+        testset_desc: testsetDesc,
+        project_id: projectId,
+        testset_id: testsetId,
+        module_id: applicationId,
+        testcases_list: tcList,
+      };
+      console.log(data);
 
-    axiosPrivate
-      .post(`qfservice/webtestset/createWebTestset`, data)
-      .then((res) => {
-        console.log(res.data.message);
-        // setTestsetObject(res.data.message);
-        setTSUpdateSuccessMsg(true);
-        setTimeout(() => {
-          setTSUpdateSuccessMsg(false);
-        }, 3000);
-      });
+      axiosPrivate
+        .post(`qfservice/webtestset/createWebTestset`, data)
+        .then((res) => {
+          console.log(res.data.message);
+          // setTestsetObject(res.data.message);
+          setTSUpdateSuccessMsg(true);
+          setTimeout(() => {
+            setTSUpdateSuccessMsg(false);
+          }, 3000);
+        });
+    } else {
+      setValidationMsg(true);
+      setTimeout(() => {
+        setValidationMsg(false);
+      }, 3000);
+      console.log("Invalid form");
+    }
   };
 
   useEffect(() => {
@@ -127,7 +142,7 @@ export default function AddTestcaseToTestset() {
   console.log(rightTestcase);
 
   return (
-    <div>
+    <div onClick={resetClassName}>
       <Paper
         elevation={1}
         sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
@@ -158,6 +173,7 @@ export default function AddTestcaseToTestset() {
             </Grid>
             <Grid item xs={8} sm={6} md={8}>
               <input
+                ref={testset_name}
                 value={testsetName}
                 // ref={first_name}
                 onChange={(e) => {
@@ -182,6 +198,7 @@ export default function AddTestcaseToTestset() {
             </Grid>
             <Grid item xs={8} sm={6} md={8}>
               <input
+                ref={testset_desc}
                 value={testsetDesc}
                 // ref={last_name}
                 onChange={(e) => {
@@ -211,7 +228,7 @@ export default function AddTestcaseToTestset() {
                 multiple
                 style={{padding:"10px"}}
               >
-                {leftTestcase.length > 0 ? leftTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : ""}
+                {leftTestcase.length > 0 ? leftTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : []}
               </select>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
@@ -229,7 +246,7 @@ export default function AddTestcaseToTestset() {
                 variant="outlined"
                 size="small"
                 onClick={handleUnselect}
-                aria-label="move all right"
+                aria-label="move all left"
               >
                 ≪
               </Button>
@@ -244,7 +261,7 @@ export default function AddTestcaseToTestset() {
                 style={{padding:"10px"}}
               >
                 <option value="">Select Testcase</option>
-                {rightTestcase.length > 0 ? rightTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : ""}
+                {rightTestcase.length > 0 ? rightTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : []}
               </select>
             </Grid>
           </Grid>
@@ -264,6 +281,7 @@ export default function AddTestcaseToTestset() {
         </Container>
       </Paper>
       <div className="datatable" style={{ marginTop: "15px" }}>
+      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
       <SnackbarNotify open={TSUpdateSuccessMsg} close={setTSUpdateSuccessMsg} msg="Testset Updated successfully" severity="success"/>
         {openDelete ? (
           <DeleteTestset

@@ -5,7 +5,7 @@ import {
   Paper,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Table from "../../CustomComponent/Table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useLocation } from "react-router-dom";
@@ -18,6 +18,7 @@ import { left } from "@popperjs/core";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
+import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
 
 function TestsetCreate() {
   const [testcaseObject, setTestcaseObject] = useState([]);
@@ -26,6 +27,10 @@ function TestsetCreate() {
   // const [datasetId, setDatasetId] = useState();
   const [testsetName, setTestsetName] = useState("");
   const [testsetDesc, setTestsetDesc] = useState("");
+  const testset_name = useRef();
+  const testset_desc = useRef();
+  const project_name = useRef();
+  const application_name = useRef();
   const [projectObject, setProjectObject] = useState([]);
   const [applicationObject, setApplicationObject] = useState([]);
   const [applicationId, setapplicationId] = useState(0);
@@ -36,6 +41,9 @@ function TestsetCreate() {
   const { auth } = useAuth();
   console.log(auth.info);
   const loggedInId = auth.info.id;
+  let requiredOnlyAlphabets = [testset_name,testset_desc];
+  let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
+  const [validationMsg, setValidationMsg] = useState(false);
 
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
@@ -70,7 +78,7 @@ function TestsetCreate() {
   ];
 
   console.log(testcaseObject);
-  console.log(leftTestcase.length);
+  // console.log(leftTestcase.length);
 
 
   function handleSelect(event) {
@@ -126,11 +134,13 @@ function TestsetCreate() {
   }, []);
 
   const submit = (e) => {
-    e.preventDefault();
+    if(validateForm([],[],[],requiredOnlyAlphabets,[],autoComplete,"error")) {
+      e.preventDefault();
     const tcList = [];
     for (let i = 0; i < rightTestcase.length; i++) {
       console.log(rightTestcase[i].datasets);
       if (rightTestcase[i].datasets != null) {
+        console.log(rightTestcase[i].datasets.length);
         for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
           tcList.push({
             testcase_id: rightTestcase[i].testcase_id,
@@ -159,13 +169,28 @@ function TestsetCreate() {
         setTimeout(() => {
           setTSCreateSuccessMsg(false);
         }, 3000);
+        setapplicationId(0);
+    setTestsetName("");
+    setTestsetDesc("");
+    setLeftTestcase([]);
+    setRightTestcase([]);
       }
     );
-    setProjectId(0);
+    // setProjectId(0);
     setapplicationId(0);
     setTestsetName("");
     setTestsetDesc("");
+    }
+    else {
+      setValidationMsg(true);
+      setTimeout(() => {
+        setValidationMsg(false);
+      }, 3000);
+      console.log("Invalid form");
+    }
   };
+
+  console.log(leftTestcase);
 
   useEffect(() => {
     getProject(setProjectObject,loggedInId);
@@ -173,13 +198,13 @@ function TestsetCreate() {
 
   useEffect(() => {
     getApplicationOfProject(setApplicationObject,projectId);
-    console.log(getTestcasesInProjects(setTestcaseObject, projectId));
+    // console.log(getTestcasesInProjects(setTestcaseObject, projectId));
     getTestcasesInProjects(setTestcaseObject, projectId);
     getTestcasesInProjects(setLeftTestcase, projectId);
   }, [projectId]);
 
   return (
-    <div>
+    <div onClick={resetClassName}>
       <div className="datatable" style={{ marginTop: "15px" }}>
         <Paper
           elevation={1}
@@ -213,6 +238,8 @@ function TestsetCreate() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={8}>
                       <Autocomplete
+                      ref={project_name}
+                        name="projectAutocomplete"
                         size="small"
                         options={projectObject}
                         getOptionLabel={(option) => option.project_name}
@@ -250,6 +277,8 @@ function TestsetCreate() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={8}>
                       <Autocomplete
+                      ref={application_name}
+                        name="applicationAutocomplete"
                         size="small"
                         options={applicationObject}
                         getOptionLabel={(option) => option.module_name}
@@ -286,6 +315,7 @@ function TestsetCreate() {
                     </Grid>
                     <Grid item xs={6} sm={6} md={8}>
                       <input
+                        ref={testset_name}
                         type="text"
                         name=""
                         placeholder=" Testset Name"
@@ -310,6 +340,7 @@ function TestsetCreate() {
                     <Grid item xs={6} sm={6} md={8}>
                       {" "}
                       <input
+                      ref={testset_desc}
                         type="text"
                         name=""
                         placeholder=""
@@ -331,11 +362,7 @@ function TestsetCreate() {
                     <Grid item xs={4} sm={4} md={4}>
                       <label>Select Testcase:</label>
                       <select id="left" multiple style={{ padding: "10px" }}>
-                        {(leftTestcase.length > 0)? leftTestcase
-                          .filter((ts) => ts.datasets != null)
-                          .map((ts) => (
-                            <option value={ts.testcase_id}>{ts.name}</option>
-                          )):""}
+                        {leftTestcase.length > 0 ? leftTestcase.filter((ts) => ts.datasets != null).map((ts) => (<option value={ts.testcase_id}>{ts.name}</option>)) : []}
                       </select>
                     </Grid>
                     <Grid item xs={1} sm={1} md={1}>
@@ -362,11 +389,7 @@ function TestsetCreate() {
                       <label>Select Testcase:</label>
                       <select id="right" multiple style={{ padding: "10px" }}>
                         <option value="">Select Testcase</option>
-                        {rightTestcase.length > 0 ? rightTestcase
-                          .filter((ts) => ts.datasets != null)
-                          .map((ts) => (
-                            <option value={ts.testcase_id}>{ts.name}</option>
-                          )) : ""}
+                        {rightTestcase.length > 0 ? rightTestcase.filter((ts) => ts.datasets != null).map((ts) => (<option value={ts.testcase_id}>{ts.name}</option>)) : []}
                       </select>
                     </Grid>
                   </Grid>
@@ -394,6 +417,7 @@ function TestsetCreate() {
             getRowId={(row) => row.testcase_id}
           /> */}
         </Paper>
+        <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
         <SnackbarNotify open={TSCreateSuccessMsg} close={setTSCreateSuccessMsg} msg="Testset Created successfully" severity="success"/>
       </div>
     </div>

@@ -102,17 +102,6 @@ export default function ReportFields({
           );
       }
     },
-    {  
-        headerName: "Actions",
-        flex: 3,
-        headerAlign: "center",
-        align: "center",
-        renderCell:(params)=>{
-            return(
-                <Button variant="contained">View Report</Button>
-            )
-        }
-      },
   ];
 
   let date = new Date();

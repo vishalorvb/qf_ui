@@ -15,7 +15,7 @@ export default function PersistentDrawerRight({
   screenId,
   setScreenId,
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -25,22 +25,6 @@ export default function PersistentDrawerRight({
   };
 
   function handleClick(e) {
-    // let val = parseInt(e.target.value);
-    // if (screenId.includes(val)) {
-    //   let temp = screenId.filter(s => {
-    //     if (s != val) {
-    //       return s
-    //     }
-    //   })
-
-    //   setScreenId([...temp])
-    // }
-    // else {
-    //   let temp = screenId
-    //   temp.push(val)
-
-    //   setScreenId([...temp])
-    // }
     setScreenId([e]);
   }
 

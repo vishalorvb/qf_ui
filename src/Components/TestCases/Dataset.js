@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { getDataset } from "../../Services/TestCaseService";
+import { deleteDataset, getDataset } from "../../Services/TestCaseService";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import PersistentDrawerRight from "./PersistentDrawerRight";
 import { getData_for_createDataset } from "../../Services/TestCaseService";
@@ -23,7 +23,7 @@ import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 import { useLocation, useNavigate } from "react-router";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { Stack } from "@mui/system";
-
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 export let DatasetRequest;
 
 function Dataset() {
@@ -35,7 +35,10 @@ function Dataset() {
   let [screeninfo, setScreeninfo] = useState(false);
   let [data, setData] = useState();
   let [selectedScreenIds, setSelectedScreenIds] = useState([]);
-  let [dropdown, setDropdown] = useState([]);
+  let [deletepopup, setDeletepopup] = useState(false);
+  let [deletedatasetId, setDeletedatasetId] = useState()
+  let [snackbar, setSnackbar] = useState(false);
+  // let deletedatasetId = null
 
   let location = useLocation()
   let navigate = useNavigate()
@@ -43,9 +46,9 @@ function Dataset() {
   let applicationId
   let testcaseId
   try {
-     projectId = location.state.projectId;
-     applicationId = location.state.applicationId;
-     testcaseId = location.state.testcaseId;
+    projectId = location.state.projectId;
+    applicationId = location.state.applicationId;
+    testcaseId = location.state.testcaseId;
   } catch (error) {
     console.warn(
       "Fist from testcase, This page need projectId, applicationId and testcaseId"
@@ -58,7 +61,6 @@ function Dataset() {
       field: "fieldname",
       headerName: "Filed Name",
       renderCell: (param) => {
-        console.log(param.row);
         return <p>{param.row.web_page_elements.name}</p>;
       },
       flex: 2,
@@ -171,32 +173,38 @@ function Dataset() {
           "is_random",
           "is_enter",
         ];
+        let flag = false
+        let preselect = opt.filter(e => {
+          if (param.row.dataset_values[e.id]) {
+            return e;
+          }
+        })
         return (
           <div>
             <MuiltiSelect
               sx={{
                 "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-                  {
-                    border: "none",
-                  },
+                {
+                  border: "none",
+                },
               }}
-              preselect={opt.filter((e) => {
-                if (param.row.dataset_values[e.id]) {
-                  return e;
-                }
-              })}
+              preselect={preselect}
+              // preselect ={opt}
               options={opt}
               value="val"
               id="id"
               stateList={(list) => {
                 let templist = list.map((obj) => obj["id"]);
-                alllist.forEach((l) => {
-                  if (templist.includes(l)) {
-                    updateDataset(param.row.element_id, l, true);
-                  } else {
-                    updateDataset(param.row.element_id, l, false);
-                  }
-                });
+                if (flag || preselect.length !== templist.length) {
+                  flag = true
+                  alllist.forEach((l) => {
+                    if (templist.includes(l)) {
+                      updateDataset(param.row.element_id, l, true);
+                    } else {
+                      updateDataset(param.row.element_id, l, false);
+                    }
+                  });
+                }
               }}
             ></MuiltiSelect>
           </div>
@@ -261,7 +269,7 @@ function Dataset() {
                   getData_for_createDataset(
                     setData,
                     param.row.testcase_id,
-                    param.row.module_id
+                    param.row.dataset_id
                   );
                   setDrawer(!drawer);
                   datasetinfo.name = param.row.name;
@@ -273,7 +281,12 @@ function Dataset() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton>
+              <IconButton
+                onClick={e => {
+                  setDeletedatasetId(param.row.dataset_id);
+                  setDeletepopup(true)
+                }}
+              >
                 <DeleteOutlined></DeleteOutlined>
               </IconButton>
             </Tooltip>
@@ -286,17 +299,23 @@ function Dataset() {
       align: "center",
     },
   ];
-
+  function ReloadDatset() {
+    getDataset(setDatasets, projectId, applicationId, testcaseId);
+    setDrawer(!drawer);
+    setSnackbar(true)
+  }
   useEffect(() => {
-    getDataset(setDatasets,projectId , applicationId, testcaseId);
+    getDataset(setDatasets, projectId, applicationId, testcaseId);
     getData_for_createDataset(setData, testcaseId);
   }, []);
+
+
 
   useEffect(() => {
     DatasetRequest = [data];
     try {
       setScreens(data.screens_in_testcase);
-    } catch (error) {}
+    } catch (error) { }
   }, [data]);
 
   useEffect(() => {
@@ -305,7 +324,7 @@ function Dataset() {
         return s.screeninfo;
       });
       setScreeninfo(x);
-    } catch (error) {}
+    } catch (error) { }
   }, [screens]);
 
   useEffect(() => {
@@ -317,7 +336,9 @@ function Dataset() {
     setSelectedScreen([...temp]);
   }, [selectedScreenIds]);
 
-  useEffect(() => {}, [selectedScreen]);
+  useEffect(() => {
+
+  }, [selectedScreen]);
 
   useEffect(() => {
     return () => {
@@ -366,7 +387,9 @@ function Dataset() {
       )}
       {createpopup && (
         <div>
-          <CreateDataSetPopUp close={setCreatepopup} />
+          <CreateDataSetPopUp close={setCreatepopup}
+            ReloadDataset={ReloadDatset}
+          />
         </div>
       )}
       {selectedScreen != undefined &&
@@ -387,6 +410,28 @@ function Dataset() {
             </>
           );
         })}
+      <ConfirmPop
+        open={deletepopup}
+        handleClose={() => setDeletepopup(false)}
+        heading="Delete Data Set"
+        message="Are you sure you want to delete?"
+        onConfirm={() => {
+          deleteDataset(deletedatasetId).then(res => {
+            if (res) {
+              setDeletepopup(false);
+              setDeletedatasetId(null)
+              getDataset(setDatasets, projectId, applicationId, testcaseId)
+            }
+          })
+        }}
+
+      ></ConfirmPop>
+      <SnackbarNotify
+        open={snackbar}
+        close={setSnackbar}
+        msg="Data Set Created successfully"
+        severity="success"
+      ></SnackbarNotify>
     </div>
   );
 }
