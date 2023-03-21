@@ -26,6 +26,7 @@ export default function ExecutionToolbar({
   const [clientInactive, setClientInactive] = useState(false);
   const [jarConnected, setJarConnected] = useState(false);
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
+  const [remoteAPiFails, setRemoteAPiFails] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
@@ -67,8 +68,10 @@ export default function ExecutionToolbar({
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.info);
+        resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         data?.executionLoc === "local"
-          ? axios
+          ? resp?.data?.status === "SUCCESS" &&
+            axios
               .postForm(`http://127.0.0.1:8765/connect`, {
                 data: resp?.data?.info,
                 jarName: `code`,
@@ -109,8 +112,10 @@ export default function ExecutionToolbar({
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.info);
+        resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         data?.executionLoc === "local"
-          ? axios
+          ? resp?.data?.status === "SUCCESS" &&
+            axios
               .postForm(`http://127.0.0.1:8765/connect`, {
                 data: resp?.data?.info,
                 jarName: `code`,
@@ -161,6 +166,12 @@ export default function ExecutionToolbar({
         open={clientInactive}
         close={setClientInactive}
         msg={"Local Client Jar is not running!"}
+        severity="error"
+      />
+      <SnackbarNotify
+        open={remoteAPiFails}
+        close={setRemoteAPiFails}
+        msg={"Somthing went wrong , Info Null "}
         severity="error"
       />
       <SnackbarNotify
