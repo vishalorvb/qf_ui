@@ -73,11 +73,6 @@ export default function PersistentDrawerRight({
                 {s.name}
               </Typography>
               <Typography variant="caption">{s.description}</Typography>
-              {/* <input
-                onChange={handleClick}
-                type="checkbox"
-                checked={screenId.includes(s.screen_id)}
-              /> */}
               <Divider />
             </Stack>
           );

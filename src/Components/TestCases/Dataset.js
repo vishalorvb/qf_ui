@@ -159,10 +159,6 @@ function Dataset() {
             id: "is_random",
             val: "Random",
           },
-          {
-            id: "is_enter",
-            val: "Random",
-          },
         ];
         let alllist = [
           "custom_code",
@@ -259,7 +255,17 @@ function Dataset() {
         return (
           <div>
             <Tooltip title="Copy">
-              <IconButton>
+              <IconButton
+              onClick={(e) => {
+                getData_for_createDataset(
+                  setData,
+                  param.row.testcase_id,
+                  param.row.dataset_id
+                );
+                setDrawer(!drawer);
+                
+              }}
+              >
                 <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
               </IconButton>
             </Tooltip>
@@ -312,10 +318,13 @@ function Dataset() {
 
 
   useEffect(() => {
+    if (data != undefined && data.screens_in_testcase.length == 0) {
+      // navigate("/testcase")
+    }
     DatasetRequest = [data];
     try {
       setScreens(data.screens_in_testcase);
-    } catch (error) { }
+    } catch (error) { console.log(error) }
   }, [data]);
 
   useEffect(() => {
@@ -324,16 +333,21 @@ function Dataset() {
         return s.screeninfo;
       });
       setScreeninfo(x);
-    } catch (error) { }
+    } catch (error) { console.log(error) }
   }, [screens]);
 
   useEffect(() => {
-    let temp = screens.filter((s) => {
-      if (selectedScreenIds.includes(s.screen_id)) {
-        return s;
-      }
-    });
-    setSelectedScreen([...temp]);
+    try {
+      let temp = screens.filter((s) => {
+        if (selectedScreenIds.includes(s.screen_id)) {
+          return s;
+        }
+      });
+      setSelectedScreen([...temp]);
+    } catch (error) {
+      console.log(error)
+    }
+    
   }, [selectedScreenIds]);
 
   useEffect(() => {
