@@ -11,11 +11,12 @@ import { getTestsets } from "../Services/TestsetService";
 import { getProject } from "../Services/ProjectService";
 import useHead from "../hooks/useHead";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { axiosPrivate } from "../api/axios";
+import axios, { axiosPrivate } from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 import { getApplicationOfProject } from "../Services/ApplicationService";
+import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 
 function Testset() {
   const [testsetObject, setTestsetObject] = useState([]);
@@ -32,6 +33,10 @@ function Testset() {
   const [deleteObject, setDeleteObject] = useState([]);
   const [executeObject, setExecuteObject] = useState([]);
   const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [selectedApplication, setSelectedApplication] = useState({});
   const navigate = useNavigate();
   const { auth } = useAuth();
   console.log(auth.info);
@@ -46,7 +51,9 @@ function Testset() {
     // setOpenEdit(true);
     // setEditObject(e);
     console.log(e);
-    navigate("AddTestcaseToTestset", { state: { param1: e, param2: projectId, param3: applicationId}});
+    console.log(selectedProject?.project_id);
+    console.log(selectedApplication?.module_id);
+    navigate("AddTestcaseToTestset", { state: { param1: e, param2: selectedProject?.project_id, param3: selectedApplication?.module_id}});
   };
 
   const deleteUserHandler = (e) => {
@@ -60,8 +67,17 @@ function Testset() {
     setExecuteObject(e);
   };
 
-  const onChangeHandler = () => {
-    setOpen1(true);
+  function onChangeHandler() {
+    axios
+        .get(
+          `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+          // `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
+        )
+        .then((resp) => {
+          const testsets = resp?.data?.info ? resp?.data?.info : [];
+          setTestsetObject(testsets);
+        });
+    // setOpen1(true);
   };
   
   const columns = [
@@ -146,28 +162,41 @@ function Testset() {
       });
   }, []);
 
-  const submit = () => {
-    axiosPrivate
-      .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
-      )
-      .then((res) => {
-        console.log(res.data.info);
-        setTestsetObject(res.data.info);
-      });
-  };
+  // const submit = () => {
+  //   axiosPrivate
+  //     .get(
+  //       `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
+  //     )
+  //     .then((res) => {
+  //       console.log(res.data.info);
+  //       setTestsetObject(res.data.info);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getProject(setProjectObject,loggedInId);
+  // }, []);
+
+  // useEffect(() => {
+  //   getApplicationOfProject(setWorkflowObject,projectId)
+  // }, [projectId])
 
   useEffect(() => {
-    getProject(setProjectObject,loggedInId);
-  }, []);
-
-  useEffect(() => {
-    getApplicationOfProject(setWorkflowObject,projectId)
-  }, [projectId])
+    selectedApplication?.module_id &&
+      axios
+        .get(
+          `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+          // `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
+        )
+        .then((resp) => {
+          const testsets = resp?.data?.info ? resp?.data?.info : [];
+          setTestsetObject(testsets);
+        });
+  }, [selectedApplication]);
 
   return (
     <div>
-      <Paper
+      {/* <Paper
         elevation={0}
         sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
       >
@@ -271,14 +300,20 @@ function Testset() {
             Search
           </Button>
         </Container>
-      </Paper>
+      </Paper> */}
+      <ProjectnApplicationSelector
+        selectedProject={selectedProject}
+        setSelectedProject={setSelectedProject}
+        selectedApplication={selectedApplication}
+        setSelectedApplication={setSelectedApplication}
+      />
       <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="Testset deleted successfully" severity="success"/>
       <div
         className="recenttable"
         style={{ flot: "right", marginBottom: "10px" }}
       ></div>
       <div className="datatable" style={{ marginTop: "20px" }}>
-      {openDelete ? <DeleteTestset object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete}  setDelSuccessMsg={setDelSuccessMsg} getTestsets={submit}/> : ""}
+      {openDelete ? <DeleteTestset object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete}  setDelSuccessMsg={setDelSuccessMsg} getTestsets = {onChangeHandler}/> : ""}
         <Table
           columns={columns}
           rows={testsetObject}

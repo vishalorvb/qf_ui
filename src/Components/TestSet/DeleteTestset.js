@@ -5,7 +5,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import { axiosPrivate } from "../../api/axios";
 
 function DeleteTestset(props) {
-    const { openDelete, setOpenDelete,object,setDelSuccessMsg,getTestsets } = props;
+    const { openDelete, setOpenDelete,object,setDelSuccessMsg, getTestsets } = props;
     const tsName = object.testset_name;
     const tsId = object.testset_id;
 
@@ -14,7 +14,7 @@ function DeleteTestset(props) {
     };
 
     const submit = () => {
-        axiosPrivate.post(`/qfservice/webtestset/deleteWebTestset?testset_id=${tsId}`).then(
+        axiosPrivate.delete(`/qfservice/webtestset/deleteWebTestset?testset_id=${tsId}`).then(
             res => {
                 console.log(res.message);
                 setDelSuccessMsg(true);
