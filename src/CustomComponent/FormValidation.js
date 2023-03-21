@@ -124,7 +124,7 @@ export function validateForm(refs, specialcharRefs, passwordRef, onlyalphabets, 
         let collection = document.getElementsByName(element)
         for (let i = 0; i < collection.length; i++) {
             console.log(collection[i].value)
-            if (collection[i].value.trim() == "") {
+            if (collection[i].value == "") {
                 collection[i].className = cname
                 status = false;
                 console.log("error in Autocomplete fiels")
