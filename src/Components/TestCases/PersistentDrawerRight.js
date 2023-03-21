@@ -15,7 +15,7 @@ export default function PersistentDrawerRight({
   screenId,
   setScreenId,
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
