@@ -5,54 +5,34 @@ import axios from '../api/axios';
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 import { useLocation } from "react-router-dom";
 import { Stack } from "@mui/system";
-
-
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
+import Card from '@mui/material/Card';
+import { ConnectedTvOutlined } from '@mui/icons-material';
+import ListRenderer from '../Components/DevopsComponent/ListRenderer';
+import ReportList from '../Components/Reports/ReportList';
+// import { useLocation} from "react-router-dom";
 
 export default function ViewReport() {
+  const location = useLocation();
+const id = location.state.id;
+const [reportData,setReportData] = useState([])
+useEffect(() => {
+  reportDetails(id);
+}, []);
+
+  function reportDetails(id) {
+  axios.get(`/qfreportservice/reportResult/${id}`).then(res => {
+
+    setReportData(res.data.info)
+})
+}
+
   return <>
-  <div>
-  <Grid container justifyContent="flex-start" columnSpacing={2}>
-            <select
-              onChange={e => { }}
-            >
-              <option> Select</option>
-              <option value="Sprint 1"> Sprint 1</option>
-              <option value="Sprint 2"> Sprint 2</option>
-              <option value="Sprint 3"> Sprint 3</option>
-            </select>
-          </Grid>
-          <Grid container justifyContent="flex-start" columnSpacing={2}>
-<h3>abc</h3>
-          </Grid>
-          <Divider></Divider>
-          <Grid container justifyContent="flex-start" columnSpacing={2}>
-          <Grid>START TIME</Grid>
-          <Grid>START TIME</Grid>
-          <Grid>START TIME</Grid>
-          </Grid>
-          <Divider></Divider>
-
-          <Grid>
-          <h3>abc</h3>
-          <Divider></Divider>
-
-          <Stack
-      direction="column"
-      justifyContent="space-between"
-      alignItems="flex-start"
-      spacing={5}
-      mb={0} >
-        <div><h3>abc</h3></div>
-        <Divider></Divider>
-
-        <div><h3>abc</h3></div>
-        <Divider></Divider>
-        
-        <div><h3>abc</h3></div>
-       <hr/>
-        
-      </Stack>
-          </Grid>
-  </div>
+  <ReportList result={reportData}/>
   </>;
 }

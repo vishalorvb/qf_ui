@@ -14,6 +14,8 @@ import Table from "../../CustomComponent/Table";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
+import ReportDetails from "../Reports/ReportDetails";
+
 export default function ReportFields({
   setSelectedProject,
   selectedProject,
@@ -29,6 +31,7 @@ export default function ReportFields({
   const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
   const [tbData, setTbData] = useState([]);
+  const [getReportInfo,setGetReportInfo] = useState([]);
   const axiosPrivate = useAxios();
   let requiredsFields = [From_Date, to_Date];
   const { auth } = useAuth();
@@ -92,8 +95,6 @@ export default function ReportFields({
       align: "center",
       renderCell:(params) => {
         let repo_result = params.row.report_result.split('/');
-
-        console.log(repo_result)
         return (
            <>
             <div style={{color:"green"}}>{repo_result[0]}</div>&nbsp;<b>/</b>&nbsp;<div style={{color:"red"}}>{repo_result[1]}</div>
@@ -109,14 +110,22 @@ export default function ReportFields({
         align: "center",
         renderCell:(params) => {
             return (
-        <Button variant="contained" onClick={navigate("ViewReport", {
-            state: { id: ""},})}>View Report</Button>
+        <Button variant="contained" onClick={e=>{
+          navigate("ViewReport", {
+            state: { id: params.row.report_id},},
+        )
+        }}>View Report</Button>
             )
         }
     
       },
    
   ];
+   function handeleReports(){
+
+  navigate("ViewReport", {
+    state: { id: getReportInfo},},
+)}
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
       const projects = res?.data?.result?.projects_list;
@@ -181,7 +190,7 @@ export default function ReportFields({
         sx={{ width: "20%" }}
         getOptionLabel={(option) => option.project_name}
         onChange={(e, value) => {
-          console.log(value);
+
           setSelectedProject(value);
         }}
         renderInput={(params) => (
