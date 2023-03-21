@@ -92,20 +92,21 @@ export function getElementsList(callback, screenId) {
 }
 
 export async function CreateDataset(data) {
-    console.log("calling create datasets")
-    let x = axios({
+    let x = await axios({
         method:'post',
         data:data,
         url:`${baseUrl}/qfservice/webdataset/web-createDataset`
     }).then(res=>{
-        console.log(res)
-        if(res.data.status === 'success'){
+
+        if(res.data.status === "SUCCESS"){
+        
             return true
         }
         else{
             return false
         }
     })
+ 
     return x
 }
 
@@ -126,6 +127,14 @@ export function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
 }
 
 
-export function deleteDataset(datasetId){
-  axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`)
+export async function deleteDataset(datasetId){
+  let x = axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`).then(res=>{
+    if(res.data.status == "SUCCESS"){
+      return true
+    }
+    else{
+      return false
+    }
+  })
+  return x
 }
