@@ -25,10 +25,11 @@ export default function ReportFields({
   const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
   const From_Date = useRef();
-  const [fromDate, setFromDate] = useState("");
+  const [fromDate, setFromDate] = useState();
   const [toDate, setToDate] = useState("");
   const to_Date = useRef();
   const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
+  const [reportFailMsg, setReportFailMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
   const [tbData, setTbData] = useState([]);
   const [getReportInfo,setGetReportInfo] = useState([]);
@@ -122,11 +123,18 @@ export default function ReportFields({
       },
    
   ];
-   function handeleReports(){
 
-  navigate("ViewReport", {
-    state: { id: getReportInfo},},
-)}
+ 
+
+  let date = new Date();
+  date.setDate(date.getDate() - 7);
+  let finalDate =  date.getFullYear()+'-' + ('0' + (date.getMonth()+1)).slice(-2) + '-'+('0' + date.getDate()).slice(-2) ;
+  let today_date = (moment(new Date()).format("YYYY-MM-DD"))
+  const values = {
+    from_Date: finalDate,
+    to_Date : today_date
+  };
+
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
       const projects = res?.data?.result?.projects_list;
@@ -150,17 +158,32 @@ export default function ReportFields({
     // if (
     //   validateForm(requiredsFields, [], [], [], [], "error")
     // )
+    if(!toDate && !fromDate)
+    {
+        setFromDate(values.from_Date)
+        setToDate(values.to_Date)
+    }
      {
       axiosPrivate
         .post(
           `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication.module_id}&user_id=${loggedInId}`
         )
         .then((Response) => {
+            if((Response.data.info).length > 0 )
+            {
           setTbData(Response.data.info);
           setReportSuccessMsg(true);
           setTimeout(() => {
             setReportSuccessMsg(false);
           }, 3000);
+            }
+            else{
+          setReportFailMsg(true);
+          setTimeout(() => {
+            setReportFailMsg(false);
+          }, 3000);
+            }
+         
         })
         .catch((error) => {
         });
@@ -226,7 +249,7 @@ export default function ReportFields({
           variant="outlined"
           type="date"
           ref={From_Date}
-          defaultValue={fromDate}
+          defaultValue={values.from_Date}
           sx={{ width: 158 }}
           onChange={(newValue) => {
             setFromDate(newValue.target.value);
@@ -251,7 +274,7 @@ export default function ReportFields({
           variant="outlined"
           type="date"
           ref={to_Date}
-          defaultValue={toDate}
+          defaultValue= {values.to_Date}
           sx={{ width: 158 }}
           onChange={(newValue) => {
             setToDate(newValue.target.value);
@@ -282,6 +305,12 @@ export default function ReportFields({
         close={setReportSuccessMsg}
         msg="We got the report successfully"
         severity="success"
+      />
+       <SnackbarNotify
+        open={reportFailMsg}
+        close={setReportFailMsg}
+        msg="No reports found"
+        severity="error"
       />
       <SnackbarNotify
         open={validationMsg}
