@@ -107,12 +107,12 @@ export default function ReportFields({
         flex: 3,
         headerAlign: "center",
         align: "center",
-        renderCell:(params) => {
-            return (
-        <Button variant="contained" onClick={navigate("ViewReport", {
-            state: { id: ""},})}>View Report</Button>
+        renderCell:(params)=>{
+            return(
+                <Button variant="contained">View Report</Button>
             )
         }
+       
     
       },
    
@@ -143,7 +143,7 @@ export default function ReportFields({
      {
       axiosPrivate
         .post(
-          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=768&user_id=${loggedInId}`
+          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication.module_id}&user_id=${loggedInId}`
         )
         .then((Response) => {
           setTbData(Response.data.info);
