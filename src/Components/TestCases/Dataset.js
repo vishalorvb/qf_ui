@@ -23,7 +23,7 @@ import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 import { useLocation, useNavigate } from "react-router";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { Stack } from "@mui/system";
-
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 export let DatasetRequest;
 
 function Dataset() {
@@ -37,7 +37,7 @@ function Dataset() {
   let [selectedScreenIds, setSelectedScreenIds] = useState([]);
   let [deletepopup, setDeletepopup] = useState(false);
   let [deletedatasetId, setDeletedatasetId] = useState()
-
+  let [snackbar, setSnackbar] = useState(false);
   // let deletedatasetId = null
 
   let location = useLocation()
@@ -195,7 +195,7 @@ function Dataset() {
               id="id"
               stateList={(list) => {
                 let templist = list.map((obj) => obj["id"]);
-                if (flag || preselect.length !== templist.length  ) {
+                if (flag || preselect.length !== templist.length) {
                   flag = true
                   alllist.forEach((l) => {
                     if (templist.includes(l)) {
@@ -299,11 +299,17 @@ function Dataset() {
       align: "center",
     },
   ];
-
+  function ReloadDatset() {
+    getDataset(setDatasets, projectId, applicationId, testcaseId);
+    setDrawer(!drawer);
+    setSnackbar(true)
+  }
   useEffect(() => {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
     getData_for_createDataset(setData, testcaseId);
   }, []);
+
+
 
   useEffect(() => {
     DatasetRequest = [data];
@@ -381,7 +387,9 @@ function Dataset() {
       )}
       {createpopup && (
         <div>
-          <CreateDataSetPopUp close={setCreatepopup} />
+          <CreateDataSetPopUp close={setCreatepopup}
+            ReloadDataset={ReloadDatset}
+          />
         </div>
       )}
       {selectedScreen != undefined &&
@@ -418,6 +426,12 @@ function Dataset() {
         }}
 
       ></ConfirmPop>
+      <SnackbarNotify
+        open={snackbar}
+        close={setSnackbar}
+        msg="Data Set Created successfully"
+        severity="success"
+      ></SnackbarNotify>
     </div>
   );
 }
