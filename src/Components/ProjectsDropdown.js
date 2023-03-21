@@ -13,7 +13,6 @@ export default function ProjectsDropdown({ setSelectedProject }) {
 
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      console.log(res.data.result.projects_list);
       setProjectList(res.data.result.projects_list);
     });
     setSelectedProject(projectModules);

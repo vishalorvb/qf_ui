@@ -18,6 +18,7 @@ import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
 import DataObjectOutlinedIcon from "@mui/icons-material/DataObjectOutlined";
 import axios from "../../api/axios";
+import AirplayIcon from "@mui/icons-material/Airplay";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
@@ -109,6 +110,21 @@ export default function TestCases() {
                 </IconButton>
               </Tooltip>
             )}
+            <Tooltip title="Screen Order Update">
+              <IconButton
+                onClick={() =>
+                  navigate("updateScreenOrder", {
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
+                }
+              >
+                <AirplayIcon />
+              </IconButton>
+            </Tooltip>
           </>
         );
       },

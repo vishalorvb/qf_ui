@@ -37,15 +37,15 @@ function Dataset() {
   let [selectedScreenIds, setSelectedScreenIds] = useState([]);
   let [dropdown, setDropdown] = useState([]);
 
-  let location = useLocation()
-  let navigate = useNavigate()
-  let projectId
-  let applicationId
-  let testcaseId
+  let location = useLocation();
+  let navigate = useNavigate();
+  let projectId;
+  let applicationId;
+  let testcaseId;
   try {
-     projectId = location.state.projectId;
-     applicationId = location.state.applicationId;
-     testcaseId = location.state.testcaseId;
+    projectId = location.state.projectId;
+    applicationId = location.state.applicationId;
+    testcaseId = location.state.testcaseId;
   } catch (error) {
     console.warn(
       "Fist from testcase, This page need projectId, applicationId and testcaseId"
@@ -274,10 +274,10 @@ function Dataset() {
             </Tooltip>
             <Tooltip title="Delete">
               <IconButton
-              onClick={e=>{
-                console.log(param.row.dataset_id)
-                deleteDataset(param.row.dataset_id)
-              }}
+                onClick={(e) => {
+                  console.log(param.row.dataset_id);
+                  deleteDataset(param.row.dataset_id);
+                }}
               >
                 <DeleteOutlined></DeleteOutlined>
               </IconButton>
@@ -293,7 +293,7 @@ function Dataset() {
   ];
 
   useEffect(() => {
-    getDataset(setDatasets,projectId , applicationId, testcaseId);
+    getDataset(setDatasets, projectId, applicationId, testcaseId);
     getData_for_createDataset(setData, testcaseId);
   }, []);
 
