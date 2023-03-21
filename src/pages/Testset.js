@@ -17,6 +17,7 @@ import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import SnackbarNotify from '../CustomComponent/SnackbarNotify';
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
+import TestcaseSelectAndExecute from "../Components/Execution/TestcaseSelectAndExecute";
 
 function Testset() {
   const [testsetObject, setTestsetObject] = useState([]);
@@ -43,13 +44,10 @@ function Testset() {
   const loggedInId = auth.info.id;
 
   const addUserHandler = (e) => {
-    // setOpen(true);
     navigate("createTestcase", { state: e });
   };
 
   const editUserHandler = (e) => {
-    // setOpenEdit(true);
-    // setEditObject(e);
     console.log(e);
     console.log(selectedProject?.project_id);
     console.log(selectedApplication?.module_id);
@@ -71,7 +69,6 @@ function Testset() {
     axios
         .get(
           `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
-          // `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
         )
         .then((resp) => {
           const testsets = resp?.data?.info ? resp?.data?.info : [];
@@ -81,7 +78,6 @@ function Testset() {
   };
   
   const columns = [
-    // { headerName: "S.No",field:'sno' ,valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1, flex: 1, headerAlign: "center", sortable: false, align: 'center' },
     {
       field: "testset_name",
       headerName: "Testset Name",
@@ -162,31 +158,11 @@ function Testset() {
       });
   }, []);
 
-  // const submit = () => {
-  //   axiosPrivate
-  //     .get(
-  //       `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data.info);
-  //       setTestsetObject(res.data.info);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getProject(setProjectObject,loggedInId);
-  // }, []);
-
-  // useEffect(() => {
-  //   getApplicationOfProject(setWorkflowObject,projectId)
-  // }, [projectId])
-
   useEffect(() => {
     selectedApplication?.module_id &&
       axios
         .get(
           `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
-          // `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
         )
         .then((resp) => {
           const testsets = resp?.data?.info ? resp?.data?.info : [];
@@ -314,6 +290,7 @@ function Testset() {
       ></div>
       <div className="datatable" style={{ marginTop: "20px" }}>
       {openDelete ? <DeleteTestset object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete}  setDelSuccessMsg={setDelSuccessMsg} getTestsets = {onChangeHandler}/> : ""}
+      {openExecute ? <TestcaseSelectAndExecute object={executeObject} openDelete={openExecute} setOpenDelete={setOpenExecute}   getTestsets = {onChangeHandler} projectId = {selectedProject?.project_id} applicationId = {selectedApplication?.module_id}/> : ""}
         <Table
           columns={columns}
           rows={testsetObject}

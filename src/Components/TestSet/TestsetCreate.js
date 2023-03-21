@@ -134,54 +134,54 @@ function TestsetCreate() {
   }, []);
 
   const submit = (e) => {
-    if(validateForm([],[],[],requiredOnlyAlphabets,[],autoComplete,"error")) {
+    if (
+      validateForm([], [], [], requiredOnlyAlphabets, [], autoComplete, "error")
+    ) {
       e.preventDefault();
-    const tcList = [];
-    for (let i = 0; i < rightTestcase.length; i++) {
-      console.log(rightTestcase[i].datasets);
-      if (rightTestcase[i].datasets != null) {
-        console.log(rightTestcase[i].datasets.length);
-        for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
-          tcList.push({
-            testcase_id: rightTestcase[i].testcase_id,
-            testcase_order: rightTestcase[i].tc_order,
-            testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
-          });
+      const tcList = [];
+      for (let i = 0; i < rightTestcase.length; i++) {
+        console.log(rightTestcase[i].datasets);
+        if (rightTestcase[i].datasets != null) {
+          console.log(rightTestcase[i].datasets.length);
+          for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
+            tcList.push({
+              testcase_id: rightTestcase[i].testcase_id,
+              testcase_order: rightTestcase[i].tc_order,
+              testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
+            });
+          }
         }
       }
-    }
-    var data = {
-      "testset_name": testsetName,
-      "testset_desc": testsetDesc,
-      "project_id": projectId,
-      "testset_id": 0,
-      "module_id": applicationId,
-      "testcases_list": tcList
-    }
-    console.log(data);
+      var data = {
+        testset_name: testsetName,
+        testset_desc: testsetDesc,
+        project_id: projectId,
+        testset_id: 0,
+        module_id: applicationId,
+        testcases_list: tcList,
+      };
+      console.log(data);
 
-    axiosPrivate
-      .post(`qfservice/webtestset/createWebTestset`, data)
-      .then((res) => {
-        console.log(res.data.message);
-        // setTestsetObject(res.data.message);
-        setTSCreateSuccessMsg(true);
-        setTimeout(() => {
-          setTSCreateSuccessMsg(false);
-        }, 3000);
-        setapplicationId(0);
-    setTestsetName("");
-    setTestsetDesc("");
-    setLeftTestcase([]);
-    setRightTestcase([]);
-      }
-    );
-    // setProjectId(0);
-    setapplicationId(0);
-    setTestsetName("");
-    setTestsetDesc("");
-    }
-    else {
+      axiosPrivate
+        .post(`qfservice/webtestset/createWebTestset`, data)
+        .then((res) => {
+          console.log(res.data.message);
+          // setTestsetObject(res.data.message);
+          setTSCreateSuccessMsg(true);
+          setTimeout(() => {
+            setTSCreateSuccessMsg(false);
+          }, 3000);
+          setapplicationId(0);
+          setTestsetName("");
+          setTestsetDesc("");
+          setLeftTestcase([]);
+          setRightTestcase([]);
+        });
+      // setProjectId(0);
+      setapplicationId(0);
+      setTestsetName("");
+      setTestsetDesc("");
+    } else {
       setValidationMsg(true);
       setTimeout(() => {
         setValidationMsg(false);
