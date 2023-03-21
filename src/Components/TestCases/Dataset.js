@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { getDataset } from "../../Services/TestCaseService";
+import { deleteDataset, getDataset } from "../../Services/TestCaseService";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import PersistentDrawerRight from "./PersistentDrawerRight";
 import { getData_for_createDataset } from "../../Services/TestCaseService";
@@ -261,7 +261,7 @@ function Dataset() {
                   getData_for_createDataset(
                     setData,
                     param.row.testcase_id,
-                    param.row.module_id
+                    param.row.dataset_id
                   );
                   setDrawer(!drawer);
                   datasetinfo.name = param.row.name;
@@ -273,7 +273,12 @@ function Dataset() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton>
+              <IconButton
+              onClick={e=>{
+                console.log(param.row.dataset_id)
+                deleteDataset(param.row.dataset_id)
+              }}
+              >
                 <DeleteOutlined></DeleteOutlined>
               </IconButton>
             </Tooltip>

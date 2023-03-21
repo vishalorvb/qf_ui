@@ -124,3 +124,8 @@ export function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
       callback(res.data.info);
     });
 }
+
+
+export function deleteDataset(datasetId){
+  axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`)
+}
