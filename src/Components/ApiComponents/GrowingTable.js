@@ -4,10 +4,20 @@ function GrowingTable(props) {
 
     let [rows, setRows] = useState([<GetRow />])
 
+
+    function* getId() {
+        let i = 1
+        while (true) {
+            yield i
+        }
+        i++
+    }
+    let id = getId()
+
     function GetRow() {
         return (
             <tr >
-                {props.header.map(head => <td style={{ border: "1px solid", padding: "4px" }}>
+                {props.header.map(head => <td key={id.next().value} style={{ border: "1px solid", padding: "4px" }}>
                     <input type="text" placeholder={head} style={{ width: "100%", height: "25px" }} />
                 </td>)}
             </tr>
@@ -23,10 +33,10 @@ function GrowingTable(props) {
             let description = table.rows[i].cells[2].childNodes[0].value
 
 
-            let tempdata ={}
-            tempdata[props.keypair[0]] = key 
-            tempdata[props.keypair[1]] = value 
-            tempdata[props.keypair[2]] = description 
+            let tempdata = {}
+            tempdata[props.keypair[0]] = key
+            tempdata[props.keypair[1]] = value
+            tempdata[props.keypair[2]] = description
             data.push(tempdata)
         }
         console.log(data)
@@ -38,24 +48,34 @@ function GrowingTable(props) {
         }
     }
 
+    function addRow() {
+        console.log("calling add row")
+        setRows([...rows, <GetRow />])
+    }
     function appendRow(e) {
-        if(e.target.parentElement.parentElement.nextSibling == null){
-            setRows([...rows, <GetRow />])
+        if (e.target.parentElement.parentElement.nextSibling == null) {
+            addRow()
         }
     }
-  
-// useEffect(() => {
-// for(let i = 0; i < 5; i){
-//     setRows([...rows, <GetRow />])
-// }
-// }, [])
+
+
+    // useEffect(() => {
+    // for(let i = 0; i < 5; i){
+    //     setRows([...rows, <GetRow />])
+    // }
+    // }, [])
 
     return (
         <div>
-            <table  id='mytable' onFocus={appendRow} onChange={handleOnChange} style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
+            <table id='mytable' onFocus={appendRow} onChange={handleOnChange} style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
                 <tr >
                     {props.header.map(head => <th style={{ border: "1px solid", padding: "4px" }}>{head}</th>)}
                 </tr>
+                {props.prefilled.map(val => <tr >
+                    <td style={{ border: "1px solid", padding: "4px" }}>
+                        <input type="text" defaultValue="hello" style={{ width: "100%", height: "25px" }} />
+                    </td>
+                </tr>)}
                 {rows}
             </table>
         </div>
