@@ -24,7 +24,13 @@ import { useLocation, useNavigate } from "react-router";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { Stack } from "@mui/system";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+
+
 export let DatasetRequest;
+
+
+let snackbarmsg = "";
+let snackbarsev = ""
 
 function Dataset() {
   let [createpopup, setCreatepopup] = useState(false);
@@ -381,7 +387,7 @@ function Dataset() {
             Save
           </Button>
         )}
-        {drawer && (
+        {drawer && screeninfo.length>0 &&(
           <PersistentDrawerRight
             screen={screeninfo}
             screenId={selectedScreenIds}

@@ -44,7 +44,11 @@ function GrowingTable(props) {
         }
     }
   
-
+// useEffect(() => {
+// for(let i = 0; i < 5; i){
+//     setRows([...rows, <GetRow />])
+// }
+// }, [])
 
     return (
         <div>
