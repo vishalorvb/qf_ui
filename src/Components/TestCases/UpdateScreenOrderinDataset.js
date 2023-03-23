@@ -2,31 +2,23 @@ import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import useHead from "../hooks/useHead";
-import axios from "../api/axios";
-import ElementsDetails from "../CustomComponent/ElementsDetails";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { IconButton } from "@mui/material";
+import axios from "../../api/axios";
+import useHead from "../../hooks/useHead";
 
-export default function ScreenElements() {
+export default function UpdateScreenOrderinDataset({ screen }) {
   const { setHeader } = useHead();
   const location = useLocation();
-  const navigate = useNavigate();
-  const [data, setData] = useState(() => []);
-
+  const [data, setData] = useState([]);
   const [order, setOrder] = useState([]);
-
-  const [popup, setPopup] = useState(false);
-  const [elementid, setElementid] = useState(0);
 
   useEffect(() => {
     axios
       .get(
-        `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.id}`
+        `/qfservice/webtestcase/getScreens?testcase_id=${location?.state?.testcaseId}`
       )
       .then((resp) => {
-        console.log(resp?.data?.info);
-        setData(resp?.data?.info);
+        const data = resp?.data?.info;
+        setData(data);
       });
 
     setHeader((ps) => {
@@ -40,9 +32,9 @@ export default function ScreenElements() {
 
   const updateScreenOrder = () => {
     axios
-      .post(`qfservice/screen/updateOrderOfScreenElements`, {
-        screenId: location?.state?.id,
-        screen_element_ids: order,
+      .post(`/qfservice/webtestcase/updateOrderOfScreensInTestcase`, {
+        testcaseId: location?.state?.testcaseId,
+        screen_ids: order,
       })
       .then((resp) => {
         console.log(resp);
@@ -57,27 +49,12 @@ export default function ScreenElements() {
     //column definitions...
     () => [
       {
-        accessorKey: "name",
+        accessorKey: "screeninfo.name",
         header: "Field Name",
       },
       {
-        accessorKey: "input_type",
-        header: "Field Type",
-      },
-      {
-        accessorKey: "locators",
-        header: "Field Locators",
-        Cell: ({ cell, column, row, table }) => (
-          <IconButton
-            onClick={() => {
-              console.log(row.original);
-              setElementid(row.original.element_id);
-              setPopup(true);
-            }}
-          >
-            <NearMeOutlinedIcon />
-          </IconButton>
-        ),
+        accessorKey: "screeninfo.description",
+        header: "Description",
       },
     ],
     []
@@ -86,12 +63,6 @@ export default function ScreenElements() {
 
   return (
     <>
-      {popup && (
-        <ElementsDetails
-          ElementId={elementid}
-          setPopup={setPopup}
-        ></ElementsDetails>
-      )}
       <MaterialReactTable
         columns={columns}
         data={data}
@@ -112,7 +83,7 @@ export default function ScreenElements() {
               );
               setData([...data]);
               setOrder(() => {
-                return data.map((d) => d.screen_element_id);
+                return data.map((d) => d.screen_id);
               });
               console.log(data);
             }

@@ -42,15 +42,15 @@ function Dataset() {
   let [data, setData] = useState();
   let [selectedScreenIds, setSelectedScreenIds] = useState([]);
   let [deletepopup, setDeletepopup] = useState(false);
-  let [deletedatasetId, setDeletedatasetId] = useState()
+  let [deletedatasetId, setDeletedatasetId] = useState();
   let [snackbar, setSnackbar] = useState(false);
   // let deletedatasetId = null
 
-  let location = useLocation()
-  let navigate = useNavigate()
-  let projectId
-  let applicationId
-  let testcaseId
+  let location = useLocation();
+  let navigate = useNavigate();
+  let projectId;
+  let applicationId;
+  let testcaseId;
   try {
     projectId = location.state.projectId;
     applicationId = location.state.applicationId;
@@ -175,20 +175,20 @@ function Dataset() {
           "is_random",
           "is_enter",
         ];
-        let flag = false
-        let preselect = opt.filter(e => {
+        let flag = false;
+        let preselect = opt.filter((e) => {
           if (param.row.dataset_values[e.id]) {
             return e;
           }
-        })
+        });
         return (
           <div>
             <MuiltiSelect
               sx={{
                 "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-                {
-                  border: "none",
-                },
+                  {
+                    border: "none",
+                  },
               }}
               preselect={preselect}
               // preselect ={opt}
@@ -198,7 +198,7 @@ function Dataset() {
               stateList={(list) => {
                 let templist = list.map((obj) => obj["id"]);
                 if (flag || preselect.length !== templist.length) {
-                  flag = true
+                  flag = true;
                   alllist.forEach((l) => {
                     if (templist.includes(l)) {
                       updateDataset(param.row.element_id, l, true);
@@ -294,9 +294,10 @@ function Dataset() {
             </Tooltip>
             <Tooltip title="Delete">
               <IconButton
-                onClick={e => {
+                onClick={(e) => {
+                  console.log(param.row.dataset_id);
                   setDeletedatasetId(param.row.dataset_id);
-                  setDeletepopup(true)
+                  setDeletepopup(true);
                 }}
               >
                 <DeleteOutlined></DeleteOutlined>
@@ -314,14 +315,12 @@ function Dataset() {
   function ReloadDatset() {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
     setDrawer(!drawer);
-    setSnackbar(true)
+    setSnackbar(true);
   }
   useEffect(() => {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
     getData_for_createDataset(setData, testcaseId);
   }, []);
-
-
 
   useEffect(() => {
     if (data != undefined && data.screens_in_testcase.length == 0) {
@@ -356,9 +355,7 @@ function Dataset() {
     
   }, [selectedScreenIds]);
 
-  useEffect(() => {
-
-  }, [selectedScreen]);
+  useEffect(() => {}, [selectedScreen]);
 
   useEffect(() => {
     return () => {
@@ -407,7 +404,8 @@ function Dataset() {
       )}
       {createpopup && (
         <div>
-          <CreateDataSetPopUp close={setCreatepopup}
+          <CreateDataSetPopUp
+            close={setCreatepopup}
             ReloadDataset={ReloadDatset}
           />
         </div>
@@ -436,15 +434,14 @@ function Dataset() {
         heading="Delete Data Set"
         message="Are you sure you want to delete?"
         onConfirm={() => {
-          deleteDataset(deletedatasetId).then(res => {
+          deleteDataset(deletedatasetId).then((res) => {
             if (res) {
               setDeletepopup(false);
-              setDeletedatasetId(null)
-              getDataset(setDatasets, projectId, applicationId, testcaseId)
+              setDeletedatasetId(null);
+              getDataset(setDatasets, projectId, applicationId, testcaseId);
             }
-          })
+          });
         }}
-
       ></ConfirmPop>
       <SnackbarNotify
         open={snackbar}

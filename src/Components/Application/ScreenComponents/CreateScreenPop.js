@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
-import useAuth from "../../hooks/useAuth";
+import axios from "../../../api/axios";
+import useAuth from "../../../hooks/useAuth";
 
 export default function CreateScreenPop(props) {
   const { elementsList, open, close, applicationId, pageId, screenName } =

@@ -4,7 +4,9 @@ import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation
 import Report from "../Components/DevopsComponent/Report";
 
 const Admin = lazy(() => import("../pages/Admin"));
-const ApiApp = lazy(() => import("../pages/ApiApp"));
+const ApiApp = lazy(() =>
+  import("../Components/Application/ApiApplication/ApiApp")
+);
 const Execution = lazy(() => import("../pages/Execution"));
 const MobileApp = lazy(() => import("../pages/MobileApp"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -15,12 +17,19 @@ const Release = lazy(() => import("../pages/Release"));
 const Reports = lazy(() => import("../pages/Reports"));
 const TestCases = lazy(() => import("../Components/TestCases/TestCases"));
 const Testset = lazy(() => import("../pages/Testset"));
-const WebApp = lazy(() => import("../pages/WebApp"));
-const Pages = lazy(() => import("../pages/Pages"));
-const PageElements = lazy(() => import("../pages/PageElements"));
-const CreateProject = lazy(() => import("../pages/CreateProject"));
-const APIsTable = lazy(() => import("../pages/APIsTable"));
-const TestSteps = lazy(() => import("../Components/TestCases/TestSteps"));
+const Applications = lazy(() => import("../pages/Applications"));
+const Pages = lazy(() =>
+  import("../Components/Application/PagesComponents/Pages")
+);
+const PageElements = lazy(() =>
+  import("../Components/Application/PagesComponents/PageElements")
+);
+const CreateProject = lazy(() =>
+  import("../Components/ProjectComponents/CreateProject")
+);
+const APIsTable = lazy(() =>
+  import("../Components/Application/ApiApplication/APIsTable")
+);
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const CreateInstance = lazy(() =>
@@ -39,15 +48,21 @@ const CreateTestcase = lazy(() =>
   import("../Components/TestSet/TestsetCreate")
 );
 const Settings = lazy(() => import("../pages/Settings"));
-const Screen = lazy(() => import("../pages/Screen"));
-const CreateScreen = lazy(() => import(`../pages/CreateScreen`));
+const Screen = lazy(() =>
+  import("../Components/Application/ScreenComponents/Screen")
+);
+const CreateScreen = lazy(() =>
+  import(`../Components/Application/ScreenComponents/CreateScreen`)
+);
 const SelectedPageElements = lazy(() =>
-  import("../Components/Application/SelectedPageElements")
+  import("../Components/Application/ScreenComponents/SelectedPageElements")
 );
 
-const ScreenElements = lazy(() => import("../pages/ScreenElements"));
+const ScreenElements = lazy(() =>
+  import("../Components/Application/ScreenComponents/ScreenElements")
+);
 const UpdateScreen = lazy(() =>
-  import("../Components/Application/UpdateScreen")
+  import("../Components/Application/ScreenComponents/UpdateScreen")
 );
 const CreateApiTestcase = lazy(() =>
   import("../Components/Application/apiTestcase/ApiTestcase")
@@ -60,6 +75,9 @@ const CreateWebTestcase = lazy(() =>
 );
 
 const ViewReport = lazy(() => import("../pages/ViewReport"));
+const UpdateScreenOrder = lazy(() =>
+  import("../Components/TestCases/UpdateScreenOrderinDataset")
+);
 
 export const Routes = [
   {
@@ -215,6 +233,11 @@ export const Routes = [
         element: Dataset,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
+      {
+        path: "updateScreenOrder",
+        element: UpdateScreenOrder,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
     ],
   },
   {
@@ -236,7 +259,7 @@ export const Routes = [
   },
   {
     path: "application",
-    element: WebApp,
+    element: Applications,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {

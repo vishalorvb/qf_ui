@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import useHead from "../hooks/useHead";
-import Table from "../CustomComponent/Table";
+import useHead from "../../../hooks/useHead";
+import Table from "../../../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import {  Outlet, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import CreateApplication from "../Components/CreateApplication";
-import { ApplicationNav } from "./ApplicationNav";
-import { getWebApplication } from "../Services/ApplicationService";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import CreateApplication from "../CreateApplication";
+import { ApplicationNav } from "../ApplicationNav";
+import { getWebApplication } from "../../../Services/ApplicationService";
 import { IconButton, Tooltip } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { moduledata } from "../Components/CreateApplication";
+import { moduledata } from "../CreateApplication";
 export default function ApiApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -50,16 +50,15 @@ export default function ApiApp() {
           <div>
             <Tooltip title="Edit">
               <IconButton
-                onClick={e => {
-                  moduledata.module_id = param.row.module_id
-                  moduledata.module_name = param.row.module_name
-                  moduledata.module_desc = param.row.module_desc
-                  moduledata.base_url = param.row.base_url
-                  setPopup(true)
+                onClick={(e) => {
+                  moduledata.module_id = param.row.module_id;
+                  moduledata.module_name = param.row.module_name;
+                  moduledata.module_desc = param.row.module_desc;
+                  moduledata.base_url = param.row.base_url;
+                  setPopup(true);
                 }}
-
               >
-                <EditOutlinedIcon ></EditOutlinedIcon>
+                <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
             <VisibilityOutlinedIcon
@@ -94,24 +93,30 @@ export default function ApiApp() {
       });
   }, []);
 
-
   useEffect(() => {
-    getWebApplication(setApplication, auth.info.id, 1)
-  }, [])
+    getWebApplication(setApplication, auth.info.id, 1);
+  }, []);
 
   return (
     <>
       <div className="intable">
-        <select onChange={e => {
-          navigate(e.target.value)
-        }}>
-          {ApplicationNav.map(el => <option selected={location.pathname == el.url ? true : false} value={el.url}>{el.name}</option>)}
+        <select
+          onChange={(e) => {
+            navigate(e.target.value);
+          }}
+        >
+          {ApplicationNav.map((el) => (
+            <option
+              selected={location.pathname == el.url ? true : false}
+              value={el.url}
+            >
+              {el.name}
+            </option>
+          ))}
         </select>
       </div>
-      {popup && <CreateApplication
-        close={popup}
-        type={1}
-      />}
+      {"aaaa"}
+      {popup && <CreateApplication close={popup} type={1} />}
       <Table
         rows={application}
         columns={pageColumns}
