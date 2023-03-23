@@ -1,84 +1,61 @@
-import { Button, Divider, Grid, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import axios from '../../api/axios';
-import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
-import { useLocation } from "react-router-dom";
-import { Stack } from "@mui/system";
+import { Divider, Grid, Typography } from '@mui/material'
+import React from 'react'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
-import Card from '@mui/material/Card';
-import { ConnectedTvOutlined } from '@mui/icons-material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import moment from "moment";
 
 export default function ReportDetails({ selectedItemData }) {
 
     return (
         <div>
-            <Typography variant="subtitle1">{selectedItemData?.testcase_name}</Typography>
+            <Typography variant="subtitle1"><b style={{ color: "#5C6780", fontSize: "20px" }}>{selectedItemData?.testcase_name}</b></Typography>
 
             <Divider></Divider>
-            <Grid container justifyContent="flex-start" columnSpacing={2} marginTop={"15px"}>
-                <Grid>
-                    <HourglassTopIcon></HourglassTopIcon>
+            <Grid container justifyContent="flex-start" columnSpacing={2} marginTop={"15px"} marginLeft={"0.1px"}>
+                <Grid xs={0.5}>
+                    <HourglassTopIcon sx={{ color: "#636161" }} />
                 </Grid>
-                <Stack
-                    direction="column"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    spacing={0}
-                    mb={0}
-                >
+                <Grid xs={3}>
                     <Typography variant="subtitle1">START TIME</Typography>
-                    <p>{moment(selectedItemData?.start_time).format('DD/MM/yyyy hh:mm:ss')}</p>
-                </Stack>
-
-                <Grid>
-                    <HourglassBottomIcon></HourglassBottomIcon>
+                    <p style={{ color: "#66BB6A" }}><b>{moment(selectedItemData?.start_time).format('DD-MM-yyyy hh:mm:ss')}</b></p>
                 </Grid>
-                <Stack
-                    direction="column"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    spacing={0}
-                    mb={0}
-                >
+                <Grid xs={0.5}>
+                    <HourglassBottomIcon sx={{ color: "#636161" }} />
+                </Grid>
+                <Grid xs={3}>
                     <Typography variant="subtitle1">END TIME</Typography>
-                    <p>{moment(selectedItemData?.end_time).format('DD/MM/yyyy hh:mm:ss')}</p>
-
-                </Stack>
-
-                <Grid>
-                    <SettingsApplicationsIcon></SettingsApplicationsIcon>
+                    <p style={{ color: "#EF5350" }}><b>{moment(selectedItemData?.end_time).format('DD-MM-yyyy hh:mm:ss')}</b></p>
                 </Grid>
-                <Stack
-                    direction="column"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    spacing={0}
-                    mb={0}
-                >
+                <Grid xs={0.5}>
+                    <SettingsApplicationsIcon sx={{ color: "#636161" }} />
+                </Grid>
+                <Grid xs={3}>
                     <Typography variant="subtitle1">EXECUTION TIME</Typography>
-                    <p>{moment(selectedItemData?.execution_time).format(' hh:mm:ss')}</p>
-
-                </Stack>
+                    <p style={{ color: "#596981" }}><b>{moment(selectedItemData?.execution_time).format(' hh:mm:ss')}</b></p>
+                </Grid>
             </Grid><br />
             <Divider></Divider>
 
-            {selectedItemData?.datasetdata?.map((dataset)=>{
-                
-                return(<div>
-                {dataset?.result_type === "screen" && <Typography variant='h5'>{dataset?.text}</Typography>}           
-                {dataset?.result_type === "pass" && <Typography variant='p'>{dataset?.text}</Typography> }
-                {dataset?.result_type === "info" && <Typography variant='p'>{dataset?.text}</Typography> }
-                {dataset?.result_type === "fail" && <Typography variant='p'>{dataset?.text}</Typography> }
-                {dataset?.result_type === "fail" && <img src={`data:image/png;base64,${dataset?.screenshot}`}/> }
-                </div>          
-                )})}
+            {selectedItemData?.datasetdata?.map((dataset) => {
+                return (<div>
+                    {dataset?.result_type === "screen" && <Typography mb={0} mt={1} p={0.7} sx={{ color: "#5C6780", fontSize: "16px", backgroundColor: "#e8f2fd", borderRadius: "5px" }} variant='h6'>{dataset?.text}</Typography>}
+                    <Grid>
+                        {dataset?.result_type === "pass" && <div style={{ marginTop: "12px", marginBottom: "12px" }}>{dataset?.text.includes("Entered UserName") === true ? <KeyboardIcon sx={{ color: "#636161" }} /> : <VisibilityOffIcon sx={{ color: "#636161" }} />}<Typography variant='p'>{dataset?.text}</Typography></div>}
+                        {dataset?.result_type === "info" && <div style={{ marginTop: "12px", marginBottom: "12px" }} ><TouchAppIcon sx={{ color: "#636161" }} /><Typography variant='p'>{dataset?.text}</Typography></div>}<Divider></Divider>
+                    </Grid>
+                    <Grid >
+                        {dataset?.result_type === "fail" && <div style={{ marginTop: "12px", marginBottom: "12px" }} >{dataset?.result_type.includes("fail") ? <CancelIcon sx={{ color: "red" }} /> : <CheckCircleIcon sx={{ color: "green" }} />}<Typography variant='p'>{dataset?.text}</Typography></div>}
+                    </Grid>
+                    {dataset?.result_type === "fail" && <img src={`data:image/png;base64,${dataset?.screenshot}`} width={"250px"} />}
+                </div>
+                )
+            })}
 
         </div>
     )
