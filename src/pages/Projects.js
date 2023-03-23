@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import useHead from "../hooks/useHead";
 import React, { useState } from "react";
-import ProjectTable from "./ProjectTable";
-import CreateProject from "./CreateProject";
+import ProjectTable from "../Components/ProjectComponents/ProjectTable";
 import { useNavigate, Outlet } from "react-router-dom";
 
 function Projects() {
@@ -30,7 +29,6 @@ function Projects() {
   return (
     <div>
       <ProjectTable />
-     
     </div>
   );
 }

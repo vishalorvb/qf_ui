@@ -5,20 +5,18 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
-import CreateApplication from "../Components/CreateApplication";
-import { ApplicationNav } from "./ApplicationNav";
+import CreateApplication from "../Components/Application/CreateApplication";
+import { ApplicationNav } from "../Components/Application/ApplicationNav";
 import { getWebApplication } from "../Services/ApplicationService";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { moduledata } from "../Components/CreateApplication";
+import { moduledata } from "../Components/Application/CreateApplication";
 export default function MobileApp() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [application, setApplication] = useState([]);
   const [openCreate, setOpenCreate] = useState(false);
-  const location = useLocation()
-
-
+  const location = useLocation();
 
   const applicationColumns = [
     {
@@ -52,7 +50,7 @@ export default function MobileApp() {
             <VisibilityOutlinedIcon
               className="eyeIcon"
               onClick={() => {
-                navigate("pages", { state: { id: param.row.module_id } })
+                navigate("pages", { state: { id: param.row.module_id } });
               }}
             />
           </div>
@@ -61,7 +59,6 @@ export default function MobileApp() {
     },
   ];
 
- 
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -83,23 +80,28 @@ export default function MobileApp() {
   }, []);
 
   useEffect(() => {
-    getWebApplication(setApplication, auth.info.id,3)
-  }, [])
+    getWebApplication(setApplication, auth.info.id, 3);
+  }, []);
 
   return (
     <>
       <div className="intable">
-        <select onChange={e => {
-          navigate(e.target.value)
-        }}>
-          {ApplicationNav.map(el => <option selected={location.pathname == el.url?true:false} value={el.url}>{el.name}</option>)}
+        <select
+          onChange={(e) => {
+            navigate(e.target.value);
+          }}
+        >
+          {ApplicationNav.map((el) => (
+            <option
+              selected={location.pathname == el.url ? true : false}
+              value={el.url}
+            >
+              {el.name}
+            </option>
+          ))}
         </select>
       </div>
-      <CreateApplication
-        open={openCreate}
-        close={setOpenCreate}
-        type={3}
-      />
+      <CreateApplication open={openCreate} close={setOpenCreate} type={3} />
 
       <Table
         rows={application}

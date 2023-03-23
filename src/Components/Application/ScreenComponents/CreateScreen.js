@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import PagesTable from "../Components/Application/PagesTable";
-import useHead from "../hooks/useHead";
+import PagesTable from "../PagesTable";
+import useHead from "../../../hooks/useHead";
 export default function CreateScreen() {
   const location = useLocation();
   const { setHeader } = useHead();

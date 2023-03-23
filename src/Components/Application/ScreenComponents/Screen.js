@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import useHead from "../hooks/useHead";
-import Table from "../CustomComponent/Table";
+import useHead from "../../../hooks/useHead";
+import Table from "../../../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
+import axios from "../../../api/axios";
 import { IconButton, Tooltip } from "@mui/material";
-import ConfirmPop from "../CustomComponent/ConfirmPop";
+import ConfirmPop from "../../../CustomComponent/ConfirmPop";
 export default function Screens() {
   const { setHeader } = useHead();
   const navigate = useNavigate();

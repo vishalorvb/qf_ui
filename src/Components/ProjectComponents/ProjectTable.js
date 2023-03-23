@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Table from "../CustomComponent/Table";
+import Table from "../../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlined from "@mui/icons-material/DeleteOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { Chip } from "@mui/material";
 import { Stack } from "@mui/system";
-import ConfirmPop from "../CustomComponent/ConfirmPop";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
 
-import { getProject } from "../Services/ProjectService";
-import { deleteProject } from "../Services/ProjectService";
+import { getProject } from "../../Services/ProjectService";
+import { deleteProject } from "../../Services/ProjectService";
 import { useNavigate } from "react-router-dom";
-import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import useAuth from "../hooks/useAuth";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import useAuth from "../../hooks/useAuth";
 import { createformData } from "./ProjectData";
 
 function ProjectTable() {
@@ -23,7 +23,6 @@ function ProjectTable() {
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-
 
   function handleDeletePopup(pid) {
     console.log(pid);

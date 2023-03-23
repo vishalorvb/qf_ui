@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
-import PagesTable from "../Components/Application/PagesTable";
-import useAuth from "../hooks/useAuth";
-import useHead from "../hooks/useHead";
-import axios from "../api/axios";
+import PagesTable from "../PagesTable";
+import useAuth from "../../../hooks/useAuth";
+import useHead from "../../../hooks/useHead";
+import axios from "../../../api/axios";
 import { useEffect } from "react";
 
 export default function Pages() {

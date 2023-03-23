@@ -116,14 +116,16 @@ export function getDataset(callback,projectId,applicationId,testcaseId){
     })
 }
 
-export function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
-  axios
+export async function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
+ let x = axios
     .get(
       `${baseUrl}/qfservice/webdataset/getScreensAndElementsInTestcaseByTestcaseIdorDatasetId?testcase_id=${testcaseId}&dataset_id=${datasetId}`
     )
     .then((res) => {
       callback(res.data.info);
+      return true
     });
+    return x
 }
 
 
