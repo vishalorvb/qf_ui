@@ -1,4 +1,4 @@
-import { Autocomplete, Typography } from "@mui/material";
+import { Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -20,17 +20,20 @@ export default function ProjectnApplicationSelector({
       const projects = res?.data?.result?.projects_list;
       setProjectList(projects);
       setSelectedProject(projects[0]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     });
   }, []);
 
   useEffect(() => {
     setSelectedApplication(applicationList[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
   useEffect(() => {
     setSelectedApplication({ module_name: "Select Project first" });
     selectedProject &&
       getApplicationOfProject(setapplicationList, selectedProject?.project_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject]);
 
   return (

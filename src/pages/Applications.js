@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/Application/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
@@ -13,7 +13,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { moduledata } from "../Components/Application/CreateApplication";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import { deleteApplication } from "../Services/ApplicationService";
 export default function Applications() {
   const { setHeader } = useHead();
@@ -61,7 +60,7 @@ export default function Applications() {
                   className="eyeIcon"
                   onClick={() => {
                     let url = ApplicationNav.filter((ele) => {
-                      if (ele.type == type) {
+                      if (ele.type === type) {
                         return ele.url;
                       }
                     });
@@ -75,7 +74,7 @@ export default function Applications() {
                 />
               </IconButton>
             </Tooltip>
-            {type == 2 && (
+            {type === 2 && (
               <Tooltip title="Screen">
                 <IconButton
                   onClick={(e) =>
@@ -137,7 +136,7 @@ export default function Applications() {
   function handleSelect(e) {
     setType(e.target.value);
     let n = ApplicationNav.filter((el) => {
-      if (el.type == e.target.value) {
+      if (el.type === e.target.value) {
         return el.name;
       }
     });
@@ -177,7 +176,7 @@ export default function Applications() {
       <div className="intable">
         <select onChange={handleSelect}>
           {ApplicationNav.map((el) => (
-            <option selected={el.type == type ? true : false} value={el.type}>
+            <option selected={el.type === type ? true : false} value={el.type}>
               {el.name}
             </option>
           ))}
@@ -198,7 +197,7 @@ export default function Applications() {
       )}
       <Table
         rows={application.filter((e) => {
-          if (e.module_type == type) {
+          if (e.module_type === type) {
             return e;
           }
         })}
