@@ -1,29 +1,30 @@
-import { Button, Container, Grid, } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
-import {
-  resetClassName,
-} from "../CustomComponent/FormValidation";
-import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import AccordionTemplate from "../CustomComponent/AccordionTemplate";
-import useHead from "../hooks/useHead";
-import { createProject } from "../Services/ProjectService";
-import { updateProject } from "../Services/ProjectService";
-import useAuth from "../hooks/useAuth";
+import { resetClassName } from "../../CustomComponent/FormValidation";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
+import useHead from "../../hooks/useHead";
+import useAuth from "../../hooks/useAuth";
 import { createformData } from "./ProjectData";
 import { clearProjectData } from "./ProjectData";
-import { validateFormbyName } from "../CustomComponent/FormValidation";
+import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
-import { getUsers } from "../Services/ProjectService";
-import { getApplication } from "../Services/ApplicationService";
-import { getApplicationOfProject } from "../Services/ApplicationService";
-import { getUserOfProject } from "../Services/ProjectService";
+import {
+  getUsers,
+  createProject,
+  updateProject,
+  getUserOfProject,
+} from "../../Services/ProjectService";
+import {
+  getApplicationOfProject,
+  getApplication,
+} from "../../Services/ApplicationService";
 function CreateProject() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const usertoken = localStorage.getItem("token");
   const navigate = useNavigate();
-
 
   useEffect(() => {
     setHeader((ps) => {
@@ -34,160 +35,165 @@ function CreateProject() {
     });
   }, []);
 
-
   let [snackbarerror, setSnackbarerror] = useState(false);
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
   let [users, setUsers] = useState([]);
-  let [leftuser, setLeftuser] = useState([])
-  let [rigthtuser, setRightuser] = useState([])
-  let [leftApplication, setLeftApplication] = useState([])
-  let [rightApplication, setRightApplication] = useState([])
-  let [applications, setApplications] = useState([])
-
+  let [leftuser, setLeftuser] = useState([]);
+  let [rigthtuser, setRightuser] = useState([]);
+  let [leftApplication, setLeftApplication] = useState([]);
+  let [rightApplication, setRightApplication] = useState([]);
+  let [applications, setApplications] = useState([]);
 
   function getUserlist() {
-    let userlist = []
-    rigthtuser.forEach(user => {
+    let userlist = [];
+    rigthtuser.forEach((user) => {
       let temp = {
-        "user_id": user.id,
-        "grafana_role": user.grafana_role
-      }
-      userlist.push(temp)
-    })
+        user_id: user.id,
+        grafana_role: user.grafana_role,
+      };
+      userlist.push(temp);
+    });
     return userlist;
   }
   function getApplicationlist() {
-    let applist = []
-    rightApplication.forEach(app => {
-      console.log(app.module_id)
-      applist.push(app.module_id)
-    })
-    return applist
+    let applist = [];
+    rightApplication.forEach((app) => {
+      console.log(app.module_id);
+      applist.push(app.module_id);
+    });
+    return applist;
   }
   function submitHandler() {
-    let x = getUserlist()
-    let app = getApplicationlist()
-    app = app.toString()
-    createformData.user_access_permissions = x
-    createformData.applicationsProjectMapping = "[" + app + "]"
-    createformData.userId = auth.info.id
-    console.log(createformData)
-    if (validateFormbyName(["projectname", "automation_framework_type", "desc", "issueTracker"], "error") == true) {
-      
+    let x = getUserlist();
+    let app = getApplicationlist();
+    app = app.toString();
+    createformData.user_access_permissions = x;
+    createformData.applicationsProjectMapping = "[" + app + "]";
+    createformData.userId = auth.info.id;
+    console.log(createformData);
+    if (
+      validateFormbyName(
+        ["projectname", "automation_framework_type", "desc", "issueTracker"],
+        "error"
+      ) == true
+    ) {
       if (createformData.sqeProjectId == "") {
-        createProject(createformData).then(res => {
+        createProject(createformData).then((res) => {
           if (res == "SUCCESS") {
-            setSnackbarsuccess(true)
+            setSnackbarsuccess(true);
             setTimeout(() => {
-              navigate("/projects")
+              navigate("/projects");
             }, 1000);
+          } else {
+            setSnackbarerror(true);
           }
-          else {
-            setSnackbarerror(true)
-          }
-        })
-      }
-      else {
-        updateProject(createformData).then(res => {
+        });
+      } else {
+        updateProject(createformData).then((res) => {
           if (res == "SUCCESS") {
-            setSnackbarsuccess(true)
+            setSnackbarsuccess(true);
             setTimeout(() => {
-              navigate("/projects")
+              navigate("/projects");
             }, 1000);
+          } else {
+            setSnackbarerror(true);
           }
-          else {
-            setSnackbarerror(true)
-          }
-        })
-
+        });
       }
-    }
-    else {
-      console.log("Invalid form")
-      setSnackbarerror(true)
+    } else {
+      console.log("Invalid form");
+      setSnackbarerror(true);
     }
   }
 
-
-
-
   function handleSelect(event) {
-    let e = document.getElementById("left")
-    let remaining = leftuser
+    let e = document.getElementById("left");
+    let remaining = leftuser;
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = users.filter(user => user.id == e.options[i].value)
-        remaining = remaining.filter(user => user.id != e.options[i].value)
+        let temp = users.filter((user) => user.id == e.options[i].value);
+        remaining = remaining.filter((user) => user.id != e.options[i].value);
         if (temp.length > 0) {
-          setRightuser(pv => [...pv, temp[0]])
+          setRightuser((pv) => [...pv, temp[0]]);
         }
       }
-      setLeftuser(remaining)
+      setLeftuser(remaining);
     }
   }
 
   function handleUnselect(event) {
-    let e = document.getElementById("right")
-    let remaining = rigthtuser
+    let e = document.getElementById("right");
+    let remaining = rigthtuser;
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = users.filter(user => user.id == e.options[i].value)
-        remaining = remaining.filter(user => user.id != e.options[i].value)
+        let temp = users.filter((user) => user.id == e.options[i].value);
+        remaining = remaining.filter((user) => user.id != e.options[i].value);
         if (temp.length > 0) {
-          setLeftuser(pv => [...pv, temp[0]])
+          setLeftuser((pv) => [...pv, temp[0]]);
         }
       }
-      setRightuser(remaining)
+      setRightuser(remaining);
     }
   }
   function handleSelectApp(event) {
-    let e = document.getElementById("leftapp")
-    let remaining = leftApplication
+    let e = document.getElementById("leftapp");
+    let remaining = leftApplication;
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = applications.filter(app => app.module_id == e.options[i].value)
-        remaining = remaining.filter(user => user.module_id != e.options[i].value)
+        let temp = applications.filter(
+          (app) => app.module_id == e.options[i].value
+        );
+        remaining = remaining.filter(
+          (user) => user.module_id != e.options[i].value
+        );
         if (temp.length > 0) {
-          setRightApplication(pv => [...pv, temp[0]])
+          setRightApplication((pv) => [...pv, temp[0]]);
         }
       }
-      setLeftApplication(remaining)
+      setLeftApplication(remaining);
     }
   }
   function handleUnSelectApp(event) {
-    let e = document.getElementById("rightapp")
-    let remaining = rightApplication
+    let e = document.getElementById("rightapp");
+    let remaining = rightApplication;
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = applications.filter(app => app.module_id == e.options[i].value)
-        remaining = remaining.filter(app => app.module_id != e.options[i].value)
+        let temp = applications.filter(
+          (app) => app.module_id == e.options[i].value
+        );
+        remaining = remaining.filter(
+          (app) => app.module_id != e.options[i].value
+        );
         if (temp.length > 0) {
-          setLeftApplication(pv => [...pv, temp[0]])
+          setLeftApplication((pv) => [...pv, temp[0]]);
         }
       }
-      setRightApplication(remaining)
+      setRightApplication(remaining);
     }
   }
 
   useEffect(() => {
-    getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken)
-    getUsers(setLeftuser, auth.info.organization_id, auth.info.ssoId, usertoken)
-    getApplication(setApplications,auth.info.id)
-    getApplication(setLeftApplication,auth.info.id)
-    getApplicationOfProject(setRightApplication,createformData.sqeProjectId)
-    getUserOfProject(setRightuser,createformData.sqeProjectId)
+    getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
+    getUsers(
+      setLeftuser,
+      auth.info.organization_id,
+      auth.info.ssoId,
+      usertoken
+    );
+    getApplication(setApplications, auth.info.id);
+    getApplication(setLeftApplication, auth.info.id);
+    getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
+    getUserOfProject(setRightuser, createformData.sqeProjectId);
   }, []);
   useEffect(() => {
     return () => {
-      clearProjectData()
-    }
-
+      clearProjectData();
+    };
   }, []);
 
   useEffect(() => {
-    console.log(applications)
-  }, [applications])
-
+    console.log(applications);
+  }, [applications]);
 
   return (
     <div className="accordionParent" onClick={resetClassName}>
@@ -225,10 +231,10 @@ function CreateProject() {
                 defaultValue={createformData.projectName}
                 type="text"
                 name="projectname"
-                onChange={e => {
+                onChange={(e) => {
                   createformData.projectName = e.target.value;
                 }}
-                disabled ={createformData.sqeProjectId==""?false:true}
+                disabled={createformData.sqeProjectId == "" ? false : true}
               />
             </Grid>
           </Grid>
@@ -248,14 +254,20 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               <select
-                onChange={e => {
+                onChange={(e) => {
                   createformData.automation_framework_type = e.target.value;
                 }}
                 name="automation_framework_type"
               >
                 <option value="">Select</option>
-                <option selected={createformData.automation_framework_type
-                  == 1 ? true : false} value={1}>Selenium</option>
+                <option
+                  selected={
+                    createformData.automation_framework_type == 1 ? true : false
+                  }
+                  value={1}
+                >
+                  Selenium
+                </option>
               </select>
             </Grid>
           </Grid>
@@ -274,10 +286,13 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
               <input
-                onChange={e => {
+                onChange={(e) => {
                   createformData.projectDesc = e.target.value;
                 }}
-                defaultValue={createformData.projectDesc} type="text" name="desc" />
+                defaultValue={createformData.projectDesc}
+                type="text"
+                name="desc"
+              />
             </Grid>
           </Grid>
         </Container>
@@ -303,13 +318,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={2}>
-              <label>
-                Git URL :
-              </label>
+              <label>Git URL :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              <input defaultValue={createformData.repository_url} type="text" name=""
-                onChange={e => {
+              <input
+                defaultValue={createformData.repository_url}
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.repository_url = e.target.value;
                 }}
               />
@@ -324,13 +340,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                Git Access Token :
-              </label>
+              <label>Git Access Token :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
-              <input defaultValue={createformData.repository_token} type="text" name=""
-                onChange={e => {
+              <input
+                defaultValue={createformData.repository_token}
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.repository_token = e.target.value;
                 }}
               />
@@ -345,15 +362,11 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                Branch :
-              </label>
+              <label>Branch :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name=""
-
-              />
+              <input type="text" name="" />
             </Grid>
           </Grid>
         </Container>
@@ -379,14 +392,16 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                Jenkins URL :
-              </label>
+              <label>Jenkins URL :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input defaultValue={createformData.jenkins_url} type="text" name="" autocomplete="off"
-                onChange={e => {
+              <input
+                defaultValue={createformData.jenkins_url}
+                type="text"
+                name=""
+                autocomplete="off"
+                onChange={(e) => {
                   createformData.jenkins_url = e.target.value;
                 }}
               />
@@ -401,14 +416,16 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                Jenkins Token :
-              </label>
+              <label>Jenkins Token :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input defaultValue={createformData.jenkins_token} type="text" name="jenkins_token" autocomplete="off"
-                onChange={e => {
+              <input
+                defaultValue={createformData.jenkins_token}
+                type="text"
+                name="jenkins_token"
+                autocomplete="off"
+                onChange={(e) => {
                   createformData.jenkins_token = e.target.value;
                 }}
               />
@@ -423,13 +440,15 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                Jenkins UserName :
-              </label>
+              <label>Jenkins UserName :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
-              <input defaultValue={createformData.jenkins_user_name} type="text" name="" autocomplete="off"
-                onChange={e => {
+              <input
+                defaultValue={createformData.jenkins_user_name}
+                type="text"
+                name=""
+                autocomplete="off"
+                onChange={(e) => {
                   createformData.jenkins_user_name = e.target.value;
                 }}
               />
@@ -444,14 +463,15 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                Jenkins Password :
-              </label>
+              <label>Jenkins Password :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input defaultValue={createformData.jenkins_password} type="password" name=""
-                onChange={e => {
+              <input
+                defaultValue={createformData.jenkins_password}
+                type="password"
+                name=""
+                onChange={(e) => {
                   createformData.jenkins_password = e.target.value;
                 }}
               />
@@ -480,14 +500,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                Database Type :
-              </label>
+              <label>Database Type :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.db_type = e.target.value;
                 }}
               />
@@ -502,14 +522,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                Database Name :
-              </label>
+              <label>Database Name :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.db_name = e.target.value;
                 }}
               />
@@ -524,14 +544,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                Host Name :
-              </label>
+              <label>Host Name :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.db_name = e.target.value;
                 }}
               />
@@ -546,14 +566,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                DB UserName :
-              </label>
+              <label>DB UserName :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.db_user_name = e.target.value;
                 }}
               />
@@ -568,14 +588,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                Port Number :
-              </label>
+              <label>Port Number :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.db_port = e.target.value;
                 }}
               />
@@ -590,14 +610,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                DB Password :
-              </label>
+              <label>DB Password :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.db_password = e.target.value;
                 }}
               />
@@ -631,16 +651,19 @@ function CreateProject() {
               </label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-
-
               <select
-                onChange={e => {
+                onChange={(e) => {
                   createformData.issueTrackerType = e.target.value;
                 }}
                 name="issueTracker"
               >
                 <option value="">Select</option>
-                <option selected={createformData.issueTrackerType == 1 ? true : false} value={1}>Jira</option>
+                <option
+                  selected={createformData.issueTrackerType == 1 ? true : false}
+                  value={1}
+                >
+                  Jira
+                </option>
                 <option value={2}>Azure</option>
               </select>
             </Grid>
@@ -654,13 +677,13 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={2}>
-              <label>
-                URL :
-              </label>
+              <label>URL :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={10}>
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.jenkins_url = e.target.value;
                 }}
               />
@@ -675,14 +698,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={4}>
-              <label>
-                User Name :
-              </label>
+              <label>User Name :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.jenkins_user_name = e.target.value;
                 }}
               />
@@ -697,14 +720,14 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-              <label>
-                Token :
-              </label>
+              <label>Token :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name=""
-                onChange={e => {
+              <input
+                type="text"
+                name=""
+                onChange={(e) => {
                   createformData.jenkins_token = e.target.value;
                 }}
               />
@@ -719,15 +742,11 @@ function CreateProject() {
             sx={{ marginBottom: "10px" }}
           >
             <Grid item xs={6} sm={6} md={2}>
-              <label>
-                Projects :
-              </label>
+              <label>Projects :</label>
             </Grid>
             <Grid item xs={6} sm={6} md={7.5}>
               {" "}
-              <input type="text" name=""
-
-              />
+              <input type="text" name="" />
             </Grid>
           </Grid>
         </Container>
@@ -755,15 +774,11 @@ function CreateProject() {
             alignItems="center"
           >
             <Grid item xs={4} sm={4} md={4}>
-              <label>
-                Select User:
-              </label>
-              <select
-                id="left"
-                multiple
-                style={{padding:"10px"}}
-              >
-                {leftuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+              <label>Select User:</label>
+              <select id="left" multiple style={{ padding: "10px" }}>
+                {leftuser.map((user) => (
+                  <option value={user.id}>{user.firstName}</option>
+                ))}
               </select>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
@@ -787,20 +802,15 @@ function CreateProject() {
               </Button>
             </Grid>
             <Grid item xs={4} sm={4} md={4}>
-              <label>
-                Select User:
-              </label>
-              <select
-                id="right"
-                multiple
-                style={{padding:"10px"}}
-              >
+              <label>Select User:</label>
+              <select id="right" multiple style={{ padding: "10px" }}>
                 <option value="">Select user</option>
-                {rigthtuser.map(user => <option value={user.id}>{user.firstName}</option>)}
+                {rigthtuser.map((user) => (
+                  <option value={user.id}>{user.firstName}</option>
+                ))}
               </select>
             </Grid>
           </Grid>
-
         </Container>
       </AccordionTemplate>
 
@@ -826,15 +836,11 @@ function CreateProject() {
             alignItems="center"
           >
             <Grid item xs={4} sm={4} md={4}>
-            <label>
-                Select Application:
-              </label>
-              <select
-                id="leftapp"
-                multiple
-                style={{padding:"10px"}}
-              >
-                {leftApplication.map(app => <option value={app.module_id}>{app.module_name}</option>)}
+              <label>Select Application:</label>
+              <select id="leftapp" multiple style={{ padding: "10px" }}>
+                {leftApplication.map((app) => (
+                  <option value={app.module_id}>{app.module_name}</option>
+                ))}
               </select>
             </Grid>
             <Grid item xs={1} sm={1} md={1}>
@@ -858,20 +864,14 @@ function CreateProject() {
               </Button>
             </Grid>
             <Grid item xs={4} sm={4} md={4}>
-            <label>
-                Selected Application:
-              </label>
-              <select
-                id="rightapp"
-                multiple
-                style={{padding:"10px"}}
-              >
-
-                {rightApplication.map(app => <option value={app.module_id}>{app.module_name}</option>)}
+              <label>Selected Application:</label>
+              <select id="rightapp" multiple style={{ padding: "10px" }}>
+                {rightApplication.map((app) => (
+                  <option value={app.module_id}>{app.module_name}</option>
+                ))}
               </select>
             </Grid>
           </Grid>
-
         </Container>
       </AccordionTemplate>
 

@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import ElementsDetails from "../../CustomComponent/ElementsDetails";
-import Table from "../../CustomComponent/Table";
+import useHead from "../../../hooks/useHead";
+import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import axios from "../../api/axios";
-import useHead from "../../hooks/useHead";
-import { useLocation } from "react-router-dom";
-import CreateScreenPop from "./CreateScreenPop";
-
-export default function SelectedPageElements() {
+import { getWebpagesElementList } from "../../../Services/ProjectService";
+import { useLocation } from "react-router";
+import axios from "../../../api/axios";
+import ElementsDetails from "../../../CustomComponent/ElementsDetails";
+export default function PageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
+
   let [elements, setElements] = useState([]);
   let [elementid, setElementid] = useState(0);
   let [popup, setPopup] = useState(false);
   const [preSelectedElement, setPreSelectedElement] = useState([]);
-  const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
+  const [newchangedElement, setNewchangedElement] = useState({});
 
   const elementColumns = [
     {
       field: "name",
       headerName: "Field Name",
-      flex: 3,
+      flex: 4,
       sortable: false,
     },
     {
@@ -32,13 +32,13 @@ export default function SelectedPageElements() {
     {
       field: "tag_name",
       headerName: "Fields Tag",
-      flex: 3,
+      flex: 2,
       sortable: false,
     },
     {
       field: "Actions",
       headerName: "Actions",
-      flex: 3,
+      flex: 1,
       sortable: false,
       align: "center",
       headerAlign: "center",
@@ -57,10 +57,11 @@ export default function SelectedPageElements() {
       },
     },
   ];
+
   useEffect(() => {
     axios
       .get(
-        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=true`
+        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);
@@ -74,19 +75,22 @@ export default function SelectedPageElements() {
             return selectedData;
           });
       });
+
+    setHeader((ps) => {
+      return { ...ps, name: "PageElements" };
+    });
   }, []);
 
   useEffect(() => {
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name: "Create Screen",
-        plusButton: preSelectedElement.length > 0,
-        plusCallback: () => setShowCreateScreenPop(true),
-      };
-    });
-  }, [preSelectedElement]);
-
+    console.log(newchangedElement);
+    axios
+      .post(
+        `/qfservice/webpages/updatePageElement?web_element_id=${newchangedElement?.id}&status=${newchangedElement?.added}`
+      )
+      .then((resp) => {
+        console.log(resp);
+      });
+  }, [newchangedElement]);
   return (
     <div>
       <Table
@@ -96,6 +100,8 @@ export default function SelectedPageElements() {
         checkboxSelection={true}
         selectionModel={preSelectedElement}
         setSelectionModel={setPreSelectedElement}
+        setNewchangedElement={setNewchangedElement}
+        hideheaderCheckbox={true}
       />
       {popup && (
         <ElementsDetails
@@ -103,15 +109,6 @@ export default function SelectedPageElements() {
           setPopup={setPopup}
         ></ElementsDetails>
       )}
-      <CreateScreenPop
-        open={showCreateScreenPop}
-        close={setShowCreateScreenPop}
-        applicationId={location.state.applicationId}
-        pageId={location.state.id}
-        elementsList={preSelectedElement.map((id) => {
-          return { web_page_element_id: id };
-        })}
-      />
     </div>
   );
 }

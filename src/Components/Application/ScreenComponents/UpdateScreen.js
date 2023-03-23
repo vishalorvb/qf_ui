@@ -1,26 +1,31 @@
 import { useEffect, useState } from "react";
-import useHead from "../hooks/useHead";
-import Table from "../CustomComponent/Table";
+import ElementsDetails from "../../../CustomComponent/ElementsDetails";
+import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { getWebpagesElementList } from "../Services/ProjectService";
-import { useLocation } from "react-router";
-import axios from "../api/axios";
-import ElementsDetails from "../CustomComponent/ElementsDetails";
-export default function PageElements() {
+import axios from "../../../api/axios";
+import useHead from "../../../hooks/useHead";
+import { useLocation } from "react-router-dom";
+import CreateScreenPop from "./CreateScreenPop";
+
+export default function UpdateScreen() {
   const { setHeader } = useHead();
   const location = useLocation();
-
   let [elements, setElements] = useState([]);
   let [elementid, setElementid] = useState(0);
   let [popup, setPopup] = useState(false);
   const [preSelectedElement, setPreSelectedElement] = useState([]);
-  const [newchangedElement, setNewchangedElement] = useState({});
+  const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
 
   const elementColumns = [
     {
+      field: "element_id",
+      headerName: "ElementId",
+      flex: 2,
+    },
+    {
       field: "name",
       headerName: "Field Name",
-      flex: 4,
+      flex: 3,
       sortable: false,
     },
     {
@@ -32,13 +37,13 @@ export default function PageElements() {
     {
       field: "tag_name",
       headerName: "Fields Tag",
-      flex: 2,
+      flex: 3,
       sortable: false,
     },
     {
       field: "Actions",
       headerName: "Actions",
-      flex: 1,
+      flex: 3,
       sortable: false,
       align: "center",
       headerAlign: "center",
@@ -57,14 +62,20 @@ export default function PageElements() {
       },
     },
   ];
-
   useEffect(() => {
     axios
       .get(
-        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
+        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.pageId}&selected_elements_only=true`
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);
+      });
+
+    axios
+      .get(
+        `http://10.11.12.243:8083/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screenId}`
+      )
+      .then((res) => {
         res?.data?.info &&
           setPreSelectedElement(() => {
             const data = res?.data?.info;
@@ -75,22 +86,19 @@ export default function PageElements() {
             return selectedData;
           });
       });
-
-    setHeader((ps) => {
-      return { ...ps, name: "PageElements" };
-    });
   }, []);
 
   useEffect(() => {
-    console.log(newchangedElement);
-    axios
-      .post(
-        `/qfservice/webpages/updatePageElement?web_element_id=${newchangedElement?.id}&status=${newchangedElement?.added}`
-      )
-      .then((resp) => {
-        console.log(resp);
-      });
-  }, [newchangedElement]);
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Create Screen",
+        plusButton: preSelectedElement.length > 0,
+        plusCallback: () => setShowCreateScreenPop(true),
+      };
+    });
+  }, [preSelectedElement]);
+
   return (
     <div>
       <Table
@@ -100,8 +108,6 @@ export default function PageElements() {
         checkboxSelection={true}
         selectionModel={preSelectedElement}
         setSelectionModel={setPreSelectedElement}
-        setNewchangedElement={setNewchangedElement}
-        hideheaderCheckbox={true}
       />
       {popup && (
         <ElementsDetails
@@ -109,6 +115,16 @@ export default function PageElements() {
           setPopup={setPopup}
         ></ElementsDetails>
       )}
+      <CreateScreenPop
+        open={showCreateScreenPop}
+        close={setShowCreateScreenPop}
+        applicationId={location.state.applicationId}
+        pageId={location.state.pageId}
+        screenName={{ name: location.state.name, desc: location.state.desc }}
+        elementsList={preSelectedElement.map((id) => {
+          return { web_page_element_id: id };
+        })}
+      />
     </div>
   );
 }

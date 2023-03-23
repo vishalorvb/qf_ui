@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import useHead from "../hooks/useHead";
-import axios from "../api/axios";
-import ElementsDetails from "../CustomComponent/ElementsDetails";
+import useHead from "../../../hooks/useHead";
+import axios from "../../../api/axios";
+import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { IconButton } from "@mui/material";
 

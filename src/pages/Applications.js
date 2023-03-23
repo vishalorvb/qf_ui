@@ -4,18 +4,18 @@ import Table from "../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import CreateApplication from "../Components/CreateApplication";
+import CreateApplication from "../Components/Application/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { getApplication } from "../Services/ApplicationService";
-import { ApplicationNav } from "./ApplicationNav";
+import { ApplicationNav } from "../Components/Application/ApplicationNav";
 import { IconButton, Tooltip } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { moduledata } from "../Components/CreateApplication";
+import { moduledata } from "../Components/Application/CreateApplication";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import { deleteApplication } from "../Services/ApplicationService";
-export default function WebApp() {
+export default function Applications() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();

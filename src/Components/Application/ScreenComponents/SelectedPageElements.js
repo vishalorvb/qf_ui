@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import ElementsDetails from "../../CustomComponent/ElementsDetails";
-import Table from "../../CustomComponent/Table";
+import ElementsDetails from "../../../CustomComponent/ElementsDetails";
+import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import axios from "../../api/axios";
-import useHead from "../../hooks/useHead";
+import axios from "../../../api/axios";
+import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
 
-export default function UpdateScreen() {
+export default function SelectedPageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
   let [elements, setElements] = useState([]);
@@ -17,11 +17,6 @@ export default function UpdateScreen() {
   const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
 
   const elementColumns = [
-    {
-      field: "element_id",
-      headerName: "ElementId",
-      flex: 2,
-    },
     {
       field: "name",
       headerName: "Field Name",
@@ -65,17 +60,10 @@ export default function UpdateScreen() {
   useEffect(() => {
     axios
       .get(
-        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.pageId}&selected_elements_only=true`
+        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=true`
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);
-      });
-
-    axios
-      .get(
-        `http://10.11.12.243:8083/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screenId}`
-      )
-      .then((res) => {
         res?.data?.info &&
           setPreSelectedElement(() => {
             const data = res?.data?.info;
@@ -119,8 +107,7 @@ export default function UpdateScreen() {
         open={showCreateScreenPop}
         close={setShowCreateScreenPop}
         applicationId={location.state.applicationId}
-        pageId={location.state.pageId}
-        screenName={{ name: location.state.name, desc: location.state.desc }}
+        pageId={location.state.id}
         elementsList={preSelectedElement.map((id) => {
           return { web_page_element_id: id };
         })}

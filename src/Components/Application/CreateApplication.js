@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 
 import { useEffect } from "react";
-import { validateFormbyName } from "../CustomComponent/FormValidation";
-import { createApplication } from "../Services/ApplicationService";
-import useAuth from "../hooks/useAuth";
+import { validateFormbyName } from "../../CustomComponent/FormValidation";
+import { createApplication } from "../../Services/ApplicationService";
+import useAuth from "../../hooks/useAuth";
 export let moduledata = {
   module_name: "",
   base_url: "",
