@@ -49,7 +49,6 @@ function GrowingTable(props) {
     }
 
     function addRow() {
-        console.log("calling add row")
         setRows([...rows, <GetRow />])
     }
     function appendRow(e) {
@@ -57,25 +56,28 @@ function GrowingTable(props) {
             addRow()
         }
     }
-
-
-    // useEffect(() => {
-    // for(let i = 0; i < 5; i){
-    //     setRows([...rows, <GetRow />])
-    // }
-    // }, [])
-
     return (
         <div>
             <table id='mytable' onFocus={appendRow} onChange={handleOnChange} style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
                 <tr >
                     {props.header.map(head => <th style={{ border: "1px solid", padding: "4px" }}>{head}</th>)}
                 </tr>
-                {props.prefilled.map(val => <tr >
-                    <td style={{ border: "1px solid", padding: "4px" }}>
-                        <input type="text" defaultValue="hello" style={{ width: "100%", height: "25px" }} />
-                    </td>
-                </tr>)}
+                {props.prefilled !==undefined && props.prefilled.map(val => {
+                    let i =0
+                    return (
+                        <tr >
+                            {props.header.map(head => {
+
+                                return (
+                                    <td style={{ border: "1px solid", padding: "4px" }}>
+                                        <input type="text" defaultValue={val[props.order[i]]} style={{ width: "100%", height: "25px" }} />
+                                    </td>
+                                )
+                                i++
+                            })}
+                        </tr>
+                    )
+                })}
                 {rows}
             </table>
         </div>

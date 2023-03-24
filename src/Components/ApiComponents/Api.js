@@ -16,8 +16,6 @@ function Api() {
     let navigate = useNavigate()
 
     function handleSave(e) {
-        console.log(Apidata)
-
         if (validateFormbyName(namelist, "error")) {
             console.log(Apidata)
             console.log("Form submited")
@@ -112,7 +110,6 @@ function Api() {
             </Grid>
             <ApiTabs></ApiTabs>
         </div>
-
     )
 }
 

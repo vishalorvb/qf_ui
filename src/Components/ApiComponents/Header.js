@@ -4,34 +4,22 @@ import { Apidata } from './Data'
 
 
 function Header() {
+  let displayorder = ["key", "value", "description"]
 
-  let demojson =[
-    {
-      "k1":"hello",
-      "k2":"world",
-      "k3":"fwfdw"
-    },
-    {
-      "k1":"ngbdg",
-      "k2":"wgdnorld",
-      "k3":"fwfdwbfb"
-    }
-  ]
-  let displayorder = ["k2", "k3","k1"]
-
- function handleHeaderData(tabdata){
-  Apidata.headers_list = tabdata
-  console.log(tabdata)
- }
+  function handleHeaderData(tabdata) {
+    Apidata.headers_list = tabdata
+    console.log(tabdata)
+  }
 
   return (
     <div>
       <GrowingTable
-      header={["Key","Value","Description"]}
-      TableData = {handleHeaderData}
-      keypair ={["key","value","description"]}
-      prefilled ={demojson}
-      order ={displayorder}
+        header={["Key", "Value", "Description"]}
+        TableData={handleHeaderData}
+        keypair={["key", "value", "description"]}
+        // prefilled ={Apidata.headers_list==undefined?[]: Apidata.headers_list.slice(0,-1)}
+        prefilled={Apidata.headers_list?.slice(0, -1)}
+        order={displayorder}
       ></GrowingTable>
     </div>
   )

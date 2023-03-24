@@ -32,6 +32,7 @@ const APIsTable = lazy(() =>
 );
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
+const ApiDatasets = lazy(() => import("../Components/ApiComponents/ApiDatasets"));
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
 );
@@ -236,6 +237,11 @@ export const Routes = [
       {
         path: "updateScreenOrder",
         element: UpdateScreenOrder,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "apidatasets",
+        element: ApiDatasets,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],

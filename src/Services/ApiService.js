@@ -30,3 +30,11 @@ export async function deleteApiRequest(apiId){
     })
     return x
 }
+
+export function getApiDatasets(callback,datasetId){
+axios.get(`${baseUrl}/qfservice/api/testcases/${datasetId}/datasets`).then(res =>{
+    if(res.data.data != null ){
+        callback(res.data.data)
+    }   
+})
+}

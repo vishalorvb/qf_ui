@@ -79,7 +79,7 @@ function Body() {
         onChange={e=>{
           Apidata.body_raw.raw_text = e.target.value;
         }}
-        rows="12" cols="150"></textarea>
+        rows="12" cols="100"></textarea>
       </div>}
     </div>
   )
