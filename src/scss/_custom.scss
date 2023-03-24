@@ -393,3 +393,23 @@ select {
 .datasetInput {
   border: none;
 }
+
+#inner {
+  width: 0px;
+  background-color: $accent;
+  transition: all 0.5s;
+  margin-left: -20px;
+  border-radius: 20px;
+  box-shadow: 1px 3px 10px rgba($accent, 0.5);
+  color: white;
+}
+
+#outer {
+  display: flex;
+}
+
+#outer:hover #inner {
+  width: 150px;
+  box-shadow: 1px 1px 3px rgba($accent, 0.8);
+  background-color: darken($accent, 5%) !important;
+}

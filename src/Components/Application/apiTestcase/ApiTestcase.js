@@ -1,44 +1,21 @@
-import { Button, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import Table from '../../../CustomComponent/Table'
-import { getApis } from '../../../Services/ApiService';
-import axios from '../../../api/axios';
+import { Button, Grid } from "@mui/material";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import Table from "../../../CustomComponent/Table";
+import { getApis } from "../../../Services/ApiService";
+import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
-import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import { useLocation } from "react-router-dom";
+import useHead from "../../../hooks/useHead";
 
-export let testcasedata = {
-  "module_id": "",
-  "testcase_name": "",
-  "testcase_desc": "",
-  "testcase_id": "",
-  "testcase_sprints":
-    [
-      {
-        "sprint_id": "1",
-        "sprint_name": "",
-        "issue_id": "",
-      }
-    ],
-
-  "apis_list":
-    [
-      
-    ]
-}
-
-function ApiTestcase() 
-{
+function ApiTestcase() {
+  const { setHeader } = useHead();
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [api, setApi] = useState([]);
-  let [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
-  let elementsList = {};
-  
 
   const columns = [
     {
@@ -54,49 +31,67 @@ function ApiTestcase()
       flex: 3,
       sortable: false,
       align: "left",
-    }
-
-  ]
+    },
+  ];
 
   useEffect(() => {
-    getApis(setApi, location.state.applicationId)
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Testcases API Update",
+      };
+    });
+    return () =>
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "",
+        };
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
- 
+
+  useEffect(() => {
+    axios
+      .get(`/qfservice/testcase/${location?.state?.testcaseId}/apis`)
+      .then((resp) => {
+        setApi(resp.data.data.apisList);
+        setPreSelectedElement(() =>
+          resp.data.data.apisList
+            .filter((api) => api.is_selected === true)
+            .map((api) => api.api_id)
+        );
+      });
+  }, []);
 
   function createTestcase() {
-    elementsList = preSelectedElement.map((id) => {
-      return { api_id: id };
-    })
-    testcasedata.testcase_name = location.state.name;
-    testcasedata.testcase_desc = location.state.desc;
-    testcasedata.module_id = location.state.applicationId;
-    testcasedata.testcase_id = location.state.testcaseId;
-    testcasedata.apis_list = elementsList;
-    
-    axios.post(`/qfservice/CreateNewTestcase`, testcasedata).then((resp) => {
-      resp?.data?.status === "SUCCESS" &&
-        navigate("", {
-        });
-      setOpen(false);
-    });
+    const testcasedata = {
+      module_id: location.state.applicationId,
+      project_id: location.state.projectId,
+      testcase_id: location.state.testcaseId,
+      testcase_sprints: [],
+      apis_list: preSelectedElement.map((id) => {
+        return { api_id: id };
+      }),
+    };
 
+    axios.post(`/qfservice/addApisToTestcase`, testcasedata).then((resp) => {
+      console.log(resp);
+    });
   }
-  
 
   function handleClick() {
     if (preSelectedElement.length === 0) {
-      setError(true)
+      setError(true);
       return;
-    }
-    else {
-      setSuccess(true)
-      createTestcase()
+    } else {
+      setSuccess(true);
+      createTestcase();
     }
   }
   return (
-    <div>
-      <div>
-        <Grid container justifyContent="flex-start" columnSpacing={2}>
+    <>
+      {/* <Grid container justifyContent="flex-start" columnSpacing={2}>
           <Grid item xs={3} md={3} lg={3}>
 
             <select
@@ -118,8 +113,7 @@ function ApiTestcase()
               <option value="3"> isssue 3</option>
             </select>
           </Grid>
-        </Grid>
-      </div>
+        </Grid> */}
       <Table
         rows={api}
         columns={columns}
@@ -129,14 +123,13 @@ function ApiTestcase()
         selectionModel={preSelectedElement}
         setSelectionModel={setPreSelectedElement}
       ></Table>
-      <br /><br />
-      <div>
-        <Grid container justifyContent="flex-end" >
-          <Grid item xs={3} md={2} lg={1.2}>
-            <Button variant="contained" onClick={handleClick}>Save</Button>
-          </Grid>
+      <Grid container justifyContent="flex-end">
+        <Grid item xs={3} md={2} lg={1.2}>
+          <Button variant="contained" onClick={handleClick}>
+            Save
+          </Button>
         </Grid>
-      </div>
+      </Grid>
       <SnackbarNotify
         open={error}
         close={setError}
@@ -149,8 +142,8 @@ function ApiTestcase()
         msg={"Testcase created successfully."}
         severity="success"
       />
-    </div>
-  )
+    </>
+  );
 }
 
-export default ApiTestcase
+export default ApiTestcase;

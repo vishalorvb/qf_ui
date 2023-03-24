@@ -30,8 +30,7 @@ export default function ProjectnApplicationSelector({
   }, [applicationList]);
 
   useEffect(() => {
-    setSelectedApplication({ module_name: "Select Project first" });
-    selectedProject &&
+    selectedProject?.project_id &&
       getApplicationOfProject(setapplicationList, selectedProject?.project_id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject]);
@@ -48,7 +47,7 @@ export default function ProjectnApplicationSelector({
         disablePortal
         id="project_id"
         options={projectsList}
-        value={selectedProject}
+        value={selectedProject || null}
         sx={{ width: "20%" }}
         getOptionLabel={(option) => option.project_name}
         onChange={(e, value) => {
@@ -62,7 +61,7 @@ export default function ProjectnApplicationSelector({
         disablePortal
         id="application_id"
         options={applicationList}
-        value={selectedApplication}
+        value={selectedApplication || null}
         sx={{ width: "20%" }}
         getOptionLabel={(option) => option.module_name}
         onChange={(e, value) => {

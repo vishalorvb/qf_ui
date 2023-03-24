@@ -58,13 +58,18 @@ export default function PageHead() {
                 {header.name}
               </Typography>
               {header.plusButton && (
-                <IconButton
-                  size="small"
-                  onClick={header.plusCallback}
-                  className="addIcon"
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
+                <div id="outer">
+                  <IconButton
+                    size="small"
+                    onClick={header.plusCallback}
+                    className="addIcon"
+                  >
+                    <AddIcon fontSize="small" />
+                  </IconButton>
+                  <div id="inner">
+                    <Typography align="center">Color</Typography>
+                  </div>
+                </div>
               )}
               {header?.name === "Pages" && (
                 <FormControl fullWidth>
