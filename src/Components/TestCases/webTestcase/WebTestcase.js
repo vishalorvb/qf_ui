@@ -59,6 +59,7 @@ export default function WebTestcase() {
         ...ps,
         name: "Testcase",
         plusButton: true,
+        buttonName: "Create Testcase",
         plusCallback: () => navigate("CreateTestcase"),
       };
     });

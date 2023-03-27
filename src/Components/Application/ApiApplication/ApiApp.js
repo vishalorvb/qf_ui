@@ -79,6 +79,7 @@ export default function ApiApp() {
         ...ps,
         name: "API",
         plusButton: true,
+        buttonName: "Create API",
         plusCallback: () => setOpenCreate(true),
       };
     });

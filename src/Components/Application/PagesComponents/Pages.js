@@ -40,6 +40,7 @@ export default function Pages() {
         ...ps,
         name: "Pages",
         plusButton: true,
+        buttonName: "Create Page",
         plusCallback: createPage,
       };
     });

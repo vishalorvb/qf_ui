@@ -399,17 +399,22 @@ select {
   background-color: $accent;
   transition: all 0.5s;
   margin-left: -20px;
-  border-radius: 20px;
+  border-radius: 10px 20px 20px 10px;
   box-shadow: 1px 3px 10px rgba($accent, 0.5);
   color: white;
 }
 
+// #buttonName {
+
+// }
+
 #outer {
   display: flex;
+  cursor: pointer;
 }
 
 #outer:hover #inner {
-  width: 150px;
+  width: 200px;
   box-shadow: 1px 1px 3px rgba($accent, 0.8);
   background-color: darken($accent, 5%) !important;
 }

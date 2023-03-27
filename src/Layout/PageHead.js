@@ -57,20 +57,6 @@ export default function PageHead() {
               <Typography variant="h6" style={{ fontWeight: 600 }}>
                 {header.name}
               </Typography>
-              {header.plusButton && (
-                <div id="outer">
-                  <IconButton
-                    size="small"
-                    onClick={header.plusCallback}
-                    className="addIcon"
-                  >
-                    <AddIcon fontSize="small" />
-                  </IconButton>
-                  <div id="inner">
-                    <Typography align="center">Color</Typography>
-                  </div>
-                </div>
-              )}
               {header?.name === "Pages" && (
                 <FormControl fullWidth>
                   <InputLabel id="browser">Browser</InputLabel>
@@ -90,6 +76,23 @@ export default function PageHead() {
                     <MenuItem value={"mozilla"}>Mozilla</MenuItem>
                   </Select>
                 </FormControl>
+              )}
+              {header.plusButton && (
+                <div id="outer" onClick={header.plusCallback}>
+                  <IconButton size="small" className="addIcon">
+                    <AddIcon fontSize="small" />
+                  </IconButton>
+                  <div id="inner">
+                    <Typography
+                      id="buttonName"
+                      noWrap
+                      lineHeight={2}
+                      align="center"
+                    >
+                      {header?.buttonName}
+                    </Typography>
+                  </div>
+                </div>
               )}
             </Stack>
 

@@ -13,6 +13,7 @@ function Projects() {
         ...ps,
         name: "Projects",
         plusButton: true,
+        buttonName: "Create Project",
         plusCallback: () => navigate("/projects/createProject"),
       };
     });

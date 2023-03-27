@@ -72,6 +72,7 @@ export default function Admin() {
         ...ps,
         name: "Manage Users",
         plusButton: true,
+        buttonName: "Add User",
         plusCallback: addUserHandler,
       };
     });

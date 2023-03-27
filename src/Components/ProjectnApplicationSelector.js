@@ -45,6 +45,7 @@ export default function ProjectnApplicationSelector({
     >
       <Autocomplete
         disablePortal
+        disableClearable
         id="project_id"
         options={projectsList}
         value={selectedProject || null}
@@ -59,6 +60,7 @@ export default function ProjectnApplicationSelector({
       />
       <Autocomplete
         disablePortal
+        disableClearable
         id="application_id"
         options={applicationList}
         value={selectedApplication || null}

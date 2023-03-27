@@ -112,6 +112,23 @@ export default function TestCases() {
                 </IconButton>
               </Tooltip>
             )}
+            {selectedApplication?.module_type === 1 && (
+              <Tooltip title="API Order Update">
+                <IconButton
+                  onClick={() =>
+                    navigate("updateAPIOrder", {
+                      state: {
+                        applicationId: param.row.module_id,
+                        testcaseId: param.row.testcase_id,
+                        projectId: selectedProject?.project_id,
+                      },
+                    })
+                  }
+                >
+                  <AirplayIcon />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Delete">
               <IconButton>
                 <DeleteOutlineIcon />
@@ -134,6 +151,7 @@ export default function TestCases() {
         ...ps,
         name: "Testcases",
         plusButton: true,
+        buttonName: "Create Testcase",
         plusCallback: () => setPopup(true),
       };
     });

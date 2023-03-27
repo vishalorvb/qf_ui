@@ -60,7 +60,7 @@ export default function Applications() {
                   className="eyeIcon"
                   onClick={() => {
                     let url = ApplicationNav.filter((ele) => {
-                      if (ele.type === type) {
+                      if (ele.type == type) {
                         return ele.url;
                       }
                     });
@@ -74,7 +74,7 @@ export default function Applications() {
                 />
               </IconButton>
             </Tooltip>
-            {type === 2 && (
+            {type == 2 && (
               <Tooltip title="Screen">
                 <IconButton
                   onClick={(e) =>
@@ -134,12 +134,14 @@ export default function Applications() {
   ];
 
   function handleSelect(e) {
+    console.log(e);
     setType(e.target.value);
     let n = ApplicationNav.filter((el) => {
-      if (el.type === e.target.value) {
+      if (el.type == e.target.value) {
         return el.name;
       }
     });
+    console.log(n);
     setName(n[0].name);
   }
   function handleSnackbar() {
@@ -153,6 +155,7 @@ export default function Applications() {
         ...ps,
         name: name,
         plusButton: true,
+        buttonName: "Create Application",
         plusCallback: () => setPopup(true),
       };
     });
@@ -176,7 +179,7 @@ export default function Applications() {
       <div className="intable">
         <select onChange={handleSelect}>
           {ApplicationNav.map((el) => (
-            <option selected={el.type === type ? true : false} value={el.type}>
+            <option selected={el.type == type ? true : false} value={el.type}>
               {el.name}
             </option>
           ))}
@@ -197,7 +200,7 @@ export default function Applications() {
       )}
       <Table
         rows={application.filter((e) => {
-          if (e.module_type === type) {
+          if (e.module_type == type) {
             return e;
           }
         })}
