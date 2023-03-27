@@ -38,3 +38,12 @@ axios.get(`${baseUrl}/qfservice/api/testcases/${datasetId}/datasets`).then(res =
     }   
 })
 }
+
+export function getDatasetDetails(callback,datasetId){
+    axios({
+        method:"post",
+        url:`${baseUrl}/qfservice/GetDatasetDetailsByDatasetId?dataset_id=${datasetId}`,
+    }).then(res=>{
+        callback(res.data.data.apidatasets)
+    })
+}

@@ -1,13 +1,14 @@
 import React from 'react'
-import GrowingTable from '../../CustomComponent/GrowingTable'
-import { Apidata } from './Data'
-function Param() {
+import GrowingTable from '../../../CustomComponent/GrowingTable'
 
 function handleParamData(tabdata){
-  Apidata.params_list = tabdata
-}
+    console.log(tabdata)
+  }
 
 
+
+
+function ApiParam() {
   return (
     <div>
       <GrowingTable
@@ -19,4 +20,4 @@ function handleParamData(tabdata){
   )
 }
 
-export default Param
+export default ApiParam

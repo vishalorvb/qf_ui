@@ -10,7 +10,6 @@ import { createApiRequest } from '../../Services/ApiService';
 
 
 function Api() {
-
     let namelist = ["apiname", "apidesc", "apiurl"]
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     let navigate = useNavigate()

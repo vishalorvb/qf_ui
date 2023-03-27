@@ -39,7 +39,7 @@ function GrowingTable(props) {
             tempdata[props.keypair[2]] = description
             data.push(tempdata)
         }
-        console.log(data)
+        // console.log(data)
 
         try {
             props.TableData(data)
@@ -56,6 +56,8 @@ function GrowingTable(props) {
             addRow()
         }
     }
+
+ 
     return (
         <div>
             <table id='mytable' onFocus={appendRow} onChange={handleOnChange} style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
@@ -63,20 +65,22 @@ function GrowingTable(props) {
                     {props.header.map(head => <th style={{ border: "1px solid", padding: "4px" }}>{head}</th>)}
                 </tr>
                 {props.prefilled !==undefined && props.prefilled.map(val => {
-                    let i =0
+                    let i =-1
                     return (
                         <tr >
                             {props.header.map(head => {
-
+                               
+                                 i = i + 1
                                 return (
                                     <td style={{ border: "1px solid", padding: "4px" }}>
                                         <input type="text" defaultValue={val[props.order[i]]} style={{ width: "100%", height: "25px" }} />
                                     </td>
                                 )
-                                i++
+                               
                             })}
                         </tr>
                     )
+                   
                 })}
                 {rows}
             </table>

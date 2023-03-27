@@ -32,7 +32,7 @@ const APIsTable = lazy(() =>
 );
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
-const ApiDatasets = lazy(() => import("../Components/ApiComponents/ApiDatasets"));
+const ApiDatasets = lazy(() => import("../Components/ApiComponents/CreateApi/ApiDatasets"));
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
 );
