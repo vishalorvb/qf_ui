@@ -120,7 +120,7 @@ function Testset() {
                 <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
-            <Tooltip title="Execute">
+            {/* <Tooltip title="Execute">
               <IconButton
                 onClick={(e) => {
                   executeHandler(param.row);
@@ -128,7 +128,7 @@ function Testset() {
               >
                 <PlayCircleOutlinedIcon></PlayCircleOutlinedIcon>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </>
         );
       },
