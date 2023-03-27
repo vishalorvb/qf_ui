@@ -7,14 +7,13 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useEffect, useState } from "react";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import axios from "../../api/axios";
 
 function CreateTestCasePopUp(props) {
-  const { projectId, applicationId, open, close, setSnack } = props;
-  console.log(props);
+  const { projectId, applicationId, applicationType, open, close, setSnack } =
+    props;
   const schema = yup.object().shape({ testcaseName: yup.string().required() });
   const {
     control,
@@ -46,7 +45,7 @@ function CreateTestCasePopUp(props) {
   };
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Create Test Case</DialogTitle>
+      <DialogTitle className="dialogTitle">Create Test Case</DialogTitle>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
         <DialogContent>
           <Stack spacing={1} mt={1}>

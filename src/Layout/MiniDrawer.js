@@ -182,7 +182,7 @@ export default function MiniDrawer({ open }) {
   };
 
   return (
-    <ThemeProvider className="sidebar" theme={drawerTheme}>
+    <ThemeProvider theme={drawerTheme}>
       <Drawer variant="permanent" open={open} className="drawer">
         <DrawerHeader className="drawerHeader">
           <Logo>QF</Logo>

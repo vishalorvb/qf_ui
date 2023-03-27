@@ -2,10 +2,10 @@ import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
-import useHead from "../../hooks/useHead";
+import axios from "../../../api/axios";
+import useHead from "../../../hooks/useHead";
 
-export default function UpdateScreenOrderinDataset() {
+export default function APIorderupdate() {
   const { setHeader } = useHead();
   const location = useLocation();
   const [data, setData] = useState([]);
@@ -13,32 +13,32 @@ export default function UpdateScreenOrderinDataset() {
 
   useEffect(() => {
     axios
-      .get(
-        `/qfservice/webtestcase/getScreens?testcase_id=${location?.state?.testcaseId}`
-      )
+      .get(`/qfservice/testcase/${location?.state?.testcaseId}/apis`)
       .then((resp) => {
-        const data = resp?.data?.info;
-        setData(data);
+        setData(() =>
+          resp.data.data.apisList.filter((api) => api.is_selected === true)
+        );
       });
 
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Screen Elements",
+        name: "API in Testcase",
         plusButton: false,
       };
     });
   }, []);
 
   const updateScreenOrder = () => {
-    axios
-      .post(`/qfservice/webtestcase/updateOrderOfScreensInTestcase`, {
-        testcaseId: location?.state?.testcaseId,
-        screen_ids: order,
-      })
-      .then((resp) => {
-        console.log(resp);
-      });
+    order.length > 0 &&
+      axios
+        .post(`/qfservice/UpdateOrderOfAPIsInTestcase`, {
+          testcaseId: location?.state?.testcaseId,
+          api_ids: order,
+        })
+        .then((resp) => {
+          console.log(resp);
+        });
   };
 
   useEffect(() => {
@@ -49,11 +49,11 @@ export default function UpdateScreenOrderinDataset() {
     //column definitions...
     () => [
       {
-        accessorKey: "screeninfo.name",
-        header: "Field Name",
+        accessorKey: "api_name",
+        header: "API Name",
       },
       {
-        accessorKey: "screeninfo.description",
+        accessorKey: "api_description",
         header: "Description",
       },
     ],
@@ -83,9 +83,8 @@ export default function UpdateScreenOrderinDataset() {
               );
               setData([...data]);
               setOrder(() => {
-                return data.map((d) => d.screen_id);
+                return data.map((d) => d.api_id);
               });
-              console.log(data);
             }
           },
         })}

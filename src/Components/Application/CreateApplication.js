@@ -52,7 +52,7 @@ export default function CreateApplication(props) {
   }
   useEffect(() => {
     moduledata.module_type = type;
-  }, []);
+  }, [type]);
 
   useEffect(() => {
     return () => {
@@ -99,7 +99,7 @@ export default function CreateApplication(props) {
                 }}
               />
             </Grid>
-            {type == 3 && (
+            {type === 3 && (
               <Grid item md={12}>
                 <input
                   type="text"

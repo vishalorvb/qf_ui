@@ -54,7 +54,7 @@ function TestcaseSelectAndExecute({
           console.log(resp?.data?.info?.datasets);
           settestcaseList(resp?.data?.info?.datasets);
         });
-  }, [open]);
+  }, [open, testcaseId]);
 
   return (
     <div>

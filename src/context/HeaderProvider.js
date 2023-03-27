@@ -6,6 +6,7 @@ export const HeaderProvider = ({ children }) => {
   const [header, setHeader] = useState({
     name: "",
     plusButton: false,
+    buttonName: "",
     plusCallback: () => console.log("null"),
     browser: "custom",
   });

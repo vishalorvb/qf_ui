@@ -65,18 +65,21 @@ const UpdateScreen = lazy(() =>
   import("../Components/Application/ScreenComponents/UpdateScreen")
 );
 const CreateApiTestcase = lazy(() =>
-  import("../Components/Application/apiTestcase/ApiTestcase")
+  import("../Components/TestCases/apiTestcase/ApiTestcase")
 );
 const WebTestcase = lazy(() =>
-  import("../Components/Application/webTestcase/WebTestcase")
+  import("../Components/TestCases/webTestcase/WebTestcase")
 );
 const CreateWebTestcase = lazy(() =>
-  import("../Components/Application/webTestcase/CreateWebTestcase")
+  import("../Components/TestCases/webTestcase/CreateWebTestcase")
 );
 
 const ViewReport = lazy(() => import("../pages/ViewReport"));
 const UpdateScreenOrder = lazy(() =>
   import("../Components/TestCases/UpdateScreenOrderinDataset")
+);
+const APIorderupdate = lazy(() =>
+  import(`../Components/TestCases/apiTestcase/APIorderupdate`)
 );
 
 export const Routes = [
@@ -236,6 +239,11 @@ export const Routes = [
       {
         path: "updateScreenOrder",
         element: UpdateScreenOrder,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "updateAPIOrder",
+        element: APIorderupdate,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],

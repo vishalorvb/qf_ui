@@ -1,18 +1,11 @@
-import { Autocomplete, Grid, IconButton, Radio, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import Table from "../../CustomComponent/Table";
 import CreateTestCasePopUp from "./CreateTestCasePopUp";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddBoxIcon from "@mui/icons-material/AddBox";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
-import { getTestcase } from "../../Services/TestCaseService";
 import { useNavigate } from "react-router";
-import { teststepData } from "./TestSteps";
-import { getApplication } from "../../Services/ApplicationService";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
@@ -26,10 +19,8 @@ export default function TestCases() {
   const [popup, setPopup] = useState(false);
   const [snack, setSnack] = useState(false);
 
-  const [selectedProject, setSelectedProject] = useState({
-    project_name: "Project",
-  });
-  const [selectedApplication, setSelectedApplication] = useState({});
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedApplication, setSelectedApplication] = useState(null);
 
   const navigate = useNavigate();
 
@@ -55,11 +46,6 @@ export default function TestCases() {
       renderCell: (param) => {
         return (
           <>
-            <Tooltip title="Delete">
-              <IconButton>
-                <DeleteIcon className=""></DeleteIcon>
-              </IconButton>
-            </Tooltip>
             <Tooltip title="Dataset">
               <IconButton
                 onClick={() =>
@@ -72,7 +58,7 @@ export default function TestCases() {
                   })
                 }
               >
-                <DataObjectOutlinedIcon />
+                <DataObjectOutlinedIcon sx={{ color: "green" }} />
               </IconButton>
             </Tooltip>
 
@@ -84,13 +70,12 @@ export default function TestCases() {
                       state: {
                         applicationId: param.row.module_id,
                         testcaseId: param.row.testcase_id,
-                        name: param.row.name,
-                        desc: param.row.description,
+                        projectId: selectedProject?.project_id,
                       },
                     })
                   }
                 >
-                  <ApiOutlinedIcon />
+                  <ApiOutlinedIcon sx={{ color: "orange" }} />
                 </IconButton>
               </Tooltip>
             ) : (
@@ -110,19 +95,43 @@ export default function TestCases() {
                 </IconButton>
               </Tooltip>
             )}
-            <Tooltip title="Screen Order Update">
-              <IconButton
-                onClick={() =>
-                  navigate("updateScreenOrder", {
-                    state: {
-                      applicationId: param.row.module_id,
-                      testcaseId: param.row.testcase_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
-                }
-              >
-                <AirplayIcon />
+            {selectedApplication?.module_type !== 1 && (
+              <Tooltip title="Screen Order Update">
+                <IconButton
+                  onClick={() =>
+                    navigate("updateScreenOrder", {
+                      state: {
+                        applicationId: param.row.module_id,
+                        testcaseId: param.row.testcase_id,
+                        projectId: selectedProject?.project_id,
+                      },
+                    })
+                  }
+                >
+                  <AirplayIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {selectedApplication?.module_type === 1 && (
+              <Tooltip title="API Order Update">
+                <IconButton
+                  onClick={() =>
+                    navigate("updateAPIOrder", {
+                      state: {
+                        applicationId: param.row.module_id,
+                        testcaseId: param.row.testcase_id,
+                        projectId: selectedProject?.project_id,
+                      },
+                    })
+                  }
+                >
+                  <AirplayIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Delete">
+              <IconButton>
+                <DeleteOutlineIcon />
               </IconButton>
             </Tooltip>
           </>
@@ -142,6 +151,7 @@ export default function TestCases() {
         ...ps,
         name: "Testcases",
         plusButton: true,
+        buttonName: "Create Testcase",
         plusCallback: () => setPopup(true),
       };
     });
@@ -154,6 +164,7 @@ export default function TestCases() {
           plusCallback: () => console.log("null"),
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -166,6 +177,7 @@ export default function TestCases() {
           const testcases = resp?.data?.info ? resp?.data?.info : [];
           setTestcases(testcases);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedApplication, popup]);
 
   return (

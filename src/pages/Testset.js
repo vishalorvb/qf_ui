@@ -1,10 +1,17 @@
-import {Autocomplete, Button, Grid, IconButton, Paper, Tooltip} from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Grid,
+  IconButton,
+  Paper,
+  Tooltip,
+} from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 // import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import { useNavigate } from "react-router-dom";
 import { getTestsets } from "../Services/TestsetService";
@@ -14,7 +21,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import axios, { axiosPrivate } from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import DeleteTestset from "../Components/TestSet/DeleteTestset";
-import SnackbarNotify from '../CustomComponent/SnackbarNotify';
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 import TestcaseSelectAndExecute from "../Components/Execution/TestcaseSelectAndExecute";
@@ -51,7 +58,13 @@ function Testset() {
     console.log(e);
     console.log(selectedProject?.project_id);
     console.log(selectedApplication?.module_id);
-    navigate("AddTestcaseToTestset", { state: { param1: e, param2: selectedProject?.project_id, param3: selectedApplication?.module_id}});
+    navigate("AddTestcaseToTestset", {
+      state: {
+        param1: e,
+        param2: selectedProject?.project_id,
+        param3: selectedApplication?.module_id,
+      },
+    });
   };
 
   const deleteUserHandler = (e) => {
@@ -67,16 +80,16 @@ function Testset() {
 
   function onChangeHandler() {
     axios
-        .get(
-          `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
-        )
-        .then((resp) => {
-          const testsets = resp?.data?.info ? resp?.data?.info : [];
-          setTestsetObject(testsets);
-        });
+      .get(
+        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+      )
+      .then((resp) => {
+        const testsets = resp?.data?.info ? resp?.data?.info : [];
+        setTestsetObject(testsets);
+      });
     // setOpen1(true);
-  };
-  
+  }
+
   const columns = [
     {
       field: "testset_name",
@@ -144,6 +157,7 @@ function Testset() {
         ...ps,
         name: "Testset",
         plusButton: true,
+        buttonName: "Create Testset",
         plusCallback: addUserHandler,
       };
     });
@@ -283,14 +297,40 @@ function Testset() {
         selectedApplication={selectedApplication}
         setSelectedApplication={setSelectedApplication}
       />
-      <SnackbarNotify open={delSuccessMsg} close={setDelSuccessMsg} msg="Testset deleted successfully" severity="success"/>
+      <SnackbarNotify
+        open={delSuccessMsg}
+        close={setDelSuccessMsg}
+        msg="Testset deleted successfully"
+        severity="success"
+      />
       <div
         className="recenttable"
         style={{ flot: "right", marginBottom: "10px" }}
       ></div>
       <div className="datatable" style={{ marginTop: "20px" }}>
-      {openDelete ? <DeleteTestset object={deleteObject} openDelete={openDelete} setOpenDelete={setOpenDelete}  setDelSuccessMsg={setDelSuccessMsg} getTestsets = {onChangeHandler}/> : ""}
-      {openExecute ? <TestcaseSelectAndExecute object={executeObject} openDelete={openExecute} setOpenDelete={setOpenExecute}   getTestsets = {onChangeHandler} projectId = {selectedProject?.project_id} applicationId = {selectedApplication?.module_id}/> : ""}
+        {openDelete ? (
+          <DeleteTestset
+            object={deleteObject}
+            openDelete={openDelete}
+            setOpenDelete={setOpenDelete}
+            setDelSuccessMsg={setDelSuccessMsg}
+            getTestsets={onChangeHandler}
+          />
+        ) : (
+          ""
+        )}
+        {openExecute ? (
+          <TestcaseSelectAndExecute
+            object={executeObject}
+            openDelete={openExecute}
+            setOpenDelete={setOpenExecute}
+            getTestsets={onChangeHandler}
+            projectId={selectedProject?.project_id}
+            applicationId={selectedApplication?.module_id}
+          />
+        ) : (
+          ""
+        )}
         <Table
           columns={columns}
           rows={testsetObject}

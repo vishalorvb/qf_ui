@@ -33,7 +33,7 @@ function ProjectTable() {
     console.log(projectId);
     deleteProject(projectId, loggedInId).then((res) => {
       console.log(res);
-      if (res == "SUCCESS") {
+      if (res === "SUCCESS") {
         console.log("dletred");
         setSnackbarsuccess(true);
         getProject(setProject, loggedInId);
@@ -78,7 +78,7 @@ function ProjectTable() {
       field: " ",
       headerName: "Type",
       renderCell: (param) => {
-        if (param.row.automation_framework_type == 1) {
+        if (param.row.automation_framework_type === 1) {
           return (
             <Stack direction="row" spacing={1}>
               <Chip
@@ -138,7 +138,7 @@ function ProjectTable() {
 
   useEffect(() => {
     getProject(setProject, loggedInId);
-  }, []);
+  }, [loggedInId]);
 
   return (
     <div>

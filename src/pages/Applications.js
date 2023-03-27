@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import CreateApplication from "../Components/Application/CreateApplication";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
@@ -13,7 +13,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { moduledata } from "../Components/Application/CreateApplication";
 import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import { deleteApplication } from "../Services/ApplicationService";
 export default function Applications() {
   const { setHeader } = useHead();
@@ -135,12 +134,14 @@ export default function Applications() {
   ];
 
   function handleSelect(e) {
+    console.log(e);
     setType(e.target.value);
     let n = ApplicationNav.filter((el) => {
       if (el.type == e.target.value) {
         return el.name;
       }
     });
+    console.log(n);
     setName(n[0].name);
   }
   function handleSnackbar() {
@@ -154,6 +155,7 @@ export default function Applications() {
         ...ps,
         name: name,
         plusButton: true,
+        buttonName: "Create Application",
         plusCallback: () => setPopup(true),
       };
     });

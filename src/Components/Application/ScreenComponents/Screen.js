@@ -100,6 +100,7 @@ export default function Screens() {
         ...ps,
         name: "Screens",
         plusButton: true,
+        buttonName: "Create Screen",
         plusCallback: () =>
           navigate("createscreen", { state: { id: location?.state?.id } }),
       };
