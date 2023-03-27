@@ -9,20 +9,22 @@ import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
+import { useNavigate } from "react-router-dom";
 
 export default function AddTestcaseToTestset() {
   const [testcaseObject, setTestcaseObject] = useState([]);
   const location = useLocation();
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteObject, setDeleteObject] = useState([]);
-  const [testsetName, setTestsetName] = useState(location.state.param1.testset_name);
-  const [testsetDesc, setTestsetDesc] = useState(location.state.param1.testset_desc);
+  const [testsetName, setTestsetName] = useState((location.state.param1.testset_name).slice(3));
+  const [testsetDesc, setTestsetDesc] = useState((location.state.param1.testset_desc).slice(3));
   const testset_name = useRef();
   const testset_desc = useRef();
   const [leftTestcase, setLeftTestcase] = useState([]);
   const [rightTestcase, setRightTestcase] = useState([]);
   const [TSUpdateSuccessMsg, setTSUpdateSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
+  const navigate = useNavigate();
 
   console.log(location.state.param3);
   console.log(location.state.param2);
@@ -102,8 +104,8 @@ export default function AddTestcaseToTestset() {
         }
       }
       var data = {
-        testset_name: testsetName,
-        testset_desc: testsetDesc,
+        testset_name: "TS_" + testsetName,
+        testset_desc: "TS_" + testsetDesc,
         project_id: projectId,
         testset_id: testsetId,
         module_id: applicationId,
@@ -119,6 +121,7 @@ export default function AddTestcaseToTestset() {
           setTSUpdateSuccessMsg(true);
           setTimeout(() => {
             setTSUpdateSuccessMsg(false);
+            navigate("/testset");
           }, 3000);
         });
     } else {
@@ -143,6 +146,8 @@ export default function AddTestcaseToTestset() {
 
   return (
     <div onClick={resetClassName}>
+      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
+      <SnackbarNotify open={TSUpdateSuccessMsg} close={setTSUpdateSuccessMsg} msg="Testset Updated successfully" severity="success"/>
       <Paper
         elevation={1}
         sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
@@ -281,8 +286,6 @@ export default function AddTestcaseToTestset() {
         </Container>
       </Paper>
       <div className="datatable" style={{ marginTop: "15px" }}>
-      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
-      <SnackbarNotify open={TSUpdateSuccessMsg} close={setTSUpdateSuccessMsg} msg="Testset Updated successfully" severity="success"/>
         {openDelete ? (
           <DeleteTestset
             object={deleteObject}

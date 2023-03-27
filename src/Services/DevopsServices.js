@@ -5,9 +5,9 @@ let userId = 1;
 // let module_id = 1052;
 let module_id = 1036;
 
-export function getPipelines(callback, module_id) {
+export function getPipelines(callback, project_id) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${baseUrl}/qfservice/pipeline/${module_id}`).then((res) => {
+  axios.get(`${baseUrl}/qfservice/pipeline/${project_id}`).then((res) => {
     console.log(res?.data?.data);
     callback(res?.data?.data);
   });
@@ -120,9 +120,9 @@ export function createPipeline(callback, params, id) {
     });
 }
 
-export function getReleaseInstances(callback, module_id) {
+export function getReleaseInstances(callback, project_id) {
   axios
-    .get(`${baseUrl}/qfservice/release-management/${module_id}`)
+    .get(`${baseUrl}/qfservice/release-management/${project_id}`)
     .then((res) => {
       console.log(res?.data?.data);
       res?.data?.data !== null && callback(res?.data?.data);

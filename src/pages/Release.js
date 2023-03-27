@@ -10,15 +10,24 @@ import ProjectsDropdown from "../Components/ProjectsDropdown";
 import { IconButton } from "@mui/material";
 import axios from "../api/axios";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import ConfirmPop from "../CustomComponent/ConfirmPop";
+let rowData;
 
 export default function Release() {
   const { setHeader } = useHead();
   const [createInstance, setCreateInstance] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [instance, setInstance] = useState([]);
   const [selectedProject, setSelectedProject] = useState([]);
   const [msg, setMsg] = useState(false);
   const [module, setmodule] = useState([]);
   const navigate = useNavigate();
+
+  const addReleaseInstances = (e) => {
+    console.log(selectedProject);
+    navigate("/release/createAnsibleInstance", { state: selectedProject });
+  };
+  console.log(selectedProject);
 
   useEffect(() => {
     setHeader((ps) => {
@@ -26,7 +35,7 @@ export default function Release() {
         ...ps,
         name: "Release Instances",
         plusButton: module ? true : false,
-        plusCallback: () => setCreateInstance(true),
+        plusCallback: addReleaseInstances,
       };
     });
     return () =>
@@ -38,15 +47,18 @@ export default function Release() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [module]);
+  }, [selectedProject]);
 
   const getReleaseInstancesfromModule = () => {
-    const module = selectedProject?.find(
-      (module) => module?.module_type === 21
-    );
-    setmodule(module);
-    module?.module_id
-      ? getReleaseInstances(setInstance, module?.module_id)
+    console.log(selectedProject);
+    // const module = selectedProject.module ? (selectedProject.filter(mod => mod.modules.length >0 )).find(module => module?.module_type === 21) : [];
+    // setmodule(module);
+    // console.log(module);
+    // module?.module_id
+    //   ? getReleaseInstances(setInstance, module?.module_id)
+    //   : setInstance([]);
+    selectedProject?.project_id
+      ? getReleaseInstances(setInstance, selectedProject?.project_id)
       : setInstance([]);
   };
 
@@ -57,7 +69,7 @@ export default function Release() {
   const deleteRelease = (row) => {
     axios
       .delete(
-        `qfservice/DeleteRelease?release_id=${row?.id}&module_id=${row?.module_id}`
+        `qfservice/DeleteRelease?release_id=${row?.id}&project_id=${selectedProject?.project_id}`
       )
       .then((resp) => {
         console.log(resp);
@@ -65,6 +77,11 @@ export default function Release() {
         resp?.data?.message && getReleaseInstancesfromModule();
       });
   };
+
+  const setRowData = (e) => {
+    setOpenDelete(true);
+    rowData(e);
+  }
 
   const instanceColumns = [
     {
@@ -101,7 +118,7 @@ export default function Release() {
             >
               <EditOutlinedIcon />
             </IconButton>
-            <IconButton onClick={() => deleteRelease(row)}>
+            <IconButton onClick= {setRowData}  >
               <DeleteOutlinedIcon />
             </IconButton>
           </div>
@@ -118,7 +135,8 @@ export default function Release() {
         msg={msg}
         severity="success"
       />
-      <ProjectsDropdown setSelectedProject={setSelectedProject} />
+      {openDelete ? <ConfirmPop heading={"Delete Release"} open={openDelete} handleClose={() =>setOpenDelete(false)} message={"Do You really want to delete this release"} onConfirm={deleteRelease(rowData)} /> : ""}
+      <ProjectsDropdown selectedProject = {selectedProject} setSelectedProject={setSelectedProject} />
       <Table rows={instance} columns={instanceColumns} />
       <SelectCreateInstanceModal
         createInstate={createInstance}

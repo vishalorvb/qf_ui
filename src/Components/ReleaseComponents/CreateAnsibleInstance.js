@@ -9,10 +9,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+
 export default function CreateAnsibleInstance() {
   const { auth } = useAuth();
   const location = useLocation();
   const [msg, setMsg] = useState(false);
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  console.log(location);
 
   const schema = yup.object().shape({
     releaseName: yup.string().required(),
@@ -49,7 +53,7 @@ export default function CreateAnsibleInstance() {
     location?.state?.id &&
       axios
         .post(`/qfservice/get-release/${location?.state?.id}`, {
-          module_id: location?.state?.module_id,
+          project_id: location?.state?.project_id,
           release_id: "",
           release_type: "ansible_release",
         })
@@ -71,13 +75,13 @@ export default function CreateAnsibleInstance() {
   }, []);
 
   const onSubmitHandler = (data) => {
-    console.log(location?.state?.module_id);
+    console.log(location?.state?.project_id);
 
     axios
       .post(
         `/qfservice/CreateAnsibleRelease/?release_id=${
           location?.state?.id ? location?.state?.id : 0
-        }&module_id=${location?.state?.module_id}&release_name=${
+        }&project_id=${location?.state?.project_id}&release_name=${
           data?.releaseName
         }&release_desc=${data?.releaseDesc}&app_source_code_branch_name=${
           data?.repoBranch
@@ -91,6 +95,11 @@ export default function CreateAnsibleInstance() {
         console.log(resp);
         const respMsg = resp?.data?.message;
         const info = resp?.data?.info;
+        setOpen(true);
+          setTimeout(() => {
+            setOpen(false);
+            navigate("/release");
+          }, 3000);
         setMsg(respMsg);
         info !== null && reset();
       });
@@ -99,8 +108,8 @@ export default function CreateAnsibleInstance() {
   return (
     <>
       <SnackbarNotify
-        open={msg !== false && true}
-        close={setMsg}
+        open={open && true}
+        close={setOpen}
         msg={msg}
         severity="success"
       />

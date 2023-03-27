@@ -20,9 +20,9 @@ export default function Pipeline() {
       return {
         ...ps,
         name: "Pipeline Instances",
-        plusButton: moduleId === 0 ? false : true,
+        plusButton: selectedProject?.project_id === 0 ? false : true,
         plusCallback: () =>
-          navigate("CreatePipeline", { state: { id: 0, module: moduleId } }),
+          navigate("CreatePipeline", { state: { id: 0, project_Id: selectedProject?.project_id } }),
       };
     }, []);
 
@@ -35,17 +35,21 @@ export default function Pipeline() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [moduleId]);
+  }, [selectedProject]);
 
   useEffect(() => {
-    const module = selectedProject?.find(
-      (module) => module?.module_type === 20
-    );
-    module?.module_id
-      ? getPipelines(setInstances, module?.module_id)
+    // const module = selectedProject?.find(
+    //   (module) => module?.module_type === 20
+    // );
+    // const module = selectedProject.module ? (selectedProject.filter(mod => mod.modules.length >0 )).find(module => module?.module_type === 20) : [];
+    // module?.module_id
+    //   ? getPipelines(setInstances, module?.module_id)
+    //   : setInstances([]);
+    // module?.module_id ? setModuleId(module?.module_id) : setModuleId(0);
+    // console.log(module?.module_type);
+    selectedProject?.project_id
+      ? getPipelines(setInstances, selectedProject?.project_id)
       : setInstances([]);
-    module?.module_id ? setModuleId(module?.module_id) : setModuleId(0);
-    console.log(module?.module_type);
   }, [selectedProject]);
 
   const instanceColumns = [
@@ -93,7 +97,7 @@ export default function Pipeline() {
             <EditOutlinedIcon
               onClick={() =>
                 navigate("CreatePipeline", {
-                  state: { id: param.row.id, module: moduleId },
+                  state: { id: param.row.id, project_Id: selectedProject?.project_id },
                 })
               }
             />
@@ -105,7 +109,7 @@ export default function Pipeline() {
 
   return (
     <>
-      <ProjectsDropdown setSelectedProject={setSelectedProject} />
+      <ProjectsDropdown selectedProject = {selectedProject} setSelectedProject={setSelectedProject} />
       <Table rows={instances} columns={instanceColumns} />
       <Outlet />
     </>
