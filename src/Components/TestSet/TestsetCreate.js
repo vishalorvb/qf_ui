@@ -19,6 +19,7 @@ import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
+import { useNavigate } from "react-router-dom";
 
 function TestsetCreate() {
   const [testcaseObject, setTestcaseObject] = useState([]);
@@ -44,6 +45,7 @@ function TestsetCreate() {
   let requiredOnlyAlphabets = [testset_name,testset_desc];
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
+  const navigate = useNavigate();
 
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
@@ -153,8 +155,8 @@ function TestsetCreate() {
         }
       }
       var data = {
-        testset_name: testsetName,
-        testset_desc: testsetDesc,
+        testset_name: "TS_" + testsetName,
+        testset_desc: "TS_" + testsetDesc,
         project_id: projectId,
         testset_id: 0,
         module_id: applicationId,
@@ -170,6 +172,7 @@ function TestsetCreate() {
           setTSCreateSuccessMsg(true);
           setTimeout(() => {
             setTSCreateSuccessMsg(false);
+            navigate("/testset");
           }, 3000);
           setapplicationId(0);
           setTestsetName("");
