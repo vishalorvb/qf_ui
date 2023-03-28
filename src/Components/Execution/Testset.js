@@ -61,35 +61,35 @@ export default function Testset({ selectedProject }) {
       });
   };
 
-  useEffect(() => {
-    let web, api, mobile;
-    selectedProject.forEach((module) => {
-      switch (module.module_type) {
-        case 2:
-          web = module;
-          break;
-        case 1:
-          api = module;
-          break;
-        case 3:
-          mobile = module;
-          break;
+  // useEffect(() => {
+  //   let web, api, mobile;
+  //   selectedProject.forEach((module) => {
+  //     switch (module.module_type) {
+  //       case 2:
+  //         web = module;
+  //         break;
+  //       case 1:
+  //         api = module;
+  //         break;
+  //       case 3:
+  //         mobile = module;
+  //         break;
 
-        default:
-          break;
-      }
-    });
+  //       default:
+  //         break;
+  //     }
+  //   });
 
-    web
-      ? getTestSet(setwebTestSets, web?.module_id, web?.project_id)
-      : setwebTestSets([]);
-    api
-      ? getTestSet(setapiTestSets, api?.module_id, api?.project_id)
-      : setapiTestSets([]);
-    mobile
-      ? getTestSet(setmobileTestSets, mobile?.module_id, mobile?.project_id)
-      : setmobileTestSets([]);
-  }, [selectedProject]);
+  //   web
+  //     ? getTestSet(setwebTestSets, web?.module_id, web?.project_id)
+  //     : setwebTestSets([]);
+  //   api
+  //     ? getTestSet(setapiTestSets, api?.module_id, api?.project_id)
+  //     : setapiTestSets([]);
+  //   mobile
+  //     ? getTestSet(setmobileTestSets, mobile?.module_id, mobile?.project_id)
+  //     : setmobileTestSets([]);
+  // }, [selectedProject]);
 
   const onSubmitHandler = (data) => {
     console.log(auth?.userId);
