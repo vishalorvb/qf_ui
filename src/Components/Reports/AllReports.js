@@ -88,9 +88,9 @@ export default function AllReports({
             renderCell: (params) => {
                 let repo_result = params.row.report_result.split('/');
                 return (
-                    <>
-                        <div style={{ color: "green" }}>{repo_result[0]}</div>&nbsp;<b>/</b>&nbsp;<div style={{ color: "red" }}>{repo_result[1]}</div>
-                    </>
+                    <div  style={{border: "1px solid grey", display:"flex",padding:"inherit",borderRadius:"15px" }}>
+                        <div style={{ color: "green",fontWeight:"600" }}>{repo_result[0]}</div>&nbsp;<b>/</b>&nbsp;<div style={{ color: "red",fontWeight:"600" }}>{repo_result[1]}</div>
+                    </div>
                 );
             }
         },

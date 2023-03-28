@@ -29,7 +29,12 @@ export default function ReportList(props) {
                 justifyContent: "center",
               }}
             >
-              {apiItem.browser_type === "chrome" && <img src="chrome.png" width={"40px"} />}
+              {apiItem.browser_type === "chrome" &&<Grid item xs={false} sx={{marginRight:"10px" }} className="chromeImg">
+          <img src="logo-light.png" className="loginLogo" alt="" height="2px"  />
+        </Grid>}
+        {apiItem.browser_type === "ie" &&<Grid item xs={false} sx={{marginRight:"10px" }} className="ieImg">
+          <img src="logo-light.png" className="loginLogo" alt="" height="2px"  />
+        </Grid>}
             </MuiListItemIcon>
 
             <MuiListItemText style={{ color: "#1C84EE" }} primary={apiItem.testcase_name} />

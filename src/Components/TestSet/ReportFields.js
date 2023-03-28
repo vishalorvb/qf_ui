@@ -29,6 +29,7 @@ export default function ReportFields({
   const [validationMsg, setValidationMsg] = useState(false);
   const [tbData, setTbData] = useState([]);
   const axiosPrivate = useAxios();
+  const[json , setJson] = useState();
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export default function ReportFields({
   };
 
   const [fromDate, setFromDate] = useState(values.from_Date);
-  console.log(fromDate)
+  console.log(json)
   const [toDate, setToDate] = useState(values.to_Date);
   const columns = [
     {
@@ -103,10 +104,11 @@ export default function ReportFields({
       renderCell: (params) => {
         let repo_result = params.row.report_result.split("/");
         return (
-          <>
-            <div style={{ color: "green" }}>{repo_result[0]}</div>&nbsp;<b>/</b>
-            &nbsp;<div style={{ color: "red" }}>{repo_result[1]}</div>
-          </>
+          <div style={{border: "1px solid grey", display:"flex",padding:"inherit",borderRadius:"15px"}}>
+
+            <div style={{ color: "green" ,fontWeight:"600"}}>{repo_result[0]}</div>&nbsp;<b>/</b>
+            &nbsp;<div style={{ color: "red" ,fontWeight:"600"}}>{repo_result[1]}</div>
+          </div>
         );
       },
     },
@@ -147,17 +149,14 @@ export default function ReportFields({
             View All
           </Button>
           <DownloadIcon
-          style={{marginLeft:"5px" , border:"1px solid #c4cbe1", width:"40px",height:"30px"}}
+          style={{marginLeft:"5px" , border:"1px solid #c4cbe1", width:"40px",height:"30px" , cursor:"pointer"}}
 
             variant="contained"
             onClick={(e) => {
-              navigate("AllReports", {
-                state: { id: params.row ,
-                  fromDate: fromDate,
-                  toDate:toDate,
-                }
-              },
-              );
+              axios.get(`/qfreportservice/reportResult/${params.id}.json`).then(res => {
+                          
+                setJson(res.data)
+          })
             }}
           >
           </DownloadIcon>
@@ -181,6 +180,10 @@ export default function ReportFields({
   useEffect(() => {
     setSelectedApplication(applicationList[0]);
   }, [applicationList]);
+  
+  useEffect(() => {
+    submit();
+  }, [selectedApplication]);
 
   useEffect(() => {
     setSelectedApplication({ module_name: "Select Project first" });

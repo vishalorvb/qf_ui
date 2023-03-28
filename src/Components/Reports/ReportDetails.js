@@ -9,6 +9,7 @@ import TouchAppIcon from '@mui/icons-material/TouchApp';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import moment from "moment";
+import { Padding } from '@mui/icons-material';
 
 export default function ReportDetails({ selectedItemData }) {
 
@@ -46,11 +47,17 @@ export default function ReportDetails({ selectedItemData }) {
                 return (<div>
                     {dataset?.result_type === "screen" && <Typography mb={0} mt={1} p={0.7} sx={{ color: "#5C6780", fontSize: "16px", backgroundColor: "#e8f2fd", borderRadius: "5px" }} variant='h6'>{dataset?.text}</Typography>}
                     <Grid>
-                        {dataset?.result_type === "pass" && <div style={{ marginTop: "12px", marginBottom: "12px" }}>{dataset?.text.includes("Entered UserName") === true ? <KeyboardIcon sx={{ color: "#636161" }} /> : <VisibilityOffIcon sx={{ color: "#636161" }} />}<Typography variant='p'>{dataset?.text}</Typography></div>}
-                        {dataset?.result_type === "info" && <div style={{ marginTop: "12px", marginBottom: "12px" }} ><TouchAppIcon sx={{ color: "#636161" }} /><Typography variant='p'>{dataset?.text}</Typography></div>}<Divider></Divider>
+                        {dataset?.result_type === "pass" && <div style={{ marginTop: "12px", marginBottom: "12px" }}>
+                            {dataset?.text.includes("Entered User") === true ? <KeyboardIcon sx={{ color: "#636161", marginRight: "10px" }} />
+                                : dataset?.text.includes("Entered Password") === true ? <VisibilityOffIcon sx={{ color: "#636161", marginRight: "10px" }} />
+                                    : dataset?.text.includes("Text is displayed as :") === true ? <CheckCircleIcon sx={{ color: "green", marginRight: "10px" }} />
+                                        : <KeyboardIcon sx={{ color: "#636161", marginRight: "10px" }} />}<Typography variant='p'>{dataset?.text}</Typography></div>}
+                    </Grid>
+                    <Grid>
+                        {dataset?.result_type === "info" && <div style={{ marginTop: "12px", marginBottom: "12px" }} ><TouchAppIcon sx={{ color: "#636161", marginRight: "10px" }} /><Typography variant='p'>{dataset?.text}</Typography></div>}<Divider></Divider>
                     </Grid>
                     <Grid >
-                        {dataset?.result_type === "fail" && <div style={{ marginTop: "12px", marginBottom: "12px" }} >{dataset?.result_type.includes("fail") ? <CancelIcon sx={{ color: "red" }} /> : <CheckCircleIcon sx={{ color: "green" }} />}<Typography variant='p'>{dataset?.text}</Typography></div>}
+                        {dataset?.result_type === "fail" && <div style={{ marginTop: "12px", marginBottom: "12px" }} >{dataset?.result_type.includes("fail") ? <CancelIcon sx={{ color: "red", marginRight: "10px" }} /> : <CheckCircleIcon sx={{ color: "green", marginRight: "10px" }} />}<Typography variant='p'>{dataset?.text}</Typography></div>}
                     </Grid>
                     {dataset?.result_type === "fail" && <img src={`data:image/png;base64,${dataset?.screenshot}`} width={"250px"} />}
                 </div>
