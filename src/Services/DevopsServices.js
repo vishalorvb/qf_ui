@@ -3,7 +3,7 @@ import { baseUrl } from "../Environment";
 
 let userId = 1;
 // let module_id = 1052;
-let module_id = 1036;
+// let module_id = 1036;
 
 export function getPipelines(callback, project_id) {
   // This function except name of state as a callback and set value in that state
@@ -22,10 +22,11 @@ export function getPipelinesHistory(callback, release_log, id) {
   });
 }
 
-export function getCreatePipelineData(callback, setdefaultData, id) {
+export function getCreatePipelineData(callback, setdefaultData, id, project_id) {
   // This function except name of state as a callback and set value in that state
+  console.log("====================="+project_id);
   axios
-    .get(`${baseUrl}/qfservice/module/${module_id}/pipeline/${id}`)
+    .get(`${baseUrl}/qfservice/project/${project_id}/pipeline/${id}`)
     .then((res) => {
       const data = res?.data?.data;
       console.log(data);
@@ -87,20 +88,20 @@ export function getPipelinesHistoryReport(callback, setError, id, tag) {
   });
 }
 
-export function executePipeline(callback, id) {
+export function executePipeline(callback, id, userId) {
   axios
-    .post(`${baseUrl}/qfservice/executepipeline?release_id=${id}&user_id=7`)
+    .post(`${baseUrl}/qfservice/executepipeline?release_id=${id}&user_id=${userId}`)
     .then((res) => {
       console.log(res.data);
       callback(res?.data?.message);
     });
 }
 
-export function createPipeline(callback, params, id) {
+export function createPipeline(callback, params, id, project_id) {
   axios
     .post(`${baseUrl}/qfservice/Createpipeline`, null, {
       params: {
-        module_id: module_id,
+        project_id: project_id,
         release_name: params.releaseName,
         release_desc: params.releaseDesc,
         ansiblereleaseId: params.release,

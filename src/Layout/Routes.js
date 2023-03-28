@@ -47,6 +47,11 @@ const CreatePipeline = lazy(() =>
 const CreateTestcase = lazy(() =>
   import("../Components/TestSet/TestsetCreate")
 );
+
+const UpdateTestcasesOrder = lazy(() =>
+  import("../Components/TestSet/UpdateTestcasesOrder")
+);
+
 const Settings = lazy(() => import("../pages/Settings"));
 const Screen = lazy(() =>
   import("../Components/Application/ScreenComponents/Screen")
@@ -261,6 +266,11 @@ export const Routes = [
       {
         path: "createTestcase",
         element: CreateTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "UpdateTestcasesOrder",
+        element: UpdateTestcasesOrder,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
