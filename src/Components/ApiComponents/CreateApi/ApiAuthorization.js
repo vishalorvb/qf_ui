@@ -1,10 +1,9 @@
 import { Divider, Grid, MenuItem, Select, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { setGetData } from './ApiDatasetData'
 
 
-
-function ApiAuthorization() {
-
+function ApiAuthorization({ApiDetails}) {
   let [authdata, setAuthdata] = useState({
     "authtype": "",
     "basicauth": {
@@ -26,7 +25,22 @@ function ApiAuthorization() {
     }
   })
   let [type, setType] = useState("")
-  
+
+  useEffect(() => {
+  if(ApiDetails.auth != null){
+    setType(ApiDetails.auth.authtype)
+    let temp = ApiDetails.auth
+    setAuthdata({ ...temp} )
+  }
+
+  }, [])
+
+  useEffect(() => {
+    if(authdata.authtype != ""){
+      setGetData(ApiDetails.api_id,"auth",authdata)
+    }
+  }, [authdata])
+
   return (
     <div>
       <Grid container alignItems="center" justifyContent="space-between" spacing={4}>
@@ -48,11 +62,11 @@ function ApiAuthorization() {
             }}
           >
             <option value="">Select</option>
-            <option value={'noauth'}>No Auth</option>
-            <option value={'basicauth'}>Basic Auth</option>
-            <option value={"apikey"}>API Key</option>
-            <option value={'bearertoken'}>Bearer Token</option>
-            <option value={'oauth2'}>OAuth 2.0</option>
+            <option selected={ApiDetails?.auth?.authtype == "noauth"} value={'noauth'} >No Auth</option>
+            <option selected={ApiDetails?.auth?.authtype == "basicauth"} value={'basicauth'}>Basic Auth</option>
+            <option selected={ApiDetails?.auth?.authtype == "apikey"} value={"apikey"}>API Key</option>
+            <option selected={ApiDetails?.auth?.authtype == "bearertoken"} value={'bearertoken'}>Bearer Token</option>
+            <option selected={ApiDetails?.auth?.authtype == "oauth2"} value={'oauth2'}>OAuth 2.0</option>
           </select>
           <Typography variant='p' gutterBottom>
             The authorization header will be automatically generated when you send the request.
@@ -70,7 +84,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.basicauth.username}
+                value={authdata.basicauth.username}
                 onChange={e => {
                   let temp = authdata
                   temp.basicauth.username = e.target.value
@@ -83,7 +97,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.basicauth.password}
+                value={authdata.basicauth.password}
                 onChange={e => {
                   let temp = authdata
                   temp.basicauth.password = e.target.value
@@ -101,7 +115,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.apikey.key}
+                value={authdata.apikey.key}
                 onChange={e => {
                   let temp = authdata
                   temp.apikey.key = e.target.value
@@ -114,7 +128,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.apikey.value}
+                value={authdata.apikey.value}
                 onChange={e => {
                   let temp = authdata
                   temp.apikey.value = e.target.value
@@ -131,7 +145,7 @@ function ApiAuthorization() {
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 fullWidth
-                
+
                 onChange={e => {
                   let temp = authdata
                   temp.apikey.addto = e.target.value
@@ -151,7 +165,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.bearertoken}
+                value={authdata.bearertoken.token}
                 onChange={e => {
                   let temp = authdata
                   temp.bearertoken = e.target.value
@@ -168,7 +182,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.oauth2.tokenurl}
+                value={authdata.oauth2.tokenurl}
                 onChange={e => {
                   let temp = authdata
                   temp.oauth2.tokenurl = e.target.value
@@ -181,7 +195,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.oauth2.clientid}
+                value={authdata.oauth2.clientid}
                 onChange={e => {
                   let temp = authdata
                   temp.oauth2.clientid = e.target.value
@@ -194,7 +208,7 @@ function ApiAuthorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.oauth2.clientid}
+                value={authdata.oauth2.clientid}
                 onChange={e => {
                   let temp = authdata
                   temp.oauth2.clientsecret = e.target.value

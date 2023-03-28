@@ -60,7 +60,6 @@ function ApiDatasets() {
     }, [selectedApi])
 
     useEffect(() => {
-        console.log(selectedApiDetails)
     }, [selectedApiDetails])
 
     return (
@@ -129,7 +128,9 @@ function ApiDatasets() {
                 </div>
 
                 <div>
-                    <CreateApiTabs></CreateApiTabs>
+                    <CreateApiTabs
+                    ApiDetails= {selectedApiDetails}
+                    ></CreateApiTabs>
                 </div>
             </div>
 

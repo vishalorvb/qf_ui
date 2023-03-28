@@ -17,7 +17,7 @@ function GrowingTable(props) {
     function GetRow() {
         return (
             <tr >
-                {props.header.map(head => <td key={id.next().value} style={{ border: "1px solid", padding: "4px" }}>
+                {props.header?.map(head => <td key={id.next().value} style={{ border: "1px solid", padding: "4px" }}>
                     <input type="text" placeholder={head} style={{ width: "100%", height: "25px" }} />
                 </td>)}
             </tr>
@@ -62,13 +62,13 @@ function GrowingTable(props) {
         <div>
             <table id='mytable' onFocus={appendRow} onChange={handleOnChange} style={{ textAlign: "left", width: '100%', border: "1px solid", borderCollapse: "collapse" }}>
                 <tr >
-                    {props.header.map(head => <th style={{ border: "1px solid", padding: "4px" }}>{head}</th>)}
+                    {props.header?.map(head => <th style={{ border: "1px solid", padding: "4px" }}>{head}</th>)}
                 </tr>
-                {props.prefilled !==undefined && props.prefilled.map(val => {
+                {props.prefilled !==undefined && props.prefilled?.map(val => {
                     let i =-1
                     return (
                         <tr >
-                            {props.header.map(head => {
+                            {props.header?.map(head => {
                                
                                  i = i + 1
                                 return (

@@ -9,8 +9,7 @@ import ApiBody from './ApiBody';
 import ApiLinktab from './ApiLinktab';
 import ApiResponse from './ApiResponse';
 
-function CreateApiTabs() {
-
+function CreateApiTabs({ApiDetails}) {
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
 
@@ -62,22 +61,32 @@ function CreateApiTabs() {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <ApiAuthorization></ApiAuthorization>
+                    <ApiAuthorization
+                    ApiDetails = {ApiDetails}
+                    ></ApiAuthorization>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <ApiHeader></ApiHeader>
+                    <ApiHeader
+                    ApiDetails = {ApiDetails}
+                    ></ApiHeader>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  <ApiParam></ApiParam>
+                  <ApiParam
+                  ApiDetails = {ApiDetails}
+                  ></ApiParam>
                 </TabPanel>
                 <TabPanel value={value} index={3}>
                   <ApiBody></ApiBody>
                 </TabPanel>
                 <TabPanel value={value} index={4}>
-                   <ApiLinktab></ApiLinktab>
+                   <ApiLinktab
+                   ApiDetails = {ApiDetails}
+                   ></ApiLinktab>
                 </TabPanel>
                 <TabPanel value={value} index={5}>
-                   <ApiResponse></ApiResponse>
+                   <ApiResponse
+                   ApiDetails = {ApiDetails}
+                   ></ApiResponse>
                 </TabPanel>
             </Box>
     </div>
