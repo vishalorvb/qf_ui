@@ -41,83 +41,76 @@ function TestcaseSelectAndExecute({
     {
       field: "datasets",
       headerName: "Datasets",
-    //   renderCell: (param) => {
-    //     let opt = [
-    //       {
-    //         id: "custom_code",
-    //         val: "Custom Code",
-    //       },
-    //       {
-    //         id: "displayed",
-    //         val: "Displayed",
-    //       },
-    //       {
-    //         id: "element_wait",
-    //         val: "Element Wait",
-    //       },
-    //       {
-    //         id: "scrollup",
-    //         val: "Scroll Up",
-    //       },
-    //       {
-    //         id: "scrolldown",
-    //         val: "Scroll Down",
-    //       },
-    //       {
-    //         id: "is_random",
-    //         val: "Random",
-    //       },
-    //     ];
-    //     let alllist = [
-    //       "custom_code",
-    //       "displayed",
-    //       "element_wait",
-    //       "scrollup",
-    //       "scrolldown",
-    //       "is_random",
-    //       "is_enter",
-    //     ];
-    //     let flag = false;
-    //     let preselect = opt.filter((e) => {
-    //       if (param.row.dataset_values[e.id]) {
-    //         return e;
-    //       }
-    //     });
-    //     return (
-    //       <div>
-    //         <MuiltiSelect
-    //           sx={{
-    //             "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-    //               {
-    //                 border: "none",
-    //               },
-    //           }}
-    //           preselect={preselect}
-    //           // preselect ={opt}
-    //           options={opt}
-    //           value="val"
-    //           id="id"
-    //           stateList={(list) => {
-    //             let templist = list.map((obj) => obj["id"]);
-    //             if (flag || preselect.length !== templist.length) {
-    //               flag = true;
-    //               alllist.forEach((l) => {
-    //                 if (templist.includes(l)) {
-    //                 //   updateDataset(param.row.element_id, l, true);
-    //                 } else {
-    //                 //   updateDataset(param.row.element_id, l, false);
-    //                 }
-    //               });
-    //             }
-    //           }}
-    //         ></MuiltiSelect>
-    //       </div>
-    //     );
-    //   },
-    //   flex: 2,
-    //   sortable: false,
-    //   align: "left",
-      flex: 3,
+      renderCell: (param) => {
+        let option = param.row.datasets.map(dataset => {
+            return {
+                id : dataset.dataset_id,
+                val : dataset.name
+            }
+        })
+        // let opt = [
+        //   {
+        //     id: "custom_code",
+        //     val: "Custom Code",
+        //   },
+        //   {
+        //     id: "displayed",
+        //     val: "Displayed",
+        //   },
+        //   {
+        //     id: "element_wait",
+        //     val: "Element Wait",
+        //   },
+        //   {
+        //     id: "scrollup",
+        //     val: "Scroll Up",
+        //   },
+        //   {
+        //     id: "scrolldown",
+        //     val: "Scroll Down",
+        //   },
+        //   {
+        //     id: "is_random",
+        //     val: "Random",
+        //   },
+        // ];
+        // let alllist = [
+        //   "custom_code",
+        //   "displayed",
+        //   "element_wait",
+        //   "scrollup",
+        //   "scrolldown",
+        //   "is_random",
+        //   "is_enter",
+        // ];
+        let flag = false;
+        // let preselect = opt.filter((e) => {
+        //   if (param.row.dataset_values[e.id]) {
+        //     return e;
+        //   }
+        // });
+        return (
+          <div>
+            <MuiltiSelect
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
+                  {
+                    border: "none",
+                  },
+              }}
+              preselect={[]}
+              // preselect ={opt}
+              options={option}
+              value="val"
+              id="id"
+              stateList={(list) => {
+                console.log(list)
+              }}
+            ></MuiltiSelect>
+          </div>
+        );
+      },
+      flex: 2,
       sortable: false,
       align: "left",
     },
