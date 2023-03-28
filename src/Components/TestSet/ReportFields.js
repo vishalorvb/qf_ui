@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import useAxios from "../../hooks/useAxios";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import DownloadIcon from '@mui/icons-material/Download';
 import Table from "../../CustomComponent/Table";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -22,8 +23,6 @@ export default function ReportFields({
   const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
   const From_Date = useRef();
-  const [fromDate, setFromDate] = useState();
-  const [toDate, setToDate] = useState("");
   const to_Date = useRef();
   const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
   const [reportFailMsg, setReportFailMsg] = useState(false);
@@ -38,6 +37,24 @@ export default function ReportFields({
   //     "projectAutocomplete",
   //     "workflowAutocomplete",
   //   ];
+
+  let date = new Date();
+  date.setDate(date.getDate() - 7);
+  let finalDate =
+    date.getFullYear() +
+    "-" +
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + date.getDate()).slice(-2);
+  let today_date = moment(new Date()).format("YYYY-MM-DD");
+  const values = {
+    from_Date: finalDate,
+    to_Date: today_date,
+  };
+
+  const [fromDate, setFromDate] = useState(values.from_Date);
+  console.log(fromDate)
+  const [toDate, setToDate] = useState(values.to_Date);
   const columns = [
     {
       field: "testcases",
@@ -98,9 +115,12 @@ export default function ReportFields({
       flex: 3,
       headerAlign: "center",
       align: "center",
+      // justifyContent:"space-between",
       renderCell: (params) => {
         return (
+          <>
           <Button
+          sx={{ backgroundColor: "#4caf50"}}
             variant="contained"
             onClick={(e) => {
               navigate("ViewReport", {
@@ -110,24 +130,45 @@ export default function ReportFields({
           >
             View Report
           </Button>
+          <Button
+          style={{marginLeft:"5px"}}
+            variant="contained"
+            onClick={(e) => {
+              navigate("AllReports", {
+                state: { id: params.row ,
+                  fromDate: fromDate,
+                  toDate:toDate,
+                }
+              },
+              console.log(fromDate)
+              );
+            }}
+          >
+            View All
+          </Button>
+          <DownloadIcon
+          style={{marginLeft:"5px" , border:"1px solid #c4cbe1", width:"40px",height:"30px"}}
+
+            variant="contained"
+            onClick={(e) => {
+              navigate("AllReports", {
+                state: { id: params.row ,
+                  fromDate: fromDate,
+                  toDate:toDate,
+                }
+              },
+              );
+            }}
+          >
+          </DownloadIcon>
+          
+          </>
         );
       },
     },
   ];
 
-  let date = new Date();
-  date.setDate(date.getDate() - 7);
-  let finalDate =
-    date.getFullYear() +
-    "-" +
-    ("0" + (date.getMonth() + 1)).slice(-2) +
-    "-" +
-    ("0" + date.getDate()).slice(-2);
-  let today_date = moment(new Date()).format("YYYY-MM-DD");
-  const values = {
-    from_Date: finalDate,
-    to_Date: today_date,
-  };
+
 
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
@@ -148,14 +189,10 @@ export default function ReportFields({
   }, [selectedProject]);
 
   const submit = (e) => {
-    e.preventDefault();
+   // e.preventDefault();
     // if (
     //   validateForm(requiredsFields, [], [], [], [], "error")
     // )
-    if (!toDate && !fromDate) {
-      setFromDate(values.from_Date);
-      setToDate(values.to_Date);
-    }
     {
       axiosPrivate
         .post(

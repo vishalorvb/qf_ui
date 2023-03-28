@@ -80,6 +80,9 @@ const CreateWebTestcase = lazy(() =>
 );
 
 const ViewReport = lazy(() => import("../pages/ViewReport"));
+
+const AllReport = lazy(() => import("../Components/Reports/AllReports"))
+
 const UpdateScreenOrder = lazy(() =>
   import("../Components/TestCases/UpdateScreenOrderinDataset")
 );
@@ -221,6 +224,20 @@ export const Routes = [
       },
     ],
   },
+  
+  {
+    path: "reports",
+    element: Reports,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: "AllReports",
+        element: AllReport,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
+  },
+  
   {
     path: "testcase",
     element: TestCases,
