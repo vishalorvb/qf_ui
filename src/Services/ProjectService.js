@@ -115,9 +115,8 @@ export function getUsers(callback,orgid,ssoid,token){
       Authorization: `Bearer ${token}`,
     },
   }).then(res => {
-    console.log(res.data.info)
     callback(res.data.info);
-    // setLeftuser(res.data.info)
+
   })
 }
 
