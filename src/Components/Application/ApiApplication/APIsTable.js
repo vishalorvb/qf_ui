@@ -18,12 +18,6 @@ export default function APIsTable() {
   let [apiid, setApiid] = useState();
 
   function handleDelete(apiid) {
-    // deleteApi(apiid).then((res) => {
-    //   if (res == null) {
-    //     getApis(location.state.id, setApis);
-    //   }
-    // });
-    // setPopup(false);
     deleteApiRequest(apiid).then((res) => {
       if (res) {
         getApis(setApis, location.state.id);
