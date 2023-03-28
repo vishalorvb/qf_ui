@@ -94,11 +94,14 @@ export default function Execution() {
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Testset selectedProject={selectedProject} />
+        <Testset 
+        selectedProject={selectedProject}
+        selectedApplication={selectedApplication}
+        />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      {/* <TabPanel value={value} index={2}>
         <Pipeline selectedProject={selectedProject} />
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   );
 }
