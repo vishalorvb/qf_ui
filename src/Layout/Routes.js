@@ -81,11 +81,16 @@ const UpdateScreenOrder = lazy(() =>
 const APIorderupdate = lazy(() =>
   import(`../Components/TestCases/apiTestcase/APIorderupdate`)
 );
-
+const getTestcases = lazy(() => import(`../pages/GetTestcases`));
 export const Routes = [
   {
     path: "ApiTestcase",
     element: CreateApiTestcase,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestcasesList",
+    element: getTestcases,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {

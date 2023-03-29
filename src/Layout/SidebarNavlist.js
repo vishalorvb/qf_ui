@@ -24,6 +24,13 @@ export const testManagementList = [
     route: "application",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-applications"></i>,
+    subList: [
+      {
+        name: "TestcaseList",
+        route: "TestcasesList",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     name: "Projects",

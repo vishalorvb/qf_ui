@@ -1,4 +1,8 @@
-import React from "react";
+import { Autocomplete, Button, Container, Grid, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { axiosPrivate } from "../api/axios";
+import Table from "../CustomComponent/Table";
+import useHead from "../hooks/useHead";
 
 function GetTestcases() {
   const [testcaseObject, setTestcaseObject] = useState([]);
@@ -16,7 +20,7 @@ function GetTestcases() {
   //   function handleRadio(testcaseId) {
   //     setRadio(testcaseId);
   //     let temp = testcases.filter((ts) => {
-  //       if (ts.testcase_id == testcaseId) {
+  //       if (ts.testcase_id == testcaseId)
   //         return ts.datasetsList;
   //       }
   //     });
@@ -145,11 +149,7 @@ function GetTestcases() {
               />
             </Grid>
           </Grid>
-          <Button
-            variant="contained"
-            onClick={submit}
-            startIcon={<SearchOutlinedIcon />}
-          >
+          <Button variant="contained" onClick={submit}>
             Search
           </Button>
         </Container>
