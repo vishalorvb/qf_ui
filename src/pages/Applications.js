@@ -177,7 +177,7 @@ export default function Applications() {
   return (
     <div id="apptable">
       <div className="intable">
-        <select onChange={handleSelect}>
+        <select onChange={handleSelect} className="intableselect">
           {ApplicationNav.map((el) => (
             <option selected={el.type == type ? true : false} value={el.type}>
               {el.name}
