@@ -21,6 +21,7 @@ export default function ReportList(props) {
           }}
           key={apiItem.testcase_name}
           divider
+          selected={selectedItem?.id === apiItem?.id}
         >
           <ListItemButton onClick={() => setSelectedItem(apiItem)}>
             <MuiListItemIcon
@@ -55,6 +56,7 @@ export default function ReportList(props) {
 
   useEffect(() => {
     setSelectedItem(result[0]);
+    console.log(result[0])
   }, [result]);
 
   return (

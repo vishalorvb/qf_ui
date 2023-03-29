@@ -29,7 +29,7 @@ export default function ReportFields({
   const [validationMsg, setValidationMsg] = useState(false);
   const [tbData, setTbData] = useState([]);
   const axiosPrivate = useAxios();
-  const[json , setJson] = useState();
+  const [json, setJson] = useState();
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
@@ -104,10 +104,10 @@ export default function ReportFields({
       renderCell: (params) => {
         let repo_result = params.row.report_result.split("/");
         return (
-          <div style={{border: "1px solid grey", display:"flex",padding:"inherit",borderRadius:"15px"}}>
+          <div style={{ border: "1px solid grey", display: "flex", padding: "inherit", borderRadius: "15px" }}>
 
-            <div style={{ color: "green" ,fontWeight:"600"}}>{repo_result[0]}</div>&nbsp;<b>/</b>
-            &nbsp;<div style={{ color: "red" ,fontWeight:"600"}}>{repo_result[1]}</div>
+            <div style={{ color: "green", fontWeight: "600" }}>{repo_result[0]}</div>&nbsp;<b>/</b>
+            &nbsp;<div style={{ color: "red", fontWeight: "600" }}>{repo_result[1]}</div>
           </div>
         );
       },
@@ -121,46 +121,47 @@ export default function ReportFields({
       renderCell: (params) => {
         return (
           <>
-          <Button
-          sx={{ backgroundColor: "#4caf50"}}
-            variant="contained"
-            onClick={(e) => {
-              navigate("ViewReport", {
-                state: { id: params.row.report_id },
-              });
-            }}
-          >
-            View Report
-          </Button>
-          <Button
-          style={{marginLeft:"5px"}}
-            variant="contained"
-            onClick={(e) => {
-              navigate("AllReports", {
-                state: { id: params.row ,
-                  fromDate: fromDate,
-                  toDate:toDate,
-                }
-              },
-              console.log(fromDate)
-              );
-            }}
-          >
-            View All
-          </Button>
-          <DownloadIcon
-          style={{marginLeft:"5px" , border:"1px solid #c4cbe1", width:"40px",height:"30px" , cursor:"pointer"}}
+            <Button
+            sx={{ backgroundColor: "#F0FFF0",color:"#2F4F4F", borderRadius: "10px", height: "25px",width:"110px", marginTop: "5px" }}
+            variant="outlined"
+              onClick={(e) => {
+                navigate("ViewReport", {
+                  state: { id: params.row.report_id },
+                });
+              }}
+            >
+              View Report
+            </Button>
+            <Button
+              sx={{marginLeft: "5px", backgroundColor: "#EDFAF9", borderRadius: "10px", height: "25px", marginTop: "5px" }}
+              variant="outlined"
+              onClick={(e) => {
+                navigate("AllReports", {
+                  state: {
+                    id: params.row,
+                    fromDate: fromDate,
+                    toDate: toDate,
+                  }
+                },
+                  console.log(fromDate)
+                );
+              }}
+            >
+              View All
+            </Button>
+            <DownloadIcon
+              style={{ marginLeft: "5px", border: "1px solid #c4cbe1", width: "30px", height: "22px", cursor: "pointer", marginTop: "5px" }}
 
-            variant="contained"
-            onClick={(e) => {
-              axios.get(`/qfreportservice/reportResult/${params.id}.json`).then(res => {
-                          
-                setJson(res.data)
-          })
-            }}
-          >
-          </DownloadIcon>
-          
+              variant="contained"
+              onClick={(e) => {
+                axios.get(`/qfreportservice/reportResult/${params.id}.json`).then(res => {
+
+                  setJson(res.data)
+                })
+              }}
+            >
+            </DownloadIcon>
+
           </>
         );
       },
@@ -180,7 +181,7 @@ export default function ReportFields({
   useEffect(() => {
     setSelectedApplication(applicationList[0]);
   }, [applicationList]);
-  
+
   useEffect(() => {
     submit();
   }, [selectedApplication]);
@@ -192,7 +193,7 @@ export default function ReportFields({
   }, [selectedProject]);
 
   const submit = (e) => {
-   // e.preventDefault();
+    // e.preventDefault();
     // if (
     //   validateForm(requiredsFields, [], [], [], [], "error")
     // )
@@ -215,7 +216,7 @@ export default function ReportFields({
             }, 3000);
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
     }
     //  else {
     //   setValidationMsg(true);
