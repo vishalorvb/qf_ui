@@ -1,24 +1,21 @@
-import { FormControl, FormControlLabel,  MenuItem, Radio, RadioGroup, Select } from '@mui/material'
 import React, { useState } from 'react'
-import GrowingTable from '../../CustomComponent/GrowingTable'
-import { Apidata } from './Data'
+import { FormControl, FormControlLabel,  MenuItem, Radio, RadioGroup, Select } from '@mui/material'
+import GrowingTable from '../../../CustomComponent/GrowingTable'
 
 
-function Body() {
+function ApiBody() {
 
-  let [selected, setSelected] = useState("")
+    let [selected, setSelected] = useState("")
 
-  function handleFormData(tabdata){
-    console.log("table data from body")
-    console.log(tabdata)
-    Apidata.body_form_data_list = tabdata
-  }
-   function handleEncoderData(tabdata){
-    Apidata.body_form_url_encoded_list = tabdata
-   }
-
-
-
+    function handleFormData(tabdata){
+      console.log("table data from body")
+      console.log(tabdata)
+      
+    }
+     function handleEncoderData(tabdata){
+     
+     }
+  
   return (
     <div>
       <FormControl>
@@ -29,7 +26,7 @@ function Body() {
           name="radio-buttons-group"
           onChange={e => {
             setSelected(e.target.value)
-            Apidata.body_type = e.target.value
+           
           }}
         >
           <FormControlLabel value="1" control={<Radio />} label="none" />
@@ -41,7 +38,7 @@ function Body() {
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             onChange={e=>{
-              Apidata.body_raw.raw_type_id = e.target.value;
+            
             }}
           >
             <MenuItem value="1">Text</MenuItem>
@@ -76,7 +73,7 @@ function Body() {
       { selected == "4" && <div style={{marginTop:"10px"}}>
         <textarea 
         onChange={e=>{
-          Apidata.body_raw.raw_text = e.target.value;
+          
         }}
         rows="12" cols="100"></textarea>
       </div>}
@@ -84,4 +81,4 @@ function Body() {
   )
 }
 
-export default Body
+export default ApiBody

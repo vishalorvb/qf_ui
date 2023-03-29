@@ -1,5 +1,5 @@
 import React from 'react'
-import GrowingTable from './GrowingTable'
+import GrowingTable from '../../CustomComponent/GrowingTable'
 import { Apidata } from './Data'
 
 function Response() {

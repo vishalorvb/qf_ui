@@ -1,43 +1,23 @@
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  IconButton,
-  Paper,
-  Tooltip,
-} from "@mui/material";
-import { Container } from "@mui/system";
+import {IconButton,Tooltip} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 // import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import { useNavigate } from "react-router-dom";
-import { getTestsets } from "../Services/TestsetService";
-import { getProject } from "../Services/ProjectService";
 import useHead from "../hooks/useHead";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import axios, { axiosPrivate } from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import { getApplicationOfProject } from "../Services/ApplicationService";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 import TestcaseSelectAndExecute from "../Components/Execution/TestcaseSelectAndExecute";
+import AirplayIcon from "@mui/icons-material/Airplay";
 
 function Testset() {
   const [testsetObject, setTestsetObject] = useState([]);
-  const [projectObject, setProjectObject] = useState([]);
-  const [workflowObject, setWorkflowObject] = useState([]);
-  const [projectId, setProjectId] = useState(null);
-  const [applicationId, setApplicationId] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [open1, setOpen1] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openExecute, setOpenExecute] = useState(false);
-  const [editObject, setEditObject] = useState([]);
   const [deleteObject, setDeleteObject] = useState([]);
   const [executeObject, setExecuteObject] = useState([]);
   const [delSuccessMsg, setDelSuccessMsg] = useState(false);
@@ -50,11 +30,11 @@ function Testset() {
   console.log(auth.info);
   const loggedInId = auth.info.id;
 
-  const addUserHandler = (e) => {
+  const createTestcaseHandler = (e) => {
     navigate("createTestcase", { state: e });
   };
 
-  const editUserHandler = (e) => {
+  const editTestcaseHandler = (e) => {
     console.log(e);
     console.log(selectedProject?.project_id);
     console.log(selectedApplication?.module_id);
@@ -67,15 +47,10 @@ function Testset() {
     });
   };
 
-  const deleteUserHandler = (e) => {
+  const deleteTestcaseHandler = (e) => {
     console.log(e.testset_id);
     setOpenDelete(true);
     setDeleteObject(e);
-  };
-
-  const executeHandler = (e) => {
-    setOpenExecute(true);
-    setExecuteObject(e);
   };
 
   function onChangeHandler() {
@@ -87,7 +62,6 @@ function Testset() {
         const testsets = resp?.data?.info ? resp?.data?.info : [];
         setTestsetObject(testsets);
       });
-    // setOpen1(true);
   }
 
   const columns = [
@@ -118,30 +92,36 @@ function Testset() {
             <Tooltip title="Delete">
               <IconButton
                 onClick={(e) => {
-                  deleteUserHandler(param.row);
+                  deleteTestcaseHandler(param.row);
                 }}
               >
                 <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
               </IconButton>
             </Tooltip>
-            <Tooltip title="Edit Testcase">
+            <Tooltip title="Edit Testset">
               <IconButton
                 onClick={(e) => {
-                  editUserHandler(param.row);
+                  editTestcaseHandler(param.row);
                 }}
               >
                 <EditOutlinedIcon></EditOutlinedIcon>
               </IconButton>
             </Tooltip>
-            <Tooltip title="Execute">
-              <IconButton
-                onClick={(e) => {
-                  executeHandler(param.row);
-                }}
-              >
-                <PlayCircleOutlinedIcon></PlayCircleOutlinedIcon>
-              </IconButton>
-            </Tooltip>
+            <Tooltip title="Testcases ReOrder">
+                <IconButton
+                  onClick={() =>
+                    navigate("UpdateTestcasesOrder", {
+                      state: {
+                        applicationId: selectedApplication?.module_id,
+                        testsetId: param.row.testset_id,
+                        projectId: selectedProject?.project_id,
+                      },
+                    })
+                  }
+                >
+                  <AirplayIcon />
+                </IconButton>
+              </Tooltip>
           </>
         );
       },
@@ -158,7 +138,7 @@ function Testset() {
         name: "Testset",
         plusButton: true,
         buttonName: "Create Testset",
-        plusCallback: addUserHandler,
+        plusCallback: createTestcaseHandler,
       };
     });
     return () =>

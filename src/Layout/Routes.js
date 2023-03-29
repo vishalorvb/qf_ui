@@ -32,6 +32,7 @@ const APIsTable = lazy(() =>
 );
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
+const ApiDatasets = lazy(() => import("../Components/ApiComponents/CreateApi/ApiDatasets"));
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
 );
@@ -47,7 +48,13 @@ const CreatePipeline = lazy(() =>
 const CreateTestcase = lazy(() =>
   import("../Components/TestSet/TestsetCreate")
 );
+
+const UpdateTestcasesOrder = lazy(() =>
+  import("../Components/TestSet/UpdateTestcasesOrder")
+);
+
 const Settings = lazy(() => import("../pages/Settings"));
+const GetTestcases = lazy(() => import("../pages/GetTestcases"));
 const Screen = lazy(() =>
   import("../Components/Application/ScreenComponents/Screen")
 );
@@ -75,6 +82,9 @@ const CreateWebTestcase = lazy(() =>
 );
 
 const ViewReport = lazy(() => import("../pages/ViewReport"));
+
+const AllReport = lazy(() => import("../Components/Reports/AllReports"))
+
 const UpdateScreenOrder = lazy(() =>
   import("../Components/TestCases/UpdateScreenOrderinDataset")
 );
@@ -125,6 +135,11 @@ export const Routes = [
   {
     path: "execution",
     element: Execution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "getTestcases",
+    element: GetTestcases,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -221,6 +236,20 @@ export const Routes = [
       },
     ],
   },
+  
+  {
+    path: "reports",
+    element: Reports,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: "AllReports",
+        element: AllReport,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
+  },
+  
   {
     path: "testcase",
     element: TestCases,
@@ -247,8 +276,8 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "updateAPIOrder",
-        element: APIorderupdate,
+        path: "apidatasets",
+        element: ApiDatasets,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
@@ -266,6 +295,11 @@ export const Routes = [
       {
         path: "createTestcase",
         element: CreateTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "UpdateTestcasesOrder",
+        element: UpdateTestcasesOrder,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
