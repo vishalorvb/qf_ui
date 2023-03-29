@@ -154,7 +154,7 @@ function ProjectTable() {
         severity="success"
       />
       <Table
-        rows={project}
+        rows={project.filter(p=>p.is_deleted == false)}
         columns={columns}
         hidefooter={true}
         getRowId={(row) => row.project_id}
