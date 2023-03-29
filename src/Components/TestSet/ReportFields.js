@@ -33,6 +33,14 @@ export default function ReportFields({
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
+
+  
+  try {
+    
+  } catch (error) {
+    
+  }
+
   //   let autoComplete = [
   //     "userAutocomplete",
   //     "projectAutocomplete",
@@ -200,7 +208,7 @@ export default function ReportFields({
     {
       axiosPrivate
         .post(
-          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication.module_id}&user_id=${loggedInId}`
+          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication?.module_id}&user_id=${loggedInId}`
         )
         .then((Response) => {
           if (Response.data.info.length > 0) {
@@ -267,7 +275,7 @@ export default function ReportFields({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "27ch", minHeight: "7ch" },
+            "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
           }}
           noValidate
           autoComplete="off"
@@ -277,9 +285,10 @@ export default function ReportFields({
             label="From Date"
             variant="outlined"
             type="date"
+            size="small"
             ref={From_Date}
             defaultValue={values.from_Date}
-            sx={{ width: 158 }}
+            sx={{ width: 220 }}
             onChange={(newValue) => {
               setFromDate(newValue.target.value);
             }}
@@ -292,19 +301,20 @@ export default function ReportFields({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "27ch", minHeight: "7ch" },
+            "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
           }}
           noValidate
           autoComplete="off"
         >
           <TextField
             id="outlined-basic"
+            size="small"
             label="To Date"
             variant="outlined"
             type="date"
             ref={to_Date}
             defaultValue={values.to_Date}
-            sx={{ width: 158 }}
+            sx={{ width: 220 }}
             onChange={(newValue) => {
               setToDate(newValue.target.value);
             }}
