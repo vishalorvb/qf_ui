@@ -112,8 +112,9 @@ export async function CreateDataset(data) {
 
 export function getDataset(callback,projectId,applicationId,testcaseId){
     axios.get(`${baseUrl}/qfservice/webtestcase/api/v1/projects/${projectId}/workflow/${applicationId}/web/testcases/${testcaseId}/datasets`).then(res=>{
-        callback(res.data.result)
-    })
+        callback(res.data.result);
+        return res.data.result
+    });
 }
 
 export async function getData_for_createDataset(callback, testcaseId, datasetId = 0) {

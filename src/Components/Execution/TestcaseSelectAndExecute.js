@@ -12,6 +12,8 @@ import Table from "../../CustomComponent/Table";
 import ExecutionToolbar from "../TestCases/ExecutionToolbar";
 import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
+import { updateDataset } from "../TestCases/DatasetHelper";
+import { getDataset } from "../../Services/TestCaseService";
 
 function TestcaseSelectAndExecute({
   open,
@@ -22,6 +24,7 @@ function TestcaseSelectAndExecute({
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
+  const [datasets, setDatasets] = useState([]);
 
   const columns = [
     {
@@ -42,7 +45,9 @@ function TestcaseSelectAndExecute({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
+        console.log(param);
         let option = param.row.datasets.map(dataset => {
+          console.log(dataset)
             return {
                 id : dataset.dataset_id,
                 val : dataset.name
@@ -84,11 +89,16 @@ function TestcaseSelectAndExecute({
         //   "is_enter",
         // ];
         let flag = false;
-        // let preselect = opt.filter((e) => {
-        //   if (param.row.dataset_values[e.id]) {
-        //     return e;
-        //   }
-        // });
+        let preselect = option.filter((e) => {
+          console.log(e);
+          console.log(param.row);
+          if (param.row.datasets[e.id]) {
+            return e;
+          }
+        });
+
+        // console.log(getDataset(setDatasets,projectId,applicationId,param.row.testcase_id));
+
         return (
           <div>
             <MuiltiSelect
@@ -98,13 +108,24 @@ function TestcaseSelectAndExecute({
                     border: "none",
                   },
               }}
-              preselect={[]}
-              // preselect ={opt}
+              preselect={preselect}
               options={option}
               value="val"
               id="id"
               stateList={(list) => {
                 console.log(list)
+                let templist = list.map((obj) => obj["id"]);
+                if (flag || preselect.length !== templist.length) {
+                  flag = true;
+                  console.log(templist);
+                  templist.forEach((l) => {
+                    if (templist.includes(l)) {
+                      updateDataset(param.row.testcase_id, l, true);
+                    } else {
+                      updateDataset(param.row.testcase_id, l, false);
+                    }
+                  });
+                }
               }}
             ></MuiltiSelect>
           </div>

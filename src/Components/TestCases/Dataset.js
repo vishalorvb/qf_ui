@@ -177,6 +177,8 @@ function Dataset() {
         ];
         let flag = false;
         let preselect = opt.filter((e) => {
+          console.log(e);
+          console.log(param.row)
           if (param.row.dataset_values[e.id]) {
             return e;
           }
