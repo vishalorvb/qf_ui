@@ -1,4 +1,4 @@
-import {IconButton,Tooltip} from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -31,16 +31,20 @@ function Testset() {
   const loggedInId = auth.info.id;
 
   const createTestcaseHandler = (e) => {
-    navigate("createTestcase", { state: e });
-  };
-
-  const editTestcaseHandler = (e) => {
-    console.log(e);
     console.log(selectedProject?.project_id);
     console.log(selectedApplication?.module_id);
-    navigate("AddTestcaseToTestset", {
+    navigate("createTestcase", {
       state: {
         param1: e,
+        param2: selectedProject?.project_id,
+        param3: selectedApplication?.module_id,
+      },
+    });
+  };
+
+  const editTestcaseHandler = () => {
+    navigate("AddTestcaseToTestset", {
+      state: {
         param2: selectedProject?.project_id,
         param3: selectedApplication?.module_id,
       },
@@ -108,20 +112,20 @@ function Testset() {
               </IconButton>
             </Tooltip>
             <Tooltip title="Testcases ReOrder">
-                <IconButton
-                  onClick={() =>
-                    navigate("UpdateTestcasesOrder", {
-                      state: {
-                        applicationId: selectedApplication?.module_id,
-                        testsetId: param.row.testset_id,
-                        projectId: selectedProject?.project_id,
-                      },
-                    })
-                  }
-                >
-                  <AirplayIcon />
-                </IconButton>
-              </Tooltip>
+              <IconButton
+                onClick={() =>
+                  navigate("UpdateTestcasesOrder", {
+                    state: {
+                      applicationId: selectedApplication?.module_id,
+                      testsetId: param.row.testset_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
+                }
+              >
+                <AirplayIcon />
+              </IconButton>
+            </Tooltip>
           </>
         );
       },
@@ -138,7 +142,7 @@ function Testset() {
         name: "Testset",
         plusButton: true,
         buttonName: "Create Testset",
-        plusCallback: createTestcaseHandler,
+        plusCallback: ()=>createTestcaseHandler(),
       };
     });
     return () =>
@@ -150,7 +154,7 @@ function Testset() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, []);
+  }, [selectedProject,selectedApplication]);
 
   useEffect(() => {
     selectedApplication?.module_id &&
