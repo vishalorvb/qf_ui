@@ -1,5 +1,4 @@
 import { Typography } from "@mui/material";
-import Pipeline from "../Components/Execution/Pipeline";
 import Testcase from "../Components/Execution/Testcase";
 import Testset from "../Components/Execution/Testset";
 import PropTypes from "prop-types";
@@ -8,7 +7,6 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
-import ProjectsDropdown from "../Components/ProjectsDropdown";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -84,7 +82,6 @@ export default function Execution() {
         >
           <Tab label="Testcase" {...a11yProps(0)} />
           <Tab label="Testset" {...a11yProps(1)} />
-          <Tab label="Pipeline" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -94,10 +91,10 @@ export default function Execution() {
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Testset selectedProject={selectedProject} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <Pipeline selectedProject={selectedProject} />
+        <Testset
+          selectedProject={selectedProject}
+          selectedApplication={selectedApplication}
+        />
       </TabPanel>
     </Box>
   );

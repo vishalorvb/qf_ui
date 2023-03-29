@@ -3,12 +3,17 @@ import PagesTable from "../PagesTable";
 import useAuth from "../../../hooks/useAuth";
 import useHead from "../../../hooks/useHead";
 import axios from "../../../api/axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
 export default function Pages() {
   const { setHeader, header } = useHead();
   const { auth } = useAuth();
   const location = useLocation();
+
+  const [clientInactive, setClientInactive] = useState(false);
+  const [jarConnected, setJarConnected] = useState(false);
+  const [remoteAPiFails, setRemoteAPiFails] = useState(false);
 
   const createPage = () => {
     console.log(header?.browser);
@@ -24,13 +29,24 @@ export default function Pages() {
       })
       .then((resp) => {
         console.log(resp?.data?.info);
+        resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         const localFormData = new FormData();
         localFormData.append("data", resp?.data?.info);
         localFormData.append("jarName", `webpage`);
-        axios.postForm(`http://127.0.0.1:8765/connect`, {
-          data: resp?.data?.info,
-          jarName: `webpage`,
-        });
+        resp?.data?.status === "SUCCESS" &&
+          axios
+            .postForm(`http://127.0.0.1:8765/connect`, {
+              data: resp?.data?.info,
+              jarName: `webpage`,
+            })
+            .then((resp) => {
+              console.log(resp);
+              setJarConnected(true);
+            })
+            .catch((err) => {
+              console.log(err.message);
+              err.message === "Network Error" && setClientInactive(true);
+            });
       });
   };
 
@@ -55,5 +71,27 @@ export default function Pages() {
       });
   }, [header?.browser]);
 
-  return <PagesTable location={location} />;
+  return (
+    <>
+      <SnackbarNotify
+        open={clientInactive}
+        close={setClientInactive}
+        msg={"Local Client Jar is not running!"}
+        severity="error"
+      />
+      <SnackbarNotify
+        open={remoteAPiFails}
+        close={setRemoteAPiFails}
+        msg={"Somthing went wrong , Info Null "}
+        severity="error"
+      />
+      <SnackbarNotify
+        open={jarConnected}
+        close={setJarConnected}
+        msg={"Local Client Jar Launched!"}
+        severity="success"
+      />
+      <PagesTable location={location} />
+    </>
+  );
 }

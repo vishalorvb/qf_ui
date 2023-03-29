@@ -1,13 +1,11 @@
 import React from 'react'
-import GrowingTable from '../../CustomComponent/GrowingTable'
-import { Apidata } from './Data'
+import GrowingTable from '../../../CustomComponent/GrowingTable'
 
+function ApiLinktab() {
 
-function ApiLink() {
-
-function handleLinkData(tabdata){
-  Apidata.apiLinkProperties = tabdata
-}
+    function handleLinkData(tabdata){
+        console.log(tabdata)
+      }
   return (
     <div>
       <GrowingTable
@@ -19,4 +17,4 @@ function handleLinkData(tabdata){
   )
 }
 
-export default ApiLink
+export default ApiLinktab
