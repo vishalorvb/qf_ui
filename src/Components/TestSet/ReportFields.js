@@ -219,6 +219,7 @@ export default function ReportFields({
             }, 3000);
           } else {
             setReportFailMsg(true);
+            setTbData([]);
             setTimeout(() => {
               setReportFailMsg(false);
             }, 3000);
