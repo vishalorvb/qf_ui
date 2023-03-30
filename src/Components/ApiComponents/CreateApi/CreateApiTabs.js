@@ -76,7 +76,9 @@ function CreateApiTabs({ApiDetails}) {
                   ></ApiParam>
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                  <ApiBody></ApiBody>
+                  <ApiBody
+                  ApiDetails = {ApiDetails}
+                  ></ApiBody>
                 </TabPanel>
                 <TabPanel value={value} index={4}>
                    <ApiLinktab

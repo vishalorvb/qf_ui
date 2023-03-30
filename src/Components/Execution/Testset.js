@@ -1,6 +1,6 @@
-import {IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
-import {useForm} from "react-hook-form-mui";
+import { useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import Table from "../../CustomComponent/Table";
 import DatasetSelectAndExecute from "./DatasetSelectAndExecute";
 import TestcaseSelectAndExecute from "./TestcaseSelectAndExecute";
 
-function Testset( selectedProject, selectedApplication ) {
+function Testset(selectedProject, selectedApplication) {
   console.log(selectedProject);
   console.log(selectedProject.selectedProject);
   console.log(selectedProject.selectedApplication);
@@ -112,7 +112,7 @@ function Testset( selectedProject, selectedApplication ) {
         getRowId={(row) => row.testset_id}
       ></Table>
     </>
-  )
+  );
 }
 
-export default Testset
+export default Testset;

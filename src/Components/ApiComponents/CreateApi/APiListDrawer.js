@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import SmartDrawer from '../../../CustomComponent/SmartDrawer'
 import { getDatasetDetails } from '../../../Services/ApiService'
 import { setGetData } from './ApiDatasetData';
-
+import { postData } from './ApiDatasetData';
 export let getData;
 
 function APiListDrawer({setSelectedApi}) {
@@ -21,6 +21,12 @@ function APiListDrawer({setSelectedApi}) {
 
     useEffect(() => {
        getData = [...Api]
+       let api_order = []
+       getData?.forEach(element => {
+        // console.log(element.api_id)
+        api_order.push(element.api_id)
+       });
+       postData.apis_order = api_order
     }, [Api])
     return (
         <div>
@@ -43,7 +49,7 @@ function APiListDrawer({setSelectedApi}) {
                             }}
                             onClick={e => {
                                 setApiId(s.api_id)
-                                setSelectedApi(s)
+                                setSelectedApi({...s})
                             }}
 
                         >

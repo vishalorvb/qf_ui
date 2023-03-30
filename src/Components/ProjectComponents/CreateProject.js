@@ -49,7 +49,7 @@ function CreateProject() {
     rigthtuser.forEach((user) => {
       let temp = {
         user_id: user.id,
-        grafana_role: user.grafana_role,
+        grafana_role: 4,
       };
       userlist.push(temp);
     });
@@ -65,9 +65,10 @@ function CreateProject() {
   }
   function submitHandler() {
     let x = getUserlist();
+    x = JSON.stringify(x)
     let app = getApplicationlist();
     app = app.toString();
-    createformData.user_access_permissions = x;
+    createformData.user_access_permissions = x
     createformData.applicationsProjectMapping = "[" + app + "]";
     createformData.userId = auth.info.id;
     console.log(createformData);
@@ -192,7 +193,7 @@ function CreateProject() {
   }, []);
 
   useEffect(() => {
-    console.log(applications);
+
   }, [applications]);
 
   return (
@@ -366,7 +367,12 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name="" />
+              <input type="text" name=""
+                defaultValue={createformData.repository_branch}
+                onChange={(e) => {
+                  createformData.repository_branch = e.target.value;
+                }}
+              />
             </Grid>
           </Grid>
         </Container>
@@ -400,7 +406,6 @@ function CreateProject() {
                 defaultValue={createformData.jenkins_url}
                 type="text"
                 name=""
-                autocomplete="off"
                 onChange={(e) => {
                   createformData.jenkins_url = e.target.value;
                 }}

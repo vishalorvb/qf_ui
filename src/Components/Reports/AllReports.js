@@ -88,9 +88,9 @@ export default function AllReports({
             renderCell: (params) => {
                 let repo_result = params.row.report_result.split('/');
                 return (
-                    <>
-                        <div style={{ color: "green" }}>{repo_result[0]}</div>&nbsp;<b>/</b>&nbsp;<div style={{ color: "red" }}>{repo_result[1]}</div>
-                    </>
+                    <div style={{ border: "1px solid grey", display: "flex", padding: "inherit", borderRadius: "15px" }}>
+                        <div style={{ color: "green", fontWeight: "600" }}>{repo_result[0]}</div>&nbsp;<b>/</b>&nbsp;<div style={{ color: "red", fontWeight: "600" }}>{repo_result[1]}</div>
+                    </div>
                 );
             }
         },
@@ -101,12 +101,16 @@ export default function AllReports({
             align: "center",
             renderCell: (params) => {
                 return (
-                    <Button sx={{ backgroundColor: "#4caf50" }} variant="contained" onClick={e => {
-                        navigate("/reports/ViewReport", {
-                            state: { id: params.id},
-                        },
-                        )
-                    }}>View Report</Button>
+                    <Button
+                        sx={{ backgroundColor: "#F0FFF0", color: "#2F4F4F", borderRadius: "10px", height: "25px", width:"110px", marginTop: "1px" }}
+                        variant="outlined"
+                        onClick={e => {
+                            navigate("/reports/ViewReport", {
+                                state: { id: params.id },
+                            },
+                            )
+                        }}>View Report
+                    </Button>
                 )
             }
         },

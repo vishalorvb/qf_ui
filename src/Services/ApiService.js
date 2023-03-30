@@ -1,4 +1,4 @@
-import { method } from "lodash";
+
 import axios from "../api/axios";
 import { baseUrl } from "../Environment";
 
@@ -31,8 +31,8 @@ export async function deleteApiRequest(apiId){
     return x
 }
 
-export function getApiDatasets(callback,datasetId){
-axios.get(`${baseUrl}/qfservice/api/testcases/${datasetId}/datasets`).then(res =>{
+export function getApiDatasets(callback,testcaseId){
+axios.get(`${baseUrl}/qfservice/api/testcases/${testcaseId}/datasets`).then(res =>{
     if(res.data.data != null ){
         callback(res.data.data)
     }   
@@ -46,4 +46,21 @@ export function getDatasetDetails(callback,datasetId){
     }).then(res=>{
         callback(res.data.data.apidatasets)
     })
+}
+
+
+export async function createApiDataset(userId,Data){
+    let x = await axios({
+        method:"post",
+        url:`${baseUrl}/qfservice/createdataset?userId=${userId}`,
+        data:Data
+    }).then(res=>{
+        if(res.data.error == null){
+            return true
+        }
+        else{
+            return false
+        }
+    })
+    return x
 }

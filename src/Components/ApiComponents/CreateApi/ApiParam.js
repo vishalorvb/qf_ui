@@ -10,21 +10,18 @@ function ApiParam({ApiDetails}) {
 
     console.log(ApiDetails)
     let displayorder = ["param_key", "param_value", "param_desc"]
-    let [paramData, setParamData] = useState([])
-    useEffect(() => {
-        if (paramData.length > 0) {
-            setGetData(ApiDetails.api_id, "paramsList", paramData.slice(0, -1))
-        }
-
-    }, [paramData])
+    function haldleTableData(data){
+        console.log(data)
+        setGetData(ApiDetails.api_id,"paramsList",data.slice(0, -1))
+    }
     return (
         <div>
             <GrowingTable
                 header={["Key", "Value", "Description"]}
-                TableData={setParamData}
+                TableData={haldleTableData}
                 keypair={["param_key", "param_value", "param_desc"]}
                 order={displayorder}
-                prefilled={ApiDetails.paramsList}
+                prefilled={ApiDetails?.paramsList}
             ></GrowingTable>
         </div>
     )

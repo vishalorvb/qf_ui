@@ -16,6 +16,7 @@ function ApiTestcase() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -77,6 +78,10 @@ function ApiTestcase() {
 
     axios.post(`/qfservice/addApisToTestcase`, testcasedata).then((resp) => {
       console.log(resp);
+      resp.data.error === null && setSuccess(true);
+      setTimeout(() => {
+        resp.data.error === null && navigate(-1);
+      }, 1000);
     });
   }
 
@@ -85,7 +90,6 @@ function ApiTestcase() {
       setError(true);
       return;
     } else {
-      setSuccess(true);
       createTestcase();
     }
   }
