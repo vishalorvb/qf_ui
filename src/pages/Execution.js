@@ -73,6 +73,7 @@ export default function Execution() {
         setSelectedProject={setSelectedProject}
         selectedApplication={selectedApplication}
         setSelectedApplication={setSelectedApplication}
+        isTestset={value === 1}
       />
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
