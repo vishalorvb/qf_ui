@@ -49,13 +49,21 @@ export default function TestCases() {
             <Tooltip title="Dataset">
               <IconButton
                 onClick={() =>
-                  navigate("datasets", {
-                    state: {
-                      applicationId: param.row.module_id,
-                      testcaseId: param.row.testcase_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
+                  selectedApplication?.module_type === 1
+                    ? navigate("apidatasets", {
+                        state: {
+                          applicationId: param.row.module_id,
+                          testcaseId: param.row.testcase_id,
+                          projectId: selectedProject?.project_id,
+                        },
+                      })
+                    : navigate("datasets", {
+                        state: {
+                          applicationId: param.row.module_id,
+                          testcaseId: param.row.testcase_id,
+                          projectId: selectedProject?.project_id,
+                        },
+                      })
                 }
               >
                 <DataObjectOutlinedIcon sx={{ color: "green" }} />
