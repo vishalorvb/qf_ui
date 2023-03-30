@@ -6,46 +6,37 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
-import Table from "../../CustomComponent/Table";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { getTestcase } from "../../Services/TestCaseService";
 import { getProject } from "../../Services/ProjectService";
 import { getApplicationOfProject } from "../../Services/ApplicationService";
 import { getTestcasesInProjects } from "../../Services/TestsetService";
-import { left } from "@popperjs/core";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function TestsetCreate() {
   const [testcaseObject, setTestcaseObject] = useState([]);
   const location = useLocation();
-  // const [testcaseId, setTestcaseId] = useState();
-  // const [datasetId, setDatasetId] = useState();
   const [testsetName, setTestsetName] = useState("");
   const [testsetDesc, setTestsetDesc] = useState("");
   const testset_name = useRef();
   const testset_desc = useRef();
-  const project_name = useRef();
-  const application_name = useRef();
-  const [projectObject, setProjectObject] = useState([]);
-  const [applicationObject, setApplicationObject] = useState([]);
-  const [applicationId, setapplicationId] = useState(0);
-  const [projectId, setProjectId] = useState(null);
   const [leftTestcase, setLeftTestcase] = useState([]);
   const [rightTestcase, setRightTestcase] = useState([]);
   const [TSCreateSuccessMsg, setTSCreateSuccessMsg] = useState(false);
   const { auth } = useAuth();
   console.log(auth.info);
-  const loggedInId = auth.info.id;
   let requiredOnlyAlphabets = [testset_name,testset_desc];
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
   const navigate = useNavigate();
+  console.log(location);
+  let ProjectId = location.state.param2;
+  let ApplicationId = location.state.param3;
 
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
@@ -57,31 +48,6 @@ function TestsetCreate() {
       },
     },
   };
-
-  let Data = [];
-
-  const columns = [
-    {
-      field: "tcName",
-      headerName: "Testcase Name",
-      flex: 3,
-      headerAlign: "center",
-      sortable: false,
-      align: "left",
-    },
-    {
-      field: "tcDesc",
-      headerName: "Description",
-      flex: 3,
-      headerAlign: "center",
-      sortable: false,
-      align: "left",
-    },
-  ];
-
-  console.log(testcaseObject);
-  // console.log(leftTestcase.length);
-
 
   function handleSelect(event) {
     let e = document.getElementById("left");
@@ -121,7 +87,6 @@ function TestsetCreate() {
         ...ps,
         name: "Create Testset",
         plusButton: false,
-        // plusCallback: addUserHandler,
       };
     });
     return () =>
@@ -157,9 +122,9 @@ function TestsetCreate() {
       var data = {
         testset_name: "TS_" + testsetName,
         testset_desc: "TS_" + testsetDesc,
-        project_id: projectId,
+        project_id: ProjectId,
         testset_id: 0,
-        module_id: applicationId,
+        module_id: ApplicationId,
         testcases_list: tcList,
       };
       console.log(data);
@@ -168,20 +133,16 @@ function TestsetCreate() {
         .post(`qfservice/webtestset/createWebTestset`, data)
         .then((res) => {
           console.log(res.data.message);
-          // setTestsetObject(res.data.message);
           setTSCreateSuccessMsg(true);
           setTimeout(() => {
             setTSCreateSuccessMsg(false);
             navigate("/testset");
           }, 3000);
-          setapplicationId(0);
           setTestsetName("");
           setTestsetDesc("");
           setLeftTestcase([]);
           setRightTestcase([]);
         });
-      // setProjectId(0);
-      setapplicationId(0);
       setTestsetName("");
       setTestsetDesc("");
     } else {
@@ -196,15 +157,9 @@ function TestsetCreate() {
   console.log(leftTestcase);
 
   useEffect(() => {
-    getProject(setProjectObject,loggedInId);
-  }, []);
-
-  useEffect(() => {
-    getApplicationOfProject(setApplicationObject,projectId);
-    // console.log(getTestcasesInProjects(setTestcaseObject, projectId));
-    getTestcasesInProjects(setTestcaseObject, projectId);
-    getTestcasesInProjects(setLeftTestcase, projectId);
-  }, [projectId]);
+    getTestcasesInProjects(setTestcaseObject, ProjectId);
+    getTestcasesInProjects(setLeftTestcase, ProjectId);
+  }, [ProjectId]);
 
   return (
     <div onClick={resetClassName}>
@@ -225,84 +180,6 @@ function TestsetCreate() {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    xl={4}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>
-                        Project <span className="importantfield">*</span>:
-                      </label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
-                      <Autocomplete
-                      ref={project_name}
-                        name="projectAutocomplete"
-                        size="small"
-                        options={projectObject}
-                        getOptionLabel={(option) => option.project_name}
-                        onChange={(e, value) => {
-                          // Project_Id.current = value.project_id;
-                          setProjectId(value.project_id);
-                        }}
-                        noOptionsText={"Projects not found"}
-                        renderInput={(params) => (
-                          <div ref={params.InputProps.ref}>
-                            <input
-                              type="text"
-                              name="projectAutocomplete"
-                              {...params.inputProps}
-                              placeholder="Please Select"
-                            />
-                          </div>
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    // xl={4}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>
-                        Application <span className="importantfield">*</span>:
-                      </label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
-                      <Autocomplete
-                      ref={application_name}
-                        name="applicationAutocomplete"
-                        size="small"
-                        options={applicationObject}
-                        getOptionLabel={(option) => option.module_name}
-                        onChange={(e, value) => {
-                          // Workflow_Id.current = value.module_id;
-                          setapplicationId(value.module_id);
-                        }}
-                        noOptionsText={"Applications not found"}
-                        renderInput={(params) => (
-                          <div ref={params.InputProps.ref}>
-                            <input
-                              type="text"
-                              name="applicationAutocomplete"
-                              {...params.inputProps}
-                              placeholder="Please Select"
-                            />
-                          </div>
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
                   <Grid
                     container
                     item
@@ -413,12 +290,6 @@ function TestsetCreate() {
               </div>
             </form>
           </div>
-          {/* <Table
-            columns={columns}
-            rows={Data}
-            //   hidefooter={false}
-            getRowId={(row) => row.testcase_id}
-          /> */}
         </Paper>
         <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
         <SnackbarNotify open={TSCreateSuccessMsg} close={setTSCreateSuccessMsg} msg="Testset Created successfully" severity="success"/>

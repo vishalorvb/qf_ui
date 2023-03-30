@@ -442,3 +442,27 @@ select {
   box-shadow: 1px 1px 3px rgba($accent, 0.8);
   background-color: darken($accent, 5%) !important;
 }
+
+.chromeImg {
+  background: url(../../public/reports-chrome.svg) no-repeat bottom center;
+  background-size: 100%;
+  display: flex;
+  justify-content:center ;
+  align-items: flex-start;
+  .loginLogo {
+    width: 30px;
+    margin-top: 5vh;
+  }
+}
+.ieImg {
+  background: url(../../public/reports-ie.svg) no-repeat bottom center;
+  background-size: 100%;
+  display: flex;
+  justify-content:center ;
+  align-items: flex-start;
+  .loginLogo {
+    width: 30px;
+    margin-top: 5vh;
+  }
+}
+
