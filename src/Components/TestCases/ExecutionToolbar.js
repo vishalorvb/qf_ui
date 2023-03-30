@@ -19,6 +19,7 @@ export default function ExecutionToolbar({
   projectId,
   selectedDatasets,
   testcaseId,
+  applicationType,
 }) {
   const { auth } = useAuth();
   const [buildEnvList, setBuildEnvList] = useState([]);
@@ -131,6 +132,85 @@ export default function ExecutionToolbar({
           : setRemoteExecutionsuccess(true);
       });
   };
+
+  const onApiSubmitExecute = (data) => {
+    console.log(data);
+    console.log(testcaseId);
+    const executionData = {
+      testcase_id: testcaseId,
+      user_id: auth?.userId,
+      testcase_datasets_ids_list: selectedDatasets,
+      build_environment_name: data?.buildenvName?.split("&")[1],
+      execution_location: data?.executionLoc,
+      repository_commit_message: "",
+      testcase_overwrite: false,
+      runtimevariables: data?.buildenvName?.split("&")[2],
+      is_execute: true,
+      is_generate: data?.regenerateScript?.length > 0,
+      client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+    axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
+      console.log(resp);
+      console.log(resp?.data?.info);
+      resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
+      data?.executionLoc === "local"
+        ? resp?.data?.status === "SUCCESS" &&
+          axios
+            .postForm(`http://127.0.0.1:8765/connect`, {
+              data: resp?.data?.info,
+              jarName: `code`,
+            })
+            .then((resp) => {
+              console.log(resp);
+              setJarConnected(true);
+            })
+            .catch((err) => {
+              console.log(err.message);
+              err.message === "Network Error" && setClientInactive(true);
+            })
+        : setRemoteExecutionsuccess(true);
+    });
+  };
+
+  const onApiSubmitGenerate = (data) => {
+    console.log(data);
+    console.log(testcaseId);
+    const executionData = {
+      testcase_id: testcaseId,
+      user_id: auth?.userId,
+      testcase_datasets_ids_list: selectedDatasets,
+      build_environment_name: data?.buildenvName?.split("&")[1],
+      execution_location: data?.executionLoc,
+      repository_commit_message: "",
+      testcase_overwrite: false,
+      runtimevariables: data?.buildenvName?.split("&")[2],
+      is_execute: false,
+      is_generate: true,
+      client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+    axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
+      console.log(resp);
+      console.log(resp?.data?.info);
+      resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
+      data?.executionLoc === "local"
+        ? resp?.data?.status === "SUCCESS" &&
+          axios
+            .postForm(`http://127.0.0.1:8765/connect`, {
+              data: resp?.data?.info,
+              jarName: `code`,
+            })
+            .then((resp) => {
+              console.log(resp);
+              setJarConnected(true);
+            })
+            .catch((err) => {
+              console.log(err.message);
+              err.message === "Network Error" && setClientInactive(true);
+            })
+        : setRemoteExecutionsuccess(true);
+    });
+  };
+
   useEffect(() => {
     reset();
     axios.get(`/qfservice/build-environment/${applicationId}`).then((resp) => {
@@ -225,12 +305,23 @@ export default function ExecutionToolbar({
         <FeatureMenu />
         {selectedDatasets.length > 0 && (
           <>
-            <Button variant="contained" onClick={handleSubmit(onSubmitExecute)}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                applicationType === 1
+                  ? handleSubmit(onApiSubmitExecute)
+                  : handleSubmit(onSubmitExecute);
+              }}
+            >
               Execute
             </Button>
             <Button
               variant="contained"
-              onClick={handleSubmit(onSubmitGenerate)}
+              onClick={() => {
+                applicationType === 1
+                  ? handleSubmit(onApiSubmitGenerate)
+                  : handleSubmit(onSubmitGenerate);
+              }}
             >
               Generate
             </Button>

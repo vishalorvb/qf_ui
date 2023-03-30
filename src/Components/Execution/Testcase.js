@@ -1,6 +1,6 @@
-import {IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import PlayArrowOutlinedIcon from "@mui/icons-material/PlayArrowOutlined";
-import {useForm} from "react-hook-form-mui";
+import { useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
@@ -98,6 +98,7 @@ export default function Testcase({ selectedProject, selectedApplication }) {
         testcaseId={selectedTestcase}
         projectId={selectedProject?.project_id}
         applicationId={selectedApplication?.module_id}
+        applicationType={selectedApplication?.module_type}
       />
 
       <Table

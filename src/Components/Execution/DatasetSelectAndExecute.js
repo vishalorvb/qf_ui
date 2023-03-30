@@ -16,6 +16,7 @@ export default function DatasetSelectAndExecute({
   testcaseId,
   applicationId,
   projectId,
+  applicationType,
 }) {
   const [datasetList, setDataList] = useState([]);
   const [selectedDatasets, setSelectedDatasets] = useState([]);
@@ -62,6 +63,7 @@ export default function DatasetSelectAndExecute({
           applicationId={applicationId}
           selectedDatasets={selectedDatasets}
           testcaseId={testcaseId}
+          applicationType={applicationType}
         />
         <Table
           rows={datasetList}
