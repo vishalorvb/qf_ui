@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 import { FormControl, FormControlLabel,  MenuItem, Radio, RadioGroup, Select } from '@mui/material'
 import GrowingTable from '../../../CustomComponent/GrowingTable'
+import { setGetData } from './ApiDatasetData'
 
-
-function ApiBody() {
-
+function ApiBody({ApiDetails}) {
     let [selected, setSelected] = useState("")
 
     function handleFormData(tabdata){
-      console.log("table data from body")
-      console.log(tabdata)
+      
+      setGetData(ApiDetails.api_id,"bodyFormDataList",tabdata.slice(0, -1))
       
     }
      function handleEncoderData(tabdata){
-     
+      console.log(tabdata.slice(0,-1))
+      setGetData(ApiDetails.api_id,"bodyFormUrlEncodedList",tabdata.slice(0, -1))
      }
-  
+     let displayorder = ["key", "value", "description"]
   return (
     <div>
       <FormControl>
@@ -61,6 +61,8 @@ function ApiBody() {
           header={["Key", "Value", "Description"]}
           TableData = {handleFormData}
           keypair ={["key", "value", "description"]}
+          order={displayorder}
+          prefilled={ApiDetails?.bodyFormDataList}
         ></GrowingTable>
       </div>}
       {selected == "3" && <div>
@@ -68,6 +70,8 @@ function ApiBody() {
           header={["Key", "Value", "Description"]}
           TableData ={handleEncoderData}
           keypair ={["key", "value", "description"]}
+          order={displayorder}
+          prefilled={ApiDetails?.bodyFormUrlEncodedList}
         ></GrowingTable>
       </div>}
       { selected == "4" && <div style={{marginTop:"10px"}}>
