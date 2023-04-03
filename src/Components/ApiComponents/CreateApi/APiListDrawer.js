@@ -21,7 +21,6 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
         getData = [...Api]
         let api_order = []
         getData?.forEach(element => {
-            // console.log(element.api_id)
             api_order.push(element.api_id)
         });
         postData.apis_order = api_order

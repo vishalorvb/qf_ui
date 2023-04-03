@@ -16,6 +16,9 @@ import useAuth from '../../../hooks/useAuth'
 import { useLocation, useNavigate } from 'react-router'
 import SnackbarNotify from '../../../CustomComponent/SnackbarNotify'
 import { clearPostData } from './ApiDatasetData'
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
+import { DeleteApiDataset } from '../../../Services/ApiService'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 
 function ApiDatasets() {
@@ -26,6 +29,7 @@ function ApiDatasets() {
     let [createDatasets, setCreateDatasets] = useState(false)
     let [save, setSave] = useState(false)
     let [snackbar, setSnackbar] = useState(false)
+    let [datasetId, setDatasetId] = useState()
     const { auth } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
@@ -84,10 +88,36 @@ function ApiDatasets() {
                         <Tooltip title="Edit">
                             <IconButton
                                 onClick={() => {
-                                    console.log(param.row.testcase_dataset_id)
+                                    postData.tc_dataset_id = param.row.testcase_dataset_id
+                                    postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+                                    postData.description = param.row.description
+                                    setDatasetId(param.row.testcase_dataset_id)
+                                    setCreateDatasets(true)
                                 }}
                             >
                                 <EditOutlinedIcon></EditOutlinedIcon>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Copy">
+                            <IconButton
+                                onClick={() => {
+                                    setDatasetId(param.row.testcase_dataset_id)
+                                    setCreateDatasets(true)
+                                }}
+                            >
+                                <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                            <IconButton
+                                onClick={() => {
+                                    // console.log(param.row.testcase_dataset_id)
+                                    DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
+                                        getApiDatasets(setDatasets, location.state.testcaseId)
+                                    })
+                                }}
+                            >
+                                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
                             </IconButton>
                         </Tooltip>
                     </div>
@@ -98,7 +128,11 @@ function ApiDatasets() {
     useEffect(() => {
         getApiDatasets(setDatasets, location.state.testcaseId)
         postData.testcase_id = location.state.testcaseId
+
     }, [])
+    useEffect(() => {
+        setDatasetId(datasets[0]?.testcase_dataset_id)
+    }, [datasets])
     useEffect(() => {
 
         getData?.forEach(element => {
@@ -122,12 +156,16 @@ function ApiDatasets() {
                     >Save</Button>
 
                     <Button variant="outlined"
-                        onClick={e => setCreateDatasets(false)} s
+                        onClick={e => {
+                            setCreateDatasets(false)
+                            clearPostData()
+                            setDatasetId(datasets[0]?.testcase_dataset_id)
+                        }} 
                     >Cancel</Button>
 
                     <APiListDrawer
                         setSelectedApi={setSelectedApi}
-                        datasetId={datasets[0]?.testcase_dataset_id}
+                        datasetId={datasetId}
                     ></APiListDrawer>
                 </Stack>
                 <br />

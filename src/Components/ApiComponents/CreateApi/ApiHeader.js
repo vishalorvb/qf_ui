@@ -5,7 +5,7 @@ import { setGetData } from './ApiDatasetData'
 function ApiHeader({ApiDetails}) {
     console.log(ApiDetails)
     console.log(ApiDetails?.headersList)
-    let displayorder = ["key", "value", "description"]
+    let displayorder = ["header_key", "header_value", "header_desc"]
     function haldleTableData(data){
         setGetData(ApiDetails.api_id,"headersList",data.slice(0, -1))
     }
@@ -15,7 +15,7 @@ function ApiHeader({ApiDetails}) {
             <GrowingTable
                 header={["Key", "Value", "Description"]}
                 TableData={haldleTableData}
-                keypair={["key", "value", "description"]}
+                keypair={["header_key", "header_value", "header_desc"]}
                 order={displayorder}
                 prefilled={ApiDetails?.headersList}
             ></GrowingTable>
