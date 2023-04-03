@@ -64,3 +64,18 @@ export async function createApiDataset(userId,Data){
     })
     return x
 }
+
+export async function DeleteApiDataset(datasetId){
+    let x = await axios({
+        method:"post",
+        url:`${baseUrl}/qfservice/DeleteDataset?dataset_id=${datasetId}`,
+    }).then(res=>{
+        if(res.data.message !== null){
+            return true
+        }
+        else{
+            return false
+        }
+    })
+    return x
+}

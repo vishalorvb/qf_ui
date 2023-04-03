@@ -23,6 +23,7 @@ a {
   flex: 1;
   flex-grow: 1;
   overflow: auto;
+  overflow-x: hidden;
   min-height: 2em;
   & + p {
     width: 100%;
@@ -384,7 +385,9 @@ select {
 [aria-label="Active"] {
   color: $accent !important;
 }
-
+[aria-label="Copy"] {
+  color: $accent !important;
+}
 // abhishek
 
 .dialogTitle {
@@ -447,7 +450,7 @@ select {
   background: url(../../public/reports-chrome.svg) no-repeat bottom center;
   background-size: 100%;
   display: flex;
-  justify-content:center ;
+  justify-content: center;
   align-items: flex-start;
   .loginLogo {
     width: 30px;
@@ -458,7 +461,7 @@ select {
   background: url(../../public/reports-ie.svg) no-repeat bottom center;
   background-size: 100%;
   display: flex;
-  justify-content:center ;
+  justify-content: center;
   align-items: flex-start;
   .loginLogo {
     width: 30px;
@@ -466,3 +469,6 @@ select {
   }
 }
 
+.css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
+  top: 159px !important;
+}
