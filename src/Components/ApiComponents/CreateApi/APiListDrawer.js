@@ -3,6 +3,7 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useState } from 'react'
 import SmartDrawer from '../../../CustomComponent/SmartDrawer'
 import { getDatasetDetails } from '../../../Services/ApiService'
+import { setGetData } from './ApiDatasetData';
 import { postData } from './ApiDatasetData';
 export let getData;
 
@@ -50,6 +51,7 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
                                 cursor: "pointer",
                             }}
                             onClick={e => {
+                                console.log(s.api_id)
                                 setApiId(s.api_id)
                                 setSelectedApi({ ...s })
                             }}

@@ -141,7 +141,6 @@ function ApiDatasets() {
         setDatasetId(datasets[0]?.testcase_dataset_id)
     }, [datasets])
     useEffect(() => {
-
         getData?.forEach(element => {
             if (element?.api_id == selectedApi?.api_id) {
                 setSelectedApiDetails(element)
@@ -151,6 +150,7 @@ function ApiDatasets() {
     }, [selectedApi])
 
     useEffect(() => {
+        console.log(selectedApiDetails)
     }, [selectedApiDetails])
 
     return (
@@ -184,9 +184,12 @@ function ApiDatasets() {
                             <Grid item md={4}>
 
                                 <input type="text" style={{ width: "100%", height: "35px" }} placeholder='API Name' name="apiname"
-                                    defaultValue={selectedApiDetails?.api_name}
+                                    value={selectedApiDetails?.api_name}
                                     onChange={e => {
                                         setGetData(selectedApi.api_id, "api_name", e.target.value)
+                                        setSelectedApiDetails(pv => {
+                                            return { ...pv, api_name: e.target.value }
+                                        })
                                     }}
                                 />
                             </Grid>
