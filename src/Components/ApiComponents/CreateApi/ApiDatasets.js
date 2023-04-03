@@ -11,9 +11,11 @@ import MastPop from '../../../CustomComponent/MastPop'
 import { postData } from './ApiDatasetData'
 import { Stack } from "@mui/system";
 import { createApiDataset } from '../../../Services/ApiService'
-import {validateFormbyName} from '../../../CustomComponent/FormValidation'
+import { validateFormbyName } from '../../../CustomComponent/FormValidation'
 import useAuth from '../../../hooks/useAuth'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
+import SnackbarNotify from '../../../CustomComponent/SnackbarNotify'
+import { clearPostData } from './ApiDatasetData'
 
 
 function ApiDatasets() {
@@ -23,9 +25,10 @@ function ApiDatasets() {
     let [selectedApiDetails, setSelectedApiDetails] = useState({})
     let [createDatasets, setCreateDatasets] = useState(false)
     let [save, setSave] = useState(false)
+    let [snackbar, setSnackbar] = useState(false)
     const { auth } = useAuth();
     const location = useLocation()
- 
+    const navigate = useNavigate()
     let projectId
     let testcaseId
     let applicationId
@@ -34,23 +37,31 @@ function ApiDatasets() {
         projectId = location.state.projectId
         testcaseId = location.state.testcaseId
         applicationId = location.state.applicationId
-        console.log(projectId)
-        console.log(applicationId)
-        console.log(testcaseId)
+
     } catch (error) {
-       console.log(error)
+        console.log(error)
+        navigate("/testcase")
     }
 
     function handleSave(e) {
         postData.multi_datasets_of_testcase = getData
         console.log(postData)
-        if (validateFormbyName(["name","desc"],"error")){
-            createApiDataset(auth.info.id,postData)
+        if (validateFormbyName(["name", "desc"], "error")) {
+            createApiDataset(auth.info.id, postData).then(res => {
+                if (res) {
+                    getApiDatasets(setDatasets, location.state.testcaseId)
+                    setSave(false)
+                    setCreateDatasets(false)
+                    setSnackbar(true)
+                    clearPostData()
+
+                }
+            })
         }
-        else{
+        else {
             console.log("Form in not valid: Fill required fields")
         }
-        
+
     }
 
     let col = [
@@ -85,8 +96,8 @@ function ApiDatasets() {
         },
     ]
     useEffect(() => {
-        getApiDatasets(setDatasets, 149)
-        postData.testcase_id = 149
+        getApiDatasets(setDatasets, location.state.testcaseId)
+        postData.testcase_id = location.state.testcaseId
     }, [])
     useEffect(() => {
 
@@ -116,11 +127,12 @@ function ApiDatasets() {
 
                     <APiListDrawer
                         setSelectedApi={setSelectedApi}
+                        datasetId={datasets[0]?.testcase_dataset_id}
                     ></APiListDrawer>
                 </Stack>
-                <br/>
+                <br />
                 <Divider></Divider>
-                <br/>
+                <br />
                 {selectedApiDetails.api_id != undefined && <div>
                     <div>
                         <Grid container spacing={1} >
@@ -205,12 +217,12 @@ function ApiDatasets() {
                 >
                     <label for="">Dataset Name</label>
                     <input type="text" name='name'
-                    defaultValue={postData.testcase_dataset_name}
+                        defaultValue={postData.testcase_dataset_name}
                         onChange={e => postData.testcase_dataset_name = e.target.value}
                     />
                     <label for="">Description</label>
                     <input type="text" name='desc'
-                    defaultValue={postData.description}
+                        defaultValue={postData.description}
                         onChange={e => postData.description = e.target.value}
                     />
                     <Button variant='contained'
@@ -218,7 +230,14 @@ function ApiDatasets() {
                     >Save</Button>
                 </MastPop>
             </div>
-
+            <div>
+                <SnackbarNotify
+                    open={snackbar}
+                    close={setSnackbar}
+                    msg="Dataset Created successfully"
+                    severity="success"
+                ></SnackbarNotify>
+            </div>
         </div>
     )
 }
