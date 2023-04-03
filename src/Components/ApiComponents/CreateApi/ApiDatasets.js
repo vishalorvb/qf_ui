@@ -1,4 +1,4 @@
-import { Grid, IconButton, Tooltip } from '@mui/material'
+import { Button, Divider, Grid, IconButton, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Table from '../../../CustomComponent/Table'
 import { getApiDatasets } from '../../../Services/ApiService'
@@ -7,7 +7,15 @@ import CreateApiTabs from './CreateApiTabs'
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { setGetData } from './ApiDatasetData'
 import { getData } from './APiListDrawer'
-
+import MastPop from '../../../CustomComponent/MastPop'
+import { postData } from './ApiDatasetData'
+import { Stack } from "@mui/system";
+import { createApiDataset } from '../../../Services/ApiService'
+import { validateFormbyName } from '../../../CustomComponent/FormValidation'
+import useAuth from '../../../hooks/useAuth'
+import { useLocation, useNavigate } from 'react-router'
+import SnackbarNotify from '../../../CustomComponent/SnackbarNotify'
+import { clearPostData } from './ApiDatasetData'
 
 
 function ApiDatasets() {
@@ -15,6 +23,46 @@ function ApiDatasets() {
     let [datasets, setDatasets] = useState([])
     let [selectedApi, setSelectedApi] = useState()
     let [selectedApiDetails, setSelectedApiDetails] = useState({})
+    let [createDatasets, setCreateDatasets] = useState(false)
+    let [save, setSave] = useState(false)
+    let [snackbar, setSnackbar] = useState(false)
+    const { auth } = useAuth();
+    const location = useLocation()
+    const navigate = useNavigate()
+    let projectId
+    let testcaseId
+    let applicationId
+
+    try {
+        projectId = location.state.projectId
+        testcaseId = location.state.testcaseId
+        applicationId = location.state.applicationId
+
+    } catch (error) {
+        console.log(error)
+        navigate("/testcase")
+    }
+
+    function handleSave(e) {
+        postData.multi_datasets_of_testcase = getData
+        console.log(postData)
+        if (validateFormbyName(["name", "desc"], "error")) {
+            createApiDataset(auth.info.id, postData).then(res => {
+                if (res) {
+                    getApiDatasets(setDatasets, location.state.testcaseId)
+                    setSave(false)
+                    setCreateDatasets(false)
+                    setSnackbar(true)
+                    clearPostData()
+
+                }
+            })
+        }
+        else {
+            console.log("Form in not valid: Fill required fields")
+        }
+
+    }
 
     let col = [
         {
@@ -48,11 +96,13 @@ function ApiDatasets() {
         },
     ]
     useEffect(() => {
-        getApiDatasets(setDatasets, 149)
+        getApiDatasets(setDatasets, location.state.testcaseId)
+        postData.testcase_id = location.state.testcaseId
     }, [])
     useEffect(() => {
+
         getData?.forEach(element => {
-            if (element.api_id == selectedApi.api_id) {
+            if (element?.api_id == selectedApi?.api_id) {
                 setSelectedApiDetails(element)
             }
         });
@@ -64,84 +114,129 @@ function ApiDatasets() {
 
     return (
         <div>
-            <div>
-                <APiListDrawer
-                    setSelectedApi={setSelectedApi}
-                ></APiListDrawer>
-            </div>
-            <div>
-                <div>
-                    <Grid container spacing={1} >
-                        <Grid item md={4}>
+            {createDatasets && <div>
+                <Stack spacing={1} direction="row">
 
-                            <input type="text" style={{ width: "100%", height: "35px" }} placeholder='API Name' name="apiname"
-                                defaultValue={selectedApiDetails.api_name}
-                                onChange={e => {
-                                    setGetData(selectedApi.api_id, "api_name", e.target.value)
-                                }}
-                            />
+                    <Button variant="contained"
+                        onClick={e => setSave(true)}
+                    >Save</Button>
+
+                    <Button variant="outlined"
+                        onClick={e => setCreateDatasets(false)} s
+                    >Cancel</Button>
+
+                    <APiListDrawer
+                        setSelectedApi={setSelectedApi}
+                        datasetId={datasets[0]?.testcase_dataset_id}
+                    ></APiListDrawer>
+                </Stack>
+                <br />
+                <Divider></Divider>
+                <br />
+                {selectedApiDetails.api_id != undefined && <div>
+                    <div>
+                        <Grid container spacing={1} >
+                            <Grid item md={4}>
+
+                                <input type="text" style={{ width: "100%", height: "35px" }} placeholder='API Name' name="apiname"
+                                    defaultValue={selectedApiDetails?.api_name}
+                                    onChange={e => {
+                                        setGetData(selectedApi.api_id, "api_name", e.target.value)
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item md={8}>
+                                <input type='text' style={{ width: "100%", height: "35px" }} placeholder="Description" name="apidesc"
+                                    value={selectedApiDetails?.api_description}
+                                    onChange={e => {
+                                        setGetData(selectedApi.api_id, "api_description", e.target.value)
+                                        setSelectedApiDetails(pv => {
+                                            return { ...pv, api_description: e.target.value }
+                                        })
+                                    }}
+                                //  setSelectedApiDetails({...selectedApiDetails, api_description: e.target.value})
+                                />
+                            </Grid>
+                            <Grid item md={2}>
+                                <select
+                                    size='small'
+                                    displayEmpty
+                                    inputProps={{ "aria-label": "Without label" }}
+                                    fullWidth
+                                    onChange={e => {
+
+                                    }}
+                                >
+
+                                    <option value={1}>Get</option>
+                                    <option value={2}>Post</option>
+                                    <option value={3}>Put</option>
+                                    <option value={4}>Delete</option>
+                                </select>
+                            </Grid>
+                            <Grid item md={4}>
+                                <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
+                                    value={selectedApiDetails.api_url}
+                                    onChange={e => {
+                                        setGetData(selectedApi?.api_id, "api_url", e.target.value)
+                                        setSelectedApiDetails(pv => {
+                                            return { ...pv, api_url: e.target.value }
+                                        })
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item md={6}>
+                                <input placeholder='Resource' />
+                            </Grid>
                         </Grid>
-                        <Grid item md={8}>
-                            <input type='text' style={{ width: "100%", height: "35px" }} placeholder="Description" name="apidesc"
-                                value={selectedApiDetails.api_description}
-                                onChange={e => {
-                                    setGetData(selectedApi.api_id, "api_description", e.target.value)
-                                    setSelectedApiDetails(pv => {
-                                        return { ...pv, api_description: e.target.value }
-                                    })
-                                }}
-                            //  setSelectedApiDetails({...selectedApiDetails, api_description: e.target.value})
-                            />
-                        </Grid>
-                        <Grid item md={2}>
-                            <select
-                                size='small'
-                                displayEmpty
-                                inputProps={{ "aria-label": "Without label" }}
-                                fullWidth
-                                onChange={e => {
+                    </div>
 
-                                }}
-                            >
+                    <div>
+                        <CreateApiTabs
+                            ApiDetails={selectedApiDetails}
+                        ></CreateApiTabs>
+                    </div>
+                </div>}
 
-                                <option value={1}>Get</option>
-                                <option value={2}>Post</option>
-                                <option value={3}>Put</option>
-                                <option value={4}>Delete</option>
-                            </select>
-                        </Grid>
-                        <Grid item md={4}>
-                            <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
-                                value={selectedApiDetails.api_url}
-                                onChange={e => {
-                                    setGetData(selectedApi.api_id, "api_url", e.target.value)
-                                    setSelectedApiDetails(pv => {
-                                        return { ...pv, api_url: e.target.value }
-                                    })
-                                }}
-                            />
-                        </Grid>
-                        <Grid item md={6}>
-                            <input placeholder='Resource' />
-                        </Grid>
-                    </Grid>
-                </div>
-
-                <div>
-                    <CreateApiTabs
-                    ApiDetails= {selectedApiDetails}
-                    ></CreateApiTabs>
-                </div>
-            </div>
-
-
-            <div>
+            </div>}
+            {createDatasets == false && <div>
+                <Button variant="contained"
+                    onClick={e => setCreateDatasets(true)}
+                >Create DataSet</Button>
                 <Table
                     rows={datasets}
                     columns={col}
                     hidefooter={true}
                     getRowId={(row) => row.testcase_dataset_id}
                 ></Table>
+            </div>}
+            <div>
+                <MastPop
+                    open={save}
+                    setOpen={() => setSave(false)}
+                >
+                    <label for="">Dataset Name</label>
+                    <input type="text" name='name'
+                        defaultValue={postData.testcase_dataset_name}
+                        onChange={e => postData.testcase_dataset_name = e.target.value}
+                    />
+                    <label for="">Description</label>
+                    <input type="text" name='desc'
+                        defaultValue={postData.description}
+                        onChange={e => postData.description = e.target.value}
+                    />
+                    <Button variant='contained'
+                        onClick={handleSave}
+                    >Save</Button>
+                </MastPop>
+            </div>
+            <div>
+                <SnackbarNotify
+                    open={snackbar}
+                    close={setSnackbar}
+                    msg="Dataset Created successfully"
+                    severity="success"
+                ></SnackbarNotify>
             </div>
         </div>
     )

@@ -3,28 +3,37 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useState } from 'react'
 import SmartDrawer from '../../../CustomComponent/SmartDrawer'
 import { getDatasetDetails } from '../../../Services/ApiService'
-import { setGetData } from './ApiDatasetData';
-
+import { postData } from './ApiDatasetData';
 export let getData;
 
-function APiListDrawer({setSelectedApi}) {
+function APiListDrawer({ setSelectedApi, datasetId }) {
 
 
-    let [showApi, setShowApi] = useState(false)
+    let [showApi, setShowApi] = useState(true)
     let [Api, setApi] = useState([])
-    let [ApiId,setApiId] = useState(0)
+    let [ApiId, setApiId] = useState(0)
 
     useEffect(() => {
-        // getApis(setApi, 941)
-        getDatasetDetails(setApi,74)
+        getDatasetDetails(setApi, datasetId)
     }, [])
 
     useEffect(() => {
-       getData = [...Api]
+        getData = [...Api]
+        let api_order = []
+        getData?.forEach(element => {
+            // console.log(element.api_id)
+            api_order.push(element.api_id)
+        });
+        postData.apis_order = api_order
+        console.log(Api[0])
+        if(Api[0] !== undefined){
+            setSelectedApi(Api[0])
+            setApiId(Api[0].api_id)
+        }
     }, [Api])
     return (
         <div>
-            <Button onClick={e => setShowApi(!showApi)} variant="outlined">{showApi?"Hide Api":"Show Api"}</Button>
+            <Button onClick={e => setShowApi(!showApi)} variant="outlined">{showApi ? "Hide Api" : "Show Api"}</Button>
             <SmartDrawer
                 open={showApi}
                 close={setShowApi}
@@ -38,12 +47,12 @@ function APiListDrawer({setSelectedApi}) {
                             mt={1}
                             ml={1}
                             sx={{
-                                backgroundColor:ApiId == s.api_id?"#e8edf2":"",
+                                backgroundColor: ApiId == s.api_id ? "#e8edf2" : "",
                                 cursor: "pointer",
                             }}
                             onClick={e => {
                                 setApiId(s.api_id)
-                                setSelectedApi(s)
+                                setSelectedApi({ ...s })
                             }}
 
                         >

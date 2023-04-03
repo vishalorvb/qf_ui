@@ -93,6 +93,16 @@ const UpdateScreenOrder = lazy(() =>
 const APIorderupdate = lazy(() =>
   import(`../Components/TestCases/apiTestcase/APIorderupdate`)
 );
+
+const ConfigureDevice = lazy(() =>
+  import("../Components/ConfigureDevices/ConfigureDevice")
+);
+const UpdateConfigureDevice = lazy(() =>
+  import("../Components/ConfigureDevices/UpdateConfigureDevice")
+);
+const AddConfigurationPopUp = lazy(() =>
+  import("../Components/ConfigureDevices/AddConfigurationPopUp")
+);
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
 export const Routes = [
   {
@@ -250,6 +260,22 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
+  },
+
+  {
+    path: "configureDevice",
+    element: ConfigureDevice,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "updateConfigureDevice",
+    element: UpdateConfigureDevice,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "addConfigureDevice",
+    element: AddConfigurationPopUp,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
 
   {
