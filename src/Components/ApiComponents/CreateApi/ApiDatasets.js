@@ -77,7 +77,14 @@ function ApiDatasets() {
             align: "left",
         },
         {
-            field: "",
+            field: "description",
+            headerName: "Description",
+            flex: 3,
+            sortable: false,
+            align: "left",
+        },
+        {
+            field: "example",
             headerName: "Action",
             flex: 3,
             sortable: false,
@@ -252,6 +259,7 @@ function ApiDatasets() {
                 <MastPop
                     open={save}
                     setOpen={() => setSave(false)}
+                    heading = "Create Dataset For API"
                 >
                     <label for="">Dataset Name</label>
                     <input type="text" name='name'
