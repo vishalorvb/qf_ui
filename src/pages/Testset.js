@@ -42,9 +42,10 @@ function Testset() {
     });
   };
 
-  const editTestcaseHandler = () => {
+  const editTestcaseHandler = (e) => {
     navigate("AddTestcaseToTestset", {
       state: {
+        param1: e,
         param2: selectedProject?.project_id,
         param3: selectedApplication?.module_id,
       },
