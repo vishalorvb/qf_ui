@@ -76,13 +76,19 @@ export default function CreatePipeline() {
   const { setHeader } = useHead();
 
   useEffect(() => {
-    getCreatePipelineData(setPipelineData, setDefaultData, location.state.id);
+    getCreatePipelineData(
+      setPipelineData,
+      setDefaultData,
+      location.state.id,
+      location?.state?.project_Id
+    );
     setHeader((ps) => {
       return {
         ...ps,
         name: "Create Pipeline",
       };
     });
+    console.log(location.state.project_Id);
   }, []);
 
   useEffect(() => {
@@ -97,7 +103,7 @@ export default function CreatePipeline() {
   return (
     <>
       <SnackbarNotify
-        open={msg && true}
+        open={msg !== "" && true}
         close={setMsg}
         msg={msg}
         severity="success"
@@ -145,7 +151,9 @@ export default function CreatePipeline() {
                 control={control}
               >
                 {cicdTypes?.map((type) => (
-                  <MenuItem value={type.id}>{type.name}</MenuItem>
+                  <MenuItem key={type?.id} value={type.id}>
+                    {type.name}
+                  </MenuItem>
                 ))}
                 <MenuItem></MenuItem>
               </TextFieldElement>
@@ -171,7 +179,7 @@ export default function CreatePipeline() {
                 control={control}
               >
                 {pipelineData?.ansiblereleases?.map((release) => (
-                  <MenuItem value={release?.id}>
+                  <MenuItem key={release?.id} value={release?.id}>
                     {release?.release_name}
                   </MenuItem>
                 ))}
@@ -227,7 +235,7 @@ export default function CreatePipeline() {
                 control={control}
               >
                 {pipelineData?.apitestsetsList?.map((sets) => (
-                  <MenuItem value={sets?.testset_id}>
+                  <MenuItem key={sets?.testset_id} value={sets?.testset_id}>
                     {sets?.testset_name}
                   </MenuItem>
                 ))}

@@ -12,7 +12,7 @@ export default function Pipeline() {
   const navigate = useNavigate();
 
   const [instances, setInstances] = useState([]);
-  const [selectedProject, setSelectedProject] = useState([]);
+  const [selectedProject, setSelectedProject] = useState({});
   const [moduleId, setModuleId] = useState(0);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Pipeline() {
       return {
         ...ps,
         name: "Pipeline Instances",
-        plusButton: selectedProject?.project_id === 0 ? false : true,
+        plusButton: true,
         buttonName: "Create Pipeline",
         plusCallback: () =>
           navigate("CreatePipeline", {
