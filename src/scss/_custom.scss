@@ -385,7 +385,9 @@ select {
 [aria-label="Active"] {
   color: $accent !important;
 }
-
+[aria-label="Copy"] {
+  color: $accent !important;
+}
 // abhishek
 
 .dialogTitle {
