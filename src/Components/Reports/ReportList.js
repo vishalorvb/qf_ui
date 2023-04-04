@@ -21,6 +21,7 @@ export default function ReportList(props) {
           }}
           key={apiItem.testcase_name}
           divider
+          selected={selectedItem?.id === apiItem?.id}
         >
           <ListItemButton onClick={() => setSelectedItem(apiItem)}>
             <MuiListItemIcon
@@ -29,7 +30,12 @@ export default function ReportList(props) {
                 justifyContent: "center",
               }}
             >
-              {apiItem.browser_type === "chrome" && <img src="chrome.png" width={"40px"} />}
+              {apiItem.browser_type === "chrome" &&<Grid item xs={false} sx={{marginRight:"10px" }} className="chromeImg">
+          <img src="logo-light.png" className="loginLogo" alt="" height="2px"  />
+        </Grid>}
+        {apiItem.browser_type === "ie" &&<Grid item xs={false} sx={{marginRight:"10px" }} className="ieImg">
+          <img src="logo-light.png" className="loginLogo" alt="" height="2px"  />
+        </Grid>}
             </MuiListItemIcon>
 
             <MuiListItemText style={{ color: "#1C84EE" }} primary={apiItem.testcase_name} />
@@ -50,6 +56,7 @@ export default function ReportList(props) {
 
   useEffect(() => {
     setSelectedItem(result[0]);
+    console.log(result[0])
   }, [result]);
 
   return (

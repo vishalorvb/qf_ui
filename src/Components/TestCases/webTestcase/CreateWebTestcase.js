@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, MenuItem } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   MultiSelectElement,
   TextFieldElement,
@@ -78,7 +78,6 @@ export default function CreateWebTestcase() {
             .map((screen) => screen?.screen_id);
         });
         reset(object);
-        console.log(data);
       });
 
     setHeader((ps) => {
@@ -139,7 +138,7 @@ export default function CreateWebTestcase() {
 
       {pagesnScreens.map((page) => {
         return (
-          <>
+          <Fragment key={page?.web_page_id}>
             <label>{page?.name}</label>
             <MultiSelectElement
               itemKey="screen_id"
@@ -160,7 +159,7 @@ export default function CreateWebTestcase() {
                 });
               }}
             ></MultiSelectElement>
-          </>
+          </Fragment>
         );
       })}
       <Stack mt={1} direction="row" justifyContent="flex-end">

@@ -12,7 +12,7 @@ export default function Pipeline() {
   const navigate = useNavigate();
 
   const [instances, setInstances] = useState([]);
-  const [selectedProject, setSelectedProject] = useState([]);
+  const [selectedProject, setSelectedProject] = useState({});
   const [moduleId, setModuleId] = useState(0);
 
   useEffect(() => {
@@ -20,9 +20,12 @@ export default function Pipeline() {
       return {
         ...ps,
         name: "Pipeline Instances",
-        plusButton: selectedProject?.project_id === 0 ? false : true,
+        plusButton: true,
+        buttonName: "Create Pipeline",
         plusCallback: () =>
-          navigate("CreatePipeline", { state: { id: 0, project_Id: selectedProject?.project_id } }),
+          navigate("CreatePipeline", {
+            state: { id: 0, project_Id: selectedProject?.project_id },
+          }),
       };
     }, []);
 
@@ -97,7 +100,10 @@ export default function Pipeline() {
             <EditOutlinedIcon
               onClick={() =>
                 navigate("CreatePipeline", {
-                  state: { id: param.row.id, project_Id: selectedProject?.project_id },
+                  state: {
+                    id: param.row.id,
+                    project_Id: selectedProject?.project_id,
+                  },
                 })
               }
             />
@@ -109,7 +115,10 @@ export default function Pipeline() {
 
   return (
     <>
-      <ProjectsDropdown selectedProject = {selectedProject} setSelectedProject={setSelectedProject} />
+      <ProjectsDropdown
+        selectedProject={selectedProject}
+        setSelectedProject={setSelectedProject}
+      />
       <Table rows={instances} columns={instanceColumns} />
       <Outlet />
     </>

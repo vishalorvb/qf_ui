@@ -32,7 +32,9 @@ const APIsTable = lazy(() =>
 );
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
-const ApiDatasets = lazy(() => import("../Components/ApiComponents/CreateApi/ApiDatasets"));
+const ApiDatasets = lazy(() =>
+  import("../Components/ApiComponents/CreateApi/ApiDatasets")
+);
 const CreateInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateInstance")
 );
@@ -83,7 +85,7 @@ const CreateWebTestcase = lazy(() =>
 
 const ViewReport = lazy(() => import("../pages/ViewReport"));
 
-const AllReport = lazy(() => import("../Components/Reports/AllReports"))
+const AllReport = lazy(() => import("../Components/Reports/AllReports"));
 
 const UpdateScreenOrder = lazy(() =>
   import("../Components/TestCases/UpdateScreenOrderinDataset")
@@ -91,7 +93,18 @@ const UpdateScreenOrder = lazy(() =>
 const APIorderupdate = lazy(() =>
   import(`../Components/TestCases/apiTestcase/APIorderupdate`)
 );
+
+const ConfigureDevice = lazy(() =>
+  import("../Components/ConfigureDevices/ConfigureDevice")
+);
+const UpdateConfigureDevice = lazy(() =>
+  import("../Components/ConfigureDevices/UpdateConfigureDevice")
+);
+const AddConfigurationPopUp = lazy(() =>
+  import("../Components/ConfigureDevices/AddConfigurationPopUp")
+);
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
+const CreateTestCase = lazy(() => import("../Components/TestCases/CreateTestCase"));
 export const Routes = [
   {
     path: "ApiTestcase",
@@ -236,7 +249,7 @@ export const Routes = [
       },
     ],
   },
-  
+
   {
     path: "reports",
     element: Reports,
@@ -249,7 +262,23 @@ export const Routes = [
       },
     ],
   },
-  
+
+  {
+    path: "configureDevice",
+    element: ConfigureDevice,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "updateConfigureDevice",
+    element: UpdateConfigureDevice,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "addConfigureDevice",
+    element: AddConfigurationPopUp,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+
   {
     path: "testcase",
     element: TestCases,
@@ -266,6 +295,11 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
+        path: "CreateTestcaseAll",
+        element: CreateTestCase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
         path: "datasets",
         element: Dataset,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
@@ -273,6 +307,11 @@ export const Routes = [
       {
         path: "updateScreenOrder",
         element: UpdateScreenOrder,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "updateAPIOrder",
+        element: APIorderupdate,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {

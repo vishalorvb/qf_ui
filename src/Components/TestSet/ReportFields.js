@@ -29,9 +29,18 @@ export default function ReportFields({
   const [validationMsg, setValidationMsg] = useState(false);
   const [tbData, setTbData] = useState([]);
   const axiosPrivate = useAxios();
+  const [json, setJson] = useState();
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
+
+  
+  try {
+    
+  } catch (error) {
+    
+  }
+
   //   let autoComplete = [
   //     "userAutocomplete",
   //     "projectAutocomplete",
@@ -53,7 +62,7 @@ export default function ReportFields({
   };
 
   const [fromDate, setFromDate] = useState(values.from_Date);
-  console.log(fromDate)
+  console.log(json)
   const [toDate, setToDate] = useState(values.to_Date);
   const columns = [
     {
@@ -103,10 +112,11 @@ export default function ReportFields({
       renderCell: (params) => {
         let repo_result = params.row.report_result.split("/");
         return (
-          <>
-            <div style={{ color: "green" }}>{repo_result[0]}</div>&nbsp;<b>/</b>
-            &nbsp;<div style={{ color: "red" }}>{repo_result[1]}</div>
-          </>
+          <div style={{ border: "1px solid grey", display: "flex", padding: "inherit", borderRadius: "15px" }}>
+
+            <div style={{ color: "green", fontWeight: "600" }}>{repo_result[0]}</div>&nbsp;<b>/</b>
+            &nbsp;<div style={{ color: "red", fontWeight: "600" }}>{repo_result[1]}</div>
+          </div>
         );
       },
     },
@@ -119,49 +129,47 @@ export default function ReportFields({
       renderCell: (params) => {
         return (
           <>
-          <Button
-          sx={{ backgroundColor: "#4caf50"}}
-            variant="contained"
-            onClick={(e) => {
-              navigate("ViewReport", {
-                state: { id: params.row.report_id },
-              });
-            }}
-          >
-            View Report
-          </Button>
-          <Button
-          style={{marginLeft:"5px"}}
-            variant="contained"
-            onClick={(e) => {
-              navigate("AllReports", {
-                state: { id: params.row ,
-                  fromDate: fromDate,
-                  toDate:toDate,
-                }
-              },
-              console.log(fromDate)
-              );
-            }}
-          >
-            View All
-          </Button>
-          <DownloadIcon
-          style={{marginLeft:"5px" , border:"1px solid #c4cbe1", width:"40px",height:"30px"}}
+            <Button
+            sx={{ backgroundColor: "#F0FFF0",color:"#2F4F4F", borderRadius: "10px", height: "25px",width:"110px", marginTop: "5px" }}
+            variant="outlined"
+              onClick={(e) => {
+                navigate("ViewReport", {
+                  state: { id: params.row.report_id },
+                });
+              }}
+            >
+              View Report
+            </Button>
+            <Button
+              sx={{marginLeft: "5px", backgroundColor: "#EDFAF9", borderRadius: "10px", height: "25px", marginTop: "5px" }}
+              variant="outlined"
+              onClick={(e) => {
+                navigate("AllReports", {
+                  state: {
+                    id: params.row,
+                    fromDate: fromDate,
+                    toDate: toDate,
+                  }
+                },
+                  console.log(fromDate)
+                );
+              }}
+            >
+              View All
+            </Button>
+            <DownloadIcon
+              style={{ marginLeft: "5px", border: "1px solid #c4cbe1", width: "30px", height: "22px", cursor: "pointer", marginTop: "5px" }}
 
-            variant="contained"
-            onClick={(e) => {
-              navigate("AllReports", {
-                state: { id: params.row ,
-                  fromDate: fromDate,
-                  toDate:toDate,
-                }
-              },
-              );
-            }}
-          >
-          </DownloadIcon>
-          
+              variant="contained"
+              onClick={(e) => {
+                axios.get(`/qfreportservice/reportResult/${params.id}.json`).then(res => {
+
+                  setJson(res.data)
+                })
+              }}
+            >
+            </DownloadIcon>
+
           </>
         );
       },
@@ -183,20 +191,24 @@ export default function ReportFields({
   }, [applicationList]);
 
   useEffect(() => {
+    submit();
+  }, [selectedApplication]);
+
+  useEffect(() => {
     setSelectedApplication({ module_name: "Select Project first" });
     selectedProject &&
       getApplicationOfProject(setapplicationList, selectedProject?.project_id);
   }, [selectedProject]);
 
   const submit = (e) => {
-   // e.preventDefault();
+    // e.preventDefault();
     // if (
     //   validateForm(requiredsFields, [], [], [], [], "error")
     // )
     {
       axiosPrivate
         .post(
-          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication.module_id}&user_id=${loggedInId}`
+          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication?.module_id}&user_id=${loggedInId}`
         )
         .then((Response) => {
           if (Response.data.info.length > 0) {
@@ -207,12 +219,13 @@ export default function ReportFields({
             }, 3000);
           } else {
             setReportFailMsg(true);
+            setTbData([]);
             setTimeout(() => {
               setReportFailMsg(false);
             }, 3000);
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
     }
     //  else {
     //   setValidationMsg(true);
@@ -263,7 +276,7 @@ export default function ReportFields({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "27ch", minHeight: "7ch" },
+            "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
           }}
           noValidate
           autoComplete="off"
@@ -273,9 +286,10 @@ export default function ReportFields({
             label="From Date"
             variant="outlined"
             type="date"
+            size="small"
             ref={From_Date}
             defaultValue={values.from_Date}
-            sx={{ width: 158 }}
+            sx={{ width: 220 }}
             onChange={(newValue) => {
               setFromDate(newValue.target.value);
             }}
@@ -288,19 +302,20 @@ export default function ReportFields({
         <Box
           component="form"
           sx={{
-            "& > :not(style)": { m: 1, width: "27ch", minHeight: "7ch" },
+            "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
           }}
           noValidate
           autoComplete="off"
         >
           <TextField
             id="outlined-basic"
+            size="small"
             label="To Date"
             variant="outlined"
             type="date"
             ref={to_Date}
             defaultValue={values.to_Date}
-            sx={{ width: 158 }}
+            sx={{ width: 220 }}
             onChange={(newValue) => {
               setToDate(newValue.target.value);
             }}

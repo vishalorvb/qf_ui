@@ -35,6 +35,7 @@ export default function Release() {
         ...ps,
         name: "Release Instances",
         plusButton: module ? true : false,
+        buttonName: "Create Instance",
         plusCallback: addReleaseInstances,
       };
     });
@@ -81,7 +82,7 @@ export default function Release() {
   const setRowData = (e) => {
     setOpenDelete(true);
     rowData(e);
-  }
+  };
 
   const instanceColumns = [
     {
@@ -118,7 +119,7 @@ export default function Release() {
             >
               <EditOutlinedIcon />
             </IconButton>
-            <IconButton onClick= {setRowData}  >
+            <IconButton onClick={setRowData}>
               <DeleteOutlinedIcon />
             </IconButton>
           </div>
@@ -135,8 +136,21 @@ export default function Release() {
         msg={msg}
         severity="success"
       />
-      {openDelete ? <ConfirmPop heading={"Delete Release"} open={openDelete} handleClose={() =>setOpenDelete(false)} message={"Do You really want to delete this release"} onConfirm={deleteRelease(rowData)} /> : ""}
-      <ProjectsDropdown selectedProject = {selectedProject} setSelectedProject={setSelectedProject} />
+      {openDelete ? (
+        <ConfirmPop
+          heading={"Delete Release"}
+          open={openDelete}
+          handleClose={() => setOpenDelete(false)}
+          message={"Do You really want to delete this release"}
+          onConfirm={deleteRelease(rowData)}
+        />
+      ) : (
+        ""
+      )}
+      <ProjectsDropdown
+        selectedProject={selectedProject}
+        setSelectedProject={setSelectedProject}
+      />
       <Table rows={instance} columns={instanceColumns} />
       <SelectCreateInstanceModal
         createInstate={createInstance}

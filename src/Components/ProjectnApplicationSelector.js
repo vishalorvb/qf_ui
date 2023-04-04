@@ -10,6 +10,7 @@ export default function ProjectnApplicationSelector({
   selectedProject,
   selectedApplication,
   setSelectedApplication,
+  isTestset,
 }) {
   const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
@@ -58,22 +59,24 @@ export default function ProjectnApplicationSelector({
           <TextField {...params} label="Projects" size="small" />
         )}
       />
-      <Autocomplete
-        disablePortal
-        disableClearable
-        id="application_id"
-        options={applicationList}
-        value={selectedApplication || null}
-        sx={{ width: "20%" }}
-        getOptionLabel={(option) => option.module_name}
-        onChange={(e, value) => {
-          console.log(value);
-          setSelectedApplication(value);
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label="Applications" size="small" />
-        )}
-      />
+      {selectedProject?.automation_framework_type !== 6 && (
+        <Autocomplete
+          disablePortal
+          disableClearable
+          id="application_id"
+          options={applicationList}
+          value={selectedApplication || null}
+          sx={{ width: "20%" }}
+          getOptionLabel={(option) => option.module_name}
+          onChange={(e, value) => {
+            console.log(value);
+            setSelectedApplication(value);
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="Applications" size="small" />
+          )}
+        />
+      )}
     </Stack>
   );
 }

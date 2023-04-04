@@ -92,22 +92,22 @@ export function getElementsList(callback, screenId) {
 }
 
 export async function CreateDataset(data) {
-    let x = await axios({
-        method:'post',
-        data:data,
-        url:`${baseUrl}/qfservice/webdataset/web-createDataset`
-    }).then(res=>{
+  let x = await axios({
+    method: 'post',
+    data: data,
+    url: `${baseUrl}/qfservice/webdataset/web-createDataset`
+  }).then(res => {
 
-        if(res.data.status === "SUCCESS"){
-        
-            return true
-        }
-        else{
-            return false
-        }
-    })
- 
-    return x
+    if (res.data.status === "SUCCESS") {
+
+      return true
+    }
+    else {
+      return false
+    }
+  })
+
+  return x
 }
 
 export function getDataset(callback,projectId,applicationId,testcaseId){
@@ -118,7 +118,7 @@ export function getDataset(callback,projectId,applicationId,testcaseId){
 }
 
 export async function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
- let x = axios
+  let x = axios
     .get(
       `${baseUrl}/qfservice/webdataset/getScreensAndElementsInTestcaseByTestcaseIdorDatasetId?testcase_id=${testcaseId}&dataset_id=${datasetId}`
     )
@@ -126,18 +126,32 @@ export async function getData_for_createDataset(callback, testcaseId, datasetId 
       callback(res.data.info);
       return true
     });
-    return x
+  return x
 }
 
 
-export async function deleteDataset(datasetId){
-  let x = axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`).then(res=>{
-    if(res.data.status == "SUCCESS"){
+export async function deleteDataset(datasetId) {
+  let x = axios.delete(`${baseUrl}/qfservice/webdataset/deleteWebDataset?dataset_id=${datasetId}`).then(res => {
+    if (res.data.status == "SUCCESS") {
       return true
     }
-    else{
+    else {
       return false
     }
+  })
+  return x
+}
+
+
+export async function CreateTestCaseService(data) {
+  console.log("Calling createTestCaseService")
+  let x = await axios({
+    method: "post",
+    url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
+    data: data
+  }).then(res => {
+    if (res.data.info != null) { return  res.data.info.testcase_id}
+    else { return false }
   })
   return x
 }

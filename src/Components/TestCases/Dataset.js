@@ -29,9 +29,6 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 export let DatasetRequest;
 
 
-let snackbarmsg = "";
-let snackbarsev = ""
-
 function Dataset() {
   let [createpopup, setCreatepopup] = useState(false);
   let [datasets, setDatasets] = useState([]);
