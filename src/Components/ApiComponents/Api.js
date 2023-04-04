@@ -10,7 +10,7 @@ import { createApiRequest } from '../../Services/ApiService';
 
 
 function Api() {
-    let namelist = ["apiname", "apidesc", "apiurl"]
+    let namelist = ["apiname", "apidesc", "apiurl","resource"]
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     let navigate = useNavigate()
 
@@ -98,13 +98,14 @@ function Api() {
                 </Grid>
                 <Grid item md={4}>
                     <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl" defaultValue={Apidata.api_url}
+                    
                         onChange={e => {
                             Apidata.api_url = e.target.value
                         }}
                     />
                 </Grid>
                 <Grid item md={6}>
-                    <input placeholder='Resource' />
+                    <input placeholder='Resource' name='resource'/>
                 </Grid>
             </Grid>
             <ApiTabs></ApiTabs>

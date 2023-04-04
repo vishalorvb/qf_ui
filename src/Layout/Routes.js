@@ -104,6 +104,7 @@ const AddConfigurationPopUp = lazy(() =>
   import("../Components/ConfigureDevices/AddConfigurationPopUp")
 );
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
+const CreateTestCase = lazy(() => import("../Components/TestCases/CreateTestCase"));
 export const Routes = [
   {
     path: "ApiTestcase",
@@ -291,6 +292,11 @@ export const Routes = [
       {
         path: "CreateTestcase",
         element: CreateWebTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "CreateTestcaseAll",
+        element: CreateTestCase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
