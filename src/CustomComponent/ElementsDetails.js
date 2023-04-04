@@ -20,10 +20,10 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
+import axios from "../api/axios";
 function ElementsDetails({ ElementId, setPopup }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
-  const [selectedXpath, setSelectedXpath] = useState([]);
   useEffect(() => {
     getElementsDetails(setDetails, ElementId);
   }, [ElementId]);
@@ -67,6 +67,22 @@ function ElementsDetails({ ElementId, setPopup }) {
 
   const updateElement = (elementData) => {
     console.log(elementData);
+    const elementDetails = {
+      element_id: ElementId,
+      selected_xpath: elementData?.path,
+      prefered: elementData?.pathType,
+      input_type: elementData?.fieldType,
+      secondary_input_type: elementData?.otherFieldType,
+      all_xpaths: details?.all_xpaths,
+      name: elementData?.fieldname,
+    };
+    console.log(elementDetails);
+    console.log(details);
+    axios
+      .postForm(`/qfservice/webpages/updateWebPageElementPaths`, elementDetails)
+      .then((resp) => {
+        resp?.data?.status === "SUCCESS" && setPopup(false);
+      });
   };
 
   return (
