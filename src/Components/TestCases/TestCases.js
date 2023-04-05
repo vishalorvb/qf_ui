@@ -190,7 +190,7 @@ export default function TestCases() {
         plusCallback: () => {
           navigate("CreateTestcaseAll", {
             state: {
-              applicationId: selectedApplication?.module_id,
+              applicationId: selectedApplication,
               projectId: selectedProject?.project_id,
             },
           })

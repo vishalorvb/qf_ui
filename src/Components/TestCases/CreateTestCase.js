@@ -15,13 +15,15 @@ function CreateTestCase() {
     let location = useLocation()
     let navigate = useNavigate();
     try {
-
+        console.log(location.state.applicationId)
         data.project_id = location.state.projectId;
-        data.module_id = location.state.applicationId;
+        data.module_id = location.state.applicationId.module_id;
     } catch (error) {
         console.log(error)
         navigate("/testcase");
     }
+
+    let redirect_url = [" ", "/testcase/CreateApiTestcase", "/testccase/CreateTestcase",]
 
     function handleSubmit(e) {
 
@@ -29,7 +31,8 @@ function CreateTestCase() {
             CreateTestCaseService(data).then(res => {
                 if (res) {
                     console.log(res)
-                    navigate("/testcase/CreateApiTestcase", {
+                    console.log(redirect_url[location.state.applicationId.module_type])
+                    navigate(redirect_url[location.state.applicationId.module_type], {
                         state: {
                             applicationId: location.state.applicationId,
                             testcaseId: res,
