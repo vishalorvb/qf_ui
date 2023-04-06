@@ -52,6 +52,12 @@ function CreateTestCase() {
     return (
         <div>
 
+            <div style={{ margin: "10px", padding: "10px", textAlign: "center", backgroundColor: "#e8f2fd", }}>
+                <h2>Create New TestCase</h2>
+            </div>
+          
+            <Divider></Divider>
+            <br/>
             <Grid container columnSpacing={2} justifyContent="center">
                 <Grid item xs={7} md={7}>
                     <Grid item md={12}>
@@ -77,17 +83,17 @@ function CreateTestCase() {
                         <label for="">Description</label>
                     </Grid>
                     <Grid item xs={12} md={12}>
-                        <textarea rows="4" cols="58"
+                        <textarea rows="4" cols="70"
                             name="desc"
                             onChange={e => {
                                 data.testcase_description = e.target.value;
                             }}
                         ></textarea>
                     </Grid>
-                    <Grid item xs={4} md={4}>
+                    <Grid item xs={4} md={4} lg={4}>
                         <Button variant="outlined">Cancel</Button>
                     </Grid>
-                    <Grid item xs={4} md={4}>
+                    <Grid item xs={4} md={4} lg={4}>
                         <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
                     </Grid>
                 </Grid>
