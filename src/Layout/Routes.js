@@ -73,8 +73,8 @@ const ScreenElements = lazy(() =>
 const UpdateScreen = lazy(() =>
   import("../Components/Application/ScreenComponents/UpdateScreen")
 );
-const CreateApiTestcase = lazy(() =>
-  import("../Components/TestCases/apiTestcase/ApiTestcase")
+const MapApiTestCase = lazy(() =>
+  import("../Components/TestCases/apiTestcase/MapApiTestCase")
 );
 const WebTestcase = lazy(() =>
   import("../Components/TestCases/webTestcase/WebTestcase")
@@ -106,11 +106,11 @@ const AddConfigurationPopUp = lazy(() =>
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
 const CreateTestCase = lazy(() => import("../Components/TestCases/CreateTestCase"));
 export const Routes = [
-  {
-    path: "ApiTestcase",
-    element: CreateApiTestcase,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
+  // {
+  //   path: "ApiTestcase",
+  //   element: CreateApiTestcase,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  // },
   {
     path: "TestcasesList",
     element: getTestcases,
@@ -285,8 +285,8 @@ export const Routes = [
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
-        path: "CreateAPiTestcase",
-        element: CreateApiTestcase,
+        path: "MapApiTestCase",
+        element: MapApiTestCase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
@@ -295,7 +295,7 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "CreateTestcaseAll",
+        path: "Create",
         element: CreateTestCase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },

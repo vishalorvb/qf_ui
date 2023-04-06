@@ -14,6 +14,7 @@ import axios from "../../api/axios";
 import AirplayIcon from "@mui/icons-material/Airplay";
 import { Link } from "react-router-dom";
 
+
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
 
@@ -188,9 +189,9 @@ export default function TestCases() {
         plusButton: true,
         buttonName: "Create Testcase",
         plusCallback: () => {
-          navigate("CreateTestcaseAll", {
+          navigate("Create", {
             state: {
-              applicationId: selectedApplication?.module_id,
+              applicationId: selectedApplication,
               projectId: selectedProject?.project_id,
             },
           })
@@ -221,6 +222,7 @@ export default function TestCases() {
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedApplication, popup]);
+
 
   return (
     <>
