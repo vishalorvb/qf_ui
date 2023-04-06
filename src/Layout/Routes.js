@@ -123,6 +123,18 @@ export const Routes = [
         path: ":pagesnscreen",
         element: pagesnscreen,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "PageElements",
+            element: PageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "screenelements",
+            element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
       },
     ],
   },

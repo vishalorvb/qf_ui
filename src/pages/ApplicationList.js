@@ -68,7 +68,6 @@ export default function ApplicationsList() {
           location?.state === "recentApplication"
             ? "Recent Applications"
             : "Search Applications",
-        buttonName: "Create Application",
       };
     });
   }, [location?.state]);

@@ -22,9 +22,18 @@ export default function PagesTable(props) {
       renderCell: (param) => {
         return (
           <Typography
-            // onClick={() =>
-            //   navigate(`${param?.row?.module_name}`, { state: param?.row })
-            // }
+            onClick={() =>
+              actionType === "screen"
+                ? navigate("selectElements", {
+                    state: {
+                      id: param.row.web_page_id,
+                      applicationId: location.state.id,
+                    },
+                  })
+                : navigate("PageElements", {
+                    state: { id: param.row.web_page_id },
+                  })
+            }
             variant="p"
             className="nameColumn"
           >
