@@ -54,12 +54,46 @@ export const testManagementList = [
     route: "testcase",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-testcases"></i>,
+    subList: [
+      {
+        name: "Create",
+        route: "/testcase/create",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        route: "",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Execution",
+        route: "create",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ]
   },
   {
     name: "Testsets",
-    route: "testset",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-testsets"></i>,
+    subList: [
+      {
+        name: "Create",
+        route: "testset/createTestset",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        route: "testset",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Execution",
+        route: "execution",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     name: "Execution",
