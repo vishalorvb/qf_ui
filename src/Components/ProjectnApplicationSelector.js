@@ -69,7 +69,7 @@ export default function ProjectnApplicationSelector({
           sx={{ width: "20%" }}
           getOptionLabel={(option) => option.module_name}
           onChange={(e, value) => {
-            console.log(value);
+            // console.log(value);
             setSelectedApplication(value);
           }}
           renderInput={(params) => (

@@ -1,8 +1,11 @@
-import { Button, Divider, Grid } from "@mui/material"
+import { Button, Divider, Grid, Typography } from "@mui/material"
 import { useLocation, useNavigate } from "react-router"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { MapAPiTestCaseData } from "./apiTestcase/MapApiTestCase"
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+
 let initialval = {
     module_id: 0,
     testcase_name: "",
@@ -12,18 +15,12 @@ let initialval = {
 let data = { ...initialval }
 
 function CreateTestCase() {
-    let location = useLocation()
-    let navigate = useNavigate();
-    try {
-        console.log(location.state.applicationId)
-        data.project_id = location.state.projectId;
-        data.module_id = location.state.applicationId.module_id;
-    } catch (error) {
-        console.log(error)
-        navigate("/testcase");
-    }
 
-    let redirect_url = [" ", "/testcase/CreateApiTestcase", "/testccase/CreateTestcase",]
+    let navigate = useNavigate();
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [selectedApplication, setSelectedApplication] = useState(null);
+
+    let redirect_url = [" ", "/testcase/MapApiTestCase", "/testcase/CreateTestcase",]
 
     function handleSubmit(e) {
 
@@ -31,19 +28,21 @@ function CreateTestCase() {
             CreateTestCaseService(data).then(res => {
                 if (res) {
                     console.log(res)
-                    console.log(redirect_url[location.state.applicationId.module_type])
-                    navigate(redirect_url[location.state.applicationId.module_type], {
-                        state: {
-                            applicationId: location.state.applicationId,
-                            testcaseId: res,
-                            projectId: location.state.projectId,
-                        },
-                    })
+                    MapAPiTestCaseData.testcase_id = res
+                    navigate(redirect_url[selectedApplication?.module_type])
                 }
             })
         }
 
     }
+
+
+    useEffect(() => {
+        data.module_id = selectedApplication?.module_id
+        data.project_id = selectedProject?.project_id
+        MapAPiTestCaseData.module_id = selectedApplication?.module_id
+        MapAPiTestCaseData.project_id = selectedProject?.project_id
+    }, [selectedProject, selectedApplication])
 
     useEffect(() => {
         return () => {
@@ -52,38 +51,45 @@ function CreateTestCase() {
     }, [])
     return (
         <div>
-            <h2>Create test case</h2>
-            <br />
-            <Divider></Divider>
-            <br />
-            <Grid container columnSpacing={2} justifyContent="flex-start">
-                <Grid item xs={4} md={4}>
-                    <label for="">TestCase Name</label>
-                    <input type="text" name="name"
-                        onChange={e => {
-                            data.testcase_name = e.target.value;
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <label for="">Description</label>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <textarea rows="4" cols="120"
-                        name="desc"
-                        onChange={e => {
-                            data.testcase_description = e.target.value;
-                        }}
-                    ></textarea>
-                </Grid>
-            </Grid>
-            <br />
-            <Grid container columnSpacing={1} justifyContent="flex-end">
-                <Grid item xs={1.5} md={1.5}>
-                    <Button variant="outlined">Cancel</Button>
-                </Grid>
-                <Grid item xs={3} md={3}>
-                    <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+
+            <Grid container columnSpacing={2} justifyContent="center">
+                <Grid item xs={7} md={7}>
+                    <Grid item md={12}>
+                        <ProjectnApplicationSelector
+                            selectedProject={selectedProject}
+                            setSelectedProject={setSelectedProject}
+                            selectedApplication={selectedApplication}
+                            setSelectedApplication={setSelectedApplication}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Typography variant="p" component="p">
+                            TestCase Name
+                        </Typography>
+                        <input type="text" name="name"
+                            onChange={e => {
+                                data.testcase_name = e.target.value;
+                            }}
+                        />
+                    </Grid>
+                    <br />
+                    <Grid item xs={12} md={12}>
+                        <label for="">Description</label>
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <textarea rows="4" cols="58"
+                            name="desc"
+                            onChange={e => {
+                                data.testcase_description = e.target.value;
+                            }}
+                        ></textarea>
+                    </Grid>
+                    <Grid item xs={4} md={4}>
+                        <Button variant="outlined">Cancel</Button>
+                    </Grid>
+                    <Grid item xs={4} md={4}>
+                        <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+                    </Grid>
                 </Grid>
             </Grid>
         </div>
