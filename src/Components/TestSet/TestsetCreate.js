@@ -1,9 +1,4 @@
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  Paper,
-} from "@mui/material";
+import { Autocomplete, Button, Grid, Paper, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
@@ -11,12 +6,16 @@ import useAuth from "../../hooks/useAuth";
 import { getProject } from "../../Services/ProjectService";
 import { getApplicationOfProject } from "../../Services/ApplicationService";
 import { getTestcasesInProjects } from "../../Services/TestsetService";
-import { axiosPrivate } from "../../api/axios";
+import axios, { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
-import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
+import {
+  validateForm,
+  resetClassName,
+} from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 
 function TestsetCreate() {
   const [testcaseObject, setTestcaseObject] = useState([]);
@@ -28,15 +27,21 @@ function TestsetCreate() {
   const [leftTestcase, setLeftTestcase] = useState([]);
   const [rightTestcase, setRightTestcase] = useState([]);
   const [TSCreateSuccessMsg, setTSCreateSuccessMsg] = useState(false);
+  const [projectsList, setProjectList] = useState([]);
+  const [applicationList, setapplicationList] = useState([]);
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [selectedApplication, setSelectedApplication] = useState({});
   const { auth } = useAuth();
   console.log(auth.info);
-  let requiredOnlyAlphabets = [testset_name,testset_desc];
+  let requiredOnlyAlphabets = [testset_name, testset_desc];
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
   const navigate = useNavigate();
   console.log(location);
-  let ProjectId = location.state.param2;
-  let ApplicationId = location.state.param3;
+  // let ProjectId = location.state.param2;
+  // let ApplicationId = location.state.param3;
 
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
@@ -51,32 +56,40 @@ function TestsetCreate() {
 
   function handleSelect(event) {
     let e = document.getElementById("left");
-    let remaining = leftTestcase.filter(ts =>ts.datasets != null);
+    let remaining = leftTestcase.filter((ts) => ts.datasets != null);
     for (let i = 0; i < e.options.length; i++) {
       console.log(e.options[i].selected);
       if (e.options[i].selected) {
-        let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
-        remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
+        let temp = testcaseObject.filter(
+          (ts) => ts.testcase_id == e.options[i].value
+        );
+        remaining = remaining.filter(
+          (ts) => ts.testcase_id != e.options[i].value
+        );
         if (temp.length > 0) {
-          setRightTestcase(pv => [...pv, temp[0]])
+          setRightTestcase((pv) => [...pv, temp[0]]);
         }
       }
-      setLeftTestcase(remaining)
+      setLeftTestcase(remaining);
     }
   }
 
   function handleUnselect(event) {
     let e = document.getElementById("right");
-    let remaining = rightTestcase.filter(ts =>ts.datasets != null);
+    let remaining = rightTestcase.filter((ts) => ts.datasets != null);
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
-        remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
+        let temp = testcaseObject.filter(
+          (ts) => ts.testcase_id == e.options[i].value
+        );
+        remaining = remaining.filter(
+          (ts) => ts.testcase_id != e.options[i].value
+        );
         if (temp.length > 0) {
-          setLeftTestcase(pv => [...pv, temp[0]])
+          setLeftTestcase((pv) => [...pv, temp[0]]);
         }
       }
-      setRightTestcase(remaining)
+      setRightTestcase(remaining);
     }
   }
 
@@ -122,9 +135,9 @@ function TestsetCreate() {
       var data = {
         testset_name: "TS_" + testsetName,
         testset_desc: "TS_" + testsetDesc,
-        project_id: ProjectId,
+        project_id: selectedProject?.project_id,
         testset_id: 0,
-        module_id: ApplicationId,
+        module_id: selectedApplication?.module_id,
         testcases_list: tcList,
       };
       console.log(data);
@@ -157,9 +170,26 @@ function TestsetCreate() {
   console.log(leftTestcase);
 
   useEffect(() => {
-    getTestcasesInProjects(setTestcaseObject, ProjectId);
-    getTestcasesInProjects(setLeftTestcase, ProjectId);
-  }, [ProjectId]);
+    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+      const projects = res?.data?.result?.projects_list;
+      setProjectList(projects);
+      setSelectedProject(projects[0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    setSelectedApplication(applicationList[0]);
+  }, [applicationList]);
+
+  useEffect(() => {
+    selectedProject?.project_id &&
+      getApplicationOfProject(setapplicationList, selectedProject?.project_id);
+  }, [selectedProject]);
+
+  useEffect(() => {
+    getTestcasesInProjects(setTestcaseObject, selectedProject?.project_id);
+    getTestcasesInProjects(setLeftTestcase, selectedProject?.project_id);
+  }, [selectedProject?.project_id]);
 
   return (
     <div onClick={resetClassName}>
@@ -190,10 +220,81 @@ function TestsetCreate() {
                   >
                     <Grid item xs={6} sm={6} md={3}>
                       <label>
-                        Testset Name <span className="importantfield">*</span>:
+                        Project <span className="importantfield">*</span>:
                       </label>
                     </Grid>
                     <Grid item xs={6} sm={6} md={8}>
+                      <Autocomplete
+                        disablePortal
+                        disableClearable
+                        id="project_id"
+                        options={projectsList}
+                        value={selectedProject || null}
+                        sx={{ width: "90%" }}
+                        getOptionLabel={(option) => option.project_name}
+                        onChange={(e, value) => {
+                          setSelectedProject(value);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            // label="Projects"
+                            size="small"
+                          />
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sm={8}
+                    md={6}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <Grid item xs={6} sm={6} md={3}>
+                      <label>
+                        Application <span className="importantfield">*</span>:
+                      </label>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={8}>
+                      <Autocomplete
+                        disablePortal
+                        disableClearable
+                        id="application_id"
+                        options={applicationList}
+                        value={selectedApplication || null}
+                        sx={{ width: "90%" }}
+                        getOptionLabel={(option) => option.module_name}
+                        onChange={(e, value) => {
+                          console.log(value);
+                          setSelectedApplication(value);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            // label="Applications"
+                            size="small"
+                          />
+                        )}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sm={8}
+                    md={6}
+                    sx={{ marginBottom: "10px" }}
+                  >
+                    <Grid item xs={6} sm={6} md={3}>
+                      <label>
+                        Testset Name <span className="importantfield">*</span>:
+                      </label>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={7.25}>
                       <input
                         ref={testset_name}
                         type="text"
@@ -213,14 +314,14 @@ function TestsetCreate() {
                   >
                     <Grid item xs={6} sm={6} md={3}>
                       <label>
-                        Testset Description{" "}
+                        Description{" "}
                         <span className="importantfield">*</span>:
                       </label>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
+                    <Grid item xs={6} sm={6} md={7.25}>
                       {" "}
                       <input
-                      ref={testset_desc}
+                        ref={testset_desc}
                         type="text"
                         name=""
                         placeholder=""
@@ -242,7 +343,15 @@ function TestsetCreate() {
                     <Grid item xs={4} sm={4} md={4}>
                       <label>Select Testcase:</label>
                       <select id="left" multiple style={{ padding: "10px" }}>
-                        {leftTestcase.length > 0 ? leftTestcase.filter((ts) => ts.datasets != null).map((ts) => (<option value={ts.testcase_id}>{ts.name}</option>)) : []}
+                        {leftTestcase.length > 0
+                          ? leftTestcase
+                              .filter((ts) => ts.datasets != null)
+                              .map((ts) => (
+                                <option value={ts.testcase_id}>
+                                  {ts.name}
+                                </option>
+                              ))
+                          : []}
                       </select>
                     </Grid>
                     <Grid item xs={1} sm={1} md={1}>
@@ -268,8 +377,15 @@ function TestsetCreate() {
                     <Grid item xs={4} sm={4} md={4}>
                       <label>Select Testcase:</label>
                       <select id="right" multiple style={{ padding: "10px" }}>
-                        <option value="">Select Testcase</option>
-                        {rightTestcase.length > 0 ? rightTestcase.filter((ts) => ts.datasets != null).map((ts) => (<option value={ts.testcase_id}>{ts.name}</option>)) : []}
+                        {rightTestcase.length > 0
+                          ? rightTestcase
+                              .filter((ts) => ts.datasets != null)
+                              .map((ts) => (
+                                <option value={ts.testcase_id}>
+                                  {ts.name}
+                                </option>
+                              ))
+                          : []}
                       </select>
                     </Grid>
                   </Grid>
@@ -291,8 +407,18 @@ function TestsetCreate() {
             </form>
           </div>
         </Paper>
-        <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
-        <SnackbarNotify open={TSCreateSuccessMsg} close={setTSCreateSuccessMsg} msg="Testset Created successfully" severity="success"/>
+        <SnackbarNotify
+          open={validationMsg}
+          close={setValidationMsg}
+          msg="Fill all the required fields"
+          severity="error"
+        />
+        <SnackbarNotify
+          open={TSCreateSuccessMsg}
+          close={setTSCreateSuccessMsg}
+          msg="Testset Created successfully"
+          severity="success"
+        />
       </div>
     </div>
   );

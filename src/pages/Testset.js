@@ -33,7 +33,7 @@ function Testset() {
   const createTestcaseHandler = (e) => {
     console.log(selectedProject?.project_id);
     console.log(selectedApplication?.module_id);
-    navigate("createTestcase", {
+    navigate("createTestset", {
       state: {
         param1: e,
         param2: selectedProject?.project_id,
@@ -86,53 +86,53 @@ function Testset() {
       sortable: false,
       align: "left",
     },
-    {
-      field: "",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      renderCell: (param) => {
-        return (
-          <>
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={(e) => {
-                  deleteTestcaseHandler(param.row);
-                }}
-              >
-                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit Testset">
-              <IconButton
-                onClick={(e) => {
-                  editTestcaseHandler(param.row);
-                }}
-              >
-                <EditOutlinedIcon></EditOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Testcases ReOrder">
-              <IconButton
-                onClick={() =>
-                  navigate("UpdateTestcasesOrder", {
-                    state: {
-                      applicationId: selectedApplication?.module_id,
-                      testsetId: param.row.testset_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
-                }
-              >
-                <AirplayIcon />
-              </IconButton>
-            </Tooltip>
-          </>
-        );
-      },
-      headerAlign: "center",
-      align: "center",
-    },
+    // {
+    //   field: "",
+    //   headerName: "Actions",
+    //   flex: 3,
+    //   sortable: false,
+    //   renderCell: (param) => {
+    //     return (
+    //       <>
+    //         <Tooltip title="Delete">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               deleteTestcaseHandler(param.row);
+    //             }}
+    //           >
+    //             <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
+    //           </IconButton>
+    //         </Tooltip>
+    //         <Tooltip title="Edit Testset">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               editTestcaseHandler(param.row);
+    //             }}
+    //           >
+    //             <EditOutlinedIcon></EditOutlinedIcon>
+    //           </IconButton>
+    //         </Tooltip>
+    //         <Tooltip title="Testcases ReOrder">
+    //           <IconButton
+    //             onClick={() =>
+    //               navigate("UpdateTestcasesOrder", {
+    //                 state: {
+    //                   applicationId: selectedApplication?.module_id,
+    //                   testsetId: param.row.testset_id,
+    //                   projectId: selectedProject?.project_id,
+    //                 },
+    //               })
+    //             }
+    //           >
+    //             <AirplayIcon />
+    //           </IconButton>
+    //         </Tooltip>
+    //       </>
+    //     );
+    //   },
+    //   headerAlign: "center",
+    //   align: "center",
+    // },
   ];
 
   const { setHeader } = useHead();
@@ -141,7 +141,7 @@ function Testset() {
       return {
         ...ps,
         name: "Testset",
-        plusButton: true,
+        plusButton: false,
         buttonName: "Create Testset",
         plusCallback: ()=>createTestcaseHandler(),
       };

@@ -47,7 +47,7 @@ const AddTestcaseToTestset = lazy(() =>
 const CreatePipeline = lazy(() =>
   import("../Components/DevopsComponent/CreatePipeline")
 );
-const CreateTestcase = lazy(() =>
+const createTestset = lazy(() =>
   import("../Components/TestSet/TestsetCreate")
 );
 
@@ -332,8 +332,8 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "createTestcase",
-        element: CreateTestcase,
+        path: "createTestset",
+        element: createTestset,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
