@@ -36,7 +36,9 @@ export default function TestCases() {
       renderCell: param => {
         return (
           <div
-          style={{color:"#009fee",textDecoration:"underline"}}
+          
+         
+            style={{ color: "#009fee", textDecoration: "underline" ,cursor:"pointer" }}
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
@@ -208,7 +210,7 @@ export default function TestCases() {
         };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProject,selectedApplication]);
+  }, [selectedProject, selectedApplication]);
 
   useEffect(() => {
     selectedApplication?.module_id &&
@@ -234,19 +236,23 @@ export default function TestCases() {
         msg="Test Case Created SuccessFully"
         severity="success"
       ></SnackbarNotify>
-      <ProjectnApplicationSelector
-        selectedProject={selectedProject}
-        setSelectedProject={setSelectedProject}
-        selectedApplication={selectedApplication}
-        setSelectedApplication={setSelectedApplication}
-      />
+      <div className="apptable">
+        <div className="intable">
+          <ProjectnApplicationSelector
+            selectedProject={selectedProject}
+            setSelectedProject={setSelectedProject}
+            selectedApplication={selectedApplication}
+            setSelectedApplication={setSelectedApplication}
+          />
+        </div>
+        <Table
+          rows={testcases}
+          columns={columns}
+          hidefooter={true}
+          getRowId={(row) => row.testcase_id}
+        ></Table>
 
-      <Table
-        rows={testcases}
-        columns={columns}
-        hidefooter={true}
-        getRowId={(row) => row.testcase_id}
-      ></Table>
+      </div>
 
       {/* <CreateTestCasePopUp
         open={popup}

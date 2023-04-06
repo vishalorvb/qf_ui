@@ -167,7 +167,7 @@ function ApiDatasets() {
                             setCreateDatasets(false)
                             clearPostData()
                             setDatasetId(datasets[0]?.testcase_dataset_id)
-                        }} 
+                        }}
                     >Cancel</Button>
 
                     <APiListDrawer
@@ -247,10 +247,19 @@ function ApiDatasets() {
                 </div>}
 
             </div>}
-            {createDatasets == false && <div>
-                <Button variant="contained"
-                    onClick={e => setCreateDatasets(true)}
-                >Create DataSet</Button>
+            <div>
+
+            </div>
+            {createDatasets == false && <div className='apptable'>
+                <div className="intable">
+                    <div style={{padding:"5px"}}>
+                        <Button variant="contained"
+                            onClick={e => setCreateDatasets(true)}
+                        >Create DataSet</Button>
+                    </div>
+
+                </div>
+
                 <Table
                     rows={datasets}
                     columns={col}
@@ -262,7 +271,7 @@ function ApiDatasets() {
                 <MastPop
                     open={save}
                     setOpen={() => setSave(false)}
-                    heading = "Create Dataset For API"
+                    heading="Create Dataset For API"
                 >
                     <label for="">Dataset Name</label>
                     <input type="text" name='name'

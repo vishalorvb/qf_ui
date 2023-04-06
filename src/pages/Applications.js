@@ -175,7 +175,7 @@ export default function Applications() {
   }, []);
 
   return (
-    <div id="apptable">
+    <div className="apptable">
       <div className="intable">
         <select onChange={handleSelect} className="intableselect">
           {ApplicationNav.map((el) => (
