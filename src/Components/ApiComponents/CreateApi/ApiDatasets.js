@@ -19,7 +19,7 @@ import { clearPostData } from './ApiDatasetData'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { DeleteApiDataset } from '../../../Services/ApiService'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-
+import AddIcon from '@mui/icons-material/Add';
 
 function ApiDatasets() {
 
@@ -167,7 +167,7 @@ function ApiDatasets() {
                             setCreateDatasets(false)
                             clearPostData()
                             setDatasetId(datasets[0]?.testcase_dataset_id)
-                        }} 
+                        }}
                     >Cancel</Button>
 
                     <APiListDrawer
@@ -247,10 +247,20 @@ function ApiDatasets() {
                 </div>}
 
             </div>}
-            {createDatasets == false && <div>
-                <Button variant="contained"
-                    onClick={e => setCreateDatasets(true)}
-                >Create DataSet</Button>
+            <div>
+
+            </div>
+            {createDatasets == false && <div className='apptable'>
+                <div className="intable">
+                    <div style={{padding:"5px",display:"inline",float:"right"}}>
+                        <Button variant="contained"
+                        startIcon={<AddIcon/>}
+                            onClick={e => setCreateDatasets(true)}
+                        >Create Dataset</Button>
+                    </div>
+
+                </div>
+
                 <Table
                     rows={datasets}
                     columns={col}
@@ -262,7 +272,7 @@ function ApiDatasets() {
                 <MastPop
                     open={save}
                     setOpen={() => setSave(false)}
-                    heading = "Create Dataset For API"
+                    heading="Create Dataset For API"
                 >
                     <label for="">Dataset Name</label>
                     <input type="text" name='name'

@@ -53,10 +53,11 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
+          emptyRecordMsg = {"No Options Available"}
           value={selectedval}
           onChange={handleChange}
           input={<OutlinedInput label="" />}
-          renderValue={(selected) => selected.map((value) => value.val + ",")}
+          renderValue={(selected) => selected.map((v) => v[value] + ",")}
           MenuProps={MenuProps}
         >
           {options.map((opt) => {

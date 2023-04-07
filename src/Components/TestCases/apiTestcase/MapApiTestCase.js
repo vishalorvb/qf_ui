@@ -1,3 +1,16 @@
+/*
+This component required following parameters and map selected Api to testcase
+Required parameters:
+
+module_id: 
+project_id: 
+testcase_id:
+
+*/
+
+
+
+
 import { Button, Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -9,13 +22,19 @@ import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import { useLocation } from "react-router-dom";
 import useHead from "../../../hooks/useHead";
 
-function ApiTestcase() {
+export let MapAPiTestCaseData = {
+  module_id: 0,
+  project_id: 0,
+  testcase_id: 0
+}
+
+function MapApiTestCase() {
   const { setHeader } = useHead();
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [api, setApi] = useState([]);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
 
   const columns = [
@@ -54,7 +73,7 @@ function ApiTestcase() {
 
   useEffect(() => {
     axios
-      .get(`/qfservice/testcase/${location?.state?.testcaseId}/apis`)
+      .get(`/qfservice/testcase/${MapAPiTestCaseData?.testcase_id}/apis`)
       .then((resp) => {
         setApi(resp.data.data.apisList);
         setPreSelectedElement(() =>
@@ -67,9 +86,9 @@ function ApiTestcase() {
 
   function createTestcase() {
     const testcasedata = {
-      module_id: location.state.applicationId,
-      project_id: location.state.projectId,
-      testcase_id: location.state.testcaseId,
+      module_id: MapAPiTestCaseData.module_id,
+      project_id: MapAPiTestCaseData.project_id,
+      testcase_id: MapAPiTestCaseData.testcase_id,
       testcase_sprints: [],
       apis_list: preSelectedElement.map((id) => {
         return { api_id: id };
@@ -80,12 +99,13 @@ function ApiTestcase() {
       console.log(resp);
       resp.data.error === null && setSuccess(true);
       setTimeout(() => {
-        resp.data.error === null && navigate(-1);
+        resp.data.error === null && navigate("/testcase");
       }, 1000);
     });
   }
 
   function handleClick() {
+    console.log("called")
     if (preSelectedElement.length === 0) {
       setError(true);
       return;
@@ -93,31 +113,17 @@ function ApiTestcase() {
       createTestcase();
     }
   }
+
+  useEffect(() => {
+    return () => {
+      MapAPiTestCaseData.module_id = 0
+      MapAPiTestCaseData.project_id = 0
+      MapAPiTestCaseData.testcase_id = 0
+    }
+  }, [])
   return (
     <>
-      {/* <Grid container justifyContent="flex-start" columnSpacing={2}>
-          <Grid item xs={3} md={3} lg={3}>
 
-            <select
-              onChange={e => { testcasedata.testcase_sprints[0].sprint_name = e.target.value }}
-            >
-              <option> Select</option>
-              <option value="Sprint 1"> Sprint 1</option>
-              <option value="Sprint 2"> Sprint 2</option>
-              <option value="Sprint 3"> Sprint 3</option>
-            </select>
-          </Grid>
-          <Grid item xs={3} md={3} lg={3}>
-            <select
-              onChange={e => { testcasedata.testcase_sprints[0].issue_id = e.target.value }}
-            >
-              <option> isssues</option>
-              <option value="1" > isssue 1</option>
-              <option value="2"> isssue 2</option>
-              <option value="3"> isssue 3</option>
-            </select>
-          </Grid>
-        </Grid> */}
       <Table
         rows={api}
         columns={columns}
@@ -143,11 +149,11 @@ function ApiTestcase() {
       <SnackbarNotify
         open={success}
         close={setSuccess}
-        msg={"Testcase created successfully."}
+        msg={"Api Mapped successfully."}
         severity="success"
       />
     </>
   );
 }
 
-export default ApiTestcase;
+export default MapApiTestCase;

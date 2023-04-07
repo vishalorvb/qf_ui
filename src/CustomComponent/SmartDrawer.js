@@ -24,7 +24,7 @@ function SmartDrawer(props) {
         }}
         variant="persistent"
         anchor="right"
-        open={props.open}
+        open={true}
       >
         <IconButton size="small" onClick={e=>props.close(false)}>
           <DoubleArrowIcon></DoubleArrowIcon>

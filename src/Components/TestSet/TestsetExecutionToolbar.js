@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -16,17 +16,27 @@ import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
-function TestsetExecutionToolbar({applicationId,
-    projectId,
-    selectedtestcases,
-    testsetId}) {
+function TestsetExecutionToolbar({
+  applicationId,
+  projectId,
+  selectedtestcases,
+  testsetId,
+  selecteddatasets,
+}) {
   const { auth } = useAuth();
+
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [execEnvList, setExecEnvList] = useState([]);
   const [clientInactive, setClientInactive] = useState(false);
   const [jarConnected, setJarConnected] = useState(false);
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
+  const [applicationType, setApplicationType] = useState("");
+  let appTypes = ["API Automation","Web Automation","Android Automation","iOS Automation","Python Web",
+  "Test Design","Performance Testing","Security Testing","Infrastructure Monitering","Risk Prediction",
+  "","WINIUM","Mobile Web Automation","Code Coverage","Pycode Style",
+  "Locust","Python Api","Python Unit Testcase","Link Project","PipeLine",
+  "Release Management"]
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -43,13 +53,24 @@ function TestsetExecutionToolbar({applicationId,
   });
 
   const onSubmitExecute = (data) => {
-    console.log(data);
-    console.log(testsetId);
-    console.log(selectedtestcases);
+    let datasets = [];
+    if (selectedtestcases.length == selecteddatasets.length) {
+      datasets = selecteddatasets;
+    } else {
+      for (let i = 0; i < selectedtestcases.length; i++) {
+        for (let j = 0; j < selecteddatasets.length; j++) {
+          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
+            datasets.push(selecteddatasets[j]);
+          }
+        }
+      }
+    }
+
     const executionData = {
       testset_id: testsetId,
-      module_id : applicationId,
-      web_testcases_list_to_execute: selectedtestcases,
+      module_id: applicationId,
+      web_testcases_list_to_execute: datasets,
+      mobile_platform: applicationType,
       config_id: null,
       config_name: null,
       build_environment_name: data?.buildenvName?.split("&")[1],
@@ -65,7 +86,7 @@ function TestsetExecutionToolbar({applicationId,
       user_id: auth?.userId,
     };
     axios
-      .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
+      .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.status);
@@ -87,12 +108,26 @@ function TestsetExecutionToolbar({applicationId,
       });
   };
   const onSubmitGenerate = (data) => {
+    let datasets = [];
     console.log(data);
     console.log(testsetId);
+    if (selectedtestcases.length == selecteddatasets.length) {
+      datasets = selecteddatasets;
+    } else {
+      for (let i = 0; i < selectedtestcases.length; i++) {
+        for (let j = 0; j < selecteddatasets.length; j++) {
+          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
+            datasets.push(selecteddatasets[j]);
+          }
+        }
+      }
+    }
+
     const executionData = {
       testset_id: testsetId,
-      module_id : applicationId,
-      web_testcases_list_to_execute: selectedtestcases,
+      module_id: applicationId,
+      web_testcases_list_to_execute: datasets,
+      mobile_platform: applicationType,
       config_id: null,
       config_name: null,
       build_environment_name: data?.buildenvName?.split("&")[1],
@@ -108,7 +143,7 @@ function TestsetExecutionToolbar({applicationId,
       user_id: auth?.userId,
     };
     axios
-      .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
+      .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.info);
@@ -131,18 +166,22 @@ function TestsetExecutionToolbar({applicationId,
   };
   useEffect(() => {
     reset();
-    axios.get(`/qfservice/build-environment/${applicationId}`).then((resp) => {
-      console.log(resp?.data?.data);
-      const buildEnv = resp?.data?.data;
-      setBuildEnvList(() => {
-        return buildEnv.map((be) => {
-          return {
-            id: be.id + "&" + be.name + "&" + be.runtime_variables,
-            label: be.name,
-          };
+    axios
+      .get(
+        `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
+      )
+      .then((resp) => {
+        console.log(resp?.data?.data);
+        const buildEnv = resp?.data?.data;
+        setBuildEnvList(() => {
+          return buildEnv.map((be) => {
+            return {
+              id: be.id + "&" + be.name + "&" + be.runtime_variables,
+              label: be.name,
+            };
+          });
         });
       });
-    });
 
     axios
       .get(
@@ -156,6 +195,18 @@ function TestsetExecutionToolbar({applicationId,
             return { id: ee.value, label: ee.name };
           });
         });
+      });
+  }, [applicationId]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://10.11.12.242:8080/qfservice/getmoduledetails/${applicationId}`
+      )
+      .then((resp) => {
+        console.log(resp?.data?.data?.module_type);
+        // setApplicationType(resp?.data?.data?.module_type);
+        setApplicationType(appTypes[(resp?.data?.data?.module_type) - 1])
       });
   }, [applicationId]);
 
@@ -211,7 +262,7 @@ function TestsetExecutionToolbar({applicationId,
           options={[
             {
               id: "1",
-              label: "Regenrate Script",
+              label: "Regenerate Script",
             },
           ]}
         />
@@ -243,7 +294,7 @@ function TestsetExecutionToolbar({applicationId,
         </Stack>
       )}
     </form>
-  )
+  );
 }
 
-export default TestsetExecutionToolbar
+export default TestsetExecutionToolbar;

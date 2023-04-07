@@ -20,9 +20,13 @@ import {
   opsManagementList,
   qfAdmin,
 } from "./SidebarNavlist";
-import { Collapse, Typography } from "@mui/material";
+import { Avatar, Button, Collapse, Typography } from "@mui/material";
 import { Copyright } from "./Login";
 import useAuth from "../hooks/useAuth";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import { Stack } from "@mui/system";
+import UserCard from "./UserCard";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 250;
 
@@ -114,10 +118,11 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer({ open }) {
+export default function MiniDrawer({ open, setOpen }) {
   const { auth } = useAuth();
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState([]);
+  const [selectedNavItem, setSelectedNavItem] = useState(0);
 
   useEffect(() => {
     !open && setOpensubNav([]);
@@ -136,11 +141,12 @@ export default function MiniDrawer({ open }) {
         return (
           <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton
-              onClick={() =>
+              onClick={() => {
                 navItem?.route === ""
                   ? openSubNavigationHandle(navItem)
-                  : navigate(navItem.route)
-              }
+                  : navigate(navItem.route, { state: navItem?.state || {} });
+                setSelectedNavItem(navItem.id);
+              }}
               dense
               className="navItems"
             >
@@ -151,7 +157,11 @@ export default function MiniDrawer({ open }) {
               }
               <MuiListItemText
                 primary={navItem.name}
-                className="navListItemText"
+                className={
+                  selectedNavItem === navItem?.id
+                    ? "navListItemText navListItemTextSelected"
+                    : "navListItemText"
+                }
               />
               {navItem.subList && open && (
                 <MuiListItemIcon className="navListIconItem">
@@ -185,13 +195,32 @@ export default function MiniDrawer({ open }) {
     <ThemeProvider theme={drawerTheme}>
       <Drawer variant="permanent" open={open} className="drawer">
         <DrawerHeader className="drawerHeader">
-          <Logo>QF</Logo>
+          <Logo onClick={() => setOpen(true)}>QF</Logo>
           {open && <Typography>Quality Fusion</Typography>}
+          <IconButton
+            size="small"
+            className="closeDrawerIcon"
+            onClick={() => setOpen(false)}
+          >
+            <KeyboardArrowLeftIcon />
+          </IconButton>
         </DrawerHeader>
         <div className="menu">
-          <List className="menuList qf-admin">
-            {navigationItemRender(qfAdmin)}
-          </List>
+          <div className="profile">
+            <Avatar sx={{ bgcolor: "white", color: "black" }}>
+              {auth?.user?.charAt(0)?.toUpperCase()}
+            </Avatar>
+            {open && (
+              <div>
+                <Typography sx={{ color: "white", margin: "0px" }}>
+                  Welcome {auth?.user}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "#728FAD" }}>
+                  {auth?.info?.userProfiles[0]?.type}
+                </Typography>
+              </div>
+            )}
+          </div>
 
           {open && (
             <div className="sideNavSections">
@@ -213,6 +242,24 @@ export default function MiniDrawer({ open }) {
             {navigationItemRender(opsManagementList)}
           </List>
         </div>
+        {open && (
+          <Button
+            sx={{
+              justifyContent: "space-between",
+              margin: "8px",
+              marginBottom: "20px",
+              color: "#728FAD",
+              padding: "10px",
+              backgroundColor: "#001c56",
+              "&:hover": {
+                backgroundColor: "#001c56",
+              },
+            }}
+            endIcon={<LogoutIcon />}
+          >
+            Logout
+          </Button>
+        )}
         {open && <Copyright className="copyright" />}
       </Drawer>
     </ThemeProvider>

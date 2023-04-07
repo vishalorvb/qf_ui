@@ -9,9 +9,10 @@ import {
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import Table from "../../CustomComponent/Table";
-import ExecutionToolbar from "../TestCases/ExecutionToolbar";
 import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
+
+const data = [];
 
 function TestcaseSelectAndExecute({
   open,
@@ -22,7 +23,7 @@ function TestcaseSelectAndExecute({
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
-
+  
   const columns = [
     {
       field: "name",
@@ -42,53 +43,6 @@ function TestcaseSelectAndExecute({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-        let option = param.row.datasets.map(dataset => {
-            return {
-                id : dataset.dataset_id,
-                val : dataset.name
-            }
-        })
-        // let opt = [
-        //   {
-        //     id: "custom_code",
-        //     val: "Custom Code",
-        //   },
-        //   {
-        //     id: "displayed",
-        //     val: "Displayed",
-        //   },
-        //   {
-        //     id: "element_wait",
-        //     val: "Element Wait",
-        //   },
-        //   {
-        //     id: "scrollup",
-        //     val: "Scroll Up",
-        //   },
-        //   {
-        //     id: "scrolldown",
-        //     val: "Scroll Down",
-        //   },
-        //   {
-        //     id: "is_random",
-        //     val: "Random",
-        //   },
-        // ];
-        // let alllist = [
-        //   "custom_code",
-        //   "displayed",
-        //   "element_wait",
-        //   "scrollup",
-        //   "scrolldown",
-        //   "is_random",
-        //   "is_enter",
-        // ];
-        let flag = false;
-        // let preselect = opt.filter((e) => {
-        //   if (param.row.dataset_values[e.id]) {
-        //     return e;
-        //   }
-        // });
         return (
           <div>
             <MuiltiSelect
@@ -98,13 +52,18 @@ function TestcaseSelectAndExecute({
                     border: "none",
                   },
               }}
-              preselect={[]}
-              // preselect ={opt}
-              options={option}
-              value="val"
-              id="id"
+              preselect={[param.row?.datasets[0]]}
+              options={param.row.datasets}
+              value="name"
+              id="dataset_id"
               stateList={(list) => {
-                console.log(list)
+                const obj = {
+                  testcase_id: param.row.testcase_id,
+                  selected_testcase_dataset_ids: list.map(val => val.dataset_id),
+                };
+                const index = data.findIndex(obj=>obj.testcase_id === param.row.testcase_id)
+                index === -1 ? data.push(obj) : data[index] = obj;
+                console.log(data);
               }}
             ></MuiltiSelect>
           </div>
@@ -116,6 +75,9 @@ function TestcaseSelectAndExecute({
     },
   ];
 
+  console.log(selectedtestcases);
+  console.log(data);
+
   const handleClose = () => {
     close(false);
     settestcaseList([]);
@@ -126,7 +88,6 @@ function TestcaseSelectAndExecute({
     open &&
       axios
         .get(
-          //   `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testsetId}`
           `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
         )
         .then((resp) => {
@@ -134,6 +95,11 @@ function TestcaseSelectAndExecute({
           settestcaseList(resp?.data?.info);
         });
   }, [open, testsetId]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [selectedtestcases])
+  
 
   return (
     <div>
@@ -145,6 +111,7 @@ function TestcaseSelectAndExecute({
             applicationId={applicationId}
             selectedtestcases={selectedtestcases}
             testsetId={testsetId}
+            selecteddatasets = {data}
           />
           <Table
             rows={testcaseList}

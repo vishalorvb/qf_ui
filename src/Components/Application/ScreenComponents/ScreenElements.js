@@ -11,7 +11,6 @@ import { IconButton } from "@mui/material";
 export default function ScreenElements() {
   const { setHeader } = useHead();
   const location = useLocation();
-  const navigate = useNavigate();
   const [data, setData] = useState(() => []);
 
   const [order, setOrder] = useState([]);
@@ -22,7 +21,7 @@ export default function ScreenElements() {
   useEffect(() => {
     axios
       .get(
-        `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.id}`
+        `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((resp) => {
         console.log(resp?.data?.info);
@@ -41,7 +40,7 @@ export default function ScreenElements() {
   const updateScreenOrder = () => {
     axios
       .post(`qfservice/screen/updateOrderOfScreenElements`, {
-        screenId: location?.state?.id,
+        screenId: location?.state?.screen_id,
         screen_element_ids: order,
       })
       .then((resp) => {

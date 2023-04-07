@@ -21,25 +21,22 @@ export default function ProjectnApplicationSelector({
       const projects = res?.data?.result?.projects_list;
       setProjectList(projects);
       setSelectedProject(projects[0]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     });
   }, []);
 
   useEffect(() => {
     setSelectedApplication(applicationList[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
   useEffect(() => {
     selectedProject?.project_id &&
       getApplicationOfProject(setapplicationList, selectedProject?.project_id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject]);
 
   return (
     <Stack
       direction="row"
-      justifyContent="flex-end"
+      justifyContent="space-between"
       alignItems="center"
       spacing={2}
       mb={1}
@@ -50,7 +47,7 @@ export default function ProjectnApplicationSelector({
         id="project_id"
         options={projectsList}
         value={selectedProject || null}
-        sx={{ width: "20%" }}
+        sx={{ width: "100%" }}
         getOptionLabel={(option) => option.project_name}
         onChange={(e, value) => {
           setSelectedProject(value);
@@ -66,10 +63,10 @@ export default function ProjectnApplicationSelector({
           id="application_id"
           options={applicationList}
           value={selectedApplication || null}
-          sx={{ width: "20%" }}
+          sx={{ width: "100%" }}
           getOptionLabel={(option) => option.module_name}
           onChange={(e, value) => {
-            console.log(value);
+            // console.log(value);
             setSelectedApplication(value);
           }}
           renderInput={(params) => (
@@ -77,6 +74,7 @@ export default function ProjectnApplicationSelector({
           )}
         />
       )}
+      
     </Stack>
   );
 }
