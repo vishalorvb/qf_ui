@@ -26,7 +26,7 @@ export default function PagesnScreens() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: location?.state?.module_name + " " + expanded,
+        name: location?.state?.module_name + " " + (expanded || ""),
       };
     });
   }, [expanded]);

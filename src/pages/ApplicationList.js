@@ -92,7 +92,7 @@ export default function ApplicationsList() {
       <Table
         rows={
           location?.state === "recentApplication"
-            ? application.slice(1, 11)
+            ? application.slice(0, 10)
             : application
         }
         columns={applicationColumns}
