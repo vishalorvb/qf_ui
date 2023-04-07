@@ -402,9 +402,8 @@ select {
   position: relative;
 }
 .intable {
-  width: 80%;
-  display: flex;
-  justify-content: flex-start;
+  width: 60%;
+  
   position: absolute;
   left: 300px;
   z-index: 2;
@@ -518,3 +517,6 @@ select {
   text-decoration: underline;
   cursor: pointer;
 }
+ .css-sghohy-MuiButtonBase-root-MuiButton-root{
+  text-transform: none !important
+ }
