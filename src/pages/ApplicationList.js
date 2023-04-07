@@ -79,7 +79,7 @@ export default function ApplicationsList() {
   console.log(location?.pathname);
 
   return (
-    <div id="apptable">
+    <>
       <div className="intable">
         <Button
           variant="contained"
@@ -98,7 +98,7 @@ export default function ApplicationsList() {
         columns={applicationColumns}
         getRowId={(row) => row.module_id}
       />
-    </div>
+    </>
   );
 }
 

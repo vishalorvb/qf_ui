@@ -408,10 +408,8 @@ select {
   // position: relative;
 }
 .intable {
-  width: 60%;
-
-  position: absolute;
-  z-index: 2;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .intableselect {
@@ -530,4 +528,7 @@ label::after {
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   text-transform: none !important;
+}
+.MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  background-color: $accent;
 }

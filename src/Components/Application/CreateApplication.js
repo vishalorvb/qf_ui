@@ -146,16 +146,10 @@ export default function CreateApplication() {
         </Grid>
       </Grid>
       <Stack mt={2} spacing={2} direction="row-reverse">
-        <Button
-          size="small"
-          variant="contained"
-          type="submit"
-          onClick={submitHandler}
-        >
+        <Button variant="contained" type="submit" onClick={submitHandler}>
           Save & Continue
         </Button>
         <Button
-          size="small"
           sx={{ color: "grey", textDecoration: "underline" }}
           onClick={() => navigate("/Application")}
         >
