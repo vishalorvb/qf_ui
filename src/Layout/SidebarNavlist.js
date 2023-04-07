@@ -51,7 +51,7 @@ export const testManagementList = [
   },
   {
     name: "Testcases",
-    route: "testcase",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-testcases"></i>,
     subList: [
@@ -62,12 +62,12 @@ export const testManagementList = [
       },
       {
         name: "Recent",
-        route: "",
+        route: "testcase",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Execution",
-        route: "create",
+        route: "",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ]

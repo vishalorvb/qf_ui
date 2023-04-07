@@ -39,7 +39,7 @@ export default function ProjectnApplicationSelector({
   return (
     <Stack
       direction="row"
-      justifyContent="flex-end"
+      justifyContent="space-between"
       alignItems="center"
       spacing={2}
       mb={1}
@@ -50,7 +50,7 @@ export default function ProjectnApplicationSelector({
         id="project_id"
         options={projectsList}
         value={selectedProject || null}
-        sx={{ width: "20%" }}
+        sx={{ width: "100%" }}
         getOptionLabel={(option) => option.project_name}
         onChange={(e, value) => {
           setSelectedProject(value);
@@ -66,7 +66,7 @@ export default function ProjectnApplicationSelector({
           id="application_id"
           options={applicationList}
           value={selectedApplication || null}
-          sx={{ width: "20%" }}
+          sx={{ width: "100%" }}
           getOptionLabel={(option) => option.module_name}
           onChange={(e, value) => {
             // console.log(value);
