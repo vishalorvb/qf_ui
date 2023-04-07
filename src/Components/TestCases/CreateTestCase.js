@@ -1,10 +1,12 @@
-import { Button, Divider, Grid, Typography } from "@mui/material"
+import { Button, Divider, Grid, TextField, Typography } from "@mui/material"
 import { useLocation, useNavigate } from "react-router"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
 import { useEffect, useState } from "react"
 import { MapAPiTestCaseData } from "./apiTestcase/MapApiTestCase"
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+import { Stack } from "@mui/system"
+import useHead from "../../hooks/useHead"
 
 let initialval = {
     module_id: 0,
@@ -19,7 +21,7 @@ function CreateTestCase() {
     let navigate = useNavigate();
     const [selectedProject, setSelectedProject] = useState(null);
     const [selectedApplication, setSelectedApplication] = useState(null);
-
+    const { setHeader } = useHead();
     let redirect_url = [" ", "/testcase/MapApiTestCase", "/testcase/CreateTestcase",]
 
     function handleSubmit(e) {
@@ -35,7 +37,30 @@ function CreateTestCase() {
         }
 
     }
-
+    
+    useEffect(() => {
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "Create Testcases",
+          plusButton: false,
+        //   buttonName: "Create Testcase",
+          plusCallback: () => {
+          console.log("Clicked")
+          },
+        };
+      });
+      return () =>
+        setHeader((ps) => {
+          return {
+            ...ps,
+            name: "",
+            plusButton: false,
+            plusCallback: () => console.log("null"),
+          };
+        });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedProject, selectedApplication]);
 
     useEffect(() => {
         data.module_id = selectedApplication?.module_id
@@ -51,13 +76,7 @@ function CreateTestCase() {
     }, [])
     return (
         <div>
-
-            <div style={{ margin: "10px", padding: "10px", textAlign: "center", backgroundColor: "#e8f2fd", }}>
-                <h2>Create New TestCase</h2>
-            </div>
-          
-            <Divider></Divider>
-            <br/>
+            <br />
             <Grid container columnSpacing={2} justifyContent="center">
                 <Grid item xs={7} md={7}>
                     <Grid item md={12}>
@@ -69,35 +88,45 @@ function CreateTestCase() {
                         />
                     </Grid>
                     <Grid item xs={12} md={12}>
-                        <Typography variant="p" component="p">
+                        {/* <Typography variant="p" component="p">
                             TestCase Name
-                        </Typography>
-                        <input type="text" name="name"
+                        </Typography> */}
+                        <TextField  label="TestCase Name" name="name" variant="outlined" size="small" fullWidth
                             onChange={e => {
                                 data.testcase_name = e.target.value;
                             }}
                         />
                     </Grid>
                     <br />
-                    <Grid item xs={12} md={12}>
+                    {/* <Grid item xs={12} md={12}>
                         <label for="">Description</label>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12} md={12}>
-                        <textarea rows="4" cols="70"
+                        <TextField label="Description" multiline  variant="outlined" size="small" fullWidth
+                        maxRows ={10}
+                        minRows ={5}
                             name="desc"
+                            required ={true}
                             onChange={e => {
                                 data.testcase_description = e.target.value;
                             }}
-                        ></textarea>
+                        />
                     </Grid>
-                    <Grid item xs={4} md={4} lg={4}>
-                        <Button variant="outlined">Cancel</Button>
-                    </Grid>
-                    <Grid item xs={4} md={4} lg={4}>
-                        <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+                    <br/>
+                    <Grid item xs={12} md={12}>
+                        <Stack
+                            direction="row"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                            spacing={2}
+                        >
+                            <Button variant="outlined">Cancel</Button>
+                            <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+                        </Stack>
                     </Grid>
                 </Grid>
             </Grid>
+
         </div>
     )
 }

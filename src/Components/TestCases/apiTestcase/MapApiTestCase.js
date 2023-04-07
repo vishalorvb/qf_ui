@@ -99,7 +99,7 @@ function MapApiTestCase() {
       console.log(resp);
       resp.data.error === null && setSuccess(true);
       setTimeout(() => {
-        resp.data.error === null && navigate(-1);
+        resp.data.error === null && navigate("/testcase");
       }, 1000);
     });
   }
@@ -123,29 +123,7 @@ function MapApiTestCase() {
   }, [])
   return (
     <>
-      {/* <Grid container justifyContent="flex-start" columnSpacing={2}>
-          <Grid item xs={3} md={3} lg={3}>
 
-            <select
-              onChange={e => { testcasedata.testcase_sprints[0].sprint_name = e.target.value }}
-            >
-              <option> Select</option>
-              <option value="Sprint 1"> Sprint 1</option>
-              <option value="Sprint 2"> Sprint 2</option>
-              <option value="Sprint 3"> Sprint 3</option>
-            </select>
-          </Grid>
-          <Grid item xs={3} md={3} lg={3}>
-            <select
-              onChange={e => { testcasedata.testcase_sprints[0].issue_id = e.target.value }}
-            >
-              <option> isssues</option>
-              <option value="1" > isssue 1</option>
-              <option value="2"> isssue 2</option>
-              <option value="3"> isssue 3</option>
-            </select>
-          </Grid>
-        </Grid> */}
       <Table
         rows={api}
         columns={columns}

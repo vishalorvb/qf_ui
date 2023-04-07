@@ -408,8 +408,8 @@ select {
   // position: relative;
 }
 .intable {
-  display: flex;
-  justify-content: flex-end;
+  width: 60%;
+
   position: absolute;
   z-index: 2;
 }
@@ -527,4 +527,7 @@ label::after {
   content: "*";
   color: red;
   margin-left: 2px;
+}
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
 }
