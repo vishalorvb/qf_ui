@@ -31,7 +31,7 @@ function ActiveUserPopup(props) {
   const submit = () => {
     axiosPrivate
       .post(
-        `qfauthservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=1`
+        `qfuserservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=1`
       )
       .then((res) => {
         console.log(res.message);
