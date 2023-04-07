@@ -122,6 +122,7 @@ export default function MiniDrawer({ open, setOpen }) {
   const { auth } = useAuth();
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState([]);
+  const [selectedNavItem, setSelectedNavItem] = useState(0);
 
   useEffect(() => {
     !open && setOpensubNav([]);
@@ -140,11 +141,12 @@ export default function MiniDrawer({ open, setOpen }) {
         return (
           <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton
-              onClick={() =>
+              onClick={() => {
                 navItem?.route === ""
                   ? openSubNavigationHandle(navItem)
-                  : navigate(navItem.route, { state: navItem?.state || {} })
-              }
+                  : navigate(navItem.route, { state: navItem?.state || {} });
+                setSelectedNavItem(navItem.id);
+              }}
               dense
               className="navItems"
             >
@@ -155,7 +157,11 @@ export default function MiniDrawer({ open, setOpen }) {
               }
               <MuiListItemText
                 primary={navItem.name}
-                className="navListItemText"
+                className={
+                  selectedNavItem === navItem?.id
+                    ? "navListItemText navListItemTextSelected"
+                    : "navListItemText"
+                }
               />
               {navItem.subList && open && (
                 <MuiListItemIcon className="navListIconItem">

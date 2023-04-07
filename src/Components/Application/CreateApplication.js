@@ -75,7 +75,7 @@ export default function CreateApplication() {
       <Grid container direction="row" spacing={2}>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>Name *</label>
+            <label>Name </label>
             <input
               type="text"
               name="appname"
