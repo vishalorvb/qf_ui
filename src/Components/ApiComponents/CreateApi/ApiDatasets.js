@@ -19,7 +19,7 @@ import { clearPostData } from './ApiDatasetData'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { DeleteApiDataset } from '../../../Services/ApiService'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-
+import AddIcon from '@mui/icons-material/Add';
 
 function ApiDatasets() {
 
@@ -252,10 +252,11 @@ function ApiDatasets() {
             </div>
             {createDatasets == false && <div className='apptable'>
                 <div className="intable">
-                    <div style={{padding:"5px"}}>
+                    <div style={{padding:"5px",display:"inline",float:"right"}}>
                         <Button variant="contained"
+                        startIcon={<AddIcon/>}
                             onClick={e => setCreateDatasets(true)}
-                        >Create DataSet</Button>
+                        >Create Dataset</Button>
                     </div>
 
                 </div>

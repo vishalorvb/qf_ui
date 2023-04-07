@@ -21,19 +21,16 @@ export default function ProjectnApplicationSelector({
       const projects = res?.data?.result?.projects_list;
       setProjectList(projects);
       setSelectedProject(projects[0]);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     });
   }, []);
 
   useEffect(() => {
     setSelectedApplication(applicationList[0]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
   useEffect(() => {
     selectedProject?.project_id &&
       getApplicationOfProject(setapplicationList, selectedProject?.project_id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject]);
 
   return (
@@ -77,6 +74,7 @@ export default function ProjectnApplicationSelector({
           )}
         />
       )}
+      
     </Stack>
   );
 }
