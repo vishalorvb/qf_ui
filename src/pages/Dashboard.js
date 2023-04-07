@@ -313,16 +313,13 @@ export default function Dashboard() {
                 setSelectedProject(value);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Projects" size="small" />
+                <TextField {...params} size="small" />
               )}
             />
             <FormControl sx={{width :"150px" }}>
-              <InputLabel id="demo-simple-select-label">Sprint</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={sprintName}
-                label="Sprint Name"
                 onChange={(e) => { setSprintName(e.target.value)}}>
                 <MenuItem value={"All"}>All</MenuItem>
                 <MenuItem value={"Sprint 1"}>Sprint 1</MenuItem>
