@@ -73,15 +73,33 @@ function Testset() {
     {
       field: "testset_name",
       headerName: "Testset Name",
-      flex: 3,
+      flex: 4,
       headerAlign: "center",
       sortable: false,
       align: "left",
+      renderCell: (param) => {
+        return (
+          <div
+            style={{ color: "#009fee", textDecoration: "underline" }}
+            onClick={() =>
+              navigate("UpdateTestcasesOrder", {
+                state: {
+                  applicationId: selectedApplication?.module_id,
+                  testsetId: param.row.testset_id,
+                  projectId: selectedProject?.project_id,
+                },
+              })
+            }
+          >
+            {param.row.testset_name}
+          </div>
+        );
+      },
     },
     {
       field: "testset_desc",
       headerName: "Testset Description",
-      flex: 3,
+      flex: 4,
       headerAlign: "center",
       sortable: false,
       align: "left",
@@ -140,7 +158,7 @@ function Testset() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Testset",
+        name: "Recent Testsets",
         plusButton: false,
         buttonName: "Create Testset",
         plusCallback: ()=>createTestcaseHandler(),

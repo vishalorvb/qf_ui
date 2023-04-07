@@ -91,7 +91,7 @@ function AddUserPopup(props) {
 
       axiosPrivate
         .post(
-          `/qfauthservice/user/createUser?user_id=0&current_user_id=${loggedInId}`,
+          `/qfuserservice/user/createUser?user_id=0&current_user_id=${loggedInId}`,
           data
         )
         .then((res) => {

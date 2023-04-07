@@ -35,7 +35,7 @@ function DeleteUserPopup(props) {
   const submit = () => {
     axiosPrivate
       .post(
-        `/qfauthservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
+        `/qfuserservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
       )
       .then((res) => {
         console.log(res.message);
