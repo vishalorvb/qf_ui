@@ -1,9 +1,11 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 // import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
 import useHead from "../hooks/useHead";
 import axios, { axiosPrivate } from "../api/axios";
@@ -74,7 +76,7 @@ function Testset() {
       field: "testset_name",
       headerName: "Testset Name",
       flex: 4,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: "left",
       renderCell: (param) => {
@@ -100,9 +102,12 @@ function Testset() {
       field: "testset_desc",
       headerName: "Testset Description",
       flex: 4,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: "left",
+      renderCell: (param) => {
+        return TestsetDescriptionCell(param, selectedApplication,selectedProject,deleteTestcaseHandler);
+      },
     },
     // {
     //   field: "",
@@ -345,5 +350,66 @@ function Testset() {
     </div>
   );
 }
+
+const TestsetDescriptionCell = (param, selectedApplication,selectedProject,deleteTestcaseHandler) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{param?.row?.testset_desc}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() => navigate("AddTestcaseToTestset", {
+            state: {
+              param1: param?.row,
+              param2: selectedProject?.project_id,
+              param3: selectedApplication?.module_id,
+            },
+          })}
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        <MenuItem
+          onClick={() =>
+            // deleteApplication(param.row.module_id, auth.info.id).then((res) => {
+            //   if (res) {
+            //     getApplication(setApplication, auth.info.id);
+            //   }
+            // })
+            deleteTestcaseHandler(param.row)
+          }
+        >
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};
 
 export default Testset;
