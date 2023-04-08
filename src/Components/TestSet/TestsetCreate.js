@@ -276,9 +276,8 @@ function TestsetCreate() {
               />
             </Stack>
           </Grid>
-
-          <Grid item md={5}>
-            <label>Select Testcase:</label>
+          <Grid item xs={4} sm={4} md={5}>
+          <label>Select Testcase:</label>
             <select id="left" multiple style={{ padding: "10px" }}>
               {leftTestcase.length > 0
                 ? leftTestcase
@@ -289,8 +288,8 @@ function TestsetCreate() {
                 : []}
             </select>
           </Grid>
-          <Grid item xs={1} sm={1} md={1}>
-            <Button
+          <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "25px" }}>
+          <Button
               sx={{ my: 0.5 }}
               variant="outlined"
               size="small"
@@ -309,8 +308,8 @@ function TestsetCreate() {
               ≪
             </Button>
           </Grid>
-          <Grid md={5}>
-            <label>Select Testcase:</label>
+          <Grid item xs={4} sm={4} md={6}>
+          <label>Selected Testcases:</label>
             <select id="right" multiple style={{ padding: "10px" }}>
               {rightTestcase.length > 0
                 ? rightTestcase
@@ -335,240 +334,6 @@ function TestsetCreate() {
         >
           Create
         </Button>
-        {/* <Paper
-          elevation={1}
-          sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
-        >
-          <div>
-            <form>
-              <div>
-                <Container
-                  component={"div"}
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>
-                        Project <span className="importantfield">*</span>:
-                      </label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
-                      <Autocomplete
-                        size="small"
-                        value={selectedProject}
-                        options={projectsList}
-                        getOptionLabel={(option) => option.project_name}
-                        onChange={(e, value) => {
-                          console.log(value);
-                          setSelectedProject(value);
-                        }}
-                        noOptionsText={"Project not found"}
-                        renderInput={(params) => (
-                          <div ref={params.InputProps.ref}>
-                            <input
-                              type="text"
-                              name="projectAutocomplete"
-                              {...params.inputProps}
-                              placeholder="Please Select"
-                            />
-                          </div>
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>
-                        Application <span className="importantfield">*</span>:
-                      </label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
-                      <Autocomplete
-                        size="small"
-                        value={selectedApplication}
-                        options={applicationList}
-                        getOptionLabel={(option) => option.module_name}
-                        onChange={(e, value) => {
-                          console.log(value);
-                          setSelectedApplication(value);
-                        }}
-                        noOptionsText={"Applications not found"}
-                        renderInput={(params) => (
-                          <div ref={params.InputProps.ref}>
-                            <input
-                              type="text"
-                              name="applicationAutocomplete"
-                              {...params.inputProps}
-                              placeholder="Please Select"
-                            />
-                          </div>
-                        )}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>
-                        Testset Name <span className="importantfield">*</span>:
-                      </label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
-                      <input
-                        ref={testset_name}
-                        type="text"
-                        name=""
-                        placeholder=" Testset Name"
-                        onChange={(e) => setTestsetName(e.target.value)}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>
-                        Description <span className="importantfield">*</span>:
-                      </label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={8}>
-                      {" "}
-                      <input
-                        ref={testset_desc}
-                        type="text"
-                        name=""
-                        placeholder=" Description"
-                        onChange={(e) => setTestsetDesc(e.target.value)}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>Select Testcase:</label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6.25}>
-                      <select id="left" multiple style={{ padding: "10px" }}>
-                        {leftTestcase.length > 0
-                          ? leftTestcase
-                              .filter((ts) => ts.datasets != null)
-                              .map((ts) => (
-                                <option value={ts.testcase_id}>
-                                  {ts.name}
-                                </option>
-                              ))
-                          : []}
-                      </select>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={1} sm={1} md={1}>
-                      <Button
-                        sx={{ my: 0.5 }}
-                        variant="outlined"
-                        size="small"
-                        onClick={handleSelect}
-                        aria-label="move all right"
-                      >
-                        ≫
-                      </Button>
-                      <Button
-                        sx={{ my: 0.5 }}
-                        variant="outlined"
-                        size="small"
-                        onClick={handleUnselect}
-                        aria-label="move all right"
-                      >
-                        ≪
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={8}
-                    md={6}
-                    sx={{ marginBottom: "10px" }}
-                  >
-                    <Grid item xs={6} sm={6} md={3}>
-                      <label>Select Testcase:</label>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6.25}>
-                      <select id="right" multiple style={{ padding: "10px" }}>
-                        {rightTestcase.length > 0
-                          ? rightTestcase
-                              .filter((ts) => ts.datasets != null)
-                              .map((ts) => (
-                                <option value={ts.testcase_id}>
-                                  {ts.name}
-                                </option>
-                              ))
-                          : []}
-                      </select>
-                    </Grid>
-                  </Grid>
-                  <Button
-                    variant="contained"
-                    onClick={submit}
-                    startIcon={<AddOutlinedIcon />}
-                    sx={{
-                      marginLeft: "45%",
-                      marginRight: "auto",
-                      marginBottom: "10px",
-                      marginTop: "25px",
-                    }}
-                  >
-                    Create
-                  </Button>
-                </Container>
-              </div>
-            </form>
-          </div>
-        </Paper> */}
         <SnackbarNotify
           open={validationMsg}
           close={setValidationMsg}
