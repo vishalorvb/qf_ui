@@ -405,11 +405,14 @@ select {
 }
 
 .apptable {
-  // position: relative;
+  position: relative;
 }
 .intable {
-  display: flex;
-  flex-direction: row-reverse;
+  width: 60%;
+  
+  position: absolute;
+  left: 300px;
+  z-index: 2;
 }
 
 .intableselect {
