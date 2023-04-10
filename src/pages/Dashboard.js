@@ -338,6 +338,13 @@ export default function Dashboard() {
     createData("Test Datasets Created by Automated Testcases", (info?.datasets_created_for_automated_testcases) != undefined ? info?.datasets_created_for_automated_testcases : 0),
   ]
 
+  const fail_row_data = [
+    createData("API",0),
+    createData("Web",0),
+    createData("Android",0),
+    createData("iOS",0)
+  ]
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <Stack
@@ -463,7 +470,7 @@ export default function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {fail_row_data.map((row) => (
                       <TableRow
                         key={row.summary}
                         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
