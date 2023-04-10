@@ -143,16 +143,16 @@ export const Routes = [
     element: createApplication,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
-  // {
-  //   path: "ApiTestcase",
-  //   element: CreateApiTestcase,
-  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
-  // },
-  // {
-  //   path: "ApiTestcase",
-  //   element: CreateApiTestcase,
-  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
-  // },
+  {
+    path: "projects",
+    element: Projects,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "createProject",
+    element: CreateProject,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
   {
     path: "TestcasesList",
     element: getTestcases,
