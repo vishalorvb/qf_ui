@@ -164,7 +164,7 @@ function ApiDatasets() {
                         ></APiListDrawer>
                     </Grid>
                     <Grid item md={10}>
-                        <Stack spacing={1} direction="row">
+                        <Stack spacing={1} direction="row" justifyContent="flex-end">
 
                             <Button variant="contained"
                                 onClick={e => setSave(true)}
