@@ -4,7 +4,7 @@ import { CreateTestCaseService } from "../../Services/TestCaseService"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
 import { useEffect, useState } from "react"
 import { MapAPiTestCaseData } from "./apiTestcase/MapApiTestCase"
-import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+// import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import { Stack } from "@mui/system"
 import useHead from "../../hooks/useHead"
 import { getProject } from "../../Services/ProjectService"
@@ -24,9 +24,9 @@ function CreateTestCase() {
     let navigate = useNavigate();
     const [selectedProject, setSelectedProject] = useState(null);
     const [selectedApplication, setSelectedApplication] = useState(null);
-    const { auth } = useAuth();
     let [project, setProject] = useState([])
     let [application, setApplication] = useState([])
+    const { auth } = useAuth();
     const { setHeader } = useHead();
     let redirect_url = [" ", "/testcase/MapApiTestCase", "/testcase/CreateTestcase",]
 
