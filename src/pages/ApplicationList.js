@@ -71,7 +71,7 @@ export default function ApplicationsList() {
                   <AdUnitsIcon sx={{ color: "green" }} />
                 </Tooltip>
               ),
-            }[param?.row?.module_type] ?? "ICON"}
+            }[param?.row?.module_type] ?? <AppleIcon sx={{ color: "white" }} />}
             <Typography
               onClick={() =>
                 navigate(`${param?.row?.module_name}`, { state: param?.row })
