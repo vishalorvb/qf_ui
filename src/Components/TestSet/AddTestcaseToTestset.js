@@ -1,14 +1,19 @@
-import {Autocomplete,Button,Grid,Paper} from "@mui/material";
-import { Container } from "@mui/system";
+import {  Button, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useLocation } from "react-router-dom";
-import { getTestcasesInProjects, getTestcasesOfTestset } from "../../Services/TestsetService";
+import {
+  getTestcasesInProjects,
+  getTestcasesOfTestset,
+} from "../../Services/TestsetService";
 import DeleteTestset from "./DeleteTestset";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
-import { validateForm, resetClassName } from "../../CustomComponent/FormValidation";
+import {
+  validateForm,
+  resetClassName,
+} from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
 
 export default function AddTestcaseToTestset() {
@@ -16,8 +21,12 @@ export default function AddTestcaseToTestset() {
   const location = useLocation();
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteObject, setDeleteObject] = useState([]);
-  const [testsetName, setTestsetName] = useState((location.state.param1.testset_name).slice(3));
-  const [testsetDesc, setTestsetDesc] = useState((location.state.param1.testset_desc).slice(3));
+  const [testsetName, setTestsetName] = useState(
+    location.state.param1.testset_name.slice(3)
+  );
+  const [testsetDesc, setTestsetDesc] = useState(
+    location.state.param1.testset_desc.slice(3)
+  );
   const testset_name = useRef();
   const testset_desc = useRef();
   const [leftTestcase, setLeftTestcase] = useState([]);
@@ -31,38 +40,48 @@ export default function AddTestcaseToTestset() {
   var testsetId = location.state.param1.testset_id;
   var projectId = location.state.param2;
   var applicationId = location.state.param3;
-  let requiredOnlyAlphabets = [testset_name,testset_desc];
+  let requiredOnlyAlphabets = [testset_name, testset_desc];
 
   function handleSelect(event) {
     let e = document.getElementById("left");
-    let remaining = leftTestcase.filter(ts =>ts.datasets != null);
+    let remaining = leftTestcase.filter((ts) => ts.datasets != null);
     for (let i = 0; i < e.options.length; i++) {
       console.log(e.options[i].selected);
       if (e.options[i].selected) {
-        let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
-        remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
+        let temp = testcaseObject.filter(
+          (ts) => ts.testcase_id == e.options[i].value
+        );
+        remaining = remaining.filter(
+          (ts) => ts.testcase_id != e.options[i].value
+        );
         if (temp.length > 0) {
-          setRightTestcase(pv => [...pv, temp[0]])
+          setRightTestcase((pv) => [...pv, temp[0]]);
         }
       }
-      setLeftTestcase(remaining)
+      setLeftTestcase(remaining);
     }
   }
 
   function handleUnselect(event) {
     let e = document.getElementById("right");
-    let remaining = rightTestcase.filter(ts =>ts.datasets != null);
+    let remaining = rightTestcase.filter((ts) => ts.datasets != null);
     for (let i = 0; i < e.options.length; i++) {
       console.log(e.options[i].selected);
       if (e.options[i].selected) {
-        console.log(testcaseObject.filter(ts => ts.testcase_id == e.options[i].value));
-        let temp = testcaseObject.filter(ts => ts.testcase_id == e.options[i].value)
-        remaining = remaining.filter(ts => ts.testcase_id != e.options[i].value)
+        console.log(
+          testcaseObject.filter((ts) => ts.testcase_id == e.options[i].value)
+        );
+        let temp = testcaseObject.filter(
+          (ts) => ts.testcase_id == e.options[i].value
+        );
+        remaining = remaining.filter(
+          (ts) => ts.testcase_id != e.options[i].value
+        );
         if (temp.length > 0) {
-          setLeftTestcase(pv => [...pv, temp[0]])
+          setLeftTestcase((pv) => [...pv, temp[0]]);
         }
       }
-      setRightTestcase(remaining)
+      setRightTestcase(remaining);
     }
   }
 
@@ -146,37 +165,23 @@ export default function AddTestcaseToTestset() {
 
   return (
     <div onClick={resetClassName}>
-      <SnackbarNotify open={validationMsg} close={setValidationMsg} msg="Fill all the required fields" severity="error"/>
-      <SnackbarNotify open={TSUpdateSuccessMsg} close={setTSUpdateSuccessMsg} msg="Testset Updated successfully" severity="success"/>
-      <Paper
-        elevation={1}
-        sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
-      >
-        <Container
-          component={"div"}
-          maxWidth={false}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            marginTop: "10px",
-            justifyContent: "flex-start",
-          }}
-        >
-          <Grid
-            container
-            item
-            xs={12}
-            sm={8}
-            md={6}
-            sx={{ marginBottom: "10px" }}
-          >
-            <Grid item xs={6} sm={6} md={3}>
-              <label>
-                Testset Name <span className="importantfield">*</span>:
-              </label>
-            </Grid>
-            <Grid item xs={8} sm={6} md={8}>
+      <SnackbarNotify
+        open={validationMsg}
+        close={setValidationMsg}
+        msg="Fill all the required fields"
+        severity="error"
+      />
+      <SnackbarNotify
+        open={TSUpdateSuccessMsg}
+        close={setTSUpdateSuccessMsg}
+        msg="Testset Updated successfully"
+        severity="success"
+      />
+      <div className="datatable" style={{ marginTop: "15px" }}>
+        <Grid container direction="row" spacing={2}>
+          <Grid item md={6}>
+            <Stack spacing={1}>
+              <label>Testset Name</label>
               <input
                 ref={testset_name}
                 value={testsetName}
@@ -186,22 +191,11 @@ export default function AddTestcaseToTestset() {
                 }}
                 placeholder="Enter First Name"
               ></input>
-            </Grid>
+            </Stack>
           </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={8}
-            md={6}
-            sx={{ marginBottom: "10px" }}
-          >
-            <Grid item xs={6} sm={6} md={3}>
-              <label>
-              Testset Description <span className="importantfield">*</span>:
-              </label>
-            </Grid>
-            <Grid item xs={8} sm={6} md={8}>
+          <Grid item md={6}>
+            <Stack spacing={1}>
+              <label>Description</label>
               <input
                 ref={testset_desc}
                 value={testsetDesc}
@@ -211,66 +205,54 @@ export default function AddTestcaseToTestset() {
                 }}
                 placeholder="Enter Last Name"
               ></input>
-            </Grid>
+            </Stack>
           </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            sx={{ marginBottom: "10px" }}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Grid item xs={4} sm={4} md={4}>
-              <label>
-                Select Testcase:
-              </label>
-              <select
-                id="left"
-                multiple
-                style={{padding:"10px"}}
-              >
-                {leftTestcase.length > 0 ? leftTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : []}
-              </select>
-            </Grid>
-            <Grid item xs={1} sm={1} md={1}>
-              <Button
-                sx={{ my: 0.5 }}
-                variant="outlined"
-                size="small"
-                onClick={handleSelect}
-                aria-label="move all right"
-              >
-                ≫
-              </Button>
-              <Button
-                sx={{ my: 0.5 }}
-                variant="outlined"
-                size="small"
-                onClick={handleUnselect}
-                aria-label="move all left"
-              >
-                ≪
-              </Button>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>
-                Select Testcase:
-              </label>
-              <select
-                id="right"
-                multiple
-                style={{padding:"10px"}}
-              >
-                <option value="">Select Testcase</option>
-                {rightTestcase.length > 0 ? rightTestcase.filter(ts =>ts.datasets != null).map(ts => <option value={ts.testcase_id}>{ts.name}</option>) : []}
-              </select>
-            </Grid>
+          <Grid item xs={4} sm={4} md={5}>
+            <label>Select Testcase:</label>
+            <select id="left" multiple style={{ padding: "10px" }}>
+              {leftTestcase.length > 0
+                ? leftTestcase
+                    .filter((ts) => ts.datasets != null)
+                    .map((ts) => (
+                      <option value={ts.testcase_id}>{ts.name}</option>
+                    ))
+                : []}
+            </select>
           </Grid>
-          <Button
+          <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "25px" }}>
+            <Button
+              sx={{ my: 0.5 }}
+              variant="outlined"
+              size="small"
+              onClick={handleSelect}
+              aria-label="move all right"
+            >
+              ≫
+            </Button>
+            <Button
+              sx={{ my: 0.5 }}
+              variant="outlined"
+              size="small"
+              onClick={handleUnselect}
+              aria-label="move all left"
+            >
+              ≪
+            </Button>
+          </Grid>
+          <Grid item xs={4} sm={4} md={6}>
+            <label>Selected Testcases:</label>
+            <select id="right" multiple style={{ padding: "10px" }}>
+              {rightTestcase.length > 0
+                ? rightTestcase
+                    .filter((ts) => ts.datasets != null)
+                    .map((ts) => (
+                      <option value={ts.testcase_id}>{ts.name}</option>
+                    ))
+                : []}
+            </select>
+          </Grid>
+        </Grid>
+        <Button
             variant="contained"
             onClick={submit}
             startIcon={<AddOutlinedIcon />}
@@ -283,8 +265,7 @@ export default function AddTestcaseToTestset() {
           >
             Update
           </Button>
-        </Container>
-      </Paper>
+      </div>
       <div className="datatable" style={{ marginTop: "15px" }}>
         {openDelete ? (
           <DeleteTestset

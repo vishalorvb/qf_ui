@@ -223,7 +223,7 @@ a {
 }
 .MuiAccordionSummary-root.Mui-expanded {
   min-height: 48px !important;
-  background: #e8eff1 !important;
+  background: #93999b !important;
   border-radius: 5px 5px 0 0 !important;
   margin: 0 !important;
 }
@@ -405,11 +405,14 @@ select {
 }
 
 .apptable {
-  // position: relative;
+  position: relative;
 }
 .intable {
-  display: flex;
-  flex-direction: row-reverse;
+  width: 60%;
+
+  position: absolute;
+  left: 300px;
+  z-index: 2;
 }
 
 .intableselect {
@@ -531,4 +534,12 @@ label::after {
 }
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: $accent;
+}
+
+.menuBadge {
+  background-color: $accent;
+  border-radius: 10px;
+  padding: 0px 10px;
+  color: white;
+  margin-left: -20px;
 }

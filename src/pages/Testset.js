@@ -1,9 +1,11 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 // import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
 import useHead from "../hooks/useHead";
 import axios, { axiosPrivate } from "../api/axios";
@@ -73,18 +75,61 @@ function Testset() {
     {
       field: "testset_name",
       headerName: "Testset Name",
-      flex: 3,
-      headerAlign: "center",
+      flex: 4,
+      headerAlign: "left",
       sortable: false,
       align: "left",
+      renderCell: (param) => {
+        return (
+          <Typography
+            onClick={() =>
+              navigate("UpdateTestcasesOrder", {
+                state: {
+                  applicationId: selectedApplication?.module_id,
+                  testsetId: param.row.testset_id,
+                  projectId: selectedProject?.project_id,
+                },
+              })
+            }
+            variant="p"
+            className="nameColumn"
+          >
+            {param?.row?.testset_name}
+          </Typography>
+        );
+        // return (
+        //   <div
+        //     style={{ color: "#009fee", textDecoration: "underline" }}
+        //     onClick={() =>
+        //       navigate("UpdateTestcasesOrder", {
+        //         state: {
+        //           applicationId: selectedApplication?.module_id,
+        //           testsetId: param.row.testset_id,
+        //           projectId: selectedProject?.project_id,
+        //         },
+        //       })
+        //     }
+        //   >
+        //     {param.row.testset_name}
+        //   </div>
+        // );
+      },
     },
     {
       field: "testset_desc",
       headerName: "Testset Description",
-      flex: 3,
-      headerAlign: "center",
+      flex: 4,
+      headerAlign: "left",
       sortable: false,
       align: "left",
+      renderCell: (param) => {
+        return TestsetDescriptionCell(
+          param,
+          selectedApplication,
+          selectedProject,
+          deleteTestcaseHandler
+        );
+      },
     },
     // {
     //   field: "",
@@ -140,10 +185,10 @@ function Testset() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Testset",
+        name: "Recent Testsets",
         plusButton: false,
         buttonName: "Create Testset",
-        plusCallback: ()=>createTestcaseHandler(),
+        plusCallback: () => createTestcaseHandler(),
       };
     });
     return () =>
@@ -155,7 +200,7 @@ function Testset() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [selectedProject,selectedApplication]);
+  }, [selectedProject, selectedApplication]);
 
   useEffect(() => {
     selectedApplication?.module_id &&
@@ -327,5 +372,73 @@ function Testset() {
     </div>
   );
 }
+
+const TestsetDescriptionCell = (
+  param,
+  selectedApplication,
+  selectedProject,
+  deleteTestcaseHandler
+) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{param?.row?.testset_desc}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() =>
+            navigate("AddTestcaseToTestset", {
+              state: {
+                param1: param?.row,
+                param2: selectedProject?.project_id,
+                param3: selectedApplication?.module_id,
+              },
+            })
+          }
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        <MenuItem
+          onClick={() =>
+            // deleteApplication(param.row.module_id, auth.info.id).then((res) => {
+            //   if (res) {
+            //     getApplication(setApplication, auth.info.id);
+            //   }
+            // })
+            deleteTestcaseHandler(param.row)
+          }
+        >
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};
 
 export default Testset;

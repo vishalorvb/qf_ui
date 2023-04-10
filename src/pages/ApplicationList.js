@@ -23,6 +23,12 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { deleteApplication } from "../Services/ApplicationService";
 import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Stack } from "@mui/system";
+import LanguageIcon from "@mui/icons-material/Language";
+import AndroidIcon from "@mui/icons-material/Android";
+import AppleIcon from "@mui/icons-material/Apple";
+import AdUnitsIcon from "@mui/icons-material/AdUnits";
+import ApiIcon from "@mui/icons-material/Api";
 export default function ApplicationsList() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -38,15 +44,44 @@ export default function ApplicationsList() {
       sortable: false,
       renderCell: (param) => {
         return (
-          <Typography
-            onClick={() =>
-              navigate(`${param?.row?.module_name}`, { state: param?.row })
-            }
-            variant="p"
-            className="nameColumn"
-          >
-            {param?.row?.module_name}
-          </Typography>
+          <Stack direction="row" spacing={1}>
+            {{
+              1: (
+                <Tooltip title="API">
+                  <ApiIcon sx={{ color: "yellow" }} />
+                </Tooltip>
+              ),
+              2: (
+                <Tooltip title="Web">
+                  <LanguageIcon sx={{ color: "lightblue" }} />
+                </Tooltip>
+              ),
+              3: (
+                <Tooltip title="Android">
+                  <AndroidIcon sx={{ color: "green" }} />
+                </Tooltip>
+              ),
+              4: (
+                <Tooltip title="Ios">
+                  <AppleIcon sx={{ color: "pink" }} />
+                </Tooltip>
+              ),
+              5: (
+                <Tooltip title="Mobile-Web">
+                  <AdUnitsIcon sx={{ color: "green" }} />
+                </Tooltip>
+              ),
+            }[param?.row?.module_type] ?? "ICON"}
+            <Typography
+              onClick={() =>
+                navigate(`${param?.row?.module_name}`, { state: param?.row })
+              }
+              variant="p"
+              className="nameColumn"
+            >
+              {param?.row?.module_name}
+            </Typography>
+          </Stack>
         );
       },
     },
@@ -79,15 +114,17 @@ export default function ApplicationsList() {
   console.log(location?.pathname);
 
   return (
-    <>
-      <div className="intable">
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => navigate("/createApplication")}
-        >
-          Create Application
-        </Button>
+    <div className="apptable">
+      <div className="intable" style={{ width: "80%" }}>
+        <div style={{ float: "right" }}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => navigate("/createApplication")}
+          >
+            Create Application
+          </Button>
+        </div>
       </div>
       <Table
         rows={
@@ -97,8 +134,9 @@ export default function ApplicationsList() {
         }
         columns={applicationColumns}
         getRowId={(row) => row.module_id}
+        searchPlaceholder="Search Applications"
       />
-    </>
+    </div>
   );
 }
 

@@ -15,7 +15,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useAuth from "../../hooks/useAuth";
 import { createformData } from "./ProjectData";
 
-function ProjectTable() {
+function ProjectTable({ location }) {
   let [popup, setPopup] = useState(false);
   let [pid, setPid] = useState();
   const navigate = useNavigate();
@@ -53,15 +53,15 @@ function ProjectTable() {
     createformData.jenkins_token = project.jenkins_token;
     createformData.jenkins_user_name = project.jenkins_user_name;
     createformData.jenkins_password = project.jenkins_password;
-    createformData.automation_framework_type = project.automation_framework_type;
+    createformData.automation_framework_type =
+      project.automation_framework_type;
     createformData.gitOps = true;
-    createformData.repository_url  = project.repository_url
-    createformData.repository_branch = project.repository_branch
-    createformData.repository_token = project.repository_token
-  
-    console.log(project)
-    navigate("createProject");
-   
+    createformData.repository_url = project.repository_url;
+    createformData.repository_branch = project.repository_branch;
+    createformData.repository_token = project.repository_token;
+
+    console.log(project);
+    navigate("/createProject");
   }
 
   const columns = [
@@ -154,7 +154,11 @@ function ProjectTable() {
         severity="success"
       />
       <Table
-        rows={project.filter(p=>p.is_deleted == false)}
+        rows={
+          location?.state === "recentProjects"
+            ? project.filter((p) => p.is_deleted == false).slice(0, 11)
+            : project.filter((p) => p.is_deleted == false)
+        }
         columns={columns}
         hidefooter={true}
         getRowId={(row) => row.project_id}

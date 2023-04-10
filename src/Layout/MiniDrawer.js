@@ -20,7 +20,14 @@ import {
   opsManagementList,
   qfAdmin,
 } from "./SidebarNavlist";
-import { Avatar, Button, Collapse, Typography } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Button,
+  Chip,
+  Collapse,
+  Typography,
+} from "@mui/material";
 import { Copyright } from "./Login";
 import useAuth from "../hooks/useAuth";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
@@ -121,8 +128,8 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer({ open, setOpen }) {
   const { auth } = useAuth();
   const role = auth?.roles;
-  const [opensubNav, setOpensubNav] = useState([]);
-  const [selectedNavItem, setSelectedNavItem] = useState(0);
+  const [opensubNav, setOpensubNav] = useState(["Application"]);
+  const [selectedNavItem, setSelectedNavItem] = useState("21");
 
   useEffect(() => {
     !open && setOpensubNav([]);
@@ -145,16 +152,14 @@ export default function MiniDrawer({ open, setOpen }) {
                 navItem?.route === ""
                   ? openSubNavigationHandle(navItem)
                   : navigate(navItem.route, { state: navItem?.state || {} });
-                setSelectedNavItem(navItem.id);
+                navItem?.route !== "" && setSelectedNavItem(navItem.id);
               }}
               dense
               className="navItems"
             >
-              {
-                <MuiListItemIcon className="navListIconItem">
-                  {navItem.icon}
-                </MuiListItemIcon>
-              }
+              <MuiListItemIcon className="navListIconItem">
+                {navItem.icon}
+              </MuiListItemIcon>
               <MuiListItemText
                 primary={navItem.name}
                 className={
@@ -163,11 +168,12 @@ export default function MiniDrawer({ open, setOpen }) {
                     : "navListItemText"
                 }
               />
+
               {navItem.subList && open && (
                 <MuiListItemIcon className="navListIconItem">
                   <ExpandMore
                     expand={opensubNav.includes(navItem.name)}
-                    onClick={() => openSubNavigationHandle(navItem)}
+                    // onClick={() => openSubNavigationHandle(navItem)}
                     aria-expanded={opensubNav.includes(navItem.name)}
                     aria-label="show more"
                     disableFocusRipple
@@ -208,7 +214,8 @@ export default function MiniDrawer({ open, setOpen }) {
         <div className="menu">
           <div className="profile">
             <Avatar sx={{ bgcolor: "white", color: "black" }}>
-              {auth?.user?.charAt(0)?.toUpperCase()}
+              {auth?.user?.charAt(0)?.toUpperCase() +
+                auth?.user?.charAt(1)?.toUpperCase()}
             </Avatar>
             {open && (
               <div>
