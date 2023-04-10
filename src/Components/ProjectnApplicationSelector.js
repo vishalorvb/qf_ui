@@ -41,40 +41,50 @@ export default function ProjectnApplicationSelector({
       spacing={2}
       mb={1}
     >
-      <Autocomplete
-        disablePortal
-        disableClearable
-        id="project_id"
-        options={projectsList}
-        value={selectedProject || null}
-        sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.project_name}
-        onChange={(e, value) => {
-          setSelectedProject(value);
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label="Projects" size="small" />
-        )}
-      />
-      {selectedProject?.automation_framework_type !== 6 && (
+      <div>
+        <label for="">Projects</label>
         <Autocomplete
           disablePortal
           disableClearable
-          id="application_id"
-          options={applicationList}
-          value={selectedApplication || null}
+          id="project_id"
+          options={projectsList}
+          value={selectedProject || null}
           sx={{ width: "100%" }}
-          getOptionLabel={(option) => option.module_name}
+          getOptionLabel={(option) => option.project_name}
           onChange={(e, value) => {
-            // console.log(value);
-            setSelectedApplication(value);
+            setSelectedProject(value);
           }}
           renderInput={(params) => (
-            <TextField {...params} label="Applications" size="small" />
+            <div ref={params.InputProps.ref}>
+              <input type="text" {...params.inputProps} />
+            </div>
           )}
         />
+      </div>
+      {selectedProject?.automation_framework_type !== 6 && (
+        <div>
+          <label for="">Application</label>
+          <Autocomplete
+            disablePortal
+            disableClearable
+            id="application_id"
+            options={applicationList}
+            value={selectedApplication || null}
+            sx={{ width: "100%" }}
+            getOptionLabel={(option) => option.module_name}
+            onChange={(e, value) => {
+              // console.log(value);
+              setSelectedApplication(value);
+            }}
+            renderInput={(params) => (
+              <div ref={params.InputProps.ref}>
+                <input type="text" {...params.inputProps} />
+              </div>
+            )}
+          />
+        </div>
       )}
-      
+
     </Stack>
   );
 }
