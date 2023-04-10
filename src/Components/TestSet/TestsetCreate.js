@@ -211,6 +211,7 @@ function TestsetCreate() {
                 onChange={(e, value) => {
                   console.log(value);
                   setSelectedProject(value);
+                  setRightTestcase([]);
                 }}
                 noOptionsText={"Project not found"}
                 renderInput={(params) => (
@@ -277,7 +278,7 @@ function TestsetCreate() {
             </Stack>
           </Grid>
           <Grid item xs={4} sm={4} md={5}>
-          <label>Select Testcase:</label>
+            <label>Select Testcase:</label>
             <select id="left" multiple style={{ padding: "10px" }}>
               {leftTestcase.length > 0
                 ? leftTestcase
@@ -289,7 +290,7 @@ function TestsetCreate() {
             </select>
           </Grid>
           <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "25px" }}>
-          <Button
+            <Button
               sx={{ my: 0.5 }}
               variant="outlined"
               size="small"
@@ -309,7 +310,7 @@ function TestsetCreate() {
             </Button>
           </Grid>
           <Grid item xs={4} sm={4} md={6}>
-          <label>Selected Testcases:</label>
+            <label>Selected Testcases:</label>
             <select id="right" multiple style={{ padding: "10px" }}>
               {rightTestcase.length > 0
                 ? rightTestcase
@@ -321,19 +322,17 @@ function TestsetCreate() {
             </select>
           </Grid>
         </Grid>
-        <Button
-          variant="contained"
-          onClick={submit}
-          startIcon={<AddOutlinedIcon />}
-          sx={{
-            marginLeft: "45%",
-            marginRight: "auto",
-            marginBottom: "10px",
-            marginTop: "25px",
-          }}
-        >
-          Create
-        </Button>
+        <Stack mt={2} spacing={2} direction="row-reverse">
+          <Button variant="contained" type="submit" onClick={submit}>
+            Save & Continue
+          </Button>
+          <Button
+            sx={{ color: "grey", textDecoration: "underline" }}
+            onClick={() => navigate("/testset")}
+          >
+            Cancel
+          </Button>
+        </Stack>
         <SnackbarNotify
           open={validationMsg}
           close={setValidationMsg}

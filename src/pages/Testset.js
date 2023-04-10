@@ -81,8 +81,7 @@ function Testset() {
       align: "left",
       renderCell: (param) => {
         return (
-          <div
-            style={{ color: "#009fee", textDecoration: "underline" }}
+          <Typography
             onClick={() =>
               navigate("UpdateTestcasesOrder", {
                 state: {
@@ -92,10 +91,28 @@ function Testset() {
                 },
               })
             }
+            variant="p"
+            className="nameColumn"
           >
-            {param.row.testset_name}
-          </div>
+            {param?.row?.testset_name}
+          </Typography>
         );
+        // return (
+        //   <div
+        //     style={{ color: "#009fee", textDecoration: "underline" }}
+        //     onClick={() =>
+        //       navigate("UpdateTestcasesOrder", {
+        //         state: {
+        //           applicationId: selectedApplication?.module_id,
+        //           testsetId: param.row.testset_id,
+        //           projectId: selectedProject?.project_id,
+        //         },
+        //       })
+        //     }
+        //   >
+        //     {param.row.testset_name}
+        //   </div>
+        // );
       },
     },
     {
@@ -106,7 +123,12 @@ function Testset() {
       sortable: false,
       align: "left",
       renderCell: (param) => {
-        return TestsetDescriptionCell(param, selectedApplication,selectedProject,deleteTestcaseHandler);
+        return TestsetDescriptionCell(
+          param,
+          selectedApplication,
+          selectedProject,
+          deleteTestcaseHandler
+        );
       },
     },
     // {
@@ -166,7 +188,7 @@ function Testset() {
         name: "Recent Testsets",
         plusButton: false,
         buttonName: "Create Testset",
-        plusCallback: ()=>createTestcaseHandler(),
+        plusCallback: () => createTestcaseHandler(),
       };
     });
     return () =>
@@ -178,7 +200,7 @@ function Testset() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [selectedProject,selectedApplication]);
+  }, [selectedProject, selectedApplication]);
 
   useEffect(() => {
     selectedApplication?.module_id &&
@@ -351,7 +373,12 @@ function Testset() {
   );
 }
 
-const TestsetDescriptionCell = (param, selectedApplication,selectedProject,deleteTestcaseHandler) => {
+const TestsetDescriptionCell = (
+  param,
+  selectedApplication,
+  selectedProject,
+  deleteTestcaseHandler
+) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -383,13 +410,15 @@ const TestsetDescriptionCell = (param, selectedApplication,selectedProject,delet
         }}
       >
         <MenuItem
-          onClick={() => navigate("AddTestcaseToTestset", {
-            state: {
-              param1: param?.row,
-              param2: selectedProject?.project_id,
-              param3: selectedApplication?.module_id,
-            },
-          })}
+          onClick={() =>
+            navigate("AddTestcaseToTestset", {
+              state: {
+                param1: param?.row,
+                param2: selectedProject?.project_id,
+                param3: selectedApplication?.module_id,
+              },
+            })
+          }
         >
           <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
           Edit
