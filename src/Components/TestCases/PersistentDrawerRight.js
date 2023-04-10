@@ -15,15 +15,9 @@ export default function PersistentDrawerRight({
   screenId,
   setScreenId,
 }) {
-  console.log(screen)
-  const [open, setOpen] = useState(false);
-  const handleDrawerOpen = () => {
-    setOpen(!open);
-  };
+ 
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+
 
   function handleClick(e) {
     setScreenId([e]);
@@ -37,26 +31,7 @@ export default function PersistentDrawerRight({
 
   return (
     <>
-      <Button variant="contained" onClick={handleDrawerOpen}>
-        {open ? "Hide Screens" : "Show Screens"}
-      </Button>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-          },
-        }}
-        variant="persistent"
-        anchor="right"
-        open={open}
-      >
-        <IconButton size="small" onClick={handleDrawerClose}>
-          <DoubleArrowIcon></DoubleArrowIcon>
-        </IconButton>
-        <Divider />
-        <Typography align="center" m={2}>
+        <Typography align="center" m={2} sx={{backgroundColor:"#e8edf2",padding:"10px",color:"002980"}}>
           List of screens
         </Typography>
         {screen.map((s) => {
@@ -64,6 +39,7 @@ export default function PersistentDrawerRight({
             <Stack
               mt={1}
               ml={1}
+              direction="column"
               sx={{
                 backgroundColor: screenId.includes(s.screen_id) && "#e8edf2",
                 cursor: "pointer",
@@ -78,7 +54,7 @@ export default function PersistentDrawerRight({
             </Stack>
           );
         })}
-      </Drawer>
+ 
     </>
   );
 }
