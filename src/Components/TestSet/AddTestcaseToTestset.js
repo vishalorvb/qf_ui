@@ -1,4 +1,4 @@
-import {  Button, Grid, Stack } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useLocation } from "react-router-dom";
@@ -252,19 +252,17 @@ export default function AddTestcaseToTestset() {
             </select>
           </Grid>
         </Grid>
-        <Button
-            variant="contained"
-            onClick={submit}
-            startIcon={<AddOutlinedIcon />}
-            sx={{
-              marginLeft: "45%",
-              marginRight: "auto",
-              marginBottom: "10px",
-              marginTop: "25px",
-            }}
-          >
+        <Stack mt={2} spacing={2} direction="row-reverse">
+          <Button variant="contained" type="submit" onClick={submit}>
             Update
           </Button>
+          <Button
+            sx={{ color: "grey", textDecoration: "underline" }}
+            onClick={() => navigate("/testset")}
+          >
+            Cancel
+          </Button>
+        </Stack>
       </div>
       <div className="datatable" style={{ marginTop: "15px" }}>
         {openDelete ? (

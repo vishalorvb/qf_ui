@@ -54,6 +54,7 @@ const UpdateTestcasesOrder = lazy(() =>
 );
 
 const Settings = lazy(() => import("../pages/Settings"));
+const AddUser = lazy(() => import("../pages/AddUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
 const Screen = lazy(() =>
   import("../Components/Application/ScreenComponents/Screen")
@@ -166,6 +167,11 @@ export const Routes = [
   {
     path: "settings",
     element: Settings,
+    accessRole: [2],
+  },
+  {
+    path: "addUser",
+    element: AddUser,
     accessRole: [2],
   },
   {
