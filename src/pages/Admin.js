@@ -70,8 +70,8 @@ export default function Admin() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Manage Users",
-        plusButton: true,
+        name: "Users",
+        plusButton: false,
         buttonName: "Add User",
         plusCallback: addUserHandler,
       };
@@ -99,14 +99,6 @@ export default function Admin() {
 
   useEffect(() => {
     getUsers();
-    // axios.get(`/qfauthservice/user/listUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   }).then(res => {
-    //     setUsers(res.data.info);
-    //   })
   }, []);
 
   const columns = [
