@@ -357,6 +357,8 @@ export default function Dashboard() {
             setSelectedProject(value);
             setSprintName('All')
             setSprintList([])
+            setAutomationTDgraph(false)
+            setShowTensorFlow(false)
           }}
           renderInput={(params) => (
             <TextField {...params} size="small" />
@@ -443,8 +445,8 @@ export default function Dashboard() {
               <Typography style={{ fontSize: "20px" }}><b>QualityFusion prediction : Success of Testcases in next sprint</b></Typography>
             </Grid>
             <Grid>
-              <Typography style={{ position: 'relative', top: '195px', left: '250px', fontSize: "50px", fontWeight: "400" }}><b>{Math.round(progress)}%</b></Typography>
-              <CircularProgress variant="determinate" value={69} size={300} sx={{ marginLeft: "130px", color: "#009fee" }} />
+              <Typography style={{ position: 'relative', top: '195px', left: '250px', fontSize: "50px", fontWeight: "400" }}><b>{progress != '' ? Math.round(progress)`%` :  <b style={{fontSize : "15px"}}>{failMsg != 'Jira is not configured'?failMsg : ""}</b>}</b></Typography>
+              <CircularProgress variant="determinate" value={progress != '' ?Math.round(progress): 0} size={300} sx={{ marginLeft: "130px", color: "#009fee" }} />
             </Grid>
             <Grid>
               <TableContainer
