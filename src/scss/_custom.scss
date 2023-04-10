@@ -409,7 +409,7 @@ select {
 }
 .intable {
   width: 60%;
-  
+
   position: absolute;
   left: 300px;
   z-index: 2;
@@ -534,4 +534,12 @@ label::after {
 }
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: $accent;
+}
+
+.menuBadge {
+  background-color: $accent;
+  border-radius: 10px;
+  padding: 0px 10px;
+  color: white;
+  margin-left: -20px;
 }

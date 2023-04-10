@@ -35,10 +35,7 @@ export default function CreateApplication() {
     { value: 2, label: "Web" },
     { value: 3, label: "Mobile-Android" },
     { value: 4, label: "Mobile-iOS" },
-    { value: 5, label: "Python BDD" },
-    { value: 6, label: "Test Design" },
-    { value: 7, label: "PT" },
-    { value: 8, label: "Security" },
+    { value: 0, label: "Mobile-web" },
   ];
 
   function submitHandler(e) {
@@ -147,7 +144,7 @@ export default function CreateApplication() {
       </Grid>
       <Stack mt={2} spacing={2} direction="row-reverse">
         <Button variant="contained" type="submit" onClick={submitHandler}>
-          Save & Continue
+          Create & Continue
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}

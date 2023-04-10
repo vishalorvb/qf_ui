@@ -3,9 +3,22 @@ import { useState } from "react";
 import { GridToolbarQuickFilter, GridLinkOperator } from "@mui/x-data-grid";
 
 export default function Table(props) {
+  const {
+    rows,
+    columns,
+    checkboxSelection,
+    selectionModel,
+    setSelectionModel,
+    getRowId,
+    hideSearch,
+    setNewchangedElement,
+    hideheaderCheckbox,
+    searchPlaceholder,
+  } = props;
   function QuickSearchToolbar() {
     return (
       <GridToolbarQuickFilter
+        placeholder={searchPlaceholder || "Search..."}
         className="tableSearch"
         quickFilterParser={(searchInput) =>
           searchInput
@@ -21,17 +34,6 @@ export default function Table(props) {
   // columns for header details
   // hidefooter for true to hide footer
 
-  const {
-    rows,
-    columns,
-    checkboxSelection,
-    selectionModel,
-    setSelectionModel,
-    getRowId,
-    hideSearch,
-    setNewchangedElement,
-    hideheaderCheckbox,
-  } = props;
   const [pagesize, setPagesize] = useState(10);
   return (
     <div className="tableParent">
