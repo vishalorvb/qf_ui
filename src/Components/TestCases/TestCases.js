@@ -1,4 +1,4 @@
-import { Autocomplete, Grid, IconButton, TextField, Tooltip } from "@mui/material";
+import { Autocomplete, Grid, IconButton, MenuItem, TextField, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 // import CreateTestCasePopUp from "./CreateTestCasePopUp";
@@ -16,6 +16,10 @@ import { Link } from "react-router-dom";
 import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth";
+import TableActions from "../../CustomComponent/TableActions";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+
+
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
@@ -66,7 +70,22 @@ export default function TestCases() {
       headerName: "Description",
       flex: 6,
       sortable: false,
-      align: "left",
+      renderCell: (param) => {
+        return (
+          <TableActions
+            heading={param.row?.description}
+          >
+            <MenuItem>
+              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+              Delete
+            </MenuItem>
+            <MenuItem>
+              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+              Edit
+            </MenuItem>            
+          </TableActions>
+        )
+      },
     },
 
 
@@ -190,3 +209,13 @@ export default function TestCases() {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+

@@ -15,7 +15,7 @@ export default function PersistentDrawerRight({
   screenId,
   setScreenId,
 }) {
- 
+
 
 
 
@@ -23,7 +23,7 @@ export default function PersistentDrawerRight({
     setScreenId([e]);
   }
 
-  useEffect(() => {}, [screenId]);
+  useEffect(() => { }, [screenId]);
 
   useEffect(() => {
     setScreenId([screen[0].screen_id]);
@@ -31,30 +31,66 @@ export default function PersistentDrawerRight({
 
   return (
     <>
-        <Typography align="center" m={2} sx={{backgroundColor:"#e8edf2",padding:"10px",color:"002980"}}>
-          List of screens
-        </Typography>
-        {screen.map((s) => {
-          return (
-            <Stack
-              mt={1}
-              ml={1}
-              direction="column"
-              sx={{
-                backgroundColor: screenId.includes(s.screen_id) && "#e8edf2",
-                cursor: "pointer",
-              }}
-              onClick={() => handleClick(s.screen_id)}
-            >
-              <Typography variant="p" sx={{ fontWeight: "bold" }}>
-                {s.name}
-              </Typography>
-              <Typography variant="caption">{s.description}</Typography>
-              <Divider />
-            </Stack>
-          );
+      <Typography align="center" m={2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>
+        List of screens
+      </Typography>
+      {screen.map((s) => {
+        return (
+          <Stack
+            mt={1}
+            ml={1}
+            direction="column"
+            sx={{
+              backgroundColor: screenId.includes(s.screen_id) && "#e8edf2",
+              cursor: "pointer",
+            }}
+            onClick={() => handleClick(s.screen_id)}
+          >
+            <Typography variant="p" sx={{ fontWeight: "bold" }}>
+              {s.name}
+            </Typography>
+            <Typography variant="caption">{s.description}</Typography>
+            <Divider />
+          </Stack>
+        );
+      })}
+
+
+
+
+
+{/* 
+      <MaterialReactTable
+        columns={columns}
+        data={screen}
+        enableColumnActions={false}
+        initialState={{ showGlobalFilter: true, density: "compact" }}
+        enableToolbarInternalActions={false}
+        muiTableBodyRowProps={{ hover: false }}
+        enableRowOrdering
+        enableSorting={false}
+        muiTableBodyRowDragHandleProps={({ table }) => ({
+          onDragEnd: () => {
+            const { draggingRow, hoveredRow } = table.getState();
+            if (hoveredRow && draggingRow) {
+              data.splice(
+                hoveredRow.index,
+                0,
+                data.splice(draggingRow.index, 1)[0]
+              );
+              setData([...data]);
+              setOrder(() => {
+                return data.map((d) => d.screen_element_id);
+              });
+              console.log(data);
+            }
+          },
         })}
- 
+        muiTablePaperProps={{
+          elevation: 0,
+        }}
+      /> */}
+
     </>
   );
 }
