@@ -190,12 +190,22 @@ export const Routes = [
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
-    path: "projects",
+    path: "Projects/Recent",
     element: Projects,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
-    path: "createProject",
+    path: "Projects/Search",
+    element: Projects,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "Projects/Create",
+    element: CreateProject,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "Projects/Search",
     element: CreateProject,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
@@ -317,18 +327,18 @@ export const Routes = [
       },
     ],
   },
-  {
-    path: "projects",
-    element: Projects,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute: [
-      {
-        path: "createProject",
-        element: CreateProject,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-    ],
-  },
+  // {
+  //   path: "projects",
+  //   element: Projects,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //   subRoute: [
+  //     {
+  //       path: "createProject",
+  //       element: CreateProject,
+  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //     },
+  //   ],
+  // },
   {
     path: "qfAdmin",
     element: QFAdmin,

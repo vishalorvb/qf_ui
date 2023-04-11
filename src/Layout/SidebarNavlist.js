@@ -66,20 +66,20 @@ export const testManagementList = [
       {
         name: "Create",
         id: "31",
-        route: "createProject",
+        route: "Projects/Create",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Recent",
         id: "32",
-        route: "projects",
+        route: "Projects/Recent",
         state: "recentProjects",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Search",
         id: "33",
-        route: "projects",
+        route: "Projects/Search",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
