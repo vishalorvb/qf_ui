@@ -163,16 +163,44 @@ export const opsManagementList = [
   {
     name: "Release",
     id: "9",
-    route: "release",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-release"></i>,
+    subList: [
+      {
+        name: "Create",
+        id: "91",
+        route: "release/createAnsibleInstance",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        id: "92",
+        route: "release",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     name: "CI CD Pipeline",
     id: "1a",
-    route: "pipeline",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-cicd"></i>,
+    subList: [
+      {
+        name: "Create",
+        id: "1a1",
+        route: "pipeline/CreatePipeline",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        id: "1a2",
+        route: "pipeline",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
 ];
 
