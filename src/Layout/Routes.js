@@ -114,6 +114,8 @@ const pagesnscreen = lazy(() =>
 const CreateTestCase = lazy(() =>
   import("../Components/TestCases/CreateTestCase")
 );
+const TestcaseExecution = lazy(()=>import(`../Components/Execution/TestcaseExecution`))
+const TestsetExecution = lazy(()=>import(`../Components/Execution/TestsetExecution`))
 
 export const Routes = [
   {
@@ -200,8 +202,13 @@ export const Routes = [
     ],
   },
   {
-    path: "execution",
-    element: Execution,
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {

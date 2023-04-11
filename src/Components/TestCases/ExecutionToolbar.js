@@ -41,10 +41,10 @@ export default function ExecutionToolbar({
   const [remoteAPiFails, setRemoteAPiFails] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
   const schema = yup.object().shape({
-    // executionLoc: yup.string().required(),
-    // buildenvName: yup.string().required(),
-    // browser: yup.array().required(),
-    // commitMsg: execLoc !== "local" && yup.string().required(),
+    executionLoc: yup.string().required(),
+    buildenvName: yup.string().required(),
+    browser: yup.array().required(),
+    commitMsg: execLoc !== "local" && yup.string().required(),
   });
   const {
     control,
@@ -66,6 +66,18 @@ export default function ExecutionToolbar({
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+
+  const executionMethodSelector = (data) => {
+    applicationType === 1? 
+    onSubmitExecute(data) : 
+    onApiSubmitExecute(data)
+  }
+
+  const generateMethodSelector = (data) => {
+    applicationType === 1? 
+    onSubmitGenerate(data) : 
+    onApiSubmitGenerate(data)
+  }
 
   const onSubmitExecute = (data) => {
     console.log("execute");
@@ -280,7 +292,7 @@ export default function ExecutionToolbar({
         });
   }, [applicationId]);
   return (
-    <form onSubmit={handleSubmit(onSubmitExecute)}>
+    <form >
       <SnackbarNotify
         open={clientInactive}
         close={setClientInactive}
@@ -369,15 +381,17 @@ export default function ExecutionToolbar({
             >
               <Button
                 fullWidth
-                type="submit"
-                // onClick={() => {
-                //    {handleSubmit(onApiSubmitExecute)}
-                //     // : handleSubmit(onSubmitExecute);
-                // }}
+                // type="submit"
+               sx={{backgroundColor: "#009fee"}} 
+               onClick={
+                     
+                    handleSubmit(executionMethodSelector)
+                }
               >
                 Execute
               </Button>
               <Button
+               sx={{backgroundColor: "#009fee"}} 
                 size="small"
                 aria-controls={open ? "split-button-menu" : undefined}
                 aria-expanded={open ? "true" : undefined}
@@ -408,7 +422,7 @@ export default function ExecutionToolbar({
                 >
                   <Paper>
                     <MenuList id="split-button-menu" autoFocusItem>
-                      <MenuItem size="small">GENERATE Script</MenuItem>
+                      <MenuItem onClick={handleSubmit(generateMethodSelector)} size="small">GENERATE Script</MenuItem>
                     </MenuList>
                   </Paper>
                 </Grow>

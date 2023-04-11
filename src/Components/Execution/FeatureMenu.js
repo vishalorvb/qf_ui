@@ -25,6 +25,7 @@ export default function FeatureMenu() {
     <>
       <Button
         fullWidth
+        sx={{backgroundColor: "#009fee"}} 
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
