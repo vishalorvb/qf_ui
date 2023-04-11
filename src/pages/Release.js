@@ -34,7 +34,7 @@ export default function Release() {
       return {
         ...ps,
         name: "Release Instances",
-        plusButton: module ? true : false,
+        plusButton: false,
         buttonName: "Create Instance",
         plusCallback: addReleaseInstances,
       };
