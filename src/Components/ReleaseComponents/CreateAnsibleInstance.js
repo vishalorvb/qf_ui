@@ -50,7 +50,7 @@ export default function CreateAnsibleInstance() {
   }, []);
 
   useEffect(() => {
-    location?.state?.id &&
+    location?.state?.id ?
       axios
         .post(`/qfservice/get-release/${location?.state?.id}`, {
           project_id: location?.state?.project_id,
@@ -71,7 +71,9 @@ export default function CreateAnsibleInstance() {
             repoToken: data?.app_source_code_repo_access_token,
             repoUserName: data?.gitusername,
           });
-        });
+        })
+        :
+        reset();
   }, []);
 
   const onSubmitHandler = (data) => {
@@ -233,9 +235,15 @@ export default function CreateAnsibleInstance() {
             </Grid>
           </Grid>
         </AccordionTemplate>
-        <Stack direction="row" justifyContent="center" alignItems="center">
-          <Button type="submit" variant="contained">
+        <Stack mt={2} spacing={2} direction="row-reverse">
+          <Button variant="contained" type="submit" >
             Save
+          </Button>
+          <Button
+            sx={{ color: "grey", textDecoration: "underline" }}
+            onClick={() => navigate("/release")}
+          >
+            Cancel
           </Button>
         </Stack>
       </form>
