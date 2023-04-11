@@ -18,9 +18,8 @@ import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth";
 import TableActions from "../../CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
-
-
+import { DeleteTestCase, GetTestCase } from "../../Services/TestCaseService";
+import { TCdata } from "./CreateTestCase";
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
   const [snack, setSnack] = useState(false);
@@ -75,14 +74,32 @@ export default function TestCases() {
           <TableActions
             heading={param.row?.description}
           >
-            <MenuItem>
+            <MenuItem
+              onClick={e => {
+                DeleteTestCase(param.row.testcase_id).then(res => {
+                  if (res) {
+                    GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
+                  }
+                })
+              }}
+            >
               <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
               Delete
             </MenuItem>
-            <MenuItem>
+            <MenuItem
+              onClick={e => {
+                console.log(param.row.module_id)
+                TCdata.module_id = param.row.module_id
+                TCdata.project_id = param.row.project.project_id
+                TCdata.testcase_name = param.row.name
+                TCdata.testcase_description = param.row.description
+                console.log(TCdata)
+                navigate("create")
+              }}
+            >
               <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
               Edit
-            </MenuItem>            
+            </MenuItem>
           </TableActions>
         )
       },
@@ -113,21 +130,9 @@ export default function TestCases() {
           plusCallback: () => console.log("null"),
         };
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    selectedApplication?.module_id &&
-      axios
-        .get(
-          `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
-        )
-        .then((resp) => {
-          const testcases = resp?.data?.info ? resp?.data?.info : [];
-          setTestcases(testcases);
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedApplication]);
+
   useEffect(() => {
     getProject(setProject, auth.userId)
   }, [])
@@ -139,8 +144,11 @@ export default function TestCases() {
   }, [selectedProject])
   useEffect(() => {
     setSelectedApplication(application[0])
+    GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
   }, [application])
-
+  useEffect(() => {
+    GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
+  }, [selectedApplication])
   return (
     <>
       <SnackbarNotify

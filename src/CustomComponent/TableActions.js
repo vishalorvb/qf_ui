@@ -4,7 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 
 
-function Actions(props) {
+function TableActions(props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -41,4 +41,4 @@ function Actions(props) {
   )
 }
 
-export default Actions
+export default TableActions

@@ -2,35 +2,35 @@ import axios from "axios";
 import { async } from "q";
 import { baseUrl } from "../Environment";
 
-export async function createWebTestCase(data) {
-  let res = await axios({
-    method: "post",
-    url: `${baseUrl}/qfservice/webtestcase/web-createTestcase`,
-    data: data,
-  })
-    .then((response) => {
-      return response.data.status;
-    })
-    .catch((err) => {
-      return "error";
-    });
-  return res;
-}
+// export async function createWebTestCase(data) {
+//   let res = await axios({
+//     method: "post",
+//     url: `${baseUrl}/qfservice/webtestcase/web-createTestcase`,
+//     data: data,
+//   })
+//     .then((response) => {
+//       return response.data.status;
+//     })
+//     .catch((err) => {
+//       return "error";
+//     });
+//   return res;
+// }
 
-export async function createApitestcase(data) {
-  let res = await axios({
-    method: "post",
-    url: `${baseUrl}/qfservice/CreateNewTestcase`,
-    data: data,
-  })
-    .then((response) => {
-      return response.data.status;
-    })
-    .catch((err) => {
-      return "error";
-    });
-  return res;
-}
+// export async function createApitestcase(data) {
+//   let res = await axios({
+//     method: "post",
+//     url: `${baseUrl}/qfservice/CreateNewTestcase`,
+//     data: data,
+//   })
+//     .then((response) => {
+//       return response.data.status;
+//     })
+//     .catch((err) => {
+//       return "error";
+//     });
+//   return res;
+// }
 
 // export async function createNewtestCase(data) {
 //   let pid = data.project_id;
@@ -81,15 +81,15 @@ export async function createApitestcase(data) {
 //     });
 // }
 
-export function getElementsList(callback, screenId) {
-  axios
-    .get(
-      `${baseUrl}/qfservice/screen/getScreenElementsList?screen_id=${screenId}`
-    )
-    .then((res) => {
-      callback(res.data.info);
-    });
-}
+// export function getElementsList(callback, screenId) {
+//   axios
+//     .get(
+//       `${baseUrl}/qfservice/screen/getScreenElementsList?screen_id=${screenId}`
+//     )
+//     .then((res) => {
+//       callback(res.data.info);
+//     });
+// }
 
 export async function CreateDataset(data) {
   let x = await axios({
@@ -110,11 +110,11 @@ export async function CreateDataset(data) {
   return x
 }
 
-export function getDataset(callback,projectId,applicationId,testcaseId){
-    axios.get(`${baseUrl}/qfservice/webtestcase/api/v1/projects/${projectId}/workflow/${applicationId}/web/testcases/${testcaseId}/datasets`).then(res=>{
-        callback(res.data.result);
-        return res.data.result
-    });
+export function getDataset(callback, projectId, applicationId, testcaseId) {
+  axios.get(`${baseUrl}/qfservice/webtestcase/api/v1/projects/${projectId}/workflow/${applicationId}/web/testcases/${testcaseId}/datasets`).then(res => {
+    callback(res.data.result);
+    return res.data.result
+  });
 }
 
 export async function getData_for_createDataset(callback, testcaseId, datasetId = 0) {
@@ -150,13 +150,30 @@ export async function CreateTestCaseService(data) {
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
     data: data
   }).then(res => {
-    if (res.data.info != null) { return  res.data.info.testcase_id}
+    if (res.data.info != null) { return res.data.info.testcase_id }
     else { return false }
   })
   return x
 }
 
 
-// export function getTestCase(callback){
+export async function DeleteTestCase(testcaseId) {
+  let x = await axios.delete(`${baseUrl}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`).then(res =>{
+    if(res.data.status == "SUCCESS"){
+      return true
+    }
+    return false
+  })
+  return x
+}
 
-// }
+export function GetTestCase(callback, projectId, applicationId) {
+  axios
+    .get(
+      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${applicationId}&project_id=${projectId}`
+    )
+    .then((resp) => {
+      const testcases = resp?.data?.info ? resp?.data?.info : [];
+      callback(testcases);
+    });
+}

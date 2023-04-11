@@ -3,9 +3,10 @@ import Drawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { Button, Grid, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import { Stack } from "@mui/system";
+import MaterialReactTable from "material-react-table";
 
 const drawerWidth = 240;
 export let selected_screen;
@@ -16,7 +17,27 @@ export default function PersistentDrawerRight({
   setScreenId,
 }) {
 
-
+  const columns = useMemo(
+    //column definitions...
+    () => [
+  
+      {
+        accessorKey: "locators",
+        header: "Test",
+        Cell: ({ cell, column, row, table }) => {
+          console.log(row.original.name)
+          return (
+            <div>
+              <h4>{row.original.name}</h4>
+              <h5>{row.original.description}</h5>
+            </div>
+          )
+        },
+      },
+    ],
+    []
+    //end
+  );
 
 
   function handleClick(e) {
@@ -28,6 +49,7 @@ export default function PersistentDrawerRight({
   useEffect(() => {
     setScreenId([screen[0].screen_id]);
   }, [screen]);
+
 
   return (
     <>
@@ -59,7 +81,7 @@ export default function PersistentDrawerRight({
 
 
 
-{/* 
+
       <MaterialReactTable
         columns={columns}
         data={screen}
@@ -72,24 +94,13 @@ export default function PersistentDrawerRight({
         muiTableBodyRowDragHandleProps={({ table }) => ({
           onDragEnd: () => {
             const { draggingRow, hoveredRow } = table.getState();
-            if (hoveredRow && draggingRow) {
-              data.splice(
-                hoveredRow.index,
-                0,
-                data.splice(draggingRow.index, 1)[0]
-              );
-              setData([...data]);
-              setOrder(() => {
-                return data.map((d) => d.screen_element_id);
-              });
-              console.log(data);
-            }
+
           },
         })}
         muiTablePaperProps={{
           elevation: 0,
         }}
-      /> */}
+      />
 
     </>
   );
