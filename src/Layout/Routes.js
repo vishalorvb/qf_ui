@@ -104,10 +104,39 @@ const AddConfigurationPopUp = lazy(() =>
   import("../Components/ConfigureDevices/AddConfigurationPopUp")
 );
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
+
+const ExecutionModified = lazy(()=>import(`../Components/Execution/Execution`))
+
+const AddEnvironment = lazy(()=>import(`../Components/Execution/AddEnvironment`))
+const TestcaseExecution = lazy(()=>import(`../Components/Execution/TestcaseExecution`))
+const TestsetExecution = lazy(()=>import(`../Components/Execution/TestsetExecution`))
+
+
 export const Routes = [
   {
     path: "ApiTestcase",
     element: CreateApiTestcase,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  
+  {
+    path: "ExecutionModified",
+    element: ExecutionModified,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "addEnvironment",
+    element: AddEnvironment,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -395,6 +424,7 @@ export const Routes = [
           },
         ],
       },
+     
     ],
   },
 ];

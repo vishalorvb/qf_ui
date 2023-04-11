@@ -52,9 +52,21 @@ export const testManagementList = [
   },
   {
     name: "Execution",
-    route: "execution",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-execute"></i>,
+    subList:[
+      {
+        name:"Testcase",
+        route:"TestcaseExecution",
+        accessRole:[1,2,3,4,5,6,7]
+      },
+      {
+        name:"Testset",
+        route:"TestsetExecution",
+        accessRole:[1,2,3,4,5,6,7]
+      }
+    ]
   },
   {
     name: "Reports",
