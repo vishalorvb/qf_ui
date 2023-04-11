@@ -1,4 +1,4 @@
-import { Autocomplete, IconButton, TextField, Tooltip } from "@mui/material";
+import { Autocomplete, Grid, IconButton, TextField, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 // import CreateTestCasePopUp from "./CreateTestCasePopUp";
@@ -13,7 +13,9 @@ import DataObjectOutlinedIcon from "@mui/icons-material/DataObjectOutlined";
 import axios from "../../api/axios";
 import AirplayIcon from "@mui/icons-material/Airplay";
 import { Link } from "react-router-dom";
-
+import { getProject } from "../../Services/ProjectService"
+import { getApplicationOfProject } from "../../Services/ApplicationService"
+import useAuth from "../../hooks/useAuth";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
@@ -21,9 +23,10 @@ export default function TestCases() {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedApplication, setSelectedApplication] = useState(null);
-
+  let [project, setProject] = useState([])
+  let [application, setApplication] = useState([])
   const navigate = useNavigate();
-
+  const { auth } = useAuth();
   const columns = [
     {
       field: "name",
@@ -34,9 +37,7 @@ export default function TestCases() {
       renderCell: param => {
         return (
           <div
-
-
-            style={{ color: "#009fee", textDecoration: "underline", cursor: "pointer" }}
+            style={{ color: "#009fee", cursor: "pointer" }}
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
@@ -76,7 +77,7 @@ export default function TestCases() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Testcases",
+        name: "Recent Testcases",
         // plusButton: true,
         // buttonName: "Create Testcase",
         plusCallback: () => {
@@ -94,7 +95,7 @@ export default function TestCases() {
         };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProject, selectedApplication]);
+  }, []);
 
   useEffect(() => {
     selectedApplication?.module_id &&
@@ -108,7 +109,18 @@ export default function TestCases() {
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedApplication]);
-
+  useEffect(() => {
+    getProject(setProject, auth.userId)
+  }, [])
+  useEffect(() => {
+    setSelectedProject(project[0])
+  }, [project])
+  useEffect(() => {
+    getApplicationOfProject(setApplication, selectedProject?.project_id)
+  }, [selectedProject])
+  useEffect(() => {
+    setSelectedApplication(application[0])
+  }, [application])
 
   return (
     <>
@@ -122,15 +134,51 @@ export default function TestCases() {
       ></SnackbarNotify>
       <div className="apptable">
         <div className="intable">
-          <div >
-          <ProjectnApplicationSelector
-            selectedProject={selectedProject}
-            setSelectedProject={setSelectedProject}
-            selectedApplication={selectedApplication}
-            setSelectedApplication={setSelectedApplication}
-          />
-          </div>
-        
+          <Grid item container spacing={2} justifyContent="flex-end">
+            <Grid item md={4}>
+              <label for="">Projects</label>
+              <Autocomplete
+                disablePortal
+                disableClearable
+                id="project_id"
+                options={project}
+                value={selectedProject || null}
+                sx={{ width: "100%" }}
+                getOptionLabel={(option) => option.project_name}
+                onChange={(e, value) => {
+                  setSelectedProject(value);
+                }}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input type="text" {...params.inputProps} />
+                  </div>
+                )}
+              />
+            </Grid>
+            <Grid item md={4}>
+              <label for="">Application</label>
+              <Autocomplete
+                disablePortal
+                disableClearable
+                id="model_id"
+                options={application}
+                value={selectedApplication || null}
+                sx={{ width: "100%" }}
+                getOptionLabel={(option) => option.module_name}
+                onChange={(e, value) => {
+                  setSelectedApplication(value);
+                }}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input type="text" {...params.inputProps} />
+                  </div>
+                )}
+              />
+
+            </Grid>
+          </Grid>
+
+
         </div>
         <Table
           rows={testcases}

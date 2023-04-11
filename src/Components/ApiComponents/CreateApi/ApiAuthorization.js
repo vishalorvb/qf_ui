@@ -84,7 +84,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.basicauth.username}
+                value={authdata.basicauth?.username}
                 onChange={e => {
                   let temp = authdata
                   temp.basicauth.username = e.target.value
@@ -97,7 +97,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.basicauth.password}
+                value={authdata.basicauth?.password}
                 onChange={e => {
                   let temp = authdata
                   temp.basicauth.password = e.target.value
@@ -115,7 +115,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.apikey.key}
+                value={authdata.apikey?.key}
                 onChange={e => {
                   let temp = authdata
                   temp.apikey.key = e.target.value
@@ -128,7 +128,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.apikey.value}
+                value={authdata.apikey?.value}
                 onChange={e => {
                   let temp = authdata
                   temp.apikey.value = e.target.value
@@ -165,7 +165,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.bearertoken.token}
+                value={authdata.bearertoken?.token}
                 onChange={e => {
                   let temp = authdata
                   temp.bearertoken = e.target.value
@@ -182,7 +182,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.oauth2.tokenurl}
+                value={authdata.oauth2?.tokenurl}
                 onChange={e => {
                   let temp = authdata
                   temp.oauth2.tokenurl = e.target.value
@@ -195,7 +195,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.oauth2.clientid}
+                value={authdata.oauth2?.clientid}
                 onChange={e => {
                   let temp = authdata
                   temp.oauth2.clientid = e.target.value
@@ -208,7 +208,7 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.oauth2.clientid}
+                value={authdata.oauth2?.clientid}
                 onChange={e => {
                   let temp = authdata
                   temp.oauth2.clientsecret = e.target.value

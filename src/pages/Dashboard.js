@@ -338,6 +338,14 @@ export default function Dashboard() {
     createData("Test Datasets Created by Automated Testcases", (info?.datasets_created_for_automated_testcases) != undefined ? info?.datasets_created_for_automated_testcases : 0),
   ]
 
+  const fail_row_data = [
+    //fail_row_data
+    createData("API",0),
+    createData("Web",0),
+    createData("Android",0),
+    createData("iOS",0)
+  ]
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <Stack
@@ -357,6 +365,8 @@ export default function Dashboard() {
             setSelectedProject(value);
             setSprintName('All')
             setSprintList([])
+            setAutomationTDgraph(false)
+            setShowTensorFlow(false)
           }}
           renderInput={(params) => (
             <TextField {...params} size="small" />
@@ -443,8 +453,8 @@ export default function Dashboard() {
               <Typography style={{ fontSize: "20px" }}><b>QualityFusion prediction : Success of Testcases in next sprint</b></Typography>
             </Grid>
             <Grid>
-              <Typography style={{ position: 'relative', top: '195px', left: '250px', fontSize: "50px", fontWeight: "400" }}><b>{Math.round(progress)}%</b></Typography>
-              <CircularProgress variant="determinate" value={69} size={300} sx={{ marginLeft: "130px", color: "#009fee" }} />
+              <Typography style={{ position: 'relative', top: '195px', left: '250px', fontSize: "50px", fontWeight: "400" }}><b>{progress != '' ? Math.round(progress)`%` :  <b style={{fontSize : "15px"}}>{failMsg != 'Jira is not configured'?failMsg : ""}</b>}</b></Typography>
+              <CircularProgress variant="determinate" value={progress != '' ?Math.round(progress): 0} size={300} sx={{ marginLeft: "130px", color: "#009fee" }} />
             </Grid>
             <Grid>
               <TableContainer
@@ -461,7 +471,7 @@ export default function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {fail_row_data.map((row) => (
                       <TableRow
                         key={row.summary}
                         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
