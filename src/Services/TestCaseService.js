@@ -158,8 +158,8 @@ export async function CreateTestCaseService(data) {
 
 
 export async function DeleteTestCase(testcaseId) {
-  let x = await axios.delete(`${baseUrl}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`).then(res =>{
-    if(res.data.status == "SUCCESS"){
+  let x = await axios.delete(`${baseUrl}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`).then(res => {
+    if (res.data.status == "SUCCESS") {
       return true
     }
     return false
@@ -176,4 +176,14 @@ export function GetTestCase(callback, projectId, applicationId) {
       const testcases = resp?.data?.info ? resp?.data?.info : [];
       callback(testcases);
     });
+}
+
+export async function UpdateTestcase(testcaseId, testcaseName, testcaseDescription) {
+  let x = await axios.post(`${baseUrl}/qfservice/webtestcase/updateWebTestcaseInfo?testcase_id=${testcaseId}&testcase_desc=${testcaseDescription}&testcase_name=${testcaseName}`).then(res => {
+    if (res.data.status == "SUCCESS") {
+      return res.data.info.testcase_id
+    }
+    return false
+  })
+  return x
 }

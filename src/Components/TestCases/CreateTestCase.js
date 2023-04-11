@@ -10,7 +10,7 @@ import useHead from "../../hooks/useHead"
 import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
-
+import { UpdateTestcase } from "../../Services/TestCaseService"
 
 export let TCdata = {
     module_id: 0,
@@ -20,6 +20,7 @@ export let TCdata = {
 }
 
 function CreateTestCase() {
+    console.log(TCdata)
     let navigate = useNavigate();
     const [selectedProject, setSelectedProject] = useState(null);
     const [selectedApplication, setSelectedApplication] = useState(null);
@@ -32,13 +33,25 @@ function CreateTestCase() {
     function handleSubmit(e) {
         console.log(TCdata)
         if (validateFormbyName(["name", "desc"], "error")) {
-            CreateTestCaseService(TCdata).then(res => {
-                if (res) {
-                    console.log(res)
-                    MapAPiTestCaseData.testcase_id = res
-                    navigate(redirect_url[selectedApplication?.module_type])
-                }
-            })
+            if (TCdata.testcase_id === undefined) {
+                CreateTestCaseService(TCdata).then(res => {
+                    if (res) {
+                        console.log(res)
+                        MapAPiTestCaseData.testcase_id = res
+                        navigate(redirect_url[selectedApplication?.module_type])
+                    }
+                })
+            }
+            else {
+                UpdateTestcase(TCdata.testcase_id, TCdata.testcase_name, TCdata.testcase_description).then(res => {
+                    if (res) {
+                        console.log(res)
+                        MapAPiTestCaseData.testcase_id = res
+                        navigate(redirect_url[selectedApplication?.module_type])
+                    }
+                })
+            }
+
         }
 
     }
@@ -68,8 +81,12 @@ function CreateTestCase() {
     }, [selectedProject, selectedApplication]);
 
     useEffect(() => {
-        TCdata.module_id = selectedApplication?.module_id
-        TCdata.project_id = selectedProject?.project_id
+        try {
+            TCdata.module_id = selectedApplication.module_id
+            TCdata.project_id = selectedProject.project_id
+        } catch (error) {
+            console.log(error)
+        }
         MapAPiTestCaseData.module_id = selectedApplication?.module_id
         MapAPiTestCaseData.project_id = selectedProject?.project_id
     }, [selectedProject, selectedApplication])
