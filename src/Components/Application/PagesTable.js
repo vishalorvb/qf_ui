@@ -6,9 +6,16 @@ import useAuth from "../../hooks/useAuth";
 import { getPages } from "../../Services/ApplicationService";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import Table from "../../CustomComponent/Table";
-import { Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 export default function PagesTable(props) {
   const { location, actionType } = props;
+  const { header, setHeader } = useHead();
   const navigate = useNavigate();
 
   let [page, setPage] = useState([]);

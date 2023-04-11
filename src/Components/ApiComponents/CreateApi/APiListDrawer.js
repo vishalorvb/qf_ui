@@ -1,9 +1,8 @@
 import { Button, Divider, Typography } from '@mui/material'
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from 'react'
-import SmartDrawer from '../../../CustomComponent/SmartDrawer'
 import { getDatasetDetails } from '../../../Services/ApiService'
-import { setGetData } from './ApiDatasetData';
+
 import { postData } from './ApiDatasetData';
 export let getData;
 
@@ -33,11 +32,6 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
     }, [Api])
     return (
         <div>
-            {/* <Button onClick={e => setShowApi(!showApi)} variant="outlined">{showApi ? "Hide Api" : "Show Api"}</Button> */}
-            <SmartDrawer
-                open={showApi}
-                close={setShowApi}
-            >
                 <Typography align="center" m={2}>
                     List of Api
                 </Typography>
@@ -65,7 +59,6 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
                         </Stack>
                     );
                 })}
-            </SmartDrawer>
         </div>
     )
 }

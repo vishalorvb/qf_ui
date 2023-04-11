@@ -24,6 +24,7 @@ import { useLocation, useNavigate } from "react-router";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { Stack } from "@mui/system";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import AddIcon from '@mui/icons-material/Add';
 
 
 export let DatasetRequest;
@@ -185,9 +186,9 @@ function Dataset() {
             <MuiltiSelect
               sx={{
                 "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-                  {
-                    border: "none",
-                  },
+                {
+                  border: "none",
+                },
               }}
               preselect={preselect}
               // preselect ={opt}
@@ -261,15 +262,15 @@ function Dataset() {
           <div>
             <Tooltip title="Copy">
               <IconButton
-              onClick={(e) => {
-                getData_for_createDataset(
-                  setData,
-                  param.row.testcase_id,
-                  param.row.dataset_id
-                );
-                setDrawer(!drawer);
-                
-              }}
+                onClick={(e) => {
+                  getData_for_createDataset(
+                    setData,
+                    param.row.testcase_id,
+                    param.row.dataset_id
+                  );
+                  setDrawer(!drawer);
+
+                }}
               >
                 <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
               </IconButton>
@@ -351,10 +352,10 @@ function Dataset() {
     } catch (error) {
       console.log(error)
     }
-    
+
   }, [selectedScreenIds]);
 
-  useEffect(() => {}, [selectedScreen]);
+  useEffect(() => { }, [selectedScreen]);
 
   useEffect(() => {
     return () => {
@@ -364,17 +365,8 @@ function Dataset() {
 
   return (
     <div>
-      <Stack spacing={1} direction="row">
-        <Button
-          variant="contained"
-          size="small"
-          onClick={(e) => {
-            setDrawer(!drawer);
-          }}
-        >
-          {drawer ? "Cancel" : "Add DataSet"}
-        </Button>
-        {drawer && (
+      {drawer && <div>
+        <Stack spacing={1} direction="row" justifyContent="flex-end">
           <Button
             variant="contained"
             size="small"
@@ -382,17 +374,63 @@ function Dataset() {
           >
             Save
           </Button>
-        )}
-        {drawer && screeninfo.length>0 &&(
-          <PersistentDrawerRight
-            screen={screeninfo}
-            screenId={selectedScreenIds}
-            setScreenId={setSelectedScreenIds}
-          ></PersistentDrawerRight>
-        )}
-      </Stack>
-      {drawer == false && (
-        <div>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={(e) => {
+              setDrawer(!drawer);
+            }}
+          >
+            Cancel
+          </Button>
+        </Stack>
+        <Grid container columnSpacing={2}>
+          <Grid item md={3}>
+            {screeninfo.length > 0 && (
+              <PersistentDrawerRight
+                screen={screeninfo}
+                screenId={selectedScreenIds}
+                setScreenId={setSelectedScreenIds}
+              ></PersistentDrawerRight>
+            )}
+          </Grid>
+          <Grid item md={9}>
+            {selectedScreen != undefined &&
+              selectedScreen.map((s) => {
+                return (
+                  <>
+                    <Typography mt={2} mb={-2} sx={{backgroundColor:"#e8edf2",padding:"10px",color:"002980"}}>
+                      {s.screeninfo.name}
+                    </Typography>
+                    <Table
+                      hideSearch={true}
+                      rows={s.screen_elements[0]}
+                      columns={elementcol}
+                      hidefooter={true}
+                      getRowId={(row) => row.element_id}
+                    ></Table>
+                  </>
+                );
+              })}
+          </Grid>
+        </Grid>
+      </div>}
+      {drawer == false && <div>
+        <div className="apptable">
+          <div className="intable">
+            <div style={{marginTop:"12px",float:"right"}}>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              size="small"
+              onClick={(e) => {
+                setDrawer(!drawer);
+              }}
+            >
+              Add Datasets
+            </Button>
+            </div>         
+          </div>
           <Table
             rows={datasets}
             columns={column}
@@ -400,7 +438,9 @@ function Dataset() {
             getRowId={(row) => row.dataset_id}
           ></Table>
         </div>
-      )}
+      </div>}
+
+
       {createpopup && (
         <div>
           <CreateDataSetPopUp
@@ -409,24 +449,7 @@ function Dataset() {
           />
         </div>
       )}
-      {selectedScreen != undefined &&
-        drawer &&
-        selectedScreen.map((s) => {
-          return (
-            <>
-              <Typography mt={4} mb={-2}>
-                {s.screeninfo.name}
-              </Typography>
-              <Table
-                hideSearch={true}
-                rows={s.screen_elements[0]}
-                columns={elementcol}
-                hidefooter={true}
-                getRowId={(row) => row.element_id}
-              ></Table>
-            </>
-          );
-        })}
+
       <ConfirmPop
         open={deletepopup}
         handleClose={() => setDeletepopup(false)}

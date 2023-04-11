@@ -408,11 +408,12 @@ select {
   position: relative;
 }
 .intable {
-  width: 60%;
+  width: 67%;
   
   position: absolute;
   left: 300px;
   z-index: 2;
+  top: -10px;
 }
 
 .intableselect {
@@ -520,7 +521,6 @@ select {
 
 .nameColumn {
   color: $accent;
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -534,4 +534,14 @@ label::after {
 }
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: $accent;
+}
+.css-11qr2p8-MuiButtonBase-root-MuiButton-root{
+  text-transform: none !important;
+}
+.menuBadge {
+  background-color: $accent;
+  border-radius: 10px;
+  padding: 0px 10px;
+  color: white;
+  margin-left: -20px;
 }
