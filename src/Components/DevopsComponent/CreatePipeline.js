@@ -1,5 +1,5 @@
 import useHead from "../../hooks/useHead";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   getCreatePipelineData,
@@ -12,12 +12,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { Stack } from "@mui/system";
 
 export default function CreatePipeline() {
   const [pipelineData, setPipelineData] = useState({});
   const [defaultData, setDefaultData] = useState({});
   const [msg, setMsg] = useState("");
   const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const schema = yup.object().shape({
     releaseName: yup.string().required(),
@@ -294,12 +296,23 @@ export default function CreatePipeline() {
                 control={control}
               />
             </Grid>
-            <Grid item md={2}>
+            {/* <Grid item md={2}>
               <Button type="submit" variant="contained">
                 Save
               </Button>
-            </Grid>
+            </Grid> */}
           </Grid>
+          <Stack mt={2} spacing={2} direction="row-reverse">
+          <Button variant="contained" type="submit" >
+            Save
+          </Button>
+          <Button
+            sx={{ color: "grey", textDecoration: "underline" }}
+            onClick={() => navigate("/pipeline")}
+          >
+            Cancel
+          </Button>
+        </Stack>
         </Box>
       </form>
     </>

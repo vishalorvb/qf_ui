@@ -41,6 +41,9 @@ const CreateInstance = lazy(() =>
 const CreateAnsibleInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateAnsibleInstance")
 );
+const UpdateAnsibleInstance = lazy(() =>
+  import("../Components/ReleaseComponents/CreateAnsibleInstance")
+);
 const AddTestcaseToTestset = lazy(() =>
   import("../Components/TestSet/AddTestcaseToTestset")
 );
@@ -294,6 +297,11 @@ export const Routes = [
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "UpdateAnsibleInstance",
+        element: UpdateAnsibleInstance,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
