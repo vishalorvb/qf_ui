@@ -122,11 +122,13 @@ export default function Login() {
   };
 
   useEffect(() => {
-    auth?.user && navigate(from, { replace: true });
+    // auth?.user && navigate(from, { replace: true });
+    auth?.user && navigate("/createApplication");
   }, [auth]);
 
   useEffect(() => {
-    auth?.user && navigate(from, { replace: true });
+    // auth?.user && navigate(from, { replace: true });
+    auth?.user && navigate("/createApplication");
   }, []);
 
   return (
