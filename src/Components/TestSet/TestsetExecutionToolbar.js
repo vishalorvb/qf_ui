@@ -23,6 +23,7 @@ import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import useHead from "../../hooks/useHead";
 import { useNavigate } from "react-router-dom";
 
 function TestsetExecutionToolbar({
@@ -72,9 +73,6 @@ function TestsetExecutionToolbar({
   console.log(projectId);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const handleClick = () => {
-    console.info(`You clicked `);
-  };
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -203,7 +201,7 @@ function TestsetExecutionToolbar({
     reset();
     // axios.get(`/qfservice/build-environment/${applicationId}`).then((resp) => {
     axios
-      .get(`/qfservice/build-environment?project_id=79&module_id=76`)
+      .get(`/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`)
       .then((resp) => {
         console.log(resp?.data?.data);
         const buildEnv = resp?.data?.data;
@@ -324,16 +322,18 @@ function TestsetExecutionToolbar({
                 aria-label="split button"
               >
                 <Button
+                 sx={{backgroundColor: "#009fee"}} 
                   fullWidth
                   type="submit"
-                  // onClick={() => {
-                  //    {handleSubmit(onApiSubmitExecute)}
-                  //     // : handleSubmit(onSubmitExecute);
-                  // }}
+                  onClick={
+                     
+                    handleSubmit(onSubmitExecute())
+                }
                 >
                   Execute
                 </Button>
                 <Button
+                 sx={{backgroundColor: "#009fee"}} 
                   size="small"
                   aria-controls={open ? "split-button-menu" : undefined}
                   aria-expanded={open ? "true" : undefined}
@@ -364,7 +364,7 @@ function TestsetExecutionToolbar({
                   >
                     <Paper>
                       <MenuList id="split-button-menu" autoFocusItem>
-                        <MenuItem size="small">GENERATE Script</MenuItem>
+                        <MenuItem size="small" onClick={handleSubmit(onSubmitGenerate())} >GENERATE Script</MenuItem>
                       </MenuList>
                     </Paper>
                   </Grow>

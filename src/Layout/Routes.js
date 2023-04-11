@@ -41,6 +41,9 @@ const CreateInstance = lazy(() =>
 const CreateAnsibleInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateAnsibleInstance")
 );
+const UpdateAnsibleInstance = lazy(() =>
+  import("../Components/ReleaseComponents/CreateAnsibleInstance")
+);
 const AddTestcaseToTestset = lazy(() =>
   import("../Components/TestSet/AddTestcaseToTestset")
 );
@@ -114,10 +117,10 @@ const pagesnscreen = lazy(() =>
 const CreateTestCase = lazy(() =>
   import("../Components/TestCases/CreateTestCase")
 );
+
 const TestcaseExecution = lazy(() =>
   import(`../Components/Execution/TestcaseExecution`)
 );
-
 const TestsetExecution = lazy(() =>
   import(`../Components/Execution/TestsetExecution`)
 );
@@ -241,8 +244,13 @@ export const Routes = [
     ],
   },
   {
-    path: "execution",
-    element: Execution,
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -341,6 +349,11 @@ export const Routes = [
         element: CreateAnsibleInstance,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
+      {
+        path: "UpdateAnsibleInstance",
+        element: UpdateAnsibleInstance,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
     ],
   },
   {
@@ -396,7 +409,7 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "CreateTestcase",
+        path: "AddScreen",
         element: CreateWebTestcase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },

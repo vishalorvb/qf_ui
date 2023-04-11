@@ -148,15 +148,12 @@ export default function TestcaseExecution() {
     <Box sx={{ width: "100%" }}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
-          {/* <Searchbar/> */}
-          <>
             <input
               type="text"
               placeholder="Search"
               value={searchTerm}
               onChange={handleSearchChange}
             />
-          </>
         </Grid>
         <Grid item md={9.2}>
           <ProjectnApplicationSelector
