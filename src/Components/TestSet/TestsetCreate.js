@@ -280,7 +280,7 @@ function TestsetCreate() {
           <Grid item xs={4} sm={4} md={5}>
             <label>Select Testcase:</label>
             <select id="left" multiple style={{ padding: "10px" }}>
-              {leftTestcase.length > 0
+              {leftTestcase?.length > 0
                 ? leftTestcase
                     .filter((ts) => ts.datasets != null)
                     .map((ts) => (
