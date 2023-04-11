@@ -1,6 +1,14 @@
 import React from "react";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+
+import MenuList from "@mui/material/MenuList";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import {
@@ -16,15 +24,12 @@ import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
-function TestsetExecutionToolbar({
-  applicationId,
-  projectId,
-  selectedtestcases,
-  testsetId,
-  selecteddatasets,
-}) {
+function TestsetExecutionToolbar({applicationId,
+    projectId,
+    selectedtestcases,
+    testsetId}) {
   const { auth } = useAuth();
-
+  const navigate = useNavigate();
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [execEnvList, setExecEnvList] = useState([]);
   const [clientInactive, setClientInactive] = useState(false);
@@ -43,6 +48,16 @@ function TestsetExecutionToolbar({
     browser: yup.array().required(),
     commitMsg: execLoc !== "local" && yup.string().required(),
   });
+  console.log(projectId);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const handleClick = () => {
+    console.info(`You clicked `);
+  };
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
   const {
     control,
     handleSubmit,
@@ -69,8 +84,7 @@ function TestsetExecutionToolbar({
     const executionData = {
       testset_id: testsetId,
       module_id: applicationId,
-      web_testcases_list_to_execute: datasets,
-      mobile_platform: applicationType,
+      web_testcases_list_to_execute: selectedtestcases,
       config_id: null,
       config_name: null,
       build_environment_name: data?.buildenvName?.split("&")[1],
@@ -125,9 +139,8 @@ function TestsetExecutionToolbar({
 
     const executionData = {
       testset_id: testsetId,
-      module_id: applicationId,
-      web_testcases_list_to_execute: datasets,
-      mobile_platform: applicationType,
+      module_id : applicationId,
+      web_testcases_list_to_execute: selectedtestcases,
       config_id: null,
       config_name: null,
       build_environment_name: data?.buildenvName?.split("&")[1],
@@ -164,12 +177,13 @@ function TestsetExecutionToolbar({
           : setRemoteExecutionsuccess(true);
       });
   };
+
+
   useEffect(() => {
     reset();
+    // axios.get(`/qfservice/build-environment/${applicationId}`).then((resp) => {
     axios
-      .get(
-        `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
-      )
+      .get(`/qfservice/build-environment?project_id=79&module_id=76`)
       .then((resp) => {
         console.log(resp?.data?.data);
         const buildEnv = resp?.data?.data;
@@ -230,57 +244,148 @@ function TestsetExecutionToolbar({
         msg={"Scripts Executed Successfully"}
         severity="success"
       />
-      <Stack spacing={1} direction="row" justifyContent="flex-start" mt={1}>
-        <SelectElement
-          name="executionLoc"
-          label="Execution Location"
-          size="small"
-          sx={{ width: 200 }}
-          control={control}
-          onChange={(e) => setExecLoc(e)}
-          options={execEnvList}
-        />
-        <SelectElement
-          name="buildenvName"
-          label="build env. Name"
-          size="small"
-          sx={{ width: 200 }}
-          control={control}
-          options={buildEnvList}
-        />
-        <MultiSelectElement
-          label="Browser"
-          name="browser"
-          size="small"
-          control={control}
-          sx={{ width: 200 }}
-          options={["Chrome", "Edge", "Firefox", "Safari"]}
-        />
-        <CheckboxButtonGroup
-          name="regenerateScript"
-          control={control}
-          options={[
-            {
-              id: "1",
-              label: "Regenerate Script",
-            },
-          ]}
-        />
-        <FeatureMenu />
-        {selectedtestcases.length > 0 && (
+      <Grid
+        container
+        direction="row"
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        spacing={1}
+      >
+        <Grid item md={2}>
+          <SelectElement
+            name="executionLoc"
+            label="Execution Location"
+            size="small"
+            fullWidth
+            control={control}
+            onChange={(e) => setExecLoc(e)}
+            options={execEnvList}
+          />
+        </Grid>
+        <Grid item md={2}>
+          <Stack direction="column">
+            <SelectElement
+              name="buildenvName"
+              label="build env. Name"
+              size="small"
+              fullWidth
+              control={control}
+              options={buildEnvList}
+            />
+              <Button onClick={()=>{
+              navigate("/addEnvironment",{state : { pId : projectId}})
+             }}>
+              + Add Environment
+            </Button>
+          </Stack>
+        </Grid>
+        <Grid item md={2}>
+          <MultiSelectElement
+            label="Browser"
+            name="browser"
+            size="small"
+            control={control}
+            fullWidth
+            options={["Chrome", "Edge", "Firefox", "Safari"]}
+          />
+        </Grid>
+        <Grid item md={2}>
+          <FeatureMenu />
+        </Grid>
+        <Grid item md={2}>
+          <Stack direction="column">
+            <React.Fragment>
+              <ButtonGroup
+                variant="contained"
+                ref={anchorRef}
+                aria-label="split button"
+              >
+                <Button
+                  fullWidth
+                  type="submit"
+                  // onClick={() => {
+                  //    {handleSubmit(onApiSubmitExecute)}
+                  //     // : handleSubmit(onSubmitExecute);
+                  // }}
+                >
+                  Execute
+                </Button>
+                <Button
+                  size="small"
+                  aria-controls={open ? "split-button-menu" : undefined}
+                  aria-expanded={open ? "true" : undefined}
+                  aria-label="select merge strategy"
+                  aria-haspopup="menu"
+                  onClick={handleToggle}
+                >
+                  <ArrowDropDownIcon />
+                </Button>
+              </ButtonGroup>
+              <Popper
+                sx={{
+                  zIndex: 1,
+                }}
+                open={open}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === "bottom" ? "center top" : "center bottom",
+                    }}
+                  >
+                    <Paper>
+                      <MenuList id="split-button-menu" autoFocusItem>
+                        <MenuItem size="small">GENERATE Script</MenuItem>
+                      </MenuList>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </React.Fragment>
+            <CheckboxButtonGroup
+              name="regenerateScript"
+              control={control}
+              options={[
+                {
+                  id: "1",
+                  label: "Regenrate Script",
+                },
+              ]}
+            />
+          </Stack>
+        </Grid>
+
+        {/* {selectedtestcases.length > 0 && (
           <>
-            <Button variant="contained" onClick={handleSubmit(onSubmitExecute)}>
-              Execute
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleSubmit(onSubmitGenerate)}
-            >
-              Generate
-            </Button>
+            <Grid item md={2}>
+              <Button
+                sx={{ width: 150 }}
+                variant="contained"
+                onClick={handleSubmit(onSubmitExecute)}
+              >
+                Execute
+              </Button>
+            </Grid>
+            <Grid item md={2}>
+              <Button
+                sx={{ width: 150 }}
+                variant="contained"
+                onClick={handleSubmit(onSubmitGenerate)}
+              >
+                Generate
+              </Button>
+            </Grid>
           </>
-        )}
-      </Stack>
+        )} */}
+      </Grid>
+
       {execLoc !== "local" && (
         <Stack mt={1}>
           <TextFieldElement

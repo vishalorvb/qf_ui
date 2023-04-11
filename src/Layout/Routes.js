@@ -104,16 +104,13 @@ const AddConfigurationPopUp = lazy(() =>
   import("../Components/ConfigureDevices/AddConfigurationPopUp")
 );
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
-const createApplication = lazy(() =>
-  import(`../Components/Application/CreateApplication`)
-);
-const applicationList = lazy(() => import(`../pages/ApplicationList`));
-const pagesnscreen = lazy(() =>
-  import(`../Components/Application/PagesnScreens`)
-);
-const CreateTestCase = lazy(() =>
-  import("../Components/TestCases/CreateTestCase")
-);
+
+const ExecutionModified = lazy(()=>import(`../Components/Execution/Execution`))
+
+const AddEnvironment = lazy(()=>import(`../Components/Execution/AddEnvironment`))
+const TestcaseExecution = lazy(()=>import(`../Components/Execution/TestcaseExecution`))
+const TestsetExecution = lazy(()=>import(`../Components/Execution/TestsetExecution`))
+
 
 export const Routes = [
   {
@@ -153,6 +150,27 @@ export const Routes = [
   {
     path: "createProject",
     element: CreateProject,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  
+  {
+    path: "ExecutionModified",
+    element: ExecutionModified,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "addEnvironment",
+    element: AddEnvironment,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -397,64 +415,65 @@ export const Routes = [
       },
     ],
   },
-  // {
-  //   path: "application",
-  //   element: Applications,
-  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //   subRoute: [
-  //     {
-  //       path: "pages",
-  //       element: Pages,
-  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //       subRoute: [
-  //         {
-  //           path: "PageElements",
-  //           element: PageElements,
-  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: "screen",
-  //       element: Screen,
-  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //       subRoute: [
-  //         {
-  //           path: "createscreen",
-  //           element: CreateScreen,
-  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //           subRoute: [
-  //             {
-  //               path: "SelectElements",
-  //               element: SelectedPageElements,
-  //               accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //             },
-  //           ],
-  //         },
-  //         {
-  //           path: "screenelements",
-  //           element: ScreenElements,
-  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //         },
-  //         {
-  //           path: "updateScreen",
-  //           element: UpdateScreen,
-  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       path: "Testcase",
-  //       element: WebTestcase,
-  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //       subRoute: [
-  //         {
-  //           path: "CreateTestcase",
-  //           element: CreateWebTestcase,
-  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    path: "application",
+    element: Applications,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: "pages",
+        element: Pages,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "PageElements",
+            element: PageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
+      {
+        path: "screen",
+        element: Screen,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "createscreen",
+            element: CreateScreen,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            subRoute: [
+              {
+                path: "SelectElements",
+                element: SelectedPageElements,
+                accessRole: [1, 2, 3, 4, 5, 6, 7],
+              },
+            ],
+          },
+          {
+            path: "screenelements",
+            element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "updateScreen",
+            element: UpdateScreen,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
+      {
+        path: "Testcase",
+        element: WebTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "CreateTestcase",
+            element: CreateWebTestcase,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
+     
+    ],
+  },
 ];
