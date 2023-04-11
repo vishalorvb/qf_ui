@@ -9,15 +9,15 @@ export const testManagementList = [
     icon: <i className="qf icon-admin"></i>,
     subList: [
       {
-        name: "Users",
+        name: "Add User",
         id: "11",
-        route: "users",
+        route: "addUser",
         accessRole: [2],
       },
       {
-        name: "Add User",
+        name: "Users",
         id: "12",
-        route: "addUser",
+        route: "users",
         accessRole: [2],
       },
       {
