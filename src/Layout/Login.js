@@ -123,12 +123,12 @@ export default function Login() {
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
-    auth?.user && navigate("/createApplication");
+    auth?.user && navigate("/Application", { state: "recentApplication" });
   }, [auth]);
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
-    auth?.user && navigate("/createApplication");
+    auth?.user && navigate("/Application", { state: "recentApplication" });
   }, []);
 
   return (

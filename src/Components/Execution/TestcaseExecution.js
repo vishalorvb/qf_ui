@@ -65,7 +65,6 @@ export default function TestcaseExecution() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -102,31 +101,37 @@ export default function TestcaseExecution() {
       });
   }, [selectedProject, selectedApplication]);
   const itemRender = (rawList) => {
-    const navigationList = rawList?.filter(apiItem=>apiItem.name.toLowerCase().includes( searchTerm.toLowerCase()) || apiItem.description.toLowerCase().includes( searchTerm.toLowerCase()))?.map((apiItem, index) => {
-      return (
-        <ListItem
-          sx={{
-            display: "block",
-            fontSize: "x-small",
-          }}
-          key={apiItem.name}
-          divider
-          selected={selectedItem === apiItem?.testcase_id}
-        >
-          <ListItemButton
-            onClick={() => {
-              setSelectedItem(apiItem?.testcase_id);
+    const navigationList = rawList
+      ?.filter(
+        (apiItem) =>
+          apiItem.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          apiItem.description.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      ?.map((apiItem, index) => {
+        return (
+          <ListItem
+            sx={{
+              display: "block",
+              fontSize: "x-small",
             }}
+            key={apiItem.name}
+            divider
+            selected={selectedItem === apiItem?.testcase_id}
           >
-            <Typography>
-              <b style={{ fontSize: "15px" }}>{apiItem.name}</b>
-              <br />
-              {apiItem.description}
-            </Typography>
-          </ListItemButton>
-        </ListItem>
-      );
-    });
+            <ListItemButton
+              onClick={() => {
+                setSelectedItem(apiItem?.testcase_id);
+              }}
+            >
+              <Typography>
+                <b style={{ fontSize: "15px" }}>{apiItem.name}</b>
+                <br />
+                {apiItem.description}
+              </Typography>
+            </ListItemButton>
+          </ListItem>
+        );
+      });
     return navigationList;
   };
   useEffect(() => {
@@ -138,8 +143,6 @@ export default function TestcaseExecution() {
       };
     });
   }, []);
-
-
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -168,7 +171,6 @@ export default function TestcaseExecution() {
       <Grid container justifyContent="space-between">
         <Grid item md={2.8}>
           <List
-          
             sx={{
               overflowY: "scroll",
               height: "400px",
@@ -181,10 +183,14 @@ export default function TestcaseExecution() {
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid item md={9}>
-          <ExecutionDetails selectedItem={selectedItem} projectId={selectedProject.project_id} applicationType={selectedApplication?.workflowType} applicationId={selectedApplication?.module_id}></ExecutionDetails>
+          <ExecutionDetails
+            selectedItem={selectedItem}
+            projectId={selectedProject.project_id}
+            applicationType={selectedApplication?.workflowType}
+            applicationId={selectedApplication?.module_id}
+          ></ExecutionDetails>
         </Grid>
       </Grid>
     </Box>
   );
 }
- 

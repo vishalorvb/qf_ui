@@ -114,10 +114,17 @@ const pagesnscreen = lazy(() =>
 const CreateTestCase = lazy(() =>
   import("../Components/TestCases/CreateTestCase")
 );
+const TestcaseExecution = lazy(() =>
+  import(`../Components/Execution/TestcaseExecution`)
+);
+
+const TestsetExecution = lazy(() =>
+  import(`../Components/Execution/TestsetExecution`)
+);
 
 export const Routes = [
   {
-    path: "Application",
+    path: "Application/Recent",
     element: applicationList,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
@@ -136,12 +143,46 @@ export const Routes = [
             element: ScreenElements,
             accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
+          {
+            path: "SelectElements",
+            element: SelectedPageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
         ],
       },
     ],
   },
   {
-    path: "createApplication",
+    path: "Application/Search",
+    element: applicationList,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: ":pagesnscreen",
+        element: pagesnscreen,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "PageElements",
+            element: PageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "screenelements",
+            element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "SelectElements",
+            element: SelectedPageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "Application/Create",
     element: createApplication,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
@@ -202,6 +243,17 @@ export const Routes = [
   {
     path: "execution",
     element: Execution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {

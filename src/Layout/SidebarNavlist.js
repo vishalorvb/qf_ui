@@ -38,20 +38,20 @@ export const testManagementList = [
       {
         name: "Create",
         id: "21",
-        route: "createApplication",
+        route: "Application/Create",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Recent",
         id: "22",
-        route: "Application",
+        route: "Application/Recent",
         state: "recentApplication",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Search",
         id: "23",
-        route: "Application",
+        route: "Application/Search",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
@@ -141,18 +141,18 @@ export const testManagementList = [
     route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-execute"></i>,
-    subList:[
+    subList: [
       {
-        name:"Testcase",
-        route:"TestcaseExecution",
-        accessRole:[1,2,3,4,5,6,7]
+        name: "Testcase",
+        route: "TestcaseExecution",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        name:"Testset",
-        route:"TestsetExecution",
-        accessRole:[1,2,3,4,5,6,7]
-      }
-    ]
+        name: "Testset",
+        route: "TestsetExecution",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     name: "Reports",
