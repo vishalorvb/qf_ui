@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, IconButton, Tooltip } from '@mui/material'
+import { Button, Divider, Grid, IconButton, MenuItem, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Table from '../../../CustomComponent/Table'
 import { getApiDatasets } from '../../../Services/ApiService'
@@ -20,6 +20,8 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { DeleteApiDataset } from '../../../Services/ApiService'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
+import TableActions from '../../../CustomComponent/TableActions'
+import { DeleteOutlined } from '@mui/icons-material'
 
 function ApiDatasets() {
 
@@ -80,57 +82,98 @@ function ApiDatasets() {
             field: "description",
             headerName: "Description",
             flex: 3,
-            sortable: false,
-            align: "left",
-        },
-        {
-            field: "example",
-            headerName: "Action",
-            flex: 3,
-            sortable: false,
-            align: "left",
             renderCell: param => {
+
                 return (
-                    <div>
-                        <Tooltip title="Edit">
-                            <IconButton
-                                onClick={() => {
-                                    postData.tc_dataset_id = param.row.testcase_dataset_id
-                                    postData.testcase_dataset_name = param.row.dataset_name_in_testcase
-                                    postData.description = param.row.description
-                                    setDatasetId(param.row.testcase_dataset_id)
-                                    setCreateDatasets(true)
-                                }}
-                            >
-                                <EditOutlinedIcon></EditOutlinedIcon>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Copy">
-                            <IconButton
-                                onClick={() => {
-                                    setDatasetId(param.row.testcase_dataset_id)
-                                    setCreateDatasets(true)
-                                }}
-                            >
-                                <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                            <IconButton
-                                onClick={() => {
-                                    // console.log(param.row.testcase_dataset_id)
-                                    DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
-                                        getApiDatasets(setDatasets, location.state.testcaseId)
-                                    })
-                                }}
-                            >
-                                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                  <TableActions
+                    heading={param.row?.description}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        setDatasetId(param.row.testcase_dataset_id)
+                        setCreateDatasets(true)
+                    }}
+                    > 
+                    <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>  
+                    Copy  
+                    </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                        postData.tc_dataset_id = param.row.testcase_dataset_id
+                        postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+                        postData.description = param.row.description
+                        setDatasetId(param.row.testcase_dataset_id)
+                        setCreateDatasets(true)
+                    }}
+                  >
+                  <EditOutlinedIcon></EditOutlinedIcon>
+                  Edit
+                  </MenuItem>
+                      <MenuItem
+                      onClick={() => {
+                        // console.log(param.row.testcase_dataset_id)
+                        DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
+                            getApiDatasets(setDatasets, location.state.testcaseId)
+                        })
+                    }}
+                      >
+                      <DeleteOutlined></DeleteOutlined>
+                      Delete
+                      </MenuItem>
+                  </TableActions>
                 )
-            }
+              },
+            sortable: false,
+            align: "left",
         },
+        // {
+        //     field: "example",
+        //     headerName: "Action",
+        //     flex: 3,
+        //     sortable: false,
+        //     align: "left",
+        //     renderCell: param => {
+        //         return (
+        //             <div>
+        //                 <Tooltip title="Edit">
+        //                     <IconButton
+        //                         onClick={() => {
+        //                             postData.tc_dataset_id = param.row.testcase_dataset_id
+        //                             postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+        //                             postData.description = param.row.description
+        //                             setDatasetId(param.row.testcase_dataset_id)
+        //                             setCreateDatasets(true)
+        //                         }}
+        //                     >
+        //                         <EditOutlinedIcon></EditOutlinedIcon>
+        //                     </IconButton>
+        //                 </Tooltip>
+        //                 <Tooltip title="Copy">
+        //                     <IconButton
+        //                         onClick={() => {
+        //                             setDatasetId(param.row.testcase_dataset_id)
+        //                             setCreateDatasets(true)
+        //                         }}
+        //                     >
+        //                         <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+        //                     </IconButton>
+        //                 </Tooltip>
+        //                 <Tooltip title="Delete">
+        //                     <IconButton
+        //                         onClick={() => {
+        //                             // console.log(param.row.testcase_dataset_id)
+        //                             DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
+        //                                 getApiDatasets(setDatasets, location.state.testcaseId)
+        //                             })
+        //                         }}
+        //                     >
+        //                         <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
+        //                     </IconButton>
+        //                 </Tooltip>
+        //             </div>
+        //         )
+        //     }
+        // },
     ]
     useEffect(() => {
         getApiDatasets(setDatasets, location.state.testcaseId)

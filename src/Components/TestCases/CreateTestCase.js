@@ -11,6 +11,8 @@ import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
 import { UpdateTestcase } from "../../Services/TestCaseService"
+import { getApplicationDetails } from "../../Services/ApplicationService"
+
 
 export let TCdata = {
     module_id: 0,
@@ -28,7 +30,7 @@ function CreateTestCase() {
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
     const { setHeader } = useHead();
-    let redirect_url = [" ", "/testcase/MapApiTestCase", "/testcase/CreateTestcase",]
+    let redirect_url = [" ", "/testcase/MapApiTestCase", "/testcase/AddScreen",]
 
     function handleSubmit(e) {
         console.log(TCdata)

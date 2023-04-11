@@ -351,7 +351,7 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "CreateTestcase",
+        path: "AddScreen",
         element: CreateWebTestcase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
