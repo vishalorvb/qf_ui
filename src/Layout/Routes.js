@@ -441,7 +441,7 @@ export const Routes = [
     ],
   },
   {
-    path: "testset",
+    path: "Testset",
     element: Testset,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [

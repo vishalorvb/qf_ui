@@ -94,7 +94,7 @@ export const testManagementList = [
       {
         name: "Create",
         id: "41",
-        route: "/testcase/create",
+        route: "/Testcase/create",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
