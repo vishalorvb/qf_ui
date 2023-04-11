@@ -1,9 +1,10 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 // import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
 import useHead from "../hooks/useHead";
 import axios, { axiosPrivate } from "../api/axios";
@@ -33,7 +34,7 @@ function Testset() {
   const createTestcaseHandler = (e) => {
     console.log(selectedProject?.project_id);
     console.log(selectedApplication?.module_id);
-    navigate("createTestcase", {
+    navigate("createTestset", {
       state: {
         param1: e,
         param2: selectedProject?.project_id,
@@ -42,9 +43,10 @@ function Testset() {
     });
   };
 
-  const editTestcaseHandler = () => {
+  const editTestcaseHandler = (e) => {
     navigate("AddTestcaseToTestset", {
       state: {
+        param1: e,
         param2: selectedProject?.project_id,
         param3: selectedApplication?.module_id,
       },
@@ -72,65 +74,45 @@ function Testset() {
     {
       field: "testset_name",
       headerName: "Testset Name",
-      flex: 3,
-      headerAlign: "center",
+      flex: 4,
+      headerAlign: "left",
       sortable: false,
       align: "left",
+      renderCell: (param) => {
+        return (
+          <Typography
+            onClick={() =>
+              navigate("UpdateTestcasesOrder", {
+                state: {
+                  applicationId: selectedApplication?.module_id,
+                  testsetId: param.row.testset_id,
+                  projectId: selectedProject?.project_id,
+                },
+              })
+            }
+            variant="p"
+            className="nameColumn"
+          >
+            {param?.row?.testset_name}
+          </Typography>
+        );
+      },
     },
     {
       field: "testset_desc",
       headerName: "Testset Description",
-      flex: 3,
-      headerAlign: "center",
+      flex: 4,
+      headerAlign: "left",
       sortable: false,
       align: "left",
-    },
-    {
-      field: "",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
       renderCell: (param) => {
-        return (
-          <>
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={(e) => {
-                  deleteTestcaseHandler(param.row);
-                }}
-              >
-                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit Testset">
-              <IconButton
-                onClick={(e) => {
-                  editTestcaseHandler(param.row);
-                }}
-              >
-                <EditOutlinedIcon></EditOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Testcases ReOrder">
-              <IconButton
-                onClick={() =>
-                  navigate("UpdateTestcasesOrder", {
-                    state: {
-                      applicationId: selectedApplication?.module_id,
-                      testsetId: param.row.testset_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
-                }
-              >
-                <AirplayIcon />
-              </IconButton>
-            </Tooltip>
-          </>
+        return TestsetDescriptionCell(
+          param,
+          selectedApplication,
+          selectedProject,
+          deleteTestcaseHandler
         );
       },
-      headerAlign: "center",
-      align: "center",
     },
   ];
 
@@ -139,10 +121,10 @@ function Testset() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Testset",
-        plusButton: true,
+        name: "Recent Testsets",
+        plusButton: false,
         buttonName: "Create Testset",
-        plusCallback: ()=>createTestcaseHandler(),
+        plusCallback: () => createTestcaseHandler(),
       };
     });
     return () =>
@@ -154,7 +136,7 @@ function Testset() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [selectedProject,selectedApplication]);
+  }, [selectedProject, selectedApplication]);
 
   useEffect(() => {
     selectedApplication?.module_id &&
@@ -170,111 +152,6 @@ function Testset() {
 
   return (
     <div>
-      {/* <Paper
-        elevation={0}
-        sx={{ padding: "2px", marginTop: "10px", marginBottom: "10px" }}
-      >
-        <Container
-          component={"div"}
-          maxWidth={false}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            marginTop: "10px",
-            justifyContent: "flex-start",
-          }}
-        >
-          <Grid
-            container
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            xl={4}
-            sx={{ marginBottom: "10px" }}
-          >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}>
-              <label>
-                Project <span className="importantfield">*</span>:
-              </label>
-            </Grid>
-            <Grid item xs={6} sm={6} md={8} xl={7}>
-              <Autocomplete
-                size="small"
-                options={projectObject}
-                getOptionLabel={(option) => option.project_name}
-                onChange={(e, value) => {
-                  // Uid.current = value.id;
-                  setProjectId(value.project_id);
-                  onChangeHandler();
-                }}
-                noOptionsText={"User not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="userAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            xl={4}
-            sx={{ marginBottom: "10px" }}
-          >
-            <Grid item xs={6} sm={6} md={3.5} xl={4}>
-              <label>
-                Application <span className="importantfield">*</span>:
-              </label>
-            </Grid>
-            <Grid item xs={6} sm={6} md={8} xl={7}>
-              <Autocomplete
-                size="small"
-                options={workflowObject}
-                getOptionLabel={(option) => option.module_name}
-                onChange={(e, value) => {
-                  // Workflow_Id.current = value.module_id;
-                  setApplicationId(value.module_id);
-                }}
-                noOptionsText={"Applications not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="applicationAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
-            </Grid>
-          </Grid>
-          <Button
-            variant="contained"
-            onClick={submit}
-            startIcon={<SearchOutlinedIcon />}
-            // sx={{
-            //   marginLeft: "45%",
-            //   marginRight: "auto",
-            //   marginBottom: "10px",
-            //   marginTop: "25px",
-            // }}
-          >
-            Search
-          </Button>
-        </Container>
-      </Paper> */}
       <ProjectnApplicationSelector
         selectedProject={selectedProject}
         setSelectedProject={setSelectedProject}
@@ -326,5 +203,64 @@ function Testset() {
     </div>
   );
 }
+
+const TestsetDescriptionCell = (
+  param,
+  selectedApplication,
+  selectedProject,
+  deleteTestcaseHandler
+) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{param?.row?.testset_desc}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() =>
+            navigate("AddTestcaseToTestset", {
+              state: {
+                param1: param?.row,
+                param2: selectedProject?.project_id,
+                param3: selectedApplication?.module_id,
+              },
+            })
+          }
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => deleteTestcaseHandler(param.row)}>
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};
 
 export default Testset;

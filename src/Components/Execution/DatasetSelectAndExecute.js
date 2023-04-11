@@ -43,15 +43,27 @@ export default function DatasetSelectAndExecute({
   };
 
   useEffect(() => {
+    console.log(datasetList);
+    console.log(applicationType);
+  }, [datasetList]);
+
+  useEffect(() => {
     open &&
-      axios
-        .get(
-          `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
-        )
-        .then((resp) => {
-          console.log(resp?.data?.info?.datasets);
-          setDataList(resp?.data?.info?.datasets);
-        });
+      (applicationType === 1
+        ? axios
+            .get(`/qfservice/api/testcases/${testcaseId}/datasets`)
+            .then((resp) => {
+              console.log(resp?.data?.data);
+              setDataList(resp?.data?.data);
+            })
+        : axios
+            .get(
+              `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
+            )
+            .then((resp) => {
+              console.log(resp?.data?.info?.datasets);
+              setDataList(resp?.data?.info?.datasets);
+            }));
   }, [open]);
 
   return (

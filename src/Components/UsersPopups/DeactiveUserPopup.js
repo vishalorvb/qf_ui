@@ -35,7 +35,7 @@ function DeactiveUserPopup(props) {
   const submit = () => {
     axiosPrivate
       .post(
-        `qfauthservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=0`
+        `qfuserservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=0`
       )
       .then((res) => {
         console.log(res.message);

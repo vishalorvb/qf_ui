@@ -47,15 +47,15 @@ const AddTestcaseToTestset = lazy(() =>
 const CreatePipeline = lazy(() =>
   import("../Components/DevopsComponent/CreatePipeline")
 );
-const CreateTestcase = lazy(() =>
-  import("../Components/TestSet/TestsetCreate")
-);
+const createTestset = lazy(() => import("../Components/TestSet/TestsetCreate"));
 
 const UpdateTestcasesOrder = lazy(() =>
   import("../Components/TestSet/UpdateTestcasesOrder")
 );
 
 const Settings = lazy(() => import("../pages/Settings"));
+const AddUser = lazy(() => import("../pages/AddUser"));
+const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
 const Screen = lazy(() =>
   import("../Components/Application/ScreenComponents/Screen")
@@ -73,8 +73,8 @@ const ScreenElements = lazy(() =>
 const UpdateScreen = lazy(() =>
   import("../Components/Application/ScreenComponents/UpdateScreen")
 );
-const CreateApiTestcase = lazy(() =>
-  import("../Components/TestCases/apiTestcase/ApiTestcase")
+const MapApiTestCase = lazy(() =>
+  import("../Components/TestCases/apiTestcase/MapApiTestCase")
 );
 const WebTestcase = lazy(() =>
   import("../Components/TestCases/webTestcase/WebTestcase")
@@ -104,39 +104,55 @@ const AddConfigurationPopUp = lazy(() =>
   import("../Components/ConfigureDevices/AddConfigurationPopUp")
 );
 const getTestcases = lazy(() => import(`../pages/GetTestcases`));
-
-const ExecutionModified = lazy(()=>import(`../Components/Execution/Execution`))
-
-const AddEnvironment = lazy(()=>import(`../Components/Execution/AddEnvironment`))
-const TestcaseExecution = lazy(()=>import(`../Components/Execution/TestcaseExecution`))
-const TestsetExecution = lazy(()=>import(`../Components/Execution/TestsetExecution`))
-
+const createApplication = lazy(() =>
+  import(`../Components/Application/CreateApplication`)
+);
+const applicationList = lazy(() => import(`../pages/ApplicationList`));
+const pagesnscreen = lazy(() =>
+  import(`../Components/Application/PagesnScreens`)
+);
+const CreateTestCase = lazy(() =>
+  import("../Components/TestCases/CreateTestCase")
+);
 
 export const Routes = [
   {
-    path: "ApiTestcase",
-    element: CreateApiTestcase,
+    path: "Application",
+    element: applicationList,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: ":pagesnscreen",
+        element: pagesnscreen,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "PageElements",
+            element: PageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "screenelements",
+            element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "createApplication",
+    element: createApplication,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
-    path: "TestcaseExecution",
-    element: TestcaseExecution,
+    path: "projects",
+    element: Projects,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
-    path: "TestsetExecution",
-    element: TestsetExecution,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  
-  {
-    path: "ExecutionModified",
-    element: ExecutionModified,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "addEnvironment",
-    element: AddEnvironment,
+    path: "createProject",
+    element: CreateProject,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -152,6 +168,16 @@ export const Routes = [
   {
     path: "settings",
     element: Settings,
+    accessRole: [2],
+  },
+  {
+    path: "addUser",
+    element: AddUser,
+    accessRole: [2],
+  },
+  {
+    path: "users/editUser",
+    element: EditUser,
     accessRole: [2],
   },
   {
@@ -313,13 +339,18 @@ export const Routes = [
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
-        path: "CreateAPiTestcase",
-        element: CreateApiTestcase,
+        path: "MapApiTestCase",
+        element: MapApiTestCase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         path: "CreateTestcase",
         element: CreateWebTestcase,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "Create",
+        element: CreateTestCase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
@@ -355,8 +386,8 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "createTestcase",
-        element: CreateTestcase,
+        path: "createTestset",
+        element: createTestset,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
@@ -366,65 +397,64 @@ export const Routes = [
       },
     ],
   },
-  {
-    path: "application",
-    element: Applications,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute: [
-      {
-        path: "pages",
-        element: Pages,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-        subRoute: [
-          {
-            path: "PageElements",
-            element: PageElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-      },
-      {
-        path: "screen",
-        element: Screen,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-        subRoute: [
-          {
-            path: "createscreen",
-            element: CreateScreen,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-            subRoute: [
-              {
-                path: "SelectElements",
-                element: SelectedPageElements,
-                accessRole: [1, 2, 3, 4, 5, 6, 7],
-              },
-            ],
-          },
-          {
-            path: "screenelements",
-            element: ScreenElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-          {
-            path: "updateScreen",
-            element: UpdateScreen,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-      },
-      {
-        path: "Testcase",
-        element: WebTestcase,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-        subRoute: [
-          {
-            path: "CreateTestcase",
-            element: CreateWebTestcase,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-      },
-     
-    ],
-  },
+  // {
+  //   path: "application",
+  //   element: Applications,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //   subRoute: [
+  //     {
+  //       path: "pages",
+  //       element: Pages,
+  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //       subRoute: [
+  //         {
+  //           path: "PageElements",
+  //           element: PageElements,
+  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: "screen",
+  //       element: Screen,
+  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //       subRoute: [
+  //         {
+  //           path: "createscreen",
+  //           element: CreateScreen,
+  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //           subRoute: [
+  //             {
+  //               path: "SelectElements",
+  //               element: SelectedPageElements,
+  //               accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           path: "screenelements",
+  //           element: ScreenElements,
+  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //         },
+  //         {
+  //           path: "updateScreen",
+  //           element: UpdateScreen,
+  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: "Testcase",
+  //       element: WebTestcase,
+  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //       subRoute: [
+  //         {
+  //           path: "CreateTestcase",
+  //           element: CreateWebTestcase,
+  //           accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];

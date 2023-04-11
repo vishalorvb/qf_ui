@@ -8,7 +8,7 @@ import Popper from "@mui/material/Popper";
 
 import MenuList from "@mui/material/MenuList";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, MenuItem } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import {
@@ -23,16 +23,15 @@ import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import MenuItem from "@mui/material/MenuItem";
 import useHead from "../../hooks/useHead";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+
 function TestsetExecutionToolbar({
   applicationId,
   projectId,
   selectedtestcases,
   testsetId,
 }) {
-  const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [buildEnvList, setBuildEnvList] = useState([]);
@@ -41,6 +40,30 @@ function TestsetExecutionToolbar({
   const [jarConnected, setJarConnected] = useState(false);
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
+  const [applicationType, setApplicationType] = useState("");
+  let appTypes = [
+    "API Automation",
+    "Web Automation",
+    "Android Automation",
+    "iOS Automation",
+    "Python Web",
+    "Test Design",
+    "Performance Testing",
+    "Security Testing",
+    "Infrastructure Monitering",
+    "Risk Prediction",
+    "",
+    "WINIUM",
+    "Mobile Web Automation",
+    "Code Coverage",
+    "Pycode Style",
+    "Locust",
+    "Python Api",
+    "Python Unit Testcase",
+    "Link Project",
+    "PipeLine",
+    "Release Management",
+  ];
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -67,9 +90,19 @@ function TestsetExecutionToolbar({
   });
 
   const onSubmitExecute = (data) => {
-    console.log(data);
-    console.log(testsetId);
-    console.log(selectedtestcases);
+    let datasets = [];
+    if (selectedtestcases.length == selectedtestcases.length) {
+      datasets = selectedtestcases;
+    } else {
+      for (let i = 0; i < selectedtestcases.length; i++) {
+        for (let j = 0; j < selectedtestcases.length; j++) {
+          if (selectedtestcases[i] == selectedtestcases[j].testcase_id) {
+            datasets.push(selectedtestcases[j]);
+          }
+        }
+      }
+    }
+
     const executionData = {
       testset_id: testsetId,
       module_id: applicationId,
@@ -89,7 +122,7 @@ function TestsetExecutionToolbar({
       user_id: auth?.userId,
     };
     axios
-      .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
+      .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.status);
@@ -111,8 +144,21 @@ function TestsetExecutionToolbar({
       });
   };
   const onSubmitGenerate = (data) => {
+    let datasets = [];
     console.log(data);
     console.log(testsetId);
+    if (selectedtestcases.length == selectedtestcases.length) {
+      datasets = selectedtestcases;
+    } else {
+      for (let i = 0; i < selectedtestcases.length; i++) {
+        for (let j = 0; j < selectedtestcases.length; j++) {
+          if (selectedtestcases[i] == selectedtestcases[j].testcase_id) {
+            datasets.push(selectedtestcases[j]);
+          }
+        }
+      }
+    }
+
     const executionData = {
       testset_id: testsetId,
       module_id: applicationId,
@@ -132,7 +178,7 @@ function TestsetExecutionToolbar({
       user_id: auth?.userId,
     };
     axios
-      .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
+      .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
       .then((resp) => {
         console.log(resp);
         console.log(resp?.data?.info);
@@ -153,7 +199,6 @@ function TestsetExecutionToolbar({
           : setRemoteExecutionsuccess(true);
       });
   };
-
 
   useEffect(() => {
     reset();
@@ -185,6 +230,18 @@ function TestsetExecutionToolbar({
             return { id: ee.value, label: ee.name };
           });
         });
+      });
+  }, [applicationId]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `http://10.11.12.242:8080/qfservice/getmoduledetails/${applicationId}`
+      )
+      .then((resp) => {
+        console.log(resp?.data?.data?.module_type);
+        // setApplicationType(resp?.data?.data?.module_type);
+        setApplicationType(appTypes[resp?.data?.data?.module_type - 1]);
       });
   }, [applicationId]);
 
@@ -237,9 +294,11 @@ function TestsetExecutionToolbar({
               control={control}
               options={buildEnvList}
             />
-              <Button onClick={()=>{
-              navigate("/addEnvironment",{state : { pId : projectId}})
-             }}>
+            <Button
+              onClick={() => {
+                navigate("/addEnvironment", { state: { pId: projectId } });
+              }}
+            >
               + Add Environment
             </Button>
           </Stack>

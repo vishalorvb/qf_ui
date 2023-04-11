@@ -16,9 +16,9 @@ export default function AppLayout() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <MiniDrawer open={open} />
+      <MiniDrawer open={open} setOpen={setOpen} />
       <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
-        <AppHeader setOpen={setOpen} />
+        {/* <AppHeader setOpen={setOpen} /> */}
         <Box className="mainContent">
           <HeaderProvider>
             <PageHead />

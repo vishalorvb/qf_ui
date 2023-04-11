@@ -74,7 +74,7 @@ function Settings() {
     <div onClick={resetClassName}>
       <Paper
         elevation={0}
-        sx={{ padding: "2px", marginTop: "20px", marginBottom: "10px" }}
+        sx={{ padding: "2px", marginTop: "4px", marginBottom: "10px" }}
       >
         <SnackbarNotify
           open={successMsg}
@@ -88,75 +88,39 @@ function Settings() {
           msg="Fill all the required fields"
           severity="error"
         />
-        {/* <SnackbarNotify open={copyMsg} close={setCopyMsg} msg="Copied" severity="success" /> */}
-        <Stack
-          component="div"
-          noValidate
-          spacing={1}
-          sx={{ marginLeft: "15px", marginBottom: "15px" }}
-        >
-          <Grid
-            container
-            item
-            xs={12}
-            sm={8}
-            md={12}
-            sx={{ marginBottom: "5px", marginTop: "10px" }}
-          >
-            <Grid item xs={6} sm={6} md={1}>
-              <label>
-                URL <span className="importantfield">*</span>:
-              </label>
+        <div className="datatable" style={{ marginTop: "15px" }}>
+          <Grid container direction="row" spacing={2}>
+            <Grid item md={12}>
+              <Stack spacing={1}>
+                <label>URL</label>
+                <input
+                  type="text"
+                  name=""
+                  value={url}
+                  ref={Url}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
+              </Stack>
             </Grid>
-            <Grid item xs={6} sm={6} md={10.5}>
-              {" "}
-              <input
-                type="text"
-                name=""
-                value={url}
-                ref={Url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-            </Grid>
-            {/* <Grid item xs={6} sm={6} md={1} >
-                            <Button size='small' variant="contained" onClick={submitCopy} startIcon={<ContentCopyIcon />} sx={{ marginLeft: "2px" }}>
-                                Copy
-                            </Button>
-                        </Grid> */}
-          </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            sm={8}
-            md={12}
-            sx={{ marginBottom: "10px", marginTop: "5px" }}
-          >
-            <Grid item xs={6} sm={6} md={1}>
-              <label>
-                UUID <span className="importantfield">*</span>:
-              </label>
-            </Grid>
-            <Grid item xs={6} sm={6} md={10.5}>
-              {" "}
-              <input
-                type="text"
-                name=""
-                value={uuid}
-                ref={Uuid}
-                onChange={(e) => setUuid(e.target.value)}
-              />
+            <Grid item md={12}>
+              <Stack spacing={1}>
+                <label>UUID</label>
+                <input
+                  type="text"
+                  name=""
+                  value={uuid}
+                  ref={Uuid}
+                  onChange={(e) => setUuid(e.target.value)}
+                />
+              </Stack>
             </Grid>
           </Grid>
-        </Stack>
-        <Button
-          variant="contained"
-          onClick={submit}
-          startIcon={<UpgradeSharpIcon />}
-          sx={{ marginLeft: "45%", marginRight: "auto", marginBottom: "10px" }}
-        >
-          Update
-        </Button>
+          <Stack mt={2} spacing={2} direction="row-reverse">
+            <Button variant="contained" type="submit" onClick={submit}>
+              Update
+            </Button>
+          </Stack>
+        </div>
       </Paper>
     </div>
   );

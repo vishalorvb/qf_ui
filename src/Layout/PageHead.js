@@ -54,8 +54,14 @@ export default function PageHead() {
                   <ArrowBackIosIcon fontSize="small" />
                 </IconButton>
               )}
+              <Typography
+                variant="h6"
+                style={{ fontWeight: 600, color: "#009fee" }}
+              >
+                {header.name.replace(/ .*/, "")}
+              </Typography>
               <Typography variant="h6" style={{ fontWeight: 600 }}>
-                {header.name}
+                {header.name.replace(header.name.replace(/ .*/, ""), "")}
               </Typography>
               {header?.name === "Pages" && (
                 <FormControl fullWidth>

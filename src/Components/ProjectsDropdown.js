@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import useProject from "../hooks/useProject";
-export default function ProjectsDropdown({ selectedProject, setSelectedProject }) {
+export default function ProjectsDropdown({
+  selectedProject,
+  setSelectedProject,
+}) {
   const [projectsList, setProjectList] = useState([]);
   const { auth } = useAuth();
   const { project, setProject, projectModules, setprojectModules } =
@@ -30,69 +33,28 @@ export default function ProjectsDropdown({ selectedProject, setSelectedProject }
   console.log(selectedProject);
 
   return (
-    // <Stack
-    //   direction="row"
-    //   justifyContent="flex-end"
-    //   alignItems="center"
-    //   spacing={2}
-    //   mb={1}
-    // >
-    //   <Typography variant="subtitle1">Project:</Typography>
-    //   <Autocomplete
-    //     disablePortal
-    //     id="project_id"
-    //     options={projectsList}
-    //     sx={{ width: "20%" }}
-    //     getOptionLabel={(option) => option.project_name}
-    //     value={project}
-    //     onChange={(e, value) => {
-    //       console.log(value);
-    //       setProject(value);
-    //       value &&
-    //         axios
-    //           .get(`/qfservice/getprojectmodules/${value?.project_id}`)
-    //           .then((res) => {
-    //             setSelectedProject(res?.data?.data);
-    //             setprojectModules(res?.data?.data);
-    //           });
-    //     }}
-    //     renderInput={(params) => <TextField {...params} size="small" />}
-    //   />
-    // </Stack>
     <Stack
-    direction="row"
-    justifyContent="flex-end"
-    alignItems="center"
-    spacing={2}
-    mb={1}
-  >
-    <Autocomplete
-      disablePortal
-      id="project_id"
-      options={projectsList}
-      value={selectedProject}
-      // value={project}
-      sx={{ width: "20%" }}
-      getOptionLabel={(option) => option.project_name}
-      onChange={(e, value) => {
-        console.log(value);
-        // setProject(value);
-        setSelectedProject(value);
-        // value &&
-        //     axios
-        //       // .get(`/qfservice/getprojectmodules/${value?.project_id}`)
-        //       .get(`/qfservice/projects/applications?project_id=${value?.project_id}`)
-        //       .then((res) => {
-        //         console.log(res);
-        //         setSelectedProject(res?.data?.data);
-        //         // setprojectModules(res?.data?.data);
-        //       });
-
-      }}
-      renderInput={(params) => (
-        <TextField {...params} label="Projects" size="small" />
-      )}
-    />
-  </Stack>
+      direction="row"
+      justifyContent="flex-end"
+      alignItems="center"
+      spacing={2}
+      mb={1}
+    >
+      <Autocomplete
+        disablePortal
+        id="project_id"
+        options={projectsList || null}
+        value={selectedProject || null}
+        sx={{ width: "20%" }}
+        getOptionLabel={(option) => option.project_name || ""}
+        onChange={(e, value) => {
+          console.log(value);
+          setSelectedProject(value);
+        }}
+        renderInput={(params) => (
+          <TextField {...params} label="Projects" size="small" />
+        )}
+      />
+    </Stack>
   );
 }
