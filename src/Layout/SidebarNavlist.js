@@ -9,15 +9,15 @@ export const testManagementList = [
     icon: <i className="qf icon-admin"></i>,
     subList: [
       {
-        name: "Users",
+        name: "Add User",
         id: "11",
-        route: "users",
+        route: "addUser",
         accessRole: [2],
       },
       {
-        name: "Add User",
+        name: "Users",
         id: "12",
-        route: "addUser",
+        route: "users",
         accessRole: [2],
       },
       {
@@ -59,9 +59,30 @@ export const testManagementList = [
   {
     name: "Projects",
     id: "3",
-    route: "projects",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-projects"></i>,
+    subList: [
+      {
+        name: "Create",
+        id: "31",
+        route: "createProject",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        id: "32",
+        route: "projects",
+        state: "recentProjects",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Search",
+        id: "33",
+        route: "projects",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     name: "Testcases",
@@ -117,10 +138,21 @@ export const testManagementList = [
   },
   {
     name: "Execution",
-    id: "6",
-    route: "execution",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-execute"></i>,
+    subList:[
+      {
+        name:"Testcase",
+        route:"TestcaseExecution",
+        accessRole:[1,2,3,4,5,6,7]
+      },
+      {
+        name:"Testset",
+        route:"TestsetExecution",
+        accessRole:[1,2,3,4,5,6,7]
+      }
+    ]
   },
   {
     name: "Reports",
@@ -142,16 +174,44 @@ export const opsManagementList = [
   {
     name: "Release",
     id: "9",
-    route: "release",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-release"></i>,
+    subList: [
+      {
+        name: "Create",
+        id: "91",
+        route: "release/createAnsibleInstance",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        id: "92",
+        route: "release",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
   {
     name: "CI CD Pipeline",
     id: "1a",
-    route: "pipeline",
+    route: "",
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-cicd"></i>,
+    subList: [
+      {
+        name: "Create",
+        id: "1a1",
+        route: "pipeline/CreatePipeline",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Recent",
+        id: "1a2",
+        route: "pipeline",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
   },
 ];
 

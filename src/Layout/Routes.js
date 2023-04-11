@@ -55,6 +55,7 @@ const UpdateTestcasesOrder = lazy(() =>
 
 const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
+const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
 const Screen = lazy(() =>
   import("../Components/Application/ScreenComponents/Screen")
@@ -113,6 +114,8 @@ const pagesnscreen = lazy(() =>
 const CreateTestCase = lazy(() =>
   import("../Components/TestCases/CreateTestCase")
 );
+const TestcaseExecution = lazy(()=>import(`../Components/Execution/TestcaseExecution`))
+const TestsetExecution = lazy(()=>import(`../Components/Execution/TestsetExecution`))
 
 export const Routes = [
   {
@@ -175,6 +178,11 @@ export const Routes = [
     accessRole: [2],
   },
   {
+    path: "users/editUser",
+    element: EditUser,
+    accessRole: [2],
+  },
+  {
     path: "application/apiApp",
     element: ApiApp,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
@@ -194,8 +202,13 @@ export const Routes = [
     ],
   },
   {
-    path: "execution",
-    element: Execution,
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
