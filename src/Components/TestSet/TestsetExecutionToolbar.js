@@ -8,7 +8,7 @@ import Popper from "@mui/material/Popper";
 
 import MenuList from "@mui/material/MenuList";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, MenuItem } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import {
@@ -23,11 +23,14 @@ import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { useNavigate } from "react-router-dom";
 
-function TestsetExecutionToolbar({applicationId,
-    projectId,
-    selectedtestcases,
-    testsetId}) {
+function TestsetExecutionToolbar({
+  applicationId,
+  projectId,
+  selectedtestcases,
+  testsetId,
+}) {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [buildEnvList, setBuildEnvList] = useState([]);
@@ -37,11 +40,29 @@ function TestsetExecutionToolbar({applicationId,
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
   const [applicationType, setApplicationType] = useState("");
-  let appTypes = ["API Automation","Web Automation","Android Automation","iOS Automation","Python Web",
-  "Test Design","Performance Testing","Security Testing","Infrastructure Monitering","Risk Prediction",
-  "","WINIUM","Mobile Web Automation","Code Coverage","Pycode Style",
-  "Locust","Python Api","Python Unit Testcase","Link Project","PipeLine",
-  "Release Management"]
+  let appTypes = [
+    "API Automation",
+    "Web Automation",
+    "Android Automation",
+    "iOS Automation",
+    "Python Web",
+    "Test Design",
+    "Performance Testing",
+    "Security Testing",
+    "Infrastructure Monitering",
+    "Risk Prediction",
+    "",
+    "WINIUM",
+    "Mobile Web Automation",
+    "Code Coverage",
+    "Pycode Style",
+    "Locust",
+    "Python Api",
+    "Python Unit Testcase",
+    "Link Project",
+    "PipeLine",
+    "Release Management",
+  ];
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -69,13 +90,13 @@ function TestsetExecutionToolbar({applicationId,
 
   const onSubmitExecute = (data) => {
     let datasets = [];
-    if (selectedtestcases.length == selecteddatasets.length) {
-      datasets = selecteddatasets;
+    if (selectedtestcases.length == selectedtestcases.length) {
+      datasets = selectedtestcases;
     } else {
       for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selecteddatasets.length; j++) {
-          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
-            datasets.push(selecteddatasets[j]);
+        for (let j = 0; j < selectedtestcases.length; j++) {
+          if (selectedtestcases[i] == selectedtestcases[j].testcase_id) {
+            datasets.push(selectedtestcases[j]);
           }
         }
       }
@@ -125,13 +146,13 @@ function TestsetExecutionToolbar({applicationId,
     let datasets = [];
     console.log(data);
     console.log(testsetId);
-    if (selectedtestcases.length == selecteddatasets.length) {
-      datasets = selecteddatasets;
+    if (selectedtestcases.length == selectedtestcases.length) {
+      datasets = selectedtestcases;
     } else {
       for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selecteddatasets.length; j++) {
-          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
-            datasets.push(selecteddatasets[j]);
+        for (let j = 0; j < selectedtestcases.length; j++) {
+          if (selectedtestcases[i] == selectedtestcases[j].testcase_id) {
+            datasets.push(selectedtestcases[j]);
           }
         }
       }
@@ -139,7 +160,7 @@ function TestsetExecutionToolbar({applicationId,
 
     const executionData = {
       testset_id: testsetId,
-      module_id : applicationId,
+      module_id: applicationId,
       web_testcases_list_to_execute: selectedtestcases,
       config_id: null,
       config_name: null,
@@ -177,7 +198,6 @@ function TestsetExecutionToolbar({applicationId,
           : setRemoteExecutionsuccess(true);
       });
   };
-
 
   useEffect(() => {
     reset();
@@ -220,7 +240,7 @@ function TestsetExecutionToolbar({applicationId,
       .then((resp) => {
         console.log(resp?.data?.data?.module_type);
         // setApplicationType(resp?.data?.data?.module_type);
-        setApplicationType(appTypes[(resp?.data?.data?.module_type) - 1])
+        setApplicationType(appTypes[resp?.data?.data?.module_type - 1]);
       });
   }, [applicationId]);
 
@@ -273,9 +293,11 @@ function TestsetExecutionToolbar({applicationId,
               control={control}
               options={buildEnvList}
             />
-              <Button onClick={()=>{
-              navigate("/addEnvironment",{state : { pId : projectId}})
-             }}>
+            <Button
+              onClick={() => {
+                navigate("/addEnvironment", { state: { pId: projectId } });
+              }}
+            >
               + Add Environment
             </Button>
           </Stack>
