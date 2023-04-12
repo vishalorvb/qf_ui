@@ -172,7 +172,16 @@ const ApplicationDescriptionCell = (param, setApplication, auth) => {
         }}
       >
         <MenuItem
-          onClick={() => navigate("/Application/Create", { state: param?.row })}
+
+          onClick={() => {
+            console.log(param.row)
+            moduledata.module_name = param.row.module_name
+            moduledata.base_url = param.row.base_url 
+            moduledata.module_desc = param.row.module_desc
+            moduledata.module_type = param.row.module_type
+            navigate("/Application/Create", { state: param?.row })
+
+          }}
         >
           <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
           Edit
