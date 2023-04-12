@@ -18,14 +18,11 @@ export default function PersistentDrawerRight({
 }) {
 
   const columns = useMemo(
-    //column definitions...
     () => [
-  
       {
         accessorKey: "locators",
-        header: "Test",
+        header: " ",
         Cell: ({ cell, column, row, table }) => {
-          console.log(row.original.name)
           return (
             <div>
               <h4>{row.original.name}</h4>
@@ -36,7 +33,6 @@ export default function PersistentDrawerRight({
       },
     ],
     []
-    //end
   );
 
 
@@ -56,7 +52,8 @@ export default function PersistentDrawerRight({
       <Typography align="center" m={2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>
         List of screens
       </Typography>
-      {screen.map((s) => {
+
+      {/* {screen.map((s) => {
         return (
           <Stack
             mt={1}
@@ -75,7 +72,7 @@ export default function PersistentDrawerRight({
             <Divider />
           </Stack>
         );
-      })}
+      })} */}
 
 
 
@@ -86,7 +83,8 @@ export default function PersistentDrawerRight({
         columns={columns}
         data={screen}
         enableColumnActions={false}
-        initialState={{ showGlobalFilter: true, density: "compact" }}
+        enablePagination = {false}
+        initialState={{  density: "compact" }}
         enableToolbarInternalActions={false}
         muiTableBodyRowProps={{ hover: false }}
         enableRowOrdering
