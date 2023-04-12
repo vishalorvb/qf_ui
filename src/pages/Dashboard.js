@@ -25,6 +25,7 @@ import AppleIcon from "@mui/icons-material/Apple";
 import { Language } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import {Divider,Card,CardContent,Typography,Autocomplete,Stack,TextField,FormControl,CircularProgress} from "@mui/material";
+import ProgressBar from "./ProgressBar";
 
 export default function Dashboard() {
   const { setHeader } = useHead();
@@ -41,7 +42,7 @@ export default function Dashboard() {
   const [projectsList, setProjectList] = useState([]);
   const [selectedProject, setSelectedProject] = useState({ project_name: "Project", });
   const [sprintName, setSprintName] = useState('All');
-  const [progress, setProgress] = React.useState(0);
+  const [progress, setProgress] = useState();
   const [androidTestcase, setAndroidTestcase] = useState();
   const [iosTestcase, setIosTestcase] = useState();
   const [webTestcase, setWebTestcase] = useState();
@@ -58,6 +59,8 @@ export default function Dashboard() {
   const [showTensorFlow, setShowTensorFlow] = useState(false)
   const [automationGraph,setAutomationGraph] = useState(false)
   const [automationTDgraph,setAutomationTDgraph] = useState(false)
+  const [showFailMsg,setShowFailMsg]= useState(false)
+  const [showProgressBar,setShowProgressBar]= useState(false)
 
   function dashboardDetails ()
   {
@@ -78,7 +81,6 @@ export default function Dashboard() {
       console.log(res?.data?.data?.model.show_automation_graph)
       if(res?.data?.data?.model.show_automation_graph == true)
       {
-        console.log("automation is true")
         setAutomationGraph(true)
       }
       if(res?.data?.data?.model.show_tensorflow == true)
@@ -107,24 +109,37 @@ export default function Dashboard() {
     },
     )
   }
-
+ 
   function getTensorflowData ()
   {
+    setShowFailMsg(false)
+    setShowProgressBar(false)
     axios.post(`/qfdashboard/getTensorflowData?sqe_project_id=${selectedProject?.project_id}&userId=${auth?.userId}`).then((res) => 
     {
-        if (res.data.status === 'FAIL') 
+        console.log(res.data.status == 'FAIL')
+        console.log(res.data.message == 'Prediction is not available due to insufficient data.')
+        if (res.data.status == 'FAIL') 
         {
           setFailMsg(res.data.message)
           setSnackbar(true)
+          if(res.data.message == 'Prediction is not available due to insufficient data.')
+          {
+            setShowFailMsg(true)
+          }
           setTimeout(() => {
             setSnackbar(false);
           }, 3000);
         }
-        if (res.data.status === 'SUCCESS') {
-          setProgress(res.data?.info?.next_sprint_pass_percentage)
+        if (res.data.status == 'SUCCESS') {
+          console.log("inside success")
+          let progress = Math.round(res.data?.info?.next_sprint_pass_percentage);
+          console.log(progress)
+          setProgress(progress)
+          setShowProgressBar(true)
         }
       })
   }
+
 
   function dashboardDetailsBySprintId()
   {
@@ -400,7 +415,7 @@ export default function Dashboard() {
         </Grid>
       </Box>
      
-      <Grid container justifyContent="space-between" alignItems="center" sx={{ marginTop: "20px" }}>
+      <Grid container justifyContent="flex-start" alignItems="flex-start" sx={{ marginTop: "20px" }}>
       {automationGraph &&  <Grid item md={6} >
           <Card sx={{ maxWidth: 600 }} elevation={0}>
             <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
@@ -447,17 +462,16 @@ export default function Dashboard() {
           </Card>
         </Grid>}
        
-        <Grid item md={6} >
-          {showTensorFlow && <>
-            <Grid>
+          {showTensorFlow && 
+            <Grid item md={6}  justifyContent="space-between" alignItems="center">
+              <Card sx={{maxWidth : 600 ,alignItems : "center"}}  elevation={0}>
+                <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
               <Typography style={{ fontSize: "20px" }}><b>QualityFusion prediction : Success of Testcases in next sprint</b></Typography>
-            </Grid>
-            <Grid>
-              <Typography style={{ position: 'relative', top: '195px', left: '250px', fontSize: "50px", fontWeight: "400" }}><b>{progress != '' ? Math.round(progress)`%` :  <b style={{fontSize : "15px"}}>{failMsg != 'Jira is not configured'?failMsg : ""}</b>}</b></Typography>
-              <CircularProgress variant="determinate" value={progress != '' ?Math.round(progress): 0} size={300} sx={{ marginLeft: "130px", color: "#009fee" }} />
-            </Grid>
-            <Grid>
-              <TableContainer
+              { showProgressBar && <ProgressBar percentage = {progress}/>}
+              {showFailMsg && <Typography 
+              style={{  fontSize: "50px",  fontWeight: "400" }}><b style={{fontSize : "15px"}}>{failMsg != 'Jira is not configured'?failMsg : ""}</b></Typography>}
+                </CardContent>
+                <TableContainer
                 component={Paper}
                 style={{ marginTop: "20px", marginBottom: "10px" }}>
                 <Table
@@ -485,9 +499,10 @@ export default function Dashboard() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              </Card>
             </Grid>
-          </>}
-          {automationTDgraph && <>
+            }
+          {automationTDgraph && <Grid item md={6}>
             <Card sx={{ maxWidth: 600 }} elevation={0}>
               <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
                 <HighchartsReact highcharts={Highcharts} options={testDesignGraphData} />
@@ -500,8 +515,6 @@ export default function Dashboard() {
                 <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
                 <Typography>Coverage</Typography>
               </Stack>
-            </Card>
-            <Grid>
               <TableContainer
                 component={Paper}
                 style={{ marginTop: "20px", marginBottom: "10px" }}
@@ -532,15 +545,15 @@ export default function Dashboard() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              </Card>
             </Grid>
-          </>}
+          }
           {snackbar && <SnackbarNotify
             open={snackbar}
             close={setSnackbar}
             msg={failMsg}
             severity="error" />}
         </Grid>
-      </Grid>
     </div>
   );
 }
