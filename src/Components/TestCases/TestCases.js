@@ -171,9 +171,9 @@ export default function TestCases() {
         severity="success"
       ></SnackbarNotify>
       <div className="apptable">
-        <div className="intable">
-          <Grid item container spacing={2} justifyContent="flex-end">
-            <Grid item md={4}>
+        
+          <Grid item container spacing={2} className="intable" justifyContent="flex-end">
+            <Grid item>
               <label for="">Projects</label>
               <Autocomplete
                 disablePortal
@@ -193,7 +193,7 @@ export default function TestCases() {
                 )}
               />
             </Grid>
-            <Grid item md={4}>
+            <Grid item>
               <label for="">Application</label>
               <Autocomplete
                 disablePortal
@@ -214,7 +214,6 @@ export default function TestCases() {
               />
             </Grid>
           </Grid>
-        </div>
         <Table
           rows={testcases}
           columns={columns}

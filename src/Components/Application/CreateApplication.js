@@ -52,11 +52,11 @@ export default function CreateApplication() {
     }
   }
 
-  // useEffect(() => {
-  //   return () => {
-  //     resetModuledata();
-  //   };
-  // }, [applicationEditData]);
+  useEffect(() => {
+    return () => {
+      resetModuledata();
+    };
+  }, []);
 
   useEffect(() => {
     setHeader((ps) => {
