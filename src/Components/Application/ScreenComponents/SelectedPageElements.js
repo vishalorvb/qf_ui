@@ -85,6 +85,7 @@ export default function SelectedPageElements() {
       };
     });
   }, []);
+  console.log(location);
 
   return (
     <div className="apptable">
@@ -92,8 +93,8 @@ export default function SelectedPageElements() {
         <CreateScreenPop
           open={showCreateScreenPop}
           close={setShowCreateScreenPop}
-          applicationId={location.state.applicationId}
-          pageId={location.state.id}
+          applicationId={location?.state?.module_id}
+          pageId={location?.state?.web_page_id}
           elementsList={preSelectedElement.map((id) => {
             return { web_page_element_id: id };
           })}

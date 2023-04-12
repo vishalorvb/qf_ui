@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import useAuth from "../../../hooks/useAuth";
 
 export default function CreateScreenPop(props) {
@@ -24,7 +25,11 @@ export default function CreateScreenPop(props) {
   const [screenData, setScreenData] = useState(() => {
     return { name: screenName?.name, desc: screenName?.desc };
   });
+  const [selectElements, setSelectElements] = useState(false);
+  const [emptyDetails, setEmptyDetails] = useState(false);
   const saveScreen = () => {
+    elementsList.length < 1 && setSelectElements(true);
+    (screenData?.name || screenData?.desc) ?? setEmptyDetails(true);
     const screendata = {
       screen_name: screenData.name,
       screen_description: screenData.desc,
@@ -35,10 +40,7 @@ export default function CreateScreenPop(props) {
     };
     axios.post(`/qfservice/screen/createScreen`, screendata).then((resp) => {
       console.log(resp);
-      resp?.data?.status === "SUCCESS" &&
-        navigate("/application/screen", {
-          state: { id: applicationId },
-        });
+      resp?.data?.status === "SUCCESS" && navigate(-1);
     });
   };
 
@@ -47,6 +49,18 @@ export default function CreateScreenPop(props) {
       {/* // <Dialog open={open} onClose={handleClose}>
     //   <DialogTitle className="dialogTitle">Create Screen</DialogTitle>
     //   <DialogContent className="dialogContent"> */}
+      <SnackbarNotify
+        open={selectElements}
+        close={setSelectElements}
+        msg="Select At least one Element"
+        severity="error"
+      />
+      <SnackbarNotify
+        open={emptyDetails}
+        close={setEmptyDetails}
+        msg="Enter Details"
+        severity="error"
+      />
       <Grid container direction="row" spacing={1}>
         <Grid item md={5}>
           <input

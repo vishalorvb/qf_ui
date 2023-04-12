@@ -21,7 +21,6 @@ export default function PagesnScreens() {
   };
   const { setHeader } = useHead();
   const location = useLocation();
-  const [expandedName, setExpandedName] = useState(true);
   console.log(location);
   useEffect(() => {
     setHeader((ps) => {
