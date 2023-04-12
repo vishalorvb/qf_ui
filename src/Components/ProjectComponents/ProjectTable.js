@@ -103,7 +103,7 @@ function ProjectTable({ location }) {
           <div style={{ float: "right" }}>
             <Button
               variant="contained"
-              onClick={() => navigate("/createProject")}
+              onClick={() => navigate("/Projects/Create")}
             >
               Create Project
             </Button>

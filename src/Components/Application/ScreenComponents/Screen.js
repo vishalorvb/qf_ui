@@ -6,8 +6,9 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
-import { IconButton, Tooltip, Typography } from "@mui/material";
+import { IconButton, MenuItem, Tooltip, Typography } from "@mui/material";
 import ConfirmPop from "../../../CustomComponent/ConfirmPop";
+import TableActions from "../../../CustomComponent/TableActions";
 export default function Screens({ location }) {
   const { setHeader } = useHead();
   const navigate = useNavigate();
@@ -39,6 +40,45 @@ export default function Screens({ location }) {
       headerName: "Description",
       flex: 3,
       sortable: false,
+      renderCell: (param) => {
+        return (
+          <TableActions heading={param?.row?.description}>
+            <MenuItem
+              onClick={() =>
+                navigate("screenelements", {
+                  state: { id: param.row.screen_id },
+                })
+              }
+            >
+              <VisibilityOutlinedIcon sx={{ color: "lightblue", mr: 1 }} /> View
+            </MenuItem>
+            <MenuItem
+              onClick={() =>
+                navigate("UpdateScreen", {
+                  state: {
+                    screenId: param.row.screen_id,
+                    pageId: param.row.web_page_id,
+                    name: param.row.name,
+                    desc: param.row.description,
+                    applicationId: location?.state?.module_id,
+                  },
+                })
+              }
+            >
+              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
+            </MenuItem>
+            <MenuItem
+              onClick={(e) => {
+                console.log(param.row.screen_id);
+                setscreenId(param.row.screen_id);
+                setPopup(true);
+              }}
+            >
+              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
+            </MenuItem>
+          </TableActions>
+        );
+      },
     },
     // {
     //   field: "Actions",
