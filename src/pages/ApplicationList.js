@@ -115,12 +115,12 @@ export default function ApplicationsList() {
 
   return (
     <div className="apptable">
-      <div className="intable" >
+      <div className="intable">
         <div style={{ float: "right" }}>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={() => navigate("/createApplication")}
+            onClick={() => navigate("/Application/Create")}
           >
             Create Application
           </Button>
@@ -172,7 +172,7 @@ const ApplicationDescriptionCell = (param, setApplication, auth) => {
         }}
       >
         <MenuItem
-          onClick={() => navigate("/createApplication", { state: param?.row })}
+          onClick={() => navigate("/Application/Create", { state: param?.row })}
         >
           <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
           Edit
