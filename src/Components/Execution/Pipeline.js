@@ -63,7 +63,11 @@ export default function Pipeline({ selectedProject }) {
         severity="success"
       />
       {executionRes?.data?.message}
-      <Table rows={instances} columns={instanceColumns} />
+      <Table
+        searchPlaceholder="Search Pipeline"
+        rows={instances}
+        columns={instanceColumns}
+      />
     </>
   );
 }

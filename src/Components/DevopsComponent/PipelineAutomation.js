@@ -93,7 +93,11 @@ export default function PipelineAutomation() {
           Release Now
         </Button>
       </Stack>
-      <Table rows={history} columns={instanceColumns} />
+      <Table
+        searchPlaceholder="Search Pipelines"
+        rows={history}
+        columns={instanceColumns}
+      />
       <Outlet />
     </>
   );

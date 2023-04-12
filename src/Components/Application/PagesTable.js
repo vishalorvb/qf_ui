@@ -37,10 +37,14 @@ export default function PagesTable(props) {
                     state: {
                       id: param.row.web_page_id,
                       applicationId: location.state.id,
+                      name: param?.row?.name,
                     },
                   })
                 : navigate("PageElements", {
-                    state: { id: param.row.web_page_id },
+                    state: {
+                      id: param.row.web_page_id,
+                      name: param?.row?.name,
+                    },
                   })
             }
             variant="p"
@@ -114,6 +118,7 @@ export default function PagesTable(props) {
   return (
     <>
       <Table
+        searchPlaceholder="Search Pages"
         rows={page}
         columns={pageColumns}
         getRowId={(row) => row.web_page_id}

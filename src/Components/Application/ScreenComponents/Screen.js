@@ -163,6 +163,7 @@ export default function Screens({ location }) {
   return (
     <>
       <Table
+        searchPlaceholder="Search Screens"
         rows={page}
         columns={pageColumns}
         getRowId={(row) => row.screen_id}

@@ -66,6 +66,7 @@ export default function DatasetSelectAndExecute({
           applicationType={applicationType}
         />
         <Table
+          searchPlaceholder="Search Dataset"
           rows={datasetList}
           columns={columns}
           checkboxSelection={true}

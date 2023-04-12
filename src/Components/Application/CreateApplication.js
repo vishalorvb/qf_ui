@@ -44,7 +44,7 @@ export default function CreateApplication() {
       createApplication(moduledata, auth.info.id).then((res) => {
         if (res) {
           resetModuledata();
-          navigate("/Application");
+          navigate("/Application/Recent");
         }
       });
     } else {
@@ -52,11 +52,11 @@ export default function CreateApplication() {
     }
   }
 
-  // useEffect(() => {
-  //   return () => {
-  //     resetModuledata();
-  //   };
-  // }, [applicationEditData]);
+  useEffect(() => {
+    return () => {
+      resetModuledata();
+    };
+  }, []);
 
   useEffect(() => {
     setHeader((ps) => {
@@ -106,7 +106,14 @@ export default function CreateApplication() {
               }}
             >
               {APPLICATION_TYPES.map((appType) => {
-                return <option value={appType.value} selected= {appType.value == moduledata.module_type}>{appType.label}</option>;
+                return (
+                  <option
+                    value={appType.value}
+                    selected={appType.value == moduledata.module_type}
+                  >
+                    {appType.label}
+                  </option>
+                );
               })}
             </select>
           </Stack>
@@ -148,7 +155,7 @@ export default function CreateApplication() {
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}
-          onClick={() => navigate("/Application")}
+          onClick={() => navigate("/Application/Recent")}
         >
           Cancel
         </Button>

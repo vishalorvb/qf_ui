@@ -101,6 +101,8 @@ export default function PersistentDrawerRight({
         muiTableBodyRowProps={{ hover: false }}
         enableRowOrdering
         enableSorting={false}
+        enableTopToolbar={false}
+        enableBottomToolbar={false}
         muiTableBodyRowDragHandleProps={({ table }) => ({
           onDragEnd: () => {
             const { draggingRow, hoveredRow } = table.getState();
