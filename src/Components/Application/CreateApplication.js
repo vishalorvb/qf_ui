@@ -106,7 +106,7 @@ export default function CreateApplication() {
               }}
             >
               {APPLICATION_TYPES.map((appType) => {
-                return <option value={appType.value}>{appType.label}</option>;
+                return <option value={appType.value} selected= {appType.value == moduledata.module_type}>{appType.label}</option>;
               })}
             </select>
           </Stack>

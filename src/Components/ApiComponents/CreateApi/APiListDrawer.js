@@ -43,6 +43,10 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
   }, []);
 
   useEffect(() => {
+    getDatasetDetails(setApi, datasetId);
+  }, []);
+
+  useEffect(() => {
     getData = [...Api];
     let api_order = [];
     getData?.forEach((element) => {
@@ -58,7 +62,11 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
   }, [Api]);
   return (
     <div>
-      <Typography align="center" m={2}>
+      <Typography
+        align="center"
+        m={2}
+        sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}
+      >
         List of Api
       </Typography>
       {/* {Api?.map(s => {
