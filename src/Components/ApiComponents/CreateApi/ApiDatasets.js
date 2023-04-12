@@ -200,13 +200,13 @@ function ApiDatasets() {
         <div>
             {createDatasets && <div>
                 <Grid container spacing={2}>
-                    <Grid item md={2}>
+                    <Grid item md={3}>
                         <APiListDrawer
                             setSelectedApi={setSelectedApi}
                             datasetId={datasetId}
                         ></APiListDrawer>
                     </Grid>
-                    <Grid item md={10}>
+                    <Grid item md={9}>
                         <Stack spacing={1} direction="row" justifyContent="flex-end">
 
                             <Button variant="contained"
