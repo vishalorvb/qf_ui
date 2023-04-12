@@ -38,9 +38,21 @@ function CreateTestCase() {
             if (TCdata.testcase_id === undefined) {
                 CreateTestCaseService(TCdata).then(res => {
                     if (res) {
-                        console.log(res)
-                        MapAPiTestCaseData.testcase_id = res
-                        navigate(redirect_url[selectedApplication?.module_type])
+                        if (selectedApplication.module_type == 1) {
+                            MapAPiTestCaseData.testcase_id = res
+                            navigate(redirect_url[selectedApplication?.module_type])
+                        }
+                        else {
+                            navigate(redirect_url[selectedApplication?.module_type], {
+                                state:
+                                {
+                                    projectId: selectedProject.project_id,
+                                    moduleId: selectedApplication.module_id,
+                                    testcaseId: res
+                                }
+                            })
+                        }
+
                     }
                 })
             }

@@ -532,15 +532,17 @@ label::after {
   color: red;
   margin-left: 2px;
 }
-// .css-sghohy-MuiButtonBase-root-MuiButton-root {
-//   text-transform: none !important;
-// }
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+  background-color: $accent;
+}
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: $accent;
 }
-// .css-11qr2p8-MuiButtonBase-root-MuiButton-root {
-//   text-transform: none !important;
-// }
+.css-11qr2p8-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+  background-color: $accent;
+}
 .menuBadge {
   background-color: $accent;
   border-radius: 10px;
@@ -551,8 +553,10 @@ label::after {
 
 button.MuiButtonBase-root.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.css-ilfnjt-MuiButtonBase-root-MuiButton-root {
   text-transform: none !important;
+  background-color: $accent;
 }
 
 button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   text-transform: none !important;
+  background-color: $accent;
 }

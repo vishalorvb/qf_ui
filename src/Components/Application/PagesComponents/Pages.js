@@ -95,7 +95,7 @@ export default function Pages({ location }) {
       />
 
       <div className="apptable">
-        <div className="intable" style={{ width: "80%" }}>
+        <div className="intable">
           <div style={{ float: "right" }}>
             <Stack spacing={1} direction="row">
               <Select

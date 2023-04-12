@@ -99,7 +99,7 @@ function ProjectTable({ location }) {
         severity="success"
       />
       <div className="apptable">
-        <div className="intable" style={{ width: "80%" }}>
+        <div className="intable">
           <div style={{ float: "right" }}>
             <Button
               variant="contained"
