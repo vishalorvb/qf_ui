@@ -63,7 +63,7 @@ export default function TestsetExecution() {
   const [selectedApplication, setSelectedApplication] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
-
+console.log(selectedItem)
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -145,13 +145,13 @@ export default function TestsetExecution() {
         <>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
           </>
         </Grid>
-        <Grid item md={5}>
+        <Grid item md={5.5}>
           <ProjectnApplicationSelector
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
@@ -179,8 +179,8 @@ export default function TestsetExecution() {
 
         <Grid item md={9}>
           <ExecuteTestSetDetails
-          projectId={selectedProject.project_id} applicationType={selectedApplication?.workflowType} applicationId={selectedApplication?.module_id}
-            selectedItem={selectedItem}
+          projectId={selectedProject.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
+           testsetId={selectedItem}
           ></ExecuteTestSetDetails>
         </Grid>
       </Grid>
