@@ -152,13 +152,13 @@ export default function TestsetExecution() {
           </>
         </Grid>
         <Grid item md={9.2}>
-          {/* <ProjectnApplicationSelector
+          <ProjectnApplicationSelector
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
             selectedApplication={selectedApplication}
             setSelectedApplication={setSelectedApplication}
             // isTestset={value === 1}
-          /> */}
+          />
         </Grid>
       </Grid>
 

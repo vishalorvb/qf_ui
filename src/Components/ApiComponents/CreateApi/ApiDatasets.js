@@ -81,7 +81,7 @@ function ApiDatasets() {
         {
             field: "description",
             headerName: "Description",
-            flex: 3,
+            flex: 6,
             renderCell: param => {
 
                 return (
