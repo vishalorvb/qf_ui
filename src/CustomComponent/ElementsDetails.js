@@ -90,7 +90,7 @@ function ElementsDetails({ ElementId, setPopup }) {
       <DialogTitle className="dialogTitle">Elements Details</DialogTitle>
       <form onSubmit={handleSubmit(updateElement)}>
         <DialogContent>
-          <Stack direction="row" spacing={11} mt={3}>
+          <Stack direction="row" spacing={1} mt={3}>
             <SelectElement
               label="Path Type"
               name="pathType"

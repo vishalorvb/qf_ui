@@ -110,6 +110,7 @@ function ProjectTable({ location }) {
           </div>
         </div>
         <Table
+          searchPlaceholder="Search Projects"
           rows={
             location?.state === "recentProjects"
               ? project.filter((p) => p.is_deleted == false).slice(0, 11)

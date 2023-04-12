@@ -27,13 +27,12 @@ export default function PageHead() {
   const navigate = useNavigate();
   const location = useLocation();
   const backButtonRender =
-    location.pathname
-      .split("/")
-      .filter(
-        (path) =>
-          path !== "" ||
-          !["Application", "Projects", "Testcase", "Testset"].includes(path)
-      ).length > 1;
+    location.pathname.split("/").filter((path) => {
+      return (
+        path !== "" &&
+        !["Application", "Projects", "Testcase", "Testset"].includes(path)
+      );
+    }).length > 1;
   const { header, setHeader } = useHead();
 
   return (
@@ -55,11 +54,11 @@ export default function PageHead() {
               alignItems="center"
               spacing={0.5}
             >
-              {/* {backButtonRender && (
+              {backButtonRender && (
                 <IconButton size="small" onClick={() => navigate(-1)}>
                   <ArrowBackIosIcon fontSize="small" />
                 </IconButton>
-              )} */}
+              )}
               <Typography
                 variant="h6"
                 style={{ fontWeight: 600, color: "#009fee" }}

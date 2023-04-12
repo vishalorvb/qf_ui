@@ -58,6 +58,7 @@ export default function CodeQuality() {
 
   return result.length > 0 ? (
     <Table
+      searchPlaceholder="Search Results"
       rows={result}
       columns={applicationColumns}
       getRowId={(row) => row.key}

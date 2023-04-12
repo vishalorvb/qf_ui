@@ -106,6 +106,7 @@ function Testset(selectedProject, selectedApplication) {
       />
 
       <Table
+        searchPlaceholder="Search Testsets"
         rows={testsets}
         columns={columns}
         hidefooter={true}

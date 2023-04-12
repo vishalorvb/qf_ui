@@ -173,7 +173,7 @@ export default function TestCases() {
       <div className="apptable">
         <div className="intable">
           <Grid item container spacing={2} justifyContent="flex-end">
-            <Grid item md={4}>
+            <Grid item>
               <label for="">Projects</label>
               <Autocomplete
                 disablePortal
@@ -193,7 +193,7 @@ export default function TestCases() {
                 )}
               />
             </Grid>
-            <Grid item md={4}>
+            <Grid item>
               <label for="">Application</label>
               <Autocomplete
                 disablePortal
@@ -216,6 +216,7 @@ export default function TestCases() {
           </Grid>
         </div>
         <Table
+          searchPlaceholder="Search Testcases"
           rows={testcases}
           columns={columns}
           hidefooter={true}

@@ -42,12 +42,12 @@ function TestcaseSelectAndExecute({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-        let option = param.row.datasets.map(dataset => {
-            return {
-                id : dataset.dataset_id,
-                val : dataset.name
-            }
-        })
+        let option = param.row.datasets.map((dataset) => {
+          return {
+            id: dataset.dataset_id,
+            val: dataset.name,
+          };
+        });
         // let opt = [
         //   {
         //     id: "custom_code",
@@ -104,7 +104,7 @@ function TestcaseSelectAndExecute({
               value="val"
               id="id"
               stateList={(list) => {
-                console.log(list)
+                console.log(list);
               }}
             ></MuiltiSelect>
           </div>
@@ -147,6 +147,7 @@ function TestcaseSelectAndExecute({
             testsetId={testsetId}
           />
           <Table
+            searchPlaceholder="Search Testcases"
             rows={testcaseList}
             columns={columns}
             checkboxSelection={true}
