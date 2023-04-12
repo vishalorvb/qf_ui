@@ -63,7 +63,7 @@ export default function TestsetExecution() {
   const [selectedApplication, setSelectedApplication] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
 
-
+console.log(selectedItem)
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -180,7 +180,7 @@ export default function TestsetExecution() {
         <Grid item md={9}>
           <ExecuteTestSetDetails
           projectId={selectedProject.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
-            selectedItem={selectedItem}
+           testsetId={selectedItem}
           ></ExecuteTestSetDetails>
         </Grid>
       </Grid>

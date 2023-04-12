@@ -59,31 +59,28 @@ export default function ExecutionToolbar({
   });
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  // const handleClick = () => {
-  //   console.info(`You clicked `);
-  //   applicationType === "web"
-  //     ? handleSubmit(onApiSubmitGenerate)
-  //     : handleSubmit(onSubmitGenerate);
-  // };
-
-  console.log(testcaseId)
+  const [snack,setSnack] = useState(false)
+  
+  console.log(selectedDatasets)
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   const executionMethodSelector = (data) => {
     // console.log("secv")
-    applicationType === 1 ? onSubmitExecute(data) : onApiSubmitExecute(data);
+    applicationType === 1 ? onApiSubmitExecute(data) :onSubmitExecute(data);
   };
 
   const generateMethodSelector = (data) => {
-    applicationType === 1 ? onSubmitGenerate(data) : onApiSubmitGenerate(data);
+    applicationType === 1 ?onApiSubmitGenerate(data):onSubmitGenerate(data) ;
   };
 
   const onSubmitExecute = (data) => {
     console.log("execute");
     console.log(data);
     console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       testcase_datasets_ids_list: selectedDatasets,
@@ -124,11 +121,20 @@ export default function ExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
+    else{
+      setSnack(true)
+      setTimeout(() => {
+       setSnack(false)
+    }, 3000);
+    }
   };
   const onSubmitGenerate = (data) => {
     console.log("split");
     console.log(data);
     console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       testcase_datasets_ids_list: selectedDatasets,
@@ -169,12 +175,21 @@ export default function ExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
+    else{
+      setSnack(true)
+      setTimeout(() => {
+       setSnack(false)
+    }, 3000);
+    }
   };
 
   const onApiSubmitExecute = (data) => {
     console.log("execute");
     console.log(data);
     console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       user_id: auth?.userId,
@@ -209,13 +224,18 @@ export default function ExecutionToolbar({
             })
         : setRemoteExecutionsuccess(true);
     });
+  }
+  else{
+    setSnack(true)
+    setTimeout(() => {
+     setSnack(false)
+  }, 3000);
+  }
   };
 
   const onApiSubmitGenerate = (data) => {
-    console.log("split");
-
-    console.log(data);
-    console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       user_id: auth?.userId,
@@ -250,6 +270,13 @@ export default function ExecutionToolbar({
             })
         : setRemoteExecutionsuccess(true);
     });
+  }
+  else{
+    setSnack(true)
+    setTimeout(() => {
+     setSnack(false)
+  }, 3000);
+  }
   };
 
   // useEffect(()=>{console.log(applicationId)},[applicationId])
@@ -316,6 +343,12 @@ export default function ExecutionToolbar({
         close={setRemoteExecutionsuccess}
         msg={"Scripts Executed Successfully"}
         severity="success"
+      />
+       <SnackbarNotify
+        open={snack}
+        close={setSnack}
+        msg={"Please select atleast one dataset"}
+        severity="error"
       />
       <Grid
         container
