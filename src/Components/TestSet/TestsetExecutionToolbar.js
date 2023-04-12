@@ -90,6 +90,8 @@ function TestsetExecutionToolbar({
 
   const onSubmitExecute = (data) => {
     let datasets = [];
+    console.log(selectedtestcases.length)
+
     if (selectedtestcases.length == selectedtestcases.length) {
       datasets = selectedtestcases;
     } else {
@@ -100,7 +102,7 @@ function TestsetExecutionToolbar({
           }
         }
       }
-    }
+    
 
     const executionData = {
       testset_id: testsetId,
@@ -120,6 +122,7 @@ function TestsetExecutionToolbar({
       client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
       user_id: auth?.userId,
     };
+     console.log("near execute service..")
     axios
       .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
       .then((resp) => {
@@ -141,6 +144,7 @@ function TestsetExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
   };
   const onSubmitGenerate = (data) => {
     let datasets = [];
@@ -294,7 +298,7 @@ function TestsetExecutionToolbar({
               options={buildEnvList}
             />
               <h5 
-             style={{cursor:"pointer" , color:"#009fee"}}
+             style={{cursor:"pointer" , color:"#009fee" , marginTop:"3px" }}
              onClick={()=>{
               navigate("/addEnvironment",{state : { projectId : projectId , applicationId:applicationId}})
              }}>
@@ -303,21 +307,15 @@ function TestsetExecutionToolbar({
           </Stack>
         </Grid>
         <Grid item md={2}>
-        <FormControl fullWidth>
-        <InputLabel>Browser</InputLabel>
-          <Select
+        <MultiSelectElement
+        menuMaxWidth={5}
             label="Browser"
             name="browser"
             size="small"
             control={control}
-            fullWidth>
-             {/* options={["Chrome", "Edge", "Firefox", "Safari"]} */}
-              <MenuItem value={"Chrome"}>Chrome</MenuItem>
-              <MenuItem value={"Edge"}>Edge</MenuItem>
-              <MenuItem value={"Firefox"}>Firefox</MenuItem>
-              <MenuItem value={"Safari"}>Safari</MenuItem>
-            </Select>
-            </FormControl>
+            fullWidth
+            options={["Chrome", "Edge", "Firefox", "Safari"]}
+          />
         </Grid>
         <Grid item md={2}>
           <FeatureMenu />
@@ -335,7 +333,6 @@ function TestsetExecutionToolbar({
                   fullWidth
                   type="submit"
                   onClick={
-                     
                     handleSubmit(onSubmitExecute())
                 }
                 >

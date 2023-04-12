@@ -66,11 +66,13 @@ export default function ExecutionToolbar({
   //     : handleSubmit(onSubmitGenerate);
   // };
 
+  console.log(testcaseId)
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   const executionMethodSelector = (data) => {
+    // console.log("secv")
     applicationType === 1 ? onSubmitExecute(data) : onApiSubmitExecute(data);
   };
 
@@ -345,7 +347,7 @@ export default function ExecutionToolbar({
               options={buildEnvList}
             ></SelectElement>
             <h5
-              style={{ cursor: "pointer", color: "#009fee" }}
+              style={{ cursor: "pointer", color: "#009fee", marginTop:"3px" }}
               onClick={() => {
                 navigate("/addEnvironment", {
                   state: { projectId: projectId, applicationId: applicationId },
@@ -357,22 +359,15 @@ export default function ExecutionToolbar({
           </Stack>
         </Grid>
         <Grid item md={2}>
-          <FormControl fullWidth>
-            <InputLabel>Browser</InputLabel>
-            <Select
-              label="Browser"
-              name="browser"
-              size="small"
-              control={control}
-              fullWidth
-            >
-              {/* options={["Chrome", "Edge", "Firefox", "Safari"]} */}
-              <MenuItem value={"Chrome"}>Chrome</MenuItem>
-              <MenuItem value={"Edge"}>Edge</MenuItem>
-              <MenuItem value={"Firefox"}>Firefox</MenuItem>
-              <MenuItem value={"Safari"}>Safari</MenuItem>
-            </Select>
-          </FormControl>
+        <MultiSelectElement
+        menuMaxWidth={5}
+            label="Browser"
+            name="browser"
+            size="small"
+            control={control}
+            fullWidth
+            options={["Chrome", "Edge", "Firefox", "Safari"]}
+          />
         </Grid>
         <Grid item md={2}>
           <FeatureMenu />

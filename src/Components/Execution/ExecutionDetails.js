@@ -5,13 +5,12 @@
   import ExecutionToolbar from "../TestCases/ExecutionToolbar";
   
   export default function ExecutionDetails({
-    selectedItem,
     testcaseId,
     applicationId,
     projectId,
     applicationType,
   }) {
-    console.log(selectedItem)
+    console.log(testcaseId)
     console.log(applicationId)
     const [datasetList, setDataList] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
@@ -41,13 +40,13 @@
     //   open &&
         axios
           .get(
-            `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${selectedItem}`
+            `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
           )
           .then((resp) => {
             console.log(resp);
             setDataList(resp?.data?.info?.datasets ?? []);
           });
-    }, [selectedItem]);
+    }, [testcaseId]);
   
     return (
 
