@@ -141,6 +141,16 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
         subRoute: [
           {
+            path: "Update",
+            element: Api,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "Create",
+            element: Api,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
             path: "PageElements",
             element: PageElements,
             accessRole: [1, 2, 3, 4, 5, 6, 7],
@@ -169,6 +179,16 @@ export const Routes = [
         element: pagesnscreen,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
         subRoute: [
+          {
+            path: "Update",
+            element: Api,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "Create",
+            element: Api,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
           {
             path: "PageElements",
             element: PageElements,

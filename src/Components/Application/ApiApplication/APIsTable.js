@@ -4,11 +4,12 @@ import Table from "../../../CustomComponent/Table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { IconButton, Tooltip } from "@mui/material";
+import { Button, IconButton, MenuItem, Tooltip } from "@mui/material";
 import ConfirmPop from "../../../CustomComponent/ConfirmPop";
 import { Apidata } from "../../ApiComponents/Data";
 import { getApis } from "../../../Services/ApiService";
 import { deleteApiRequest } from "../../../Services/ApiService";
+import TableActions from "../../../CustomComponent/TableActions";
 export default function APIsTable() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -20,7 +21,7 @@ export default function APIsTable() {
   function handleDelete(apiid) {
     deleteApiRequest(apiid).then((res) => {
       if (res) {
-        getApis(setApis, location.state.id);
+        getApis(setApis, location.state.module_id);
       }
       setPopup(false);
     });
@@ -37,11 +38,11 @@ export default function APIsTable() {
   }
 
   useEffect(() => {
-    getApis(setApis, location.state.id);
+    getApis(setApis, location.state.module_id);
   }, []);
 
   useEffect(() => {
-    Apidata.module_id = location.state.id;
+    Apidata.module_id = location.state.module_id;
   }, []);
 
   let requests = [" ", "Get", "Post", "Put", "Delete"];
@@ -49,13 +50,7 @@ export default function APIsTable() {
     {
       field: "api_name",
       headerName: "API Name",
-      flex: 3,
-      sortable: false,
-    },
-    {
-      field: "api_description",
-      headerName: "Description",
-      flex: 4,
+      flex: 2,
       sortable: false,
     },
     {
@@ -65,72 +60,88 @@ export default function APIsTable() {
         let x = param.row.request_type;
         return requests[x];
       },
-      flex: 2,
+      flex: 1,
       sortable: false,
     },
     {
-      field: "Actions",
-      headerName: "Actions",
-      flex: 2,
+      field: "api_description",
+      headerName: "Description",
+      flex: 4,
       sortable: false,
-      align: "center",
-      headerAlign: "center",
       renderCell: (param) => {
         return (
-          <div>
-            <Tooltip title="Edit">
-              <IconButton
-                onClick={(e) => {
-                  handleEdit(param.row);
-                  navigate("create");
-                }}
-              >
-                <EditIcon className="editIcon" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={(e) => {
-                  setApiid(param.row.api_id);
-                  setPopup(true);
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <TableActions heading={param.row.api_description}>
+            <MenuItem
+              onClick={(e) => {
+                handleEdit(param.row);
+                navigate("Update");
+              }}
+            >
+              <EditIcon sx={{ color: "blue", mr: 1 }} /> Edit
+            </MenuItem>
+            <MenuItem
+              onClick={(e) => {
+                setApiid(param.row.api_id);
+                setPopup(true);
+              }}
+            >
+              <DeleteIcon sx={{ color: "red", mr: 1 }} /> Delete
+            </MenuItem>
+          </TableActions>
         );
       },
     },
+
+    // {
+    //   field: "Actions",
+    //   headerName: "Actions",
+    //   flex: 2,
+    //   sortable: false,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (param) => {
+    //     return (
+    //       <div>
+    //         <Tooltip title="Edit">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               handleEdit(param.row);
+    //               navigate("Update");
+    //             }}
+    //           >
+    //             <EditIcon className="editIcon" />
+    //           </IconButton>
+    //         </Tooltip>
+    //         <Tooltip title="Delete">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               setApiid(param.row.api_id);
+    //               setPopup(true);
+    //             }}
+    //           >
+    //             <DeleteIcon />
+    //           </IconButton>
+    //         </Tooltip>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   useEffect(() => {
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name: "API Requests",
-        plusButton: true,
-        plusCallback: () =>
-          navigate("create", { state: { id: location.state.id } }),
-      };
-    });
-    return () =>
-      setHeader((ps) => {
-        return {
-          ...ps,
-          name: "",
-          plusButton: false,
-          plusCallback: () => console.log("null"),
-        };
-      });
-  }, []);
-
-  useEffect(() => {
-    getApis(location.state.id, setApis);
+    getApis(location.state.module_id, setApis);
   }, []);
 
   return (
     <>
+      <Button
+        variant="contained"
+        onClick={() =>
+          navigate("Create", { state: { id: location.state.module_id } })
+        }
+      >
+        Create API
+      </Button>
       <Table rows={apis} columns={pageColumns} getRowId={(row) => row.api_id} />
       <Outlet />
       <ConfirmPop
