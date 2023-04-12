@@ -532,15 +532,15 @@ label::after {
   color: red;
   margin-left: 2px;
 }
-// .css-sghohy-MuiButtonBase-root-MuiButton-root {
-//   text-transform: none !important;
-// }
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+}
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: $accent;
 }
-// .css-11qr2p8-MuiButtonBase-root-MuiButton-root {
-//   text-transform: none !important;
-// }
+.css-11qr2p8-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+}
 .menuBadge {
   background-color: $accent;
   border-radius: 10px;
