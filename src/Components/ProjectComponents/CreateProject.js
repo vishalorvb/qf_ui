@@ -65,10 +65,10 @@ function CreateProject() {
   }
   function submitHandler() {
     let x = getUserlist();
-    x = JSON.stringify(x)
+    x = JSON.stringify(x);
     let app = getApplicationlist();
     app = app.toString();
-    createformData.user_access_permissions = x
+    createformData.user_access_permissions = x;
     createformData.applicationsProjectMapping = "[" + app + "]";
     createformData.userId = auth.info.id;
     console.log(createformData);
@@ -83,7 +83,7 @@ function CreateProject() {
           if (res == "SUCCESS") {
             setSnackbarsuccess(true);
             setTimeout(() => {
-              navigate("/projects");
+              navigate("/Projects/Recent");
             }, 1000);
           } else {
             setSnackbarerror(true);
@@ -94,7 +94,7 @@ function CreateProject() {
           if (res == "SUCCESS") {
             setSnackbarsuccess(true);
             setTimeout(() => {
-              navigate("/projects");
+              navigate("/Projects/Recent");
             }, 1000);
           } else {
             setSnackbarerror(true);
@@ -192,9 +192,7 @@ function CreateProject() {
     };
   }, []);
 
-  useEffect(() => {
-
-  }, [applications]);
+  useEffect(() => {}, [applications]);
 
   return (
     <div className="accordionParent" onClick={resetClassName}>
@@ -210,7 +208,7 @@ function CreateProject() {
         msg="Saved Succesfully"
         severity="success"
       />
-      <AccordionTemplate name="Project Information">
+      <AccordionTemplate defaultState={true} name="Project Information">
         <Container
           component={"div"}
           maxWidth={false}
@@ -267,8 +265,13 @@ function CreateProject() {
                   }
                   value={1}
                 >
-                  Selenium
+                  Selenium Automation
                 </option>
+                {/* <option value={1}>BDD</option>
+                <option value={1}>Winium</option>
+                <option value={1}>Mobile</option>
+                <option value={1}>Cucumber Automation</option>
+                <option value={1}>Link Project</option> */}
               </select>
             </Grid>
           </Grid>
@@ -291,8 +294,8 @@ function CreateProject() {
                   createformData.projectDesc = e.target.value;
                 }}
                 defaultValue={createformData.projectDesc}
-                type="text"
                 name="desc"
+                autocomplete="off"
               />
             </Grid>
           </Grid>
@@ -325,7 +328,6 @@ function CreateProject() {
               <input
                 defaultValue={createformData.repository_url}
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.repository_url = e.target.value;
                 }}
@@ -347,7 +349,6 @@ function CreateProject() {
               <input
                 defaultValue={createformData.repository_token}
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.repository_token = e.target.value;
                 }}
@@ -367,7 +368,8 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={5}>
               {" "}
-              <input type="text" name=""
+              <input
+                type="text"
                 defaultValue={createformData.repository_branch}
                 onChange={(e) => {
                   createformData.repository_branch = e.target.value;
@@ -405,7 +407,6 @@ function CreateProject() {
               <input
                 defaultValue={createformData.jenkins_url}
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.jenkins_url = e.target.value;
                 }}
@@ -450,9 +451,8 @@ function CreateProject() {
             <Grid item xs={6} sm={6} md={7}>
               <input
                 defaultValue={createformData.jenkins_user_name}
-                type="text"
-                name=""
                 autocomplete="off"
+                type="text"
                 onChange={(e) => {
                   createformData.jenkins_user_name = e.target.value;
                 }}
@@ -475,7 +475,6 @@ function CreateProject() {
               <input
                 defaultValue={createformData.jenkins_password}
                 type="password"
-                name=""
                 onChange={(e) => {
                   createformData.jenkins_password = e.target.value;
                 }}
@@ -511,7 +510,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.db_type = e.target.value;
                 }}
@@ -533,7 +531,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.db_name = e.target.value;
                 }}
@@ -555,7 +552,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.db_name = e.target.value;
                 }}
@@ -577,7 +573,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.db_user_name = e.target.value;
                 }}
@@ -599,7 +594,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.db_port = e.target.value;
                 }}
@@ -621,7 +615,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.db_password = e.target.value;
                 }}
@@ -687,7 +680,6 @@ function CreateProject() {
             <Grid item xs={6} sm={6} md={10}>
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.jenkins_url = e.target.value;
                 }}
@@ -709,7 +701,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.jenkins_user_name = e.target.value;
                 }}
@@ -731,7 +722,6 @@ function CreateProject() {
               {" "}
               <input
                 type="text"
-                name=""
                 onChange={(e) => {
                   createformData.jenkins_token = e.target.value;
                 }}
@@ -751,7 +741,7 @@ function CreateProject() {
             </Grid>
             <Grid item xs={6} sm={6} md={7.5}>
               {" "}
-              <input type="text" name="" />
+              <input type="text" />
             </Grid>
           </Grid>
         </Container>
@@ -887,16 +877,10 @@ function CreateProject() {
         sm={12}
         md={12}
         sx={{ marginBottom: "20px" }}
-        justifyContent="space-around"
+        justifyContent="flex-end"
       >
-        <Button
-          size="small"
-          sx={{ marginBottom: "10px" }}
-          onClick={submitHandler}
-          variant="contained"
-          startIcon={<SaveIcon></SaveIcon>}
-        >
-          Save{" "}
+        <Button onClick={submitHandler} variant="contained">
+          Save
         </Button>
       </Grid>
     </div>

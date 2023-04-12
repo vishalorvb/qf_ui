@@ -81,7 +81,7 @@ export default function SelectedPageElements() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create Screen",
+        name: location?.state?.name + " Create Screen",
       };
     });
   }, []);
