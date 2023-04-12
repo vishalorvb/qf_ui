@@ -1,4 +1,11 @@
-import { Autocomplete, Grid, IconButton, MenuItem, TextField, Tooltip } from "@mui/material";
+import {
+  Autocomplete,
+  Grid,
+  IconButton,
+  MenuItem,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 // import CreateTestCasePopUp from "./CreateTestCasePopUp";
@@ -6,8 +13,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { useNavigate } from "react-router";
-import { getProject } from "../../Services/ProjectService"
-import { getApplicationOfProject } from "../../Services/ApplicationService"
+import { getProject } from "../../Services/ProjectService";
+import { getApplicationOfProject } from "../../Services/ApplicationService";
 import useAuth from "../../hooks/useAuth";
 import TableActions from "../../CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -20,8 +27,8 @@ export default function TestCases() {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedApplication, setSelectedApplication] = useState(null);
-  let [project, setProject] = useState([])
-  let [application, setApplication] = useState([])
+  let [project, setProject] = useState([]);
+  let [application, setApplication] = useState([]);
   const navigate = useNavigate();
   const { auth } = useAuth();
   const columns = [
@@ -31,32 +38,32 @@ export default function TestCases() {
       flex: 2,
       sortable: false,
       align: "left",
-      renderCell: param => {
+      renderCell: (param) => {
         return (
           <div
             style={{ color: "#009fee", cursor: "pointer" }}
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
-                  state: {
-                    applicationId: param.row.module_id,
-                    testcaseId: param.row.testcase_id,
-                    projectId: selectedProject?.project_id,
-                  },
-                })
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
                 : navigate("datasets", {
-                  state: {
-                    applicationId: param.row.module_id,
-                    testcaseId: param.row.testcase_id,
-                    projectId: selectedProject?.project_id,
-                  },
-                })
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
             }
           >
             {param.row.name}
           </div>
-        )
-      }
+        );
+      },
     },
     {
       field: "description",
@@ -65,42 +72,42 @@ export default function TestCases() {
       sortable: false,
       renderCell: (param) => {
         return (
-          <TableActions
-            heading={param.row?.description}
-          >
+          <TableActions heading={param.row?.description}>
             <MenuItem
-              onClick={e => {
-                DeleteTestCase(param.row.testcase_id).then(res => {
-                  if (res) {
-                    GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
-                  }
-                })
-              }}
-            >
-              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
-              Delete
-            </MenuItem>
-            <MenuItem
-              onClick={e => {
-                console.log(param.row)
-                TCdata.module_id = param.row.module_id
-                TCdata.project_id = param.row.project.project_id
-                TCdata.testcase_name = param.row.name
-                TCdata.testcase_description = param.row.description
-                TCdata.testcase_id = param.row.testcase_id
-                console.log(TCdata)
-                navigate("create")
+              onClick={(e) => {
+                console.log(param.row);
+                TCdata.module_id = param.row.module_id;
+                TCdata.project_id = param.row.project.project_id;
+                TCdata.testcase_name = param.row.name;
+                TCdata.testcase_description = param.row.description;
+                TCdata.testcase_id = param.row.testcase_id;
+                console.log(TCdata);
+                navigate("/Testcase/Create");
               }}
             >
               <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
               Edit
             </MenuItem>
+            <MenuItem
+              onClick={(e) => {
+                DeleteTestCase(param.row.testcase_id).then((res) => {
+                  if (res) {
+                    GetTestCase(
+                      setTestcases,
+                      selectedProject?.project_id,
+                      selectedApplication?.module_id
+                    );
+                  }
+                });
+              }}
+            >
+              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+              Delete
+            </MenuItem>
           </TableActions>
-        )
+        );
       },
     },
-
-
   ];
 
   const { setHeader } = useHead();
@@ -112,7 +119,7 @@ export default function TestCases() {
         // plusButton: true,
         // buttonName: "Create Testcase",
         plusCallback: () => {
-          console.log("")
+          console.log("");
         },
       };
     });
@@ -127,26 +134,32 @@ export default function TestCases() {
       });
   }, []);
 
-
   useEffect(() => {
-    getProject(setProject, auth.userId)
-  }, [])
+    getProject(setProject, auth.userId);
+  }, []);
   useEffect(() => {
-    setSelectedProject(project[0])
-  }, [project])
+    setSelectedProject(project[0]);
+  }, [project]);
   useEffect(() => {
     if (selectedProject !== null) {
-      getApplicationOfProject(setApplication, selectedProject?.project_id)
+      getApplicationOfProject(setApplication, selectedProject?.project_id);
     }
-  }, [selectedProject])
+  }, [selectedProject]);
   useEffect(() => {
-      setSelectedApplication(application[0])
-      GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
-    
-  }, [application])
+    setSelectedApplication(application[0]);
+    GetTestCase(
+      setTestcases,
+      selectedProject?.project_id,
+      selectedApplication?.module_id
+    );
+  }, [application]);
   useEffect(() => {
-      GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id) 
-  }, [selectedApplication])
+    GetTestCase(
+      setTestcases,
+      selectedProject?.project_id,
+      selectedApplication?.module_id
+    );
+  }, [selectedApplication]);
   return (
     <>
       <SnackbarNotify
@@ -199,11 +212,8 @@ export default function TestCases() {
                   </div>
                 )}
               />
-
             </Grid>
           </Grid>
-
-
         </div>
         <Table
           rows={testcases}
@@ -215,13 +225,3 @@ export default function TestCases() {
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-

@@ -418,7 +418,7 @@ export const Routes = [
   },
 
   {
-    path: "testcase",
+    path: "Testcase/Recent",
     element: TestCases,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
@@ -430,11 +430,6 @@ export const Routes = [
       {
         path: "AddScreen",
         element: CreateWebTestcase,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        path: "Create",
-        element: CreateTestCase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
@@ -460,26 +455,31 @@ export const Routes = [
     ],
   },
   {
-    path: "Testset",
+    path: "Testcase/Create",
+    element: CreateTestCase,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "Testset/Recent",
     element: Testset,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
       {
-        path: "AddTestcaseToTestset",
+        path: "Update",
         element: AddTestcaseToTestset,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "createTestset",
-        element: createTestset,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        path: "UpdateTestcasesOrder",
+        path: "Reorder",
         element: UpdateTestcasesOrder,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
+  },
+  {
+    path: "Testset/Create",
+    element: createTestset,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   // {
   //   path: "application",

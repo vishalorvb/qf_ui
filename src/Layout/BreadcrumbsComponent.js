@@ -16,7 +16,9 @@ export default function BreadcrumbsComponent() {
     .filter((crumb) => crumb !== "" && crumb !== "dashboard")
     .map((crumb, idx) => {
       currentLocation += `/${crumb}`;
-      nav = ["Application", "Projects"].includes(crumb) ? nav : nav + 1;
+      nav = ["Application", "Projects", "Testcase"].includes(crumb)
+        ? nav
+        : nav + 1;
       return (
         <div className="crumb" key={idx}>
           <Typography
