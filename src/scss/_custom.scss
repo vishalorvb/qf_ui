@@ -412,9 +412,9 @@ select {
 }
 .intable {
   position: absolute;
-  top: -11px;
+  top: -8px;
   right: 0;
-  
+  z-index: 2;
 }
 
 .intableselect {
