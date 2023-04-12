@@ -36,9 +36,12 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
     getBuilEnvironment();
   }, []);
 
+  console.log(location.state.projectId)
+  console.log(location.state.applicationId)
+
   function getBuilEnvironment() {
     axios
-      .get(`/qfservice/build-environment?project_id=79&module_id=76`)
+      .get(`/qfservice/build-environment?project_id=${location.state.projectId}&module_id=${location.state.applicationId}`)
       .then((res) => {
         console.log(res.data.data.length);
         if (res.data.data.length > 0) {

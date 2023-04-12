@@ -5,7 +5,9 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl'
 import MenuList from "@mui/material/MenuList";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, MenuItem } from "@mui/material";
@@ -291,24 +293,31 @@ function TestsetExecutionToolbar({
               control={control}
               options={buildEnvList}
             />
-            <Button
-              onClick={() => {
-                navigate("/addEnvironment", { state: { pId: projectId } });
-              }}
-            >
+              <h5 
+             style={{cursor:"pointer" , color:"#009fee"}}
+             onClick={()=>{
+              navigate("/addEnvironment",{state : { projectId : projectId , applicationId:applicationId}})
+             }}>
               + Add Environment
-            </Button>
+            </h5>
           </Stack>
         </Grid>
         <Grid item md={2}>
-          <MultiSelectElement
+        <FormControl fullWidth>
+        <InputLabel>Browser</InputLabel>
+          <Select
             label="Browser"
             name="browser"
             size="small"
             control={control}
-            fullWidth
-            options={["Chrome", "Edge", "Firefox", "Safari"]}
-          />
+            fullWidth>
+             {/* options={["Chrome", "Edge", "Firefox", "Safari"]} */}
+              <MenuItem value={"Chrome"}>Chrome</MenuItem>
+              <MenuItem value={"Edge"}>Edge</MenuItem>
+              <MenuItem value={"Firefox"}>Firefox</MenuItem>
+              <MenuItem value={"Safari"}>Safari</MenuItem>
+            </Select>
+            </FormControl>
         </Grid>
         <Grid item md={2}>
           <FeatureMenu />

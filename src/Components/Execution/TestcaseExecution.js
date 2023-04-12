@@ -155,7 +155,7 @@ export default function TestcaseExecution() {
               onChange={handleSearchChange}
             />
         </Grid>
-        <Grid item md={9.2}>
+        <Grid item md={5} >
           <ProjectnApplicationSelector
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
@@ -169,8 +169,8 @@ export default function TestcaseExecution() {
         <Grid item md={2.8}>
           <List
             sx={{
-              overflowY: "scroll",
-              height: "400px",
+              overflowY: "auto",
+              height: "70vh",
               width: "100%",
             }}
           >

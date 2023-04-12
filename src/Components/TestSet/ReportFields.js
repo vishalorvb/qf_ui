@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import useAxios from "../../hooks/useAxios";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from "@mui/icons-material/Download";
 import Table from "../../CustomComponent/Table";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -34,12 +34,8 @@ export default function ReportFields({
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
 
-  
   try {
-    
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 
   //   let autoComplete = [
   //     "userAutocomplete",
@@ -62,7 +58,7 @@ export default function ReportFields({
   };
 
   const [fromDate, setFromDate] = useState(values.from_Date);
-  console.log(json)
+  console.log(json);
   const [toDate, setToDate] = useState(values.to_Date);
   const columns = [
     {
@@ -112,10 +108,22 @@ export default function ReportFields({
       renderCell: (params) => {
         let repo_result = params.row.report_result.split("/");
         return (
-          <div style={{ border: "1px solid grey", display: "flex", padding: "inherit", borderRadius: "15px" }}>
-
-            <div style={{ color: "green", fontWeight: "600" }}>{repo_result[0]}</div>&nbsp;<b>/</b>
-            &nbsp;<div style={{ color: "red", fontWeight: "600" }}>{repo_result[1]}</div>
+          <div
+            style={{
+              border: "1px solid grey",
+              display: "flex",
+              padding: "inherit",
+              borderRadius: "15px",
+            }}
+          >
+            <div style={{ color: "green", fontWeight: "600" }}>
+              {repo_result[0]}
+            </div>
+            &nbsp;<b>/</b>
+            &nbsp;
+            <div style={{ color: "red", fontWeight: "600" }}>
+              {repo_result[1]}
+            </div>
           </div>
         );
       },
@@ -130,8 +138,15 @@ export default function ReportFields({
         return (
           <>
             <Button
-            sx={{ backgroundColor: "#F0FFF0",color:"#2F4F4F", borderRadius: "10px", height: "25px",width:"110px", marginTop: "5px" }}
-            variant="outlined"
+              sx={{
+                backgroundColor: "#F0FFF0",
+                color: "#2F4F4F",
+                borderRadius: "10px",
+                height: "25px",
+                width: "110px",
+                marginTop: "5px",
+              }}
+              variant="outlined"
               onClick={(e) => {
                 navigate("ViewReport", {
                   state: { id: params.row.report_id },
@@ -141,16 +156,24 @@ export default function ReportFields({
               View Report
             </Button>
             <Button
-              sx={{marginLeft: "5px", backgroundColor: "#EDFAF9", borderRadius: "10px", height: "25px", marginTop: "5px" }}
+              sx={{
+                marginLeft: "5px",
+                backgroundColor: "#EDFAF9",
+                borderRadius: "10px",
+                height: "25px",
+                marginTop: "5px",
+              }}
               variant="outlined"
               onClick={(e) => {
-                navigate("AllReports", {
-                  state: {
-                    id: params.row,
-                    fromDate: fromDate,
-                    toDate: toDate,
-                  }
-                },
+                navigate(
+                  "AllReports",
+                  {
+                    state: {
+                      id: params.row,
+                      fromDate: fromDate,
+                      toDate: toDate,
+                    },
+                  },
                   console.log(fromDate)
                 );
               }}
@@ -158,25 +181,28 @@ export default function ReportFields({
               View All
             </Button>
             <DownloadIcon
-              style={{ marginLeft: "5px", border: "1px solid #c4cbe1", width: "30px", height: "22px", cursor: "pointer", marginTop: "5px" }}
-
+              style={{
+                marginLeft: "5px",
+                border: "1px solid #c4cbe1",
+                width: "30px",
+                height: "22px",
+                cursor: "pointer",
+                marginTop: "5px",
+              }}
               variant="contained"
               onClick={(e) => {
-                axios.get(`/qfreportservice/reportResult/${params.id}.json`).then(res => {
-
-                  setJson(res.data)
-                })
+                axios
+                  .get(`/qfreportservice/reportResult/${params.id}.json`)
+                  .then((res) => {
+                    setJson(res.data);
+                  });
               }}
-            >
-            </DownloadIcon>
-
+            ></DownloadIcon>
           </>
         );
       },
     },
   ];
-
-
 
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
@@ -225,7 +251,7 @@ export default function ReportFields({
             }, 3000);
           }
         })
-        .catch((error) => { });
+        .catch((error) => {});
     }
     //  else {
     //   setValidationMsg(true);
@@ -324,8 +350,8 @@ export default function ReportFields({
             }}
           />
         </Box>
-      </Stack>
-      <Grid container justifyContent="flex-center">
+     
+   
         <Button
           variant="contained"
           onClick={submit}
@@ -339,7 +365,8 @@ export default function ReportFields({
         >
           Search
         </Button>
-      </Grid>
+      
+      </Stack>
       <SnackbarNotify
         open={reportSuccessMsg}
         close={setReportSuccessMsg}
@@ -361,6 +388,7 @@ export default function ReportFields({
       <div className="datatable" style={{ marginTop: "15px" }}>
         <Table
           columns={columns}
+          hideSearch={true}
           rows={tbData}
           getRowId={(row) => row.report_id}
         />

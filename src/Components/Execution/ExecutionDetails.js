@@ -61,7 +61,7 @@
           />
           <Table
             rows={datasetList}
-            options={{ search: false }}
+            hideSearch={true}
             columns={columns}
             checkboxSelection={true}
             selectionModel={selectedDatasets}

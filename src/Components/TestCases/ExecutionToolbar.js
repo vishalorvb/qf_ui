@@ -14,7 +14,9 @@ import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -23,6 +25,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
+import Select from "@mui/material/Select";
 
 export default function ExecutionToolbar({
   applicationId,
@@ -68,16 +71,12 @@ export default function ExecutionToolbar({
   };
 
   const executionMethodSelector = (data) => {
-    applicationType === 1? 
-    onSubmitExecute(data) : 
-    onApiSubmitExecute(data)
-  }
+    applicationType === 1 ? onSubmitExecute(data) : onApiSubmitExecute(data);
+  };
 
   const generateMethodSelector = (data) => {
-    applicationType === 1? 
-    onSubmitGenerate(data) : 
-    onApiSubmitGenerate(data)
-  }
+    applicationType === 1 ? onSubmitGenerate(data) : onApiSubmitGenerate(data);
+  };
 
   const onSubmitExecute = (data) => {
     console.log("execute");
@@ -251,7 +250,6 @@ export default function ExecutionToolbar({
     });
   };
 
-
   // useEffect(()=>{console.log(applicationId)},[applicationId])
   // console.log("first")
 
@@ -292,7 +290,7 @@ export default function ExecutionToolbar({
         });
   }, [applicationId]);
   return (
-    <form >
+    <form>
       <SnackbarNotify
         open={clientInactive}
         close={setClientInactive}
@@ -337,10 +335,7 @@ export default function ExecutionToolbar({
           />
         </Grid>
         <Grid item md={2}>
-          <Stack
-            direction="column"
-          >
-           
+          <Stack direction="column">
             <SelectElement
               name="buildenvName"
               label="build env. Name"
@@ -348,98 +343,111 @@ export default function ExecutionToolbar({
               fullWidth
               control={control}
               options={buildEnvList}
-              ></SelectElement>
-             <Button onClick={()=>{
-              navigate("/addEnvironment",{state : { pId : projectId}})
-             }}>
+            ></SelectElement>
+            <h5
+              style={{ cursor: "pointer", color: "#009fee" }}
+              onClick={() => {
+                navigate("/addEnvironment", {
+                  state: { projectId: projectId, applicationId: applicationId },
+                });
+              }}
+            >
               + Add Environment
-            </Button>
+            </h5>
           </Stack>
         </Grid>
         <Grid item md={2}>
-          <MultiSelectElement
-            label="Browser"
-            name="browser"
-            size="small"
-            control={control}
-            fullWidth
-            options={["Chrome", "Edge", "Firefox", "Safari"]}
-          />
+          <FormControl fullWidth>
+            <InputLabel>Browser</InputLabel>
+            <Select
+              label="Browser"
+              name="browser"
+              size="small"
+              control={control}
+              fullWidth
+            >
+              {/* options={["Chrome", "Edge", "Firefox", "Safari"]} */}
+              <MenuItem value={"Chrome"}>Chrome</MenuItem>
+              <MenuItem value={"Edge"}>Edge</MenuItem>
+              <MenuItem value={"Firefox"}>Firefox</MenuItem>
+              <MenuItem value={"Safari"}>Safari</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item md={2}>
           <FeatureMenu />
         </Grid>
         <Grid item md={2}>
-        <Stack
-        direction="column"
-      >
-          <React.Fragment>
-            <ButtonGroup
-              variant="contained"
-              ref={anchorRef}
-              aria-label="split button"
-            >
-              <Button
-                fullWidth
-                // type="submit"
-               sx={{backgroundColor: "#009fee"}} 
-               onClick={
-                     
-                    handleSubmit(executionMethodSelector)
-                }
+          <Stack direction="column">
+            <React.Fragment>
+              <ButtonGroup
+                variant="contained"
+                ref={anchorRef}
+                aria-label="split button"
               >
-                Execute
-              </Button>
-              <Button
-               sx={{backgroundColor: "#009fee"}} 
-                size="small"
-                aria-controls={open ? "split-button-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-label="select merge strategy"
-                aria-haspopup="menu"
-                onClick={handleToggle}
-              >
-                <ArrowDropDownIcon />
-              </Button>
-            </ButtonGroup>
-            <Popper
-              sx={{
-                zIndex: 1,
-              }}
-              open={open}
-              anchorEl={anchorRef.current}
-              role={undefined}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom",
-                  }}
+                <Button
+                  fullWidth
+                  // type="submit"
+                  sx={{ backgroundColor: "#009fee" }}
+                  onClick={handleSubmit(executionMethodSelector)}
                 >
-                  <Paper>
-                    <MenuList id="split-button-menu" autoFocusItem>
-                      <MenuItem onClick={handleSubmit(generateMethodSelector)} size="small">GENERATE Script</MenuItem>
-                    </MenuList>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </React.Fragment>
-        <CheckboxButtonGroup
-          name="regenerateScript"
-          control={control}
-          options={[
-            {
-              id: "1",
-              label: "Regenrate Script",
-            },
-          ]}
-        />
-      </Stack>
+                  Execute
+                </Button>
+                <Button
+                  sx={{ backgroundColor: "#009fee" }}
+                  size="small"
+                  aria-controls={open ? "split-button-menu" : undefined}
+                  aria-expanded={open ? "true" : undefined}
+                  aria-label="select merge strategy"
+                  aria-haspopup="menu"
+                  onClick={handleToggle}
+                >
+                  <ArrowDropDownIcon />
+                </Button>
+              </ButtonGroup>
+              <Popper
+                sx={{
+                  zIndex: 1,
+                }}
+                open={open}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === "bottom" ? "center top" : "center bottom",
+                    }}
+                  >
+                    <Paper>
+                      <MenuList id="split-button-menu" autoFocusItem>
+                        <MenuItem
+                          onClick={handleSubmit(generateMethodSelector)}
+                          size="small"
+                        >
+                          GENERATE Script
+                        </MenuItem>
+                      </MenuList>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </React.Fragment>
+            <CheckboxButtonGroup
+              name="regenerateScript"
+              control={control}
+              options={[
+                {
+                  id: "1",
+                  label: "Regenrate Script",
+                },
+              ]}
+            />
+          </Stack>
         </Grid>
 
         {/* <Grid item md={1.7}>
@@ -470,8 +478,7 @@ export default function ExecutionToolbar({
                 Execute
               </Button>
             </Grid> */}
-      </Grid>
-    {" "}
+      </Grid>{" "}
       {execLoc !== "local" && (
         <Stack mt={1}>
           <TextFieldElement

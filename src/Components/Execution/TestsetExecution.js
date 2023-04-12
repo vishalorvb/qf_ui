@@ -151,7 +151,7 @@ export default function TestsetExecution() {
             />
           </>
         </Grid>
-        <Grid item md={9.2}>
+        <Grid item md={5}>
           <ProjectnApplicationSelector
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
@@ -166,8 +166,8 @@ export default function TestsetExecution() {
         <Grid item md={2.8} justifyContent="flex-start">
           <List
             sx={{
-              overflowY: "scroll",
-              maxHeight: "400px",
+              overflowY: "aurto",
+              height:"70vh"
             //   maxWidth: "500px",
             }}
           >

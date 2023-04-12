@@ -125,6 +125,10 @@ const TestsetExecution = lazy(() =>
   import(`../Components/Execution/TestsetExecution`)
 );
 
+const AddEnvironemt = lazy(() =>
+  import(`../Components/Execution/AddEnvironment`)
+);
+
 export const Routes = [
   {
     path: "Application/Recent",
@@ -272,6 +276,11 @@ export const Routes = [
   {
     path: "TestsetExecution",
     element: TestsetExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "addEnvironment",
+    element: AddEnvironemt,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
