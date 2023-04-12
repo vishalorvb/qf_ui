@@ -94,37 +94,40 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
                 );
             })} */}
 
-      {tempApi != undefined && (
-        <MaterialReactTable
-          columns={columns}
-          data={tempApi}
-          enableTopToolbar={false}
-          enableColumnActions={false}
-          enableBottomToolbar={false}
-          enablePagination={false}
-          initialState={{ density: "compact" }}
-          enableToolbarInternalActions={false}
-          muiTableBodyRowProps={{ hover: false }}
-          enableRowOrdering
-          enableSorting={false}
-          muiTableBodyRowDragHandleProps={({ table }) => ({
-            onDragEnd: () => {
-              const { draggingRow, hoveredRow } = table.getState();
-              if (hoveredRow && draggingRow) {
-                let x = [...tempApi];
-                x.splice(hoveredRow.index, 0, draggingRow.original);
-                x.splice(draggingRow.index + 1, 1);
-                setTempApi([...x]);
-              }
-            },
-          })}
-          muiTablePaperProps={{
-            elevation: 0,
-          }}
-        />
-      )}
-    </div>
-  );
+
+
+
+
+            {tempApi != undefined && <MaterialReactTable
+
+                columns={columns}
+                data={tempApi}
+                enableColumnActions={false}
+                enablePagination={false}
+                initialState={{ density: "compact" }}
+                enableToolbarInternalActions={false}
+                muiTableBodyRowProps={{ hover: false }}
+                enableRowOrdering
+                enableSorting={false}
+                enableTopToolbar={false}
+                enableBottomToolbar={false}
+                muiTableBodyRowDragHandleProps={({ table }) => ({
+                    onDragEnd: () => {
+                        const { draggingRow, hoveredRow } = table.getState();
+                        if (hoveredRow && draggingRow) {
+                            let x = [...tempApi]
+                            x.splice(hoveredRow.index, 0, draggingRow.original)
+                            x.splice(draggingRow.index + 1, 1)
+                            setTempApi([...x])
+                        }
+                    },
+                })}
+                muiTablePaperProps={{
+                    elevation: 0,
+                }}
+            />}
+        </div>
+    )
 }
 
 export default APiListDrawer;

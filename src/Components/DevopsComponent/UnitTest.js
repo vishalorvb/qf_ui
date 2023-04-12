@@ -45,6 +45,7 @@ export default function UnitTest() {
 
   return result.length > 0 ? (
     <Table
+      searchPlaceholder="Search Results"
       rows={result}
       columns={applicationColumns}
       getRowId={(row) => row.message + row.testcaseName + row.result}

@@ -61,29 +61,28 @@ export default function ExecutionToolbar({
   const anchorRef = React.useRef(null);
   const [buildEnvId,setBuildEnvId] = useState()
   const [runtimeVariable,setRunTimeVariable] = useState()
-  // const handleClick = () => {
-  //   console.info(`You clicked `);
-  //   applicationType === "web"
-  //     ? handleSubmit(onApiSubmitGenerate)
-  //     : handleSubmit(onSubmitGenerate);
-  // };
-
+  const [snack,setSnack] = useState(false)
+  
+  console.log(selectedDatasets)
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   const executionMethodSelector = (data) => {
-    applicationType === 1 ? onSubmitExecute(data) : onApiSubmitExecute(data);
+    // console.log("secv")
+    applicationType === 1 ? onApiSubmitExecute(data) :onSubmitExecute(data);
   };
 
   const generateMethodSelector = (data) => {
-    applicationType === 1 ? onSubmitGenerate(data) : onApiSubmitGenerate(data);
+    applicationType === 1 ?onApiSubmitGenerate(data):onSubmitGenerate(data) ;
   };
 
   const onSubmitExecute = (data) => {
     console.log("execute");
     console.log(data);
     console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       testcase_datasets_ids_list: selectedDatasets,
@@ -124,11 +123,20 @@ export default function ExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
+    else{
+      setSnack(true)
+      setTimeout(() => {
+       setSnack(false)
+    }, 3000);
+    }
   };
   const onSubmitGenerate = (data) => {
     console.log("split");
     console.log(data);
     console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       testcase_datasets_ids_list: selectedDatasets,
@@ -169,12 +177,21 @@ export default function ExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
+    else{
+      setSnack(true)
+      setTimeout(() => {
+       setSnack(false)
+    }, 3000);
+    }
   };
 
   const onApiSubmitExecute = (data) => {
     console.log("execute");
     console.log(data);
     console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       user_id: auth?.userId,
@@ -209,13 +226,18 @@ export default function ExecutionToolbar({
             })
         : setRemoteExecutionsuccess(true);
     });
+  }
+  else{
+    setSnack(true)
+    setTimeout(() => {
+     setSnack(false)
+  }, 3000);
+  }
   };
 
   const onApiSubmitGenerate = (data) => {
-    console.log("split");
-
-    console.log(data);
-    console.log(testcaseId);
+    if(selectedDatasets.length != 0 )
+    {
     const executionData = {
       testcase_id: testcaseId,
       user_id: auth?.userId,
@@ -250,6 +272,13 @@ export default function ExecutionToolbar({
             })
         : setRemoteExecutionsuccess(true);
     });
+  }
+  else{
+    setSnack(true)
+    setTimeout(() => {
+     setSnack(false)
+  }, 3000);
+  }
   };
 
   // useEffect(()=>{console.log(applicationId)},[applicationId])
@@ -318,6 +347,12 @@ export default function ExecutionToolbar({
         msg={"Scripts Executed Successfully"}
         severity="success"
       />
+       <SnackbarNotify
+        open={snack}
+        close={setSnack}
+        msg={"Please select atleast one dataset"}
+        severity="error"
+      />
       <Grid
         container
         direction="row"
@@ -348,7 +383,7 @@ export default function ExecutionToolbar({
               options={buildEnvList}
             ></SelectElement>
             <h5
-              style={{ cursor: "pointer", color: "#009fee" }}
+              style={{ cursor: "pointer", color: "#009fee", marginTop:"3px" }}
               onClick={() => {
                 navigate("/addEnvironment", {
                   state: { projectId: projectId, applicationId: applicationId },
@@ -360,22 +395,15 @@ export default function ExecutionToolbar({
           </Stack>
         </Grid>
         <Grid item md={2}>
-          <FormControl fullWidth>
-            <InputLabel>Browser</InputLabel>
-            <Select
-              label="Browser"
-              name="browser"
-              size="small"
-              control={control}
-              fullWidth
-            >
-              {/* options={["Chrome", "Edge", "Firefox", "Safari"]} */}
-              <MenuItem value={"Chrome"}>Chrome</MenuItem>
-              <MenuItem value={"Edge"}>Edge</MenuItem>
-              <MenuItem value={"Firefox"}>Firefox</MenuItem>
-              <MenuItem value={"Safari"}>Safari</MenuItem>
-            </Select>
-          </FormControl>
+        <MultiSelectElement
+        menuMaxWidth={5}
+            label="Browser"
+            name="browser"
+            size="small"
+            control={control}
+            fullWidth
+            options={["Chrome", "Edge", "Firefox", "Safari"]}
+          />
         </Grid>
         <Grid item md={2}>
           <FeatureMenu envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) && runtimeVariable}/>

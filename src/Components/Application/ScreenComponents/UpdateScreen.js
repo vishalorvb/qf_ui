@@ -102,6 +102,7 @@ export default function UpdateScreen() {
   return (
     <div>
       <Table
+        searchPlaceholder="Search Elements"
         rows={elements}
         columns={elementColumns}
         getRowId={(row) => row.element_id}

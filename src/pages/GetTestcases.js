@@ -124,6 +124,7 @@ function GetTestcases() {
         />
       </Stack>
       <Table
+        searchPlaceholder="Search Testcase"
         rows={testcaseObject}
         columns={columns}
         hidefooter={true}

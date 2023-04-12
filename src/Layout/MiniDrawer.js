@@ -214,14 +214,23 @@ export default function MiniDrawer({ open, setOpen }) {
           </IconButton>
         </DrawerHeader>
         <div className="menu">
-          <div className="profile">
+          <div
+            className="profile"
+            style={{ width: drawerWidth - 20, overflow: "hidden" }}
+          >
             <Avatar sx={{ bgcolor: "white", color: "black" }}>
               {auth?.user?.charAt(0)?.toUpperCase() +
                 auth?.user?.charAt(1)?.toUpperCase()}
             </Avatar>
             {open && (
               <div>
-                <Typography sx={{ color: "white", margin: "0px" }}>
+                <Typography
+                  sx={{
+                    color: "white",
+                    margin: "0px",
+                    textOverflow: "ellipsis",
+                  }}
+                >
                   Welcome {auth?.user}
                 </Typography>
                 <Typography variant="caption" sx={{ color: "#728FAD" }}>

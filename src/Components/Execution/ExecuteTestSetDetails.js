@@ -9,18 +9,21 @@ import {
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import Table from "../../CustomComponent/Table";
-import ExecutionToolbar from "../TestCases/ExecutionToolbar";
 import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 
+const data = [];
+
 function ExecuteTestSetDetails({
-  selectedItem,
   testsetId,
   applicationId,
   projectId,
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
+  // const [selecteddatasets, setSelecteddatasets] = useState([]);
+
+  
 
   const columns = [
     {
@@ -41,98 +44,60 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-        let option = param.row.datasets.map(dataset => {
-            return {
-                id : dataset.dataset_id,
-                val : dataset.name
-            }
-        })
-        // let opt = [
-        //   {
-        //     id: "custom_code",
-        //     val: "Custom Code",
-        //   },
-        //   {
-        //     id: "displayed",
-        //     val: "Displayed",
-        //   },
-        //   {
-        //     id: "element_wait",
-        //     val: "Element Wait",
-        //   },
-        //   {
-        //     id: "scrollup",
-        //     val: "Scroll Up",
-        //   },
-        //   {
-        //     id: "scrolldown",
-        //     val: "Scroll Down",
-        //   },
-        //   {
-        //     id: "is_random",
-        //     val: "Random",
-        //   },
-        // ];
-        // let alllist = [
-        //   "custom_code",
-        //   "displayed",
-        //   "element_wait",
-        //   "scrollup",
-        //   "scrolldown",
-        //   "is_random",
-        //   "is_enter",
-        // ];
-        let flag = false;
-        // let preselect = opt.filter((e) => {
-        //   if (param.row.dataset_values[e.id]) {
-        //     return e;
-        //   }
-        // });
-        return (
-          <div>
-            <MuiltiSelect
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-                  {
-                    border: "none",
+          return (
+                      <div>
+                        <MuiltiSelect
+                          sx={{
+                            "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
+                              {
+                                border: "none",
+                              },
+                          }}
+                          preselect={[param.row?.datasets[0]]}
+                          options={param.row.datasets}
+                          value="name"
+                          id="dataset_id"
+                          stateList={(list) => {
+                            const obj = {
+                              testcase_id: param.row.testcase_id,
+                              selected_testcase_dataset_ids: list.map(val => val.dataset_id),
+                            };
+                            const index = data.findIndex(obj=>obj.testcase_id === param.row.testcase_id)
+                            index === -1 ? data.push(obj) : data[index] = obj;
+                            console.log(data);
+                          }}
+                        ></MuiltiSelect>
+                      </div>
+                    );
                   },
-              }}
-              preselect={[]}
-              // preselect ={opt}
-              options={option}
-              value="val"
-              id="id"
-              stateList={(list) => {
-                console.log(list)
-              }}
-            ></MuiltiSelect>
-          </div>
-        );
-      },
-      flex: 2,
-      sortable: false,
-      align: "left",
-    },
-  ];
-
-  const handleClose = () => {
-   // close(false);
-    settestcaseList([]);
-    setSelectedtestcases([]);
-  };
-
-  useEffect(() => {
-    // open &&
-      axios
-        .get(
-          //   `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testsetId}`
-          `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${selectedItem}`
-        )
-        .then((resp) => {
-          console.log(resp?.data?.info);
-          settestcaseList(resp?.data?.info);
-        });
-  }, [selectedItem]);
+                  flex: 2,
+                  sortable: false,
+                  align: "left",
+                },
+              ];
+            
+              console.log(selectedtestcases);
+              console.log(data);
+            
+              const handleClose = () => {
+                settestcaseList([]);
+                setSelectedtestcases([]);
+              };
+            
+              useEffect(() => {
+                  axios
+                    .get(
+                      `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
+                    )
+                    .then((resp) => {
+                      console.log(resp?.data?.info);
+                      settestcaseList(resp?.data?.info);
+                    });
+              }, [testsetId]);
+            
+              useEffect(() => {
+                console.log(data);
+              }, [selectedtestcases])
 
   return (
     <div>
@@ -141,6 +106,8 @@ function ExecuteTestSetDetails({
             applicationId={applicationId}
             selectedtestcases={selectedtestcases}
             testsetId={testsetId}
+            // selecteddatasets = {selecteddatasets}
+            selecteddatasets = {data}
           />
           <Table
             rows={testcaseList}

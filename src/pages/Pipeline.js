@@ -88,10 +88,8 @@ export default function Pipeline() {
       flex: 3,
       sortable: false,
       renderCell: (param) => {
-        return (
-          PipelineActionCell(param)
-        )
-      }
+        return PipelineActionCell(param);
+      },
     },
   ];
 
@@ -101,15 +99,17 @@ export default function Pipeline() {
         selectedProject={selectedProject}
         setSelectedProject={setSelectedProject}
       />
-      <Table rows={instances} columns={instanceColumns} />
+      <Table
+        searchPlaceholder="Search Pipeline"
+        rows={instances}
+        columns={instanceColumns}
+      />
       <Outlet />
     </>
   );
 }
 
-const PipelineActionCell = (
-  param
-) => {
+const PipelineActionCell = (param) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -143,7 +143,7 @@ const PipelineActionCell = (
         <MenuItem
           onClick={() =>
             navigate("UpdateAnsibleInstance", {
-              state: param?.row
+              state: param?.row,
             })
           }
         >
@@ -158,4 +158,3 @@ const PipelineActionCell = (
     </div>
   );
 };
-

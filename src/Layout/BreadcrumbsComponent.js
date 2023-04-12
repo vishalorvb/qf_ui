@@ -46,15 +46,12 @@ export default function BreadcrumbsComponent() {
     });
 
   return (
-    <>
-      {nav}
-      <Breadcrumbs aria-label="breadcrumb">
-        <LinkRouter to={"/"}>
-          <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          Home
-        </LinkRouter>
-        {crumbs}
-      </Breadcrumbs>
-    </>
+    <Breadcrumbs aria-label="breadcrumb">
+      <LinkRouter to={"/"}>
+        <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+        Home
+      </LinkRouter>
+      {crumbs}
+    </Breadcrumbs>
   );
 }

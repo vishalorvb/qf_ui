@@ -179,6 +179,7 @@ function Testset() {
           ""
         )}
         <Table
+          searchPlaceholder="Search Testset"
           columns={columns}
           rows={testsetObject}
           getRowId={(row) => row.testset_id}

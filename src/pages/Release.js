@@ -105,11 +105,8 @@ export default function Release() {
       flex: 5,
       sortable: false,
       renderCell: (param) => {
-        return (
-          ReleaseActionCell(param,setRowData)
-        )
-      }
-      
+        return ReleaseActionCell(param, setRowData);
+      },
     },
   ];
 
@@ -136,7 +133,11 @@ export default function Release() {
         selectedProject={selectedProject}
         setSelectedProject={setSelectedProject}
       />
-      <Table rows={instance} columns={instanceColumns} />
+      <Table
+        searchPlaceholder="Search Releases"
+        rows={instance}
+        columns={instanceColumns}
+      />
       <SelectCreateInstanceModal
         createInstate={createInstance}
         setCreateInstance={setCreateInstance}
@@ -147,10 +148,7 @@ export default function Release() {
   );
 }
 
-const ReleaseActionCell = (
-  param,
-  setRowData
-) => {
+const ReleaseActionCell = (param, setRowData) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -184,7 +182,7 @@ const ReleaseActionCell = (
         <MenuItem
           onClick={() =>
             navigate("UpdateAnsibleInstance", {
-              state: param?.row
+              state: param?.row,
             })
           }
         >
