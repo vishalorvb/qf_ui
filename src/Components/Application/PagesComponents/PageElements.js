@@ -75,9 +75,10 @@ export default function PageElements() {
             return selectedData;
           });
       });
+    console.log(location?.state);
 
     setHeader((ps) => {
-      return { ...ps, name: "PageElements" };
+      return { ...ps, name: location?.state?.name + " PageElements" };
     });
   }, []);
 
@@ -94,6 +95,7 @@ export default function PageElements() {
   return (
     <div>
       <Table
+        searchPlaceholder="Search Elements"
         rows={elements}
         columns={elementColumns}
         getRowId={(row) => row.element_id}

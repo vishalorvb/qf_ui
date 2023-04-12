@@ -104,6 +104,7 @@ export default function MobileApp() {
       <CreateApplication open={openCreate} close={setOpenCreate} type={3} />
 
       <Table
+        searchPlaceholder="Search Application"
         rows={application}
         columns={applicationColumns}
         getRowId={(row) => row.module_id}

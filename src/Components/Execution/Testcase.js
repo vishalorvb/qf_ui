@@ -103,12 +103,12 @@ export default function Testcase({ selectedProject, selectedApplication }) {
       />
 
       <Table
+        searchPlaceholder="Search Testcases"
         rows={testcases}
         columns={columns}
         hidefooter={true}
         getRowId={(row) => row.testcase_id}
       ></Table>
-      
     </>
   );
 }

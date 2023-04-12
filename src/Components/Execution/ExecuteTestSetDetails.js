@@ -41,12 +41,12 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-        let option = param.row.datasets.map(dataset => {
-            return {
-                id : dataset.dataset_id,
-                val : dataset.name
-            }
-        })
+        let option = param.row.datasets.map((dataset) => {
+          return {
+            id: dataset.dataset_id,
+            val: dataset.name,
+          };
+        });
         // let opt = [
         //   {
         //     id: "custom_code",
@@ -103,7 +103,7 @@ function ExecuteTestSetDetails({
               value="val"
               id="id"
               stateList={(list) => {
-                console.log(list)
+                console.log(list);
               }}
             ></MuiltiSelect>
           </div>
@@ -116,43 +116,44 @@ function ExecuteTestSetDetails({
   ];
 
   const handleClose = () => {
-   // close(false);
+    // close(false);
     settestcaseList([]);
     setSelectedtestcases([]);
   };
 
   useEffect(() => {
     // open &&
-      axios
-        .get(
-          //   `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testsetId}`
-          `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${selectedItem}`
-        )
-        .then((resp) => {
-          console.log(resp?.data?.info);
-          settestcaseList(resp?.data?.info);
-        });
+    axios
+      .get(
+        //   `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testsetId}`
+        `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${selectedItem}`
+      )
+      .then((resp) => {
+        console.log(resp?.data?.info);
+        settestcaseList(resp?.data?.info);
+      });
   }, [selectedItem]);
 
   return (
     <div>
-          <TestsetExecutionToolbar
-            projectId={projectId}
-            applicationId={applicationId}
-            selectedtestcases={selectedtestcases}
-            testsetId={testsetId}
-          />
-          <Table
-            rows={testcaseList}
-            hideSearch={true}
-            columns={columns}
-            checkboxSelection={true}
-            selectionModel={selectedtestcases}
-            setSelectionModel={setSelectedtestcases}
-            getRowId={(row) => row.testcase_id}
-          />
-        
-          {/* <Button variant="contained" onClick={handleClose}>
+      <TestsetExecutionToolbar
+        projectId={projectId}
+        applicationId={applicationId}
+        selectedtestcases={selectedtestcases}
+        testsetId={testsetId}
+      />
+      <Table
+        searchPlaceholder="Search Testcases"
+        rows={testcaseList}
+        hideSearch={true}
+        columns={columns}
+        checkboxSelection={true}
+        selectionModel={selectedtestcases}
+        setSelectionModel={setSelectedtestcases}
+        getRowId={(row) => row.testcase_id}
+      />
+
+      {/* <Button variant="contained" onClick={handleClose}>
             Close
           </Button> */}
     </div>

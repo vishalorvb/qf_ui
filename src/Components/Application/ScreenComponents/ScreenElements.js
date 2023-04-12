@@ -31,7 +31,7 @@ export default function ScreenElements() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Screen Elements",
+        name: location?.state?.name + " Screen Elements",
         plusButton: false,
       };
     });

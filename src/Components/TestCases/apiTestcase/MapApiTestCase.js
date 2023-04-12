@@ -8,9 +8,6 @@ testcase_id:
 
 */
 
-
-
-
 import { Button, Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -25,8 +22,8 @@ import useHead from "../../../hooks/useHead";
 export let MapAPiTestCaseData = {
   module_id: 0,
   project_id: 0,
-  testcase_id: 0
-}
+  testcase_id: 0,
+};
 
 function MapApiTestCase() {
   const { setHeader } = useHead();
@@ -105,7 +102,7 @@ function MapApiTestCase() {
   }
 
   function handleClick() {
-    console.log("called")
+    console.log("called");
     if (preSelectedElement.length === 0) {
       setError(true);
       return;
@@ -116,15 +113,15 @@ function MapApiTestCase() {
 
   useEffect(() => {
     return () => {
-      MapAPiTestCaseData.module_id = 0
-      MapAPiTestCaseData.project_id = 0
-      MapAPiTestCaseData.testcase_id = 0
-    }
-  }, [])
+      MapAPiTestCaseData.module_id = 0;
+      MapAPiTestCaseData.project_id = 0;
+      MapAPiTestCaseData.testcase_id = 0;
+    };
+  }, []);
   return (
     <>
-
       <Table
+        searchPlaceholder="Search APIs"
         rows={api}
         columns={columns}
         hidefooter={true}

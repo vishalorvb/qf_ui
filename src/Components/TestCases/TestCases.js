@@ -45,19 +45,19 @@ export default function TestCases() {
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
-                  state: {
-                    applicationId: param.row.module_id,
-                    testcaseId: param.row.testcase_id,
-                    projectId: selectedProject?.project_id,
-                  },
-                })
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
                 : navigate("datasets", {
-                  state: {
-                    applicationId: param.row.module_id,
-                    testcaseId: param.row.testcase_id,
-                    projectId: selectedProject?.project_id,
-                  },
-                })
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: selectedProject?.project_id,
+                    },
+                  })
             }
           >
             {param.row.name}
@@ -216,6 +216,7 @@ export default function TestCases() {
           </Grid>
         </div>
         <Table
+          searchPlaceholder="Search Testcases"
           rows={testcases}
           columns={columns}
           hidefooter={true}
