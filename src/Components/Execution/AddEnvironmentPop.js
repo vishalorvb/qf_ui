@@ -28,11 +28,11 @@ let postVal = { ...initialValue };
 
 function AddEnvironmentPop(props) {
 
-    const { addEnvironmentPop, close , getBuilEnvironment} = props;
+    const { addEnvironmentPop, close , getBuilEnvironment,projectId,applicationId} = props;
     const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
     const [reportFailMsg, setReportFailMsg] = useState(false);
     
-
+    console.log(projectId)
 
     const handleClose = () => {
         close(false);
@@ -44,17 +44,17 @@ function AddEnvironmentPop(props) {
 //   postVal.project_id=projectId;
     
    postVal.base_url="";
-   postVal.module_id=76;
-   postVal.project_id=79;
+   postVal.module_id=applicationId;
+   postVal.project_id=projectId;
    postVal.url="";
   axios.post(`/qfservice/CreateBuildEnvironment`, postVal)
   .then((resp) => {
     
     if ( resp?.data?.message === "Successfully createdBuild Environment") {
         setReportSuccessMsg(true);
-        getBuilEnvironment();
         setTimeout(() => {
             setReportSuccessMsg(false);
+            getBuilEnvironment();
         }, 3000);
   handleClose()
     }

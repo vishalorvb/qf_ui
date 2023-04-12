@@ -140,6 +140,13 @@ export default function Dashboard() {
       })
   }
 
+  function getPredictionTestcases()
+  {
+    axios.post(`/qfdashboard/getPredictionTestcases?sqe_project_id=${selectedProject?.project_id}&userId=${auth?.userId}`).then((res) => 
+    {
+      console.log(res)
+    })
+  }
 
   function dashboardDetailsBySprintId()
   {
