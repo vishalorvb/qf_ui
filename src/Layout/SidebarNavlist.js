@@ -94,13 +94,13 @@ export const testManagementList = [
       {
         name: "Create",
         id: "41",
-        route: "/Testcase/create",
+        route: "Testcase/Create",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Recent",
         id: "42",
-        route: "testcase",
+        route: "Testcase/Recent",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       // {
@@ -120,13 +120,13 @@ export const testManagementList = [
       {
         name: "Create",
         id: "51",
-        route: "testset/createTestset",
+        route: "Testset/Create",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
         name: "Recent",
         id: "52",
-        route: "testset",
+        route: "Testset/Recent",
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       // {

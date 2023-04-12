@@ -63,7 +63,7 @@ function ProjectTable({ location }) {
     createformData.repository_token = project.repository_token;
 
     console.log(project);
-    navigate("/createProject");
+    navigate("/Projects/Create");
   }
 
   const columns = [

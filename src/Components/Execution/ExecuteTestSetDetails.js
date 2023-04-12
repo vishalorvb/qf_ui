@@ -144,7 +144,7 @@ function ExecuteTestSetDetails({
           />
           <Table
             rows={testcaseList}
-            hiddenSearch={true}
+            hideSearch={true}
             columns={columns}
             checkboxSelection={true}
             selectionModel={selectedtestcases}
