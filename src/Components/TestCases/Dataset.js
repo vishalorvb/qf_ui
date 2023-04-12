@@ -6,6 +6,7 @@ import {
   Chip,
   Grid,
   IconButton,
+  MenuItem,
   TextField,
   Tooltip,
   Typography,
@@ -24,6 +25,8 @@ import { useLocation, useNavigate } from "react-router";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { Stack } from "@mui/system";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import AddIcon from '@mui/icons-material/Add';
+import TableActions from "../../CustomComponent/TableActions";
 
 
 export let DatasetRequest;
@@ -174,8 +177,6 @@ function Dataset() {
         ];
         let flag = false;
         let preselect = opt.filter((e) => {
-          console.log(e);
-          console.log(param.row)
           if (param.row.dataset_values[e.id]) {
             return e;
           }
@@ -185,9 +186,9 @@ function Dataset() {
             <MuiltiSelect
               sx={{
                 "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-                  {
-                    border: "none",
-                  },
+                {
+                  border: "none",
+                },
               }}
               preselect={preselect}
               // preselect ={opt}
@@ -227,40 +228,14 @@ function Dataset() {
     {
       field: "description",
       headerName: "Description",
-      flex: 3,
-      sortable: false,
-      align: "left",
-    },
-    {
-      field: "dgn",
-      headerName: "DataSet Type",
-      renderCell: (param) => {
-        if (!param.row.is_db_dataset) {
-          return (
-            <div>
-              <h4>Regular</h4>
-            </div>
-          );
-        } else {
-          return (
-            <div>
-              <h4>DB DataSet</h4>
-            </div>
-          );
-        }
-      },
-      flex: 3,
-      sortable: false,
-      align: "left",
-    },
-    {
-      headerName: "Action",
-      field: "action",
-      renderCell: (param) => {
+      flex: 6,
+      renderCell: param => {
+
         return (
-          <div>
-            <Tooltip title="Copy">
-              <IconButton
+          <TableActions
+            heading={param.row?.description}
+          >
+            <MenuItem
               onClick={(e) => {
                 getData_for_createDataset(
                   setData,
@@ -268,48 +243,123 @@ function Dataset() {
                   param.row.dataset_id
                 );
                 setDrawer(!drawer);
-                
+
+              }}
+            > 
+            <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>  
+            Copy  
+            </MenuItem>
+          <MenuItem
+            onClick={(e) => {
+              getData_for_createDataset(
+                setData,
+                param.row.testcase_id,
+                param.row.dataset_id
+              );
+              setDrawer(!drawer);
+              datasetinfo.name = param.row.name;
+              datasetinfo.description = param.row.description;
+              datasetinfo.dataset_id = param.row.dataset_id;
+            }}
+          >
+          <EditOutlinedIcon></EditOutlinedIcon>
+          Edit
+          </MenuItem>
+              <MenuItem
+               onClick={(e) => {
+                console.log(param.row.dataset_id);
+                setDeletedatasetId(param.row.dataset_id);
+                setDeletepopup(true);
               }}
               >
-                <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit">
-              <IconButton
-                onClick={(e) => {
-                  getData_for_createDataset(
-                    setData,
-                    param.row.testcase_id,
-                    param.row.dataset_id
-                  );
-                  setDrawer(!drawer);
-                  datasetinfo.name = param.row.name;
-                  datasetinfo.description = param.row.description;
-                  datasetinfo.dataset_id = param.row.dataset_id;
-                }}
-              >
-                <EditOutlinedIcon></EditOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={(e) => {
-                  console.log(param.row.dataset_id);
-                  setDeletedatasetId(param.row.dataset_id);
-                  setDeletepopup(true);
-                }}
-              >
-                <DeleteOutlined></DeleteOutlined>
-              </IconButton>
-            </Tooltip>
-          </div>
-        );
+              <DeleteOutlined></DeleteOutlined>
+              Delete
+              </MenuItem>
+          </TableActions>
+        )
       },
-      flex: 2,
-      headerAlign: "center",
       sortable: false,
-      align: "center",
+      align: "left",
     },
+    // {
+    //   field: "dgn",
+    //   headerName: "DataSet Type",
+    //   renderCell: (param) => {
+    //     if (!param.row.is_db_dataset) {
+    //       return (
+    //         <div>
+    //           <h4>Regular</h4>
+    //         </div>
+    //       );
+    //     } else {
+    //       return (
+    //         <div>
+    //           <h4>DB DataSet</h4>
+    //         </div>
+    //       );
+    //     }
+    //   },
+    //   flex: 3,
+    //   sortable: false,
+    //   align: "left",
+    // },
+    // {
+    //   headerName: "Action",
+    //   field: "action",
+    //   renderCell: (param) => {
+    //     return (
+    //       <div>
+    //         <Tooltip title="Copy">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               getData_for_createDataset(
+    //                 setData,
+    //                 param.row.testcase_id,
+    //                 param.row.dataset_id
+    //               );
+    //               setDrawer(!drawer);
+
+    //             }}
+    //           >
+    //             <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+    //           </IconButton>
+    //         </Tooltip>
+    //         <Tooltip title="Edit">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               getData_for_createDataset(
+    //                 setData,
+    //                 param.row.testcase_id,
+    //                 param.row.dataset_id
+    //               );
+    //               setDrawer(!drawer);
+    //               datasetinfo.name = param.row.name;
+    //               datasetinfo.description = param.row.description;
+    //               datasetinfo.dataset_id = param.row.dataset_id;
+    //             }}
+    //           >
+    //             <EditOutlinedIcon></EditOutlinedIcon>
+    //           </IconButton>
+    //         </Tooltip>
+    //         <Tooltip title="Delete">
+    //           <IconButton
+    //             onClick={(e) => {
+    //               console.log(param.row.dataset_id);
+    //               setDeletedatasetId(param.row.dataset_id);
+    //               setDeletepopup(true);
+    //             }}
+    //           >
+    //             <DeleteOutlined></DeleteOutlined>
+    //           </IconButton>
+    //         </Tooltip>
+    //       </div>
+    //     );
+    //   },
+    //   flex: 2,
+    //   headerAlign: "center",
+    //   sortable: false,
+    //   align: "center",
+    // },
   ];
   function ReloadDatset() {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
@@ -351,10 +401,10 @@ function Dataset() {
     } catch (error) {
       console.log(error)
     }
-    
+
   }, [selectedScreenIds]);
 
-  useEffect(() => {}, [selectedScreen]);
+  useEffect(() => { }, [selectedScreen]);
 
   useEffect(() => {
     return () => {
@@ -364,17 +414,8 @@ function Dataset() {
 
   return (
     <div>
-      <Stack spacing={1} direction="row">
-        <Button
-          variant="contained"
-          size="small"
-          onClick={(e) => {
-            setDrawer(!drawer);
-          }}
-        >
-          {drawer ? "Cancel" : "Add DataSet"}
-        </Button>
-        {drawer && (
+      {drawer && <div>
+        <Stack spacing={1} direction="row" justifyContent="flex-end">
           <Button
             variant="contained"
             size="small"
@@ -382,17 +423,63 @@ function Dataset() {
           >
             Save
           </Button>
-        )}
-        {drawer && screeninfo.length>0 &&(
-          <PersistentDrawerRight
-            screen={screeninfo}
-            screenId={selectedScreenIds}
-            setScreenId={setSelectedScreenIds}
-          ></PersistentDrawerRight>
-        )}
-      </Stack>
-      {drawer == false && (
-        <div>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={(e) => {
+              setDrawer(!drawer);
+            }}
+          >
+            Cancel
+          </Button>
+        </Stack>
+        <Grid container columnSpacing={2}>
+          <Grid item md={3}>
+            {screeninfo.length > 0 && (
+              <PersistentDrawerRight
+                screen={screeninfo}
+                screenId={selectedScreenIds}
+                setScreenId={setSelectedScreenIds}
+              ></PersistentDrawerRight>
+            )}
+          </Grid>
+          <Grid item md={9}>
+            {selectedScreen != undefined &&
+              selectedScreen.map((s) => {
+                return (
+                  <>
+                    <Typography mt={2} mb={-2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>
+                      {s.screeninfo.name}
+                    </Typography>
+                    <Table
+                      hideSearch={true}
+                      rows={s.screen_elements[0]}
+                      columns={elementcol}
+                      hidefooter={true}
+                      getRowId={(row) => row.element_id}
+                    ></Table>
+                  </>
+                );
+              })}
+          </Grid>
+        </Grid>
+      </div>}
+      {drawer == false && <div>
+        <div className="apptable">
+          <div className="intable">
+            <div style={{ marginTop: "12px", float: "right" }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                size="small"
+                onClick={(e) => {
+                  setDrawer(!drawer);
+                }}
+              >
+                Add Datasets
+              </Button>
+            </div>
+          </div>
           <Table
             rows={datasets}
             columns={column}
@@ -400,7 +487,9 @@ function Dataset() {
             getRowId={(row) => row.dataset_id}
           ></Table>
         </div>
-      )}
+      </div>}
+
+
       {createpopup && (
         <div>
           <CreateDataSetPopUp
@@ -409,24 +498,7 @@ function Dataset() {
           />
         </div>
       )}
-      {selectedScreen != undefined &&
-        drawer &&
-        selectedScreen.map((s) => {
-          return (
-            <>
-              <Typography mt={4} mb={-2}>
-                {s.screeninfo.name}
-              </Typography>
-              <Table
-                hideSearch={true}
-                rows={s.screen_elements[0]}
-                columns={elementcol}
-                hidefooter={true}
-                getRowId={(row) => row.element_id}
-              ></Table>
-            </>
-          );
-        })}
+
       <ConfirmPop
         open={deletepopup}
         handleClose={() => setDeletepopup(false)}

@@ -1,19 +1,18 @@
-import { Autocomplete, IconButton, TextField, Tooltip } from "@mui/material";
+import { Autocomplete, Grid, IconButton, MenuItem, TextField, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 // import CreateTestCasePopUp from "./CreateTestCasePopUp";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
-import { Navigate, useNavigate } from "react-router";
-import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
-import ScreenshotMonitorIcon from "@mui/icons-material/ScreenshotMonitor";
-import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
-import DataObjectOutlinedIcon from "@mui/icons-material/DataObjectOutlined";
-import axios from "../../api/axios";
-import AirplayIcon from "@mui/icons-material/Airplay";
-import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router";
+import { getProject } from "../../Services/ProjectService"
+import { getApplicationOfProject } from "../../Services/ApplicationService"
+import useAuth from "../../hooks/useAuth";
+import TableActions from "../../CustomComponent/TableActions";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { DeleteTestCase, GetTestCase } from "../../Services/TestCaseService";
+import { TCdata } from "./CreateTestCase";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
@@ -21,9 +20,10 @@ export default function TestCases() {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedApplication, setSelectedApplication] = useState(null);
-
+  let [project, setProject] = useState([])
+  let [application, setApplication] = useState([])
   const navigate = useNavigate();
-
+  const { auth } = useAuth();
   const columns = [
     {
       field: "name",
@@ -34,9 +34,7 @@ export default function TestCases() {
       renderCell: param => {
         return (
           <div
-
-
-            style={{ color: "#009fee", textDecoration: "underline", cursor: "pointer" }}
+            style={{ color: "#009fee", cursor: "pointer" }}
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
@@ -65,7 +63,41 @@ export default function TestCases() {
       headerName: "Description",
       flex: 6,
       sortable: false,
-      align: "left",
+      renderCell: (param) => {
+        return (
+          <TableActions
+            heading={param.row?.description}
+          >
+            <MenuItem
+              onClick={e => {
+                DeleteTestCase(param.row.testcase_id).then(res => {
+                  if (res) {
+                    GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
+                  }
+                })
+              }}
+            >
+              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+              Delete
+            </MenuItem>
+            <MenuItem
+              onClick={e => {
+                console.log(param.row)
+                TCdata.module_id = param.row.module_id
+                TCdata.project_id = param.row.project.project_id
+                TCdata.testcase_name = param.row.name
+                TCdata.testcase_description = param.row.description
+                TCdata.testcase_id = param.row.testcase_id
+                console.log(TCdata)
+                navigate("create")
+              }}
+            >
+              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+              Edit
+            </MenuItem>
+          </TableActions>
+        )
+      },
     },
 
 
@@ -76,7 +108,7 @@ export default function TestCases() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Testcases",
+        name: "Recent Testcases",
         // plusButton: true,
         // buttonName: "Create Testcase",
         plusCallback: () => {
@@ -93,23 +125,28 @@ export default function TestCases() {
           plusCallback: () => console.log("null"),
         };
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProject, selectedApplication]);
+  }, []);
+
 
   useEffect(() => {
-    selectedApplication?.module_id &&
-      axios
-        .get(
-          `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
-        )
-        .then((resp) => {
-          const testcases = resp?.data?.info ? resp?.data?.info : [];
-          setTestcases(testcases);
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedApplication]);
-
-
+    getProject(setProject, auth.userId)
+  }, [])
+  useEffect(() => {
+    setSelectedProject(project[0])
+  }, [project])
+  useEffect(() => {
+    if (selectedProject !== null) {
+      getApplicationOfProject(setApplication, selectedProject?.project_id)
+    }
+  }, [selectedProject])
+  useEffect(() => {
+      setSelectedApplication(application[0])
+      GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id)
+    
+  }, [application])
+  useEffect(() => {
+      GetTestCase(setTestcases, selectedProject?.project_id, selectedApplication?.module_id) 
+  }, [selectedApplication])
   return (
     <>
       <SnackbarNotify
@@ -122,15 +159,51 @@ export default function TestCases() {
       ></SnackbarNotify>
       <div className="apptable">
         <div className="intable">
-          <div >
-          <ProjectnApplicationSelector
-            selectedProject={selectedProject}
-            setSelectedProject={setSelectedProject}
-            selectedApplication={selectedApplication}
-            setSelectedApplication={setSelectedApplication}
-          />
-          </div>
-        
+          <Grid item container spacing={2} justifyContent="flex-end">
+            <Grid item md={4}>
+              <label for="">Projects</label>
+              <Autocomplete
+                disablePortal
+                disableClearable
+                id="project_id"
+                options={project}
+                value={selectedProject || null}
+                sx={{ width: "100%" }}
+                getOptionLabel={(option) => option.project_name}
+                onChange={(e, value) => {
+                  setSelectedProject(value);
+                }}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input type="text" {...params.inputProps} />
+                  </div>
+                )}
+              />
+            </Grid>
+            <Grid item md={4}>
+              <label for="">Application</label>
+              <Autocomplete
+                disablePortal
+                disableClearable
+                id="model_id"
+                options={application}
+                value={selectedApplication || null}
+                sx={{ width: "100%" }}
+                getOptionLabel={(option) => option.module_name}
+                onChange={(e, value) => {
+                  setSelectedApplication(value);
+                }}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input type="text" {...params.inputProps} />
+                  </div>
+                )}
+              />
+
+            </Grid>
+          </Grid>
+
+
         </div>
         <Table
           rows={testcases}
@@ -142,3 +215,13 @@ export default function TestCases() {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+

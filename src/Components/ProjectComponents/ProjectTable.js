@@ -4,7 +4,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlined from "@mui/icons-material/DeleteOutlined";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { Chip } from "@mui/material";
+import { Button, Chip, Menu, MenuItem, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 
@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useAuth from "../../hooks/useAuth";
 import { createformData } from "./ProjectData";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 function ProjectTable({ location }) {
   let [popup, setPopup] = useState(false);
@@ -78,66 +80,9 @@ function ProjectTable({ location }) {
       flex: 3,
       sortable: false,
       align: "left",
-    },
-    {
-      field: " ",
-      headerName: "Type",
       renderCell: (param) => {
-        if (param.row.automation_framework_type === 1) {
-          return (
-            <Stack direction="row" spacing={1}>
-              <Chip
-                label="Selenium"
-                variant="outlined"
-                color="warning"
-                size="small"
-              />
-            </Stack>
-          );
-        } else {
-          return (
-            <Stack direction="row" spacing={1}>
-              <Chip label="Other" variant="outlined" color="primary" />
-            </Stack>
-          );
-        }
+        return ProjectDescriptionCell(param, handleEdit, handleDeletePopup);
       },
-      flex: 2,
-      sortable: false,
-      align: "flex-start",
-    },
-
-    {
-      headerName: "Action",
-      field: "action",
-      renderCell: (param) => {
-        return (
-          <div>
-            <Tooltip title="Edit">
-              <IconButton
-                onClick={() => {
-                  handleEdit(param.row);
-                }}
-              >
-                <EditOutlinedIcon></EditOutlinedIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={(e) => {
-                  handleDeletePopup(param.row.project_id);
-                }}
-              >
-                <DeleteOutlined></DeleteOutlined>
-              </IconButton>
-            </Tooltip>
-          </div>
-        );
-      },
-      flex: 1,
-      headerAlign: "left",
-      sortable: false,
-      align: "left",
     },
   ];
 
@@ -146,23 +91,36 @@ function ProjectTable({ location }) {
   }, [loggedInId]);
 
   return (
-    <div>
+    <>
       <SnackbarNotify
         open={snackbarsuccess}
         close={setSnackbarsuccess}
         msg="Deleted Succesfully"
         severity="success"
       />
-      <Table
-        rows={
-          location?.state === "recentProjects"
-            ? project.filter((p) => p.is_deleted == false).slice(0, 11)
-            : project.filter((p) => p.is_deleted == false)
-        }
-        columns={columns}
-        hidefooter={true}
-        getRowId={(row) => row.project_id}
-      ></Table>
+      <div className="apptable">
+        <div className="intable">
+          <div style={{ float: "right" }}>
+            <Button
+              variant="contained"
+              onClick={() => navigate("/Projects/Create")}
+            >
+              Create Project
+            </Button>
+          </div>
+        </div>
+        <Table
+          rows={
+            location?.state === "recentProjects"
+              ? project.filter((p) => p.is_deleted == false).slice(0, 11)
+              : project.filter((p) => p.is_deleted == false)
+          }
+          columns={columns}
+          hidefooter={true}
+          getRowId={(row) => row.project_id}
+        ></Table>
+      </div>
+
       <ConfirmPop
         open={popup}
         handleClose={() => setPopup(false)}
@@ -170,8 +128,60 @@ function ProjectTable({ location }) {
         message={"Are you sure you want to delete this project"}
         onConfirm={() => DeleteProjectFromUser(pid)}
       ></ConfirmPop>
-    </div>
+    </>
   );
 }
 
 export default ProjectTable;
+
+const ProjectDescriptionCell = (param, handleEdit, handleDeletePopup) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{param?.row?.description}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            handleEdit(param.row);
+          }}
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            handleDeletePopup(param.row.project_id);
+          }}
+        >
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};

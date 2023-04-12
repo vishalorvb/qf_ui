@@ -72,3 +72,10 @@ export async function deleteApplication(applicationId,userId){
         return false
     })
 }
+
+export async function getApplicationDetails(applicationId){
+    let x = await axios.get(`${baseUrl}/qfservice/getmoduledetails/${applicationId}`).then(res=>{
+        return res.data.data
+    })
+    return x
+}

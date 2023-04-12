@@ -221,6 +221,9 @@ a {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+.MuiAccordionSummary-root {
+  background: rgb(223, 222, 222) !important;
+}
 .MuiAccordionSummary-root.Mui-expanded {
   min-height: 48px !important;
   background: #93999b !important;
@@ -408,11 +411,12 @@ select {
   position: relative;
 }
 .intable {
-  width: 60%;
+  width: 67%;
 
   position: absolute;
   left: 300px;
   z-index: 2;
+  top: -10px;
 }
 
 .intableselect {
@@ -530,15 +534,29 @@ label::after {
 }
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   text-transform: none !important;
+  background-color: $accent;
 }
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: $accent;
 }
-
+.css-11qr2p8-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+  background-color: $accent;
+}
 .menuBadge {
   background-color: $accent;
   border-radius: 10px;
   padding: 0px 10px;
   color: white;
   margin-left: -20px;
+}
+
+button.MuiButtonBase-root.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.css-ilfnjt-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+  background-color: $accent;
+}
+
+button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  text-transform: none !important;
+  background-color: $accent;
 }

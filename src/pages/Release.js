@@ -7,10 +7,12 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SelectCreateInstanceModal from "../Components/ReleaseComponents/SelectCreateInstanceModal";
 import { getReleaseInstances } from "../Services/DevopsServices";
 import ProjectsDropdown from "../Components/ProjectsDropdown";
-import { IconButton } from "@mui/material";
+import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import axios from "../api/axios";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 let rowData;
 
 export default function Release() {
@@ -34,7 +36,7 @@ export default function Release() {
       return {
         ...ps,
         name: "Release Instances",
-        plusButton: module ? true : false,
+        plusButton: false,
         buttonName: "Create Instance",
         plusCallback: addReleaseInstances,
       };
@@ -100,31 +102,14 @@ export default function Release() {
     {
       field: "updated_at",
       headerName: "Last Updated",
-      flex: 3,
+      flex: 5,
       sortable: false,
-    },
-    {
-      field: "Actions",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      align: "center",
-      headerAlign: "center",
       renderCell: (param) => {
-        const row = param.row;
         return (
-          <div>
-            <IconButton
-              onClick={() => navigate("CreateAnsibleInstance", { state: row })}
-            >
-              <EditOutlinedIcon />
-            </IconButton>
-            <IconButton onClick={setRowData}>
-              <DeleteOutlinedIcon />
-            </IconButton>
-          </div>
-        );
-      },
+          ReleaseActionCell(param,setRowData)
+        )
+      }
+      
     },
   ];
 
@@ -161,3 +146,56 @@ export default function Release() {
     </>
   );
 }
+
+const ReleaseActionCell = (
+  param,
+  setRowData
+) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{param.row.updated_at}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() =>
+            navigate("UpdateAnsibleInstance", {
+              state: param?.row
+            })
+          }
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => setRowData(param.row)}>
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};

@@ -13,9 +13,8 @@ import ExecutionToolbar from "../TestCases/ExecutionToolbar";
 import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 
-function TestcaseSelectAndExecute({
-  open,
-  close,
+function ExecuteTestSetDetails({
+  selectedItem,
   testsetId,
   applicationId,
   projectId,
@@ -117,29 +116,26 @@ function TestcaseSelectAndExecute({
   ];
 
   const handleClose = () => {
-    close(false);
+   // close(false);
     settestcaseList([]);
     setSelectedtestcases([]);
   };
 
   useEffect(() => {
-    open &&
+    // open &&
       axios
         .get(
           //   `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testsetId}`
-          `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
+          `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${selectedItem}`
         )
         .then((resp) => {
           console.log(resp?.data?.info);
           settestcaseList(resp?.data?.info);
         });
-  }, [open, testsetId]);
+  }, [selectedItem]);
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="lg">
-        <DialogTitle>Execution</DialogTitle>
-        <DialogContent>
           <TestsetExecutionToolbar
             projectId={projectId}
             applicationId={applicationId}
@@ -148,21 +144,19 @@ function TestcaseSelectAndExecute({
           />
           <Table
             rows={testcaseList}
+            hideSearch={true}
             columns={columns}
             checkboxSelection={true}
             selectionModel={selectedtestcases}
             setSelectionModel={setSelectedtestcases}
             getRowId={(row) => row.testcase_id}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleClose}>
+        
+          {/* <Button variant="contained" onClick={handleClose}>
             Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </Button> */}
     </div>
   );
 }
 
-export default TestcaseSelectAndExecute;
+export default ExecuteTestSetDetails;

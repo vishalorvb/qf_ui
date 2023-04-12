@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import { Button, IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
 import Table from "../CustomComponent/Table";
-
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddUserPopup from "../Components/UsersPopups/AddUserPopup";
 import EditUserPopup from "../Components/UsersPopups/EditUserPopup";
 import DeleteUserPopup from "../Components/UsersPopups/DeleteUserPopup";
@@ -16,6 +17,7 @@ import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
   const { setHeader } = useHead();
@@ -107,7 +109,7 @@ export default function Admin() {
       field: "sno",
       valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
       flex: 1,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: "center",
     },
@@ -115,7 +117,7 @@ export default function Admin() {
       field: "name",
       headerName: "Name",
       flex: 3,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: "left",
       renderCell: (params) => {
@@ -125,8 +127,8 @@ export default function Admin() {
     {
       field: "email",
       headerName: "Email",
-      flex: 3,
-      headerAlign: "center",
+      flex: 4,
+      headerAlign: "left",
       sortable: false,
       align: "left",
     },
@@ -134,19 +136,19 @@ export default function Admin() {
       field: "ssoId",
       headerName: "User Id",
       flex: 3,
-      headerAlign: "center",
+      headerAlign: "left",
       sortable: false,
       align: "left",
     },
     {
       field: "",
       headerName: "Actions",
-      flex: 3,
+      flex: 2,
       sortable: false,
       renderCell: (param) => {
         return (
           <>
-            <Tooltip title="Edit">
+            {/* <Tooltip title="Edit">
               <IconButton
                 onClick={(e) => {
                   editUserHandler(param.row);
@@ -163,7 +165,7 @@ export default function Admin() {
               >
                 <DeleteOutlineOutlinedIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             {param.row.user_status === 0 ? (
               <Tooltip title="Inactive">
                 <IconButton
@@ -185,11 +187,12 @@ export default function Admin() {
                 </IconButton>
               </Tooltip>
             )}
+           { AdminActionCell(param,deleteUserHandler)}
           </>
         );
       },
-      headerAlign: "center",
-      align: "center",
+      headerAlign: "left",
+      align: "left",
     },
   ];
 
@@ -307,3 +310,58 @@ export default function Admin() {
     </div>
   );
 }
+
+const AdminActionCell = (
+  param,
+  deleteUserHandler
+) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() =>
+            navigate("editUser", {
+              state: {
+                param1: param?.row,
+              },
+            })
+          }
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        <MenuItem onClick={() => deleteUserHandler(param.row)}>
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};

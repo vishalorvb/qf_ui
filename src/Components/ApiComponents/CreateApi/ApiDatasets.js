@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, IconButton, Tooltip } from '@mui/material'
+import { Button, Divider, Grid, IconButton, MenuItem, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Table from '../../../CustomComponent/Table'
 import { getApiDatasets } from '../../../Services/ApiService'
@@ -20,6 +20,8 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { DeleteApiDataset } from '../../../Services/ApiService'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
+import TableActions from '../../../CustomComponent/TableActions'
+import { DeleteOutlined } from '@mui/icons-material'
 
 function ApiDatasets() {
 
@@ -79,58 +81,99 @@ function ApiDatasets() {
         {
             field: "description",
             headerName: "Description",
-            flex: 3,
-            sortable: false,
-            align: "left",
-        },
-        {
-            field: "example",
-            headerName: "Action",
-            flex: 3,
-            sortable: false,
-            align: "left",
+            flex: 6,
             renderCell: param => {
+
                 return (
-                    <div>
-                        <Tooltip title="Edit">
-                            <IconButton
-                                onClick={() => {
-                                    postData.tc_dataset_id = param.row.testcase_dataset_id
-                                    postData.testcase_dataset_name = param.row.dataset_name_in_testcase
-                                    postData.description = param.row.description
-                                    setDatasetId(param.row.testcase_dataset_id)
-                                    setCreateDatasets(true)
-                                }}
-                            >
-                                <EditOutlinedIcon></EditOutlinedIcon>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Copy">
-                            <IconButton
-                                onClick={() => {
-                                    setDatasetId(param.row.testcase_dataset_id)
-                                    setCreateDatasets(true)
-                                }}
-                            >
-                                <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                            <IconButton
-                                onClick={() => {
-                                    // console.log(param.row.testcase_dataset_id)
-                                    DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
-                                        getApiDatasets(setDatasets, location.state.testcaseId)
-                                    })
-                                }}
-                            >
-                                <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                  <TableActions
+                    heading={param.row?.description}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        setDatasetId(param.row.testcase_dataset_id)
+                        setCreateDatasets(true)
+                    }}
+                    > 
+                    <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>  
+                    Copy  
+                    </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                        postData.tc_dataset_id = param.row.testcase_dataset_id
+                        postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+                        postData.description = param.row.description
+                        setDatasetId(param.row.testcase_dataset_id)
+                        setCreateDatasets(true)
+                    }}
+                  >
+                  <EditOutlinedIcon></EditOutlinedIcon>
+                  Edit
+                  </MenuItem>
+                      <MenuItem
+                      onClick={() => {
+                        // console.log(param.row.testcase_dataset_id)
+                        DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
+                            getApiDatasets(setDatasets, location.state.testcaseId)
+                        })
+                    }}
+                      >
+                      <DeleteOutlined></DeleteOutlined>
+                      Delete
+                      </MenuItem>
+                  </TableActions>
                 )
-            }
+              },
+            sortable: false,
+            align: "left",
         },
+        // {
+        //     field: "example",
+        //     headerName: "Action",
+        //     flex: 3,
+        //     sortable: false,
+        //     align: "left",
+        //     renderCell: param => {
+        //         return (
+        //             <div>
+        //                 <Tooltip title="Edit">
+        //                     <IconButton
+        //                         onClick={() => {
+        //                             postData.tc_dataset_id = param.row.testcase_dataset_id
+        //                             postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+        //                             postData.description = param.row.description
+        //                             setDatasetId(param.row.testcase_dataset_id)
+        //                             setCreateDatasets(true)
+        //                         }}
+        //                     >
+        //                         <EditOutlinedIcon></EditOutlinedIcon>
+        //                     </IconButton>
+        //                 </Tooltip>
+        //                 <Tooltip title="Copy">
+        //                     <IconButton
+        //                         onClick={() => {
+        //                             setDatasetId(param.row.testcase_dataset_id)
+        //                             setCreateDatasets(true)
+        //                         }}
+        //                     >
+        //                         <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+        //                     </IconButton>
+        //                 </Tooltip>
+        //                 <Tooltip title="Delete">
+        //                     <IconButton
+        //                         onClick={() => {
+        //                             // console.log(param.row.testcase_dataset_id)
+        //                             DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
+        //                                 getApiDatasets(setDatasets, location.state.testcaseId)
+        //                             })
+        //                         }}
+        //                     >
+        //                         <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
+        //                     </IconButton>
+        //                 </Tooltip>
+        //             </div>
+        //         )
+        //     }
+        // },
     ]
     useEffect(() => {
         getApiDatasets(setDatasets, location.state.testcaseId)
@@ -156,105 +199,105 @@ function ApiDatasets() {
     return (
         <div>
             {createDatasets && <div>
-                <Stack spacing={1} direction="row">
+                <Grid container spacing={2}>
+                    <Grid item md={2}>
+                        <APiListDrawer
+                            setSelectedApi={setSelectedApi}
+                            datasetId={datasetId}
+                        ></APiListDrawer>
+                    </Grid>
+                    <Grid item md={10}>
+                        <Stack spacing={1} direction="row" justifyContent="flex-end">
 
-                    <Button variant="contained"
-                        onClick={e => setSave(true)}
-                    >Save</Button>
+                            <Button variant="contained"
+                                onClick={e => setSave(true)}
+                            >Save</Button>
 
-                    <Button variant="outlined"
-                        onClick={e => {
-                            setCreateDatasets(false)
-                            clearPostData()
-                            setDatasetId(datasets[0]?.testcase_dataset_id)
-                        }}
-                    >Cancel</Button>
+                            <Button variant="outlined"
+                                onClick={e => {
+                                    setCreateDatasets(false)
+                                    clearPostData()
+                                    setDatasetId(datasets[0]?.testcase_dataset_id)
+                                }}
+                            >Cancel</Button>
+                        </Stack>
+                        <br />
+                        <Divider></Divider>
+                        <br />
+                        {selectedApiDetails.api_id != undefined && <div>
+                            <div>
+                                <Grid container spacing={1} >
+                                    <Grid item md={4}>
 
-                    <APiListDrawer
-                        setSelectedApi={setSelectedApi}
-                        datasetId={datasetId}
-                    ></APiListDrawer>
-                </Stack>
-                <br />
-                <Divider></Divider>
-                <br />
-                {selectedApiDetails.api_id != undefined && <div>
-                    <div>
-                        <Grid container spacing={1} >
-                            <Grid item md={4}>
+                                        <input type="text" style={{ width: "100%", height: "35px" }} placeholder='API Name' name="apiname"
+                                            value={selectedApiDetails?.api_name}
+                                            onChange={e => {
+                                                setGetData(selectedApi.api_id, "api_name", e.target.value)
+                                                setSelectedApiDetails(pv => {
+                                                    return { ...pv, api_name: e.target.value }
+                                                })
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item md={8}>
+                                        <input type='text' style={{ width: "100%", height: "35px" }} placeholder="Description" name="apidesc"
+                                            value={selectedApiDetails?.api_description}
+                                            onChange={e => {
+                                                setGetData(selectedApi.api_id, "api_description", e.target.value)
+                                                setSelectedApiDetails(pv => {
+                                                    return { ...pv, api_description: e.target.value }
+                                                })
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item md={2}>
+                                        <select
+                                            size='small'
+                                            displayEmpty
+                                            inputProps={{ "aria-label": "Without label" }}
+                                            fullWidth
+                                            onChange={e => {
 
-                                <input type="text" style={{ width: "100%", height: "35px" }} placeholder='API Name' name="apiname"
-                                    value={selectedApiDetails?.api_name}
-                                    onChange={e => {
-                                        setGetData(selectedApi.api_id, "api_name", e.target.value)
-                                        setSelectedApiDetails(pv => {
-                                            return { ...pv, api_name: e.target.value }
-                                        })
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item md={8}>
-                                <input type='text' style={{ width: "100%", height: "35px" }} placeholder="Description" name="apidesc"
-                                    value={selectedApiDetails?.api_description}
-                                    onChange={e => {
-                                        setGetData(selectedApi.api_id, "api_description", e.target.value)
-                                        setSelectedApiDetails(pv => {
-                                            return { ...pv, api_description: e.target.value }
-                                        })
-                                    }}
-                                //  setSelectedApiDetails({...selectedApiDetails, api_description: e.target.value})
-                                />
-                            </Grid>
-                            <Grid item md={2}>
-                                <select
-                                    size='small'
-                                    displayEmpty
-                                    inputProps={{ "aria-label": "Without label" }}
-                                    fullWidth
-                                    onChange={e => {
+                                            }}
+                                        >
 
-                                    }}
-                                >
+                                            <option value={1}>Get</option>
+                                            <option value={2}>Post</option>
+                                            <option value={3}>Put</option>
+                                            <option value={4}>Delete</option>
+                                        </select>
+                                    </Grid>
+                                    <Grid item md={4}>
+                                        <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
+                                            value={selectedApiDetails.api_url}
+                                            onChange={e => {
+                                                setGetData(selectedApi?.api_id, "api_url", e.target.value)
+                                                setSelectedApiDetails(pv => {
+                                                    return { ...pv, api_url: e.target.value }
+                                                })
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item md={6}>
+                                        <input placeholder='Resource' />
+                                    </Grid>
+                                </Grid>
+                            </div>
 
-                                    <option value={1}>Get</option>
-                                    <option value={2}>Post</option>
-                                    <option value={3}>Put</option>
-                                    <option value={4}>Delete</option>
-                                </select>
-                            </Grid>
-                            <Grid item md={4}>
-                                <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
-                                    value={selectedApiDetails.api_url}
-                                    onChange={e => {
-                                        setGetData(selectedApi?.api_id, "api_url", e.target.value)
-                                        setSelectedApiDetails(pv => {
-                                            return { ...pv, api_url: e.target.value }
-                                        })
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item md={6}>
-                                <input placeholder='Resource' />
-                            </Grid>
-                        </Grid>
-                    </div>
-
-                    <div>
-                        <CreateApiTabs
-                            ApiDetails={selectedApiDetails}
-                        ></CreateApiTabs>
-                    </div>
-                </div>}
-
+                            <div>
+                                <CreateApiTabs
+                                    ApiDetails={selectedApiDetails}
+                                ></CreateApiTabs>
+                            </div>
+                        </div>}
+                    </Grid>
+                </Grid>
             </div>}
-            <div>
-
-            </div>
             {createDatasets == false && <div className='apptable'>
                 <div className="intable">
-                    <div style={{padding:"5px",display:"inline",float:"right"}}>
+                    <div style={{ padding: "5px", display: "inline", float: "right" }}>
                         <Button variant="contained"
-                        startIcon={<AddIcon/>}
+                            startIcon={<AddIcon />}
                             onClick={e => setCreateDatasets(true)}
                         >Create Dataset</Button>
                     </div>

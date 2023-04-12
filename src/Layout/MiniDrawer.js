@@ -34,6 +34,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { Stack } from "@mui/system";
 import UserCard from "./UserCard";
 import LogoutIcon from "@mui/icons-material/Logout";
+import useLogout from "../hooks/useLogout";
 
 const drawerWidth = 250;
 
@@ -126,10 +127,11 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer({ open, setOpen }) {
+  const logout = useLogout();
   const { auth } = useAuth();
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState(["Application"]);
-  const [selectedNavItem, setSelectedNavItem] = useState("21");
+  const [selectedNavItem, setSelectedNavItem] = useState("22");
 
   useEffect(() => {
     !open && setOpensubNav([]);
@@ -263,6 +265,7 @@ export default function MiniDrawer({ open, setOpen }) {
               },
             }}
             endIcon={<LogoutIcon />}
+            onClick={() => logout()}
           >
             Logout
           </Button>

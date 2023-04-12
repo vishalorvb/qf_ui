@@ -41,6 +41,9 @@ const CreateInstance = lazy(() =>
 const CreateAnsibleInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateAnsibleInstance")
 );
+const UpdateAnsibleInstance = lazy(() =>
+  import("../Components/ReleaseComponents/CreateAnsibleInstance")
+);
 const AddTestcaseToTestset = lazy(() =>
   import("../Components/TestSet/AddTestcaseToTestset")
 );
@@ -55,6 +58,7 @@ const UpdateTestcasesOrder = lazy(() =>
 
 const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
+const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
 const Screen = lazy(() =>
   import("../Components/Application/ScreenComponents/Screen")
@@ -114,9 +118,20 @@ const CreateTestCase = lazy(() =>
   import("../Components/TestCases/CreateTestCase")
 );
 
+const TestcaseExecution = lazy(() =>
+  import(`../Components/Execution/TestcaseExecution`)
+);
+const TestsetExecution = lazy(() =>
+  import(`../Components/Execution/TestsetExecution`)
+);
+
+const AddEnvironemt = lazy(() =>
+  import(`../Components/Execution/AddEnvironment`)
+);
+
 export const Routes = [
   {
-    path: "Application",
+    path: "Application/Recent",
     element: applicationList,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [
@@ -135,22 +150,66 @@ export const Routes = [
             element: ScreenElements,
             accessRole: [1, 2, 3, 4, 5, 6, 7],
           },
+          {
+            path: "SelectElements",
+            element: SelectedPageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
         ],
       },
     ],
   },
   {
-    path: "createApplication",
+    path: "Application/Search",
+    element: applicationList,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute: [
+      {
+        path: ":pagesnscreen",
+        element: pagesnscreen,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute: [
+          {
+            path: "PageElements",
+            element: PageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "screenelements",
+            element: ScreenElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "SelectElements",
+            element: SelectedPageElements,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "Application/Create",
     element: createApplication,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
-    path: "projects",
+    path: "Projects/Recent",
     element: Projects,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
-    path: "createProject",
+    path: "Projects/Search",
+    element: Projects,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "Projects/Create",
+    element: CreateProject,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "Projects/Search",
     element: CreateProject,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
@@ -175,6 +234,11 @@ export const Routes = [
     accessRole: [2],
   },
   {
+    path: "users/editUser",
+    element: EditUser,
+    accessRole: [2],
+  },
+  {
     path: "application/apiApp",
     element: ApiApp,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
@@ -194,8 +258,29 @@ export const Routes = [
     ],
   },
   {
-    path: "execution",
-    element: Execution,
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "addEnvironment",
+    element: AddEnvironemt,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
   {
@@ -251,18 +336,18 @@ export const Routes = [
       },
     ],
   },
-  {
-    path: "projects",
-    element: Projects,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute: [
-      {
-        path: "createProject",
-        element: CreateProject,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-    ],
-  },
+  // {
+  //   path: "projects",
+  //   element: Projects,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //   subRoute: [
+  //     {
+  //       path: "createProject",
+  //       element: CreateProject,
+  //       accessRole: [1, 2, 3, 4, 5, 6, 7],
+  //     },
+  //   ],
+  // },
   {
     path: "qfAdmin",
     element: QFAdmin,
@@ -281,6 +366,11 @@ export const Routes = [
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "UpdateAnsibleInstance",
+        element: UpdateAnsibleInstance,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
     ],
@@ -338,7 +428,7 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "CreateTestcase",
+        path: "AddScreen",
         element: CreateWebTestcase,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
@@ -370,7 +460,7 @@ export const Routes = [
     ],
   },
   {
-    path: "testset",
+    path: "Testset",
     element: Testset,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     subRoute: [

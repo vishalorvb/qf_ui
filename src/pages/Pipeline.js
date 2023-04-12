@@ -3,9 +3,10 @@ import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { Menu, MenuItem, Typography } from "@mui/material";
 import { getPipelines } from "../Services/DevopsServices";
 import ProjectsDropdown from "../Components/ProjectsDropdown";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 export default function Pipeline() {
   const { setHeader } = useHead();
@@ -20,7 +21,7 @@ export default function Pipeline() {
       return {
         ...ps,
         name: "Pipeline Instances",
-        plusButton: true,
+        plusButton: false,
         buttonName: "Create Pipeline",
         plusCallback: () =>
           navigate("CreatePipeline", {
@@ -68,7 +69,7 @@ export default function Pipeline() {
             onClick={() =>
               navigate("pipelineAutomation", { state: { id: param.row.id } })
             }
-            sx={{ cursor: "pointer" }}
+            style={{ color: "#009fee", cursor: "pointer" }}
           >
             {param.row.release_name}
           </Typography>
@@ -86,30 +87,11 @@ export default function Pipeline() {
       headerName: "Last Updated",
       flex: 3,
       sortable: false,
-    },
-    {
-      field: "Actions",
-      headerName: "Actions",
-      flex: 3,
-      sortable: false,
-      align: "center",
-      headerAlign: "center",
       renderCell: (param) => {
         return (
-          <div>
-            <EditOutlinedIcon
-              onClick={() =>
-                navigate("CreatePipeline", {
-                  state: {
-                    id: param.row.id,
-                    project_Id: selectedProject?.project_id,
-                  },
-                })
-              }
-            />
-          </div>
-        );
-      },
+          PipelineActionCell(param)
+        )
+      }
     },
   ];
 
@@ -124,3 +106,56 @@ export default function Pipeline() {
     </>
   );
 }
+
+const PipelineActionCell = (
+  param
+) => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      <Typography variant="p">{param.row.updated_at}</Typography>
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem
+          onClick={() =>
+            navigate("UpdateAnsibleInstance", {
+              state: param?.row
+            })
+          }
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Edit
+        </MenuItem>
+        {/* <MenuItem onClick={() => setRowData(param.row)}>
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem> */}
+      </Menu>
+    </div>
+  );
+};
+

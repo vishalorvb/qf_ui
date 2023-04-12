@@ -6,6 +6,7 @@ import axios from "../../../api/axios";
 import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
+import { Button } from "@mui/material";
 
 export default function SelectedPageElements() {
   const { setHeader } = useHead();
@@ -60,7 +61,7 @@ export default function SelectedPageElements() {
   useEffect(() => {
     axios
       .get(
-        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=true`
+        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.web_page_id}&selected_elements_only=true`
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);
@@ -81,14 +82,22 @@ export default function SelectedPageElements() {
       return {
         ...ps,
         name: "Create Screen",
-        plusButton: preSelectedElement.length > 0,
-        plusCallback: () => setShowCreateScreenPop(true),
       };
     });
-  }, [preSelectedElement]);
+  }, []);
 
   return (
-    <div>
+    <div className="apptable">
+      <div className="intable">
+        <div style={{ float: "right" }}>
+          <Button
+            variant="contained"
+            onClick={() => setShowCreateScreenPop(true)}
+          >
+            Create Screen
+          </Button>
+        </div>
+      </div>
       <Table
         rows={elements}
         columns={elementColumns}
