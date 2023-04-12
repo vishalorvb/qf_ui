@@ -8,11 +8,13 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import Table from "../../CustomComponent/Table";
 import {
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   Typography,
 } from "@mui/material";
+import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 export default function PagesTable(props) {
   const { location, actionType } = props;
   const { header, setHeader } = useHead();
@@ -54,6 +56,24 @@ export default function PagesTable(props) {
       headerName: "Description",
       flex: 3,
       sortable: false,
+    },
+    {
+      field: "createScreen",
+      headerName: "Create Screen",
+      flex: 1,
+      sortable: false,
+      align: "center",
+      headerAlign: "center",
+      hide: actionType === "screen",
+      renderCell: (param) => {
+        return (
+          <IconButton
+            onClick={() => navigate("SelectElements", { state: param?.row })}
+          >
+            <AddToQueueIcon />
+          </IconButton>
+        );
+      },
     },
     // {
     //   field: "Actions",
@@ -144,7 +164,7 @@ export default function PagesTable(props) {
 //           onClick={() =>
 //             deleteApplication(param.row.module_id, auth.info.id).then((res) => {
 //               if (res) {
-//                 getPages(setApplication,location.state.module_id);
+//                 getPages(setPages,location.state.module_id);
 //               }
 //             })
 //           }

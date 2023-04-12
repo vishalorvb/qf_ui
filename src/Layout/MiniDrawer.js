@@ -131,7 +131,7 @@ export default function MiniDrawer({ open, setOpen }) {
   const { auth } = useAuth();
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState(["Application"]);
-  const [selectedNavItem, setSelectedNavItem] = useState("21");
+  const [selectedNavItem, setSelectedNavItem] = useState("22");
 
   useEffect(() => {
     !open && setOpensubNav([]);
