@@ -16,7 +16,7 @@ export default function BreadcrumbsComponent() {
     .filter((crumb) => crumb !== "" && crumb !== "dashboard")
     .map((crumb, idx) => {
       currentLocation += `/${crumb}`;
-      nav = ["Application"].includes(crumb) ? nav : nav + 1;
+      nav = ["Application", "Projects"].includes(crumb) ? nav : nav + 1;
       return (
         <div className="crumb" key={idx}>
           <Typography
@@ -34,12 +34,15 @@ export default function BreadcrumbsComponent() {
     });
 
   return (
-    <Breadcrumbs aria-label="breadcrumb">
-      <LinkRouter to={"/"}>
-        <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-        Home
-      </LinkRouter>
-      {crumbs}
-    </Breadcrumbs>
+    <>
+      {nav}
+      <Breadcrumbs aria-label="breadcrumb">
+        <LinkRouter to={"/"}>
+          <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          Home
+        </LinkRouter>
+        {crumbs}
+      </Breadcrumbs>
+    </>
   );
 }
