@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import Table from '../../CustomComponent/Table'
-import { getElementsList } from '../../Services/TestCaseService'
-function ElementsTable({screenId}) {
+import React, { useEffect, useState } from "react";
+import Table from "../../CustomComponent/Table";
+import { getElementsList } from "../../Services/TestCaseService";
+function ElementsTable({ screenId }) {
+  let [elements, setElements] = useState([]);
 
-let [elements,setElements] = useState([])
-
-const columns = [
+  const columns = [
     {
       field: "name",
       headerName: "Field Name",
@@ -21,21 +20,22 @@ const columns = [
       align: "center",
       headerAlign: "center",
     },
-]
-useEffect(() => {
-getElementsList(setElements,screenId)
-}, [])
+  ];
+  useEffect(() => {
+    getElementsList(setElements, screenId);
+  }, []);
 
   return (
     <div>
       <Table
+        searchPlaceholder="Search Elements"
         rows={elements}
         columns={columns}
         hidefooter={true}
         getRowId={(row) => row.element_id}
       ></Table>
     </div>
-  )
+  );
 }
 
-export default ElementsTable
+export default ElementsTable;

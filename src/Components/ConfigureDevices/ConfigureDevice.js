@@ -94,7 +94,7 @@ const ConfigureDevice = () => {
           setTimeout(() => {
             setSuccessDelete(false);
           }, 3000);
-          getConfigurations(selectedProject?.project_id)
+          getConfigurations(selectedProject?.project_id);
         }
       })
       .catch((res) => {
@@ -227,19 +227,22 @@ const ConfigureDevice = () => {
         />
       </Grid>
       <Table
+        searchPlaceholder="Search Configurations"
         rows={configurations}
         columns={columns}
         hidefooter={true}
         getRowId={(row) => row.specificationId}
       ></Table>
-     {popup && <AddConfigurationPopUp
-        open={true}
-        close={setPopup}
-        snackbar={setSnack}
-        projectId={selectedProject?.project_id}
-        setSnack={setSnack}
-        getConfigurations = {getConfigurations}
-      />}
+      {popup && (
+        <AddConfigurationPopUp
+          open={true}
+          close={setPopup}
+          snackbar={setSnack}
+          projectId={selectedProject?.project_id}
+          setSnack={setSnack}
+          getConfigurations={getConfigurations}
+        />
+      )}
       <SnackbarNotify
         open={successMsg}
         close={setSuccessMsg}
@@ -264,14 +267,15 @@ const ConfigureDevice = () => {
         msg="Deleted configuration successfully"
         severity="success"
       />
-    { confirm && <ConfirmPop
-        open={true}
-        handleClose={(e) => setConfirm(false)}
-        heading={"Delete Configuration"}
-        message={"Are you sure you want to delete the Configuration ?"}
-        onConfirm={(e) => deleteApiRequest(specificationId)}
-      ></ConfirmPop>
-    }
+      {confirm && (
+        <ConfirmPop
+          open={true}
+          handleClose={(e) => setConfirm(false)}
+          heading={"Delete Configuration"}
+          message={"Are you sure you want to delete the Configuration ?"}
+          onConfirm={(e) => deleteApiRequest(specificationId)}
+        ></ConfirmPop>
+      )}
     </>
   );
 };

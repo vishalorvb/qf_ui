@@ -89,16 +89,18 @@ export default function SelectedPageElements() {
   return (
     <div className="apptable">
       <div className="intable">
-        <div style={{ float: "right" }}>
-          <Button
-            variant="contained"
-            onClick={() => setShowCreateScreenPop(true)}
-          >
-            Create Screen
-          </Button>
-        </div>
+        <CreateScreenPop
+          open={showCreateScreenPop}
+          close={setShowCreateScreenPop}
+          applicationId={location.state.applicationId}
+          pageId={location.state.id}
+          elementsList={preSelectedElement.map((id) => {
+            return { web_page_element_id: id };
+          })}
+        />
       </div>
       <Table
+        searchPlaceholder="Search Elements"
         rows={elements}
         columns={elementColumns}
         getRowId={(row) => row.element_id}
@@ -112,15 +114,6 @@ export default function SelectedPageElements() {
           setPopup={setPopup}
         ></ElementsDetails>
       )}
-      <CreateScreenPop
-        open={showCreateScreenPop}
-        close={setShowCreateScreenPop}
-        applicationId={location.state.applicationId}
-        pageId={location.state.id}
-        elementsList={preSelectedElement.map((id) => {
-          return { web_page_element_id: id };
-        })}
-      />
     </div>
   );
 }

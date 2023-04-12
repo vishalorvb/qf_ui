@@ -220,6 +220,7 @@ const ReleaseActionCell = (param, setRowData) => {
           onClick={() =>
             navigate("UpdateAnsibleInstance", {
               state: param?.row,
+              state: param?.row,
             })
           }
         >
