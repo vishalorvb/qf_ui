@@ -59,6 +59,8 @@ export default function ExecutionToolbar({
   });
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  const [buildEnvId,setBuildEnvId] = useState()
+  const [runtimeVariable,setRunTimeVariable] = useState()
   // const handleClick = () => {
   //   console.info(`You clicked `);
   //   applicationType === "web"
@@ -261,9 +263,10 @@ export default function ExecutionToolbar({
           `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
         )
         .then((resp) => {
-          console.log(resp?.data?.data);
+          setBuildEnvId(resp?.data?.data[0]?.id)
+          setRunTimeVariable(resp?.data?.data[0]?.runtime_variables)
           const buildEnv = resp?.data?.data;
-
+          
           setBuildEnvList(() => {
             return buildEnv.map((be) => {
               return {
@@ -375,7 +378,7 @@ export default function ExecutionToolbar({
           </FormControl>
         </Grid>
         <Grid item md={2}>
-          <FeatureMenu />
+          <FeatureMenu envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) && runtimeVariable}/>
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">

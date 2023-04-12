@@ -7,7 +7,8 @@ import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useNavigate } from "react-router-dom";
 
-export default function FeatureMenu() {
+export default function FeatureMenu({envId,runtimeVar}) {
+  console.log(runtimeVar)
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
   const [openFeaturefile,setFeatureFile] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -48,14 +49,8 @@ export default function FeatureMenu() {
           Runtime Variables
         </MenuItem>
         <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
-        {/* <MenuItem onClick={(e) => {
-                navigate("/addEnvironment", {
-                  // state: { id: params.row.report_id },
-                });
-              }}>Add Environment</MenuItem> */}
       </Menu>
-      {/* <RuntimeVar open={openRuntimeVar} close={setOpenRuntimeVar} /> */}
-      <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar}/>
+      <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={envId}  runtimeVar = {runtimeVar}/>
       <FeatureFile open={openFeaturefile} close={setFeatureFile}/>
       
     </>
