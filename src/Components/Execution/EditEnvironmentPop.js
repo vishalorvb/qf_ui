@@ -9,6 +9,8 @@ import {
 import { Divider, Grid, Typography } from "@mui/material";
 import axios from "../../api/axios";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 let initialValue = {
   id: "",
@@ -23,8 +25,9 @@ let initialValue = {
 let postVal = { ...initialValue };
 
 function EditEnvironmentPop(props) {
-  const { row, editEnvironmentPop, close, editEnvironmentData } = props;
+  const { row, editEnvironmentPop, close, editEnvironmentData ,getBuilEnvironment,projectId,applicationId} = props;
   console.log(editEnvironmentData);
+  const [editSuccessMsg,setEditSuccessMsg] = useState(false)
   const handleClose = () => {
     close(false);
   };
@@ -35,16 +38,18 @@ function EditEnvironmentPop(props) {
       console.log(postVal);
       postVal.id = editEnvironmentData.id;
       postVal.base_url = "";
-      postVal.module_id = 76;
-      postVal.project_id = 79;
+      postVal.module_id = applicationId;
+      postVal.project_id = projectId;
       postVal.url = "";
         axios.post(`/qfservice/CreateBuildEnvironment`, postVal)
         .then((resp) => {
-          if ( resp?.data?.message === "Successfully createdBuild Environment") {
-              // setReportSuccessMsg(true);
-              // getBuilEnvironment();
+          console.log(resp?.data?.error?.description)
+          console.log(resp?.data?.message)
+          if ( resp?.data?.message === "Successfully updatedBuild Environment") { 
+              setEditSuccessMsg(true)
               setTimeout(() => {
-                  // setReportSuccessMsg(false);
+                  setEditSuccessMsg(false)
+                  getBuilEnvironment();
               }, 3000);
         handleClose()
           }
@@ -62,6 +67,7 @@ function EditEnvironmentPop(props) {
   };
 
   return (
+    <>
     <Dialog
       open={editEnvironmentPop}
       onClose={handleClose}
@@ -127,6 +133,13 @@ function EditEnvironmentPop(props) {
         </Button>
       </DialogActions>
     </Dialog>
+    <SnackbarNotify
+        open={editSuccessMsg}
+        close={setEditSuccessMsg}
+        msg="Updated successfully"
+        severity="success"
+    />
+    </>
   );
 }
 

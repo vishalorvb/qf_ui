@@ -32,6 +32,9 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
   const location = useLocation();
   const navigate = useNavigate();
 
+  let project_id =location.state.projectId;
+  let application_id = location.state.applicationId
+
   useEffect(() => {
     getBuilEnvironment();
   }, []);
@@ -39,9 +42,9 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
   console.log(location.state.projectId)
   console.log(location.state.applicationId)
 
-  function getBuilEnvironment() {
+  async function getBuilEnvironment() {
     axios
-      .get(`/qfservice/build-environment?project_id=${location.state.projectId}&module_id=${location.state.applicationId}`)
+      .get(`/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`)
       .then((res) => {
         console.log(res.data.data.length);
         if (res.data.data.length > 0) {
@@ -59,24 +62,21 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
         }
       });
   }
-  function deleteApiRequest(specificationId) {
-    axios
-      .post(
-        `qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`
-      )
-      .then((res) => {
-        if (res.data.message === "Successfully deleted Build Environment") {
+    function deleteApiRequest(specificationId) {
+      axios.post(`qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`).then((res) => {
+        if (res.data.message === "Successfully deleted Build Environment")
+         {
+         
           setSuccessDelete(true);
-          getBuilEnvironment();
           setTimeout(() => {
             setSuccessDelete(false);
+            getBuilEnvironment()
           }, 3000);
-        }
+          return true
+         }
       })
-      .catch((res) => {
-        console.log(res);
-      });
-    setConfirm(false);
+      setConfirm(false);
+    
   }
 
   const columns = [
@@ -182,6 +182,8 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
         addEnvironmentPop={addEnvironmentPop}
         close={setAddEnvironmentPop}
         getBuilEnvironment={getBuilEnvironment}
+        projectId={project_id}
+        applicationId={application_id}
       />
       <EditEnvironmentPop
         editEnvironmentPop={editEnvironmentPop}
@@ -189,6 +191,8 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
         row={tbData}
         getBuilEnvironment={getBuilEnvironment}
         editEnvironmentData ={editEnvironmentData}
+        projectId={project_id}
+        applicationId={application_id}
       />
       {confirm && (
         <ConfirmPop
