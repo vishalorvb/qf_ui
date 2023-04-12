@@ -91,6 +91,7 @@ export default function PersistentDrawerRight({
 
 
       {tempScreen != undefined && <MaterialReactTable
+      
         columns={columns}
         data={tempScreen}
         enableColumnActions={false}
