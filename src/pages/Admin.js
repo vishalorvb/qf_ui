@@ -326,7 +326,7 @@ const AdminActionCell = (
   };
   return (
     <div className="descColumn">
-      <Typography variant="p">{}</Typography>
+      {/* <Typography variant="p">{}</Typography> */}
       <MoreVertIcon
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}

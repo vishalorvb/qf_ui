@@ -279,7 +279,7 @@ function TestsetCreate() {
           </Grid>
           <Grid item xs={4} sm={4} md={5}>
             <label>Select Testcase:</label>
-            <select id="left" multiple style={{ padding: "10px" }}>
+            <select id="left" multiple style={{ padding: "10px", marginTop:"10px" }}>
               {leftTestcase?.length > 0
                 ? leftTestcase
                     .filter((ts) => ts.datasets != null)
@@ -289,7 +289,7 @@ function TestsetCreate() {
                 : []}
             </select>
           </Grid>
-          <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "25px" }}>
+          <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "30px" }}>
             <Button
               sx={{ my: 0.5 }}
               variant="outlined"
@@ -311,7 +311,7 @@ function TestsetCreate() {
           </Grid>
           <Grid item xs={4} sm={4} md={6}>
             <label>Selected Testcases:</label>
-            <select id="right" multiple style={{ padding: "10px" }}>
+            <select id="right" multiple style={{ padding: "10px", marginTop:"10px"  }}>
               {rightTestcase.length > 0
                 ? rightTestcase
                     .filter((ts) => ts.datasets != null)
