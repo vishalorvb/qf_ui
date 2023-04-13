@@ -1,22 +1,12 @@
 import { Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
-import Testcase from "./Testcase";
-import Testset from "./Testset";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
 import axios from "../../api/axios";
-import MuiListItemText from "@mui/material/ListItemText";
-import MuiListItemIcon from "@mui/material/ListItemIcon";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
-import ExecutionDetails from "./ExecutionDetails";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
-import Searchbar from "./Searchbar";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,16 +44,12 @@ function a11yProps(index) {
 export default function TestsetExecution() {
   const { setHeader } = useHead();
   const [testcases, setTestcases] = useState([]);
-  const [testsets, setTestsets] = useState([]);
-
   const [selectedItem, setSelectedItem] = useState([]);
   const [selectedProject, setSelectedProject] = useState({
     project_name: "Project",
   });
   const [selectedApplication, setSelectedApplication] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-
-console.log(selectedItem)
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -77,16 +63,6 @@ console.log(selectedItem)
   }, []);
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    console.log(value);
-  };
-
-  useEffect(() => {
-    console.log(selectedProject?.project_id);
-    console.log(selectedApplication?.module_id);
-  }, [selectedProject]);
-
   useEffect(() => {
     axios
       .get(
@@ -94,14 +70,12 @@ console.log(selectedItem)
       )
       .then((resp) => {
         const testcases = resp?.data?.info ? resp?.data?.info : [];
-        console.log(testcases);
         setTestcases(testcases);
       });
   }, [selectedProject, selectedApplication]);
 
   const itemRender = (rawList) => {
     const navigationList = rawList.filter(apiItem=>apiItem.testset_name.toLowerCase().includes( searchTerm.toLowerCase()) || apiItem.testset_desc.toLowerCase().includes( searchTerm.toLowerCase()))?.map((apiItem, index) => {
-      console.log(apiItem);
       return (
         <ListItem
           sx={{
@@ -157,7 +131,6 @@ console.log(selectedItem)
             setSelectedProject={setSelectedProject}
             selectedApplication={selectedApplication}
             setSelectedApplication={setSelectedApplication}
-            // isTestset={value === 1}
           />
         </Grid>
       </Grid>
@@ -168,7 +141,6 @@ console.log(selectedItem)
             sx={{
               overflowY: "aurto",
               height:"70vh"
-            //   maxWidth: "500px",
             }}
           >
             {itemRender(testcases)}

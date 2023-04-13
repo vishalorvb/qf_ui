@@ -14,9 +14,7 @@ import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -25,7 +23,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import Select from "@mui/material/Select";
+
 
 export default function ExecutionToolbar({
   applicationId,
@@ -63,13 +61,11 @@ export default function ExecutionToolbar({
   const [runtimeVariable,setRunTimeVariable] = useState()
   const [snack,setSnack] = useState(false)
   
-  console.log(selectedDatasets)
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   const executionMethodSelector = (data) => {
-    // console.log("secv")
     applicationType === 1 ? onApiSubmitExecute(data) :onSubmitExecute(data);
   };
 
@@ -78,9 +74,6 @@ export default function ExecutionToolbar({
   };
 
   const onSubmitExecute = (data) => {
-    console.log("execute");
-    console.log(data);
-    console.log(testcaseId);
     if(selectedDatasets.length != 0 )
     {
     const executionData = {
@@ -103,8 +96,6 @@ export default function ExecutionToolbar({
     axios
       .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
       .then((resp) => {
-        console.log(resp);
-        console.log(resp?.data?.info);
         resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         data?.executionLoc === "local"
           ? resp?.data?.status === "SUCCESS" &&
@@ -114,11 +105,9 @@ export default function ExecutionToolbar({
                 jarName: `code`,
               })
               .then((resp) => {
-                console.log(resp);
                 setJarConnected(true);
               })
               .catch((err) => {
-                console.log(err.message);
                 err.message === "Network Error" && setClientInactive(true);
               })
           : setRemoteExecutionsuccess(true);
@@ -132,9 +121,6 @@ export default function ExecutionToolbar({
     }
   };
   const onSubmitGenerate = (data) => {
-    console.log("split");
-    console.log(data);
-    console.log(testcaseId);
     if(selectedDatasets.length != 0 )
     {
     const executionData = {
@@ -157,8 +143,6 @@ export default function ExecutionToolbar({
     axios
       .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
       .then((resp) => {
-        console.log(resp);
-        console.log(resp?.data?.info);
         resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         data?.executionLoc === "local"
           ? resp?.data?.status === "SUCCESS" &&
@@ -168,11 +152,9 @@ export default function ExecutionToolbar({
                 jarName: `code`,
               })
               .then((resp) => {
-                console.log(resp);
                 setJarConnected(true);
               })
               .catch((err) => {
-                console.log(err.message);
                 err.message === "Network Error" && setClientInactive(true);
               })
           : setRemoteExecutionsuccess(true);
@@ -187,9 +169,6 @@ export default function ExecutionToolbar({
   };
 
   const onApiSubmitExecute = (data) => {
-    console.log("execute");
-    console.log(data);
-    console.log(testcaseId);
     if(selectedDatasets.length != 0 )
     {
     const executionData = {
@@ -206,8 +185,6 @@ export default function ExecutionToolbar({
       client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
     axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
-      console.log(resp);
-      console.log(resp?.data?.info);
       resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
       data?.executionLoc === "local"
         ? resp?.data?.status === "SUCCESS" &&
@@ -217,11 +194,9 @@ export default function ExecutionToolbar({
               jarName: `code`,
             })
             .then((resp) => {
-              console.log(resp);
               setJarConnected(true);
             })
             .catch((err) => {
-              console.log(err.message);
               err.message === "Network Error" && setClientInactive(true);
             })
         : setRemoteExecutionsuccess(true);
@@ -252,8 +227,6 @@ export default function ExecutionToolbar({
       client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
     axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
-      console.log(resp);
-      console.log(resp?.data?.info);
       resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
       data?.executionLoc === "local"
         ? resp?.data?.status === "SUCCESS" &&
@@ -263,11 +236,9 @@ export default function ExecutionToolbar({
               jarName: `code`,
             })
             .then((resp) => {
-              console.log(resp);
               setJarConnected(true);
             })
             .catch((err) => {
-              console.log(err.message);
               err.message === "Network Error" && setClientInactive(true);
             })
         : setRemoteExecutionsuccess(true);
@@ -280,9 +251,6 @@ export default function ExecutionToolbar({
   }, 3000);
   }
   };
-
-  // useEffect(()=>{console.log(applicationId)},[applicationId])
-  // console.log("first")
 
   useEffect(() => {
     reset();
@@ -312,7 +280,6 @@ export default function ExecutionToolbar({
           `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
         )
         .then((resp) => {
-          console.log(resp?.data?.data);
           const execEnv = resp?.data?.data;
           setExecEnvList(() => {
             return execEnv.map((ee) => {
@@ -406,7 +373,7 @@ export default function ExecutionToolbar({
           />
         </Grid>
         <Grid item md={2}>
-          <FeatureMenu envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) && runtimeVariable}/>
+          <FeatureMenu testcaseId={testcaseId} selectedDatasets={selectedDatasets} envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""}/>
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">
@@ -480,35 +447,6 @@ export default function ExecutionToolbar({
             />
           </Stack>
         </Grid>
-
-        {/* <Grid item md={1.7}>
-              <Button
-                sx={{ width: 150 }}
-                variant="contained"
-                type="submit"
-                // onClick={() => {
-                //   applicationType === 1
-                //     ? handleSubmit(onApiSubmitGenerate)
-                //     : handleSubmit(onSubmitGenerate);
-                // }}
-              >
-                Generate
-              </Button>
-        </Grid> */}
-
-        {/* <Grid item md={1.7}>
-              <Button
-                sx={{ width: 150 }}
-                variant="contained"
-                onClick={() => {
-                  applicationType === 1
-                    ? handleSubmit(onApiSubmitExecute)
-                    : handleSubmit(onSubmitExecute);
-                }}
-              >
-                Execute
-              </Button>
-            </Grid> */}
       </Grid>{" "}
       {execLoc !== "local" && (
         <Stack mt={1}>
