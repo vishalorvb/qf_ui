@@ -111,15 +111,12 @@ export default function ApplicationsList() {
     getApplication(setApplication, auth.info.id);
   }, []);
 
-  console.log(location?.pathname);
-
   return (
     <div className="apptable">
       <div className="intable">
         <div style={{ float: "right" }}>
           <Button
             variant="contained"
-            startIcon={<AddIcon />}
             onClick={() => navigate("/Application/Create")}
           >
             Create Application
@@ -172,15 +169,12 @@ const ApplicationDescriptionCell = (param, setApplication, auth) => {
         }}
       >
         <MenuItem
-
           onClick={() => {
-            console.log(param.row)
-            moduledata.module_name = param.row.module_name
-            moduledata.base_url = param.row.base_url 
-            moduledata.module_desc = param.row.module_desc
-            moduledata.module_type = param.row.module_type
-            navigate("/Application/Create", { state: param?.row })
-
+            moduledata.module_name = param.row.module_name;
+            moduledata.base_url = param.row.base_url;
+            moduledata.module_desc = param.row.module_desc;
+            moduledata.module_type = param.row.module_type;
+            navigate("Update", { state: param?.row });
           }}
         >
           <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
