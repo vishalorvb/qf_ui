@@ -39,7 +39,6 @@ export default function TestCases() {
       sortable: false,
       align: "left",
       renderCell: (param) => {
-        console.log(param.row)
         return (
           <div
             style={{ color: "#009fee", cursor: "pointer" }}
@@ -142,24 +141,30 @@ export default function TestCases() {
     setSelectedProject(project[0]);
   }, [project]);
   useEffect(() => {
-    if (selectedProject !== null) {
+    if (selectedProject !== null && selectedProject?.project_id !== undefined ) {
       getApplicationOfProject(setApplication, selectedProject?.project_id);
     }
   }, [selectedProject]);
   useEffect(() => {
     setSelectedApplication(application[0]);
-    GetTestCase(
-      setTestcases,
-      selectedProject?.project_id,
-      selectedApplication?.module_id
-    );
+    if (selectedApplication?.module_id !== undefined) {
+      GetTestCase(
+        setTestcases,
+        selectedProject?.project_id,
+        selectedApplication?.module_id
+      );
+    }
+
   }, [application]);
   useEffect(() => {
-    GetTestCase(
-      setTestcases,
-      selectedProject?.project_id,
-      selectedApplication?.module_id
-    );
+    if (selectedApplication?.module_id !== undefined) {
+      GetTestCase(
+        setTestcases,
+        selectedProject?.project_id,
+        selectedApplication?.module_id
+      );
+    }
+
   }, [selectedApplication]);
   return (
     <>
