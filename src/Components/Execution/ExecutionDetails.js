@@ -10,8 +10,6 @@
     projectId,
     applicationType,
   }) {
-    console.log(testcaseId)
-    console.log(applicationId)
     const [datasetList, setDataList] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const columns = [
@@ -31,19 +29,16 @@
       },
     ];
     const handleClose = () => {
-    //   close(false);
       setDataList([]);
       setSelectedDatasets([]);
     };
   
     useEffect(() => {
-    //   open &&
         axios
           .get(
             `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
           )
           .then((resp) => {
-            console.log(resp);
             setDataList(resp?.data?.info?.datasets ?? []);
           });
     }, [testcaseId]);

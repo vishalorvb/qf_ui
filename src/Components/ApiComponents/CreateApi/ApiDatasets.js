@@ -159,7 +159,7 @@ function ApiDatasets() {
         setHeader((ps) => {
             return {
                 ...ps,
-                name: location?.state?.testcaseName,
+                name: `${location?.state?.testcaseName} Datasets`,
             };
         });
         

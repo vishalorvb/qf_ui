@@ -5,15 +5,18 @@ import MenuItem from "@mui/material/MenuItem";
 import RuntimeVar from "./RuntimeVar";
 import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function FeatureMenu({envId,runtimeVar}) {
+
+export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDatasets,testsetId}) {
   console.log(runtimeVar)
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
   const [openFeaturefile,setFeatureFile] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +24,7 @@ export default function FeatureMenu({envId,runtimeVar}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  console.log(location.pathname)
 
   return (
     <>
@@ -36,6 +40,7 @@ export default function FeatureMenu({envId,runtimeVar}) {
       >
         + Features
       </Button>
+      {location.pathname == "/TestcaseExecution" &&
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -49,9 +54,23 @@ export default function FeatureMenu({envId,runtimeVar}) {
           Runtime Variables
         </MenuItem>
         <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
-      </Menu>
+      </Menu>}
+      {location.pathname == "/TestsetExecution" &&
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={() => setOpenRuntimeVar(true)}>
+          Runtime Variables
+        </MenuItem>
+      </Menu>}
       <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={envId}  runtimeVar = {runtimeVar}/>
-      <FeatureFile open={openFeaturefile} close={setFeatureFile}/>
+      <FeatureFile open={openFeaturefile} close={setFeatureFile} testcaseId={testcaseId} selectedDatasets={selectedDatasets}/>
       
     </>
   );
