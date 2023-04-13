@@ -80,7 +80,9 @@ export default function CreateApplication() {
       <Grid container direction="row" spacing={2}>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>Name </label>
+            <label>
+              Name<span className="importantfield">*</span>
+            </label>
             <input
               type="text"
               name="appname"
@@ -94,7 +96,9 @@ export default function CreateApplication() {
         </Grid>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>URL</label>
+            <label>
+              URL<span className="importantfield">*</span>
+            </label>
             <input
               type="text"
               name="url"
@@ -108,7 +112,9 @@ export default function CreateApplication() {
         </Grid>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>Application Type</label>
+            <label>
+              Application Type<span className="importantfield">*</span>
+            </label>
             <select
               onChange={(e) => {
                 moduledata.module_type = e.target.value;
@@ -146,7 +152,9 @@ export default function CreateApplication() {
         )}
         <Grid item md={12}>
           <Stack spacing={1}>
-            <label>Description</label>
+            <label>
+              Description<span className="importantfield">*</span>
+            </label>
             <input
               type="text"
               row="5"
