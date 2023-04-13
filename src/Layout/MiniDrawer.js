@@ -11,7 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
 import MuiListItemText from "@mui/material/ListItemText";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
 //navItems
@@ -132,7 +132,7 @@ export default function MiniDrawer({ open, setOpen }) {
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState(["Application"]);
   const [selectedNavItem, setSelectedNavItem] = useState("22");
-
+  const location = useLocation();
   useEffect(() => {
     !open && setOpensubNav([]);
   }, [open]);
@@ -165,7 +165,8 @@ export default function MiniDrawer({ open, setOpen }) {
               <MuiListItemText
                 primary={navItem.name}
                 className={
-                  selectedNavItem === navItem?.id
+                  // selectedNavItem === navItem?.id
+                  location?.pathname?.includes(navItem?.route)
                     ? "navListItemText navListItemTextSelected"
                     : "navListItemText"
                 }
@@ -231,7 +232,7 @@ export default function MiniDrawer({ open, setOpen }) {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  Welcome {auth?.user}
+                  Welcome {auth?.info?.firstName}
                 </Typography>
                 <Typography variant="caption" sx={{ color: "#728FAD" }}>
                   {auth?.info?.userProfiles[0]?.type}

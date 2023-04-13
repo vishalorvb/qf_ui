@@ -3,17 +3,16 @@ import { Button, MenuItem } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import {
   MultiSelectElement,
-  TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import useHead from "../../../hooks/useHead";
 import * as yup from "yup";
 import { Stack } from "@mui/system";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
-export default function CreateWebTestcase() {
+export default function MapScreen() {
   const { setHeader } = useHead();
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,6 +27,7 @@ export default function CreateWebTestcase() {
     resolver: yupResolver(yup.object().shape({})),
   });
   const onSubmit = (data) => {
+    console.log(location.state)
     let screens = [];
     for (const key in data) {
       if (data[key]) {
@@ -41,7 +41,7 @@ export default function CreateWebTestcase() {
     }
 
     const screensData = {
-      module_id: location?.state?.applicationId,
+      module_id: location?.state?.moduleId,
       project_id: location?.state?.projectId,
       testcase_id: location?.state?.testcaseId,
       testcase_sprints: [],
@@ -63,7 +63,7 @@ export default function CreateWebTestcase() {
   useEffect(() => {
     axios
       .get(
-        `/qfservice/webtestcase/getScreensInTestcase?module_id=${location?.state?.applicationId}&project_id=${location?.state?.projectId}&testcase_id=${location?.state?.testcaseId}`
+        `/qfservice/webtestcase/getScreensInTestcase?module_id=${location?.state?.moduleId}&project_id=${location?.state?.projectId}&testcase_id=${location?.state?.testcaseId}`
       )
       .then((resp) => {
         const data = resp?.data?.info;
@@ -84,8 +84,6 @@ export default function CreateWebTestcase() {
       return {
         ...ps,
         name: "Add Screens",
-        // plusButton: true,
-        // plusCallback: () => navigate("CreateTestcase"),
       };
     });
     return () =>
@@ -106,35 +104,7 @@ export default function CreateWebTestcase() {
         msg={"Screens Updated Successfully"}
         severity="success"
       />
-      {/* <TextFieldElement
-        id="sprint"
-        label="Sprint"
-        fullWidth
-        select
-        size="small"
-        name="sprint"
-        control={control}
-      >
-        {/* {cicdTypes?.map((type) => (
-                  <MenuItem value={type.id}>{type.name}</MenuItem>
-                ))} 
-        <MenuItem>Sprint</MenuItem>
-      </TextFieldElement> */}
-
-      {/* <TextFieldElement
-        id="issue"
-        label="Issue"
-        fullWidth
-        select
-        size="small"
-        name="issue"
-        control={control}
-      >
-        {/* {cicdTypes?.map((type) => (
-                  <MenuItem value={type.id}>{type.name}</MenuItem>
-                ))} 
-        <MenuItem>Issue</MenuItem>
-      </TextFieldElement> */}
+     
 
       {pagesnScreens.map((page) => {
         return (

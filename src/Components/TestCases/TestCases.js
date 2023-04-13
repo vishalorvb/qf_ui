@@ -45,19 +45,21 @@ export default function TestCases() {
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
-                    state: {
-                      applicationId: param.row.module_id,
-                      testcaseId: param.row.testcase_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
+                  state: {
+                    applicationId: param.row.module_id,
+                    testcaseId: param.row.testcase_id,
+                    projectId: selectedProject?.project_id,
+                    testcaseName: param.row.name
+                  },
+                })
                 : navigate("datasets", {
-                    state: {
-                      applicationId: param.row.module_id,
-                      testcaseId: param.row.testcase_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
+                  state: {
+                    applicationId: param.row.module_id,
+                    testcaseId: param.row.testcase_id,
+                    projectId: selectedProject?.project_id,
+                    testcaseName: param.row.name
+                  },
+                })
             }
           >
             {param.row.name}
@@ -116,8 +118,6 @@ export default function TestCases() {
       return {
         ...ps,
         name: "Recent Testcases",
-        // plusButton: true,
-        // buttonName: "Create Testcase",
         plusCallback: () => {
           console.log("");
         },
@@ -141,24 +141,30 @@ export default function TestCases() {
     setSelectedProject(project[0]);
   }, [project]);
   useEffect(() => {
-    if (selectedProject !== null) {
+    if (selectedProject !== null && selectedProject?.project_id !== undefined ) {
       getApplicationOfProject(setApplication, selectedProject?.project_id);
     }
   }, [selectedProject]);
   useEffect(() => {
     setSelectedApplication(application[0]);
-    GetTestCase(
-      setTestcases,
-      selectedProject?.project_id,
-      selectedApplication?.module_id
-    );
+    if (selectedApplication?.module_id !== undefined) {
+      GetTestCase(
+        setTestcases,
+        selectedProject?.project_id,
+        selectedApplication?.module_id
+      );
+    }
+
   }, [application]);
   useEffect(() => {
-    GetTestCase(
-      setTestcases,
-      selectedProject?.project_id,
-      selectedApplication?.module_id
-    );
+    if (selectedApplication?.module_id !== undefined) {
+      GetTestCase(
+        setTestcases,
+        selectedProject?.project_id,
+        selectedApplication?.module_id
+      );
+    }
+
   }, [selectedApplication]);
   return (
     <>

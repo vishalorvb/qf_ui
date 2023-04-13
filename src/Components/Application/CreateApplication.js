@@ -1,6 +1,6 @@
 import { Button, Grid } from "@mui/material";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { createApplication } from "../../Services/ApplicationService";
 import useAuth from "../../hooks/useAuth";
@@ -30,6 +30,9 @@ export default function CreateApplication() {
   const [selectedType, setSelectedType] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
+  const refName = useRef(null);
+  const refUrl = useRef(null);
+  const refDesc = useRef(null);
   const APPLICATION_TYPES = [
     { value: 1, label: "API" },
     { value: 2, label: "Web" },
@@ -53,6 +56,9 @@ export default function CreateApplication() {
   }
 
   useEffect(() => {
+    refName.current.value = moduledata?.module_name ?? "";
+    refUrl.current.value = moduledata?.module_name ?? "";
+    refDesc.current.value = moduledata?.module_name ?? "";
     return () => {
       resetModuledata();
     };
@@ -62,7 +68,9 @@ export default function CreateApplication() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create Application",
+        name: moduledata?.module_name
+          ? moduledata?.module_name + " " + "Update Application"
+          : "Create Application",
       };
     });
   }, []);
@@ -72,10 +80,13 @@ export default function CreateApplication() {
       <Grid container direction="row" spacing={2}>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>Name </label>
+            <label>
+              Name<span className="importantfield">*</span>
+            </label>
             <input
               type="text"
               name="appname"
+              ref={refName}
               defaultValue={moduledata.module_name}
               onChange={(e) => {
                 moduledata.module_name = e.target.value;
@@ -85,10 +96,13 @@ export default function CreateApplication() {
         </Grid>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>URL</label>
+            <label>
+              URL<span className="importantfield">*</span>
+            </label>
             <input
               type="text"
               name="url"
+              ref={refUrl}
               defaultValue={moduledata.base_url}
               onChange={(e) => {
                 moduledata.base_url = e.target.value;
@@ -98,7 +112,9 @@ export default function CreateApplication() {
         </Grid>
         <Grid item md={selectedType === "3" ? 3 : 4}>
           <Stack spacing={1}>
-            <label>Application Type</label>
+            <label>
+              Application Type<span className="importantfield">*</span>
+            </label>
             <select
               onChange={(e) => {
                 moduledata.module_type = e.target.value;
@@ -136,11 +152,14 @@ export default function CreateApplication() {
         )}
         <Grid item md={12}>
           <Stack spacing={1}>
-            <label>Description</label>
+            <label>
+              Description<span className="importantfield">*</span>
+            </label>
             <input
               type="text"
               row="5"
               name="desc"
+              ref={refDesc}
               defaultValue={moduledata.module_desc}
               onChange={(e) => {
                 moduledata.module_desc = e.target.value;

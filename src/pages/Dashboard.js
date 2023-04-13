@@ -65,6 +65,7 @@ export default function Dashboard() {
 
   function dashboardDetails ()
   {
+    setAutomationTDgraph(false)
     axios.get(`/qfdashboard/dashboard/${selectedProject?.project_id}?userId=${auth?.userId}`).then((res) => 
     {
       console.log("api called")
@@ -150,6 +151,8 @@ export default function Dashboard() {
   }
   function dashboardDetailsBySprintId()
   {
+    setShowTensorFlow(false)
+    setShowProgressBar(false)
     axios.get(`/qfdashboard/dashboard/${selectedProject?.project_id}/${sprintName}?userId=${auth?.userId}`).then((res) => {
       setAutomationTDgraph(false)
       setShowTensorFlow(false)
@@ -197,7 +200,7 @@ export default function Dashboard() {
      getTensorflowData()
      getPredictionTestcases()
     }
-  }, [selectedProject])
+  }, [selectedProject,sprintName])
   useEffect(() => {
     if(sprintName != 'All')
     {
@@ -206,6 +209,8 @@ export default function Dashboard() {
    getPredictionTestcases()
     }
   }, [sprintName]);
+ 
+
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
       const projects = res?.data?.result?.projects_list;
