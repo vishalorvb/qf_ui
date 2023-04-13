@@ -65,6 +65,7 @@ export default function Dashboard() {
 
   function dashboardDetails ()
   {
+    setAutomationTDgraph(false)
     axios.get(`/qfdashboard/dashboard/${selectedProject?.project_id}?userId=${auth?.userId}`).then((res) => 
     {
       console.log("api called")
