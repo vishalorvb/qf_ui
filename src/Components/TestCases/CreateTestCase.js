@@ -30,7 +30,7 @@ function CreateTestCase() {
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
     const { setHeader } = useHead();
-    let redirect_url = [" ", "/testcase/MapApiTestCase", "/testcase/AddScreen",]
+    let redirect_url = [" ", "Testcase/Recent/MapApiTestCase", "/Testcase/Recent/AddScreen",]
 
     function handleSubmit(e) {
         console.log(TCdata)

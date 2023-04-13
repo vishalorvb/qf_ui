@@ -39,11 +39,13 @@ function ApiDatasets() {
     let projectId
     let testcaseId
     let applicationId
+    let tescaseName
 
     try {
         projectId = location.state.projectId
         testcaseId = location.state.testcaseId
         applicationId = location.state.applicationId
+        tescaseName = location.state.tescaseName
 
     } catch (error) {
         console.log(error)
@@ -127,54 +129,7 @@ function ApiDatasets() {
             sortable: false,
             align: "left",
         },
-        // {
-        //     field: "example",
-        //     headerName: "Action",
-        //     flex: 3,
-        //     sortable: false,
-        //     align: "left",
-        //     renderCell: param => {
-        //         return (
-        //             <div>
-        //                 <Tooltip title="Edit">
-        //                     <IconButton
-        //                         onClick={() => {
-        //                             postData.tc_dataset_id = param.row.testcase_dataset_id
-        //                             postData.testcase_dataset_name = param.row.dataset_name_in_testcase
-        //                             postData.description = param.row.description
-        //                             setDatasetId(param.row.testcase_dataset_id)
-        //                             setCreateDatasets(true)
-        //                         }}
-        //                     >
-        //                         <EditOutlinedIcon></EditOutlinedIcon>
-        //                     </IconButton>
-        //                 </Tooltip>
-        //                 <Tooltip title="Copy">
-        //                     <IconButton
-        //                         onClick={() => {
-        //                             setDatasetId(param.row.testcase_dataset_id)
-        //                             setCreateDatasets(true)
-        //                         }}
-        //                     >
-        //                         <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
-        //                     </IconButton>
-        //                 </Tooltip>
-        //                 <Tooltip title="Delete">
-        //                     <IconButton
-        //                         onClick={() => {
-        //                             // console.log(param.row.testcase_dataset_id)
-        //                             DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
-        //                                 getApiDatasets(setDatasets, location.state.testcaseId)
-        //                             })
-        //                         }}
-        //                     >
-        //                         <DeleteOutlineOutlinedIcon></DeleteOutlineOutlinedIcon>
-        //                     </IconButton>
-        //                 </Tooltip>
-        //             </div>
-        //         )
-        //     }
-        // },
+ 
     ]
     useEffect(() => {
         getApiDatasets(setDatasets, location.state.testcaseId)
@@ -200,25 +155,15 @@ function ApiDatasets() {
 
     const { setHeader } = useHead();
     useEffect(() => {
+
         setHeader((ps) => {
             return {
                 ...ps,
-                name: "Api datset",
-                plusCallback: () => {
-                    console.log("");
-                },
+                name: location?.state?.testcaseName,
             };
         });
-        return () =>
-            setHeader((ps) => {
-                return {
-                    ...ps,
-                    name: "",
-                    plusButton: false,
-                    plusCallback: () => console.log("null"),
-                };
-            });
-    }, []);
+        
+    }, [location.state.testcaseName]);
 
     return (
         <div>
@@ -343,9 +288,7 @@ function ApiDatasets() {
                             onClick={e => setCreateDatasets(true)}
                         >Create Dataset</Button>
                     </div>
-
                 </div>
-
                 <Table
                     rows={datasets}
                     columns={col}

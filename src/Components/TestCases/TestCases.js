@@ -39,25 +39,28 @@ export default function TestCases() {
       sortable: false,
       align: "left",
       renderCell: (param) => {
+        console.log(param.row)
         return (
           <div
             style={{ color: "#009fee", cursor: "pointer" }}
             onClick={() =>
               selectedApplication?.module_type === 1
                 ? navigate("apidatasets", {
-                    state: {
-                      applicationId: param.row.module_id,
-                      testcaseId: param.row.testcase_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
+                  state: {
+                    applicationId: param.row.module_id,
+                    testcaseId: param.row.testcase_id,
+                    projectId: selectedProject?.project_id,
+                    testcaseName: param.row.name
+                  },
+                })
                 : navigate("datasets", {
-                    state: {
-                      applicationId: param.row.module_id,
-                      testcaseId: param.row.testcase_id,
-                      projectId: selectedProject?.project_id,
-                    },
-                  })
+                  state: {
+                    applicationId: param.row.module_id,
+                    testcaseId: param.row.testcase_id,
+                    projectId: selectedProject?.project_id,
+                    testcaseName: param.row.name
+                  },
+                })
             }
           >
             {param.row.name}
@@ -219,7 +222,6 @@ export default function TestCases() {
           columns={columns}
           hidefooter={true}
           getRowId={(row) => row.testcase_id}
-          searchPlaceholder={"Search Testcase"}
         ></Table>
       </div>
     </>

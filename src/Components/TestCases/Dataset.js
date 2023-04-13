@@ -27,6 +27,7 @@ import { Stack } from "@mui/system";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import AddIcon from '@mui/icons-material/Add';
 import TableActions from "../../CustomComponent/TableActions";
+import useHead from "../../hooks/useHead";
 
 
 export let DatasetRequest;
@@ -332,6 +333,18 @@ function Dataset() {
       clearDatasetinfo();
     };
   }, []);
+
+  const { setHeader } = useHead();
+  useEffect(() => {
+
+      setHeader((ps) => {
+          return {
+              ...ps,
+              name: location?.state?.testcaseName,
+          };
+      });
+      
+  }, [location.state.testcaseName]);
 
   return (
     <div>
