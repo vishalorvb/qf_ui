@@ -245,121 +245,42 @@ function Dataset() {
                 setDrawer(!drawer);
 
               }}
-            > 
-            <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>  
-            Copy  
+            >
+              <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+              Copy
             </MenuItem>
-          <MenuItem
-            onClick={(e) => {
-              getData_for_createDataset(
-                setData,
-                param.row.testcase_id,
-                param.row.dataset_id
-              );
-              setDrawer(!drawer);
-              datasetinfo.name = param.row.name;
-              datasetinfo.description = param.row.description;
-              datasetinfo.dataset_id = param.row.dataset_id;
-            }}
-          >
-          <EditOutlinedIcon></EditOutlinedIcon>
-          Edit
-          </MenuItem>
-              <MenuItem
-               onClick={(e) => {
+            <MenuItem
+              onClick={(e) => {
+                getData_for_createDataset(
+                  setData,
+                  param.row.testcase_id,
+                  param.row.dataset_id
+                );
+                setDrawer(!drawer);
+                datasetinfo.name = param.row.name;
+                datasetinfo.description = param.row.description;
+                datasetinfo.dataset_id = param.row.dataset_id;
+              }}
+            >
+              <EditOutlinedIcon></EditOutlinedIcon>
+              Edit
+            </MenuItem>
+            <MenuItem
+              onClick={(e) => {
                 console.log(param.row.dataset_id);
                 setDeletedatasetId(param.row.dataset_id);
                 setDeletepopup(true);
               }}
-              >
+            >
               <DeleteOutlined></DeleteOutlined>
               Delete
-              </MenuItem>
+            </MenuItem>
           </TableActions>
         )
       },
       sortable: false,
       align: "left",
     },
-    // {
-    //   field: "dgn",
-    //   headerName: "DataSet Type",
-    //   renderCell: (param) => {
-    //     if (!param.row.is_db_dataset) {
-    //       return (
-    //         <div>
-    //           <h4>Regular</h4>
-    //         </div>
-    //       );
-    //     } else {
-    //       return (
-    //         <div>
-    //           <h4>DB DataSet</h4>
-    //         </div>
-    //       );
-    //     }
-    //   },
-    //   flex: 3,
-    //   sortable: false,
-    //   align: "left",
-    // },
-    // {
-    //   headerName: "Action",
-    //   field: "action",
-    //   renderCell: (param) => {
-    //     return (
-    //       <div>
-    //         <Tooltip title="Copy">
-    //           <IconButton
-    //             onClick={(e) => {
-    //               getData_for_createDataset(
-    //                 setData,
-    //                 param.row.testcase_id,
-    //                 param.row.dataset_id
-    //               );
-    //               setDrawer(!drawer);
-
-    //             }}
-    //           >
-    //             <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
-    //           </IconButton>
-    //         </Tooltip>
-    //         <Tooltip title="Edit">
-    //           <IconButton
-    //             onClick={(e) => {
-    //               getData_for_createDataset(
-    //                 setData,
-    //                 param.row.testcase_id,
-    //                 param.row.dataset_id
-    //               );
-    //               setDrawer(!drawer);
-    //               datasetinfo.name = param.row.name;
-    //               datasetinfo.description = param.row.description;
-    //               datasetinfo.dataset_id = param.row.dataset_id;
-    //             }}
-    //           >
-    //             <EditOutlinedIcon></EditOutlinedIcon>
-    //           </IconButton>
-    //         </Tooltip>
-    //         <Tooltip title="Delete">
-    //           <IconButton
-    //             onClick={(e) => {
-    //               console.log(param.row.dataset_id);
-    //               setDeletedatasetId(param.row.dataset_id);
-    //               setDeletepopup(true);
-    //             }}
-    //           >
-    //             <DeleteOutlined></DeleteOutlined>
-    //           </IconButton>
-    //         </Tooltip>
-    //       </div>
-    //     );
-    //   },
-    //   flex: 2,
-    //   headerAlign: "center",
-    //   sortable: false,
-    //   align: "center",
-    // },
   ];
   function ReloadDatset() {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
@@ -415,24 +336,12 @@ function Dataset() {
   return (
     <div>
       {drawer && <div>
-        <Stack spacing={1} direction="row" justifyContent="flex-end">
-          <Button
-            variant="contained"
-            size="small"
-            onClick={(e) => setCreatepopup(true)}
-          >
-            Save
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={(e) => {
-              setDrawer(!drawer);
-            }}
-          >
-            Cancel
-          </Button>
-        </Stack>
+
+          <CreateDataSetPopUp
+            ReloadDataset={ReloadDatset}
+            drawer={drawer}
+            setDrawer={setDrawer}
+          />
         <Grid container columnSpacing={2}>
           <Grid item md={3}>
             {screeninfo.length > 0 && (
@@ -488,17 +397,6 @@ function Dataset() {
           ></Table>
         </div>
       </div>}
-
-
-      {createpopup && (
-        <div>
-          <CreateDataSetPopUp
-            close={setCreatepopup}
-            ReloadDataset={ReloadDatset}
-          />
-        </div>
-      )}
-
       <ConfirmPop
         open={deletepopup}
         handleClose={() => setDeletepopup(false)}

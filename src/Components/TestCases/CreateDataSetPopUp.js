@@ -1,10 +1,6 @@
 import {
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
+
   Grid,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -15,14 +11,14 @@ import { datasetinfo } from "./DatasetHelper";
 import { DatasetRequest } from "./Dataset";
 import { useNavigate } from "react-router";
 
-function CreateDataSetPopUp({ close, ReloadDataset }) {
+function CreateDataSetPopUp({ ReloadDataset,drawer,setDrawer }) {
   let navigate = useNavigate();
   function handleSubmit(e) {
     if (validateFormbyName(["name", "desc"], "error")) {
       DatasetRequest[0].datasets_list = [datasetinfo];
       CreateDataset(DatasetRequest[0]).then((res) => {
         if (res) {
-          close(false);
+
           ReloadDataset();
         }
       });
@@ -31,64 +27,55 @@ function CreateDataSetPopUp({ close, ReloadDataset }) {
 
   try {
     return (
-      <Dialog open={true} onClose={() => close(false)}>
-        <DialogTitle className="dialogTitle">Create Data Set</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={1} mt={1} justifyContent="flex-start">
-            <Grid item container>
-              <Grid md={3}>
-                <label for="">Dataset Type</label>
-              </Grid>
-              <Grid item sm={4} md={4}>
-                <select
-                  onChange={(e) => (datasetinfo.is_db_dataset = e.target.value)}
-                >
-                  <option value={false}>Regular</option>
-                  <option value={true}>DB</option>
-                </select>
-              </Grid>
-            </Grid>
-            <Grid item container>
-              <Grid item md={3}>
-                <label for="">Dataset Name</label>
-              </Grid>
-              <Grid item md={7}>
-                <input
-                  type="text"
-                  name="name"
-                  defaultValue={datasetinfo.name}
-                  onChange={(e) => {
-                    datasetinfo.name = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid item container>
-              <Grid item md={3}>
-                <label for="">Dataset Description</label>
-              </Grid>
-              <Grid item md={7}>
-                <input
-                  type="text"
-                  name="desc"
-                  defaultValue={datasetinfo.description}
-                  onChange={(e) => {
-                    datasetinfo.description = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
+      <Grid container spacing={1} justifyContent='flex-end'>
+        <Grid item sm={2} md={2}>
+          <select
+            onChange={(e) => (datasetinfo.is_db_dataset = e.target.value)}
+          >
+            <option value={false}>Regular</option>
+            <option value={true}>DB</option>
+          </select>
+        </Grid>
+
+        <Grid item md={2}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Dataset Name"
+            defaultValue={datasetinfo.name}
+            onChange={(e) => {
+              datasetinfo.name = e.target.value;
+            }}
+          />
+        </Grid>
+
+        <Grid item md={2}>
+          <input
+            type="text"
+            name="desc"
+            placeholder="Dataset Description"
+            defaultValue={datasetinfo.description}
+            onChange={(e) => {
+              datasetinfo.description = e.target.value;
+            }}
+          />
+        </Grid>
+        <Grid item md={0.7}>
           <Button variant="contained" onClick={handleSubmit}>
             Save
           </Button>
-          <Button variant="outlined" onClick={(e) => close(false)}>
+        </Grid>
+        <Grid item md={1}>
+          <Button variant="outlined"
+            onClick={(e) => {
+              setDrawer(!drawer);
+            }}
+          >
             Cancel
           </Button>
-        </DialogActions>
-      </Dialog>
+        </Grid>
+      </Grid>
+
     );
   } catch (error) {
     console.log(error);

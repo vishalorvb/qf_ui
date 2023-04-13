@@ -22,6 +22,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import AddIcon from '@mui/icons-material/Add';
 import TableActions from '../../../CustomComponent/TableActions'
 import { DeleteOutlined } from '@mui/icons-material'
+import useHead from '../../../hooks/useHead'
 
 function ApiDatasets() {
 
@@ -85,44 +86,44 @@ function ApiDatasets() {
             renderCell: param => {
 
                 return (
-                  <TableActions
-                    heading={param.row?.description}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        setDatasetId(param.row.testcase_dataset_id)
-                        setCreateDatasets(true)
-                    }}
-                    > 
-                    <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>  
-                    Copy  
-                    </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                        postData.tc_dataset_id = param.row.testcase_dataset_id
-                        postData.testcase_dataset_name = param.row.dataset_name_in_testcase
-                        postData.description = param.row.description
-                        setDatasetId(param.row.testcase_dataset_id)
-                        setCreateDatasets(true)
-                    }}
-                  >
-                  <EditOutlinedIcon></EditOutlinedIcon>
-                  Edit
-                  </MenuItem>
-                      <MenuItem
-                      onClick={() => {
-                        // console.log(param.row.testcase_dataset_id)
-                        DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
-                            getApiDatasets(setDatasets, location.state.testcaseId)
-                        })
-                    }}
-                      >
-                      <DeleteOutlined></DeleteOutlined>
-                      Delete
-                      </MenuItem>
-                  </TableActions>
+                    <TableActions
+                        heading={param.row?.description}
+                    >
+                        <MenuItem
+                            onClick={() => {
+                                setDatasetId(param.row.testcase_dataset_id)
+                                setCreateDatasets(true)
+                            }}
+                        >
+                            <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+                            Copy
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                postData.tc_dataset_id = param.row.testcase_dataset_id
+                                postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+                                postData.description = param.row.description
+                                setDatasetId(param.row.testcase_dataset_id)
+                                setCreateDatasets(true)
+                            }}
+                        >
+                            <EditOutlinedIcon></EditOutlinedIcon>
+                            Edit
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                // console.log(param.row.testcase_dataset_id)
+                                DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
+                                    getApiDatasets(setDatasets, location.state.testcaseId)
+                                })
+                            }}
+                        >
+                            <DeleteOutlined></DeleteOutlined>
+                            Delete
+                        </MenuItem>
+                    </TableActions>
                 )
-              },
+            },
             sortable: false,
             align: "left",
         },
@@ -196,6 +197,29 @@ function ApiDatasets() {
         console.log(selectedApiDetails)
     }, [selectedApiDetails])
 
+
+    const { setHeader } = useHead();
+    useEffect(() => {
+        setHeader((ps) => {
+            return {
+                ...ps,
+                name: "Api datset",
+                plusCallback: () => {
+                    console.log("");
+                },
+            };
+        });
+        return () =>
+            setHeader((ps) => {
+                return {
+                    ...ps,
+                    name: "",
+                    plusButton: false,
+                    plusCallback: () => console.log("null"),
+                };
+            });
+    }, []);
+
     return (
         <div>
             {createDatasets && <div>
@@ -207,20 +231,38 @@ function ApiDatasets() {
                         ></APiListDrawer>
                     </Grid>
                     <Grid item md={9}>
-                        <Stack spacing={1} direction="row" justifyContent="flex-end">
-
-                            <Button variant="contained"
-                                onClick={e => setSave(true)}
-                            >Save</Button>
-
-                            <Button variant="outlined"
-                                onClick={e => {
-                                    setCreateDatasets(false)
-                                    clearPostData()
-                                    setDatasetId(datasets[0]?.testcase_dataset_id)
-                                }}
-                            >Cancel</Button>
-                        </Stack>
+               
+                        <Grid container spacing={2} justifyContent="flex-end">
+                            <Grid item md={2}>
+                                <input type="text" name='name'
+                                    placeholder='Dataset Name'
+                                    defaultValue={postData.testcase_dataset_name}
+                                    onChange={e => postData.testcase_dataset_name = e.target.value}
+                                />
+                            </Grid>
+                            <Grid item md={2}>
+                                <input type="text" name='desc'
+                                    placeholder='Dataset Description'
+                                    defaultValue={postData.description}
+                                    onChange={e => postData.description = e.target.value}
+                                />
+                            </Grid>
+                            <Grid item md={1}>
+                                <Button variant="contained"
+                                    onClick={handleSave}
+                                >Save</Button>
+                            </Grid>
+                            <Grid item md={1}>
+                                <Button variant="outlined"
+                                    onClick={e => {
+                                        setCreateDatasets(false)
+                                        clearPostData()
+                                        setDatasetId(datasets[0]?.testcase_dataset_id)
+                                    }}
+                                >Cancel</Button>
+                            </Grid>
+                            <Grid item md={0.2}> </Grid>
+                        </Grid>
                         <br />
                         <Divider></Divider>
                         <br />
@@ -312,25 +354,7 @@ function ApiDatasets() {
                 ></Table>
             </div>}
             <div>
-                <MastPop
-                    open={save}
-                    setOpen={() => setSave(false)}
-                    heading="Create Dataset For API"
-                >
-                    <label for="">Dataset Name</label>
-                    <input type="text" name='name'
-                        defaultValue={postData.testcase_dataset_name}
-                        onChange={e => postData.testcase_dataset_name = e.target.value}
-                    />
-                    <label for="">Description</label>
-                    <input type="text" name='desc'
-                        defaultValue={postData.description}
-                        onChange={e => postData.description = e.target.value}
-                    />
-                    <Button variant='contained'
-                        onClick={handleSave}
-                    >Save</Button>
-                </MastPop>
+               
             </div>
             <div>
                 <SnackbarNotify
