@@ -28,6 +28,7 @@ export default function CreateWebTestcase() {
     resolver: yupResolver(yup.object().shape({})),
   });
   const onSubmit = (data) => {
+    console.log(location.state)
     let screens = [];
     for (const key in data) {
       if (data[key]) {
@@ -41,7 +42,7 @@ export default function CreateWebTestcase() {
     }
 
     const screensData = {
-      module_id: location?.state?.applicationId,
+      module_id: location?.state?.moduleId,
       project_id: location?.state?.projectId,
       testcase_id: location?.state?.testcaseId,
       testcase_sprints: [],
@@ -63,7 +64,7 @@ export default function CreateWebTestcase() {
   useEffect(() => {
     axios
       .get(
-        `/qfservice/webtestcase/getScreensInTestcase?module_id=${location?.state?.applicationId}&project_id=${location?.state?.projectId}&testcase_id=${location?.state?.testcaseId}`
+        `/qfservice/webtestcase/getScreensInTestcase?module_id=${location?.state?.moduleId}&project_id=${location?.state?.projectId}&testcase_id=${location?.state?.testcaseId}`
       )
       .then((resp) => {
         const data = resp?.data?.info;
