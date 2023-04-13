@@ -5,15 +5,17 @@ import CloseIcon from "@mui/icons-material/Close";
 function MastPop(props) {
   return (
     <Dialog open={props.open} maxWidth="md">
-      <div style={{ backgroundColor: "#1976d2", padding: "7px", color:"white"}}>
-        <h2>{props.heading}
+      <div
+        style={{ backgroundColor: "#009fee", padding: "7px", color: "white" }}
+      >
+        <h2>
+          {props.heading}
           <span>
             <IconButton sx={{ float: "right" }} onClick={props.setOpen}>
               <CloseIcon></CloseIcon>
             </IconButton>
           </span>
         </h2>
-
       </div>
       <div style={{ padding: "10px" }}>{props.children}</div>
     </Dialog>

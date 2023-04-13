@@ -525,11 +525,11 @@ select {
   cursor: pointer;
 }
 
-label::after {
-  content: "*";
-  color: red;
-  margin-left: 2px;
-}
+// label::after {
+//   content: "*";
+//   color: red;
+//   margin-left: 2px;
+// }
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   text-transform: none !important;
   background-color: $accent;
@@ -559,6 +559,9 @@ button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-contained
   background-color: $accent;
 }
 
+.importantfield {
+  color: red;
+}
 // .css-qp6sd5-MuiTableCell-root{
 //   display: none !important;
 // }

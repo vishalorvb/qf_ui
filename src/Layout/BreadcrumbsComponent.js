@@ -6,7 +6,6 @@ export default function BreadcrumbsComponent() {
   const location = useLocation();
   const navigate = useNavigate();
   let currentLocation = ``;
-  console.log(location);
   const LinkRouter = (props) => {
     return <Link {...props} component={RouterLink} />;
   };
