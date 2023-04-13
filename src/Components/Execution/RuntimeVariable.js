@@ -11,11 +11,16 @@ import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { Divider, Grid, Typography } from '@mui/material'
 import axios from "../../api/axios";
+import { useState } from "react";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 function RuntimeVariable(props) {
-    const { projectId, applicationId, applicationType, open, close, setSnack } =
-        props;
+    const { projectId, applicationId, applicationType, open, close,envId,runtimeVar } = props;
+    const [variables,setVariables] = useState('')
     const schema = yup.object().shape({ testcaseName: yup.string().required() });
+  const [snack, setSnack] = useState(false);
+    
+
     const {
         control,
         handleSubmit,
@@ -29,22 +34,20 @@ function RuntimeVariable(props) {
         close(false);
     };
 
-    const onSubmitHandler = (params) => {
-        console.log(params);
-        console.log({ projectId, applicationId });
-        const data = {
-            module_id: applicationId,
-            testcase_name: params.testcaseName,
-            testcase_description: params.testcasedesc,
-            project_id: projectId,
-        };
-        axios.post(`/qfservice/webtestcase/CreateWebTestCase`, data).then((res) => {
-            console.log(res);
-            res?.data?.status === "SUCCESS" && setSnack(true);
-            res?.data?.status === "SUCCESS" && handleClose();
+    const onSubmitHandler = () => {
+        axios.putForm(`/qfservice/updateruntimevariables`,{ runtimevars : variables,env_id : envId}).then((res) => {
+            if(res?.data?.status === "SUCCESS")
+            {
+                handleClose()
+                setSnack(true)
+                setTimeout(() => {
+                    setSnack(false)
+                }, 3000);
+            }
         });
     };
     return (
+        <>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
             <DialogTitle className="dialogTitle">RunTime Variables</DialogTitle>
             <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -53,20 +56,29 @@ function RuntimeVariable(props) {
                     <TextareaAutosize
                         aria-label="minimum height"
                         minRows={5}
+                        defaultValue={runtimeVar}
                         placeholder="{key:value}"
                         style={{ width: 550 , height:300, marginTop:"10px", padding:"10px"}}
+                        onChange={(e)=> setVariables(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
                 <Button variant="contained" type="submit" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="contained" type="submit">
+                    <Button variant="contained" type="submit" onClick={onSubmitHandler}>
                         Update
                     </Button>
                 </DialogActions>
             </form>
         </Dialog>
+        <SnackbarNotify
+        open={snack}
+        close={setSnack}
+        msg={"Updated Successfully!"}
+        severity="success"
+      />
+        </>
     );
 }
 
