@@ -116,8 +116,6 @@ export default function TestCases() {
       return {
         ...ps,
         name: "Recent Testcases",
-        // plusButton: true,
-        // buttonName: "Create Testcase",
         plusCallback: () => {
           console.log("");
         },
@@ -221,6 +219,7 @@ export default function TestCases() {
           columns={columns}
           hidefooter={true}
           getRowId={(row) => row.testcase_id}
+          searchPlaceholder={"Search Testcase"}
         ></Table>
       </div>
     </>

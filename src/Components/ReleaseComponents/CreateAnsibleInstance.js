@@ -44,7 +44,7 @@ export default function CreateAnsibleInstance() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Ansible Instance",
+        name: "Create Ansible Release",
       };
     });
   }, []);
@@ -123,6 +123,7 @@ export default function CreateAnsibleInstance() {
             justifyContent="flex-start"
             alignItems="center"
             spacing={2}
+            sx={{marginTop : 0.1}}
           >
             <Grid item md={6}>
               <TextFieldElement
@@ -155,6 +156,7 @@ export default function CreateAnsibleInstance() {
             justifyContent="flex-start"
             alignItems="center"
             spacing={2}
+            sx={{marginTop : 0.1}}
           >
             <Grid item md={6}>
               <TextFieldElement
