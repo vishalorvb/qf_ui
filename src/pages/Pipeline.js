@@ -3,18 +3,24 @@ import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Menu, MenuItem, Typography } from "@mui/material";
+import { Autocomplete, Grid, Menu, MenuItem, Typography } from "@mui/material";
 import { getPipelines } from "../Services/DevopsServices";
 import ProjectsDropdown from "../Components/ProjectsDropdown";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { getProject } from "../Services/ProjectService";
+import useAuth from "../hooks/useAuth";
 
 export default function Pipeline() {
   const { setHeader } = useHead();
   const navigate = useNavigate();
 
   const [instances, setInstances] = useState([]);
-  const [selectedProject, setSelectedProject] = useState({});
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [project, setProject] = useState([]);
   const [moduleId, setModuleId] = useState(0);
+  const { auth } = useAuth();
 
   useEffect(() => {
     setHeader((ps) => {
@@ -40,6 +46,13 @@ export default function Pipeline() {
         };
       });
   }, [selectedProject]);
+
+  useEffect(() => {
+    getProject(setProject, auth.userId);
+  }, []);
+  useEffect(() => {
+    setSelectedProject(project[0]);
+  }, [project]);
 
   useEffect(() => {
     // const module = selectedProject?.find(
@@ -95,15 +108,31 @@ export default function Pipeline() {
 
   return (
     <>
-      <ProjectsDropdown
-        selectedProject={selectedProject}
-        setSelectedProject={setSelectedProject}
-      />
-      <Table
-        searchPlaceholder="Search Pipeline"
-        rows={instances}
-        columns={instanceColumns}
-      />
+      <div className="apptable">
+        <div className="intable">
+          <Grid item>
+            <label for="">Projects</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="project_id"
+              options={project}
+              value={selectedProject || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.project_name}
+              onChange={(e, value) => {
+                setSelectedProject(value);
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+        </div>
+        <Table rows={instances} columns={instanceColumns} />
+      </div>
       <Outlet />
     </>
   );
@@ -142,7 +171,7 @@ const PipelineActionCell = (param) => {
       >
         <MenuItem
           onClick={() =>
-            navigate("UpdateAnsibleInstance", {
+            navigate("UpdatPipeline", {
               state: param?.row,
             })
           }
