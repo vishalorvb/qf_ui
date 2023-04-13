@@ -7,12 +7,21 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SelectCreateInstanceModal from "../Components/ReleaseComponents/SelectCreateInstanceModal";
 import { getReleaseInstances } from "../Services/DevopsServices";
 import ProjectsDropdown from "../Components/ProjectsDropdown";
-import { IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import axios from "../api/axios";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import useAuth from "../hooks/useAuth";
+import { getProject } from "../Services/ProjectService";
 let rowData;
 
 export default function Release() {
@@ -20,10 +29,14 @@ export default function Release() {
   const [createInstance, setCreateInstance] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [instance, setInstance] = useState([]);
-  const [selectedProject, setSelectedProject] = useState([]);
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [project, setProject] = useState([]);
   const [msg, setMsg] = useState(false);
   const [module, setmodule] = useState([]);
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   const addReleaseInstances = (e) => {
     console.log(selectedProject);
@@ -51,6 +64,13 @@ export default function Release() {
         };
       });
   }, [selectedProject]);
+
+  useEffect(() => {
+    getProject(setProject, auth.userId);
+  }, []);
+  useEffect(() => {
+    setSelectedProject(project[0]);
+  }, [project]);
 
   const getReleaseInstancesfromModule = () => {
     console.log(selectedProject);
@@ -105,11 +125,8 @@ export default function Release() {
       flex: 5,
       sortable: false,
       renderCell: (param) => {
-        return (
-          ReleaseActionCell(param,setRowData)
-        )
-      }
-      
+        return ReleaseActionCell(param, setRowData);
+      },
     },
   ];
 
@@ -132,25 +149,43 @@ export default function Release() {
       ) : (
         ""
       )}
-      <ProjectsDropdown
-        selectedProject={selectedProject}
-        setSelectedProject={setSelectedProject}
-      />
-      <Table rows={instance} columns={instanceColumns} />
-      <SelectCreateInstanceModal
-        createInstate={createInstance}
-        setCreateInstance={setCreateInstance}
-        module={module}
-      />
+      <div className="apptable">
+        <div className="intable">
+          <Grid item>
+            <label for="">Projects</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="project_id"
+              options={project}
+              value={selectedProject || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.project_name}
+              onChange={(e, value) => {
+                setSelectedProject(value);
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+        </div>
+
+        <Table rows={instance} columns={instanceColumns} />
+        {/* <SelectCreateInstanceModal
+          createInstate={createInstance}
+          setCreateInstance={setCreateInstance}
+          module={module}
+        /> */}
+      </div>
       <Outlet />
     </>
   );
 }
 
-const ReleaseActionCell = (
-  param,
-  setRowData
-) => {
+const ReleaseActionCell = (param, setRowData) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -184,7 +219,8 @@ const ReleaseActionCell = (
         <MenuItem
           onClick={() =>
             navigate("UpdateAnsibleInstance", {
-              state: param?.row
+              state: param?.row,
+              state: param?.row,
             })
           }
         >

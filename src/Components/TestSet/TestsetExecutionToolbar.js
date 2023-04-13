@@ -5,9 +5,9 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl'
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
 import MenuList from "@mui/material/MenuList";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, MenuItem } from "@mui/material";
@@ -33,6 +33,7 @@ function TestsetExecutionToolbar({
   projectId,
   selectedtestcases,
   testsetId,
+  selecteddatasets,
 }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -43,6 +44,9 @@ function TestsetExecutionToolbar({
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
   const [applicationType, setApplicationType] = useState("");
+  const anchorRef = React.useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const [snack,setSnack] = useState(false)
   let appTypes = [
     "API Automation",
     "Web Automation",
@@ -66,15 +70,13 @@ function TestsetExecutionToolbar({
     "PipeLine",
     "Release Management",
   ];
+  console.log(selecteddatasets.length)
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
     browser: yup.array().required(),
     commitMsg: execLoc !== "local" && yup.string().required(),
   });
-  console.log(projectId);
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -90,22 +92,24 @@ function TestsetExecutionToolbar({
 
   const onSubmitExecute = (data) => {
     let datasets = [];
-    if (selectedtestcases.length == selectedtestcases.length) {
-      datasets = selectedtestcases;
+    if (selectedtestcases.length == selecteddatasets.length) {
+      datasets = selecteddatasets;
     } else {
       for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selectedtestcases.length; j++) {
-          if (selectedtestcases[i] == selectedtestcases[j].testcase_id) {
-            datasets.push(selectedtestcases[j]);
+        for (let j = 0; j < selecteddatasets.length; j++) {
+          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
+            datasets.push(selecteddatasets[j]);
           }
         }
       }
     }
-
+    if((datasets.length) != 0)
+    {
     const executionData = {
       testset_id: testsetId,
       module_id: applicationId,
-      web_testcases_list_to_execute: selectedtestcases,
+      web_testcases_list_to_execute: datasets,
+      mobile_platform: applicationType,
       config_id: null,
       config_name: null,
       build_environment_name: data?.buildenvName?.split("&")[1],
@@ -120,6 +124,7 @@ function TestsetExecutionToolbar({
       client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
       user_id: auth?.userId,
     };
+
     axios
       .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
       .then((resp) => {
@@ -141,27 +146,36 @@ function TestsetExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
+    else{
+      setSnack(true)
+      setTimeout(() => {
+       setSnack(false)
+    }, 3000);
+  }
   };
   const onSubmitGenerate = (data) => {
     let datasets = [];
     console.log(data);
     console.log(testsetId);
-    if (selectedtestcases.length == selectedtestcases.length) {
-      datasets = selectedtestcases;
+    if (selectedtestcases.length == selecteddatasets.length) {
+      datasets = selecteddatasets;
     } else {
       for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selectedtestcases.length; j++) {
-          if (selectedtestcases[i] == selectedtestcases[j].testcase_id) {
-            datasets.push(selectedtestcases[j]);
+        for (let j = 0; j < selecteddatasets.length; j++) {
+          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
+            datasets.push(selecteddatasets[j]);
           }
         }
       }
     }
-
+    if((datasets.length) != 0)
+    {
     const executionData = {
       testset_id: testsetId,
       module_id: applicationId,
-      web_testcases_list_to_execute: selectedtestcases,
+      web_testcases_list_to_execute: datasets,
+      mobile_platform: applicationType,
       config_id: null,
       config_name: null,
       build_environment_name: data?.buildenvName?.split("&")[1],
@@ -197,13 +211,20 @@ function TestsetExecutionToolbar({
               })
           : setRemoteExecutionsuccess(true);
       });
+    }
+    else{
+      setSnack(true)
+      setTimeout(() => {
+       setSnack(false)
+    }, 3000);
+    }
   };
-
   useEffect(() => {
     reset();
-    // axios.get(`/qfservice/build-environment/${applicationId}`).then((resp) => {
     axios
-      .get(`/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`)
+      .get(
+        `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
+      )
       .then((resp) => {
         console.log(resp?.data?.data);
         const buildEnv = resp?.data?.data;
@@ -264,6 +285,12 @@ function TestsetExecutionToolbar({
         msg={"Scripts Executed Successfully"}
         severity="success"
       />
+      { snack &&  <SnackbarNotify
+        open={snack}
+        close={setSnack}
+        msg={"Please select atleast one dataset"}
+        severity="error"
+      />}
       <Grid
         container
         direction="row"
@@ -293,31 +320,28 @@ function TestsetExecutionToolbar({
               control={control}
               options={buildEnvList}
             />
-              <h5 
-             style={{cursor:"pointer" , color:"#009fee"}}
-             onClick={()=>{
-              navigate("/addEnvironment",{state : { projectId : projectId , applicationId:applicationId}})
-             }}>
+            <h5
+              style={{ cursor: "pointer", color: "#009fee", marginTop: "3px" }}
+              onClick={() => {
+                navigate("/addEnvironment", {
+                  state: { projectId: projectId, applicationId: applicationId },
+                });
+              }}
+            >
               + Add Environment
             </h5>
           </Stack>
         </Grid>
         <Grid item md={2}>
-        <FormControl fullWidth>
-        <InputLabel>Browser</InputLabel>
-          <Select
+          <MultiSelectElement
+            menuMaxWidth={5}
             label="Browser"
             name="browser"
             size="small"
             control={control}
-            fullWidth>
-             {/* options={["Chrome", "Edge", "Firefox", "Safari"]} */}
-              <MenuItem value={"Chrome"}>Chrome</MenuItem>
-              <MenuItem value={"Edge"}>Edge</MenuItem>
-              <MenuItem value={"Firefox"}>Firefox</MenuItem>
-              <MenuItem value={"Safari"}>Safari</MenuItem>
-            </Select>
-            </FormControl>
+            fullWidth
+            options={["Chrome", "Edge", "Firefox", "Safari"]}
+          />
         </Grid>
         <Grid item md={2}>
           <FeatureMenu />
@@ -331,18 +355,15 @@ function TestsetExecutionToolbar({
                 aria-label="split button"
               >
                 <Button
-                 sx={{backgroundColor: "#009fee"}} 
+                  sx={{ backgroundColor: "#009fee" }}
                   fullWidth
                   type="submit"
-                  onClick={
-                     
-                    handleSubmit(onSubmitExecute())
-                }
+                  onClick={handleSubmit(onSubmitExecute)}
                 >
                   Execute
                 </Button>
                 <Button
-                 sx={{backgroundColor: "#009fee"}} 
+                  sx={{ backgroundColor: "#009fee" }}
                   size="small"
                   aria-controls={open ? "split-button-menu" : undefined}
                   aria-expanded={open ? "true" : undefined}
@@ -373,7 +394,12 @@ function TestsetExecutionToolbar({
                   >
                     <Paper>
                       <MenuList id="split-button-menu" autoFocusItem>
-                        <MenuItem size="small" onClick={handleSubmit(onSubmitGenerate())} >GENERATE Script</MenuItem>
+                        <MenuItem
+                          size="small"
+                          onClick={handleSubmit(onSubmitGenerate)}
+                        >
+                          GENERATE Script
+                        </MenuItem>
                       </MenuList>
                     </Paper>
                   </Grow>
@@ -434,3 +460,4 @@ function TestsetExecutionToolbar({
 }
 
 export default TestsetExecutionToolbar;
+

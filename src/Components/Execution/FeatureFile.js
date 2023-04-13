@@ -38,11 +38,11 @@ function FeatureFile(props) {
             testcase_description: params.testcasedesc,
             project_id: projectId,
         };
-        axios.post(`/qfservice/webtestcase/CreateWebTestCase`, data).then((res) => {
-            console.log(res);
-            res?.data?.status === "SUCCESS" && setSnack(true);
-            res?.data?.status === "SUCCESS" && handleClose();
-        });
+        // axios.post(`/qfservice/webtestcase/CreateWebTestCase`, data).then((res) => {
+        //     console.log(res);
+        //     res?.data?.status === "SUCCESS" && setSnack(true);
+        //     res?.data?.status === "SUCCESS" && handleClose();
+        // });
     };
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>

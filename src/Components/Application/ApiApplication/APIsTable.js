@@ -133,16 +133,24 @@ export default function APIsTable() {
   }, []);
 
   return (
-    <>
-      <Button
-        variant="contained"
-        onClick={() =>
-          navigate("Create", { state: { id: location.state.module_id } })
-        }
-      >
-        Create API
-      </Button>
-      <Table rows={apis} columns={pageColumns} getRowId={(row) => row.api_id} />
+    <div className="apptable">
+      <div className="intable">
+        <Button
+          variant="contained"
+          onClick={() =>
+            navigate("Create", { state: { id: location.state.module_id } })
+          }
+        >
+          Create API
+        </Button>
+      </div>
+
+      <Table
+        searchPlaceholder="Search APIs"
+        rows={apis}
+        columns={pageColumns}
+        getRowId={(row) => row.api_id}
+      />
       <Outlet />
       <ConfirmPop
         open={popup}
@@ -151,6 +159,6 @@ export default function APIsTable() {
         message={"Are you sure you want to delete this API"}
         onConfirm={(e) => handleDelete(apiid)}
       ></ConfirmPop>
-    </>
+    </div>
   );
 }

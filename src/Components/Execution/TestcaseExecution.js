@@ -144,18 +144,19 @@ export default function TestcaseExecution() {
     });
   }, []);
 
+  console.log(selectedApplication)
   return (
     <Box sx={{ width: "100%" }}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
         </Grid>
-        <Grid item md={5} >
+        <Grid item md={5.5} >
           <ProjectnApplicationSelector
             selectedProject={selectedProject}
             setSelectedProject={setSelectedProject}
@@ -182,8 +183,9 @@ export default function TestcaseExecution() {
         <Grid item md={9}>
           <ExecutionDetails
             selectedItem={selectedItem}
+            testcaseId={selectedItem}
             projectId={selectedProject.project_id}
-            applicationType={selectedApplication?.workflowType}
+            applicationType={selectedApplication?.module_type}
             applicationId={selectedApplication?.module_id}
           ></ExecutionDetails>
         </Grid>

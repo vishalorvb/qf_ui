@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
-import { Button, IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import Table from "../CustomComponent/Table";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -187,7 +194,7 @@ export default function Admin() {
                 </IconButton>
               </Tooltip>
             )}
-           { AdminActionCell(param,deleteUserHandler)}
+            {AdminActionCell(param, deleteUserHandler)}
           </>
         );
       },
@@ -302,6 +309,7 @@ export default function Admin() {
           severity="error"
         />
         <Table
+          searchPlaceholder="Search Users"
           columns={columns}
           rows={users}
           // hidefooter={false}
@@ -311,10 +319,7 @@ export default function Admin() {
   );
 }
 
-const AdminActionCell = (
-  param,
-  deleteUserHandler
-) => {
+const AdminActionCell = (param, deleteUserHandler) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -326,7 +331,7 @@ const AdminActionCell = (
   };
   return (
     <div className="descColumn">
-      <Typography variant="p">{}</Typography>
+      {/* <Typography variant="p">{}</Typography> */}
       <MoreVertIcon
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}

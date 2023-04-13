@@ -1,4 +1,12 @@
-import { IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -12,6 +20,8 @@ import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 import TestcaseSelectAndExecute from "../Components/Execution/TestcaseSelectAndExecute";
+import { getApplicationOfProject } from "../Services/ApplicationService";
+import { getProject } from "../Services/ProjectService";
 
 function Testset() {
   const [testsetObject, setTestsetObject] = useState([]);
@@ -20,6 +30,8 @@ function Testset() {
   const [deleteObject, setDeleteObject] = useState([]);
   const [executeObject, setExecuteObject] = useState([]);
   const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+  const [project, setProject] = useState([]);
+  const [application, setApplication] = useState([]);
   const [selectedProject, setSelectedProject] = useState({
     project_name: "Project",
   });
@@ -102,6 +114,21 @@ function Testset() {
     },
   ];
 
+  useEffect(() => {
+    getProject(setProject, auth.userId);
+  }, []);
+  useEffect(() => {
+    setSelectedProject(project[0]);
+  }, [project]);
+  useEffect(() => {
+    if (selectedProject !== null) {
+      getApplicationOfProject(setApplication, selectedProject?.project_id);
+    }
+  }, [selectedProject]);
+  useEffect(() => {
+    setSelectedApplication(application[0]);
+  }, [application]);
+
   const { setHeader } = useHead();
   useEffect(() => {
     setHeader((ps) => {
@@ -137,13 +164,52 @@ function Testset() {
   }, [selectedApplication]);
 
   return (
-    <div>
-      <ProjectnApplicationSelector
-        selectedProject={selectedProject}
-        setSelectedProject={setSelectedProject}
-        selectedApplication={selectedApplication}
-        setSelectedApplication={setSelectedApplication}
-      />
+    <div className="apptable">
+      <div className="intable">
+        <Grid item container spacing={2} justifyContent="flex-end">
+          <Grid item>
+            <label for="">Projects</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="project_id"
+              options={project}
+              value={selectedProject || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.project_name}
+              onChange={(e, value) => {
+                setSelectedProject(value);
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+          <Grid item>
+            <label for="">Application</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="model_id"
+              options={application}
+              value={selectedApplication || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.module_name}
+              onChange={(e, value) => {
+                setSelectedApplication(value);
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+        </Grid>
+      </div>
+
       <SnackbarNotify
         open={delSuccessMsg}
         close={setDelSuccessMsg}
@@ -179,6 +245,7 @@ function Testset() {
           ""
         )}
         <Table
+          searchPlaceholder="Search Testset"
           columns={columns}
           rows={testsetObject}
           getRowId={(row) => row.testset_id}

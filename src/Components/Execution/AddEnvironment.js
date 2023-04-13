@@ -28,23 +28,25 @@ const AddEnvironemt = () => {
   const [close, setClose] = useState(false);
   const [successDelete, setSuccessDelete] = useState(false);
   const [specificationId, setSpecificationId] = useState();
-const [editEnvironmentData,setEditEnvironmentData] = useState ();
+  const [editEnvironmentData, setEditEnvironmentData] = useState();
   const location = useLocation();
   const navigate = useNavigate();
 
-  let project_id =location.state.projectId;
-  let application_id = location.state.applicationId
+  let project_id = location.state.projectId;
+  let application_id = location.state.applicationId;
 
   useEffect(() => {
     getBuilEnvironment();
   }, []);
 
-  console.log(location.state.projectId)
-  console.log(location.state.applicationId)
+  console.log(location.state.projectId);
+  console.log(location.state.applicationId);
 
   async function getBuilEnvironment() {
     axios
-      .get(`/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`)
+      .get(
+        `/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`
+      )
       .then((res) => {
         console.log(res.data.data.length);
         if (res.data.data.length > 0) {
@@ -62,21 +64,22 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
         }
       });
   }
-    function deleteApiRequest(specificationId) {
-      axios.post(`qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`).then((res) => {
-        if (res.data.message === "Successfully deleted Build Environment")
-         {
-         
+  function deleteApiRequest(specificationId) {
+    axios
+      .post(
+        `qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`
+      )
+      .then((res) => {
+        if (res.data.message === "Successfully deleted Build Environment") {
           setSuccessDelete(true);
           setTimeout(() => {
             setSuccessDelete(false);
-            getBuilEnvironment()
+            getBuilEnvironment();
           }, 3000);
-          return true
-         }
-      })
-      setConfirm(false);
-    
+          return true;
+        }
+      });
+    setConfirm(false);
   }
 
   const columns = [
@@ -108,8 +111,7 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
             <Tooltip title="Edit">
               <IconButton
                 onClick={() => {
-
-                    setEditEnvironmentData(param.row)
+                  setEditEnvironmentData(param.row);
                   setEditEnvironmentPop(true);
                 }}
               >
@@ -176,7 +178,12 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
         severity="success"
       />
       <div className="datatable" style={{ marginTop: "15px" }}>
-        <Table columns={columns} rows={tbData} getRowId={(row) => row.id} />
+        <Table
+          searchPlaceholder="Search Environment"
+          columns={columns}
+          rows={tbData}
+          getRowId={(row) => row.id}
+        />
       </div>
       <AddEnvironmentPop
         addEnvironmentPop={addEnvironmentPop}
@@ -190,7 +197,7 @@ const [editEnvironmentData,setEditEnvironmentData] = useState ();
         close={setEditEnvironmentPop}
         row={tbData}
         getBuilEnvironment={getBuilEnvironment}
-        editEnvironmentData ={editEnvironmentData}
+        editEnvironmentData={editEnvironmentData}
         projectId={project_id}
         applicationId={application_id}
       />

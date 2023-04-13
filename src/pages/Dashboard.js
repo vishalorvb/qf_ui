@@ -61,9 +61,11 @@ export default function Dashboard() {
   const [automationTDgraph,setAutomationTDgraph] = useState(false)
   const [showFailMsg,setShowFailMsg]= useState(false)
   const [showProgressBar,setShowProgressBar]= useState(false)
+  const [predictionInfo,setPredictionInfo]= useState([])
 
   function dashboardDetails ()
   {
+    setAutomationTDgraph(false)
     axios.get(`/qfdashboard/dashboard/${selectedProject?.project_id}?userId=${auth?.userId}`).then((res) => 
     {
       console.log("api called")
@@ -139,17 +141,18 @@ export default function Dashboard() {
         }
       })
   }
-
   function getPredictionTestcases()
   {
     axios.post(`/qfdashboard/getPredictionTestcases?sqe_project_id=${selectedProject?.project_id}&userId=${auth?.userId}`).then((res) => 
     {
-      console.log(res)
+      console.log(res?.data?.info?.web?.fail)
+      setPredictionInfo(res?.data?.info)
     })
   }
-
   function dashboardDetailsBySprintId()
   {
+    setShowTensorFlow(false)
+    setShowProgressBar(false)
     axios.get(`/qfdashboard/dashboard/${selectedProject?.project_id}/${sprintName}?userId=${auth?.userId}`).then((res) => {
       setAutomationTDgraph(false)
       setShowTensorFlow(false)
@@ -195,15 +198,19 @@ export default function Dashboard() {
     {
       dashboardDetails()
      getTensorflowData()
+     getPredictionTestcases()
     }
-  }, [selectedProject])
+  }, [selectedProject,sprintName])
   useEffect(() => {
     if(sprintName != 'All')
     {
    dashboardDetailsBySprintId()
    getTensorflowData()
+   getPredictionTestcases()
     }
   }, [sprintName]);
+ 
+
   useEffect(() => {
     axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
       const projects = res?.data?.result?.projects_list;
@@ -362,10 +369,10 @@ export default function Dashboard() {
 
   const fail_row_data = [
     //fail_row_data
-    createData("API",0),
-    createData("Web",0),
-    createData("Android",0),
-    createData("iOS",0)
+    createData("API",(predictionInfo?.api?.fail) != undefined ? predictionInfo.api?.fail :0),
+    createData("Web",(predictionInfo?.web?.fail) != undefined ? predictionInfo.web?.fail : 0),
+    createData("Android",(predictionInfo?.web?.android) != undefined ? predictionInfo.web?.android : 0),
+    createData("iOS",(predictionInfo?.android?.fail) != undefined ? predictionInfo.android?.fail : 0)
   ]
 
   return (
