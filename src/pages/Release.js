@@ -112,6 +112,19 @@ export default function Release() {
       headerName: "Name",
       flex: 3,
       sortable: false,
+      // renderCell: (param) => {
+      //   return (
+      //     <Typography
+      //       variant="p"
+      //       onClick={() =>
+      //         navigate("pipelineAutomation", { state: { id: param.row.id } })
+      //       }
+      //       style={{ color: "#009fee", cursor: "pointer" }}
+      //     >
+      //       {param.row.release_name}
+      //     </Typography>
+      //   );
+      // },
     },
     {
       field: "release_desc",
@@ -219,8 +232,7 @@ const ReleaseActionCell = (param, setRowData) => {
         <MenuItem
           onClick={() =>
             navigate("UpdateAnsibleInstance", {
-              state: param?.row,
-              state: param?.row,
+              state: param?.row
             })
           }
         >
