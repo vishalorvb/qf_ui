@@ -20,6 +20,20 @@ import {
   getApplicationOfProject,
   getApplication,
 } from "../../Services/ApplicationService";
+
+
+{/* <option value={1}>BDD</option>
+                <option value={1}>Winium</option>
+                <option value={1}>Mobile</option>
+                <option value={1}>Cucumber Automation</option>
+                <option value={1}>Link Project</option> */}
+let automationType = [
+  { "Name": "Selenium", "Val": 1 },
+  { "Name": "BDD", "Val": 2 },
+  { "Name": "Cucumber Automation", "Val": 3 },
+  { "Name": "Link Project", "Val": 4 },
+]
+
 function CreateProject() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
@@ -193,16 +207,12 @@ function CreateProject() {
     };
   }, []);
 
-  useEffect(() => {}, [applications]);
+  useEffect(() => { }, [applications]);
 
   const ref = useRef(null);
-  // const handle = (e) => {
-  //   e.preventDefault();
-  //   ref.current.reset();
-  // };
   return (
     <form ref={ref}>
-      {/* <button onClick={handle}>click</button> */}
+    
       <div className="accordionParent" onClick={resetClassName}>
         <SnackbarNotify
           open={snackbarerror}
@@ -267,21 +277,16 @@ function CreateProject() {
                   name="automation_framework_type"
                 >
                   <option value="">Select</option>
-                  <option
-                    selected={
-                      createformData.automation_framework_type == 1
-                        ? true
-                        : false
-                    }
-                    value={1}
+                  {automationType.map(opt => <option
+                  selected={
+                    createformData.automation_framework_type == opt.Val
+                      ? true
+                      : false
+                  }
+                  value={opt.Val}
                   >
-                    Selenium Automation
-                  </option>
-                  {/* <option value={1}>BDD</option>
-                <option value={1}>Winium</option>
-                <option value={1}>Mobile</option>
-                <option value={1}>Cucumber Automation</option>
-                <option value={1}>Link Project</option> */}
+                    {opt.Name}
+                  </option>)}
                 </select>
               </Grid>
             </Grid>
