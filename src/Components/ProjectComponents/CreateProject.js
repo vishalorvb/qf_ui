@@ -1,4 +1,4 @@
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { resetClassName } from "../../CustomComponent/FormValidation";
@@ -460,6 +460,7 @@ function CreateProject() {
             md={12}
             sx={{ marginBottom: "10px" }}
             spacing={2}
+
           >
             <Grid item xs={4} sm={4} md={4}>
               <label>
@@ -511,9 +512,15 @@ function CreateProject() {
                 }}
               />
             </Grid>
-            <Grid item xs={8} sm={8} md={8}>
+            <Grid item xs={4} sm={4} md={4}>
               <label>Projects :</label>
               <input type="text" />
+            </Grid>
+            <Grid item xs={4} sm={4} md={4} justifyContent="center">
+            <br/>
+              <Button  variant="contained">
+                Verify
+              </Button>
             </Grid>
           </Grid>
 
@@ -641,20 +648,17 @@ function CreateProject() {
             </Grid>
           </Container>
         </AccordionTemplate>
-
-        <Grid
-          container
-          item
-          xs={12}
-          sm={12}
-          md={12}
-          sx={{ marginBottom: "20px" }}
-          justifyContent="flex-end"
-        >
-          <Button onClick={submitHandler} variant="contained">
-            Save
-          </Button>
-        </Grid>
+        <Grid item xs={12} md={12}>
+                <Stack
+                    direction="row"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    spacing={2}
+                >
+                    <Button variant="contained"onClick={submitHandler} >Save & Continue</Button>
+                </Stack>
+            </Grid>
+  
       </div>
     </form>
   );
