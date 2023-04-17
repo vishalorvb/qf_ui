@@ -212,7 +212,7 @@ function CreateProject() {
   const ref = useRef(null);
   return (
     <form ref={ref}>
-    
+
       <div className="accordionParent" onClick={resetClassName}>
         <SnackbarNotify
           open={snackbarerror}
@@ -227,542 +227,296 @@ function CreateProject() {
           severity="success"
         />
         <AccordionTemplate defaultState={true} name="Project Information">
-          <Container
-            component={"div"}
-            maxWidth={false}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
-          >
-            <Grid container item md={6} sx={{ marginBottom: "10px" }}>
-              <Grid item xs={6} sm={6} md={4}>
-                <label>
-                  Project Name <span className="importantfield">*</span>:
-                </label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                <input
-                  defaultValue={createformData.projectName}
-                  type="text"
-                  name="projectname"
-                  onChange={(e) => {
-                    createformData.projectName = e.target.value;
-                  }}
-                  disabled={createformData.sqeProjectId == "" ? false : true}
-                />
-              </Grid>
+          <Grid container spacing={2} sx={{ marginBottom: "10px" }} >
+            <Grid item xs={6} sm={6} md={6}>
+              <label>
+                Project Name <span className="importantfield">*</span>:
+              </label>
+              <input
+                defaultValue={createformData.projectName}
+                type="text"
+                name="projectname"
+                onChange={(e) => {
+                  createformData.projectName = e.target.value;
+                }}
+                disabled={createformData.sqeProjectId == "" ? false : true}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>
-                  Automation Framework Type{" "}
-                  <span className="importantfield">*</span>:
-                </label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                <select
-                  onChange={(e) => {
-                    createformData.automation_framework_type = e.target.value;
-                  }}
-                  name="automation_framework_type"
-                >
-                  <option value="">Select</option>
-                  {automationType.map(opt => <option
+            <Grid item xs={6} sm={6} md={6}>
+              <label>
+                Automation Framework Type{" "}
+                <span className="importantfield">*</span>:
+              </label>
+              <select
+                onChange={(e) => {
+                  createformData.automation_framework_type = e.target.value;
+                }}
+                name="automation_framework_type"
+              >
+                <option value="">Select</option>
+                {automationType.map(opt => <option
                   selected={
                     createformData.automation_framework_type == opt.Val
                       ? true
                       : false
                   }
                   value={opt.Val}
-                  >
-                    {opt.Name}
-                  </option>)}
-                </select>
-              </Grid>
+                >
+                  {opt.Name}
+                </option>)}
+              </select>
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={2}>
-                <label>
-                  Description <span className="importantfield">*</span>:
-                </label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={10}>
-                <input
-                  onChange={(e) => {
-                    createformData.projectDesc = e.target.value;
-                  }}
-                  defaultValue={createformData.projectDesc}
-                  name="desc"
-                  autocomplete="off"
-                />
-              </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <label>
+                Description <span className="importantfield">*</span>:
+              </label>
+              <input
+                onChange={(e) => {
+                  createformData.projectDesc = e.target.value;
+                }}
+                defaultValue={createformData.projectDesc}
+                name="desc"
+                autocomplete="off"
+              />
             </Grid>
-          </Container>
+          </Grid>
         </AccordionTemplate>
-
         <AccordionTemplate name="Repository">
-          <Container
-            component={"div"}
-            maxWidth={false}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
+
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+            spacing={2}
           >
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={2}>
-                <label>Git URL :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={10}>
-                <input
-                  defaultValue={createformData.repository_url}
-                  type="text"
-                  onChange={(e) => {
-                    createformData.repository_url = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <label>Git URL :</label>
+              <input
+                defaultValue={createformData.repository_url}
+                type="text"
+                onChange={(e) => {
+                  createformData.repository_url = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>Git Access Token :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                <input
-                  defaultValue={createformData.repository_token}
-                  type="text"
-                  onChange={(e) => {
-                    createformData.repository_token = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <label>Git Access Token :</label>
+              <input
+                defaultValue={createformData.repository_token}
+                type="text"
+                onChange={(e) => {
+                  createformData.repository_token = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>Branch :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  type="text"
-                  defaultValue={createformData.repository_branch}
-                  onChange={(e) => {
-                    createformData.repository_branch = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+              <label>Branch :</label>
+              <input
+                type="text"
+                defaultValue={createformData.repository_branch}
+                onChange={(e) => {
+                  createformData.repository_branch = e.target.value;
+                }}
+              />
             </Grid>
-          </Container>
+          </Grid>
         </AccordionTemplate>
 
         <AccordionTemplate name="CICD Pipeline">
-          <Container
-            component={"div"}
-            maxWidth={false}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            spacing={2}
+            sx={{ marginBottom: "10px" }}
           >
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>Jenkins URL :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                {" "}
-                <input
-                  defaultValue={createformData.jenkins_url}
-                  type="text"
-                  onChange={(e) => {
-                    createformData.jenkins_url = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <label>Jenkins URL :</label>
+              <input
+                defaultValue={createformData.jenkins_url}
+                type="text"
+                onChange={(e) => {
+                  createformData.jenkins_url = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>Jenkins Token :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  defaultValue={createformData.jenkins_token}
-                  type="text"
-                  name="jenkins_token"
-                  autocomplete="off"
-                  onChange={(e) => {
-                    createformData.jenkins_token = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <label>Jenkins Token :</label>
+              <input
+                defaultValue={createformData.jenkins_token}
+                type="text"
+                name="jenkins_token"
+                autocomplete="off"
+                onChange={(e) => {
+                  createformData.jenkins_token = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>Jenkins UserName :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                <input
-                  defaultValue={createformData.jenkins_user_name}
-                  autocomplete="off"
-                  type="text"
-                  onChange={(e) => {
-                    createformData.jenkins_user_name = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <label>Jenkins UserName :</label>
+              <input
+                defaultValue={createformData.jenkins_user_name}
+                autocomplete="off"
+                type="text"
+                onChange={(e) => {
+                  createformData.jenkins_user_name = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>Jenkins Password :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  defaultValue={createformData.jenkins_password}
-                  type="password"
-                  onChange={(e) => {
-                    createformData.jenkins_password = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={6} sm={6} md={6}>
+              <label>Jenkins Password :</label>
+              <input
+                defaultValue={createformData.jenkins_password}
+                type="password"
+                onChange={(e) => {
+                  createformData.jenkins_password = e.target.value;
+                }}
+              />
             </Grid>
-          </Container>
+          </Grid>
         </AccordionTemplate>
 
         <AccordionTemplate name="Database">
-          <Container
-            component={"div"}
-            maxWidth={false}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
-          >
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>Database Type :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.db_type = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>Database Name :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.db_name = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>Host Name :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.db_name = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>DB UserName :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.db_user_name = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>Port Number :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.db_port = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>DB Password :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.db_password = e.target.value;
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </Container>
-        </AccordionTemplate>
 
-        <AccordionTemplate name="Collaboration">
-          <Container
-            component={"div"}
-            maxWidth={false}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+            spacing={2}
           >
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={2}>
-                <label>
-                  Select Issue Tracker <span className="importantfield">*</span>
-                  :
-                </label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={10}>
-                <select
-                  onChange={(e) => {
-                    createformData.issueTrackerType = e.target.value;
-                  }}
-                  name="issueTracker"
+            <Grid item xs={4} sm={4} md={4}>
+              <label>Database Type :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.db_type = e.target.value;
+                }}
+              />
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>Database Name :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.db_name = e.target.value;
+                }}
+              />
+
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>Host Name :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.db_name = e.target.value;
+                }}
+              />
+
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>DB UserName :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.db_user_name = e.target.value;
+                }}
+              />
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>Port Number :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.db_port = e.target.value;
+                }}
+              />
+            </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>DB Password :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.db_password = e.target.value;
+                }}
+              />
+            </Grid>
+          </Grid>
+        </AccordionTemplate>
+        <AccordionTemplate name="Collaboration">
+
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            sx={{ marginBottom: "10px" }}
+            spacing={2}
+          >
+            <Grid item xs={4} sm={4} md={4}>
+              <label>
+                Select Issue Tracker <span className="importantfield">*</span>
+                :
+              </label>
+              <select
+                onChange={(e) => {
+                  createformData.issueTrackerType = e.target.value;
+                }}
+                name="issueTracker"
+              >
+                <option value="">Select</option>
+                <option
+                  selected={
+                    createformData.issueTrackerType == 1 ? true : false
+                  }
+                  value={1}
                 >
-                  <option value="">Select</option>
-                  <option
-                    selected={
-                      createformData.issueTrackerType == 1 ? true : false
-                    }
-                    value={1}
-                  >
-                    Jira
-                  </option>
-                  <option value={2}>Azure</option>
-                </select>
-              </Grid>
+                  Jira
+                </option>
+                <option value={2}>Azure</option>
+              </select>
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={2}>
-                <label>URL :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={10}>
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.jenkins_url = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>URL :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.jenkins_url = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={4}>
-                <label>User Name :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.jenkins_user_name = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>User Name :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.jenkins_user_name = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={8}
-              md={6}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid container item xs={6} sm={6} md={7} justifyContent="center">
-                <label>Token :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={5}>
-                {" "}
-                <input
-                  type="text"
-                  onChange={(e) => {
-                    createformData.jenkins_token = e.target.value;
-                  }}
-                />
-              </Grid>
+            <Grid item xs={4} sm={4} md={4}>
+              <label>Token :</label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  createformData.jenkins_token = e.target.value;
+                }}
+              />
             </Grid>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-            >
-              <Grid item xs={6} sm={6} md={2}>
-                <label>Projects :</label>
-              </Grid>
-              <Grid item xs={6} sm={6} md={7.5}>
-                {" "}
-                <input type="text" />
-              </Grid>
+            <Grid item xs={8} sm={8} md={8}>
+              <label>Projects :</label>
+              <input type="text" />
             </Grid>
-          </Container>
+          </Grid>
+
         </AccordionTemplate>
 
         <AccordionTemplate name="Add User">
