@@ -1,6 +1,5 @@
 import { Button, Container, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import SaveIcon from "@mui/icons-material/Save";
 import { resetClassName } from "../../CustomComponent/FormValidation";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
@@ -21,18 +20,14 @@ import {
   getApplication,
 } from "../../Services/ApplicationService";
 
-
-{/* <option value={1}>BDD</option>
-                <option value={1}>Winium</option>
-                <option value={1}>Mobile</option>
-                <option value={1}>Cucumber Automation</option>
-                <option value={1}>Link Project</option> */}
 let automationType = [
   { "Name": "Selenium", "Val": 1 },
   { "Name": "BDD", "Val": 2 },
   { "Name": "Cucumber Automation", "Val": 3 },
   { "Name": "Link Project", "Val": 4 },
 ]
+
+let errorMsg = ""
 
 function CreateProject() {
   const { setHeader } = useHead();
@@ -88,7 +83,7 @@ function CreateProject() {
     console.log(createformData);
     if (
       validateFormbyName(
-        ["projectname", "automation_framework_type", "desc", "issueTracker"],
+        ["projectname", "automation_framework_type", "desc",],
         "error"
       ) == true
     ) {
@@ -100,6 +95,7 @@ function CreateProject() {
               navigate("/Projects/Recent");
             }, 1000);
           } else {
+            errorMsg = "Project Name already exists"
             setSnackbarerror(true);
           }
         });
@@ -111,12 +107,13 @@ function CreateProject() {
               navigate("/Projects/Recent");
             }, 1000);
           } else {
+
             setSnackbarerror(true);
           }
         });
       }
     } else {
-      console.log("Invalid form");
+      errorMsg = "Fill Required Fields"
       setSnackbarerror(true);
     }
   }
@@ -197,8 +194,12 @@ function CreateProject() {
     );
     getApplication(setApplications, auth.info.id);
     getApplication(setLeftApplication, auth.info.id);
-    getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
-    getUserOfProject(setRightuser, createformData.sqeProjectId);
+    if (createformData.sqeProjectId != ""){
+      getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
+    }
+    if(createformData.sqeProjectId != ""){
+      getUserOfProject(setRightuser, createformData.sqeProjectId);
+    }
   }, []);
   useEffect(() => {
     return () => {
@@ -217,7 +218,7 @@ function CreateProject() {
         <SnackbarNotify
           open={snackbarerror}
           close={setSnackbarerror}
-          msg="All required fields should be filled"
+          msg={errorMsg}
           severity="error"
         />
         <SnackbarNotify
@@ -252,14 +253,9 @@ function CreateProject() {
                   createformData.automation_framework_type = e.target.value;
                 }}
                 name="automation_framework_type"
+                defaultValue={createformData.automation_framework_type}
               >
-                <option value="">Select</option>
-                {automationType.map(opt => <option
-                  selected={
-                    createformData.automation_framework_type == opt.Val
-                      ? true
-                      : false
-                  }
+                {automationType.map(opt => <option key={opt.Val}
                   value={opt.Val}
                 >
                   {opt.Name}
@@ -276,7 +272,7 @@ function CreateProject() {
                 }}
                 defaultValue={createformData.projectDesc}
                 name="desc"
-                autocomplete="off"
+              
               />
             </Grid>
           </Grid>
@@ -351,7 +347,7 @@ function CreateProject() {
                 defaultValue={createformData.jenkins_token}
                 type="text"
                 name="jenkins_token"
-                autocomplete="off"
+              
                 onChange={(e) => {
                   createformData.jenkins_token = e.target.value;
                 }}
@@ -361,7 +357,7 @@ function CreateProject() {
               <label>Jenkins UserName :</label>
               <input
                 defaultValue={createformData.jenkins_user_name}
-                autocomplete="off"
+                autoComplete="off"
                 type="text"
                 onChange={(e) => {
                   createformData.jenkins_user_name = e.target.value;
@@ -468,20 +464,14 @@ function CreateProject() {
                 :
               </label>
               <select
+              defaultValue={createformData.issueTrackerType}
                 onChange={(e) => {
                   createformData.issueTrackerType = e.target.value;
                 }}
                 name="issueTracker"
               >
                 <option value="">Select</option>
-                <option
-                  selected={
-                    createformData.issueTrackerType == 1 ? true : false
-                  }
-                  value={1}
-                >
-                  Jira
-                </option>
+                <option value={1}>Jira</option>
                 <option value={2}>Azure</option>
               </select>
             </Grid>
@@ -517,8 +507,8 @@ function CreateProject() {
               <input type="text" />
             </Grid>
             <Grid item xs={4} sm={4} md={4} justifyContent="center">
-            <br/>
-              <Button  variant="contained">
+              <br />
+              <Button variant="contained">
                 Verify
               </Button>
             </Grid>
@@ -551,7 +541,7 @@ function CreateProject() {
                 <label>Select User:</label>
                 <select id="left" multiple style={{ padding: "10px" }}>
                   {leftuser.map((user) => (
-                    <option value={user.id}>{user.firstName}</option>
+                    <option value={user.id} key={user.id}>{user.firstName}</option>
                   ))}
                 </select>
               </Grid>
@@ -580,7 +570,7 @@ function CreateProject() {
                 <select id="right" multiple style={{ padding: "10px" }}>
                   <option value="">Select user</option>
                   {rigthtuser.map((user) => (
-                    <option value={user.id}>{user.firstName}</option>
+                    <option value={user.id} key={user.id}>{user.firstName}</option>
                   ))}
                 </select>
               </Grid>
@@ -613,7 +603,7 @@ function CreateProject() {
                 <label>Select Application:</label>
                 <select id="leftapp" multiple style={{ padding: "10px" }}>
                   {leftApplication.map((app) => (
-                    <option value={app.module_id}>{app.module_name}</option>
+                    <option value={app.module_id} key={app.module_id}>{app.module_name}</option>
                   ))}
                 </select>
               </Grid>
@@ -641,7 +631,7 @@ function CreateProject() {
                 <label>Selected Application:</label>
                 <select id="rightapp" multiple style={{ padding: "10px" }}>
                   {rightApplication.map((app) => (
-                    <option value={app.module_id}>{app.module_name}</option>
+                    <option value={app.module_id} key={app.module_id}>{app.module_name}</option>
                   ))}
                 </select>
               </Grid>
@@ -649,16 +639,16 @@ function CreateProject() {
           </Container>
         </AccordionTemplate>
         <Grid item xs={12} md={12}>
-                <Stack
-                    direction="row"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    spacing={2}
-                >
-                    <Button variant="contained"onClick={submitHandler} >Save & Continue</Button>
-                </Stack>
-            </Grid>
-  
+          <Stack
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+            spacing={2}
+          >
+            <Button variant="contained" onClick={submitHandler} >Save & Continue</Button>
+          </Stack>
+        </Grid>
+
       </div>
     </form>
   );
