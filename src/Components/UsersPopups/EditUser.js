@@ -119,7 +119,7 @@ function EditUser() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>First Name </label>
+              <label>First Name <span className="importantfield">*</span></label>
               <input
                 value={fname}
                 ref={first_name}
@@ -132,7 +132,7 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Last Name</label>
+              <label>Last Name <span className="importantfield">*</span></label>
               <input
                 value={lname}
                 ref={last_name}
@@ -145,7 +145,7 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Email</label>
+              <label>Email <span className="importantfield">*</span></label>
               <input
                 name="email"
                 ref={Email}
@@ -159,7 +159,7 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>User Id</label>
+              <label>User Id <span className="importantfield">*</span></label>
               <Tooltip title="Non Editable">
                 <input
                   value={values.uid}
@@ -171,7 +171,7 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Password</label>
+              <label>Password <span className="importantfield">*</span></label>
               <input
                 value={password}
                 ref={Password}
@@ -184,7 +184,7 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Role</label>
+              <label>Role <span className="importantfield">*</span></label>
               <select
                 name="roleAutocomplete"
                 id="selectList"

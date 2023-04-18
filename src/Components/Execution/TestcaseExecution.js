@@ -1,22 +1,13 @@
 import { Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
-import Testcase from "./Testcase";
-import Testset from "./Testset";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
 import axios from "../../api/axios";
-import MuiListItemText from "@mui/material/ListItemText";
-import MuiListItemIcon from "@mui/material/ListItemIcon";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecutionDetails from "./ExecutionDetails";
-import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
-import Searchbar from "./Searchbar";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -43,20 +34,14 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+
 
 export default function TestcaseExecution() {
   const { setHeader } = useHead();
   const [testcases, setTestcases] = useState([]);
   const [testcasesspare, setTestcasesspare] = useState([]);
-  const [testsets, setTestsets] = useState([]);
-  const [tabVAaluE, setTabValue] = useState();
   const [selectedItem, setSelectedItem] = useState([]);
+  const [reportFailMsg, setReportFailMsg] = useState(false);
 
   const [selectedProject, setSelectedProject] = useState({
     project_name: "Project",
@@ -79,15 +64,6 @@ export default function TestcaseExecution() {
   }, []);
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    console.log(value);
-  };
-
-  useEffect(() => {
-    console.log(selectedProject);
-  }, [selectedProject]);
-
   useEffect(() => {
     axios
       .get(
@@ -95,7 +71,6 @@ export default function TestcaseExecution() {
       )
       .then((resp) => {
         const testcases = resp?.data?.info ? resp?.data?.info : [];
-        console.log(testcases);
         setTestcases(testcases);
         setTestcasesspare(testcases);
       });
@@ -144,8 +119,20 @@ export default function TestcaseExecution() {
     });
   }, []);
 
-  console.log(selectedApplication)
+  useEffect(() => {
+    if((selectedApplication?.module_type) == 19 ){
+      setReportFailMsg(true);
+      setTimeout(() => {
+          setReportFailMsg(false);
+      }, 3000);
+    }
+    else{
+
+    }
+  }, [selectedApplication])
+  
   return (
+    <>
     <Box sx={{ width: "100%" }}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
@@ -176,7 +163,6 @@ export default function TestcaseExecution() {
             }}
           >
             {itemRender(testcases)}
-            {/* <Searchbar items={testcases != "undefined" ? testcases : 0} /> */}
           </List>
         </Grid>
         <Divider orientation="vertical" flexItem />
@@ -191,5 +177,12 @@ export default function TestcaseExecution() {
         </Grid>
       </Grid>
     </Box>
+       <SnackbarNotify
+       open={reportFailMsg}
+       close={setReportFailMsg}
+       msg="No Testcases are found for this Application."
+       severity="error"
+   />
+   </>
   );
 }

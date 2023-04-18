@@ -11,7 +11,7 @@ import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
 import { UpdateTestcase } from "../../Services/TestCaseService"
-import { getApplicationDetails } from "../../Services/ApplicationService"
+
 
 
 export let TCdata = {
@@ -30,10 +30,10 @@ function CreateTestCase() {
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
     const { setHeader } = useHead();
-    let redirect_url = [" ", "Testcase/Recent/MapApiTestCase", "/Testcase/Recent/AddScreen",]
+    let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
 
+    console.log(selectedProject)
     function handleSubmit(e) {
-        console.log(TCdata)
         if (validateFormbyName(["name", "desc"], "error")) {
             if (TCdata.testcase_id === undefined) {
                 CreateTestCaseService(TCdata).then(res => {

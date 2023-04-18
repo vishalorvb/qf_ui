@@ -139,7 +139,7 @@ export default function AddTestcaseToTestset() {
           setTSUpdateSuccessMsg(true);
           setTimeout(() => {
             setTSUpdateSuccessMsg(false);
-            navigate("/testset");
+            navigate("/testset/Recent");
           }, 3000);
         });
     } else {
@@ -180,7 +180,7 @@ export default function AddTestcaseToTestset() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Testset Name</label>
+              <label>Testset Name <span className="importantfield">*</span></label>
               <input
                 ref={testset_name}
                 value={testsetName}
@@ -194,7 +194,7 @@ export default function AddTestcaseToTestset() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Description</label>
+              <label>Description <span className="importantfield">*</span></label>
               <input
                 ref={testset_desc}
                 value={testsetDesc}

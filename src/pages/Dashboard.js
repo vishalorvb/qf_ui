@@ -48,7 +48,6 @@ export default function Dashboard() {
   const [webTestcase, setWebTestcase] = useState();
   const [apiTestcase, setApiTestcase] = useState();
   const [period, setPeriod] = useState();
-
   const [automation, setAutomation] = useState();
   const [defects, setDefects] = useState();
   const [coverage, setCoverage] = useState();
@@ -68,7 +67,6 @@ export default function Dashboard() {
     setAutomationTDgraph(false)
     axios.get(`/qfdashboard/dashboard/${selectedProject?.project_id}?userId=${auth?.userId}`).then((res) => 
     {
-      console.log("api called")
       setInfo(res?.data?.data?.model)
       setTestCases(res?.data?.data?.model.automation_test_cases_count)
       setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count)
@@ -79,8 +77,6 @@ export default function Dashboard() {
         const sprintList = jinfo.map(element => element.period)
         setSprintList(sprintList);
       }
-      console.log(res)
-      console.log(res?.data?.data?.model.show_automation_graph)
       if(res?.data?.data?.model.show_automation_graph == true)
       {
         setAutomationGraph(true)
@@ -118,8 +114,6 @@ export default function Dashboard() {
     setShowProgressBar(false)
     axios.post(`/qfdashboard/getTensorflowData?sqe_project_id=${selectedProject?.project_id}&userId=${auth?.userId}`).then((res) => 
     {
-        console.log(res.data.status == 'FAIL')
-        console.log(res.data.message == 'Prediction is not available due to insufficient data.')
         if (res.data.status == 'FAIL') 
         {
           setFailMsg(res.data.message)
@@ -133,9 +127,7 @@ export default function Dashboard() {
           }, 3000);
         }
         if (res.data.status == 'SUCCESS') {
-          console.log("inside success")
           let progress = Math.round(res.data?.info?.next_sprint_pass_percentage);
-          console.log(progress)
           setProgress(progress)
           setShowProgressBar(true)
         }
@@ -145,7 +137,6 @@ export default function Dashboard() {
   {
     axios.post(`/qfdashboard/getPredictionTestcases?sqe_project_id=${selectedProject?.project_id}&userId=${auth?.userId}`).then((res) => 
     {
-      console.log(res?.data?.info?.web?.fail)
       setPredictionInfo(res?.data?.info)
     })
   }
@@ -368,7 +359,6 @@ export default function Dashboard() {
   ]
 
   const fail_row_data = [
-    //fail_row_data
     createData("API",(predictionInfo?.api?.fail) != undefined ? predictionInfo.api?.fail :0),
     createData("Web",(predictionInfo?.web?.fail) != undefined ? predictionInfo.web?.fail : 0),
     createData("Android",(predictionInfo?.web?.android) != undefined ? predictionInfo.web?.android : 0),

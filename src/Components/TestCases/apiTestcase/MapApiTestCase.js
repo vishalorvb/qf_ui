@@ -96,7 +96,7 @@ function MapApiTestCase() {
       console.log(resp);
       resp.data.error === null && setSuccess(true);
       setTimeout(() => {
-        resp.data.error === null && navigate("/testcase");
+        resp.data.error === null && navigate("/Testcase/Recent");
       }, 1000);
     });
   }

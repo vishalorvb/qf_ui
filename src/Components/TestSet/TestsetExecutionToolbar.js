@@ -1,13 +1,9 @@
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import MenuList from "@mui/material/MenuList";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, MenuItem } from "@mui/material";
@@ -46,7 +42,10 @@ function TestsetExecutionToolbar({
   const [applicationType, setApplicationType] = useState("");
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
-  const [snack,setSnack] = useState(false)
+  const [snack, setSnack] = useState(false)
+  const [runtimeVariable, setRunTimeVariable] = useState()
+  const [buildEnvId, setBuildEnvId] = useState()
+
   let appTypes = [
     "API Automation",
     "Web Automation",
@@ -70,7 +69,7 @@ function TestsetExecutionToolbar({
     "PipeLine",
     "Release Management",
   ];
-  console.log(selecteddatasets.length)
+
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -103,61 +102,54 @@ function TestsetExecutionToolbar({
         }
       }
     }
-    if((datasets.length) != 0)
-    {
-    const executionData = {
-      testset_id: testsetId,
-      module_id: applicationId,
-      web_testcases_list_to_execute: datasets,
-      mobile_platform: applicationType,
-      config_id: null,
-      config_name: null,
-      build_environment_name: data?.buildenvName?.split("&")[1],
-      build_environment_id: data?.buildenvName?.split("&")[0],
-      browser_type: data?.browser?.toString(),
-      execution_location: data?.executionLoc,
-      repository_commit_message: "",
-      testcase_overwrite: true,
-      runtimevariables: data?.buildenvName?.split("&")[2],
-      is_execute: true,
-      is_generate: data?.regenerateScript?.length > 0,
-      client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      user_id: auth?.userId,
-    };
+    if ((datasets.length) != 0) {
+      const executionData = {
+        testset_id: testsetId,
+        module_id: applicationId,
+        web_testcases_list_to_execute: datasets,
+        mobile_platform: applicationType,
+        config_id: null,
+        config_name: null,
+        build_environment_name: data?.buildenvName?.split("&")[1],
+        build_environment_id: data?.buildenvName?.split("&")[0],
+        browser_type: data?.browser?.toString(),
+        execution_location: data?.executionLoc,
+        repository_commit_message: "",
+        testcase_overwrite: true,
+        runtimevariables: data?.buildenvName?.split("&")[2],
+        is_execute: true,
+        is_generate: data?.regenerateScript?.length > 0,
+        client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        user_id: auth?.userId,
+      };
 
-    axios
-      .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
-      .then((resp) => {
-        console.log(resp);
-        console.log(resp?.data?.status);
-        data?.executionLoc === "local"
-          ? axios
+      axios
+        .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
+        .then((resp) => {
+          data?.executionLoc === "local"
+            ? axios
               .postForm(`http://127.0.0.1:8765/connect`, {
                 data: resp?.data?.info,
                 jarName: `code`,
               })
               .then((resp) => {
-                console.log(resp);
                 setJarConnected(true);
               })
               .catch((err) => {
-                console.log(err.message);
                 err.message === "Network Error" && setClientInactive(true);
               })
-          : setRemoteExecutionsuccess(true);
-      });
+            : setRemoteExecutionsuccess(true);
+        });
     }
-    else{
+    else {
       setSnack(true)
       setTimeout(() => {
-       setSnack(false)
-    }, 3000);
-  }
+        setSnack(false)
+      }, 3000);
+    }
   };
   const onSubmitGenerate = (data) => {
     let datasets = [];
-    console.log(data);
-    console.log(testsetId);
     if (selectedtestcases.length == selecteddatasets.length) {
       datasets = selecteddatasets;
     } else {
@@ -169,54 +161,49 @@ function TestsetExecutionToolbar({
         }
       }
     }
-    if((datasets.length) != 0)
-    {
-    const executionData = {
-      testset_id: testsetId,
-      module_id: applicationId,
-      web_testcases_list_to_execute: datasets,
-      mobile_platform: applicationType,
-      config_id: null,
-      config_name: null,
-      build_environment_name: data?.buildenvName?.split("&")[1],
-      build_environment_id: data?.buildenvName?.split("&")[0],
-      browser_type: data?.browser?.toString(),
-      execution_location: data?.executionLoc,
-      repository_commit_message: "",
-      testcase_overwrite: true,
-      runtimevariables: data?.buildenvName?.split("&")[2],
-      is_execute: false,
-      is_generate: true,
-      client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      user_id: auth?.userId,
-    };
-    axios
-      .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
-      .then((resp) => {
-        console.log(resp);
-        console.log(resp?.data?.info);
-        data?.executionLoc === "local"
-          ? axios
+    if ((datasets.length) != 0) {
+      const executionData = {
+        testset_id: testsetId,
+        module_id: applicationId,
+        web_testcases_list_to_execute: datasets,
+        mobile_platform: applicationType,
+        config_id: null,
+        config_name: null,
+        build_environment_name: data?.buildenvName?.split("&")[1],
+        build_environment_id: data?.buildenvName?.split("&")[0],
+        browser_type: data?.browser?.toString(),
+        execution_location: data?.executionLoc,
+        repository_commit_message: "",
+        testcase_overwrite: true,
+        runtimevariables: data?.buildenvName?.split("&")[2],
+        is_execute: false,
+        is_generate: true,
+        client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        user_id: auth?.userId,
+      };
+      axios
+        .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
+        .then((resp) => {
+          data?.executionLoc === "local"
+            ? axios
               .postForm(`http://127.0.0.1:8765/connect`, {
                 data: resp?.data?.info,
                 jarName: `code`,
               })
               .then((resp) => {
-                console.log(resp);
                 setJarConnected(true);
               })
               .catch((err) => {
-                console.log(err.message);
                 err.message === "Network Error" && setClientInactive(true);
               })
-          : setRemoteExecutionsuccess(true);
-      });
+            : setRemoteExecutionsuccess(true);
+        });
     }
-    else{
+    else {
       setSnack(true)
       setTimeout(() => {
-       setSnack(false)
-    }, 3000);
+        setSnack(false)
+      }, 3000);
     }
   };
   useEffect(() => {
@@ -226,8 +213,10 @@ function TestsetExecutionToolbar({
         `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
       )
       .then((resp) => {
-        console.log(resp?.data?.data);
         const buildEnv = resp?.data?.data;
+        setBuildEnvId(resp?.data?.data[0]?.id)
+        setRunTimeVariable(resp?.data?.data[0]?.runtime_variables)
+
         setBuildEnvList(() => {
           return buildEnv.map((be) => {
             return {
@@ -243,8 +232,8 @@ function TestsetExecutionToolbar({
         `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
       )
       .then((resp) => {
-        console.log(resp?.data?.data);
         const execEnv = resp?.data?.data;
+
         setExecEnvList(() => {
           return execEnv.map((ee) => {
             return { id: ee.value, label: ee.name };
@@ -259,8 +248,6 @@ function TestsetExecutionToolbar({
         `http://10.11.12.242:8080/qfservice/getmoduledetails/${applicationId}`
       )
       .then((resp) => {
-        console.log(resp?.data?.data?.module_type);
-        // setApplicationType(resp?.data?.data?.module_type);
         setApplicationType(appTypes[resp?.data?.data?.module_type - 1]);
       });
   }, [applicationId]);
@@ -285,7 +272,7 @@ function TestsetExecutionToolbar({
         msg={"Scripts Executed Successfully"}
         severity="success"
       />
-      { snack &&  <SnackbarNotify
+      {snack && <SnackbarNotify
         open={snack}
         close={setSnack}
         msg={"Please select atleast one dataset"}
@@ -323,7 +310,7 @@ function TestsetExecutionToolbar({
             <h5
               style={{ cursor: "pointer", color: "#009fee", marginTop: "3px" }}
               onClick={() => {
-                navigate("/addEnvironment", {
+                navigate("/TestsetExecution/AddEnvironment", {
                   state: { projectId: projectId, applicationId: applicationId },
                 });
               }}
@@ -344,7 +331,7 @@ function TestsetExecutionToolbar({
           />
         </Grid>
         <Grid item md={2}>
-          <FeatureMenu />
+          <FeatureMenu testsetId={testsetId} envId={buildEnvId} runtimeVar={(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""} />
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">
@@ -418,29 +405,6 @@ function TestsetExecutionToolbar({
             />
           </Stack>
         </Grid>
-
-        {/* {selectedtestcases.length > 0 && (
-          <>
-            <Grid item md={2}>
-              <Button
-                sx={{ width: 150 }}
-                variant="contained"
-                onClick={handleSubmit(onSubmitExecute)}
-              >
-                Execute
-              </Button>
-            </Grid>
-            <Grid item md={2}>
-              <Button
-                sx={{ width: 150 }}
-                variant="contained"
-                onClick={handleSubmit(onSubmitGenerate)}
-              >
-                Generate
-              </Button>
-            </Grid>
-          </>
-        )} */}
       </Grid>
 
       {execLoc !== "local" && (

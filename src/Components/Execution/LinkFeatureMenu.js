@@ -2,17 +2,17 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import RuntimeVar from "./RuntimeVar";
 import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useLocation, useNavigate } from "react-router-dom";
+import ReportPath from "./ReportPath";
 
 
-export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDatasets,testsetId}) {
+export default function LinkFeatureMenu({envId,runtimeVar,}) {
   console.log(runtimeVar)
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
-  const [openFeaturefile,setFeatureFile] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [reportPath, setReportPath] = React.useState(false);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,7 +40,6 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
       >
         + Features
       </Button>
-      {location.pathname == "/TestcaseExecution" &&
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -53,25 +52,10 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
         <MenuItem onClick={() => setOpenRuntimeVar(true)}>
           Runtime Variables
         </MenuItem>
-        <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
-      </Menu>}
-      {location.pathname == "/TestsetExecution" &&
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={() => setOpenRuntimeVar(true)}>
-          Runtime Variables
-        </MenuItem>
-      </Menu>}
+        <MenuItem onClick={() => setReportPath(true)}>Report Path</MenuItem>
+      </Menu>
       <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={envId}  runtimeVar = {runtimeVar}/>
-      <FeatureFile open={openFeaturefile} close={setFeatureFile} testcaseId={testcaseId} selectedDatasets={selectedDatasets}/>
-      
+      <ReportPath open={reportPath} close={setReportPath}/>
     </>
   );
 }

@@ -1,11 +1,4 @@
 import React from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import Table from "../../CustomComponent/Table";
@@ -21,7 +14,6 @@ function ExecuteTestSetDetails({
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
-  // const [selecteddatasets, setSelecteddatasets] = useState([]);
 
   
 
@@ -64,7 +56,6 @@ function ExecuteTestSetDetails({
                             };
                             const index = data.findIndex(obj=>obj.testcase_id === param.row.testcase_id)
                             index === -1 ? data.push(obj) : data[index] = obj;
-                            console.log(data);
                           }}
                         ></MuiltiSelect>
                       </div>
@@ -76,8 +67,7 @@ function ExecuteTestSetDetails({
                 },
               ];
             
-              console.log(selectedtestcases);
-              console.log(data);
+
             
               const handleClose = () => {
                 settestcaseList([]);
@@ -90,14 +80,10 @@ function ExecuteTestSetDetails({
                       `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
                     )
                     .then((resp) => {
-                      console.log(resp?.data?.info);
                       settestcaseList(resp?.data?.info);
                     });
               }, [testsetId]);
             
-              useEffect(() => {
-                console.log(data);
-              }, [selectedtestcases])
 
   return (
     <div>
@@ -106,7 +92,6 @@ function ExecuteTestSetDetails({
             applicationId={applicationId}
             selectedtestcases={selectedtestcases}
             testsetId={testsetId}
-            // selecteddatasets = {selecteddatasets}
             selecteddatasets = {data}
           />
           <Table
@@ -119,9 +104,6 @@ function ExecuteTestSetDetails({
             getRowId={(row) => row.testcase_id}
           />
         
-          {/* <Button variant="contained" onClick={handleClose}>
-            Close
-          </Button> */}
     </div>
   );
 }

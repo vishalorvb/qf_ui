@@ -39,6 +39,7 @@ export default function CreateApplication() {
     { value: 3, label: "Mobile-Android" },
     { value: 4, label: "Mobile-iOS" },
     { value: 0, label: "Mobile-web" },
+    { value: 19, label: "Link Project" },
   ];
 
   function submitHandler(e) {
