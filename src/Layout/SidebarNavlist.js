@@ -2,13 +2,6 @@ import "../scss/navicons.scss";
 
 export const testManagementList = [
   {
-    name: "Dashboard",
-    id: "8",
-    route: "/",
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    icon: <i className="qf icon-dashboard"></i>,
-  },
-  {
     name: "Admin",
     id: "1",
     route: "",
