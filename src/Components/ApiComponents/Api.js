@@ -33,7 +33,6 @@ function Api() {
     }
   }
   useEffect(() => {
-    console.log(Apidata);
     setHeader((ps) => {
       return {
         ...ps,

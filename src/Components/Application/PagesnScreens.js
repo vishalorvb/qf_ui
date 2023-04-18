@@ -21,7 +21,6 @@ export default function PagesnScreens() {
   };
   const { setHeader } = useHead();
   const location = useLocation();
-  console.log(location);
   useEffect(() => {
     setHeader((ps) => {
       return {

@@ -31,7 +31,7 @@ const PersistLogin = () => {
           token: token,
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }

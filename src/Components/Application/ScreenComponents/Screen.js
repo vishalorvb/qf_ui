@@ -45,15 +45,6 @@ export default function Screens({ location }) {
           <TableActions heading={param?.row?.description}>
             <MenuItem
               onClick={() =>
-                navigate("screenelements", {
-                  state: { id: param.row.screen_id },
-                })
-              }
-            >
-              <VisibilityOutlinedIcon sx={{ color: "lightblue", mr: 1 }} /> View
-            </MenuItem>
-            <MenuItem
-              onClick={() =>
                 navigate("UpdateScreen", {
                   state: {
                     screenId: param.row.screen_id,
