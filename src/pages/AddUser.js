@@ -140,7 +140,7 @@ function AddUser() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>First Name </label>
+              <label>First Name <span className="importantfield">*</span></label>
               <input
                 type="text"
                 ref={first_name}
@@ -152,7 +152,7 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Last Name</label>
+              <label>Last Name <span className="importantfield">*</span></label>
               <input
                 type="text"
                 ref={last_name}
@@ -164,7 +164,7 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>User Id</label>
+              <label>User Id <span className="importantfield">*</span></label>
               <input
                 type="text"
                 ref={sso_id}
@@ -176,7 +176,7 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Password</label>
+              <label>Password <span className="importantfield">*</span></label>
               <input
                 type="text"
                 ref={Password}
@@ -188,7 +188,7 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Email Id</label>
+              <label>Email Id <span className="importantfield">*</span></label>
               <input
                 name="email"
                 ref={Email}
@@ -200,7 +200,7 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Role</label>
+              <label>Role <span className="importantfield">*</span></label>
               <select
                 ref={role_id}
                 name="roleAutocomplete"

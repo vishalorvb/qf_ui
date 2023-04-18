@@ -168,7 +168,7 @@ function Testset() {
       <div className="intable">
         <Grid item container spacing={2} justifyContent="flex-end">
           <Grid item>
-            <label for="">Projects</label>
+            <label for="">Projects <span className="importantfield">*</span></label>
             <Autocomplete
               disablePortal
               disableClearable
@@ -188,7 +188,7 @@ function Testset() {
             />
           </Grid>
           <Grid item>
-            <label for="">Application</label>
+            <label for="">Application <span className="importantfield">*</span></label>
             <Autocomplete
               disablePortal
               disableClearable
