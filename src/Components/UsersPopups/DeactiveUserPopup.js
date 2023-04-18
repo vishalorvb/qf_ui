@@ -70,8 +70,11 @@ function DeactiveUserPopup(props) {
             alignItems="center"
             className="poptitle"
           >
-            <Typography sx={{ marginLeft: 1 }} variant="inherit">
-              Deactivate User{" "}
+            <Typography
+              sx={{ marginLeft: 1, color: "white" }}
+              variant="inherit"
+            >
+              Deactivate User
             </Typography>
             <IconButton
               sx={{ marginLeft: "auto" }}

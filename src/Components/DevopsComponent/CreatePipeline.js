@@ -44,6 +44,8 @@ export default function CreatePipeline() {
 
   const location = useLocation();
 
+  console.log(location);
+
   const onSubmitHandler = (params) => {
     const id = location.state.id;
     const moduleId = location.state.module;
@@ -82,7 +84,7 @@ export default function CreatePipeline() {
       setPipelineData,
       setDefaultData,
       location.state.id,
-      location?.state?.project_Id
+      location?.state?.project_id
     );
     setHeader((ps) => {
       return {
@@ -94,6 +96,7 @@ export default function CreatePipeline() {
   }, []);
 
   useEffect(() => {
+    console.log(defaultData);
     reset(defaultData);
   }, [defaultData]);
 
@@ -119,55 +122,55 @@ export default function CreatePipeline() {
             justifyContent="center"
             alignItems="center"
             spacing={1}
-            sx={{marginTop : "5px"}}
+            sx={{ marginTop: "5px" }}
           >
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Release Name :</label>
-              <input
-                id="release-name"
-                // label="Release Name"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="releaseName"
-                control={control}
-              />
+              <Stack spacing={1}>
+                <label>Release Name :</label>
+                <input
+                  id="release-name"
+                  // label="Release Name"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  name="releaseName"
+                  control={control}
+                />
               </Stack>
             </Grid>
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Release Description :</label>
-              <input
-                id="release-description"
-                // label="Release Description"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="releaseDesc"
-                control={control}
-              />
+              <Stack spacing={1}>
+                <label>Release Description :</label>
+                <input
+                  id="release-description"
+                  // label="Release Description"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  name="releaseDesc"
+                  control={control}
+                />
               </Stack>
             </Grid>
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>CICD Type :</label>
-              <TextFieldElement
-                id="select"
-                // label="CICD Type"
-                fullWidth
-                select
-                size="small"
-                name="cicdType"
-                control={control}
-              >
-                {cicdTypes?.map((type) => (
-                  <MenuItem key={type?.id} value={type.id}>
-                    {type.name}
-                  </MenuItem>
-                ))}
-                <MenuItem></MenuItem>
-              </TextFieldElement>
+              <Stack spacing={1}>
+                <label>CICD Type :</label>
+                <TextFieldElement
+                  id="select"
+                  // label="CICD Type"
+                  fullWidth
+                  select
+                  size="small"
+                  name="cicdType"
+                  control={control}
+                >
+                  {cicdTypes?.map((type) => (
+                    <MenuItem key={type?.id} value={type.id}>
+                      {type.name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem></MenuItem>
+                </TextFieldElement>
               </Stack>
             </Grid>
           </Grid>
@@ -178,33 +181,33 @@ export default function CreatePipeline() {
             justifyContent="center"
             alignItems="center"
             spacing={1}
-            sx={{marginTop : "10px"}}
+            sx={{ marginTop: "10px" }}
           >
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Select Release :</label>
-              <TextFieldElement
-                id="select"
-                // label="Select Release"
-                select
-                size="small"
-                fullWidth
-                name="release"
-                control={control}
-              >
-                {pipelineData?.ansiblereleases?.map((release) => (
-                  <MenuItem key={release?.id} value={release?.id}>
-                    {release?.release_name}
-                  </MenuItem>
-                ))}
-                <MenuItem></MenuItem>
-              </TextFieldElement>
+              <Stack spacing={1}>
+                <label>Select Release :</label>
+                <TextFieldElement
+                  id="select"
+                  // label="Select Release"
+                  select
+                  size="small"
+                  fullWidth
+                  name="release"
+                  control={control}
+                >
+                  {pipelineData?.ansiblereleases?.map((release) => (
+                    <MenuItem key={release?.id} value={release?.id}>
+                      {release?.release_name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem></MenuItem>
+                </TextFieldElement>
               </Stack>
             </Grid>
-          {/* </Grid> */}
+            {/* </Grid> */}
 
-          {/* <Typography>Web Testsets</Typography> */}
-          {/* <Grid
+            {/* <Typography>Web Testsets</Typography> */}
+            {/* <Grid
             container
             direction="row"
             justifyContent="center"
@@ -212,30 +215,30 @@ export default function CreatePipeline() {
             spacing={1}
           > */}
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Select web Testset :</label>
-              <TextFieldElement
-                id="select"
-                // label="Select web Testset"
-                select
-                size="small"
-                fullWidth
-                name="webTest"
-                control={control}
-              >
-                {pipelineData?.webtestsets?.map((sets) => (
-                  <MenuItem key={sets?.testset_id} value={sets?.testset_id}>
-                    {sets?.testset_name}
-                  </MenuItem>
-                ))}
-                <MenuItem></MenuItem>
-              </TextFieldElement>
+              <Stack spacing={1}>
+                <label>Select web Testset :</label>
+                <TextFieldElement
+                  id="select"
+                  // label="Select web Testset"
+                  select
+                  size="small"
+                  fullWidth
+                  name="webTest"
+                  control={control}
+                >
+                  {pipelineData?.webtestsets?.map((sets) => (
+                    <MenuItem key={sets?.testset_id} value={sets?.testset_id}>
+                      {sets?.testset_name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem></MenuItem>
+                </TextFieldElement>
               </Stack>
             </Grid>
-          {/* </Grid> */}
+            {/* </Grid> */}
 
-          {/* <Typography>API Testsets</Typography> */}
-          {/* <Grid
+            {/* <Typography>API Testsets</Typography> */}
+            {/* <Grid
             container
             direction="row"
             justifyContent="center"
@@ -243,24 +246,24 @@ export default function CreatePipeline() {
             spacing={1}
           > */}
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Select API Testset :</label>
-              <TextFieldElement
-                id="select"
-                // label="Select API Testset"
-                select
-                size="small"
-                fullWidth
-                name="ApiTest"
-                control={control}
-              >
-                {pipelineData?.apitestsetsList?.map((sets) => (
-                  <MenuItem key={sets?.testset_id} value={sets?.testset_id}>
-                    {sets?.testset_name}
-                  </MenuItem>
-                ))}
-                <MenuItem></MenuItem>
-              </TextFieldElement>
+              <Stack spacing={1}>
+                <label>Select API Testset :</label>
+                <TextFieldElement
+                  id="select"
+                  // label="Select API Testset"
+                  select
+                  size="small"
+                  fullWidth
+                  name="ApiTest"
+                  control={control}
+                >
+                  {pipelineData?.apitestsetsList?.map((sets) => (
+                    <MenuItem key={sets?.testset_id} value={sets?.testset_id}>
+                      {sets?.testset_name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem></MenuItem>
+                </TextFieldElement>
               </Stack>
             </Grid>
           </Grid>
@@ -272,37 +275,37 @@ export default function CreatePipeline() {
             justifyContent="center"
             alignItems="center"
             spacing={1}
-            sx={{marginTop : "10px"}}
+            sx={{ marginTop: "10px" }}
           >
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Sonar cube code Path :</label>
-              <input
-                id="Sonar-cube-code-Path"
-                label="Sonar cube code Path"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="sonrCubePath"
-                control={control}
-              />
+              <Stack spacing={1}>
+                <label>Sonar cube code Path :</label>
+                <input
+                  id="Sonar-cube-code-Path"
+                  label="Sonar cube code Path"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  name="sonrCubePath"
+                  control={control}
+                />
               </Stack>
             </Grid>
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Sonar cube Project Key :</label>
-              <input
-                id="Sonar-cube-Project-Key"
-                label="Sonar cube Project Key"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="sonrCubeKey"
-                control={control}
-              />
+              <Stack spacing={1}>
+                <label>Sonar cube Project Key :</label>
+                <input
+                  id="Sonar-cube-Project-Key"
+                  label="Sonar cube Project Key"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  name="sonrCubeKey"
+                  control={control}
+                />
               </Stack>
             </Grid>
-          {/* </Grid>
+            {/* </Grid>
           <Typography>Code Quality</Typography>
           <Grid
             container
@@ -312,17 +315,17 @@ export default function CreatePipeline() {
             spacing={1}
           > */}
             <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Unit testset path :</label>
-              <input
-                id="Unit-testset-path"
-                label="Unit testset path"
-                variant="outlined"
-                size="small"
-                fullWidth
-                name="unitTestPath"
-                control={control}
-              />
+              <Stack spacing={1}>
+                <label>Unit testset path :</label>
+                <input
+                  id="Unit-testset-path"
+                  label="Unit testset path"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  name="unitTestPath"
+                  control={control}
+                />
               </Stack>
             </Grid>
             {/* <Grid item md={2}>
@@ -332,16 +335,16 @@ export default function CreatePipeline() {
             </Grid> */}
           </Grid>
           <Stack mt={2} spacing={2} direction="row-reverse">
-          <Button variant="contained" type="submit" >
-            Save
-          </Button>
-          <Button
-            sx={{ color: "grey", textDecoration: "underline" }}
-            onClick={() => navigate("/pipeline")}
-          >
-            Cancel
-          </Button>
-        </Stack>
+            <Button variant="contained" type="submit">
+              Save
+            </Button>
+            <Button
+              sx={{ color: "grey", textDecoration: "underline" }}
+              onClick={() => navigate("/pipeline")}
+            >
+              Cancel
+            </Button>
+          </Stack>
         </Box>
       </form>
     </>
