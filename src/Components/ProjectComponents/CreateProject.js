@@ -24,7 +24,7 @@ let automationType = [
   { "Name": "Selenium", "Val": 1 },
   { "Name": "BDD", "Val": 2 },
   { "Name": "Cucumber Automation", "Val": 3 },
-  { "Name": "Link Project", "Val": 4 },
+  { "Name": "Link Project", "Val": 6 },
 ]
 
 let errorMsg = ""

@@ -29,13 +29,14 @@ import AndroidIcon from "@mui/icons-material/Android";
 import AppleIcon from "@mui/icons-material/Apple";
 import AdUnitsIcon from "@mui/icons-material/AdUnits";
 import ApiIcon from "@mui/icons-material/Api";
+import JoinInnerRoundedIcon from '@mui/icons-material/JoinInnerRounded';
 export default function ApplicationsList() {
   const { setHeader } = useHead();
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [application, setApplication] = useState([]);
   const location = useLocation();
-
+  const [snack,setSnack] = useState(false)
   const applicationColumns = [
     {
       field: "module_name",
@@ -71,11 +72,26 @@ export default function ApplicationsList() {
                   <AdUnitsIcon sx={{ color: "green" }} />
                 </Tooltip>
               ),
+              19: (
+                <Tooltip title="Link-Project">
+                  <JoinInnerRoundedIcon sx={{ color: "gray" }} />
+                </Tooltip>
+              ),
             }[param?.row?.module_type] ?? <AppleIcon sx={{ color: "white" }} />}
             <Typography
               onClick={() =>
+                {if((param?.row.module_type) == '19')
+                {
+                  setSnack(true)
+                  setTimeout(() => {
+                    setSnack(false)
+                 }, 3000);
+                }
+                else
+                {
                 navigate(`${param?.row?.module_name}`, { state: param?.row })
-              }
+                }
+              }}
               variant="p"
               className="nameColumn"
             >
@@ -133,6 +149,13 @@ export default function ApplicationsList() {
         getRowId={(row) => row.module_id}
         searchPlaceholder="Search Applications"
       />
+     { snack &&  <SnackbarNotify
+        open={snack}
+        close={setSnack}
+        msg={"Link Project don't have Pages and Screens"}
+        severity="error"
+      />
+     }
     </div>
   );
 }
@@ -193,6 +216,7 @@ const ApplicationDescriptionCell = (param, setApplication, auth) => {
           Delete
         </MenuItem>
       </Menu>
+     
     </div>
   );
 };
