@@ -32,6 +32,7 @@ function CreateTestCase() {
     const { setHeader } = useHead();
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
 
+    console.log(selectedProject)
     function handleSubmit(e) {
         console.log(TCdata)
         if (validateFormbyName(["name", "desc"], "error")) {

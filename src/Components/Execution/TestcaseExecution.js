@@ -7,6 +7,7 @@ import useHead from "../../hooks/useHead";
 import axios from "../../api/axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecutionDetails from "./ExecutionDetails";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -40,6 +41,7 @@ export default function TestcaseExecution() {
   const [testcases, setTestcases] = useState([]);
   const [testcasesspare, setTestcasesspare] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
+  const [reportFailMsg, setReportFailMsg] = useState(false);
 
   const [selectedProject, setSelectedProject] = useState({
     project_name: "Project",
@@ -117,8 +119,20 @@ export default function TestcaseExecution() {
     });
   }, []);
 
-  console.log(selectedApplication)
+  useEffect(() => {
+    if((selectedApplication?.module_type) == 19 ){
+      setReportFailMsg(true);
+      setTimeout(() => {
+          setReportFailMsg(false);
+      }, 3000);
+    }
+    else{
+
+    }
+  }, [selectedApplication])
+  
   return (
+    <>
     <Box sx={{ width: "100%" }}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
@@ -163,5 +177,12 @@ export default function TestcaseExecution() {
         </Grid>
       </Grid>
     </Box>
+       <SnackbarNotify
+       open={reportFailMsg}
+       close={setReportFailMsg}
+       msg="No Testcases are found for this Application."
+       severity="error"
+   />
+   </>
   );
 }

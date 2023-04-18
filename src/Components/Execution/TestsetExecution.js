@@ -7,6 +7,7 @@ import useHead from "../../hooks/useHead";
 import axios from "../../api/axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
+import LinkProjectExecution from "./LinkProjectExecution";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,7 +76,7 @@ export default function TestsetExecution() {
   }, [selectedProject, selectedApplication]);
 
   const itemRender = (rawList) => {
-    const navigationList = rawList.filter(apiItem=>apiItem.testset_name.toLowerCase().includes( searchTerm.toLowerCase()) || apiItem.testset_desc.toLowerCase().includes( searchTerm.toLowerCase()))?.map((apiItem, index) => {
+    const navigationList = rawList.filter(apiItem => apiItem.testset_name.toLowerCase().includes(searchTerm.toLowerCase()) || apiItem.testset_desc.toLowerCase().includes(searchTerm.toLowerCase()))?.map((apiItem, index) => {
       return (
         <ListItem
           sx={{
@@ -116,13 +117,13 @@ export default function TestsetExecution() {
     <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
-        <>
+          <> {selectedApplication?.module_type != 19 &&
             <input
               type="text"
               placeholder="Search..."
               value={searchTerm}
               onChange={handleSearchChange}
-            />
+            />}
           </>
         </Grid>
         <Grid item md={5.5}>
@@ -134,28 +135,28 @@ export default function TestsetExecution() {
           />
         </Grid>
       </Grid>
+      {selectedApplication?.module_type != 19 ?
+        <Grid container justifyContent="space-between">
+          <Grid item md={2.8} justifyContent="flex-start">
+            <List
+              sx={{
+                overflowY: "aurto",
+                height: "70vh"
+              }}
+            >
+              {itemRender(testcases)}
+            </List>
+          </Grid>
 
-      <Grid container justifyContent="space-between">
-        <Grid item md={2.8} justifyContent="flex-start">
-          <List
-            sx={{
-              overflowY: "aurto",
-              height:"70vh"
-            }}
-          >
-            {itemRender(testcases)}
-          </List>
-        </Grid>
+          <Divider orientation="vertical" flexItem />
 
-        <Divider orientation="vertical" flexItem />
-
-        <Grid item md={9}>
-          <ExecuteTestSetDetails
-          projectId={selectedProject.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
-           testsetId={selectedItem}
-          ></ExecuteTestSetDetails>
-        </Grid>
-      </Grid>
+          <Grid item md={9}>
+            <ExecuteTestSetDetails
+              projectId={selectedProject.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
+              testsetId={selectedItem}
+            ></ExecuteTestSetDetails>
+          </Grid>
+        </Grid>:<LinkProjectExecution projectId={selectedProject.project_id}  applicationId={selectedApplication?.module_id}/>}
     </>
   );
 }

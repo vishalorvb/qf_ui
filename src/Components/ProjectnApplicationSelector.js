@@ -57,7 +57,7 @@ export default function ProjectnApplicationSelector({
           <TextField {...params} label="Projects" size="small" />
         )}
       />
-      {selectedProject?.automation_framework_type !== 6 && (
+     
         <Autocomplete
           disablePortal
           disableClearable
@@ -74,7 +74,7 @@ export default function ProjectnApplicationSelector({
             <TextField {...params} label="Applications" size="small" />
           )}
         />
-      )}
+      
       
     </Stack>
   );
