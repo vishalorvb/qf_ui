@@ -309,28 +309,56 @@ export const Routes = [
     path: "TestcaseExecution",
     element: TestcaseExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
   {
     path: "TestsetExecution",
     element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
   {
     path: "TestcaseExecution",
     element: TestcaseExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
 
   {
     path: "TestsetExecution",
     element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
-  {
-    path: "addEnvironment",
-    element: AddEnvironemt,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
+  // {
+  //   path: "addEnvironment",
+  //   element: AddEnvironemt,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  // },
   {
     path: "getTestcases",
     element: GetTestcases,

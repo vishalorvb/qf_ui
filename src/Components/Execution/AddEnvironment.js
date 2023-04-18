@@ -18,6 +18,7 @@ import EditEnvironmentPop from "./EditEnvironmentPop";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import axios from "../../api/axios";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import useHead from "../../hooks/useHead";
 const AddEnvironemt = () => {
   const [tbData, setTbData] = useState([]);
   const [addEnvironmentPop, setAddEnvironmentPop] = useState(false);
@@ -31,12 +32,23 @@ const AddEnvironemt = () => {
   const [editEnvironmentData, setEditEnvironmentData] = useState();
   const location = useLocation();
   const navigate = useNavigate();
+  const { setHeader } = useHead();
+
 
   let project_id = location.state.projectId;
   let application_id = location.state.applicationId;
 
   useEffect(() => {
     getBuilEnvironment();
+  }, []);
+
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Build Environment",
+      };
+    });
   }, []);
 
   console.log(location.state.projectId);
@@ -139,14 +151,9 @@ const AddEnvironemt = () => {
       <Grid
         container
         direction="row"
-        justifyContent="space-between"
+        justifyContent="flex-end"
         alignItems="center"
       >
-        <Typography variant="subtitle1">
-          <b style={{ color: "#5C6780", fontSize: "20px" }}>
-            Build Environment
-          </b>
-        </Typography>
 
         <Button
           sx={{ marginLeft: 2 }}

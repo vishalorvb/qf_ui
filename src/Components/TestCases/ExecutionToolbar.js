@@ -352,7 +352,7 @@ export default function ExecutionToolbar({
             <h5
               style={{ cursor: "pointer", color: "#009fee", marginTop:"3px" }}
               onClick={() => {
-                navigate("/addEnvironment", {
+                navigate("/TestcaseExecution/AddEnvironment", {
                   state: { projectId: projectId, applicationId: applicationId },
                 });
               }}
