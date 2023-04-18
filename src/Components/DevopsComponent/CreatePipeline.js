@@ -5,7 +5,7 @@ import {
   getCreatePipelineData,
   createPipeline,
 } from "../../Services/DevopsServices";
-import { Box, Button, Grid, MenuItem, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, MenuItem, Typography } from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,11 +13,17 @@ import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Stack } from "@mui/system";
+import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
+import { getProject } from "../../Services/ProjectService";
 
 export default function CreatePipeline() {
   const [pipelineData, setPipelineData] = useState({});
   const [defaultData, setDefaultData] = useState({});
   const [msg, setMsg] = useState("");
+  const [selectedProject, setSelectedProject] = useState({
+    project_name: "Project",
+  });
+  const [project, setProject] = useState([]);
   const { auth } = useAuth();
   const navigate = useNavigate();
 
@@ -46,13 +52,13 @@ export default function CreatePipeline() {
 
   const onSubmitHandler = (params) => {
     const id = location.state.id;
-    const moduleId = location.state.module;
+    const projectId = location.state.project_id;
     console.log(location.state);
     // createPipeline(setSaveRes, data, location.state.id);
     axios
       .post(`/qfservice/Createpipeline`, null, {
         params: {
-          module_id: moduleId,
+          project_id: projectId,
           release_name: params.releaseName,
           release_desc: params.releaseDesc,
           ansiblereleaseId: params.release,
@@ -75,6 +81,8 @@ export default function CreatePipeline() {
       });
   };
 
+  console.log(location.state);
+
   const { setHeader } = useHead();
 
   useEffect(() => {
@@ -82,20 +90,27 @@ export default function CreatePipeline() {
       setPipelineData,
       setDefaultData,
       location.state.id,
-      location?.state?.project_Id
+      location?.state?.project_id
     );
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create Pipeline",
+        name: location.pathname === "/pipeline/CreatePipeline" ? "Create Pipeline" : "Update Pipeline",
       };
     });
-    console.log(location.state.project_Id);
+    console.log(location.state.project_id);
   }, []);
 
   useEffect(() => {
     reset(defaultData);
   }, [defaultData]);
+
+  useEffect(() => {
+    getProject(setProject, auth.userId);
+  }, []);
+  useEffect(() => {
+    setSelectedProject(project[0]);
+  }, [project]);
 
   const cicdTypes = [];
   for (const key in pipelineData?.cicdTypes) {
@@ -107,85 +122,75 @@ export default function CreatePipeline() {
       <SnackbarNotify
         open={msg !== "" && true}
         close={setMsg}
-        msg={msg}
+        msg={location.pathname === "/pipeline/CreatePipeline" ? "Pipeline Created Successfully" : msg}
         severity="success"
       />
+      {location.pathname === "/pipeline/CreatePipeline" ? (
+        <Grid container justifyContent="flex-end" mb={1}>
+          <Grid item md={2}>
+            <label for="">Projects</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="project_id"
+              options={project}
+              value={selectedProject || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.project_name}
+              onChange={(e, value) => {
+                setSelectedProject(value);
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+        </Grid>
+      ) : (
+        ""
+      )}
       <form onSubmit={handleSubmit(onSubmitHandler)}>
-        <Box>
-          {/* <Typography>Release Info</Typography> */}
+        <AccordionTemplate
+          name="Release Info"
+          defaultState={true}
+          style={{ marginTop: "10px" }}
+        >
           <Grid
             container
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
-            spacing={1}
-            sx={{marginTop : "5px"}}
+            spacing={2}
+            sx={{ marginTop: 0.1 }}
           >
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Release Name :</label>
-              <input
+            <Grid item md={6}>
+              <TextFieldElement
                 id="release-name"
-                // label="Release Name"
+                label="Release Name"
                 variant="outlined"
                 size="small"
                 fullWidth
                 name="releaseName"
                 control={control}
               />
-              </Stack>
             </Grid>
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Release Description :</label>
-              <input
+            <Grid item md={6}>
+              <TextFieldElement
                 id="release-description"
-                // label="Release Description"
+                label="Release Description"
                 variant="outlined"
                 size="small"
                 fullWidth
                 name="releaseDesc"
                 control={control}
               />
-              </Stack>
             </Grid>
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>CICD Type :</label>
+            <Grid item md={6}>
               <TextFieldElement
                 id="select"
-                // label="CICD Type"
-                fullWidth
-                select
-                size="small"
-                name="cicdType"
-                control={control}
-              >
-                {cicdTypes?.map((type) => (
-                  <MenuItem key={type?.id} value={type.id}>
-                    {type.name}
-                  </MenuItem>
-                ))}
-                <MenuItem></MenuItem>
-              </TextFieldElement>
-              </Stack>
-            </Grid>
-          </Grid>
-          {/* <Typography>Release</Typography> */}
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
-            sx={{marginTop : "10px"}}
-          >
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Select Release :</label>
-              <TextFieldElement
-                id="select"
-                // label="Select Release"
+                label="Select Release"
                 select
                 size="small"
                 fullWidth
@@ -199,24 +204,40 @@ export default function CreatePipeline() {
                 ))}
                 <MenuItem></MenuItem>
               </TextFieldElement>
-              </Stack>
             </Grid>
-          {/* </Grid> */}
-
-          {/* <Typography>Web Testsets</Typography> */}
-          {/* <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
-          > */}
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Select web Testset :</label>
+            <Grid item md={6}>
               <TextFieldElement
                 id="select"
-                // label="Select web Testset"
+                label="CICD Type"
+                fullWidth
+                select
+                size="small"
+                name="cicdType"
+                control={control}
+              >
+                {cicdTypes?.map((type) => (
+                  <MenuItem key={type?.id} value={type.id}>
+                    {type.name}
+                  </MenuItem>
+                ))}
+                <MenuItem></MenuItem>
+              </TextFieldElement>
+            </Grid>
+          </Grid>
+        </AccordionTemplate>
+        <AccordionTemplate name="Testsets" defaultState={true}>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={2}
+            sx={{ marginTop: 0.1 }}
+          >
+            <Grid item md={6}>
+              <TextFieldElement
+                id="select"
+                label="Select web Testset"
                 select
                 size="small"
                 fullWidth
@@ -230,24 +251,11 @@ export default function CreatePipeline() {
                 ))}
                 <MenuItem></MenuItem>
               </TextFieldElement>
-              </Stack>
             </Grid>
-          {/* </Grid> */}
-
-          {/* <Typography>API Testsets</Typography> */}
-          {/* <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
-          > */}
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Select API Testset :</label>
+            <Grid item md={6}>
               <TextFieldElement
                 id="select"
-                // label="Select API Testset"
+                label="Select API Testset"
                 select
                 size="small"
                 fullWidth
@@ -261,23 +269,20 @@ export default function CreatePipeline() {
                 ))}
                 <MenuItem></MenuItem>
               </TextFieldElement>
-              </Stack>
             </Grid>
           </Grid>
-
-          {/* <Typography>UnitTest</Typography> */}
+        </AccordionTemplate>
+        <AccordionTemplate name="Code Quality" defaultState={true}>
           <Grid
             container
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
-            spacing={1}
-            sx={{marginTop : "10px"}}
+            spacing={2}
+            sx={{ marginTop: 0.1 }}
           >
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Sonar cube code Path :</label>
-              <input
+            <Grid item md={6}>
+              <TextFieldElement
                 id="Sonar-cube-code-Path"
                 label="Sonar cube code Path"
                 variant="outlined"
@@ -286,12 +291,9 @@ export default function CreatePipeline() {
                 name="sonrCubePath"
                 control={control}
               />
-              </Stack>
             </Grid>
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Sonar cube Project Key :</label>
-              <input
+            <Grid item md={6}>
+              <TextFieldElement
                 id="Sonar-cube-Project-Key"
                 label="Sonar cube Project Key"
                 variant="outlined"
@@ -300,21 +302,9 @@ export default function CreatePipeline() {
                 name="sonrCubeKey"
                 control={control}
               />
-              </Stack>
             </Grid>
-          {/* </Grid>
-          <Typography>Code Quality</Typography>
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}
-          > */}
-            <Grid item md={4}>
-            <Stack spacing={1}>
-              <label>Unit testset path :</label>
-              <input
+            <Grid item md={12}>
+              <TextFieldElement
                 id="Unit-testset-path"
                 label="Unit testset path"
                 variant="outlined"
@@ -323,16 +313,11 @@ export default function CreatePipeline() {
                 name="unitTestPath"
                 control={control}
               />
-              </Stack>
             </Grid>
-            {/* <Grid item md={2}>
-              <Button type="submit" variant="contained">
-                Save
-              </Button>
-            </Grid> */}
           </Grid>
-          <Stack mt={2} spacing={2} direction="row-reverse">
-          <Button variant="contained" type="submit" >
+        </AccordionTemplate>
+        <Stack mt={2} spacing={2} direction="row-reverse">
+          <Button variant="contained" type="submit">
             Save
           </Button>
           <Button
@@ -342,7 +327,6 @@ export default function CreatePipeline() {
             Cancel
           </Button>
         </Stack>
-        </Box>
       </form>
     </>
   );

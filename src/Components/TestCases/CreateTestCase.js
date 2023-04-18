@@ -34,7 +34,6 @@ function CreateTestCase() {
 
     console.log(selectedProject)
     function handleSubmit(e) {
-        console.log(TCdata)
         if (validateFormbyName(["name", "desc"], "error")) {
             if (TCdata.testcase_id === undefined) {
                 CreateTestCaseService(TCdata).then(res => {
