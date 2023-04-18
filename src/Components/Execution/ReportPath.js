@@ -30,15 +30,6 @@ function ReportPath(props) {
     const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
     const [reportFailMsg, setReportFailMsg] = useState(false);
 
-    // if(testsetEditData?.length > 0){
-    //     setTestsetId(testsetEditData?.id);
-    //     console.log(testsetId)
-    // }
-    // else{
-    //     setTestsetId(0);
-    //     console.log(testsetId)
-
-    // }
     const handleClose = () => {
         close(false);
     };
@@ -90,14 +81,14 @@ function ReportPath(props) {
             <DialogTitle className="dialogTitle">Report Path</DialogTitle>
             <DialogContent>
                 <Grid container spacing={2} justifyContent="flex-start" justifyItems="center" sx={{ marginTop: "15px" }}>
-                    <Grid xs={3} sx={{ marginTop: "15px" }}> Report Path </Grid>
+                    <Grid xs={2} sx={{ marginTop: "15px" }}> Report Path: </Grid>
 
-                    <Grid xs={9}> <TextField
+                    <Grid xs={8}> <TextField
                      size="small"
+                     fullWidth
                       id="outlined-basic"
                        variant="outlined"
                         placeholder="Report path"
-                         sx={{width:500 }}
                          name= ""
                          defaultValue={postVal.testset_name}
                          onChange={(e) => {postVal.testset_name = e.target.value}}

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
-import axios from "../../api/axios";
+import axios from "axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
 import LinkProjectExecution from "./LinkProjectExecution";
@@ -67,7 +67,7 @@ export default function TestsetExecution() {
   useEffect(() => {
     axios
       .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+        `http://10.11.12.243:8083/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
       )
       .then((resp) => {
         const testcases = resp?.data?.info ? resp?.data?.info : [];
@@ -152,11 +152,11 @@ export default function TestsetExecution() {
 
           <Grid item md={9}>
             <ExecuteTestSetDetails
-              projectId={selectedProject.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
+              projectId={selectedProject?.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
               testsetId={selectedItem}
             ></ExecuteTestSetDetails>
           </Grid>
-        </Grid>:<LinkProjectExecution projectId={selectedProject.project_id}  applicationId={selectedApplication?.module_id}/>}
+        </Grid>:<LinkProjectExecution projectId={selectedProject?.project_id}  applicationId={selectedApplication?.module_id}/>}
     </>
   );
 }

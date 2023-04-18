@@ -11,17 +11,18 @@ import {
 import { useEffect, useState, useRef } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Divider, Grid, Typography } from '@mui/material'
-import axios from "../../api/axios";
+import axios from "axios";
 import TextField from '@mui/material/TextField';
 
 
 let initialValue = {
-    testset_id:"" ,
+    testset_id:0 ,
     testset_name: "",
     testset_desc: "",
     module_id: "",
     runtime_variables: "",
-    testset_command:""
+    testset_command:"",
+    project_id:""
 }
 export let postVal = { ...initialValue };
 
@@ -31,45 +32,37 @@ function AddTestSetLinkProject(props) {
     const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
     const [reportFailMsg, setReportFailMsg] = useState(false);
 
-    // if(testsetEditData?.length > 0){
-    //     setTestsetId(testsetEditData?.id);
-    //     console.log(testsetId)
-    // }
-    // else{
-    //     setTestsetId(0);
-    //     console.log(testsetId)
-
-    // }
     const handleClose = () => {
         close(false);
     };
-console.log(testsetEditData?.length)
-console.log(testsetEditData)
+// console.log(testsetEditData?.length)
+// console.log(testsetEditData)
 
 setTestsetEditData("")
 
     const onSubmitHandler = (params) => { {
    postVal.module_id=applicationId;
+   postVal.project_id=projectId;
    console.log(postVal)
-  axios.post(`/qfservice/CreateLinkTestset?project_id=${projectId}`, postVal)
+  axios.post(`http://10.11.12.243:8083/qfservice/CreateLinkTestset`, postVal)
   .then((resp) => {
    console.log(resp)
-//     if ( resp?.data?.message === "Successfully createdBuild Environment") {
-//         setReportSuccessMsg(true);
-//         setTimeout(() => {
-//             setReportSuccessMsg(false);
-//             getBuilEnvironment();
-//         }, 3000);
-//   handleClose()
-//     }
-//     else {
-//         setReportFailMsg(true);
-//         setTimeout(() => {
-//             setReportFailMsg(false);
-//         }, 3000);
-//   handleClose()
+    if ( resp?.data?.status === "SUCCESS") {
+        setReportSuccessMsg(true);
+        setTimeout(() => {
+            setReportSuccessMsg(false);
+            getBuilEnvironment();
+        }, 3000);
+  handleClose()
+    }
+    else {
+        setReportFailMsg(true);
+        setTimeout(() => {
+            setReportFailMsg(false);
+        }, 3000);
+  handleClose()
 
-//     }
+    }
     
    });
     
