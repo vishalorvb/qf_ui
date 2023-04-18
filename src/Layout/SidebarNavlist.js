@@ -168,7 +168,20 @@ export const testManagementList = [
     accessRole: [1, 2, 3, 4, 5, 6, 7],
     icon: <i className="qf icon-reports"></i>,
   },
-  
+  {
+    name: "BIReports",
+    id: "1c",
+    route: "BIReports",
+    accessRole: [ 2 ],
+    icon: <i className="qf icon-bireports"></i>,
+  },
+  {
+    name: "Dashboard",
+    id: "8",
+    route: "/",
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    icon: <i className="qf icon-dashboard"></i>,
+  },
 ];
 
 export const opsManagementList = [
