@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -8,6 +8,7 @@ import axios from "../../api/axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
 import LinkProjectExecution from "./LinkProjectExecution";
+import { useNavigate } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +52,7 @@ export default function TestsetExecution() {
   });
   const [selectedApplication, setSelectedApplication] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -144,7 +146,12 @@ export default function TestsetExecution() {
                 height: "70vh"
               }}
             >
-              {itemRender(testcases)}
+               {(testcases.length) > 0 ? itemRender(testcases) : <div style={{textAlign : "center"}}>
+           <Typography>No Testsets Found</Typography><br/>
+           <Button
+            variant = "contained"
+            onClick={()=>{ navigate("/Testset/Create")}}
+           >Create Testset</Button></div>} 
             </List>
           </Grid>
 
