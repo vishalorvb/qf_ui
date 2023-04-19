@@ -370,6 +370,7 @@ function CreateProject() {
               <input
                 defaultValue={createformData.jenkins_password}
                 type="password"
+                autoComplete="off"
                 onChange={(e) => {
                   createformData.jenkins_password = e.target.value;
                 }}

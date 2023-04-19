@@ -144,7 +144,6 @@ export async function deleteDataset(datasetId) {
 
 
 export async function CreateTestCaseService(data) {
-  console.log("Calling createTestCaseService")
   let x = await axios({
     method: "post",
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
