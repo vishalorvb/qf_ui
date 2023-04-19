@@ -7,6 +7,7 @@ import useHead from "../../hooks/useHead";
 import axios from "../../api/axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecutionDetails from "./ExecutionDetails";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -40,6 +41,7 @@ export default function TestcaseExecution() {
   const [testcases, setTestcases] = useState([]);
   const [testcasesspare, setTestcasesspare] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
+  const [reportFailMsg, setReportFailMsg] = useState(false);
 
   const [selectedProject, setSelectedProject] = useState({
     project_name: "Project",
@@ -73,6 +75,7 @@ export default function TestcaseExecution() {
         setTestcasesspare(testcases);
       });
   }, [selectedProject, selectedApplication]);
+  console.log(selectedProject?.automation_framework_type)
   const itemRender = (rawList) => {
     const navigationList = rawList
       ?.filter(
@@ -117,8 +120,20 @@ export default function TestcaseExecution() {
     });
   }, []);
 
-  console.log(selectedApplication)
+  useEffect(() => {
+    if((selectedApplication?.module_type) == 19 ){
+      setReportFailMsg(true);
+      setTimeout(() => {
+          setReportFailMsg(false);
+      }, 3000);
+    }
+    else{
+
+    }
+  }, [selectedApplication])
+  
   return (
+    <>
     <Box sx={{ width: "100%" }}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
@@ -157,11 +172,19 @@ export default function TestcaseExecution() {
             selectedItem={selectedItem}
             testcaseId={selectedItem}
             projectId={selectedProject.project_id}
+            frameworkType = {selectedProject.automation_framework_type}
             applicationType={selectedApplication?.module_type}
             applicationId={selectedApplication?.module_id}
           ></ExecutionDetails>
         </Grid>
       </Grid>
     </Box>
+       <SnackbarNotify
+       open={reportFailMsg}
+       close={setReportFailMsg}
+       msg="No Testcases are found for this Application."
+       severity="error"
+   />
+   </>
   );
 }

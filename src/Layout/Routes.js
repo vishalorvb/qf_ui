@@ -27,6 +27,9 @@ const PageElements = lazy(() =>
 const CreateProject = lazy(() =>
   import("../Components/ProjectComponents/CreateProject")
 );
+const Phases = lazy(() =>
+  import("../Components/BIReports/Phases")
+);
 const APIsTable = lazy(() =>
   import("../Components/Application/ApiApplication/APIsTable")
 );
@@ -59,6 +62,8 @@ const createTestset = lazy(() => import("../Components/TestSet/TestsetCreate"));
 const UpdateTestcasesOrder = lazy(() =>
   import("../Components/TestSet/UpdateTestcasesOrder")
 );
+
+const BiReports = lazy(() => import("../pages/BIReports"));
 
 const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
@@ -277,6 +282,16 @@ export const Routes = [
     accessRole: [2],
   },
   {
+    path: "BIReports",
+    element: BiReports,
+    accessRole: [2],
+  },
+  {
+    path: "BIReports/phases",
+    element: Phases,
+    accessRole: [2],
+  },
+  {
     path: "addUser",
     element: AddUser,
     accessRole: [2],
@@ -309,27 +324,75 @@ export const Routes = [
     path: "TestcaseExecution",
     element: TestcaseExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "AddConfigureDevice",
+        element: AddConfigurationPopUp,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "ConfigureDevice",
+        element:ConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
   {
     path: "TestsetExecution",
     element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "ConfigureDevice",
+        element:ConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
   {
     path: "TestcaseExecution",
     element: TestcaseExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "ConfigureDevice",
+        element:ConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "UpdateDevice",
+        element:UpdateConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
 
   {
     path: "TestsetExecution",
     element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "addEnvironment",
-    element: AddEnvironemt,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    subRoute : [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      }
+    ]
   },
   {
     path: "getTestcases",
@@ -441,22 +504,12 @@ export const Routes = [
       },
     ],
   },
+  // {
+  //   path: "updateConfigureDevice",
+  //   element: UpdateConfigureDevice,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  // },
 
-  {
-    path: "configureDevice",
-    element: ConfigureDevice,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "updateConfigureDevice",
-    element: UpdateConfigureDevice,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "addConfigureDevice",
-    element: AddConfigurationPopUp,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
 
   {
     path: "Testcase/Recent",

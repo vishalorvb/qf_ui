@@ -128,10 +128,6 @@ export default function APIsTable() {
     // },
   ];
 
-  useEffect(() => {
-    getApis(location.state.module_id, setApis);
-  }, []);
-
   return (
     <div className="apptable">
       <div className="intable">

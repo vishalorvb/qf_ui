@@ -20,7 +20,7 @@ function RuntimeVariable(props) {
     const schema = yup.object().shape({ testcaseName: yup.string().required() });
   const [snack, setSnack] = useState(false);
     
-
+console.log(envId)
     const {
         control,
         handleSubmit,

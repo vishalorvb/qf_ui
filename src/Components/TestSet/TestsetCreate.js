@@ -202,7 +202,7 @@ function TestsetCreate() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Project </label>
+              <label>Project <span className="importantfield">*</span></label>
               <Autocomplete
                 size="small"
                 value={selectedProject}
@@ -229,7 +229,7 @@ function TestsetCreate() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Application</label>
+              <label>Application <span className="importantfield">*</span></label>
               <Autocomplete
                 size="small"
                 value={selectedApplication}
@@ -255,7 +255,7 @@ function TestsetCreate() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Testset Name</label>
+              <label>Testset Name <span className="importantfield">*</span></label>
               <input
                 ref={testset_name}
                 type="text"
@@ -267,7 +267,7 @@ function TestsetCreate() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Description</label>
+              <label>Description <span className="importantfield">*</span></label>
               <input
                 ref={testset_desc}
                 type="text"
