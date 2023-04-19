@@ -5,7 +5,14 @@ import {
   getCreatePipelineData,
   createPipeline,
 } from "../../Services/DevopsServices";
-import { Autocomplete, Box, Button, Grid, MenuItem, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Grid,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -49,6 +56,8 @@ export default function CreatePipeline() {
   });
 
   const location = useLocation();
+
+  console.log(location);
 
   const onSubmitHandler = (params) => {
     const id = location.state.id;
@@ -95,13 +104,17 @@ export default function CreatePipeline() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: location.pathname === "/pipeline/CreatePipeline" ? "Create Pipeline" : "Update Pipeline",
+        name:
+          location.pathname === "/pipeline/CreatePipeline"
+            ? "Create Pipeline"
+            : "Update Pipeline",
       };
     });
     console.log(location.state.project_id);
   }, []);
 
   useEffect(() => {
+    console.log(defaultData);
     reset(defaultData);
   }, [defaultData]);
 
@@ -122,7 +135,11 @@ export default function CreatePipeline() {
       <SnackbarNotify
         open={msg !== "" && true}
         close={setMsg}
-        msg={location.pathname === "/pipeline/CreatePipeline" ? "Pipeline Created Successfully" : msg}
+        msg={
+          location.pathname === "/pipeline/CreatePipeline"
+            ? "Pipeline Created Successfully"
+            : msg
+        }
         severity="success"
       />
       {location.pathname === "/pipeline/CreatePipeline" ? (

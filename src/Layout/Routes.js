@@ -27,6 +27,9 @@ const PageElements = lazy(() =>
 const CreateProject = lazy(() =>
   import("../Components/ProjectComponents/CreateProject")
 );
+const Phases = lazy(() =>
+  import("../Components/BIReports/Phases")
+);
 const APIsTable = lazy(() =>
   import("../Components/Application/ApiApplication/APIsTable")
 );
@@ -59,6 +62,8 @@ const createTestset = lazy(() => import("../Components/TestSet/TestsetCreate"));
 const UpdateTestcasesOrder = lazy(() =>
   import("../Components/TestSet/UpdateTestcasesOrder")
 );
+
+const BiReports = lazy(() => import("../pages/BIReports"));
 
 const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
@@ -274,6 +279,16 @@ export const Routes = [
   {
     path: "settings",
     element: Settings,
+    accessRole: [2],
+  },
+  {
+    path: "BIReports",
+    element: BiReports,
+    accessRole: [2],
+  },
+  {
+    path: "BIReports/phases",
+    element: Phases,
     accessRole: [2],
   },
   {

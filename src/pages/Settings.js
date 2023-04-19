@@ -92,7 +92,7 @@ function Settings() {
           <Grid container direction="row" spacing={2}>
             <Grid item md={12}>
               <Stack spacing={1}>
-                <label>URL</label>
+                <label>URL <span className="importantfield">*</span></label>
                 <input
                   type="text"
                   name=""
@@ -104,7 +104,7 @@ function Settings() {
             </Grid>
             <Grid item md={12}>
               <Stack spacing={1}>
-                <label>UUID</label>
+                <label>UUID <span className="importantfield">*</span></label>
                 <input
                   type="text"
                   name=""
