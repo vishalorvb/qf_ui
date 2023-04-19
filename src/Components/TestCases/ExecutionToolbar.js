@@ -31,6 +31,7 @@ export default function ExecutionToolbar({
   selectedDatasets,
   testcaseId,
   applicationType,
+  frameworkType
 }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -373,7 +374,7 @@ export default function ExecutionToolbar({
           />
         </Grid>
         <Grid item md={2}>
-          <FeatureMenu testcaseId={testcaseId} selectedDatasets={selectedDatasets} envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""}/>
+          <FeatureMenu testcaseId={testcaseId} projectId={projectId} frameworkType={frameworkType} selectedDatasets={selectedDatasets} envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""}/>
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">

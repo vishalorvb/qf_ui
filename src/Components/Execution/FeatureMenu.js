@@ -6,26 +6,22 @@ import RuntimeVar from "./RuntimeVar";
 import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useLocation, useNavigate } from "react-router-dom";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
-export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDatasets,testsetId}) {
-  console.log(runtimeVar)
+export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDatasets,testsetId,frameworkType,projectId}) {
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
   const [openFeaturefile,setFeatureFile] = React.useState(false)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation();
-
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log(location.pathname)
-
   return (
     <>
       <Button
@@ -38,7 +34,7 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
         onClick={handleClick}
         variant="contained"
       >
-        + Features
+        + Features&nbsp;&nbsp;&nbsp;&nbsp;<ArrowDropDownIcon/>
       </Button>
       {location.pathname == "/TestcaseExecution" &&
       <Menu
@@ -54,7 +50,19 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
           Runtime Variables
         </MenuItem>
         <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
-      </Menu>}
+        {frameworkType == 4 &&  
+      <MenuItem  onClick={() => {
+                 navigate("/TestcaseExecution/ConfigureDevice", {
+                   state :{
+                     projectId : projectId,
+                     pathname : location.pathname
+                   }
+                 });
+               }}>Configure Device</MenuItem>
+
+     } 
+      </Menu>
+      }
       {location.pathname == "/TestsetExecution" &&
       <Menu
         id="basic-menu"
@@ -68,7 +76,19 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
         <MenuItem onClick={() => setOpenRuntimeVar(true)}>
           Runtime Variables
         </MenuItem>
+        {frameworkType == 4 &&  
+      <MenuItem  onClick={() => {
+                 navigate("/TestsetExecution/ConfigureDevice", {
+                   state :{
+                     projectId : projectId,
+                     pathname: location.pathname
+                   }
+                 });
+               }}>Configure Device</MenuItem>
+
+     } 
       </Menu>}
+    
       <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={envId}  runtimeVar = {runtimeVar}/>
       <FeatureFile open={openFeaturefile} close={setFeatureFile} testcaseId={testcaseId} selectedDatasets={selectedDatasets}/>
       

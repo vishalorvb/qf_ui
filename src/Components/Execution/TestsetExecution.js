@@ -152,7 +152,10 @@ export default function TestsetExecution() {
 
           <Grid item md={9}>
             <ExecuteTestSetDetails
-              projectId={selectedProject.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
+              projectId={selectedProject.project_id}
+               applicationType={selectedApplication?.module_type} 
+               applicationId={selectedApplication?.module_id}
+               frameworkType = {selectedProject.automation_framework_type}
               testsetId={selectedItem}
             ></ExecuteTestSetDetails>
           </Grid>

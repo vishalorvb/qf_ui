@@ -314,6 +314,16 @@ export const Routes = [
         path: "AddEnvironment",
         element: AddEnvironemt,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path: "AddConfigureDevice",
+        element: AddConfigurationPopUp,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "ConfigureDevice",
+        element:ConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       }
     ]
   },
@@ -326,6 +336,11 @@ export const Routes = [
         path: "AddEnvironment",
         element: AddEnvironemt,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "ConfigureDevice",
+        element:ConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
       }
     ]
   },
@@ -337,6 +352,16 @@ export const Routes = [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "ConfigureDevice",
+        element:ConfigureDevice,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        path : "UpdateDevice",
+        element:UpdateConfigureDevice,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       }
     ]
@@ -354,11 +379,6 @@ export const Routes = [
       }
     ]
   },
-  // {
-  //   path: "addEnvironment",
-  //   element: AddEnvironemt,
-  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
-  // },
   {
     path: "getTestcases",
     element: GetTestcases,
@@ -469,22 +489,12 @@ export const Routes = [
       },
     ],
   },
+  // {
+  //   path: "updateConfigureDevice",
+  //   element: UpdateConfigureDevice,
+  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
+  // },
 
-  {
-    path: "configureDevice",
-    element: ConfigureDevice,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "updateConfigureDevice",
-    element: UpdateConfigureDevice,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
-  {
-    path: "addConfigureDevice",
-    element: AddConfigurationPopUp,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-  },
 
   {
     path: "Testcase/Recent",

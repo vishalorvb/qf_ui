@@ -75,6 +75,7 @@ export default function TestcaseExecution() {
         setTestcasesspare(testcases);
       });
   }, [selectedProject, selectedApplication]);
+  console.log(selectedProject?.automation_framework_type)
   const itemRender = (rawList) => {
     const navigationList = rawList
       ?.filter(
@@ -171,6 +172,7 @@ export default function TestcaseExecution() {
             selectedItem={selectedItem}
             testcaseId={selectedItem}
             projectId={selectedProject.project_id}
+            frameworkType = {selectedProject.automation_framework_type}
             applicationType={selectedApplication?.module_type}
             applicationId={selectedApplication?.module_id}
           ></ExecutionDetails>
