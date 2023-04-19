@@ -140,7 +140,9 @@ function AddUser() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>First Name <span className="importantfield">*</span></label>
+              <label>
+                First Name <span className="importantfield">*</span>
+              </label>
               <input
                 type="text"
                 ref={first_name}
@@ -152,7 +154,9 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Last Name <span className="importantfield">*</span></label>
+              <label>
+                Last Name <span className="importantfield">*</span>
+              </label>
               <input
                 type="text"
                 ref={last_name}
@@ -164,7 +168,9 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>User Id <span className="importantfield">*</span></label>
+              <label>
+                User Id <span className="importantfield">*</span>
+              </label>
               <input
                 type="text"
                 ref={sso_id}
@@ -176,7 +182,9 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Password <span className="importantfield">*</span></label>
+              <label>
+                Password <span className="importantfield">*</span>
+              </label>
               <input
                 type="text"
                 ref={Password}
@@ -188,7 +196,9 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Email Id <span className="importantfield">*</span></label>
+              <label>
+                Email Id <span className="importantfield">*</span>
+              </label>
               <input
                 name="email"
                 ref={Email}
@@ -200,7 +210,9 @@ function AddUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Role <span className="importantfield">*</span></label>
+              <label>
+                Role <span className="importantfield">*</span>
+              </label>
               <select
                 ref={role_id}
                 name="roleAutocomplete"
