@@ -137,6 +137,15 @@ const TestsetExecution = lazy(() =>
 const AddEnvironemt = lazy(() =>
   import(`../Components/Execution/AddEnvironment`)
 );
+const LinkProjectExecution = lazy(() =>
+import(`../Components/Execution/LinkProjectExecution`)
+);
+ const AddTestSetLinkProject = lazy(() =>
+import(`../Components/Execution/AddTestSetLinkProject`)
+);
+const EditTestLinkProject = lazy(() =>
+import(`../Components/Execution/EditTestLinkProject`)
+);
 
 export const Routes = [
   {
@@ -341,7 +350,24 @@ export const Routes = [
         path: "AddEnvironment",
         element: AddEnvironemt,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
-      }
+      },
+      {
+        path: "LinkProjectExecution",
+        element:LinkProjectExecution ,
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        subRoute : [
+          {
+            path: "AddLinkTestset",
+            element: AddTestSetLinkProject,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+          {
+            path: "EditLinkTestset",
+            element: EditTestLinkProject,
+            accessRole: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ]
+      },
     ]
   },
   {

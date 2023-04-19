@@ -168,7 +168,8 @@ function TestsetCreate() {
         project_id: selectedProject?.project_id,
         testset_id: 0,
         module_id: selectedApplication?.module_id,
-        command:command,
+        cucumber_tags:command,
+        testcases_list: []
       };
     }
       else{
