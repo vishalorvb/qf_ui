@@ -48,7 +48,6 @@ export default function Admin() {
 
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
-  console.log(auth.info);
   const loggedInId = auth.info.id;
 
   const addUserHandler = () => {

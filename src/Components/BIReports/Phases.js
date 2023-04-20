@@ -5,17 +5,20 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import useHead from "../../hooks/useHead";
 import ImageIcon from "@mui/icons-material/Image";
 import Divider from "@mui/material/Divider";
-import { Stack } from "@mui/system";
+import { Container, Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import PhaseDetails from "./PhaseDetails";
 
 function Phases() {
     const [phaseName, setPhaseName] = useState("");
@@ -37,6 +40,8 @@ function Phases() {
     const [addSuccessMsg, setAddSuccessMsg] = useState(false);
     const [addErrorMsg, setAddErrorMsg] = useState(false);
     const [msg, setMsg] = useState("");
+    const [openNewPhase, setOpenNewPhase] = useState(true);
+    const [openPhase, setOpenPhase] = useState(false);
 
     let requiredOnlyNumbers = [total_testcases, automated_testcases, completed_testcases,functional_testcases,regression_testcases,saved_hours];
     let requiredOnlyAlphabets = [phase_name];
@@ -104,181 +109,210 @@ function Phases() {
   }, []);
 
   return (
-    <Grid container justify-content="flex-start" spacing={1}>
-      <Grid item container md={3}>
-        <Grid item container mt={2}>
-          <List sx={{ maxWidth: 500, width: "90%" }}>
-            <Grid item xs={2} sm={4} md={12}>
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar>
-                    <ImageIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Add New" secondary="Phase" />
-              </ListItem>
-              <Divider sx={{ mt: 1 }} />
-            </Grid>
-            {Array.from(Array(6)).map((_, index) => (
-              <Grid item xs={2} sm={4} md={12} key={index} mt={1}>
+    <>
+      <Grid container>
+        <Grid item container md={3}>
+          <Grid item container mt={0}>
+            <List sx={{ maxWidth: 500, width: "90%" }}>
+              <Grid item xs={2} sm={4} md={12}>
                 <ListItem button>
-                  <ListItemAvatar>
-                    <Avatar>
-                      <ImageIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={"Phase " + (index + 1)}
-                    secondary="Phase"
-                  />
+                  <ListItemButton
+                    onClick={() => {
+                      setOpenNewPhase(true);
+                      setOpenPhase(false);
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar>
+                        <ImageIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Add New" secondary="Phase" />
+                  </ListItemButton>
                 </ListItem>
-                {index != 5 ? <Divider sx={{ mt: 1 }} /> : ""}
+                <Divider sx={{ mt: 1 }} />
               </Grid>
-            ))}
-          </List>
-        </Grid>
-      </Grid>
-      <Grid item container md={1}>
-        <Divider orientation="vertical" />
-      </Grid>
-      <Grid item container md={8} mt={5}>
-        <Grid item md={2} justifyContent="flex-start">
-          <h3>Details</h3>
-        </Grid>
-        <Grid item container  direction="row"  spacing={2}>
-          <Grid item md={12}>
-            <Stack spacing={1}>
-              <label>
-                Phase name <span className="importantfield">*</span>
-              </label>
-              <input
-                type="text"
-                ref={phase_name}
-                onChange={(e) => setPhaseName(e.target.value)}
-                name="phaseName"
-                // placeholder=" Enter Phase Name"
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Total Testcases <span className="importantfield">*</span>
-              </label>
-              <input
-                type="text"
-                ref={total_testcases}
-                onChange={(e) => setTotalTestcases(e.target.value)}
-                name="totaltestcases"
-                // placeholder=" Enter Last Name"
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Automated Testcases <span className="importantfield">*</span>
-              </label>
-              <input
-                type="text"
-                ref={automated_testcases}
-                onChange={(e) => setAutomatedTestcases(e.target.value)}
-                name="automatedtestcases"
-                // placeholder=" Enter Unique Id only"
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Testcases Completed <span className="importantfield">*</span>
-              </label>
-              <input
-                type="text"
-                ref={completed_testcases}
-                onChange={(e) => setCompletedTestcases(e.target.value)}
-                name="completedtestcases"
-                // placeholder=" Enter password "
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Total Functional Testcases{" "}
-                <span className="importantfield">*</span>
-              </label>
-              <input
-                name="functionaltestcases"
-                ref={functional_testcases}
-                type="text"
-                onChange={(e) => setFunctionalTestcases(e.target.value)}
-                // placeholder=" Enter Email"
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Total Regression Testcases{" "}
-                <span className="importantfield">*</span>
-              </label>
-              <input
-                type="text"
-                ref={regression_testcases}
-                onChange={(e) => setRegressionTestcases(e.target.value)}
-                name="regressiontestcases"
-                // placeholder=" Enter password "
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Total No. Efforts Saved(hrs){" "}
-                <span className="importantfield">*</span>
-              </label>
-              <input
-                name="savedhours"
-                ref={saved_hours}
-                type="text"
-                onChange={(e) => setSavedHours(e.target.value)}
-                // placeholder=" Enter Email"
-              />
-            </Stack>
+              {Array.from(Array(6)).map((_, index) => (
+                <Grid item xs={2} sm={4} md={12} key={index} mt={1}>
+                  <ListItem button>
+                    <ListItemButton
+                      onClick={() => {
+                        setOpenNewPhase(false);
+                        setOpenPhase(true);
+                      }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar>
+                          <ImageIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={"Phase " + (index + 1)}
+                        secondary="Phase"
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  {index != 5 ? <Divider sx={{ mt: 1 }} /> : ""}
+                </Grid>
+              ))}
+            </List>
           </Grid>
         </Grid>
-        <Stack mt={2} spacing={2} direction="row-reverse">
-            <Button variant="contained" type="submit" onClick={submit}>
-              Save
-            </Button>
-            <Button
-              sx={{ color: "grey", textDecoration: "underline" }}
-              onClick={() => navigate("/BIReports")}
-            >
-              Cancel
-            </Button>
-          </Stack>
+        <Grid item container md={0.5}>
+          <Divider orientation="vertical" />
+        </Grid>
+        {openNewPhase ? (
+          <Grid item container md={8.5}>
+            <Grid item container direction="row" spacing={1} mt={4}>
+              <Grid item md={12}>
+                <Typography variant="h4">Details</Typography>
+                {/* <h3></h3> */}
+              </Grid>
+              <Grid item md={12}>
+                <Stack spacing={1}>
+                  <label>
+                    Phase name <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    ref={phase_name}
+                    onChange={(e) => setPhaseName(e.target.value)}
+                    name="phaseName"
+                    // placeholder=" Enter Phase Name"
+                  />
+                </Stack>
+              </Grid>
+              <Grid item md={6}>
+                <Stack spacing={1}>
+                  <label>
+                    Total Testcases <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    ref={total_testcases}
+                    onChange={(e) => setTotalTestcases(e.target.value)}
+                    name="totaltestcases"
+                    // placeholder=" Enter Last Name"
+                  />
+                </Stack>
+              </Grid>
+              <Grid item md={6}>
+                <Stack spacing={1}>
+                  <label>
+                    Automated Testcases{" "}
+                    <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    ref={automated_testcases}
+                    onChange={(e) => setAutomatedTestcases(e.target.value)}
+                    name="automatedtestcases"
+                    // placeholder=" Enter Unique Id only"
+                  />
+                </Stack>
+              </Grid>
+              <Grid item md={6}>
+                <Stack spacing={1}>
+                  <label>
+                    Testcases Completed{" "}
+                    <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    ref={completed_testcases}
+                    onChange={(e) => setCompletedTestcases(e.target.value)}
+                    name="completedtestcases"
+                    // placeholder=" Enter password "
+                  />
+                </Stack>
+              </Grid>
+              <Grid item md={6}>
+                <Stack spacing={1}>
+                  <label>
+                    Total Functional Testcases{" "}
+                    <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    name="functionaltestcases"
+                    ref={functional_testcases}
+                    type="text"
+                    onChange={(e) => setFunctionalTestcases(e.target.value)}
+                    // placeholder=" Enter Email"
+                  />
+                </Stack>
+              </Grid>
+              <Grid item md={6}>
+                <Stack spacing={1}>
+                  <label>
+                    Total Regression Testcases{" "}
+                    <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    ref={regression_testcases}
+                    onChange={(e) => setRegressionTestcases(e.target.value)}
+                    name="regressiontestcases"
+                    // placeholder=" Enter password "
+                  />
+                </Stack>
+              </Grid>
+              <Grid item md={6}>
+                <Stack spacing={1}>
+                  <label>
+                    Total No. Efforts Saved(hrs){" "}
+                    <span className="importantfield">*</span>
+                  </label>
+                  <input
+                    name="savedhours"
+                    ref={saved_hours}
+                    type="text"
+                    onChange={(e) => setSavedHours(e.target.value)}
+                    // placeholder=" Enter Email"
+                  />
+                </Stack>
+              </Grid>
+            </Grid>
+            <Grid item container spacing={1} direction="row-reverse">
+              <Grid item>
+                <Button variant="contained" type="submit" onClick={submit}>
+                  Save
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  sx={{ color: "grey", textDecoration: "underline" }}
+                  onClick={() => navigate("/BIReports")}
+                >
+                  Cancel
+                </Button>{" "}
+              </Grid>
+            </Grid>
+          </Grid>
+        ) : (
+          ""
+        )}
+        {openPhase ? <PhaseDetails/> : ""}
       </Grid>
+
       <SnackbarNotify
-          open={validationMsg}
-          close={setValidationMsg}
-          msg="Fill all the required fields"
-          severity="error"
-        />
-        <SnackbarNotify
-          open={addSuccessMsg}
-          close={setAddSuccessMsg}
-          msg={msg}
-          severity="success"
-        />
-        <SnackbarNotify
-          open={addErrorMsg}
-          close={setAddErrorMsg}
-          msg={msg}
-          severity="error"
-        />
-    </Grid>
+        open={validationMsg}
+        close={setValidationMsg}
+        msg="Fill all the required fields"
+        severity="error"
+      />
+      <SnackbarNotify
+        open={addSuccessMsg}
+        close={setAddSuccessMsg}
+        msg={msg}
+        severity="success"
+      />
+      <SnackbarNotify
+        open={addErrorMsg}
+        close={setAddErrorMsg}
+        msg={msg}
+        severity="error"
+      />
+    </>
   );
 }
 

@@ -23,7 +23,6 @@ function Settings() {
   const [validationMsg, setValidationMsg] = useState(false);
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
-  console.log(auth.info);
   const organizationId = auth.info.organization_id;
 
   let requiredsFields = [Url, Uuid];
