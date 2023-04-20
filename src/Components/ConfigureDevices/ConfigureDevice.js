@@ -134,12 +134,20 @@ const ConfigureDevice = () => {
               <IconButton
                 onClick={() => {
                   setSpecificationId(param.row.specificationId)
-                  navigate("/TestcaseExecution/UpdateDevice", {
+                  location.state.pathname == '/TestcaseExecution' &&   navigate("/TestcaseExecution/UpdateDevice", {
                     state: {
                       id: param.row.specificationId,
                       projectId: projectId,
                     },
                   });
+
+                  location.state.pathname == '/TestsetExecution' &&  navigate("/TestsetExecution/UpdateDevice", {
+                    state: {
+                      id: param.row.specificationId,
+                      projectId: projectId,
+                    },
+                  });
+                
                 }}
               >
                 <EditIcon style={{ color: "black" }} />
@@ -216,11 +224,19 @@ const ConfigureDevice = () => {
         alignItems="center">
       <Button
             variant="contained"
-            onClick={() =>   navigate("/TestcaseExecution/AddConfigureDevice", {
+            onClick={() =>  {
+              location.state.pathname == '/TestcaseExecution' && navigate("/TestcaseExecution/AddConfigureDevice", {
               state: {
                 projectId: projectId,
               },
-            })}
+            })
+
+            location.state.pathname == '/TestsetExecution' && navigate("/TestsetExecution/AddConfigureDevice", {
+              state: {
+                projectId: projectId,
+              },
+            })}}
+
           >
             Add Configuration
           </Button>
