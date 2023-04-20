@@ -30,6 +30,8 @@ function CreateTestCase() {
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
 
     function handleSubmit(e) {
+
+        
         if (validateFormbyName(["name", "desc"], "error")) {
             if (TCdata.testcase_id === undefined) {
                 CreateTestCaseService(TCdata).then(res => {
