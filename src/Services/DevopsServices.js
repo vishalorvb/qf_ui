@@ -125,7 +125,6 @@ export function getReleaseInstances(callback, project_id) {
   axios
     .get(`${baseUrl}/qfservice/release-management/${project_id}`)
     .then((res) => {
-      console.log(res?.data?.data);
       res?.data?.data !== null && callback(res?.data?.data);
     });
 }

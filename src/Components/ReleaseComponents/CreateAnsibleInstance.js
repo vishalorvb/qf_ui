@@ -28,7 +28,6 @@ export default function CreateAnsibleInstance() {
   });
   const [project, setProject] = useState([]);
   const navigate = useNavigate();
-  console.log(location);
 
   const schema = yup.object().shape({
     releaseName: yup.string().required(),
@@ -67,8 +66,6 @@ export default function CreateAnsibleInstance() {
       };
     });
   }, []);
-
-  console.log(location.pathname);
 
   useEffect(() => {
     location?.state?.id

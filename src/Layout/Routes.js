@@ -30,6 +30,9 @@ const CreateProject = lazy(() =>
 const Phases = lazy(() =>
   import("../Components/BIReports/Phases")
 );
+const Cycles = lazy(() =>
+  import("../Components/BIReports/Cycles")
+);
 const APIsTable = lazy(() =>
   import("../Components/Application/ApiApplication/APIsTable")
 );
@@ -298,6 +301,11 @@ export const Routes = [
   {
     path: "BIReports/phases",
     element: Phases,
+    accessRole: [2],
+  },
+  {
+    path: "BIReports/cycles",
+    element: Cycles,
     accessRole: [2],
   },
   {

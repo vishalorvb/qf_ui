@@ -2,6 +2,7 @@ import { Autocomplete, Button, Grid, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "../api/axios";
+import AccordionTemplate from "../CustomComponent/AccordionTemplate";
 import Table from "../CustomComponent/Table";
 import useAuth from "../hooks/useAuth";
 import useHead from "../hooks/useHead";
@@ -19,22 +20,21 @@ function BIReports() {
 
   const phaseHandler = (e) => {
     navigate("phases", {
-    //   state: {
-    //     param1: e,
-    //     param2: selectedProject?.project_id,
-    //   },
+      //   state: {
+      //     param1: e,
+      //     param2: selectedProject?.project_id,
+      //   },
     });
-
   };
 
   const cyclesHandler = (e) => {
-    // navigate("createTestset", {
-    //   state: {
-    //     param1: e,
-    //     param2: selectedProject?.project_id,
-    //     param3: selectedApplication?.module_id,
-    //   },
-    // });
+    navigate("cycles", {
+      //   state: {
+      //     param1: e,
+      //     param2: selectedProject?.project_id,
+      //     param3: selectedApplication?.module_id,
+      //   },
+    });
   };
 
   const columns = [
@@ -73,7 +73,6 @@ function BIReports() {
           `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}`
         )
         .then((resp) => {
-          console.log(resp?.data?.info);
           const testsets = resp?.data?.info ? resp?.data?.info : [];
           setTestset(testsets);
         });
@@ -101,7 +100,7 @@ function BIReports() {
           md={12}
         >
           <Grid item md={2}>
-            <label for="">
+            <label htmlFor="">
               Projects <span className="importantfield">*</span>
             </label>
             <Autocomplete
@@ -111,7 +110,7 @@ function BIReports() {
               options={project}
               value={selectedProject || null}
               sx={{ width: "100%" }}
-              getOptionLabel={(option) => option.project_name}
+              getOptionLabel={(option) => (option.project_name ? option.project_name : "")}
               onChange={(e, value) => {
                 setSelectedProject(value);
               }}
@@ -123,7 +122,7 @@ function BIReports() {
             />
           </Grid>
           <Grid item md={2}>
-            <label for="">
+            <label htmlFor="">
               Testsets <span className="importantfield">*</span>
             </label>
             <Autocomplete
@@ -133,7 +132,7 @@ function BIReports() {
               options={testset}
               value={selectedTestset || null}
               sx={{ width: "100%" }}
-              getOptionLabel={(option) => option.testset_name}
+              getOptionLabel={(option) => (option.testset_name ? option.testset_name : "")}
               onChange={(e, value) => {
                 setSelectedTestset(value);
               }}
@@ -144,14 +143,169 @@ function BIReports() {
               )}
             />
           </Grid>
-          <Grid item md={6} mt={3} ml={12}>
+          <Grid item md={6} mt={2.5} ml={3}>
             <Button variant="contained" type="submit">
               Add
             </Button>
           </Grid>
         </Grid>
       </Grid>
-      <div for="" style={{backgroundColor:"#009fee", padding:"10px"}}>DRIVEN_WEB </div>
+      <AccordionTemplate name="DRIVEN_WEB" defaultState={true}>
+        <Table
+          searchPlaceholder="Search Testset"
+          columns={columns}
+          //   rows={drivenWebTSObject}
+          rows={project}
+          getRowId={(row) => row.project_id}
+        />
+        <Stack mt={2} spacing={2} direction="column" mb={3}>
+          <p for="">
+            Total Phases {0}{" "}
+            <span
+              onClick={() => phaseHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+          <p for="">
+            Total Cycles {1}{" "}
+            <span
+              onClick={() => cyclesHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+        </Stack>
+      </AccordionTemplate>
+      <AccordionTemplate name="Automation Demo" defaultState={true}>
+        <Table
+          searchPlaceholder="Search Testset"
+          columns={columns}
+          //   rows={drivenWebTSObject}
+          rows={project}
+          getRowId={(row) => row.project_id}
+        />
+        <Stack mt={2} spacing={2} direction="column" mb={3}>
+          <p for="">
+            Total Phases {}{" "}
+            <span
+              onClick={() => phaseHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+          <p for="">
+            Total Cycles {}{" "}
+            <span
+              onClick={() => cyclesHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+        </Stack>
+      </AccordionTemplate>
+      <AccordionTemplate name="INF Driven" defaultState={true}>
+        <Table
+          searchPlaceholder="Search Testset"
+          columns={columns}
+          //   rows={drivenWebTSObject}
+          rows={project}
+          getRowId={(row) => row.project_id}
+        />
+        <Stack mt={2} spacing={2} direction="column" mb={3}>
+          <p for="">
+            Total Phases {}{" "}
+            <span
+              onClick={() => phaseHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+          <p for="">
+            Total Cycles {}{" "}
+            <span
+              onClick={() => cyclesHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+        </Stack>
+      </AccordionTemplate>
+      <AccordionTemplate name="UCX_DRIVEN_ADMIN_IOS_APP" defaultState={true}>
+        <Table
+          searchPlaceholder="Search Testset"
+          columns={columns}
+          //   rows={drivenWebTSObject}
+          rows={project}
+          getRowId={(row) => row.project_id}
+        />
+        <Stack mt={2} spacing={2} direction="column" mb={3}>
+          <p for="">
+            Total Phases {}{" "}
+            <span
+              onClick={() => phaseHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+          <p for="">
+            Total Cycles {}{" "}
+            <span
+              onClick={() => cyclesHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+        </Stack>
+      </AccordionTemplate>
+      <AccordionTemplate name="DRIVEN_IOS" defaultState={true}>
+        <Table
+          searchPlaceholder="Search Testset"
+          columns={columns}
+          //   rows={drivenWebTSObject}
+          rows={project}
+          getRowId={(row) => row.project_id}
+        />
+        <Stack mt={2} spacing={2} direction="column" mb={3}>
+          <p for="">
+            Total Phases {}{" "}
+            <span
+              onClick={() => phaseHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+          <p for="">
+            Total Cycles {}{" "}
+            <span
+              onClick={() => cyclesHandler()}
+              style={{ color: "#009fee", cursor: "pointer" }}
+            >
+              {" "}
+              Click
+            </span>
+          </p>
+        </Stack>
+      </AccordionTemplate>
+      <AccordionTemplate name="DRIVEN_ANDROID" defaultState={true}>
       <Table
         searchPlaceholder="Search Testset"
         columns={columns}
@@ -160,69 +314,28 @@ function BIReports() {
         getRowId={(row) => row.project_id}
       />
       <Stack mt={2} spacing={2} direction="column" mb={3}>
-        <p for="">Total Phases {0} <span onClick={() =>phaseHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-        <p for="">Total Cycles {1} <span onClick={() =>cyclesHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
+        <p for="">
+          Total Phases {}{" "}
+          <span
+            onClick={() => phaseHandler()}
+            style={{ color: "#009fee", cursor: "pointer" }}
+          >
+            {" "}
+            Click
+          </span>
+        </p>
+        <p for="">
+          Total Cycles {}{" "}
+          <span
+            onClick={() => cyclesHandler()}
+            style={{ color: "#009fee", cursor: "pointer" }}
+          >
+            {" "}
+            Click
+          </span>
+        </p>
       </Stack>
-      <div for="" style={{backgroundColor:"#009fee", padding:"10px"}}>Automation Demo </div>
-      <Table
-        searchPlaceholder="Search Testset"
-        columns={columns}
-        //   rows={drivenWebTSObject}
-        rows={project}
-        getRowId={(row) => row.project_id}
-      />
-      <Stack mt={2} spacing={2} direction="column" mb={3}>
-        <p for="">Total Phases {} <span onClick={() =>phaseHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-        <p for="">Total Cycles {} <span onClick={() =>cyclesHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-      </Stack>
-      <div for="" style={{backgroundColor:"#009fee", padding:"10px"}}>INF Driven </div>
-      <Table
-        searchPlaceholder="Search Testset"
-        columns={columns}
-        //   rows={drivenWebTSObject}
-        rows={project}
-        getRowId={(row) => row.project_id}
-      />
-      <Stack mt={2} spacing={2} direction="column" mb={3}>
-        <p for="">Total Phases {} <span onClick={() =>phaseHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-        <p for="">Total Cycles {} <span onClick={() =>cyclesHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-      </Stack>
-      <div for="" style={{backgroundColor:"#009fee", padding:"10px"}}>UCX_DRIVEN_ADMIN_IOS_APP</div>
-      <Table
-        searchPlaceholder="Search Testset"
-        columns={columns}
-        //   rows={drivenWebTSObject}
-        rows={project}
-        getRowId={(row) => row.project_id}
-      />
-      <Stack mt={2} spacing={2} direction="column" mb={3}>
-        <p for="">Total Phases {} <span onClick={() =>phaseHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-        <p for="">Total Cycles {} <span onClick={() =>cyclesHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-      </Stack>
-      <div for="" style={{backgroundColor:"#009fee", padding:"10px"}}>DRIVEN_IOS </div>
-      <Table
-        searchPlaceholder="Search Testset"
-        columns={columns}
-        //   rows={drivenWebTSObject}
-        rows={project}
-        getRowId={(row) => row.project_id}
-      />
-      <Stack mt={2} spacing={2} direction="column" mb={3}>
-        <p for="">Total Phases {} <span onClick={() =>phaseHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-        <p for="">Total Cycles {} <span onClick={() =>cyclesHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-      </Stack>
-      <div for="" style={{backgroundColor:"#009fee", padding:"10px"}}>DRIVEN_ANDROID </div>
-      <Table
-        searchPlaceholder="Search Testset"
-        columns={columns}
-        //   rows={drivenWebTSObject}
-        rows={project}
-        getRowId={(row) => row.project_id}
-      />
-      <Stack mt={2} spacing={2} direction="column" mb={3}>
-        <p for="">Total Phases {} <span onClick={() =>phaseHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-        <p for="">Total Cycles {} <span onClick={() =>cyclesHandler()} style={{ color: "#009fee", cursor: "pointer" }}> Click</span></p>
-      </Stack>
+      </AccordionTemplate>
     </>
   );
 }

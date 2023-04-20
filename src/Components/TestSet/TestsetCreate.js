@@ -41,14 +41,10 @@ function TestsetCreate() {
   const [selectedProject, setSelectedProject] = useState({});
   const [selectedApplication, setSelectedApplication] = useState({});
   const { auth } = useAuth();
-  console.log(auth.info);
   let requiredOnlyAlphabets = [testset_name, testset_desc];
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
   const navigate = useNavigate();
-  console.log(location);
-  // let ProjectId = location.state.param2;
-  // let ApplicationId = location.state.param3;
 
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
@@ -138,8 +134,8 @@ function TestsetCreate() {
   }, [applicationList]);
 
   useEffect(() => {
-    getTestcasesInProjects(setTestcaseObject, selectedProject?.project_id);
-    getTestcasesInProjects(setLeftTestcase, selectedProject?.project_id);
+    selectedProject?.project_id && getTestcasesInProjects(setTestcaseObject, selectedProject?.project_id);
+    selectedProject?.project_id && getTestcasesInProjects(setLeftTestcase, selectedProject?.project_id);
   }, [selectedProject?.project_id]);
 
   const submit = (e) => {
@@ -209,8 +205,6 @@ function TestsetCreate() {
     }
   };
 
-  console.log(leftTestcase);
-
   return (
     <div onClick={resetClassName}>
       <div className="datatable" style={{ marginTop: "15px" }}>
@@ -220,9 +214,9 @@ function TestsetCreate() {
               <label>Project <span className="importantfield">*</span></label>
               <Autocomplete
                 size="small"
-                value={selectedProject}
+                value={selectedProject || null}
                 options={projectsList}
-                getOptionLabel={(option) => option.project_name}
+                getOptionLabel={(option) => (option.project_name ? option.project_name : "")}
                 onChange={(e, value) => {
                   console.log(value);
                   setSelectedProject(value);
@@ -247,9 +241,9 @@ function TestsetCreate() {
               <label>Application <span className="importantfield">*</span></label>
               <Autocomplete
                 size="small"
-                value={selectedApplication}
+                value={selectedApplication || null}
                 options={applicationList}
-                getOptionLabel={(option) => option.module_name}
+                getOptionLabel={(option) => (option.module_name ? option.module_name : "" )}
                 onChange={(e, value) => {
                   console.log(value);
                   setSelectedApplication(value);
