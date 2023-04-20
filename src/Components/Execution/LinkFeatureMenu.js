@@ -6,10 +6,10 @@ import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReportPath from "./ReportPath";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-
-export default function LinkFeatureMenu({envId,runtimeVar,}) {
-  console.log(runtimeVar)
+export default function LinkFeatureMenu({runtimeVar,buildEnvId}) {
+  // console.log(runtimeVar)
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [reportPath, setReportPath] = React.useState(false);
@@ -24,7 +24,7 @@ export default function LinkFeatureMenu({envId,runtimeVar,}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log(location.pathname)
+  // console.log(location.pathname)
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function LinkFeatureMenu({envId,runtimeVar,}) {
         onClick={handleClick}
         variant="contained"
       >
-        + Features
+        + Features &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ArrowDropDownIcon/>
       </Button>
       <Menu
         id="basic-menu"
@@ -54,8 +54,8 @@ export default function LinkFeatureMenu({envId,runtimeVar,}) {
         </MenuItem>
         <MenuItem onClick={() => setReportPath(true)}>Report Path</MenuItem>
       </Menu>
-      <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={envId}  runtimeVar = {runtimeVar}/>
-      <ReportPath open={reportPath} close={setReportPath}/>
+      <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={buildEnvId}  runtimeVar = {runtimeVar}/>
+      <ReportPath open={reportPath} close={setReportPath} buildEnvId={buildEnvId}/>
     </>
   );
 }

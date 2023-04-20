@@ -24,13 +24,12 @@ import { TCdata } from "./CreateTestCase";
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
   const [snack, setSnack] = useState(false);
-
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [selectedApplication, setSelectedApplication] = useState(null);
   let [project, setProject] = useState([]);
   let [application, setApplication] = useState([]);
   const navigate = useNavigate();
   const { auth } = useAuth();
+  const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+
   const columns = [
     {
       field: "name",
@@ -43,12 +42,12 @@ export default function TestCases() {
           <div
             style={{ color: "#009fee", cursor: "pointer" }}
             onClick={() =>
-              selectedApplication?.module_type === 1
+              globalApplication?.module_type === 1
                 ? navigate("apidatasets", {
                   state: {
                     applicationId: param.row.module_id,
                     testcaseId: param.row.testcase_id,
-                    projectId: selectedProject?.project_id,
+                    projectId: globalProject?.project_id,
                     testcaseName: param.row.name
                   },
                 })
@@ -56,7 +55,7 @@ export default function TestCases() {
                   state: {
                     applicationId: param.row.module_id,
                     testcaseId: param.row.testcase_id,
-                    projectId: selectedProject?.project_id,
+                    projectId: globalProject?.project_id,
                     testcaseName: param.row.name
                   },
                 })
@@ -96,8 +95,8 @@ export default function TestCases() {
                   if (res) {
                     GetTestCase(
                       setTestcases,
-                      selectedProject?.project_id,
-                      selectedApplication?.module_id
+                      globalProject?.project_id,
+                      globalApplication?.module_id
                     );
                   }
                 });
@@ -112,7 +111,6 @@ export default function TestCases() {
     },
   ];
 
-  const { setHeader } = useHead();
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -138,34 +136,41 @@ export default function TestCases() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    setSelectedProject(project[0]);
+    if (globalProject == null) {
+      setglobalProject(project[0]);
+    }
+
   }, [project]);
   useEffect(() => {
-    if (selectedProject !== null && selectedProject?.project_id !== undefined ) {
-      getApplicationOfProject(setApplication, selectedProject?.project_id);
+    if (globalProject !== null && globalProject?.project_id !== undefined) {
+      getApplicationOfProject(setApplication, globalProject?.project_id);
     }
-  }, [selectedProject]);
+  }, [globalProject]);
   useEffect(() => {
-    setSelectedApplication(application[0]);
-    if (selectedApplication?.module_id !== undefined) {
+ 
+      setglobalApplication(application[0]);
+
+    if (globalApplication?.module_id !== undefined) {
       GetTestCase(
         setTestcases,
-        selectedProject?.project_id,
-        selectedApplication?.module_id
+        globalProject?.project_id,
+        globalApplication?.module_id
       );
     }
 
   }, [application]);
   useEffect(() => {
-    if (selectedApplication?.module_id !== undefined) {
+    if (globalApplication?.module_id !== undefined) {
       GetTestCase(
         setTestcases,
-        selectedProject?.project_id,
-        selectedApplication?.module_id
+        globalProject?.project_id,
+        globalApplication?.module_id
       );
     }
-
-  }, [selectedApplication]);
+  }, [globalApplication]);
+  useEffect(() => {
+    console.log(globalApplication)
+  }, [globalApplication])
   return (
     <>
       <SnackbarNotify
@@ -180,17 +185,17 @@ export default function TestCases() {
         <div className="intable">
           <Grid item container spacing={2} justifyContent="flex-end">
             <Grid item>
-              <label for="">Projects</label>
+              <label htmlFor="">Projects</label>
               <Autocomplete
                 disablePortal
                 disableClearable
                 id="project_id"
                 options={project}
-                value={selectedProject || null}
+                value={globalProject || null}
                 sx={{ width: "100%" }}
                 getOptionLabel={(option) => option.project_name}
                 onChange={(e, value) => {
-                  setSelectedProject(value);
+                  setglobalProject(value);
                 }}
                 renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
@@ -200,17 +205,17 @@ export default function TestCases() {
               />
             </Grid>
             <Grid item>
-              <label for="">Application</label>
+              <label htmlFor="">Application</label>
               <Autocomplete
                 disablePortal
                 disableClearable
                 id="model_id"
                 options={application}
-                value={selectedApplication || null}
+                value={globalApplication || null}
                 sx={{ width: "100%" }}
                 getOptionLabel={(option) => option.module_name}
                 onChange={(e, value) => {
-                  setSelectedApplication(value);
+                  setglobalApplication(value);
                 }}
                 renderInput={(params) => (
                   <div ref={params.InputProps.ref}>

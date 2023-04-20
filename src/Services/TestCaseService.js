@@ -144,7 +144,6 @@ export async function deleteDataset(datasetId) {
 
 
 export async function CreateTestCaseService(data) {
-  console.log("Calling createTestCaseService")
   let x = await axios({
     method: "post",
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
@@ -170,7 +169,8 @@ export async function DeleteTestCase(testcaseId) {
 export function GetTestCase(callback, projectId, applicationId) {
   axios
     .get(
-      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${applicationId}&project_id=${projectId}`
+      // `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${applicationId}&project_id=${projectId}`
+      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
     )
     .then((resp) => {
       const testcases = resp?.data?.info ? resp?.data?.info : [];

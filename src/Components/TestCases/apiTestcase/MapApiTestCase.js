@@ -93,7 +93,6 @@ function MapApiTestCase() {
     };
 
     axios.post(`/qfservice/addApisToTestcase`, testcasedata).then((resp) => {
-      console.log(resp);
       resp.data.error === null && setSuccess(true);
       setTimeout(() => {
         resp.data.error === null && navigate("/Testcase/Recent");
@@ -102,7 +101,6 @@ function MapApiTestCase() {
   }
 
   function handleClick() {
-    console.log("called");
     if (preSelectedElement.length === 0) {
       setError(true);
       return;

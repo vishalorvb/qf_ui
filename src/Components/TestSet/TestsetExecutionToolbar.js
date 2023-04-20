@@ -30,6 +30,7 @@ function TestsetExecutionToolbar({
   selectedtestcases,
   testsetId,
   selecteddatasets,
+  frameworkType
 }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -331,7 +332,7 @@ function TestsetExecutionToolbar({
           />
         </Grid>
         <Grid item md={2}>
-          <FeatureMenu testsetId={testsetId} envId={buildEnvId} runtimeVar={(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""} />
+          <FeatureMenu frameworkType={frameworkType} projectId={projectId} testsetId={testsetId} envId={buildEnvId} runtimeVar={(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""} />
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">

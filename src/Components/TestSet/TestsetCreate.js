@@ -29,6 +29,8 @@ function TestsetCreate() {
   const location = useLocation();
   const [testsetName, setTestsetName] = useState("");
   const [testsetDesc, setTestsetDesc] = useState("");
+  const [command, setCommand] = useState("");
+
   const testset_name = useRef();
   const testset_desc = useRef();
   const [leftTestcase, setLeftTestcase] = useState([]);
@@ -159,14 +161,27 @@ function TestsetCreate() {
           }
         }
       }
+      if((selectedApplication?.module_type) == 19){
       var data = {
         testset_name: "TS_" + testsetName,
         testset_desc: "TS_" + testsetDesc,
         project_id: selectedProject?.project_id,
         testset_id: 0,
         module_id: selectedApplication?.module_id,
-        testcases_list: tcList,
+        cucumber_tags:command,
+        testcases_list: []
       };
+    }
+      else{
+        var data = {
+          testset_name: "TS_" + testsetName,
+          testset_desc: "TS_" + testsetDesc,
+          project_id: selectedProject?.project_id,
+          testset_id: 0,
+          module_id: selectedApplication?.module_id,
+          testcases_list: tcList,
+        };
+      }
       console.log(data);
 
       axiosPrivate
@@ -176,7 +191,7 @@ function TestsetCreate() {
           setTSCreateSuccessMsg(true);
           setTimeout(() => {
             setTSCreateSuccessMsg(false);
-            navigate("/testset/Recent");
+            navigate("/Testset/Recent");
           }, 3000);
           setTestsetName("");
           setTestsetDesc("");
@@ -277,76 +292,92 @@ function TestsetCreate() {
               />
             </Stack>
           </Grid>
-          <Grid item xs={4} sm={4} md={5}>
-            <label>Select Testcase:</label>
-            <select id="left" multiple style={{ padding: "10px", marginTop:"10px" }}>
-              {leftTestcase?.length > 0
-                ? leftTestcase
-                    .filter((ts) => ts.datasets != null)
-                    .map((ts) => (
-                      <option value={ts.testcase_id}>{ts.name}</option>
-                    ))
-                : []}
-            </select>
-          </Grid>
-          <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "30px" }}>
-            <Button
-              sx={{ my: 0.5 }}
-              variant="outlined"
-              size="small"
-              onClick={handleSelect}
-              aria-label="move all right"
-            >
-              ≫
-            </Button>
-            <Button
-              sx={{ my: 0.5 }}
-              variant="outlined"
-              size="small"
-              onClick={handleUnselect}
-              aria-label="move all right"
-            >
-              ≪
-            </Button>
-          </Grid>
-          <Grid item xs={4} sm={4} md={6}>
-            <label>Selected Testcases:</label>
-            <select id="right" multiple style={{ padding: "10px", marginTop:"10px"  }}>
-              {rightTestcase.length > 0
-                ? rightTestcase
-                    .filter((ts) => ts.datasets != null)
-                    .map((ts) => (
-                      <option value={ts.testcase_id}>{ts.name}</option>
-                    ))
-                : []}
-            </select>
-          </Grid>
+          {selectedApplication?.module_type == 19 ?
+            < Grid item md={6}>
+          <Stack spacing={1}>
+            <label>Command <span className="importantfield">*</span></label>
+            <input
+              // ref={command}
+              type="text"
+              name=""
+              style={{ width: "50%vs" , height:100}}
+              
+              placeholder="command"
+              onChange={(e) => setCommand(e.target.value)}
+            />
+          </Stack>
+        </Grid>: <>
+        <Grid item xs={4} sm={4} md={5}>
+          <label>Select Testcase:</label>
+          <select id="left" multiple style={{ padding: "10px", marginTop: "10px" }}>
+            {leftTestcase?.length > 0
+              ? leftTestcase
+                .filter((ts) => ts.datasets != null)
+                .map((ts) => (
+                  <option value={ts.testcase_id}>{ts.name}</option>
+                ))
+              : []}
+          </select>
         </Grid>
-        <Stack mt={2} spacing={2} direction="row-reverse">
-          <Button variant="contained" type="submit" onClick={submit}>
-            Save & Continue
+        <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "30px" }}>
+          <Button
+            sx={{ my: 0.5 }}
+            variant="outlined"
+            size="small"
+            onClick={handleSelect}
+            aria-label="move all right"
+          >
+            ≫
           </Button>
           <Button
-            sx={{ color: "grey", textDecoration: "underline" }}
-            onClick={() => navigate("/testset")}
+            sx={{ my: 0.5 }}
+            variant="outlined"
+            size="small"
+            onClick={handleUnselect}
+            aria-label="move all right"
           >
-            Cancel
+            ≪
           </Button>
-        </Stack>
-        <SnackbarNotify
-          open={validationMsg}
-          close={setValidationMsg}
-          msg="Fill all the required fields"
-          severity="error"
-        />
-        <SnackbarNotify
-          open={TSCreateSuccessMsg}
-          close={setTSCreateSuccessMsg}
-          msg="Testset Created successfully"
-          severity="success"
-        />
-      </div>
+        </Grid>
+        <Grid item xs={4} sm={4} md={6}>
+          <label>Selected Testcases:</label>
+          <select id="right" multiple style={{ padding: "10px", marginTop: "10px" }}>
+            {rightTestcase.length > 0
+              ? rightTestcase
+                .filter((ts) => ts.datasets != null)
+                .map((ts) => (
+                  <option value={ts.testcase_id}>{ts.name}</option>
+                ))
+              : []}
+          </select>
+        </Grid> </>
+        }
+      </Grid>
+      <Stack mt={2} spacing={2} direction="row-reverse">
+        <Button variant="contained" type="submit" onClick={submit}>
+          Save & Continue
+        </Button>
+        <Button
+          sx={{ color: "grey", textDecoration: "underline" }}
+          onClick={() => navigate("/testset")}
+        >
+          Cancel
+        </Button>
+      </Stack>
+      <SnackbarNotify
+        open={validationMsg}
+        close={setValidationMsg}
+        msg="Fill all the required fields"
+        severity="error"
+      />
+      <SnackbarNotify
+        open={TSCreateSuccessMsg}
+        close={setTSCreateSuccessMsg}
+        msg="Testset Created successfully"
+        severity="success"
+      />
     </div>
+    </div >
   );
 }
 
