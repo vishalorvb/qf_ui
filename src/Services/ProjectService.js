@@ -121,7 +121,13 @@ export function getUsers(callback,orgid,ssoid,token){
 
 export function getUserOfProject(callback,projectId){
   axios.get(`${baseUrl}/qfservice/projects/getUsersDetailsByProjectId?project_id=${projectId}`).then(res=>{
-    console.log(res.data.data)
     callback(res.data.data);
+  })
+}
+
+export function getJiraProject(callback,url,username,password,itstype,orgname,orgid){
+  axios.post(`${baseUrl}/qfservice/loadJiraProjects?url=${url}&userName=${username}&password=${password}&its_type=${itstype}&org_name=${orgname}&orgId=${orgid}`).then(res=>{
+    console.log(res.data.info)
+    callback(res.data.info)
   })
 }

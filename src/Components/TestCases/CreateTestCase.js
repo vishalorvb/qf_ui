@@ -28,7 +28,6 @@ function CreateTestCase() {
     const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
 
-    console.log(globalApplication?.module_type)
     function handleSubmit(e) {
         if ((globalApplication?.module_type) == 19) {
             setReportFailMsg(true);
@@ -105,7 +104,7 @@ function CreateTestCase() {
         }
     }, [globalProject])
     useEffect(() => {
-        setglobalApplication(application[0])
+            setglobalApplication(application[0])       
     }, [application])
     useEffect(() => {
 
@@ -120,6 +119,7 @@ function CreateTestCase() {
             }
         };
     }, [])
+
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
