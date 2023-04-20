@@ -8,16 +8,15 @@ import { SelectElement, useForm } from 'react-hook-form-mui';
 import axios from '../../api/axios';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import AddTestSetLinkProject from './AddTestSetLinkProject';
 import ConfirmPop from '../../CustomComponent/ConfirmPop';
-import { postVal } from './AddTestSetLinkProject';
 import { postValue } from './EditTestLinkProject';
 import LinkFeatureMenu from './LinkFeatureMenu';
 import useHead from '../../hooks/useHead';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
-import { Navigate } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import ProjectnApplicationSelector from '../ProjectnApplicationSelector';
 
 
 
@@ -25,31 +24,35 @@ import { useLocation } from "react-router-dom";
 const LinkProjectExecution = () => {
   const [execLoc, setExecLoc] = useState("local");
   const [execEnvList, setExecEnvList] = useState([]);
-  const [openTestsetPopup, setOpenTestsetPopup] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const [testsetEditData, setTestsetEditData] = useState();
+  const [snack, setSnack] = useState(false)
   const [testsetData, setTestsetData] = useState([]);
   const [selectedTestsetData, setSelectedTestsetData] = useState([]);
   const [specificationId, setSpecificationId] = useState();
   const [successDelete, setSuccessDelete] = useState(false);
-  const { setHeader } = useHead();
+  const { setHeader ,globalProject,setglobalProject,globalApplication,setglobalApplication} = useHead();
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [buildEnvId, setBuildEnvId] = useState()
   const navigate = useNavigate();
   const location = useLocation();
+  const [remoteAPiFails, setRemoteAPiFails] = useState(false);
+  const [jarConnected, setJarConnected] = useState(false);
+  const [clientInactive, setClientInactive] = useState(false);
+  const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
+  // coselectedProjectnst [, setglobalProject] = useState({
+  //   project_name: "Project",
+  // });
+  // const [globalApplication, setglobalApplication] = useState({});
   let projectId = location.state?.projectId;
   let applicationId = location.state?.applicationId;
-
-
-  console.log(location.state?.projectId);
-  console.log(location.state?.applicationId);
-
+  const { auth } = useAuth();
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
     browser: yup.array().required(),
     commitMsg: execLoc !== "local" && yup.string().required(),
   });
+  console.log(applicationId)
   const {
     control,
     handleSubmit,
@@ -58,6 +61,11 @@ const LinkProjectExecution = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+
+  let user_id = (auth?.userId)
+
+  console.log(execLoc);
 
   useEffect(() => {
     setHeader((ps) => {
@@ -78,25 +86,20 @@ const LinkProjectExecution = () => {
 
 
   useEffect(() => {
-    getEnvironment()
+    getExecutionEnvironment()
   }, [projectId, applicationId])
 
-  function getEnvironment() {
+  function getExecutionEnvironment() {
     applicationId !== undefined &&
       axios
         .get(
-          `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
+          `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
         )
         .then((resp) => {
-          setBuildEnvId(resp?.data?.data[0]?.id)
-          const buildEnv = resp?.data?.data;
-
-          setBuildEnvList(() => {
-            return buildEnv.map((be) => {
-              return {
-                id: be.id + "&" + be.name + "&" + be.runtime_variables,
-                label: be.name,
-              };
+          const execEnv = resp?.data?.data;
+          setExecEnvList(() => {
+            return execEnv.map((ee) => {
+              return { id: ee.value, label: ee.name };
             });
           });
         });
@@ -115,7 +118,10 @@ const LinkProjectExecution = () => {
       )
       .then((resp) => {
         // const testsets = resp?.data?.info
-        setTestsetData(resp?.data?.info);
+        // console.log(resp.data.info)
+        if (resp.data.info != null) {
+          setTestsetData(resp?.data?.info);
+        }
       });
   }
 
@@ -166,7 +172,7 @@ const LinkProjectExecution = () => {
                   console.log(param.row)
                   postValue.testset_id = param.row.testset_id;
                   postValue.testset_name = param.row.testset_name;
-                  postValue.testset_desc= param.row.testset_desc;
+                  postValue.testset_desc = param.row.testset_desc;
                   postValue.cucumber_tags = param.row.cucumber_tags;
                   postValue.module_id = param.row.module_id;
                   postValue.project_id = location.state?.projectId
@@ -223,20 +229,77 @@ const LinkProjectExecution = () => {
       });
     setConfirm(false);
   }
+
   function LinkExecute(params) {
+    if (selectedTestsetData?.length != 0) {
+      console.log(params?.executionLoc);
+
+      const executionData = {
+        testset_id: selectedTestsetData,
+        run_environment: "jenkins",
+      }
+      // console.log(executionData)
+      axios
+        .post(`/qfservice/ExecuteLinkTestset?user_id=${user_id}&project_id=${projectId}`, executionData)
+        .then((resp) => {
+          resp?.status === "FAIL" && setRemoteAPiFails(true);
+          execLoc === "jenkins"
+            ? resp?.status === "SUCCESS" &&
+            axios
+              .postForm(`http://127.0.0.1:8765/connect`, {
+                data: resp?.data?.info,
+                jarName: `code`,
+              })
+              .then((resp) => {
+                setJarConnected(true);
+              })
+              .catch((err) => {
+                err.message === "Network Error" && setClientInactive(true);
+              })
+            : setRemoteExecutionsuccess(true);
+        });
+    }
+    else {
+      setSnack(true)
+      setTimeout(() => {
+        setSnack(false)
+      }, 3000);
+    }
 
   }
-  console.log(projectId);
-  console.log(applicationId);
+
+  
 
   return (
     <>
+    {
+    globalApplication?.module_type != 19 ?
+    // navigate(-1) : ""
+    ""
+    :""
+
+  }
+      <Grid container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        spacing="1"
+        mt={1}>
+        <Grid item md={6} >
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
+        </Grid></Grid>
       <Grid container
         direction="row"
         justifyContent="space-between"
         alignItems="center"
         spacing="1"
         mt={1}>
+
         <Grid item md={8} container spacing={1} display="flex">
           <Grid item md={2}>
             <SelectElement
@@ -248,34 +311,12 @@ const LinkProjectExecution = () => {
               onChange={(e) => setExecLoc(e)}
               options={execEnvList}
             /></Grid>
-          <Grid item md={2}>
-            <Stack direction="column">
-              <SelectElement
-                name="buildenvName"
-                label="build env. Name"
-                size="small"
-                fullWidth
-                control={control}
-                options={buildEnvList}
-              ></SelectElement>
-              <h5
-                style={{ cursor: "pointer", color: "#009fee", marginTop: "3px" }}
-                onClick={() => {
-                  Navigate("/TestcaseExecution/AddEnvironment", {
-                    state: { projectId: projectId, applicationId: applicationId },
-                  });
-                }}
-              >
-                + Add Environment
-              </h5>
-            </Stack>
-          </Grid>
           <Grid item md={2}> <LinkFeatureMenu buildEnvId={buildEnvId} /> </Grid>
           <Grid item md={2}>
             <Button fullWidth variant="contained"
               onClick={() => {
                 navigate("/TestsetExecution/LinkProjectExecution/AddLinkTestset", {
-                  state: { projectId: location.state?.projectId, applicationId: applicationId },
+                  state: { projectId: projectId, applicationId: applicationId },
                 });
               }}
               style={{ backgroundColor: "#009fee" }}
@@ -310,6 +351,12 @@ const LinkProjectExecution = () => {
         close={setSuccessDelete}
         msg="Deleted Testset successfully"
         severity="success"
+      />
+      <SnackbarNotify
+        open={snack}
+        close={setSnack}
+        msg="Please select Testset."
+        severity="error"
       />
     </>
 

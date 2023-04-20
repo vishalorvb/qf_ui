@@ -26,16 +26,12 @@ export let postValue = { ...initialValue };
 
 function EditTestLinkProject() {
     console.log(postValue)
-    const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
+    const [reportEditSuccessMsg, setEditReportSuccessMsg] = useState(false);
     const [reportFailMsg, setReportFailMsg] = useState(false);
     const [reportExistingFailMsg, setReportExistingFailMsg] = useState(false);
     const location = useLocation();
     const { setHeader } = useHead();
-
     const navigate = useNavigate();
-
-
-    console.log(postValue)
 
     useEffect(() => {
         setHeader((ps) => {
@@ -44,53 +40,35 @@ function EditTestLinkProject() {
                 name: "Edit Testset ",
             };
         });
-        // return () => {
-        //   setHeader((ps) => {
-        //     return {
-        //       ...ps,
-        //       name: "Testset Execution",
-        //     };
-        //   });
-        // }
     }, []);
     const onSubmitHandler = (params) => {
-        console.log(postValue)
-        
-            // postValue.testset_id = location.state.param?.testset_id;
-            // postValue.module_id = location.state?.applicationId;
-            // postValue.project_id = location.state?.projectId;
-            axios.post(`http://10.11.12.243:8083/qfservice/webtestset/createWebTestset`, postValue)
-                .then((resp) => {
-                    if (resp?.data?.status === "SUCCESS") {
-                        setReportSuccessMsg(true);
-                        setTimeout(() => {
-                            setReportSuccessMsg(false);
-                            // getBuilEnvironment();
-                        }, 3000);
-                        navigate(-1);
-                    }
-                    else if (resp?.data?.message == "Testset already exists.") {
-                        setReportExistingFailMsg(true);
-                        setTimeout(() => {
-                            setReportExistingFailMsg(false);
-                        }, 3000);
 
-                    }
-                    else {
-                        setReportFailMsg(true);
-                        setTimeout(() => {
-                            setReportFailMsg(false);
-                        }, 3000);
-
-                    }
-                });
-        
+        axios.post(`http://10.11.12.243:8083/qfservice/webtestset/createWebTestset`, postValue)
+            .then((resp) => {
+                if (resp?.data?.status === "SUCCESS") {
+                    setEditReportSuccessMsg(true);
+                    setTimeout(() => {
+                        setEditReportSuccessMsg(false);
+                    }, 3000);
+                    navigate(-1);
+                }
+                else if (resp?.data?.message == "Testset already exists.") {
+                    setReportExistingFailMsg(true);
+                    setTimeout(() => {
+                        setReportExistingFailMsg(false);
+                    }, 3000);
+                    navigate(-1);
+                }
+                else {
+                    setReportFailMsg(true);
+                    setTimeout(() => {
+                        setReportFailMsg(false);
+                    }, 3000);
+                    navigate(-1);
+                }
+            })
     };
-    // useEffect(() => {
-    //     return () => {
-    //         postValue = { ...initialValue }
-    //     }
-    // }, [])
+
 
 
     return (
@@ -115,10 +93,10 @@ function EditTestLinkProject() {
                     id="outlined-basic"
                     variant="outlined"
                     placeholder="Description"
-                    defaultValue={ postValue.testset_desc}
+                    defaultValue={postValue.testset_desc}
                     sx={{ marginTop: "15px", width: 500 }}
                     name="testset_desc"
-                    onChange={(e) => { postValue.testset_desc = "TS_" + e.target.value }}
+                    onChange={(e) => { postValue.testset_desc =  e.target.value }}
                 /></Grid>
                 <Grid xs={2} sx={{ marginTop: "30px" }}> Command </Grid>
                 <Grid xs={9}>
@@ -131,7 +109,6 @@ function EditTestLinkProject() {
                         onChange={(e) => { postValue.cucumber_tags = e.target.value }}
                     />
                 </Grid>
-            </Grid>
             <Grid container justifyContent="flex-end" justifyItems="center" mt={1}>
                 <Grid xs={1.3}>
                     <Button
@@ -143,17 +120,18 @@ function EditTestLinkProject() {
                         Update
                     </Button>
                 </Grid>
+                </Grid>
             </Grid>
             <SnackbarNotify
-                open={reportSuccessMsg}
-                close={setReportSuccessMsg}
-                msg="Created successfully"
+                open={reportEditSuccessMsg}
+                close={setEditReportSuccessMsg}
+                msg="Updated successfully"
                 severity="success"
             />
             <SnackbarNotify
                 open={reportFailMsg}
                 close={setReportFailMsg}
-                msg="No Created."
+                msg="Not Updated."
                 severity="error"
             />
             <SnackbarNotify

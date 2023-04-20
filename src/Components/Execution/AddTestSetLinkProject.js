@@ -33,8 +33,6 @@ function AddTestSetLinkProject() {
 
     const navigate = useNavigate();
 
- 
-console.log(location.state.param.testset_desc)
 
     useEffect(() => {
         setHeader((ps) => {
@@ -102,7 +100,7 @@ console.log(location.state.param.testset_desc)
                             placeholder="testset_name"
                             sx={{ width: 500 }}
                             name="testset_name"
-                            defaultValue={"testset_name"}
+                            // defaultValue={"testset_name"}
                             onChange={(e) => { postVal.testset_name = "TS_" + e.target.value }}
                         /></Grid>
                         <Grid xs={2} sx={{ marginTop: "30px" }}> Description </Grid>
@@ -112,17 +110,17 @@ console.log(location.state.param.testset_desc)
                             id="outlined-basic"
                             variant="outlined"
                             placeholder="Description"
-                            defaultValue={"testset_desc"}
+                            // defaultValue={"testset_desc"}
                             sx={{ marginTop: "15px", width: 500 }}
                             name="testset_desc"
-                            onChange={(e) => { postVal.testset_desc = "TS_" + e.target.value }}
+                            onChange={(e) => { postVal.testset_desc =  e.target.value }}
                         /></Grid>
                         <Grid xs={2} sx={{ marginTop: "30px" }}> Command </Grid>
                         <Grid xs={9}>
                             <TextareaAutosize
                                 aria-label="minimum height"
                                 minRows={5}
-                                defaultValue={"command"}
+                               placeholder="Command"
                                 name="cucumber_tags"
                                 style={{ width: 500, height: 300, marginTop: "10px", padding: "10px" }}
                                 onChange={(e) => { postVal.cucumber_tags = e.target.value }}
