@@ -9,6 +9,7 @@ import { createformData } from "./ProjectData";
 import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
+
 import {
   getUsers,
   createProject,
@@ -53,6 +54,7 @@ function CreateProject() {
   let [leftApplication, setLeftApplication] = useState([]);
   let [rightApplication, setRightApplication] = useState([]);
   let [applications, setApplications] = useState([]);
+  let [jiraProject,setJiraproject] = useState(null);
 
   function getUserlist() {
     let userlist = [];
@@ -469,10 +471,10 @@ function CreateProject() {
               defaultValue={createformData.issueTrackerType}
                 onChange={(e) => {
                   createformData.issueTrackerType = e.target.value;
+                
                 }}
                 name="issueTracker"
               >
-                <option value="">Select</option>
                 <option value={1}>Jira</option>
                 <option value={2}>Azure</option>
               </select>
@@ -504,10 +506,10 @@ function CreateProject() {
                 }}
               />
             </Grid>
-            <Grid item xs={4} sm={4} md={4}>
+          { jiraProject != null && <Grid item xs={4} sm={4} md={4}>
               <label>Projects :</label>
               <input type="text" />
-            </Grid>
+            </Grid>}
             <Grid item xs={4} sm={4} md={4} justifyContent="center">
               <br />
               <Button variant="contained">

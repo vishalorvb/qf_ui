@@ -28,8 +28,8 @@ export default function TestCases() {
   let [application, setApplication] = useState([]);
   const navigate = useNavigate();
   const { auth } = useAuth();
-  const { setHeader,globalProject,setglobalProject,globalApplication,setglobalApplication } = useHead();
-  
+  const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+
   const columns = [
     {
       field: "name",
@@ -136,18 +136,20 @@ export default function TestCases() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    if(globalProject == null){
+    if (globalProject == null) {
       setglobalProject(project[0]);
     }
-    
+
   }, [project]);
   useEffect(() => {
-    if (globalProject !== null && globalProject?.project_id !== undefined ) {
+    if (globalProject !== null && globalProject?.project_id !== undefined) {
       getApplicationOfProject(setApplication, globalProject?.project_id);
     }
   }, [globalProject]);
   useEffect(() => {
-    setglobalApplication(application[0]);
+ 
+      setglobalApplication(application[0]);
+
     if (globalApplication?.module_id !== undefined) {
       GetTestCase(
         setTestcases,
@@ -165,8 +167,10 @@ export default function TestCases() {
         globalApplication?.module_id
       );
     }
-
   }, [globalApplication]);
+  useEffect(() => {
+    console.log(globalApplication)
+  }, [globalApplication])
   return (
     <>
       <SnackbarNotify

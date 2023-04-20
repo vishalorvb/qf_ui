@@ -29,7 +29,6 @@ function CreateTestCase() {
     const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
 
-    console.log(selectedProject)
     function handleSubmit(e) {
         if (validateFormbyName(["name", "desc"], "error")) {
             if (TCdata.testcase_id === undefined) {
@@ -99,7 +98,7 @@ function CreateTestCase() {
         }
     }, [globalProject])
     useEffect(() => {
-        setglobalApplication(application[0])
+            setglobalApplication(application[0])       
     }, [application])
     useEffect(() => {
 
@@ -114,6 +113,7 @@ function CreateTestCase() {
             }
         };
     }, [])
+
     return (
         <Grid item container spacing={2} justifyContent="left">
             <Grid item md={4}>
