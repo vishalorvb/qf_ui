@@ -40,7 +40,6 @@ export default function ProjectnApplicationSelector({
       alignItems="center"
       spacing={2}
       mb={1}
-      
     >
       <Autocomplete
         disablePortal
@@ -49,7 +48,7 @@ export default function ProjectnApplicationSelector({
         options={projectsList}
         value={selectedProject || null}
         sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.project_name}
+        getOptionLabel={(option) => option.project_name ?? ""}
         onChange={(e, value) => {
           setSelectedProject(value);
         }}
@@ -57,25 +56,23 @@ export default function ProjectnApplicationSelector({
           <TextField {...params} label="Projects" size="small" />
         )}
       />
-     
-        <Autocomplete
-          disablePortal
-          disableClearable
-          id="application_id"
-          options={applicationList}
-          value={selectedApplication || null}
-          sx={{ width: "100%" }}
-          getOptionLabel={(option) => option.module_name}
-          onChange={(e, value) => {
-            // console.log(value);
-            setSelectedApplication(value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Applications" size="small" />
-          )}
-        />
-      
-      
+
+      <Autocomplete
+        disablePortal
+        disableClearable
+        id="application_id"
+        options={applicationList}
+        value={selectedApplication || null}
+        sx={{ width: "100%" }}
+        getOptionLabel={(option) => option.module_name ?? ""}
+        onChange={(e, value) => {
+          // console.log(value);
+          setSelectedApplication(value);
+        }}
+        renderInput={(params) => (
+          <TextField {...params} label="Applications" size="small" />
+        )}
+      />
     </Stack>
   );
 }
