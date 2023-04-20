@@ -25,6 +25,7 @@ let automationType = [
   { "Name": "BDD", "Val": 2 },
   { "Name": "Cucumber Automation", "Val": 3 },
   { "Name": "Link Project", "Val": 6 },
+  {"Name" : "Mobile", "Val":4 }
 ]
 
 let errorMsg = ""
@@ -369,6 +370,7 @@ function CreateProject() {
               <input
                 defaultValue={createformData.jenkins_password}
                 type="password"
+                autoComplete="off"
                 onChange={(e) => {
                   createformData.jenkins_password = e.target.value;
                 }}

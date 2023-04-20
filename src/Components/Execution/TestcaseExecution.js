@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -8,6 +8,7 @@ import axios from "../../api/axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecutionDetails from "./ExecutionDetails";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { useNavigate } from "react-router-dom";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -49,6 +50,8 @@ export default function TestcaseExecution() {
   const [selectedApplication, setSelectedApplication] = useState({});
 
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -75,6 +78,7 @@ export default function TestcaseExecution() {
         setTestcasesspare(testcases);
       });
   }, [selectedProject, selectedApplication]);
+  console.log(selectedProject?.automation_framework_type)
   const itemRender = (rawList) => {
     const navigationList = rawList
       ?.filter(
@@ -162,7 +166,13 @@ export default function TestcaseExecution() {
               width: "100%",
             }}
           >
-            {itemRender(testcases)}
+           {(testcases.length) > 0 ? itemRender(testcases) : <div style={{textAlign : "center"}}>
+           
+           <Typography>No Testcases Found</Typography><br/>
+           <Button
+            variant = "contained"
+            onClick={()=>{ navigate("/Testcase/Create")}}
+           >Create Testcase</Button></div>} 
           </List>
         </Grid>
         <Divider orientation="vertical" flexItem />
@@ -171,6 +181,7 @@ export default function TestcaseExecution() {
             selectedItem={selectedItem}
             testcaseId={selectedItem}
             projectId={selectedProject.project_id}
+            frameworkType = {selectedProject.automation_framework_type}
             applicationType={selectedApplication?.module_type}
             applicationId={selectedApplication?.module_id}
           ></ExecutionDetails>

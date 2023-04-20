@@ -9,7 +9,9 @@
     applicationId,
     projectId,
     applicationType,
+    frameworkType
   }) {
+    console.log(frameworkType)
     const [datasetList, setDataList] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const columns = [
@@ -52,6 +54,7 @@
             selectedDatasets={selectedDatasets}
             testcaseId={testcaseId}
             applicationType={applicationType}
+            frameworkType={frameworkType}
           />
           <Table
             rows={datasetList}

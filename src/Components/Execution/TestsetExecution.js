@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -9,6 +9,7 @@ import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
 import LinkProjectExecution from "./LinkProjectExecution";
 import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 function TabPanel(props) {
@@ -55,6 +56,7 @@ export default function TestsetExecution() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -148,7 +150,12 @@ export default function TestsetExecution() {
                 height: "70vh"
               }}
             >
-              {itemRender(testcases)}
+               {(testcases.length) > 0 ? itemRender(testcases) : <div style={{textAlign : "center"}}>
+           <Typography>No Testsets Found</Typography><br/>
+           <Button
+            variant = "contained"
+            onClick={()=>{ navigate("/Testset/Create")}}
+           >Create Testset</Button></div>} 
             </List>
           </Grid>
 
@@ -156,7 +163,10 @@ export default function TestsetExecution() {
 
           <Grid item md={9}>
             <ExecuteTestSetDetails
-              projectId={selectedProject?.project_id} applicationType={selectedApplication?.module_type} applicationId={selectedApplication?.module_id}
+              projectId={selectedProject.project_id}
+               applicationType={selectedApplication?.module_type} 
+               applicationId={selectedApplication?.module_id}
+               frameworkType = {selectedProject.automation_framework_type}
               testsetId={selectedItem}
             ></ExecuteTestSetDetails>
           </Grid>

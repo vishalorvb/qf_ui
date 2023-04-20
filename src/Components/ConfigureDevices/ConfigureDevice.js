@@ -12,6 +12,9 @@ import TextField from "@mui/material/TextField";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import { useLocation } from "react-router-dom";
+import UpdateConfigureDevice from "./UpdateConfigureDevice";
+
 
 const ConfigureDevice = () => {
   const [configurations, setConfigurations] = useState([]);
@@ -27,10 +30,15 @@ const ConfigureDevice = () => {
   const [successDelete, setSuccessDelete] = useState(false);
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const projectId = location?.state?.projectId
 
-  function getConfigurations(project_id) {
+  console.log(location.state.pathname)
+
+
+  function getConfigurations(projectId) {
     axios
-      .get(`/qfservice/mobileconfiguration?project_id=${project_id}`)
+      .get(`/qfservice/mobileconfiguration?project_id=${projectId}`)
       .then((res) => {
         if (res.data.data.length > 0) {
           setConfigurations(res?.data?.data);
@@ -52,14 +60,13 @@ const ConfigureDevice = () => {
   }
 
   function makeDefault() {
-    const project_id = selectedProject.project_id;
     const config_id = configurations[0]?.specificationId;
     axios
       .post(
-        `/qfservice/mobileconfiguration/${config_id}/makedefault?project_id=${project_id}`
+        `/qfservice/mobileconfiguration/${config_id}/makedefault?project_id=${projectId}`
       )
       .then((res) => {
-        getConfigurations(project_id);
+        getConfigurations(projectId);
         setSuccessMsg(true);
         setTimeout(() => {
           setSuccessMsg(false);
@@ -71,15 +78,8 @@ const ConfigureDevice = () => {
   }
 
   useEffect(() => {
-    getConfigurations(selectedProject?.project_id);
-  }, [selectedProject]);
-  useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      const projects = res?.data?.result?.projects_list;
-      setProjectList(projects);
-      setSelectedProject(projects[0]);
-    });
-  }, []);
+    getConfigurations(projectId);
+  }, [projectId]);
 
   function deleteApiRequest(specificationId) {
     axios
@@ -90,7 +90,7 @@ const ConfigureDevice = () => {
         console.log(res);
         if (res.data.status == "SUCCESS") {
           setSuccessDelete(true);
-          getConfigurations();
+          getConfigurations(projectId);
           setTimeout(() => {
             setSuccessDelete(false);
           }, 3000);
@@ -133,12 +133,21 @@ const ConfigureDevice = () => {
             <Tooltip title="Edit">
               <IconButton
                 onClick={() => {
-                  navigate("/updateConfigureDevice", {
+                  setSpecificationId(param.row.specificationId)
+                  location.state.pathname == '/TestcaseExecution' &&   navigate("/TestcaseExecution/UpdateDevice", {
                     state: {
                       id: param.row.specificationId,
-                      projectId: selectedProject?.project_id,
+                      projectId: projectId,
                     },
                   });
+
+                  location.state.pathname == '/TestsetExecution' &&  navigate("/TestsetExecution/UpdateDevice", {
+                    state: {
+                      id: param.row.specificationId,
+                      projectId: projectId,
+                    },
+                  });
+                
                 }}
               >
                 <EditIcon style={{ color: "black" }} />
@@ -192,9 +201,9 @@ const ConfigureDevice = () => {
       return {
         ...ps,
         name: "Configurations",
-        plusButton: true,
-        buttonName: "Add Configuration",
-        plusCallback: () => setPopup(true),
+        // plusButton: true,
+        // buttonName: "Add Configuration",
+        // plusCallback: () => setPopup(true),
       };
     });
     return () =>
@@ -206,25 +215,31 @@ const ConfigureDevice = () => {
           plusCallback: () => console.log("null"),
         };
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
-      <Grid>
-        <Autocomplete
-          disablePortal
-          id="project_id"
-          options={projectsList}
-          value={selectedProject}
-          sx={{ width: "20%" }}
-          getOptionLabel={(option) => option.project_name}
-          onChange={(e, value) => {
-            setSelectedProject(value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Projects" size="small" />
-          )}
-        />
+      <Grid  container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center">
+      <Button
+            variant="contained"
+            onClick={() =>  {
+              location.state.pathname == '/TestcaseExecution' && navigate("/TestcaseExecution/AddConfigureDevice", {
+              state: {
+                projectId: projectId,
+              },
+            })
+
+            location.state.pathname == '/TestsetExecution' && navigate("/TestsetExecution/AddConfigureDevice", {
+              state: {
+                projectId: projectId,
+              },
+            })}}
+
+          >
+            Add Configuration
+          </Button>
       </Grid>
       <Table
         searchPlaceholder="Search Configurations"
@@ -232,13 +247,14 @@ const ConfigureDevice = () => {
         columns={columns}
         hidefooter={true}
         getRowId={(row) => row.specificationId}
+        hideSearch={true}
       ></Table>
       {popup && (
         <AddConfigurationPopUp
           open={true}
           close={setPopup}
           snackbar={setSnack}
-          projectId={selectedProject?.project_id}
+          projectId={projectId}
           setSnack={setSnack}
           getConfigurations={getConfigurations}
         />

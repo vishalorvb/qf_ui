@@ -191,7 +191,7 @@ function TestsetCreate() {
           setTSCreateSuccessMsg(true);
           setTimeout(() => {
             setTSCreateSuccessMsg(false);
-            navigate("/testset/Recent");
+            navigate("/Testset/Recent");
           }, 3000);
           setTestsetName("");
           setTestsetDesc("");
