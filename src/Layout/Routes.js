@@ -149,7 +149,7 @@ import(`../Components/Execution/AddTestSetLinkProject`)
 const EditTestLinkProject = lazy(() =>
 import(`../Components/Execution/EditTestLinkProject`)
 );
-
+const UserProfile = lazy(()=> import('../Components/UsersPopups/UserProfile'))
 export const Routes = [
   {
     path: "Application/Recent",
@@ -619,5 +619,9 @@ export const Routes = [
     element: createTestset,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
- 
+ {
+  path:"/accountInfo",
+  element:UserProfile,
+  accessRole: [1, 2, 3, 4, 5, 6, 7],
+ }
 ];

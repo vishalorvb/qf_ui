@@ -25,6 +25,7 @@ let filterApplication = {
   // "automation_type": "module type list"
   1:[1,2],
   3:[1,2],
+  4:[3,4,13]
 }
 let automationType = [
   { "Name": "Selenium", "Val": 1 },
@@ -46,7 +47,7 @@ function CreateProject() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create Project",
+        name: createformData.sqeProjectId == "" ? "Create Project" : "Edit Project",
       };
     });
   }, []);
@@ -273,7 +274,7 @@ function CreateProject() {
                 }}
                 name="automation_framework_type"
                 defaultValue={1}
-                // disabled={createformData.automation_framework_type == 0 ? false : true}
+                disabled={createformData.sqeProjectId == "" ? false : true}
               >
                 {automationType.map(opt => <option key={opt.Val}
                   value={opt.Val}
