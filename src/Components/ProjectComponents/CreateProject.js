@@ -10,6 +10,12 @@ import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
 
+let filterApplication = {
+  // "automation_type": "module type list"
+  1:[1,2],
+  3:[1,2],
+}
+
 import {
   getUsers,
   createProject,
@@ -55,6 +61,7 @@ function CreateProject() {
   let [rightApplication, setRightApplication] = useState([]);
   let [applications, setApplications] = useState([]);
   let [jiraProject,setJiraproject] = useState(null);
+  let [automation_type,setAutomationType] = useState(1)
 
   function getUserlist() {
     let userlist = [];
@@ -70,7 +77,6 @@ function CreateProject() {
   function getApplicationlist() {
     let applist = [];
     rightApplication.forEach((app) => {
-      console.log(app.module_id);
       applist.push(app.module_id);
     });
     return applist;
@@ -204,6 +210,13 @@ function CreateProject() {
       getUserOfProject(setRightuser, createformData.sqeProjectId);
     }
   }, []);
+
+  useEffect(() => {
+  let x = applications.filter(a=>{
+   
+  })
+  }, [applications])
+
   useEffect(() => {
     return () => {
       ref?.current?.reset();
@@ -211,7 +224,7 @@ function CreateProject() {
     };
   }, []);
 
-  useEffect(() => { }, [applications]);
+
 
   const ref = useRef(null);
   return (
@@ -256,7 +269,8 @@ function CreateProject() {
                   createformData.automation_framework_type = e.target.value;
                 }}
                 name="automation_framework_type"
-                defaultValue={createformData.automation_framework_type}
+                defaultValue={1}
+                disabled={createformData.automation_framework_type == 0 ? false : true}
               >
                 {automationType.map(opt => <option key={opt.Val}
                   value={opt.Val}
