@@ -1,9 +1,17 @@
 import { Divider, Grid } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import IconButton from '@mui/material/IconButton';
+import useAuth from '../../hooks/useAuth';
 function UserProfile() {
+
+    let [currentPassword, setCurrentPassword] = useState(true)
+    let [newPassword, setnewPassword] = useState(true)
+    let [confirmPassword, setconfirmPassword] = useState(true)
+    const { auth } = useAuth();
+
+
     return (
         <div style={{ padding: "40px" }} >
             <Grid container spacing={2} justifyContent="center" >
@@ -19,7 +27,9 @@ function UserProfile() {
                     </Grid>
                     <Grid item md={7}>
                         <label >Email Address</label>
-                        <input type="text" name="" />
+                        <input
+                        defaultValue={auth.info.email}
+                         type="text" name="email" />
                     </Grid>
                     <Grid item md={2}>
 
@@ -27,10 +37,12 @@ function UserProfile() {
                     <Grid item md={2}>
 
                     </Grid>
-                 
+
                     <Grid item md={7}>
                         <label >User Id</label>
-                        <input type="text" name="" />
+                        <input 
+                        defaultValue={auth.user}
+                        type="text" name="" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -46,24 +58,54 @@ function UserProfile() {
 
                     <Grid item md={9}>
                         <label >Current Password</label>
-                        <input type="password" name="" />
+                        <input type={currentPassword ? "password" : "text"} name="current" />
                     </Grid>
                     <Grid item md={2}>
-                        <VisibilityRoundedIcon></VisibilityRoundedIcon>
+                        <IconButton
+                            onMouseDown={e => {
+                                setCurrentPassword(false)
+                            }}
+                            onMouseUp={e => {
+                                setCurrentPassword(true)
+                            }
+                            }
+                        >
+                            <VisibilityRoundedIcon></VisibilityRoundedIcon>
+                        </IconButton>
                     </Grid>
                     <Grid item md={9}>
                         <label >New Password</label>
-                        <input type="password" name="" />
+                        <input type={newPassword ? "password" : "text"} name="new" />
                     </Grid>
                     <Grid item md={2}>
-                        <VisibilityRoundedIcon></VisibilityRoundedIcon>
+                        <IconButton
+                         onMouseDown={e => {
+                            setnewPassword(false)
+                        }}
+                        onMouseUp={e => {
+                            setnewPassword(true)
+                        }
+                        }
+                        >
+                            <VisibilityRoundedIcon></VisibilityRoundedIcon>
+                        </IconButton>
                     </Grid>
                     <Grid item md={9}>
-                        <label >New Password</label>
-                        <input type="password" name="" />
+                        <label >Confirm Password</label>
+                        <input type={confirmPassword ? "password" : "text"} name="confirm" />
                     </Grid>
                     <Grid item md={2}>
-                        <VisibilityRoundedIcon></VisibilityRoundedIcon>
+                        <IconButton
+                            onMouseDown={e => {
+                                setconfirmPassword(false)
+                            }}
+                            onMouseUp={e => {
+                                setconfirmPassword(true)
+                            }
+                            }
+                        >
+                            <VisibilityRoundedIcon></VisibilityRoundedIcon>
+                        </IconButton>
                     </Grid>
                 </Grid>
             </Grid>
