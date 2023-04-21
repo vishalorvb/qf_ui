@@ -11,9 +11,7 @@ import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
 import { UpdateTestcase } from "../../Services/TestCaseService"
-
-
-
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -23,6 +21,7 @@ export let TCdata = {
 
 function CreateTestCase() {
     let navigate = useNavigate();
+    const [reportFailMsg, setReportFailMsg] = useState(false);
     let [project, setProject] = useState([])
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
@@ -30,15 +29,21 @@ function CreateTestCase() {
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
 
     function handleSubmit(e) {
-
-        
-        if (validateFormbyName(["name", "desc"], "error")) {
-            if (TCdata.testcase_id === undefined) {
-                CreateTestCaseService(TCdata).then(res => {
-                    if (res) {
-                        if (globalApplication.module_type == 1) {
-                            MapAPiTestCaseData.testcase_id = res
-                            navigate(redirect_url[globalApplication?.module_type])
+        if ((globalApplication?.module_type) == 19) {
+            setReportFailMsg(true);
+            setTimeout(() => {
+                setReportFailMsg(false);
+            }, 3000);
+        }
+        else {
+            if (validateFormbyName(["name", "desc"], "error")) {
+                if (TCdata.testcase_id === undefined) {
+                    CreateTestCaseService(TCdata).then(res => {
+                        if (res) {
+                            if (globalApplication.module_type == 1) {
+                                MapAPiTestCaseData.testcase_id = res
+                                navigate(redirect_url[globalApplication?.module_type])
+                            }
                         }
                         else {
 
@@ -53,21 +58,20 @@ function CreateTestCase() {
                         }
 
                     }
-                })
-            }
-            else {
-                UpdateTestcase(TCdata.testcase_id, TCdata.testcase_name, TCdata.testcase_description).then(res => {
-                    if (res) {
-                        MapAPiTestCaseData.testcase_id = res
-                        navigate(redirect_url[globalApplication?.module_type])
-                    }
-                })
-            }
+                    )
+                }
+                else {
+                    UpdateTestcase(TCdata.testcase_id, TCdata.testcase_name, TCdata.testcase_description).then(res => {
+                        if (res) {
+                            MapAPiTestCaseData.testcase_id = res
+                            navigate(redirect_url[globalApplication?.module_type])
+                        }
+                    })
+                }
 
+            }
         }
-
     }
-
     useEffect(() => {
         setHeader((ps) => {
             return {
@@ -117,80 +121,88 @@ function CreateTestCase() {
     }, [])
 
     return (
-        <Grid item container spacing={2} justifyContent="left">
-            <Grid item md={4}>
-                <label htmlFor="">Projects</label>
-                <Autocomplete
-                    disablePortal
-                    disableClearable
-                    id="project_id"
-                    options={project}
-                    value={globalProject || null}
-                    sx={{ width: "100%" }}
-                    getOptionLabel={(option) => option.project_name}
-                    onChange={(e, value) => {
-                        setglobalProject(value);
-                    }}
-                    renderInput={(params) => (
-                        <div ref={params.InputProps.ref}>
-                            <input type="text" {...params.inputProps} />
-                        </div>
-                    )}
-                />
-            </Grid>
-            <Grid item md={4}>
-                <label htmlFor="">Application</label>
-                <Autocomplete
-                    disablePortal
-                    disableClearable
-                    id="model_id"
-                    options={application}
-                    value={globalApplication || null}
-                    sx={{ width: "100%" }}
-                    getOptionLabel={(option) => option.module_name}
-                    onChange={(e, value) => {
-                        setglobalApplication(value);
-                    }}
-                    renderInput={(params) => (
-                        <div ref={params.InputProps.ref}>
-                            <input type="text" {...params.inputProps} />
-                        </div>
-                    )}
-                />
+        <>
+            <Grid item container spacing={2} justifyContent="left">
+                <Grid item md={4}>
+                    <label htmlFor="">Projects</label>
+                    <Autocomplete
+                        disablePortal
+                        disableClearable
+                        id="project_id"
+                        options={project}
+                        value={globalProject || null}
+                        sx={{ width: "100%" }}
+                        getOptionLabel={(option) => option.project_name}
+                        onChange={(e, value) => {
+                            setglobalProject(value);
+                        }}
+                        renderInput={(params) => (
+                            <div ref={params.InputProps.ref}>
+                                <input type="text" {...params.inputProps} />
+                            </div>
+                        )}
+                    />
+                </Grid>
+                <Grid item md={4}>
+                    <label htmlFor="">Application</label>
+                    <Autocomplete
+                        disablePortal
+                        disableClearable
+                        id="model_id"
+                        options={application}
+                        value={globalApplication || null}
+                        sx={{ width: "100%" }}
+                        getOptionLabel={(option) => option.module_name}
+                        onChange={(e, value) => {
+                            setglobalApplication(value);
+                        }}
+                        renderInput={(params) => (
+                            <div ref={params.InputProps.ref}>
+                                <input type="text" {...params.inputProps} />
+                            </div>
+                        )}
+                    />
 
-            </Grid>
-            <Grid item xs={4} md={4}>
-                <label htmlFor="">TestCase Name</label>
-                <input
-                    defaultValue={TCdata.testcase_name}
-                    onChange={e => {
-                        TCdata.testcase_name = e.target.value;
-                    }}
-                />
-            </Grid>
-            <br />
-            <Grid item xs={12} md={12}>
-                <label htmlFor="">Description</label>
-                <input
-                    defaultValue={TCdata.testcase_description}
-                    onChange={e => {
-                        TCdata.testcase_description = e.target.value;
-                    }}
-                />
-            </Grid>
-            <br />
-            <Grid item xs={12} md={12}>
-                <Stack
-                    direction="row"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    spacing={2}
-                >
-                    <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
-                    <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
-                </Stack>
-            </Grid>
-        </Grid>
+                </Grid>
+                <Grid item xs={4} md={4}>
+                    <label htmlFor="">TestCase Name</label>
+                    <input
+                        defaultValue={TCdata.testcase_name}
+                        onChange={e => {
+                            TCdata.testcase_name = e.target.value;
+                        }}
+                    />
+                </Grid>
+                <br />
+                <Grid item xs={12} md={12}>
+                    <label htmlFor="">Description</label>
+                    <input
+                        defaultValue={TCdata.testcase_description}
+                        onChange={e => {
+                            TCdata.testcase_description = e.target.value;
+                        }}
+                    />
+                </Grid>
+                <br />
+                <Grid item xs={12} md={12}>
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        spacing={2}
+                    >
+                        <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                        <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+                    </Stack>
+                </Grid>
+            </Grid >
+            <SnackbarNotify
+                open={reportFailMsg}
+                close={setReportFailMsg}
+                msg="Testcases can't be created for this Application."
+                severity="error"
+            />
+        </>
 
     )
 }

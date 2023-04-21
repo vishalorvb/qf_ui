@@ -38,7 +38,6 @@ function Testset() {
   const [selectedApplication, setSelectedApplication] = useState({});
   const navigate = useNavigate();
   const { auth } = useAuth();
-  console.log(auth.info);
 
   const createTestcaseHandler = (e) => {
     console.log(selectedProject?.project_id);
@@ -121,9 +120,8 @@ function Testset() {
     setSelectedProject(project[0]);
   }, [project]);
   useEffect(() => {
-    if (selectedProject !== null) {
-      getApplicationOfProject(setApplication, selectedProject?.project_id);
-    }
+    selectedProject?.project_id && getApplicationOfProject(setApplication, selectedProject?.project_id);
+    
   }, [selectedProject]);
   useEffect(() => {
     setSelectedApplication(application[0]);
@@ -176,7 +174,7 @@ function Testset() {
               options={project}
               value={selectedProject || null}
               sx={{ width: "100%" }}
-              getOptionLabel={(option) => option.project_name}
+              getOptionLabel={(option) => (option.project_name ? option.project_name : "")}
               onChange={(e, value) => {
                 setSelectedProject(value);
               }}
@@ -196,7 +194,7 @@ function Testset() {
               options={application}
               value={selectedApplication || null}
               sx={{ width: "100%" }}
-              getOptionLabel={(option) => option.module_name}
+              getOptionLabel={(option) => (option.module_name ?option.module_name : "")}
               onChange={(e, value) => {
                 setSelectedApplication(value);
               }}

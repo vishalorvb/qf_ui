@@ -42,7 +42,6 @@ export default function Release() {
     console.log(selectedProject);
     navigate("/release/createAnsibleInstance", { state: selectedProject });
   };
-  console.log(selectedProject);
 
   useEffect(() => {
     setHeader((ps) => {
@@ -73,13 +72,6 @@ export default function Release() {
   }, [project]);
 
   const getReleaseInstancesfromModule = () => {
-    console.log(selectedProject);
-    // const module = selectedProject.module ? (selectedProject.filter(mod => mod.modules.length >0 )).find(module => module?.module_type === 21) : [];
-    // setmodule(module);
-    // console.log(module);
-    // module?.module_id
-    //   ? getReleaseInstances(setInstance, module?.module_id)
-    //   : setInstance([]);
     selectedProject?.project_id
       ? getReleaseInstances(setInstance, selectedProject?.project_id)
       : setInstance([]);
@@ -165,7 +157,7 @@ export default function Release() {
       <div className="apptable">
         <div className="intable">
           <Grid item>
-            <label for="">Projects</label>
+            <label htmlFor="">Projects</label>
             <Autocomplete
               disablePortal
               disableClearable
