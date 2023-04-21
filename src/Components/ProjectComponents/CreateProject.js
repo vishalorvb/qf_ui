@@ -9,13 +9,6 @@ import { createformData } from "./ProjectData";
 import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
-
-let filterApplication = {
-  // "automation_type": "module type list"
-  1:[1,2],
-  3:[1,2],
-}
-
 import {
   getUsers,
   createProject,
@@ -27,6 +20,12 @@ import {
   getApplication,
 } from "../../Services/ApplicationService";
 
+
+let filterApplication = {
+  // "automation_type": "module type list"
+  1:[1,2],
+  3:[1,2],
+}
 let automationType = [
   { "Name": "Selenium", "Val": 1 },
   { "Name": "BDD", "Val": 2 },
