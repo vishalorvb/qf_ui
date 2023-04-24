@@ -146,6 +146,12 @@ import(`../Components/Execution/AddTestSetLinkProject`)
 const EditTestLinkProject = lazy(() =>
 import(`../Components/Execution/EditTestLinkProject`)
 );
+const AddOrganization = lazy(() =>
+import(`../pages/AddOrganization`)
+);
+const Organization = lazy(() =>
+import(`../pages/Organization`)
+);
 
 export const Routes = [
   {
@@ -609,6 +615,16 @@ export const Routes = [
   {
     path: "Testset/Create",
     element: createTestset,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "AddOrganization",
+    element: AddOrganization,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "Organization",
+    element: Organization,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
  
