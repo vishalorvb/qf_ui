@@ -2,7 +2,6 @@ import "../scss/navicons.scss";
 
 export const testManagementList = [
   {
-<<<<<<< HEAD
     name: "Dashboard",
     id: "8",
     route: "/",
@@ -31,8 +30,6 @@ export const testManagementList = [
     ],
   },
   {
-=======
->>>>>>> developer
     name: "Admin",
     id: "1",
     route: "",
