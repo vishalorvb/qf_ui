@@ -100,11 +100,14 @@ function CreateTestCase() {
 
     useEffect(() => {
         if (globalProject?.project_id !== undefined) {
+            setglobalApplication(null)
             getApplicationOfProject(setApplication, globalProject?.project_id)
         }
     }, [globalProject])
     useEffect(() => {
-            setglobalApplication(application[0])       
+        if (globalApplication == null) {
+            setglobalApplication(application[0])
+        }
     }, [application])
     useEffect(() => {
 
