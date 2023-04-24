@@ -219,7 +219,11 @@ export default function MiniDrawer({ open, setOpen }) {
             className="profile"
             style={{ width: drawerWidth - 20, overflow: "hidden" }}
           >
-            <Avatar sx={{ bgcolor: "white", color: "black" }}>
+            <Avatar sx={{ bgcolor: "white", color: "black" }}
+            onClick={e=>{
+              navigate("/profile")
+            }}
+            >
               {auth?.user?.charAt(0)?.toUpperCase() +
                 auth?.user?.charAt(1)?.toUpperCase()}
             </Avatar>

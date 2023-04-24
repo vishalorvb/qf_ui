@@ -620,7 +620,7 @@ export const Routes = [
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
  {
-  path:"/accountInfo",
+  path:"/profile",
   element:UserProfile,
   accessRole: [1, 2, 3, 4, 5, 6, 7],
  }
