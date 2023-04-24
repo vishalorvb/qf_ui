@@ -31,8 +31,9 @@ export default function ExecutionToolbar({
   selectedDatasets,
   testcaseId,
   applicationType,
-  frameworkType
+  frameworkType,
 }) {
+  console.log(applicationType)
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [buildEnvList, setBuildEnvList] = useState([]);
@@ -289,6 +290,7 @@ export default function ExecutionToolbar({
           });
         });
   }, [applicationId]);
+
   return (
     <form>
       <SnackbarNotify
@@ -362,8 +364,8 @@ export default function ExecutionToolbar({
             </h5>
           </Stack>
         </Grid>
-        <Grid item md={2}>
-        <MultiSelectElement
+       
+          { (applicationType == 3 || applicationType == 4)?"": <Grid item md={2}> <MultiSelectElement
         menuMaxWidth={5}
             label="Browser"
             name="browser"
@@ -373,6 +375,9 @@ export default function ExecutionToolbar({
             options={["Chrome", "Edge", "Firefox", "Safari"]}
           />
         </Grid>
+
+          }
+      
         <Grid item md={2}>
           <FeatureMenu testcaseId={testcaseId} projectId={projectId} frameworkType={frameworkType} selectedDatasets={selectedDatasets} envId = {buildEnvId}  runtimeVar = {(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""}/>
         </Grid>
