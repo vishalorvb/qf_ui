@@ -27,9 +27,8 @@ const PageElements = lazy(() =>
 const CreateProject = lazy(() =>
   import("../Components/ProjectComponents/CreateProject")
 );
-const Phases = lazy(() =>
-  import("../Components/BIReports/Phases")
-);
+const Phases = lazy(() => import("../Components/BIReports/Phases"));
+const Cycles = lazy(() => import("../Components/BIReports/Cycles"));
 const APIsTable = lazy(() =>
   import("../Components/Application/ApiApplication/APIsTable")
 );
@@ -137,367 +136,402 @@ const TestsetExecution = lazy(() =>
 const AddEnvironemt = lazy(() =>
   import(`../Components/Execution/AddEnvironment`)
 );
+const LinkProjectExecution = lazy(() =>
+  import(`../Components/Execution/LinkProjectExecution`)
+);
+const AddTestSetLinkProject = lazy(() =>
+  import(`../Components/Execution/AddTestSetLinkProject`)
+);
+const EditTestLinkProject = lazy(() =>
+  import(`../Components/Execution/EditTestLinkProject`)
+);
+const AddOrganization = lazy(() => import(`../pages/AddOrganization`));
+const Organization = lazy(() => import(`../pages/Organization`));
 
+const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
 export const Routes = [
   {
     path: "Application/Recent",
     element: applicationList,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: ":pagesnscreen",
         element: pagesnscreen,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
         subRoute: [
           {
             path: "Update",
             element: Api,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "Create",
             element: Api,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "PageElements",
             element: PageElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "screenelements",
             element: ScreenElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "SelectElements",
             element: SelectedPageElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
         ],
       },
       {
         path: "Update",
         element: createApplication,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "Application/Search",
     element: applicationList,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: ":pagesnscreen",
         element: pagesnscreen,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
         subRoute: [
           {
             path: "Update",
             element: Api,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "Create",
             element: Api,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "PageElements",
             element: PageElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "screenelements",
             element: ScreenElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "SelectElements",
             element: SelectedPageElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
         ],
       },
       {
         path: "Update",
         element: createApplication,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "Application/Create",
     element: createApplication,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
   {
     path: "Projects/Recent",
     element: Projects,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "Update",
         element: CreateProject,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "Projects/Search",
     element: Projects,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "Update",
         element: CreateProject,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "Projects/Create",
     element: CreateProject,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
   {
     path: "Projects/Search",
     element: CreateProject,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
   {
     path: "TestcasesList",
     element: getTestcases,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
   {
     path: "users",
     element: Admin,
-    accessRole: [2],
+    accessRole: [2, 3, 4],
   },
   {
     path: "settings",
     element: Settings,
-    accessRole: [2],
+    accessRole: [2, 3, 4],
   },
   {
-    path: "BIReports",
-    element: BiReports,
-    accessRole: [2],
-  },
-  {
-    path: "BIReports/phases",
-    element: Phases,
+    path: "BIReports/cycles",
+    element: Cycles,
     accessRole: [2],
   },
   {
     path: "addUser",
     element: AddUser,
-    accessRole: [2],
+    accessRole: [2, 3, 4],
   },
   {
     path: "users/editUser",
     element: EditUser,
-    accessRole: [2],
+    accessRole: [2, 3, 4],
   },
   {
-    path: "application/apiApp",
-    element: ApiApp,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    path: "BIReports",
+    element: BiReports,
+    accessRole: [1, 4],
+  },
+  {
+    path: "BIReports/phases",
+    element: Phases,
+    accessRole: [1, 4],
+  },
+
+  {
+    path: "TestcaseExecution",
+    element: TestcaseExecution,
+    accessRole: [1, 4],
     subRoute: [
       {
-        path: "apiRequests",
-        element: APIsTable,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-        subRoute: [
-          {
-            path: "create",
-            element: Api,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 4],
+      },
+      {
+        path: "AddConfigureDevice",
+        element: AddConfigurationPopUp,
+        accessRole: [1, 4],
+      },
+      {
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
+        accessRole: [1, 4],
+      },
+    ],
+  },
+  {
+    path: "TestsetExecution",
+    element: TestsetExecution,
+    accessRole: [1, 4],
+    subRoute: [
+      {
+        path: "AddEnvironment",
+        element: AddEnvironemt,
+        accessRole: [1, 4],
+      },
+      {
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
+        accessRole: [1, 4],
+      },
+      {
+        path: "AddConfigureDevice",
+        element: AddConfigurationPopUp,
+        accessRole: [1, 4],
+      },
+      {
+        path: "UpdateDevice",
+        element: UpdateConfigureDevice,
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "TestcaseExecution",
     element: TestcaseExecution,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    accessRole: [1, 4],
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
+      },
+      {
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
+        accessRole: [1, 4],
+      },
+      {
+        path: "UpdateDevice",
+        element: UpdateConfigureDevice,
+        accessRole: [1, 4],
+      },
+      {
+        path: "LinkProjectExecution",
+        element: LinkProjectExecution,
+        accessRole: [1, 4],
+        subRoute: [
+          {
+            path: "AddLinkTestset",
+            element: AddTestSetLinkProject,
+            accessRole: [1, 4],
+          },
+          {
+            path: "EditLinkTestset",
+            element: EditTestLinkProject,
+            accessRole: [1, 4],
+          },
+        ],
+      },
+      {
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
+        accessRole: [1, 4],
       },
       {
         path: "AddConfigureDevice",
         element: AddConfigurationPopUp,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
-        path : "ConfigureDevice",
-        element:ConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      }
-    ]
-  },
-  {
-    path: "TestsetExecution",
-    element: TestsetExecution,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
-      {
-        path: "AddEnvironment",
-        element: AddEnvironemt,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        path: "UpdateDevice",
+        element: UpdateConfigureDevice,
+        accessRole: [1, 4],
       },
-      {
-        path : "ConfigureDevice",
-        element:ConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        path: "AddConfigureDevice",
-        element: AddConfigurationPopUp,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      },
-      {
-        path : "UpdateDevice",
-        element:UpdateConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      }
-    ]
+    ],
   },
   {
     path: "TestcaseExecution",
     element: TestcaseExecution,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    accessRole: [1, 4],
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
-        path : "ConfigureDevice",
-        element:ConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
+        accessRole: [1, 4],
       },
       {
-        path : "UpdateDevice",
-        element:UpdateConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      }
-    ]
+        path: "UpdateDevice",
+        element: UpdateConfigureDevice,
+        accessRole: [1, 4],
+      },
+    ],
   },
 
   {
     path: "TestsetExecution",
     element: TestsetExecution,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    accessRole: [1, 4],
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-      }
-    ]
+        accessRole: [1, 4],
+      },
+    ],
   },
   {
     path: "getTestcases",
     element: GetTestcases,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
-  {
-    path: "application/mobileApp",
-    element: MobileApp,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute: [
-      {
-        path: ":id",
-        element: Pages,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-        subRoute: [
-          {
-            path: ":id",
-            element: PageElements,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ],
-      },
-    ],
-  },
+
   {
     path: "*",
     element: NotFound,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 2, 3, 4, 5],
   },
   {
     path: "pipeline",
     element: Pipeline,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "CreatePipeline",
         element: CreatePipeline,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "UpdatPipeline",
         element: UpdatPipeline,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "pipelineAutomation",
         element: PipelineAutomation,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
         subRoute: [
           {
             path: "report",
             element: Report,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
         ],
       },
     ],
   },
-  {
-    path: "qfAdmin",
-    element: QFAdmin,
-    accessRole: [1, 2],
-  },
+  // {
+  //   path: "qfAdmin",
+  //   element: QFAdmin,
+  //   accessRole: [1, 2],
+  // },
   {
     path: "release",
     element: Release,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "CreateInstance",
         element: CreateInstance,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "CreateAnsibleInstance",
         element: CreateAnsibleInstance,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "UpdateAnsibleInstance",
         element: UpdateAnsibleInstance,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "reports",
     element: Reports,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "viewReport",
         element: ViewReport,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
@@ -505,85 +539,94 @@ export const Routes = [
   {
     path: "reports",
     element: Reports,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "AllReports",
         element: AllReport,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
-  // {
-  //   path: "updateConfigureDevice",
-  //   element: UpdateConfigureDevice,
-  //   accessRole: [1, 2, 3, 4, 5, 6, 7],
-  // },
-
 
   {
     path: "Testcase/Recent",
     element: TestCases,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "MapApiTestCase",
         element: MapApiTestCase,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "MapScreen",
         element: MapScreen,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "datasets",
         element: Dataset,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "updateScreenOrder",
         element: UpdateScreenOrder,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "updateAPIOrder",
         element: APIorderupdate,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "apidatasets",
         element: ApiDatasets,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "Testcase/Create",
     element: CreateTestCase,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
   {
     path: "Testset/Recent",
     element: Testset,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "Update",
         element: AddTestcaseToTestset,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "Reorder",
         element: UpdateTestcasesOrder,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "Testset/Create",
     element: createTestset,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
- 
+  {
+    path: "AddOrganization",
+    element: AddOrganization,
+    accessRole: [1, 4],
+  },
+  {
+    path: "Organization",
+    element: Organization,
+    accessRole: [1, 4],
+  },
+
+  {
+    path: "/profile",
+    element: UserProfile,
+    accessRole: [1, 4],
+  },
 ];

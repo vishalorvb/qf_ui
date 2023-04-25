@@ -11,7 +11,8 @@ function ExecuteTestSetDetails({
   testsetId,
   applicationId,
   projectId,
-  frameworkType
+  frameworkType,
+  applicationType
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
@@ -95,6 +96,7 @@ function ExecuteTestSetDetails({
             testsetId={testsetId}
             selecteddatasets = {data}
             frameworkType={frameworkType}
+            applicationType={applicationType}
           />
           <Table
             rows={testcaseList}

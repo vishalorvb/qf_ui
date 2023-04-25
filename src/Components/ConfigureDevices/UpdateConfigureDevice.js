@@ -61,7 +61,7 @@ const UpdateConfigureDevice = () => {
         setExecutionEnvironment(
           res?.data?.info?.model.saucelab.config_location
         );
-        setPlatformType(res?.data?.info?.model.saucelab.platform_type);
+        setPlatformType(res?.data?.info?.model.saucelab.plotform_type);
         setConfigObjInfo(res?.data?.info?.model.saucelab.config_obj);
       });
   }, []);
@@ -81,7 +81,7 @@ const UpdateConfigureDevice = () => {
       project_id: location.state.projectId,
       config_location: executionEnvironment,
       config_obj: configObjInfo,
-      platform_type: platformType,
+      plotform_type: platformType,
     };
     axios
       .post(

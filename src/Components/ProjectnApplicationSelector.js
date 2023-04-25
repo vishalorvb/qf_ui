@@ -5,33 +5,41 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import { getApplicationOfProject } from "../Services/ApplicationService";
-export default function ProjectnApplicationSelector({
-  setSelectedProject,
-  selectedProject,
-  selectedApplication,
-  setSelectedApplication,
-  isTestset,
-}) {
+import useHead from "../hooks/useHead";
+import { getProject } from "../Services/ProjectService";
+export default function ProjectnApplicationSelector({ isTestset }) {
   const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
+  const {
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
 
   const { auth } = useAuth();
+
   useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      const projects = res?.data?.result?.projects_list;
-      setProjectList(projects);
-      setSelectedProject(projects[0]);
-    });
+    getProject(setProjectList, auth.userId);
   }, []);
 
   useEffect(() => {
-    setSelectedApplication(applicationList[0]);
-  }, [applicationList]);
+    if (globalProject == null) {
+      setglobalProject(projectsList[0]);
+    }
+  }, [projectsList]);
 
   useEffect(() => {
-    selectedProject?.project_id &&
-      getApplicationOfProject(setapplicationList, selectedProject?.project_id);
-  }, [selectedProject]);
+    if (globalProject?.project_id !== undefined) {
+      setglobalApplication(null);
+      getApplicationOfProject(setapplicationList, globalProject?.project_id);
+    }
+  }, [globalProject]);
+  useEffect(() => {
+    if (globalApplication == null) {
+      setglobalApplication(applicationList[0]);
+    }
+  }, [applicationList]);
 
   return (
     <Stack
@@ -46,11 +54,11 @@ export default function ProjectnApplicationSelector({
         disableClearable
         id="project_id"
         options={projectsList}
-        value={selectedProject || null}
+        value={globalProject || null}
         sx={{ width: "100%" }}
         getOptionLabel={(option) => option.project_name ?? ""}
         onChange={(e, value) => {
-          setSelectedProject(value);
+          setglobalProject(value);
         }}
         renderInput={(params) => (
           <TextField {...params} label="Projects" size="small" />
@@ -62,12 +70,12 @@ export default function ProjectnApplicationSelector({
         disableClearable
         id="application_id"
         options={applicationList}
-        value={selectedApplication || null}
+        value={globalApplication || null}
         sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.module_name ?? ""}
+        getOptionLabel={(option) => option.module_name}
         onChange={(e, value) => {
           // console.log(value);
-          setSelectedApplication(value);
+          setglobalApplication(value);
         }}
         renderInput={(params) => (
           <TextField {...params} label="Applications" size="small" />

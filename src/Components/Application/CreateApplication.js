@@ -43,7 +43,7 @@ export default function CreateApplication() {
   ];
 
   function submitHandler(e) {
-    if (validateFormbyName(["appname", "url", "desc", "apk_name"], "error")) {
+    if (validateFormbyName(["appname", "url", "desc"], "error")) {
       console.log("valid form");
       createApplication(moduledata, auth.info.id).then((res) => {
         if (res) {
@@ -79,39 +79,7 @@ export default function CreateApplication() {
   return (
     <>
       <Grid container direction="row" spacing={2}>
-        <Grid item md={selectedType === "3" ? 3 : 4}>
-          <Stack spacing={1}>
-            <label>
-              Name<span className="importantfield">*</span>
-            </label>
-            <input
-              type="text"
-              name="appname"
-              ref={refName}
-              defaultValue={moduledata.module_name}
-              onChange={(e) => {
-                moduledata.module_name = e.target.value;
-              }}
-            />
-          </Stack>
-        </Grid>
-        <Grid item md={selectedType === "3" ? 3 : 4}>
-          <Stack spacing={1}>
-            <label>
-              URL<span className="importantfield">*</span>
-            </label>
-            <input
-              type="text"
-              name="url"
-              ref={refUrl}
-              defaultValue={moduledata.base_url}
-              onChange={(e) => {
-                moduledata.base_url = e.target.value;
-              }}
-            />
-          </Stack>
-        </Grid>
-        <Grid item md={selectedType === "3" ? 3 : 4}>
+        <Grid item md={4}>
           <Stack spacing={1}>
             <label>
               Application Type<span className="importantfield">*</span>
@@ -136,7 +104,45 @@ export default function CreateApplication() {
             </select>
           </Stack>
         </Grid>
-        {selectedType === "3" && (
+        <Grid item md={4}>
+          <Stack spacing={1}>
+            <label>
+              Name<span className="importantfield">*</span>
+            </label>
+            <input
+              type="text"
+              name="appname"
+              ref={refName}
+              defaultValue={moduledata.module_name}
+              onChange={(e) => {
+                moduledata.module_name = e.target.value;
+              }}
+            />
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={1}>
+            <label>
+              {selectedType === "3"
+                ? "APK-name"
+                : selectedType === "4"
+                ? "IOS file"
+                : "URL"}
+              <span className="importantfield">*</span>
+            </label>
+            <input
+              type="text"
+              name="url"
+              ref={refUrl}
+              defaultValue={moduledata.base_url}
+              onChange={(e) => {
+                moduledata.base_url = e.target.value;
+              }}
+            />
+          </Stack>
+        </Grid>
+
+        {/* {selectedType === "3" && (
           <Grid item md={3}>
             <Stack spacing={1}>
               <label>APK</label>
@@ -151,7 +157,7 @@ export default function CreateApplication() {
               />
             </Stack>
           </Grid>
-        )}
+        )} */}
         <Grid item md={12}>
           <Stack spacing={1}>
             <label>

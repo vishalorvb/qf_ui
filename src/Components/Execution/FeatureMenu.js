@@ -7,6 +7,7 @@ import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import useHead from "../../hooks/useHead";
 
 
 export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDatasets,testsetId,frameworkType,projectId}) {
@@ -22,6 +23,8 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
   const handleClose = () => {
     setAnchorEl(null);
   };
+  // const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication  } = useHead();
+  
   return (
     <>
       <Button

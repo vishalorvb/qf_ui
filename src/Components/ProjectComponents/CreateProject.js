@@ -9,7 +9,6 @@ import { createformData } from "./ProjectData";
 import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router-dom";
-
 import {
   getUsers,
   createProject,
@@ -21,6 +20,14 @@ import {
   getApplication,
 } from "../../Services/ApplicationService";
 
+
+let filterApplication = {
+  // "automation_type": "module type list"
+  1:[1,2],
+  3:[1,2],
+  4:[3,4,13],
+  6:[19]
+}
 let automationType = [
   { "Name": "Selenium", "Val": 1 },
   { "Name": "BDD", "Val": 2 },
@@ -41,7 +48,7 @@ function CreateProject() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create Project",
+        name: createformData.sqeProjectId == "" ? "Create Project" : "Edit Project",
       };
     });
   }, []);
@@ -55,6 +62,7 @@ function CreateProject() {
   let [rightApplication, setRightApplication] = useState([]);
   let [applications, setApplications] = useState([]);
   let [jiraProject,setJiraproject] = useState(null);
+  let [automation_type,setAutomationType] = useState("1")
 
   function getUserlist() {
     let userlist = [];
@@ -70,7 +78,6 @@ function CreateProject() {
   function getApplicationlist() {
     let applist = [];
     rightApplication.forEach((app) => {
-      console.log(app.module_id);
       applist.push(app.module_id);
     });
     return applist;
@@ -83,7 +90,6 @@ function CreateProject() {
     createformData.user_access_permissions = x;
     createformData.applicationsProjectMapping = "[" + app + "]";
     createformData.userId = auth.info.id;
-    console.log(createformData);
     if (
       validateFormbyName(
         ["projectname", "automation_framework_type", "desc",],
@@ -196,7 +202,7 @@ function CreateProject() {
       usertoken
     );
     getApplication(setApplications, auth.info.id);
-    getApplication(setLeftApplication, auth.info.id);
+    // getApplication(setLeftApplication, auth.info.id);
     if (createformData.sqeProjectId != ""){
       getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
     }
@@ -204,6 +210,17 @@ function CreateProject() {
       getUserOfProject(setRightuser, createformData.sqeProjectId);
     }
   }, []);
+
+  useEffect(() => {
+  let x = applications.filter(a=>{
+    if(filterApplication[automation_type]?.includes(a.module_type)){
+      return a
+    }
+  })
+
+  setLeftApplication(x)
+  }, [automation_type,applications])
+
   useEffect(() => {
     return () => {
       ref?.current?.reset();
@@ -211,7 +228,7 @@ function CreateProject() {
     };
   }, []);
 
-  useEffect(() => { }, [applications]);
+
 
   const ref = useRef(null);
   return (
@@ -254,9 +271,11 @@ function CreateProject() {
               <select
                 onChange={(e) => {
                   createformData.automation_framework_type = e.target.value;
+                  setAutomationType(e.target.value);
                 }}
                 name="automation_framework_type"
-                defaultValue={createformData.automation_framework_type}
+                defaultValue={1}
+                disabled={createformData.sqeProjectId == "" ? false : true}
               >
                 {automationType.map(opt => <option key={opt.Val}
                   value={opt.Val}

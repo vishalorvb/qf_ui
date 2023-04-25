@@ -27,7 +27,7 @@ let initialval = {
   project_id: "",
   config_location: "",
   config_obj: "",
-  platform_type: "",
+  plotform_type: "",
 };
 
 let postVal = { ...initialval };
@@ -72,6 +72,7 @@ const AddConfigurationPopUp = (props) => {
       postVal.organizationId=organizationId;
       postVal.userId=userId;
       postVal.userName="";
+      console.log(postVal)
       axios.post(`/qfservice/mobileconfiguration/save.do`, postVal)
       .then((resp) => {
           resp?.data?.status === "SUCCESS" && setSnack(true)
@@ -185,8 +186,8 @@ const AddConfigurationPopUp = (props) => {
         <Grid item xs={10}>
         <Select
                 sx={{ width: 150 }}
-                name="platform_type"
-                onChange={(e) => {postVal.platform_type = e.target.value;}}
+                name="plotform_type"
+                onChange={(e) => {postVal.plotform_type = e.target.value;}}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
               >
