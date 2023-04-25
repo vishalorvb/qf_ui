@@ -122,14 +122,21 @@ export default function Login() {
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
+    console.log(auth?.roles);
     auth?.user &&
-      navigate("/Application/Recent", { state: "recentApplication" });
+      auth?.roles &&
+      ([1, 4].includes(auth?.roles)
+        ? navigate("/Application/Recent", { state: "recentApplication" })
+        : navigate("/users", { state: "recentApplication" }));
   }, [auth]);
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
     auth?.user &&
-      navigate("/Application/Recent", { state: "recentApplication" });
+      auth?.roles &&
+      ([1, 4].includes(auth?.roles)
+        ? navigate("/Application/Recent", { state: "recentApplication" })
+        : navigate("/users", { state: "recentApplication" }));
   }, []);
 
   return (

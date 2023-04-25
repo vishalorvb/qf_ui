@@ -283,11 +283,15 @@ export default function ExecutionToolbar({
         )
         .then((resp) => {
           const execEnv = resp?.data?.data;
-          setExecEnvList(() => {
-            return execEnv.map((ee) => {
-              return { id: ee.value, label: ee.name };
-            });
-          });
+          const data1 = execEnv.map((ee)=>{
+            return { id : ee.value ,label : ee.name}
+          })
+          const execConfig = resp?.data?.data1
+          const data2 = execConfig.map((ee)=>{
+            return { id : ee.specificationId,label : ee.name}
+          })
+          const mergedObj = [...data1, ...data2];
+          setExecEnvList(mergedObj);
         });
   }, [applicationId]);
 
@@ -454,7 +458,7 @@ export default function ExecutionToolbar({
           </Stack>
         </Grid>
       </Grid>{" "}
-      {execLoc !== "local" && (
+      {(execLoc == "docker" || execLoc == "jenkins") && (
         <Stack mt={1}>
           <TextFieldElement
             label="Commit message"

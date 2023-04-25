@@ -25,7 +25,8 @@ let filterApplication = {
   // "automation_type": "module type list"
   1:[1,2],
   3:[1,2],
-  4:[3,4,13]
+  4:[3,4,13],
+  6:[19]
 }
 let automationType = [
   { "Name": "Selenium", "Val": 1 },

@@ -30,7 +30,8 @@ function TestsetExecutionToolbar({
   selectedtestcases,
   testsetId,
   selecteddatasets,
-  frameworkType
+  frameworkType,
+  applicationType
 }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ function TestsetExecutionToolbar({
   const [jarConnected, setJarConnected] = useState(false);
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
-  const [applicationType, setApplicationType] = useState("");
+  const [appType, setApplicationType] = useState("");
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
   const [snack, setSnack] = useState(false)
@@ -108,7 +109,7 @@ function TestsetExecutionToolbar({
         testset_id: testsetId,
         module_id: applicationId,
         web_testcases_list_to_execute: datasets,
-        mobile_platform: applicationType,
+        mobile_platform: appType,
         config_id: null,
         config_name: null,
         build_environment_name: data?.buildenvName?.split("&")[1],
@@ -167,7 +168,7 @@ function TestsetExecutionToolbar({
         testset_id: testsetId,
         module_id: applicationId,
         web_testcases_list_to_execute: datasets,
-        mobile_platform: applicationType,
+        mobile_platform: appType,
         config_id: null,
         config_name: null,
         build_environment_name: data?.buildenvName?.split("&")[1],
@@ -234,12 +235,20 @@ function TestsetExecutionToolbar({
       )
       .then((resp) => {
         const execEnv = resp?.data?.data;
-
-        setExecEnvList(() => {
-          return execEnv.map((ee) => {
-            return { id: ee.value, label: ee.name };
-          });
-        });
+        const data1 = execEnv.map((ee)=>{
+          return { id : ee.value ,label : ee.name}
+        })
+        const execConfig = resp?.data?.data1
+        const data2 = execConfig.map((ee)=>{
+          return { id : ee.specificationId,label : ee.name}
+        })
+        const mergedObj = [...data1, ...data2];
+        setExecEnvList(mergedObj);
+        // setExecEnvList(() => {
+        //   return execEnv.map((ee) => {
+        //     return { id: ee.value, label: ee.name };
+        //   });
+        // });
       });
   }, [applicationId]);
 
@@ -320,9 +329,8 @@ function TestsetExecutionToolbar({
             </h5>
           </Stack>
         </Grid>
-        <Grid item md={2}>
-          <MultiSelectElement
-            menuMaxWidth={5}
+        { (applicationType == 3 || applicationType == 4)?"": <Grid item md={2}> <MultiSelectElement
+        menuMaxWidth={5}
             label="Browser"
             name="browser"
             size="small"
@@ -331,6 +339,8 @@ function TestsetExecutionToolbar({
             options={["Chrome", "Edge", "Firefox", "Safari"]}
           />
         </Grid>
+
+          }
         <Grid item md={2}>
           <FeatureMenu frameworkType={frameworkType} projectId={projectId} testsetId={testsetId} envId={buildEnvId} runtimeVar={(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""} />
         </Grid>
@@ -408,7 +418,7 @@ function TestsetExecutionToolbar({
         </Grid>
       </Grid>
 
-      {execLoc !== "local" && (
+      {(execLoc == "docker" || execLoc == "jenkins") && (
         <Stack mt={1}>
           <TextFieldElement
             label="Commit message"

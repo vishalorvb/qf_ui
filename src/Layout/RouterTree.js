@@ -57,7 +57,7 @@ export const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<UnAuthorized />} />
         <Route path="/" element={<AppLayout />}>
-          <Route element={<RequireAuth allowedRoles={[1, 2, 3, 4, 5, 6, 7]} />}>
+          <Route element={<RequireAuth allowedRoles={[1, 4]} />}>
             <Route index element={<Dashboard />} />
           </Route>
           {routeLister(Routes)}
