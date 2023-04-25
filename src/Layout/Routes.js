@@ -141,22 +141,22 @@ const AddEnvironemt = lazy(() =>
   import(`../Components/Execution/AddEnvironment`)
 );
 const LinkProjectExecution = lazy(() =>
-import(`../Components/Execution/LinkProjectExecution`)
+  import(`../Components/Execution/LinkProjectExecution`)
 );
- const AddTestSetLinkProject = lazy(() =>
-import(`../Components/Execution/AddTestSetLinkProject`)
+const AddTestSetLinkProject = lazy(() =>
+  import(`../Components/Execution/AddTestSetLinkProject`)
 );
 const EditTestLinkProject = lazy(() =>
-import(`../Components/Execution/EditTestLinkProject`)
+  import(`../Components/Execution/EditTestLinkProject`)
 );
 const AddOrganization = lazy(() =>
-import(`../pages/AddOrganization`)
+  import(`../pages/AddOrganization`)
 );
 const Organization = lazy(() =>
-import(`../pages/Organization`)
+  import(`../pages/Organization`)
 );
 
-const UserProfile = lazy(()=> import('../Components/UsersPopups/UserProfile'))
+const UserProfile = lazy(() => import('../Components/UsersPopups/UserProfile'))
 export const Routes = [
   {
     path: "Application/Recent",
@@ -348,7 +348,7 @@ export const Routes = [
     path: "TestcaseExecution",
     element: TestcaseExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
@@ -360,8 +360,8 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path : "ConfigureDevice",
-        element:ConfigureDevice,
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       }
     ]
@@ -370,32 +370,15 @@ export const Routes = [
     path: "TestsetExecution",
     element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path: "LinkProjectExecution",
-        element:LinkProjectExecution ,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
-        subRoute : [
-          {
-            path: "AddLinkTestset",
-            element: AddTestSetLinkProject,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-          {
-            path: "EditLinkTestset",
-            element: EditTestLinkProject,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
-          },
-        ]
-      },
-      {
-        path : "ConfigureDevice",
-        element:ConfigureDevice,
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
@@ -404,8 +387,8 @@ export const Routes = [
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path : "UpdateDevice",
-        element:UpdateConfigureDevice,
+        path: "UpdateDevice",
+        element: UpdateConfigureDevice,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       }
     ]
@@ -414,20 +397,20 @@ export const Routes = [
     path: "TestcaseExecution",
     element: TestcaseExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path : "ConfigureDevice",
-        element:ConfigureDevice,
+        path: "ConfigureDevice",
+        element: ConfigureDevice,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       },
       {
-        path : "UpdateDevice",
-        element:UpdateConfigureDevice,
+        path: "UpdateDevice",
+        element: UpdateConfigureDevice,
         accessRole: [1, 2, 3, 4, 5, 6, 7],
       }
     ]
@@ -437,7 +420,7 @@ export const Routes = [
     path: "TestsetExecution",
     element: TestsetExecution,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
-    subRoute : [
+    subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
@@ -636,10 +619,20 @@ export const Routes = [
     element: Organization,
     accessRole: [1, 2, 3, 4, 5, 6, 7],
   },
- 
- {
-  path:"/profile",
-  element:UserProfile,
-  accessRole: [1, 2, 3, 4, 5, 6, 7],
- }
+
+  {
+    path: "/profile",
+    element: UserProfile,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "AddLinkTestset",
+    element: AddTestSetLinkProject,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  },
+  {
+    path: "EditLinkTestset",
+    element: EditTestLinkProject,
+    accessRole: [1, 2, 3, 4, 5, 6, 7],
+  }
 ];
