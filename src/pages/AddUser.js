@@ -221,8 +221,8 @@ function AddUser() {
               >
                 <option value="">...Select Role...</option>
                 <option value="1">AUTOMATION ENGINEER</option>
-                <option value="2">ADMIN</option>
-                <option value="3">DBA</option>
+                {/* <option value="2">ADMIN</option> */}
+                {/* <option value="3">DBA</option> */}
                 <option value="4">AUTOMATION MANAGER</option>
               </select>
             </Stack>

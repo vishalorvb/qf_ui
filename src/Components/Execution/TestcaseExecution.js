@@ -35,8 +35,6 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-
-
 export default function TestcaseExecution() {
   const { setHeader } = useHead();
   const [testcases, setTestcases] = useState([]);
@@ -51,7 +49,6 @@ export default function TestcaseExecution() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -78,7 +75,7 @@ export default function TestcaseExecution() {
         setTestcasesspare(testcases);
       });
   }, [selectedProject, selectedApplication]);
-  console.log(selectedProject?.automation_framework_type)
+  console.log(selectedProject?.automation_framework_type);
   const itemRender = (rawList) => {
     const navigationList = rawList
       ?.filter(
@@ -124,76 +121,83 @@ export default function TestcaseExecution() {
   }, []);
 
   useEffect(() => {
-    if((selectedApplication?.module_type) == 19 ){
+    if (selectedApplication?.module_type == 19) {
       setReportFailMsg(true);
       setTimeout(() => {
-          setReportFailMsg(false);
+        setReportFailMsg(false);
       }, 3000);
+    } else {
     }
-    else{
+  }, [selectedApplication]);
 
-    }
-  }, [selectedApplication])
-  
   return (
     <>
-    <Box sx={{ width: "100%" }}>
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item md={2.8}>
+      <Box sx={{ width: "100%" }}>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item md={2.8}>
             <input
               type="text"
               placeholder="Search..."
               value={searchTerm}
               onChange={handleSearchChange}
             />
+          </Grid>
+          <Grid item md={5.5}>
+            <ProjectnApplicationSelector
+              selectedProject={selectedProject}
+              setSelectedProject={setSelectedProject}
+              selectedApplication={selectedApplication}
+              setSelectedApplication={setSelectedApplication}
+              // isTestset={value === 1}
+            />
+          </Grid>
         </Grid>
-        <Grid item md={5.5} >
-          <ProjectnApplicationSelector
-            selectedProject={selectedProject}
-            setSelectedProject={setSelectedProject}
-            selectedApplication={selectedApplication}
-            setSelectedApplication={setSelectedApplication}
-            // isTestset={value === 1}
-          />
+        <Grid container justifyContent="space-between">
+          <Grid item md={2.8}>
+            <List
+              sx={{
+                overflowY: "auto",
+                height: "70vh",
+                width: "100%",
+              }}
+            >
+              {testcases.length > 0 ? (
+                itemRender(testcases)
+              ) : (
+                <div style={{ textAlign: "center" }}>
+                  <Typography>No Testcases Found</Typography>
+                  <br />
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      navigate("/Testcase/Create");
+                    }}
+                  >
+                    Create Testcase
+                  </Button>
+                </div>
+              )}
+            </List>
+          </Grid>
+          <Divider orientation="vertical" flexItem />
+          <Grid item md={9}>
+            <ExecutionDetails
+              selectedItem={selectedItem}
+              testcaseId={selectedItem}
+              projectId={selectedProject?.project_id}
+              frameworkType={selectedProject?.automation_framework_type}
+              applicationType={selectedApplication?.module_type}
+              applicationId={selectedApplication?.module_id}
+            ></ExecutionDetails>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container justifyContent="space-between">
-        <Grid item md={2.8}>
-          <List
-            sx={{
-              overflowY: "auto",
-              height: "70vh",
-              width: "100%",
-            }}
-          >
-           {(testcases.length) > 0 ? itemRender(testcases) : <div style={{textAlign : "center"}}>
-           
-           <Typography>No Testcases Found</Typography><br/>
-           <Button
-            variant = "contained"
-            onClick={()=>{ navigate("/Testcase/Create")}}
-           >Create Testcase</Button></div>} 
-          </List>
-        </Grid>
-        <Divider orientation="vertical" flexItem />
-        <Grid item md={9}>
-          <ExecutionDetails
-            selectedItem={selectedItem}
-            testcaseId={selectedItem}
-            projectId={selectedProject.project_id}
-            frameworkType = {selectedProject.automation_framework_type}
-            applicationType={selectedApplication?.module_type}
-            applicationId={selectedApplication?.module_id}
-          ></ExecutionDetails>
-        </Grid>
-      </Grid>
-    </Box>
-       <SnackbarNotify
-       open={reportFailMsg}
-       close={setReportFailMsg}
-       msg="No Testcases are found for this Application."
-       severity="error"
-   />
-   </>
+      </Box>
+      <SnackbarNotify
+        open={reportFailMsg}
+        close={setReportFailMsg}
+        msg="No Testcases are found for this Application."
+        severity="error"
+      />
+    </>
   );
 }
