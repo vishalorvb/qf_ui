@@ -38,7 +38,7 @@ const ConfigureDevice = () => {
 
   function getConfigurations(projectId) {
     axios
-      .get(`/qfservice/mobileconfiguration?project_id=${projectId}`)
+      .get(`/qfservice/mobileconfiguration?project_id=${792}`)
       .then((res) => {
         if (res.data.data.length > 0) {
           setConfigurations(res?.data?.data);
@@ -113,25 +113,11 @@ const ConfigureDevice = () => {
       flex: 2,
       sortable: false,
       align: "left",
-    },
-    {
-      field: "url",
-      headerName: "URL",
-      flex: 2,
-      sortable: false,
-      align: "left",
-    },
-    {
-      field: "Action",
-      headerName: "Action",
-      flex: 2,
-      sortable: false,
-      align: "left",
       renderCell: (param) => {
         return (
           <>
-            <Tooltip title="Edit">
-              <IconButton
+      
+              <span style={{cursor:"pointer"}}
                 onClick={() => {
                   setSpecificationId(param.row.specificationId)
                   location.state.pathname == '/TestcaseExecution' &&   navigate("/TestcaseExecution/UpdateDevice", {
@@ -148,11 +134,33 @@ const ConfigureDevice = () => {
                     },
                   });
                 
+                }}>{param.row.name}
+                </span>
+  
+            {/* <Tooltip title="Delete">
+              <IconButton
+                onClick={() => {
+                  setSpecificationId(param.row.specificationId);
+                  console.log(specificationId);
+                  setConfirm(true);
                 }}
               >
-                <EditIcon style={{ color: "black" }} />
+                <DeleteOutlineIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
+          </>
+        );
+      },
+    },
+    {
+      field: "Action",
+      headerName: "Action",
+      flex: 2,
+      sortable: false,
+      align: "left",
+      renderCell: (param) => {
+        return (
+          <>
             <Tooltip title="Delete">
               <IconButton
                 onClick={() => {
@@ -164,32 +172,6 @@ const ConfigureDevice = () => {
                 <DeleteOutlineIcon />
               </IconButton>
             </Tooltip>
-          </>
-        );
-      },
-    },
-
-    {
-      field: "Set as default",
-      headerName: "Set as default",
-      flex: 2,
-      sortable: false,
-      align: "left",
-      renderCell: (param) => {
-        return (
-          <>
-            <Button
-              sx={{
-                backgroundColor: "#EDFAF9",
-                borderRadius: "10px",
-                height: "25px",
-                marginTop: "5px",
-              }}
-              variant="outlined"
-              onClick={makeDefault}
-            >
-              Make a Default
-            </Button>
           </>
         );
       },
@@ -259,30 +241,31 @@ const ConfigureDevice = () => {
           getConfigurations={getConfigurations}
         />
       )}
-      <SnackbarNotify
+     {successMsg &&  <SnackbarNotify
         open={successMsg}
         close={setSuccessMsg}
         msg="Successfully setted as default"
         severity="success"
       />
-      <SnackbarNotify
+     }
+      {fetchSuccessMsg && <SnackbarNotify
         open={fetchSuccessMsg}
         close={setFetchSuccessMsg}
         msg="Configurations fetched successfully"
         severity="success"
-      />
-      <SnackbarNotify
+      />}
+      {fetchFailMsg && <SnackbarNotify
         open={fetchFailMsg}
         close={setFetchFailMsg}
         msg="No configurations found for this project"
         severity="error"
-      />
-      <SnackbarNotify
+      />}
+      {successDelete && <SnackbarNotify
         open={successDelete}
         close={setSuccessDelete}
         msg="Deleted configuration successfully"
         severity="success"
-      />
+      />}
       {confirm && (
         <ConfirmPop
           open={true}

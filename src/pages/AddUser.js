@@ -39,9 +39,7 @@ function AddUser() {
   const [roleObject, setRoleObject] = useState([]);
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-  // const token = localStorage.getItem("token");
   const axiosPrivate = useAxios();
-  const [users, setUsers] = useState([]);
   const [validationMsg, setValidationMsg] = useState(false);
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addErrorMsg, setAddErrorMsg] = useState(false);
@@ -121,16 +119,6 @@ function AddUser() {
           plusButton: false,
           plusCallback: () => console.log("null"),
         };
-      });
-  }, []);
-
-  useEffect(() => {
-    axiosPrivate
-      .get(
-        `/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
-      )
-      .then((res) => {
-        setUsers(res.data.info);
       });
   }, []);
 

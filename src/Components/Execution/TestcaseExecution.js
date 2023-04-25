@@ -9,6 +9,7 @@ import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecutionDetails from "./ExecutionDetails";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";
+import { GetTestCase } from "../../Services/TestCaseService";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -36,7 +37,13 @@ TabPanel.propTypes = {
 };
 
 export default function TestcaseExecution() {
-  const { setHeader } = useHead();
+  const {
+    setHeader,
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
   const [testcases, setTestcases] = useState([]);
   const [testcasesspare, setTestcasesspare] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -65,17 +72,26 @@ export default function TestcaseExecution() {
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    axios
-      .get(
-        `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${selectedApplication?.module_id}&project_id=${selectedProject?.project_id}`
-      )
-      .then((resp) => {
-        const testcases = resp?.data?.info ? resp?.data?.info : [];
-        setTestcases(testcases);
-        setTestcasesspare(testcases);
-      });
-  }, [selectedProject, selectedApplication]);
-  console.log(selectedProject?.automation_framework_type);
+    // axios
+    //   .get(
+    //     `/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${globalApplication?.module_id}&project_id=${globalProject?.project_id}`
+    //   )
+    //   .then((resp) => {
+    //     const testcases = resp?.data?.info ? resp?.data?.info : [];
+    //     setTestcases(testcases);
+    //     setTestcasesspare(testcases);
+    //   });
+
+    GetTestCase(
+      (res) => {
+        setTestcases(res);
+        setTestcasesspare(res);
+      },
+      globalProject?.project_id,
+      globalApplication?.module_id
+    );
+  }, [globalProject, globalApplication]);
+  console.log(globalApplication);
   const itemRender = (rawList) => {
     const navigationList = rawList
       ?.filter(
@@ -121,14 +137,14 @@ export default function TestcaseExecution() {
   }, []);
 
   useEffect(() => {
-    if (selectedApplication?.module_type == 19) {
+    if (globalApplication?.module_type == 19) {
       setReportFailMsg(true);
       setTimeout(() => {
         setReportFailMsg(false);
       }, 3000);
     } else {
     }
-  }, [selectedApplication]);
+  }, [globalApplication]);
 
   return (
     <>
@@ -144,10 +160,10 @@ export default function TestcaseExecution() {
           </Grid>
           <Grid item md={5.5}>
             <ProjectnApplicationSelector
-              selectedProject={selectedProject}
-              setSelectedProject={setSelectedProject}
-              selectedApplication={selectedApplication}
-              setSelectedApplication={setSelectedApplication}
+              globalProject={globalProject}
+              setglobalProject={setglobalProject}
+              globalApplication={globalApplication}
+              setglobalApplication={setglobalApplication}
               // isTestset={value === 1}
             />
           </Grid>
@@ -184,9 +200,9 @@ export default function TestcaseExecution() {
             <ExecutionDetails
               selectedItem={selectedItem}
               testcaseId={selectedItem}
-              projectId={selectedProject?.project_id}
-              frameworkType={selectedProject?.automation_framework_type}
-              applicationType={selectedApplication?.module_type}
+              projectId={globalProject?.project_id}
+              frameworkType={globalProject?.automation_framework_type}
+              applicationType={globalApplication?.module_type}
               applicationId={selectedApplication?.module_id}
             ></ExecutionDetails>
           </Grid>

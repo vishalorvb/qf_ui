@@ -51,8 +51,7 @@ const AddEnvironemt = () => {
     });
   }, []);
 
-  console.log(location.state.projectId);
-  console.log(location.state.applicationId);
+  
 
   async function getBuilEnvironment() {
     axios

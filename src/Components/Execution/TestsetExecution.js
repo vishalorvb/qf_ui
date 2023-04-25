@@ -8,7 +8,9 @@ import axios from "../../api/axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
 import LinkProjectExecution from "./LinkProjectExecution";
+import { Navigate } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,18 +46,19 @@ function a11yProps(index) {
 }
 
 export default function TestsetExecution() {
-  const { setHeader } = useHead();
+  const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
   const [testcases, setTestcases] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
-  const [selectedProject, setSelectedProject] = useState({
-    project_name: "Project",
-  });
-  const [selectedApplication, setSelectedApplication] = useState({});
+  // const [globalProject, setglobalProject] = useState({
+  //   project_name: "Project",
+  // });
+  // const [globalApplication, setglobalApplication] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -69,13 +72,13 @@ export default function TestsetExecution() {
   useEffect(() => {
     axios
       .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+        `/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
       )
       .then((resp) => {
         const testcases = resp?.data?.info ? resp?.data?.info : [];
         setTestcases(testcases);
       });
-  }, [selectedProject, selectedApplication]);
+  }, [globalProject, globalApplication]);
 
   const itemRender = (rawList) => {
     const navigationList = rawList.filter(apiItem => apiItem.testset_name.toLowerCase().includes(searchTerm.toLowerCase()) || apiItem.testset_desc.toLowerCase().includes(searchTerm.toLowerCase()))?.map((apiItem, index) => {
@@ -115,11 +118,24 @@ export default function TestsetExecution() {
       };
     });
   }, []);
+
+  useEffect(() => {
+    if (globalApplication?.module_type == 19) {
+      navigate("/TestsetExecution/LinkProjectExecution", {
+        state: { projectId: globalProject?.project_id, applicationId: globalApplication?.module_id },
+      })
+   
+    }
+
+
+  }, [globalApplication])
+
+
   return (
     <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
-          <> {selectedApplication?.module_type != 19 &&
+          <> {globalApplication?.module_type != 19 &&
             <input
               type="text"
               placeholder="Search..."
@@ -130,43 +146,45 @@ export default function TestsetExecution() {
         </Grid>
         <Grid item md={5.5}>
           <ProjectnApplicationSelector
-            selectedProject={selectedProject}
-            setSelectedProject={setSelectedProject}
-            selectedApplication={selectedApplication}
-            setSelectedApplication={setSelectedApplication}
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
           />
         </Grid>
       </Grid>
-      {selectedApplication?.module_type != 19 ?
-        <Grid container justifyContent="space-between">
-          <Grid item md={2.8} justifyContent="flex-start">
-            <List
-              sx={{
-                overflowY: "aurto",
-                height: "70vh"
-              }}
-            >
-               {(testcases.length) > 0 ? itemRender(testcases) : <div style={{textAlign : "center"}}>
-           <Typography>No Testsets Found</Typography><br/>
-           <Button
-            variant = "contained"
-            onClick={()=>{ navigate("/Testset/Create")}}
-           >Create Testset</Button></div>} 
-            </List>
-          </Grid>
 
-          <Divider orientation="vertical" flexItem />
+      <Grid container justifyContent="space-between">
+        <Grid item md={2.8} justifyContent="flex-start">
+          <List
+            sx={{
+              overflowY: "aurto",
+              height: "70vh"
+            }}
+          >
+            {(testcases.length) > 0 ? itemRender(testcases) : <div style={{ textAlign: "center" }}>
+              <Typography>No Testsets Found</Typography><br />
+              <Button
+                variant="contained"
+                onClick={() => { navigate("/Testset/Create") }}
+              >Create Testset</Button></div>}
+          </List>
+        </Grid>
 
-          <Grid item md={9}>
-            <ExecuteTestSetDetails
-              projectId={selectedProject.project_id}
-               applicationType={selectedApplication?.module_type} 
-               applicationId={selectedApplication?.module_id}
-               frameworkType = {selectedProject.automation_framework_type}
-              testsetId={selectedItem}
-            ></ExecuteTestSetDetails>
-          </Grid>
-        </Grid>:<LinkProjectExecution projectId={selectedProject.project_id}  applicationId={selectedApplication?.module_id}/>}
+        <Divider orientation="vertical" flexItem />
+
+        <Grid item md={9}>
+          <ExecuteTestSetDetails
+            projectId={globalProject?.project_id }
+            applicationType={globalApplication?.module_type}
+            applicationId={globalApplication?.module_id}
+            frameworkType={globalProject?.automation_framework_type}
+            testsetId={selectedItem}
+          ></ExecuteTestSetDetails>
+        </Grid>
+      </Grid>
+
+      {/* <LinkProjectExecution projectId={globalProject?.project_id}  applicationId={globalApplication?.module_id}/> */}
     </>
   );
 }

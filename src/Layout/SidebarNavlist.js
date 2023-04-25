@@ -9,6 +9,27 @@ export const testManagementList = [
     icon: <i className="qf icon-dashboard"></i>,
   },
   {
+    name: "Organization",
+    id: "10",
+    route: "",
+    accessRole: [2],
+    icon: <i className=""></i>,
+    subList: [
+      {
+        name: "Add Organization",
+        id: "93",
+        route: "AddOrganization",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+      {
+        name: "Organization",
+        id: "94",
+        route: "Organization",
+        accessRole: [1, 2, 3, 4, 5, 6, 7],
+      },
+    ],
+  },
+  {
     name: "Admin",
     id: "1",
     route: "",
