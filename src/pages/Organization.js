@@ -1,11 +1,14 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Table from '../CustomComponent/Table'
 import { IconButton, Tooltip } from '@mui/material';
 import EditIcon from "@mui/icons-material/Edit";
+import useHead from '../hooks/useHead';
 
 
 const Organization = () => {
+
+  const { setHeader } = useHead();
 
   const Data = [
     {
@@ -70,7 +73,15 @@ const columns = [
 
 ];
 
+useEffect(() => {
+  setHeader((ps) => {
+    return {
+      ...ps,
+      name: "Organization",
+    };
+  });
 
+}, []);
 
 
   return(
