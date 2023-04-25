@@ -144,24 +144,11 @@ const AddTestSetLinkProject = lazy(() =>
 );
 const EditTestLinkProject = lazy(() =>
   import(`../Components/Execution/EditTestLinkProject`)
-<<<<<<< HEAD
-);
-const AddOrganization = lazy(() =>
-  import(`../pages/AddOrganization`)
-);
-const Organization = lazy(() =>
-  import(`../pages/Organization`)
-=======
->>>>>>> developer
 );
 const AddOrganization = lazy(() => import(`../pages/AddOrganization`));
 const Organization = lazy(() => import(`../pages/Organization`));
 
-<<<<<<< HEAD
-const UserProfile = lazy(() => import('../Components/UsersPopups/UserProfile'))
-=======
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
->>>>>>> developer
 export const Routes = [
   {
     path: "Application/Recent",
