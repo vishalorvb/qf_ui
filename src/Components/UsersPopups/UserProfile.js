@@ -1,5 +1,5 @@
-import { Divider, Grid } from '@mui/material'
-import React, { useState } from 'react'
+import { Button, Divider, Grid, TextField } from '@mui/material'
+import React, { useRef, useState } from 'react'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import IconButton from '@mui/material/IconButton';
@@ -10,26 +10,54 @@ function UserProfile() {
     let [newPassword, setnewPassword] = useState(true)
     let [confirmPassword, setconfirmPassword] = useState(true)
     const { auth } = useAuth();
+    const fileInputRef = useRef(null);
 
+
+
+    const handleUploadClick = () => {
+        fileInputRef.current.click();
+      };
+      const handleFileInputChange = (event) => {
+        const file = event.target.files[0];
+        console.log(file.size)
+        if (file.size > 2 * 1024 * 1024) {
+            console.log("photo size exceeds")
+          }
+        // Perform any necessary actions with the selected file here
+      };
+      
 
     return (
         <div style={{ padding: "40px" }} >
             <Grid container spacing={2} justifyContent="center" >
                 <Grid item md={4}>
-                    <h4>Profile</h4>
+                    <h4 
+                    style={{color:"rgb(0, 159, 238)"}}
+                    >Profile</h4>
                     <h5>Primary Info</h5>
                 </Grid>
                 <Grid container md={6} alignItems='center' >
                     <Grid item md={2}>
-                        <IconButton>
+                        <IconButton
+                        onClick={handleUploadClick}
+                        >
                             <AccountCircleRoundedIcon fontSize="large"></AccountCircleRoundedIcon>
+                            <input  type="file"
+                            ref={fileInputRef}
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            onChange={handleFileInputChange}
+                            />
                         </IconButton>
                     </Grid>
                     <Grid item md={7}>
                         <label >Email Address</label>
-                        <input
+                        {/* <input
                         defaultValue={auth.info.email}
-                         type="text" name="email" />
+                         type="text" name="email" /> */}
+                         <TextField id="standard-basic" label="" variant="standard"  fullWidth
+                          defaultValue={auth.info.email}
+                         />
                     </Grid>
                     <Grid item md={2}>
 
@@ -37,12 +65,14 @@ function UserProfile() {
                     <Grid item md={2}>
 
                     </Grid>
-
                     <Grid item md={7}>
                         <label >User Id</label>
-                        <input 
+                        {/* <input 
                         defaultValue={auth.user}
-                        type="text" name="" />
+                        type="text" name="" /> */}
+                         <TextField id="standard-basic" label="" variant="standard"  fullWidth
+                          defaultValue={auth.user}
+                         />
                     </Grid>
                 </Grid>
             </Grid>
@@ -51,7 +81,9 @@ function UserProfile() {
             <br />
             <Grid container spacing={2} justifyContent="center">
                 <Grid item md={4}>
-                    <h4>Password</h4>
+                    <h4
+                    style={{color:"rgb(0, 159, 238)"}}
+                    >Password</h4>
                     <h5>Update Your Password</h5>
                 </Grid>
                 <Grid container md={6} alignItems='center' spacing={2}>
@@ -62,6 +94,7 @@ function UserProfile() {
                     </Grid>
                     <Grid item md={2}>
                         <IconButton
+                        sx={{marginTop:"20px"}}
                             onMouseDown={e => {
                                 setCurrentPassword(false)
                             }}
@@ -79,6 +112,7 @@ function UserProfile() {
                     </Grid>
                     <Grid item md={2}>
                         <IconButton
+                         sx={{marginTop:"20px"}}
                          onMouseDown={e => {
                             setnewPassword(false)
                         }}
@@ -96,6 +130,7 @@ function UserProfile() {
                     </Grid>
                     <Grid item md={2}>
                         <IconButton
+                         sx={{marginTop:"20px"}}
                             onMouseDown={e => {
                                 setconfirmPassword(false)
                             }}
@@ -107,6 +142,9 @@ function UserProfile() {
                             <VisibilityRoundedIcon></VisibilityRoundedIcon>
                         </IconButton>
                     </Grid>
+                    <Grid item md={9}>
+                        <Button variant='contained'>Update</Button>
+                    </Grid>
                 </Grid>
             </Grid>
             <br />
@@ -114,7 +152,9 @@ function UserProfile() {
             <br />
             <Grid container spacing={2} justifyContent="center">
                 <Grid item md={4}>
-                    <h4>Organization</h4>
+                    <h4
+                    style={{color:"rgb(0, 159, 238)"}}
+                    >Organization</h4>
 
                 </Grid>
                 <Grid item md={6}>

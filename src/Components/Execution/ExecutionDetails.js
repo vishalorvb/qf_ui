@@ -9,9 +9,9 @@
     applicationId,
     projectId,
     applicationType,
-    frameworkType
+    frameworkType,
   }) {
-    console.log(frameworkType)
+    console.log(applicationType)
     const [datasetList, setDataList] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const columns = [
