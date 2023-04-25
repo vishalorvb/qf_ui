@@ -317,25 +317,7 @@ export const Routes = [
     element: Phases,
     accessRole: [1, 4],
   },
-  // {
-  //   path: "application/apiApp",
-  //   element: ApiApp,
-  //   accessRole: [ 3, 4, 5],
-  //   subRoute: [
-  //     {
-  //       path: "apiRequests",
-  //       element: APIsTable,
-  //       accessRole: [1, 2, 3, 4, 5],
-  //       subRoute: [
-  //         {
-  //           path: "create",
-  //           element: Api,
-  //           accessRole: [1, 2, 3, 4, 5],
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+
   {
     path: "TestcaseExecution",
     element: TestcaseExecution,
@@ -408,56 +390,56 @@ export const Routes = [
       {
         path: "LinkProjectExecution",
         element: LinkProjectExecution,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
         subRoute: [
           {
             path: "AddLinkTestset",
             element: AddTestSetLinkProject,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
           {
             path: "EditLinkTestset",
             element: EditTestLinkProject,
-            accessRole: [1, 2, 3, 4, 5, 6, 7],
+            accessRole: [1, 4],
           },
         ],
       },
       {
         path: "ConfigureDevice",
         element: ConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "AddConfigureDevice",
         element: AddConfigurationPopUp,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "UpdateDevice",
         element: UpdateConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
   {
     path: "TestcaseExecution",
     element: TestcaseExecution,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
     subRoute: [
       {
         path: "AddEnvironment",
         element: AddEnvironemt,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "ConfigureDevice",
         element: ConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
       {
         path: "UpdateDevice",
         element: UpdateConfigureDevice,
-        accessRole: [1, 2, 3, 4, 5, 6, 7],
+        accessRole: [1, 4],
       },
     ],
   },
@@ -479,25 +461,7 @@ export const Routes = [
     element: GetTestcases,
     accessRole: [1, 4],
   },
-  // {
-  //   path: "application/mobileApp",
-  //   element: MobileApp,
-  //   accessRole: [1, 2, 3, 4, 5],
-  //   subRoute: [
-  //     {
-  //       path: ":id",
-  //       element: Pages,
-  //       accessRole: [1, 2, 3, 4, 5],
-  //       subRoute: [
-  //         {
-  //           path: ":id",
-  //           element: PageElements,
-  //           accessRole: [1, 2, 3, 4, 5],
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+
   {
     path: "*",
     element: NotFound,
@@ -584,11 +548,6 @@ export const Routes = [
       },
     ],
   },
-  // {
-  //   path: "updateConfigureDevice",
-  //   element: UpdateConfigureDevice,
-  //   accessRole: [1, 2, 3, 4, 5,  ],
-  // },
 
   {
     path: "Testcase/Recent",
@@ -657,17 +616,17 @@ export const Routes = [
   {
     path: "AddOrganization",
     element: AddOrganization,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
   {
     path: "Organization",
     element: Organization,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
 
   {
     path: "/profile",
     element: UserProfile,
-    accessRole: [1, 2, 3, 4, 5, 6, 7],
+    accessRole: [1, 4],
   },
 ];
