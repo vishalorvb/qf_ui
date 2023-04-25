@@ -81,7 +81,7 @@ export default function TestcaseExecution() {
     //     setTestcases(testcases);
     //     setTestcasesspare(testcases);
     //   });
-    
+
     GetTestCase(
       (res) => {
         setTestcases(res);
@@ -91,7 +91,7 @@ export default function TestcaseExecution() {
       globalApplication?.module_id
     );
   }, [globalProject, globalApplication]);
-  console.log(globalApplication)
+  console.log(globalApplication);
   const itemRender = (rawList) => {
     const navigationList = rawList
       ?.filter(
