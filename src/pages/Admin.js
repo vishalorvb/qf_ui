@@ -44,6 +44,7 @@ export default function Admin() {
   const [delSuccessMsg, setDelSuccessMsg] = useState(false);
   const [actSuccessMsg, setActSuccessMsg] = useState(false);
   const [deactSuccessMsg, setDeactSuccessMsg] = useState(false);
+  const [delFailMsg,setDeleteFailMsg] = useState(false)
   const [validationMsg, setValidationMsg] = useState(false);
 
   const axiosPrivate = useAxios();
@@ -239,6 +240,7 @@ export default function Admin() {
             loggedInId={loggedInId}
             getUsers={getUsers}
             setDelSuccessMsg={setDelSuccessMsg}
+            setDeleteFailMsg= {setDeleteFailMsg}
           />
         ) : (
           ""
@@ -299,6 +301,12 @@ export default function Admin() {
           open={addErrorMsg}
           close={setAddErrorMsg}
           msg="User is already exist with this id, Please select another id"
+          severity="error"
+        />
+         <SnackbarNotify
+          open={delFailMsg}
+          close={setDeleteFailMsg}
+          msg="You don't have permission to perform this operation"
           severity="error"
         />
         <SnackbarNotify
