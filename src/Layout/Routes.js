@@ -616,12 +616,12 @@ export const Routes = [
   {
     path: "AddOrganization",
     element: AddOrganization,
-    accessRole: [1, 4],
+    accessRole: [2, 3],
   },
   {
     path: "Organization",
     element: Organization,
-    accessRole: [1, 4],
+    accessRole: [2, 3],
   },
 
   {
