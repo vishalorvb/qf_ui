@@ -44,19 +44,17 @@ function CreateTestCase() {
                                 MapAPiTestCaseData.testcase_id = res
                                 navigate(redirect_url[globalApplication?.module_type])
                             }
+                            else{
+                                navigate(redirect_url[2], {
+                                    state:
+                                    {
+                                        projectId: globalProject.project_id,
+                                        moduleId: globalApplication.module_id,
+                                        testcaseId: res
+                                    }
+                                })
+                            }
                         }
-                        else {
-
-                            navigate(redirect_url[2], {
-                                state:
-                                {
-                                    projectId: globalProject.project_id,
-                                    moduleId: globalApplication.module_id,
-                                    testcaseId: res
-                                }
-                            })
-                        }
-
                     }
                     )
                 }
