@@ -21,7 +21,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "../api/axios";
-function ElementsDetails({ ElementId, setPopup }) {
+function ElementsDetails({ ElementId, setPopup, getPageElements }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
   useEffect(() => {
@@ -81,6 +81,7 @@ function ElementsDetails({ ElementId, setPopup }) {
     axios
       .postForm(`/qfservice/webpages/updateWebPageElementPaths`, elementDetails)
       .then((resp) => {
+        resp?.data?.status === "SUCCESS" && getPageElements();
         resp?.data?.status === "SUCCESS" && setPopup(false);
       });
   };
