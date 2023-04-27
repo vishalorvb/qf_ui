@@ -7,6 +7,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { useNavigate } from "react-router-dom";
+
+let initialval = {
+  organization_id:"",
+  firstName: "",
+  lastName: "",
+  company: "",
+  adminUserId: "",
+  email: "",
+  phone: "",
+  password: "",
+  confirmPassword: "",
+};
+
+export let postVal = { ...initialval };
 
 
 const schema = yup.object().shape({
@@ -23,34 +38,86 @@ const schema = yup.object().shape({
 const AddOrganization = () => {
   const { setHeader } = useHead();
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
+  const [addFailMsg, setAddFailMsg] = useState(false);
+  const navigate = useNavigate();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema)
   });
 
   const onSubmitHandler = async (data) => {
-    console.log("inside submit handler");
+    console.log(data);
     try {
-      const response = await axios.post('/qfuserservice/signup', data);
-      console.log(response.data);
-      if(response.data.message = "Successfully updated"){
+      if(postVal.company.length == 0) {
+        const response = await axios.post('/qfuserservice/signup', data);
+      console.log(response.data.status);
+      if(response.data.status == "SUCCESS"){
         setAddSuccessMsg(true);
         setTimeout(() => {
           setAddSuccessMsg(false);
         }, 3000);
+        // navigate("/Organization");
+        reset();
       } 
+      else{
+
+        setAddFailMsg(true);
+        setTimeout(() => {
+          setAddFailMsg(false);
+        }, 3000);
+        reset();
+
+      }
+      }
+      else{
+        //   const response = await axios.post('/qfuserservice/user/updateorgdetails', data);
+        // console.log(response.data.status);
+        // if(response.data.status == "SUCCESS"){
+        //   setAddSuccessMsg(true);
+        //   setTimeout(() => {
+        //     setAddSuccessMsg(false);
+        //   }, 3000);
+        //   // navigate("/Organization");
+        //   reset();
+        // } 
+        // else{
+  
+        //   setAddFailMsg(true);
+        //   setTimeout(() => {
+        //     setAddFailMsg(false);
+        //   }, 3000);
+        //   reset();
+  
+        // }
+      }
+     
     } catch (error) {
       console.error(error); // handle error
     }
   };
 
   useEffect(() => {
+    if(postVal.company.length == 0) {
     setHeader((ps) => {
       return {
         ...ps,
         name: "Add Organization",
       };
     });
+  }
+  else if(postVal.company.length !=0 ){
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Edit Organization",
+      };
+    });
+  }
+
+    return ()=>{
+      postVal ={...initialval}
+    }
   }, []);
 
 
@@ -69,6 +136,7 @@ const AddOrganization = () => {
               className={errors.firstName ? "error" : "valid"}
               fullWidth
               size="small"
+              defaultValue={""}
             />
             {errors.firstName && <span style={{ color: "red" }}>{errors.firstName.message}</span>}
           </Stack>
@@ -96,6 +164,7 @@ const AddOrganization = () => {
             <input
               {...register("company")}
               className={errors.company ? "error" : "valid"}
+              defaultValue={postVal.company}
               fullWidth
               size="small"
             />
@@ -138,6 +207,7 @@ const AddOrganization = () => {
             <input
               {...register("phone")}
               type='number'
+              defaultValue={postVal.phone}
               className={errors.phone ? "error" : "valid"}
               fullWidth
               size="small"
@@ -157,6 +227,7 @@ const AddOrganization = () => {
               className={errors.password ? "error" : "valid"}
               fullWidth
               size="small"
+              type='password'
             />
             {errors.password && <span style={{ color: "red" }}>{errors.password.message}</span>}
           </Stack>
@@ -171,6 +242,7 @@ const AddOrganization = () => {
               className={errors.confirmPassword ? "error" : "valid"}
               fullWidth
               size="small"
+              type='password'
             />
             {errors.confirmPassword && <span style={{ color: "red" }}>{errors.confirmPassword.message}</span>}
           </Stack>
@@ -189,6 +261,12 @@ const AddOrganization = () => {
             close={setAddSuccessMsg}
             msg="created successfully"
             severity="success"
+          />
+            <SnackbarNotify
+            open={addFailMsg}
+            close={setAddFailMsg}
+            msg="Admin User Id or Organization name should be unique"
+            severity="error"
           />
           </>
   );
