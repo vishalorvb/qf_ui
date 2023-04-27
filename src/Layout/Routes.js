@@ -33,6 +33,9 @@ const Phases = lazy(() =>
 const Cycles = lazy(() =>
   import("../Components/BIReports/Cycles")
 );
+const ActiveReports = lazy(() =>
+  import("../Components/BIReports/ActiveReports")
+);
 const APIsTable = lazy(() =>
   import("../Components/Application/ApiApplication/APIsTable")
 );
