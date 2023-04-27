@@ -11,16 +11,17 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import useHead from "../../hooks/useHead";
-import ImageIcon from "@mui/icons-material/Image";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 import { Container, Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import PhaseDetails from "./PhaseDetails";
 
 function Phases() {
+    const location = useLocation();
     const [phaseName, setPhaseName] = useState("");
     const [totalTestcases, setTotalTestcases] = useState(0);
     const [automatedTestcases, setAutomatedTestcases] = useState(0);
@@ -42,6 +43,8 @@ function Phases() {
     const [msg, setMsg] = useState("");
     const [openNewPhase, setOpenNewPhase] = useState(true);
     const [openPhase, setOpenPhase] = useState(false);
+    var phases = location.state.param1 ? location.state.param1 : 0;
+    var projectId = location.state.param2 ? location.state.param2 : 0;
 
     let requiredOnlyNumbers = [total_testcases, automated_testcases, completed_testcases,functional_testcases,regression_testcases,saved_hours];
     let requiredOnlyAlphabets = [phase_name];
@@ -124,7 +127,7 @@ function Phases() {
                   >
                     <ListItemAvatar>
                       <Avatar>
-                        <ImageIcon />
+                        <AssignmentIcon />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText primary="Add New" secondary="Phase" />
@@ -132,7 +135,7 @@ function Phases() {
                 </ListItem>
                 <Divider sx={{ mt: 1 }} />
               </Grid>
-              {Array.from(Array(6)).map((_, index) => (
+              {Array.from(Array(phases)).map((_, index) => (
                 <Grid item xs={2} sm={4} md={12} key={index} mt={1}>
                   <ListItem button>
                     <ListItemButton
@@ -143,7 +146,7 @@ function Phases() {
                     >
                       <ListItemAvatar>
                         <Avatar>
-                          <ImageIcon />
+                            <AssignmentIcon />
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
@@ -152,7 +155,7 @@ function Phases() {
                       />
                     </ListItemButton>
                   </ListItem>
-                  {index != 5 ? <Divider sx={{ mt: 1 }} /> : ""}
+                  {index != (phases - 1) ? <Divider sx={{ mt: 1 }} /> : ""}
                 </Grid>
               ))}
             </List>
@@ -163,12 +166,12 @@ function Phases() {
         </Grid>
         {openNewPhase ? (
           <Grid item container md={8.5}>
-            <Grid item container direction="row" spacing={1} mt={4}>
+            <Grid item container direction="row" spacing={1} mt={2}>
               <Grid item md={12}>
                 <Typography variant="h4">Details</Typography>
                 {/* <h3></h3> */}
               </Grid>
-              <Grid item md={12}>
+              <Grid item md={12} mt={3}>
                 <Stack spacing={1}>
                   <label>
                     Phase name <span className="importantfield">*</span>
@@ -272,7 +275,7 @@ function Phases() {
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item container spacing={1} direction="row-reverse">
+            <Grid item container spacing={1} direction="row-reverse" mt={2}>
               <Grid item>
                 <Button variant="contained" type="submit" onClick={submit}>
                   Save
