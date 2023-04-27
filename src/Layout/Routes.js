@@ -27,8 +27,12 @@ const PageElements = lazy(() =>
 const CreateProject = lazy(() =>
   import("../Components/ProjectComponents/CreateProject")
 );
-const Phases = lazy(() => import("../Components/BIReports/Phases"));
-const Cycles = lazy(() => import("../Components/BIReports/Cycles"));
+const Phases = lazy(() =>
+  import("../Components/BIReports/Phases")
+);
+const Cycles = lazy(() =>
+  import("../Components/BIReports/Cycles")
+);
 const APIsTable = lazy(() =>
   import("../Components/Application/ApiApplication/APIsTable")
 );
@@ -295,6 +299,11 @@ export const Routes = [
   {
     path: "BIReports/cycles",
     element: Cycles,
+    accessRole: [2],
+  },
+  {
+    path: "BIReports/activeReports",
+    element: ActiveReports,
     accessRole: [2],
   },
   {

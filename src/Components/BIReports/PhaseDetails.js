@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
@@ -90,7 +90,7 @@ function PhaseDetails() {
     <Grid item container md={8.5}>
       <Grid item container direction="row" spacing={1} mt={4}>
         <Grid item md={12}>
-          <h3>Details</h3>
+        <Typography variant="h4">Details</Typography>
         </Grid>
         <Grid item md={12}>
           <Stack spacing={1}>
