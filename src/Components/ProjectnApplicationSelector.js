@@ -7,36 +7,39 @@ import useAuth from "../hooks/useAuth";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
-export default function ProjectnApplicationSelector({
-  isTestset,
-}) {
+export default function ProjectnApplicationSelector({ isTestset }) {
   const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
-  const { globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+  const {
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
 
   const { auth } = useAuth();
 
   useEffect(() => {
-    getProject(setProjectList, auth.userId)
-  }, [])
+    getProject(setProjectList, auth.userId);
+  }, []);
 
   useEffect(() => {
     if (globalProject == null) {
       setglobalProject(projectsList[0]);
     }
-  }, [projectsList])
+  }, [projectsList]);
 
   useEffect(() => {
     if (globalProject?.project_id !== undefined) {
-      setglobalApplication(null)
-      getApplicationOfProject(setapplicationList, globalProject?.project_id)
+      setglobalApplication(null);
+      getApplicationOfProject(setapplicationList, globalProject?.project_id);
     }
-  }, [globalProject])
+  }, [globalProject]);
   useEffect(() => {
     if (globalApplication == null) {
-      setglobalApplication(applicationList[0])
+      setglobalApplication(applicationList[0]);
     }
-  }, [applicationList])
+  }, [applicationList]);
 
   return (
     <Stack
@@ -45,7 +48,6 @@ export default function ProjectnApplicationSelector({
       alignItems="center"
       spacing={2}
       mb={1}
-
     >
       <Autocomplete
         disablePortal
@@ -54,7 +56,7 @@ export default function ProjectnApplicationSelector({
         options={projectsList}
         value={globalProject || null}
         sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.project_name}
+        getOptionLabel={(option) => option.project_name ?? ""}
         onChange={(e, value) => {
           setglobalProject(value);
         }}
@@ -79,8 +81,6 @@ export default function ProjectnApplicationSelector({
           <TextField {...params} label="Applications" size="small" />
         )}
       />
-
-
     </Stack>
   );
 }
