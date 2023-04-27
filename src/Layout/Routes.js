@@ -386,11 +386,21 @@ export const Routes = [
         path: "UpdateDevice",
         element: UpdateConfigureDevice,
         accessRole: [1, 4],
-      },  
-    
+      },
       {
         path: "ConfigureDevice",
         element: ConfigureDevice,
+        accessRole: [1, 4],
+      },
+       
+      {
+        path: "AddLinkTestset",
+        element: AddTestSetLinkProject,
+        accessRole: [1, 4],
+      },
+      {
+        path: "EditLinkTestset",
+        element: EditTestLinkProject,
         accessRole: [1, 4],
       },
       {
@@ -439,16 +449,6 @@ export const Routes = [
         accessRole: [1, 4],
       },
     ],
-  },
-  {
-    path: "AddLinkTestset",
-    element: AddTestSetLinkProject,
-    accessRole: [1, 4],
-  },
-  {
-    path: "EditLinkTestset",
-    element: EditTestLinkProject,
-    accessRole: [1, 4],
   },
   {
     path: "getTestcases",
@@ -610,13 +610,13 @@ export const Routes = [
   {
     path: "AddOrganization",
     element: AddOrganization,
-    accessRole: [2,3],
+    accessRole: [2, 3],
   },
   {
     path: "Organization",
     element: Organization,
-    accessRole: [2,3],
-    accessRole: [2, 3],  },
+    accessRole: [2, 3],
+  },
 
   {
     path: "/profile",
