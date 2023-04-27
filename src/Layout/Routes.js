@@ -388,25 +388,19 @@ export const Routes = [
         accessRole: [1, 4],
       },
       {
-        path: "LinkProjectExecution",
-        element: LinkProjectExecution,
-        accessRole: [1, 4],
-        subRoute: [
-          {
-            path: "AddLinkTestset",
-            element: AddTestSetLinkProject,
-            accessRole: [1, 4],
-          },
-          {
-            path: "EditLinkTestset",
-            element: EditTestLinkProject,
-            accessRole: [1, 4],
-          },
-        ],
-      },
-      {
         path: "ConfigureDevice",
         element: ConfigureDevice,
+        accessRole: [1, 4],
+      },
+       
+      {
+        path: "AddLinkTestset",
+        element: AddTestSetLinkProject,
+        accessRole: [1, 4],
+      },
+      {
+        path: "EditLinkTestset",
+        element: EditTestLinkProject,
         accessRole: [1, 4],
       },
       {

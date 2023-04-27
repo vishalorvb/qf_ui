@@ -117,16 +117,16 @@ export default function TestsetExecution() {
     });
   }, []);
 
-  useEffect(() => {
-    if (globalApplication?.module_type == 19) {
-      navigate("/TestsetExecution/LinkProjectExecution", {
-        state: { projectId: globalProject?.project_id, applicationId: globalApplication?.module_id },
-      })
-   
-    }
+  // useEffect(() => {
+  //   if (globalApplication?.module_type == 19) {
+  //     navigate("/TestsetExecution/LinkProjectExecution", {
+  //       state: { projectId: globalProject?.project_id, applicationId: globalApplication?.module_id },
+  //     })
+
+  //   }
 
 
-  }, [globalApplication])
+  // }, [globalApplication])
 
 
   return (
@@ -152,37 +152,37 @@ export default function TestsetExecution() {
         </Grid>
       </Grid>
 
-      <Grid container justifyContent="space-between">
-        <Grid item md={2.8} justifyContent="flex-start">
-          <List
-            sx={{
-              overflowY: "aurto",
-              height: "70vh"
-            }}
-          >
-            {(testcases.length) > 0 ? itemRender(testcases) : <div style={{ textAlign: "center" }}>
-              <Typography>No Testsets Found</Typography><br />
-              <Button
-                variant="contained"
-                onClick={() => { navigate("/Testset/Create") }}
-              >Create Testset</Button></div>}
-          </List>
-        </Grid>
+      {globalApplication?.module_type != 19 ?
+        <Grid container justifyContent="space-between">
+          <Grid item md={2.8} justifyContent="flex-start">
+            <List
+              sx={{
+                overflowY: "aurto",
+                height: "70vh"
+              }}
+            >
+              {(testcases.length) > 0 ? itemRender(testcases) : <div style={{ textAlign: "center" }}>
+                <Typography>No Testsets Found</Typography><br />
+                <Button
+                  variant="contained"
+                  onClick={() => { navigate("/Testset/Create") }}
+                >Create Testset</Button></div>}
+            </List>
+          </Grid>
 
-        <Divider orientation="vertical" flexItem />
+          <Divider orientation="vertical" flexItem />
 
-        <Grid item md={9}>
-          <ExecuteTestSetDetails
-            projectId={globalProject?.project_id }
-            applicationType={globalApplication?.module_type}
-            applicationId={globalApplication?.module_id}
-            frameworkType={globalProject?.automation_framework_type}
-            testsetId={selectedItem}
-          ></ExecuteTestSetDetails>
-        </Grid>
-      </Grid>
-
-      {/* <LinkProjectExecution projectId={globalProject?.project_id}  applicationId={globalApplication?.module_id}/> */}
+          <Grid item md={9}>
+            <ExecuteTestSetDetails
+              projectId={globalProject?.project_id}
+              applicationType={globalApplication?.module_type}
+              applicationId={globalApplication?.module_id}
+              frameworkType={globalProject?.automation_framework_type}
+              testsetId={selectedItem}
+            ></ExecuteTestSetDetails>
+          </Grid>
+        </Grid> :
+          <LinkProjectExecution projectId={globalProject?.project_id} applicationId={globalApplication?.module_id} /> }
     </>
   );
 }

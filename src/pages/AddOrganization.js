@@ -1,12 +1,16 @@
 import { Button, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Stack from '@mui/material/Stack';
 import useHead from '../hooks/useHead';
-import useLogout from "../hooks/useLogout";
-import { NumberValidation, validateForm, validateFormbyName } from '../CustomComponent/FormValidation';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios from '../api/axios';
+import { useForm } from 'react-hook-form';
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { useNavigate } from "react-router-dom";
 
 let initialval = {
+  organization_id:"",
   firstName: "",
   lastName: "",
   company: "",
@@ -17,343 +21,256 @@ let initialval = {
   confirmPassword: "",
 };
 
-let postVal = { ...initialval };
+export let postVal = { ...initialval };
 
 
+const schema = yup.object().shape({
+  firstName: yup.string().required(),
+  lastName: yup.string().required(),
+  company: yup.string().required(),
+  adminUserId: yup.string().required(),
+  email: yup.string().email().required(),
+  phone: yup.string().required(),
+  password: yup.string().required(),
+  confirmPassword: yup.string().oneOf([yup.ref('password'), null], "Passwords must match").required(),
+});
 
 const AddOrganization = () => {
-
   const { setHeader } = useHead();
-  const logout = useLogout();
+  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
+  const [addFailMsg, setAddFailMsg] = useState(false);
+  const navigate = useNavigate();
 
 
-  const onSubmitHandler = (params) => {
-    console.log(postVal)
-    if (validateFormbyName(["firstName", "lastName", "company", "email"], "error")) {
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const onSubmitHandler = async (data) => {
+    console.log(data);
+    try {
+      if(postVal.company.length == 0) {
+        const response = await axios.post('/qfuserservice/signup', data);
+      console.log(response.data.status);
+      if(response.data.status == "SUCCESS"){
+        setAddSuccessMsg(true);
+        setTimeout(() => {
+          setAddSuccessMsg(false);
+        }, 3000);
+        // navigate("/Organization");
+        reset();
+      } 
+      else{
+
+        setAddFailMsg(true);
+        setTimeout(() => {
+          setAddFailMsg(false);
+        }, 3000);
+        reset();
+
+      }
+      }
+      else{
+        //   const response = await axios.post('/qfuserservice/user/updateorgdetails', data);
+        // console.log(response.data.status);
+        // if(response.data.status == "SUCCESS"){
+        //   setAddSuccessMsg(true);
+        //   setTimeout(() => {
+        //     setAddSuccessMsg(false);
+        //   }, 3000);
+        //   // navigate("/Organization");
+        //   reset();
+        // } 
+        // else{
+  
+        //   setAddFailMsg(true);
+        //   setTimeout(() => {
+        //     setAddFailMsg(false);
+        //   }, 3000);
+        //   reset();
+  
+        // }
+      }
+     
+    } catch (error) {
+      console.error(error); // handle error
     }
-    
-// else if () {
-//   console.log("Password is not same")
-// }
-else if (postVal.password === postVal.confirmPassword) {
-        //   axios.post(`/qfuserservice/signup`, postVal)
-        // .then((resp) => {
-        //     console.log(resp)
-        //   });
-        console.log("Password is same")
-      }
-      else if(postVal.password !== postVal.confirmPassword)
-      {
-        console.log("Password is not same")
-      }
+  };
 
-    ;
+  useEffect(() => {
+    if(postVal.company.length == 0) {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Add Organization",
+      };
+    });
+  }
+  else if(postVal.company.length !=0 ){
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Edit Organization",
+      };
+    });
   }
 
+    return ()=>{
+      postVal ={...initialval}
+    }
+  }, []);
+
+
+
+  return (
+    <>
+    <form onSubmit={handleSubmit(onSubmitHandler)}>
+      <Grid container justifyContent="flex-start" alignItems="center" spacing={2}>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              first Name
+              <span className="importantfield">*</span></label>
+            <input
+              {...register("firstName")}
+              className={errors.firstName ? "error" : "valid"}
+              fullWidth
+              size="small"
+              defaultValue={""}
+            />
+            {errors.firstName && <span style={{ color: "red" }}>{errors.firstName.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              last Name
+              <span className="importantfield">*</span>
+              </label>
+            <input
+              {...register("lastName")}
+              className={errors.lastName ? "error" : "valid"}
+              fullWidth
+              size="small"
+            />
+            {errors.lastName && <span style={{ color: "red" }}>{errors.lastName.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              Organization Name<span className="importantfield">*</span>
+            </label>
+            <input
+              {...register("company")}
+              className={errors.company ? "error" : "valid"}
+              defaultValue={postVal.company}
+              fullWidth
+              size="small"
+            />
+            {errors.company && <span style={{ color: "red" }}>{errors.company.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              Admin User Id<span className="importantfield">*</span>
+            </label>
+            <input
+              {...register("adminUserId")}
+              className={errors.adminUserId ? "error" : "valid"}
+              fullWidth
+              size="small"
+            />
+            {errors.adminUserId && <span style={{ color: "red" }}>{errors.adminUserId.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              Admin Email<span className="importantfield">*</span>
+            </label>
+            <input
+              {...register("email")}
+              className={errors.email ? "error" : "valid"}
+              fullWidth
+              size="small"
+            />
+            {errors.email && <span style={{ color: "red" }}>{errors.email.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              Phone Number
+              <span className="importantfield">*</span></label>
+            <input
+              {...register("phone")}
+              type='number'
+              defaultValue={postVal.phone}
+              className={errors.phone ? "error" : "valid"}
+              fullWidth
+              size="small"
+            />
+            {errors.phone && <span style={{ color: "red" }}>{errors.phone.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              Password
+              <span className="importantfield">*</span>
+            </label>
+
+            <input
+              {...register("password")}
+              className={errors.password ? "error" : "valid"}
+              fullWidth
+              size="small"
+              type='password'
+            />
+            {errors.password && <span style={{ color: "red" }}>{errors.password.message}</span>}
+          </Stack>
+        </Grid>
+        <Grid item md={4}>
+          <Stack spacing={0.5}>
+            <label>
+              Confirm Password<span className="importantfield">*</span>
+            </label>
+            <input
+              {...register("confirmPassword")}
+              className={errors.confirmPassword ? "error" : "valid"}
+              fullWidth
+              size="small"
+              type='password'
+            />
+            {errors.confirmPassword && <span style={{ color: "red" }}>{errors.confirmPassword.message}</span>}
+          </Stack>
+        </Grid>
+      </Grid>
+      <Grid container justifyContent="flex-end" alignItems="center" mt={2}>
+        <Grid item md={1.5}>
+          <Button fullWidth variant="contained" type="submit" style={{ backgroundColor: "#009fee" }}>
+            Sign Up
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
+            <SnackbarNotify
+            open={addSuccessMsg}
+            close={setAddSuccessMsg}
+            msg="created successfully"
+            severity="success"
+          />
+            <SnackbarNotify
+            open={addFailMsg}
+            close={setAddFailMsg}
+            msg="Admin User Id or Organization name should be unique"
+            severity="error"
+          />
+          </>
+  );
   
-
-useEffect(() => {
-  setHeader((ps) => {
-    return {
-      ...ps,
-      name: "Add Organization",
-    };
-  });
-  // return () => {
-  //   setHeader((ps) => {
-  //     return {
-  //       ...ps,
-  //       name: "Testset Execution",
-  //     };
-  //   });
-  // }
-}, []);
-
-
-return (
-  <>
-    <Grid container justifyContent="flex-start" alignItems="center" spacing={2}>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            first Name</label>
-          <input
-            fullWidth
-            size="small"
-            name="firstName"
-            onChange={(e) => { postVal.firstName = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            last Name</label>
-          <input
-            fullWidth
-            size="small"
-            name="lastName"
-            onChange={(e) => { postVal.lastName = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            Organization Name</label>
-          <input
-            fullWidth
-            size="small"
-            name="company"
-            onChange={(e) => { postVal.company = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            Admin User Id</label>
-          <input
-            fullWidth
-            size="small"
-            name="adminUserId"
-            onChange={(e) => { postVal.adminUserId = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            Admin Email</label>
-          <input
-            fullWidth
-            type='email'
-            size="small"
-            name="email"
-            onChange={(e) => { postVal.email = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            Phone Number</label>
-          <input
-            fullWidth
-            type='number'
-            size="small"
-            name="phone"
-            onChange={(e) => { postVal.phone = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            Password</label>
-          <input
-            fullWidth
-            size="small"
-            type='password'
-            name="password"
-            onChange={(e) => { postVal.password = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-      <Grid item md={4}>
-        <Stack spacing={0.5}>
-          <label>
-            Confirm Password</label>
-          <input
-            fullWidth
-            size="small"
-            type='password'
-            name="confirmPassword"
-            onChange={(e) => { postVal.confirmPassword = e.target.value; }}
-
-          />
-        </Stack>
-      </Grid>
-    </Grid>
-    <Grid container justifyContent="flex-end" alignItems="center" mt={2}>
-      <Grid item md={1.5}>
-        <Button fullWidth variant="contained"
-          onClick={onSubmitHandler}
-          style={{ backgroundColor: "#009fee" }}
-        >
-          Sign Up
-        </Button>
-      </Grid>
-    </Grid>
-  </>
-  /* <Grid container justifyContent="center" mb={1}>
-    <Grid item md={8}>
-      <h3 
-            style={{color: "#009fee" }}
-      
-      >Create your Account</h3>
-    </Grid>
-  </Grid> */
-  /* <Stack spacing={1} maxWidth="50%" >
-        <Stack spacing={1} direction="row">
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Admin First Name"
-                name="firstName"
-                onChange={(e) => {postVal.firstName = e.target.value;}}
-
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Admin Last Name"
-                name="lastName"
-                onChange={(e) => {postVal.lastName = e.target.value;}}
-
-              />
-        </Stack>
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Organization Name"
-                name='company'
-                onChange={(e) => {postVal.company = e.target.value;}}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <BusinessIcon />
-                      <Divider orientation='vertical' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Admin User Id"
-                name='adminUserId'
-                onChange={(e) => {postVal.adminUserId = e.target.value;}}
-
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon />
-                      <Divider orientation='vertical' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Admin Email"
-                name='email'
-                onChange={(e) => {postVal.email = e.target.value;}}
-
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon />
-                      <Divider orientation='vertical' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Phone Number"
-                name='phone'
-                onChange={(e) => {postVal.phone = e.target.value;}}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <CallIcon />
-                      <Divider orientation='vertical' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                type='password'
-                placeholder="Password"
-                name='password'
-                onChange={(e) => {postVal.password = e.target.value;}}
-
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon />
-                      <Divider orientation='vertical' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                type='password'
-                placeholder="Confirm Password"
-                name='confirmPassword'
-                onChange={(e) => {postVal.confirmPassword = e.target.value;}}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon />
-                      <Divider orientation='vertical' />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-    </Stack>
-      <Grid container justifyContent="space-between" mt={2} alignItems="center"> 
-        <Grid item md={3}>
-       <h4  style={{ color: "#596981" , cursor:"pointer"}}>
-        Already have account please 
-        <span  style={{ color: "#009fee" }} 
-       onClick={() => logout()}
-       > Login</span>
-       </h4>
-
-        </Grid>
-        <Grid item md={2}>
-        <Button fullWidth variant="contained"
-               onClick={onSubmitHandler}
-                style={{ backgroundColor: "#009fee" }}
-              >
-                Sign Up
-              </Button>
-
-        </Grid>
-
-      </Grid> */
-)
 }
 
 export default AddOrganization
