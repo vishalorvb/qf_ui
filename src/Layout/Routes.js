@@ -616,7 +616,7 @@ export const Routes = [
     path: "Organization",
     element: Organization,
     accessRole: [2,3],
-  },
+    accessRole: [2, 3],  },
 
   {
     path: "/profile",

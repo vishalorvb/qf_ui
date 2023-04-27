@@ -31,7 +31,7 @@ function TestsetExecutionToolbar({
   testsetId,
   selecteddatasets,
   frameworkType,
-  applicationType
+  applicationType,
 }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -44,9 +44,9 @@ function TestsetExecutionToolbar({
   const [appType, setApplicationType] = useState("");
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
-  const [snack, setSnack] = useState(false)
-  const [runtimeVariable, setRunTimeVariable] = useState()
-  const [buildEnvId, setBuildEnvId] = useState()
+  const [snack, setSnack] = useState(false);
+  const [runtimeVariable, setRunTimeVariable] = useState();
+  const [buildEnvId, setBuildEnvId] = useState();
 
   let appTypes = [
     "API Automation",
@@ -104,7 +104,7 @@ function TestsetExecutionToolbar({
         }
       }
     }
-    if ((datasets.length) != 0) {
+    if (datasets.length != 0) {
       const executionData = {
         testset_id: testsetId,
         module_id: applicationId,
@@ -126,27 +126,26 @@ function TestsetExecutionToolbar({
       };
 
       axios
-        .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
+        .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
         .then((resp) => {
           data?.executionLoc === "local"
             ? axios
-              .postForm(`http://127.0.0.1:8765/connect`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-              })
+                .postForm(`http://127.0.0.1:8765/connect`, {
+                  data: resp?.data?.info,
+                  jarName: `code`,
+                })
+                .then((resp) => {
+                  setJarConnected(true);
+                })
+                .catch((err) => {
+                  err.message === "Network Error" && setClientInactive(true);
+                })
             : setRemoteExecutionsuccess(true);
         });
-    }
-    else {
-      setSnack(true)
+    } else {
+      setSnack(true);
       setTimeout(() => {
-        setSnack(false)
+        setSnack(false);
       }, 3000);
     }
   };
@@ -163,7 +162,7 @@ function TestsetExecutionToolbar({
         }
       }
     }
-    if ((datasets.length) != 0) {
+    if (datasets.length != 0) {
       const executionData = {
         testset_id: testsetId,
         module_id: applicationId,
@@ -184,27 +183,26 @@ function TestsetExecutionToolbar({
         user_id: auth?.userId,
       };
       axios
-        .post(`/qfservice/webtestset/ExecuteWebTestset`, executionData)
+        .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
         .then((resp) => {
           data?.executionLoc === "local"
             ? axios
-              .postForm(`http://127.0.0.1:8765/connect`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-              })
+                .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
+                  data: resp?.data?.info,
+                  jarName: `code`,
+                })
+                .then((resp) => {
+                  setJarConnected(true);
+                })
+                .catch((err) => {
+                  err.message === "Network Error" && setClientInactive(true);
+                })
             : setRemoteExecutionsuccess(true);
         });
-    }
-    else {
-      setSnack(true)
+    } else {
+      setSnack(true);
       setTimeout(() => {
-        setSnack(false)
+        setSnack(false);
       }, 3000);
     }
   };
@@ -216,8 +214,8 @@ function TestsetExecutionToolbar({
       )
       .then((resp) => {
         const buildEnv = resp?.data?.data;
-        setBuildEnvId(resp?.data?.data[0]?.id)
-        setRunTimeVariable(resp?.data?.data[0]?.runtime_variables)
+        setBuildEnvId(resp?.data?.data[0]?.id);
+        setRunTimeVariable(resp?.data?.data[0]?.runtime_variables);
 
         setBuildEnvList(() => {
           return buildEnv.map((be) => {
@@ -235,13 +233,13 @@ function TestsetExecutionToolbar({
       )
       .then((resp) => {
         const execEnv = resp?.data?.data;
-        const data1 = execEnv.map((ee)=>{
-          return { id : ee.value ,label : ee.name}
-        })
-        const execConfig = resp?.data?.data1
-        const data2 = execConfig.map((ee)=>{
-          return { id : ee.specificationId,label : ee.name}
-        })
+        const data1 = execEnv.map((ee) => {
+          return { id: ee.value, label: ee.name };
+        });
+        const execConfig = resp?.data?.data1;
+        const data2 = execConfig.map((ee) => {
+          return { id: ee.specificationId, label: ee.name };
+        });
         const mergedObj = [...data1, ...data2];
         setExecEnvList(mergedObj);
         // setExecEnvList(() => {
@@ -282,12 +280,14 @@ function TestsetExecutionToolbar({
         msg={"Scripts Executed Successfully"}
         severity="success"
       />
-      {snack && <SnackbarNotify
-        open={snack}
-        close={setSnack}
-        msg={"Please select atleast one dataset"}
-        severity="error"
-      />}
+      {snack && (
+        <SnackbarNotify
+          open={snack}
+          close={setSnack}
+          msg={"Please select atleast one dataset"}
+          severity="error"
+        />
+      )}
       <Grid
         container
         direction="row"
@@ -329,20 +329,34 @@ function TestsetExecutionToolbar({
             </h5>
           </Stack>
         </Grid>
-        { (applicationType == 3 || applicationType == 4)?"": <Grid item md={2}> <MultiSelectElement
-        menuMaxWidth={5}
-            label="Browser"
-            name="browser"
-            size="small"
-            control={control}
-            fullWidth
-            options={["Chrome", "Edge", "Firefox", "Safari"]}
-          />
-        </Grid>
-
-          }
+        {applicationType == 3 || applicationType == 4 ? (
+          ""
+        ) : (
+          <Grid item md={2}>
+            {" "}
+            <MultiSelectElement
+              menuMaxWidth={5}
+              label="Browser"
+              name="browser"
+              size="small"
+              control={control}
+              fullWidth
+              options={["Chrome", "Edge", "Firefox", "Safari"]}
+            />
+          </Grid>
+        )}
         <Grid item md={2}>
-          <FeatureMenu frameworkType={frameworkType} projectId={projectId} testsetId={testsetId} envId={buildEnvId} runtimeVar={(runtimeVariable != undefined || runtimeVariable != null) ? runtimeVariable : ""} />
+          <FeatureMenu
+            frameworkType={frameworkType}
+            projectId={projectId}
+            testsetId={testsetId}
+            envId={buildEnvId}
+            runtimeVar={
+              runtimeVariable != undefined || runtimeVariable != null
+                ? runtimeVariable
+                : ""
+            }
+          />
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">
@@ -435,4 +449,3 @@ function TestsetExecutionToolbar({
 }
 
 export default TestsetExecutionToolbar;
-
