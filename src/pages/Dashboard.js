@@ -118,6 +118,7 @@ export default function Dashboard() {
         {
           setFailMsg(res.data.message)
           setSnackbar(true)
+          console.log(res.data.message)
           if(res.data.message == 'Prediction is not available due to insufficient data.')
           {
             setShowFailMsg(true)

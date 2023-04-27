@@ -98,9 +98,7 @@ export default function TestsetExecution() {
             }}
           >
             <Typography>
-              <b style={{ fontSize: "15px" }}>{apiItem.testset_name}</b>
-              <br />
-              {apiItem.testset_desc}
+              <b style={{ fontSize: "15px" , color : "#009fee" }}>{apiItem.testset_name}</b>
             </Typography>
           </ListItemButton>
         </ListItem>
