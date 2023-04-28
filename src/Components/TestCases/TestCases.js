@@ -20,6 +20,7 @@ import TableActions from "../../CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DeleteTestCase, GetTestCase } from "../../Services/TestCaseService";
 import { TCdata } from "./CreateTestCase";
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
@@ -184,7 +185,7 @@ export default function TestCases() {
       <div className="apptable">
         <div className="intable">
           <Grid item container spacing={2} justifyContent="flex-end">
-            <Grid item>
+            {/* <Grid item>
               <label htmlFor="">Projects</label>
               <Autocomplete
                 disablePortal
@@ -223,7 +224,13 @@ export default function TestCases() {
                   </div>
                 )}
               />
-            </Grid>
+            </Grid> */}
+              <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
           </Grid>
         </div>
         <Table

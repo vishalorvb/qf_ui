@@ -49,12 +49,12 @@ export default function TestcaseExecution() {
               onClick={() => {
                 setSelectedItem(apiItem?.testcase_id);
               }}
+              style={{fontSize: "15px", color : "#009fee"}}
             >
-              <Typography>
-                <b style={{ fontSize: "15px", color : "#009fee"  }}>{apiItem.name}</b>
+             <b> {apiItem.name}</b>
                 {/* <br />
                 {apiItem.description} */}
-              </Typography>
+            
             </ListItemButton>
           </ListItem>
         );
