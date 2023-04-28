@@ -5,7 +5,7 @@ import {
 import { useEffect, useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Grid } from '@mui/material'
-import axios from "axios";
+import axios from "../../api/axios";
 import TextField from '@mui/material/TextField';
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +54,7 @@ function AddTestSetLinkProject() {
         {
             postVal.module_id = location.state?.applicationId;
             postVal.project_id = location.state?.projectId;
-            axios.post(`http://10.11.12.243:8083/qfservice/webtestset/createWebTestset`, postVal)
+            axios.post(`/qfservice/webtestset/createWebTestset`, postVal)
                 .then((resp) => {
                     if (resp?.data?.status === "SUCCESS") {
                         setReportSuccessMsg(true);

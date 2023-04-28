@@ -114,7 +114,7 @@ const LinkProjectExecution = () => {
   function getTestsets() {
     axios
       .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
+        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject.project_id}&module_id=${globalApplication.module_id}`
       )
       .then((resp) => {
         // const testsets = resp?.data?.info
@@ -125,7 +125,7 @@ const LinkProjectExecution = () => {
       });
   }
 
-  console.log(applicationId)
+  // console.log(applicationId)
   const columns = [
     {
       field: " ",
@@ -175,10 +175,10 @@ const LinkProjectExecution = () => {
                   postValue.testset_desc = param.row.testset_desc;
                   postValue.cucumber_tags = param.row.cucumber_tags;
                   postValue.module_id = param.row.module_id;
-                  postValue.project_id = location.state?.projectId
+                  postValue.project_id = globalProject.project_id
 
                   console.log(postValue)
-                  navigate("/TestsetExecution/LinkProjectExecution/EditLinkTestset", {
+                  navigate("/EditLinkTestset", {
                     // state: {
                     //   projectId: location.state?.projectId,
                     //   applicationId: applicationId,
@@ -268,31 +268,10 @@ const LinkProjectExecution = () => {
 
   }
 
-  
+
 
   return (
     <>
-    {
-    globalApplication?.module_type != 19 ?
-    // navigate(-1) : ""
-    ""
-    :""
-
-  }
-      <Grid container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        spacing="1"
-        mt={1}>
-        <Grid item md={6} >
-          <ProjectnApplicationSelector
-            globalProject={globalProject}
-            setglobalProject={setglobalProject}
-            globalApplication={globalApplication}
-            setglobalApplication={setglobalApplication}
-          />
-        </Grid></Grid>
       <Grid container
         direction="row"
         justifyContent="space-between"
@@ -315,8 +294,8 @@ const LinkProjectExecution = () => {
           <Grid item md={2}>
             <Button fullWidth variant="contained"
               onClick={() => {
-                navigate("/TestsetExecution/LinkProjectExecution/AddLinkTestset", {
-                  state: { projectId: projectId, applicationId: applicationId },
+                navigate("/AddLinkTestset", {
+                  state: { projectId: globalProject.project_id, applicationId: globalApplication.module_id },
                 });
               }}
               style={{ backgroundColor: "#009fee" }}

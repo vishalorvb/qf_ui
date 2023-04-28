@@ -22,7 +22,7 @@ export const testManagementList = [
         accessRole: [3],
       },
       {
-        name: "Organization",
+        name: "Recent",
         id: "94",
         route: "Organization",
         accessRole: [3],

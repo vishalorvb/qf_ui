@@ -409,6 +409,7 @@ export const Routes = [
         element: ConfigureDevice,
         accessRole: [1, 2, 4, 5],
       },
+
       {
         path: "AddConfigureDevice",
         element: AddConfigurationPopUp,
@@ -420,6 +421,16 @@ export const Routes = [
         accessRole: [1, 2, 4, 5],
       },
     ],
+  },
+  {
+    path: "AddLinkTestset",
+    element: AddTestSetLinkProject,
+    accessRole: [1, 4],
+  },
+  {
+    path: "EditLinkTestset",
+    element: EditTestLinkProject,
+    accessRole: [1, 4],
   },
   {
     path: "TestcaseExecution",
