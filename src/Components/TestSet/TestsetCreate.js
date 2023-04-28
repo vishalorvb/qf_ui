@@ -5,6 +5,7 @@ import {
   Paper,
   Stack,
   TextField,
+  TextareaAutosize,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
@@ -313,12 +314,12 @@ function TestsetCreate() {
           </Grid>
            {globalApplication?.module_type == 19 ? (
 
-            <Grid item md={12}>
+            <Grid item md={12} >
               <Stack spacing={1}>
                 <label>
                   Command <span className="importantfield">*</span>
                 </label>
-                <input
+                <TextareaAutosize
                   // ref={command}
                   type="text"
                   name=""
