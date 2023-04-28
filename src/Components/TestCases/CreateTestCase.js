@@ -12,6 +12,7 @@ import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
 import { UpdateTestcase } from "../../Services/TestCaseService"
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -124,7 +125,7 @@ function CreateTestCase() {
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
-                <Grid item md={4}>
+                {/* <Grid item md={4}>
                     <label htmlFor="">Projects</label>
                     <Autocomplete
                         disablePortal
@@ -164,7 +165,13 @@ function CreateTestCase() {
                         )}
                     />
 
-                </Grid>
+                </Grid> */}
+                <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
                 <Grid item xs={4} md={4}>
                     <label htmlFor="">TestCase Name</label>
                     <input
@@ -175,7 +182,7 @@ function CreateTestCase() {
                     />
                 </Grid>
                 <br />
-                <Grid item xs={12} md={12}>
+                <Grid item xs={8} md={8}>
                     <label htmlFor="">Description</label>
                     <input
                         defaultValue={TCdata.testcase_description}

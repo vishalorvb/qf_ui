@@ -16,6 +16,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import useHead from "../../hooks/useHead";
 
 const UpdateConfigureDevice = () => {
   const [platformType, setPlatformType] = React.useState("");
@@ -28,6 +29,8 @@ const UpdateConfigureDevice = () => {
   const navigate = useNavigate();
   const schema = yup.object().shape({ testcaseName: yup.string().required() });
   const [snack, setSnack] = useState(false);
+  const { setHeader } = useHead();
+
 
   // try {
   //     specificationId
@@ -92,7 +95,15 @@ const UpdateConfigureDevice = () => {
           });
       });
   }
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
 
+        name: "Update Mobile Configuration",
+      };
+    });
+  }, []);
   return (
     <>
       <Grid container spacing={2} justifyContent="center" alignItems="center">

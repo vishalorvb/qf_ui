@@ -1,4 +1,4 @@
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -7,46 +7,45 @@ import useAuth from "../hooks/useAuth";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
-export default function ProjectnApplicationSelector({
-  isTestset,
-}) {
+export default function ProjectnApplicationSelector({ isTestset }) {
   const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
-  const { globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+  const {
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
 
   const { auth } = useAuth();
 
   useEffect(() => {
-    getProject(setProjectList, auth.userId)
-  }, [])
+    getProject(setProjectList, auth.userId);
+  }, []);
 
   useEffect(() => {
     if (globalProject == null) {
       setglobalProject(projectsList[0]);
     }
-  }, [projectsList])
+  }, [projectsList]);
 
   useEffect(() => {
     if (globalProject?.project_id !== undefined) {
-      setglobalApplication(null)
-      getApplicationOfProject(setapplicationList, globalProject?.project_id)
+      setglobalApplication(null);
+      getApplicationOfProject(setapplicationList, globalProject?.project_id);
     }
-  }, [globalProject])
+  }, [globalProject]);
   useEffect(() => {
     if (globalApplication == null) {
-      setglobalApplication(applicationList[0])
+      setglobalApplication(applicationList[0]);
     }
-  }, [applicationList])
+  }, [applicationList]);
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      spacing={2}
-      mb={1}
 
-    >
+       <Grid item container spacing={2} justifyContent="flex-end">
+            <Grid item>
+              <label htmlFor="">Projects</label>
       <Autocomplete
         disablePortal
         disableClearable
@@ -54,15 +53,20 @@ export default function ProjectnApplicationSelector({
         options={projectsList}
         value={globalProject || null}
         sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.project_name}
+        getOptionLabel={(option) => option.project_name ?? ""}
         onChange={(e, value) => {
           setglobalProject(value);
         }}
         renderInput={(params) => (
-          <TextField {...params} label="Projects" size="small" />
+          <div ref={params.InputProps.ref}>
+          <input type="text" {...params.inputProps} />
+        </div>
+          
         )}
       />
-
+      </Grid>
+      <Grid item>
+              <label htmlFor="">Applications</label>
       <Autocomplete
         disablePortal
         disableClearable
@@ -76,11 +80,12 @@ export default function ProjectnApplicationSelector({
           setglobalApplication(value);
         }}
         renderInput={(params) => (
-          <TextField {...params} label="Applications" size="small" />
+          <div ref={params.InputProps.ref}>
+          <input type="text" {...params.inputProps} />
+        </div>
         )}
       />
-
-
-    </Stack>
+      </Grid>
+      </Grid>
   );
 }

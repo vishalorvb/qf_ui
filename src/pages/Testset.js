@@ -24,6 +24,7 @@ import { getApplicationOfProject } from "../Services/ApplicationService";
 import { getProject } from "../Services/ProjectService";
 
 function Testset() {
+  const {  globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
   const [testsetObject, setTestsetObject] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openExecute, setOpenExecute] = useState(false);
@@ -40,13 +41,13 @@ function Testset() {
   const { auth } = useAuth();
 
   const createTestcaseHandler = (e) => {
-    console.log(selectedProject?.project_id);
-    console.log(selectedApplication?.module_id);
+    console.log(globalProject?.project_id);
+    console.log(globalApplication?.module_id);
     navigate("createTestset", {
       state: {
         param1: e,
-        param2: selectedProject?.project_id,
-        param3: selectedApplication?.module_id,
+        param2: globalProject?.project_id,
+        param3: globalApplication?.module_id,
       },
     });
   };
@@ -60,7 +61,7 @@ function Testset() {
   function onChangeHandler() {
     axios
       .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
       )
       .then((resp) => {
         const testsets = resp?.data?.info ? resp?.data?.info : [];
@@ -83,9 +84,9 @@ function Testset() {
             onClick={() =>
               navigate("Reorder", {
                 state: {
-                  applicationId: selectedApplication?.module_id,
+                  applicationId: globalApplication?.module_id,
                   testsetId: param.row.testset_id,
-                  projectId: selectedProject?.project_id,
+                  projectId: globalProject?.project_id,
                 },
               })
             }
@@ -105,8 +106,8 @@ function Testset() {
       renderCell: (param) => {
         return TestsetDescriptionCell(
           param,
-          selectedApplication,
-          selectedProject,
+          globalApplication,
+          globalProject,
           deleteTestcaseHandler
         );
       },
@@ -120,9 +121,9 @@ function Testset() {
     setSelectedProject(project[0]);
   }, [project]);
   useEffect(() => {
-    selectedProject?.project_id && getApplicationOfProject(setApplication, selectedProject?.project_id);
+    globalProject?.project_id && getApplicationOfProject(setApplication, globalProject?.project_id);
     
-  }, [selectedProject]);
+  }, [globalProject]);
   useEffect(() => {
     setSelectedApplication(application[0]);
   }, [application]);
@@ -147,25 +148,25 @@ function Testset() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [selectedProject, selectedApplication]);
+  }, [globalProject, globalApplication]);
 
   useEffect(() => {
-    selectedApplication?.module_id &&
+    globalApplication?.module_id &&
       axios
         .get(
-          `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${selectedProject?.project_id}&module_id=${selectedApplication?.module_id}`
+          `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
         )
         .then((resp) => {
           const testsets = resp?.data?.info ? resp?.data?.info : [];
           setTestsetObject(testsets);
         });
-  }, [selectedApplication]);
+  }, [globalApplication]);
 
   return (
     <div className="apptable">
       <div className="intable">
         <Grid item container spacing={2} justifyContent="flex-end">
-          <Grid item>
+          {/* <Grid item>
             <label for="">Projects <span className="importantfield">*</span></label>
             <Autocomplete
               disablePortal
@@ -204,7 +205,13 @@ function Testset() {
                 </div>
               )}
             />
-          </Grid>
+          </Grid> */}
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
         </Grid>
       </div>
 
@@ -236,8 +243,8 @@ function Testset() {
             openDelete={openExecute}
             setOpenDelete={setOpenExecute}
             getTestsets={onChangeHandler}
-            projectId={selectedProject?.project_id}
-            applicationId={selectedApplication?.module_id}
+            projectId={globalProject?.project_id}
+            applicationId={globalApplication?.module_id}
           />
         ) : (
           ""
@@ -255,8 +262,8 @@ function Testset() {
 
 const TestsetDescriptionCell = (
   param,
-  selectedApplication,
-  selectedProject,
+  globalApplication,
+  globalProject,
   deleteTestcaseHandler
 ) => {
   const navigate = useNavigate();
@@ -294,8 +301,8 @@ const TestsetDescriptionCell = (
             navigate("Update", {
               state: {
                 param1: param?.row,
-                param2: selectedProject?.project_id,
-                param3: selectedApplication?.module_id,
+                param2: globalProject?.project_id,
+                param3: globalApplication?.module_id,
               },
             })
           }

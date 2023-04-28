@@ -55,7 +55,7 @@ function ProjectTable({ location }) {
     createformData.jenkins_user_name = project.jenkins_user_name;
     createformData.jenkins_password = project.jenkins_password;
     createformData.automation_framework_type =
-    project.automation_framework_type;
+      project.automation_framework_type;
     createformData.gitOps = true;
     createformData.repository_url = project.repository_url;
     createformData.repository_branch = project.repository_branch;
@@ -72,6 +72,11 @@ function ProjectTable({ location }) {
       flex: 3,
       sortable: false,
       align: "left",
+      renderCell: (param) => {
+        return (
+          <span style={{color:"rgb(0, 159, 238)"}}>{param.row?.project_name}</span>
+        );
+      },
     },
     {
       field: "description",
@@ -111,10 +116,10 @@ function ProjectTable({ location }) {
         <Table
           searchPlaceholder="Search Projects"
           rows={
-            // location?.state === "recentProjects"
-            //   ? project.filter((p) => p.is_deleted == false).slice(0, 11)
-            //   : project.filter((p) => p.is_deleted == false)
-            project
+            location?.state === "recentProjects"
+              ? project.filter((p) => p.is_deleted == false).slice(0, 11)
+              : project.filter((p) => p.is_deleted == false)
+            // project
           }
           columns={columns}
           hidefooter={true}
