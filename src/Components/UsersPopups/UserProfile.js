@@ -8,7 +8,7 @@ import useHead from '../../hooks/useHead';
 import { UpdateUser } from '../../Services/UserService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
-
+import { uploadPic } from '../../Services/UserService';
 
 let userData = {
     user_id: "",
@@ -38,7 +38,11 @@ function UserProfile() {
         fileInputRef.current.click();
     };
     const handleFileInputChange = (event) => {
+
+        const formData = new FormData();
         const file = event.target.files[0];
+        formData.append('file', file);
+        uploadPic(auth.userId,formData,auth.token)
         if (file.size > 2 * 1024 * 1024) {
         }
     };

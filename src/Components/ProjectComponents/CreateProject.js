@@ -14,6 +14,7 @@ import {
   createProject,
   updateProject,
   getUserOfProject,
+  getJiraProject
 } from "../../Services/ProjectService";
 import {
   getApplicationOfProject,
@@ -21,19 +22,26 @@ import {
 } from "../../Services/ApplicationService";
 
 
+let jiraProjectdata = {
+  url: "",
+  username: "",
+  password: "",
+  itstype: 1,
+}
+
 let filterApplication = {
   // "automation_type": "module type list"
-  1:[1,2],
-  3:[1,2],
-  4:[3,4,13],
-  6:[19]
+  1: [1, 2],
+  3: [1, 2],
+  4: [3, 4, 13],
+  6: [19]
 }
 let automationType = [
   { "Name": "Selenium", "Val": 1 },
   { "Name": "BDD", "Val": 2 },
   { "Name": "Cucumber Automation", "Val": 3 },
   { "Name": "Link Project", "Val": 6 },
-  {"Name" : "Mobile", "Val":4 }
+  { "Name": "Mobile", "Val": 4 }
 ]
 
 let errorMsg = ""
@@ -61,8 +69,8 @@ function CreateProject() {
   let [leftApplication, setLeftApplication] = useState([]);
   let [rightApplication, setRightApplication] = useState([]);
   let [applications, setApplications] = useState([]);
-  let [jiraProject,setJiraproject] = useState(null);
-  let [automation_type,setAutomationType] = useState("1")
+  let [jiraProject, setJiraproject] = useState(null);
+  let [automation_type, setAutomationType] = useState("1")
 
   function getUserlist() {
     let userlist = [];
@@ -192,7 +200,11 @@ function CreateProject() {
       setRightApplication(remaining);
     }
   }
+  function handleJiraProject() {
+    console.log(jiraProjectdata)
 
+    getJiraProject(setJiraproject, jiraProjectdata.url, jiraProjectdata.username, jiraProjectdata.password, jiraProjectdata.itstype, "prolifics", auth.info.organization_id)
+  }
   useEffect(() => {
     getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
     getUsers(
@@ -203,28 +215,35 @@ function CreateProject() {
     );
     getApplication(setApplications, auth.info.id);
     // getApplication(setLeftApplication, auth.info.id);
-    if (createformData.sqeProjectId != ""){
+    if (createformData.sqeProjectId != "") {
       getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
     }
-    if(createformData.sqeProjectId != ""){
+    if (createformData.sqeProjectId != "") {
       getUserOfProject(setRightuser, createformData.sqeProjectId);
     }
   }, []);
 
   useEffect(() => {
-  let x = applications.filter(a=>{
-    if(filterApplication[automation_type]?.includes(a.module_type)){
-      return a
-    }
-  })
+    let x = applications.filter(a => {
+      if (filterApplication[automation_type]?.includes(a.module_type)) {
+        return a
+      }
+    })
 
-  setLeftApplication(x)
-  }, [automation_type,applications])
+    setLeftApplication(x)
+  }, [automation_type, applications])
 
   useEffect(() => {
     return () => {
       ref?.current?.reset();
       clearProjectData();
+
+      jiraProjectdata = {
+        url: "",
+        username: "",
+        password: "",
+        itstype: 1,
+      }
     };
   }, []);
 
@@ -294,7 +313,7 @@ function CreateProject() {
                 }}
                 defaultValue={createformData.projectDesc}
                 name="desc"
-              
+
               />
             </Grid>
           </Grid>
@@ -369,7 +388,7 @@ function CreateProject() {
                 defaultValue={createformData.jenkins_token}
                 type="text"
                 name="jenkins_token"
-              
+
                 onChange={(e) => {
                   createformData.jenkins_token = e.target.value;
                 }}
@@ -487,10 +506,11 @@ function CreateProject() {
                 :
               </label>
               <select
-              defaultValue={createformData.issueTrackerType}
+                // defaultValue={createformData.issueTrackerType}
                 onChange={(e) => {
-                  createformData.issueTrackerType = e.target.value;
-                
+                  // createformData.issueTrackerType = e.target.value;
+                  jiraProjectdata.itstype = e.target.value;
+
                 }}
                 name="issueTracker"
               >
@@ -503,7 +523,8 @@ function CreateProject() {
               <input
                 type="text"
                 onChange={(e) => {
-                  createformData.jenkins_url = e.target.value;
+                  // createformData.jenkins_url = e.target.value;
+                  jiraProjectdata.url = e.target.value;
                 }}
               />
             </Grid>
@@ -512,7 +533,8 @@ function CreateProject() {
               <input
                 type="text"
                 onChange={(e) => {
-                  createformData.jenkins_user_name = e.target.value;
+                  // createformData.jenkins_user_name = e.target.value;
+                  jiraProjectdata.username = e.target.value;
                 }}
               />
             </Grid>
@@ -521,17 +543,23 @@ function CreateProject() {
               <input
                 type="text"
                 onChange={(e) => {
-                  createformData.jenkins_token = e.target.value;
+                  // createformData.jenkins_token = e.target.value;
+                  jiraProjectdata.password = e.target.value;
                 }}
               />
             </Grid>
-          { jiraProject != null && <Grid item xs={4} sm={4} md={4}>
+            {jiraProject != null && <Grid item xs={4} sm={4} md={4}>
               <label>Projects :</label>
-              <input type="text" />
+              {/* <input type="text" /> */}
+              <select>
+                {jiraProject.map(v => <option value={v.jira_project_id}>{v.name}</option>)}
+              </select>
             </Grid>}
             <Grid item xs={4} sm={4} md={4} justifyContent="center">
               <br />
-              <Button variant="contained">
+              <Button variant="contained"
+                onClick={handleJiraProject}
+              >
                 Verify
               </Button>
             </Grid>
