@@ -51,44 +51,66 @@ function BIReports() {
   const [openDelete, setOpenDelete] = useState(false);
   const [deleteObject, setDeleteObject] = useState([]);
   const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [msg, setMsg] = useState("");
 
-  const handleSelectChange = (selectedOptions) => {
-    setSelectedOptions(selectedOptions);
+  const handleSelectChange = (e) => {
+    console.log(e.target.value);
+    setSelectedOptions(e.target.value);
   };
 
-  const phaseHandler = (e) => {
-    console.log(e);
+  const phaseHandler = (phase,projectId) => {
     navigate("phases", {
         state: {
-          param1: e,
-          param2: selectedProject?.project_id,
+          param1: phase,
+          param2: projectId,
         },
     });
   };
 
-  const cyclesHandler = (e) => {
+  const cyclesHandler = (cycle,projectId,testsets) => {
     navigate("cycles", {
         state: {
-          param1: e,
-          param2: selectedProject?.project_id,
+          param1: cycle,
+          param2: projectId,
+          param3: testsets,
         },
     });
   };
 
   const deleteUserHandler = (e) => {
     setOpenDelete(true);
+    console.log(e);
     setDeleteObject(e);
   };
-
-  const addHandler = (e) => {
-    setOpenDelete(true);
-    setDeleteObject(e);
+  
+  const data = [];
+  const addHandler = () => {
+    testset.map((ts) =>
+      selectedOptions.forEach((option) => {
+        if (option === ts.testset_name) {
+          data.push({
+            project_id: selectedProject.project_id,
+            module_id: ts.module_id,
+            testset_id: ts.testset_id,
+          });
+        }
+      })
+    );
+    axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {
+      const message = resp?.data?.status ? resp?.data?.status : [];
+      setMsg(message);
+      setAddSuccessMsg(true);
+      getTestsets();
+      setTimeout(() => {
+        setAddSuccessMsg(false);
+      }, 3000);
+    });
   };
 
   function TestsetsData(bitestset, columns, phaseHandler, cyclesHandler) {
     return bitestset.map((item) => {
-      console.log("first");
       return (
         <AccordionTemplate name={item.project_name} defaultState={true}>
           <Table
@@ -101,7 +123,7 @@ function BIReports() {
             <p htmlFor="">
               Total Phases {item.total_phases}{" "}
               <span
-                onClick={() => phaseHandler(item.total_phases)}
+                onClick={() => phaseHandler(item.total_phases,item.project_id)}
                 style={{ color: "#009fee", cursor: "pointer" }}
               >
                 Click
@@ -110,7 +132,7 @@ function BIReports() {
             <p htmlFor="">
               Total Cycles {item.total_cycles}{" "}
               <span
-                onClick={() => cyclesHandler(item.total_cycles)}
+                onClick={() => cyclesHandler(item.total_cycles,item.project_id,item.testsets)}
                 style={{ color: "#009fee", cursor: "pointer" }}
               >
                 Click
@@ -144,10 +166,17 @@ function BIReports() {
             <Grid container justifyContent={"flex-end"} spacing={3}>
               <Grid item mt={1.5}>
                 <Typography
-                  onClick={() => navigate("activeReports")}
+                  onClick={() =>
+                    navigate("activeReports", {
+                      state: {
+                        param1: param.row.testsetmap_id,
+                        param2: selectedProject?.project_id,
+                      },
+                    })
+                  }
                   style={{ color: "#009fee", cursor: "pointer" }}
                 >
-                  {param.row.activecount} Active Reports
+                  {param.row.count} Active Reports
                 </Typography>
               </Grid>
               <Grid item>
@@ -173,13 +202,17 @@ function BIReports() {
     getProject(setProject, auth.userId);
   }, []);
 
-  useEffect(() => {
+  const getTestsets = () => {
     auth.userId &&
       axios.get(`Biservice/configbireport/${auth.userId}`).then((resp) => {
         console.log(resp?.data?.info?.bitestsets);
         const testsets = resp?.data?.info ? resp?.data?.info?.bitestsets : [];
         setBiTestset(testsets);
       });
+  }
+
+  useEffect(() => {
+    getTestsets();
   }, [auth.userId]);
 
   useEffect(() => {
@@ -251,12 +284,14 @@ function BIReports() {
               <Select
                 multiple
                 options={testset}
+                getOptionLabel={(option) => (option.testset_name ? option.testset_name : "")}
                 value={selectedOptions}
                 onChange={handleSelectChange}
+                // onChange={(key,value) => (console.log(value))}
               >
                 {testset.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    {name}
+                  <MenuItem key={name.testset_id} value={name.testset_name}>
+                    {name.testset_name}
                   </MenuItem>
                 ))}
               </Select>
@@ -280,7 +315,7 @@ function BIReports() {
           openDelete={openDelete}
           setOpenDelete={setOpenDelete}
           // loggedInId={loggedInId}
-          // getUsers={hhh}
+          getTestsets={getTestsets}
           setDelSuccessMsg={setDelSuccessMsg}
         />
       ) : (
@@ -290,6 +325,12 @@ function BIReports() {
         open={delSuccessMsg}
         close={setDelSuccessMsg}
         msg="Testset deleted successfully"
+        severity="success"
+      />
+      <SnackbarNotify
+        open={addSuccessMsg}
+        close={setAddSuccessMsg}
+        msg={msg == "SUCCESS" ? "Testset Added successfully" : "Durga"}
         severity="success"
       />
     </>

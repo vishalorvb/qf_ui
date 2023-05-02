@@ -3,17 +3,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router";
-import { axiosPrivate } from "../../api/axios";
+import axios, { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
-function PhaseDetails() {
-  const [phaseName, setPhaseName] = useState("Durgarao");
-  const [totalTestcases, setTotalTestcases] = useState(10);
-  const [automatedTestcases, setAutomatedTestcases] = useState(0);
-  const [completedTestcases, setCompletedTestcases] = useState(0);
-  const [functionalTestcases, setFunctionalTestcases] = useState(0);
-  const [regressionTestcases, setRegressionTestcases] = useState(0);
-  const [savedHours, setSavedHours] = useState([]);
+function PhaseDetails(props) {
+  const { projectId, phaseId} = props;
+  const [phaseDetail, setPhaseDetail] = useState([]);
+  useEffect(() => {
+    phaseId &&
+      axios.post(`Biservice/projects/phases/details?phase_id=${phaseId}`).then((resp) => {
+        console.log(resp?.data?.info);
+        const phase = resp?.data?.info ? resp?.data?.info : [];
+        setPhaseDetail(phase);
+      });
+  }, [phaseId])
+  
+  const [phaseName, setPhaseName] = useState(phaseDetail.phase);
+  const [totalTestcases, setTotalTestcases] = useState(phaseDetail.total_tc);
+  const [automatedTestcases, setAutomatedTestcases] = useState(phaseDetail.automated_tc);
+  const [completedTestcases, setCompletedTestcases] = useState(phaseDetail.completed_tc);
+  const [functionalTestcases, setFunctionalTestcases] = useState(phaseDetail.total_functional_tc);
+  const [regressionTestcases, setRegressionTestcases] = useState(phaseDetail.total_regression_tc);
+  const [savedHours, setSavedHours] = useState(phaseDetail.efforts_saving);
   const phase_name = useRef();
   const total_testcases = useRef();
   const automated_testcases = useRef();
@@ -50,13 +61,18 @@ function PhaseDetails() {
       )
     ) {
       var data = {
-        phaseName: phaseName.trim(),
-        totalTestcases: totalTestcases.trim(),
-        automatedTestcases: automatedTestcases.trim(),
-        completedTestcases: completedTestcases.trim(),
-        functionalTestcases: functionalTestcases.trim(),
-        regressionTestcases: regressionTestcases.trim(),
-        savedHours: savedHours.trim(),
+        "id": phaseDetail.id,
+        "project_id": projectId,
+        "phase": phaseName.trim(),
+        "total_tc": totalTestcases.trim(),
+        "automated_tc": automatedTestcases.trim(),
+        "completed_tc": completedTestcases.trim(),
+        "total_functional_tc": functionalTestcases.trim(),
+        "total_regression_tc": regressionTestcases.trim(),
+        "executed": phaseDetail.executed,
+        "has_phase_chart": phaseDetail.has_phase_chart,
+        "efforts_saving": savedHours.trim(),
+        "is_default": phaseDetail.is_default
       };
 
       axiosPrivate

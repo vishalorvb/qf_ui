@@ -1,16 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "../../api/axios";
 import Table from "../../CustomComponent/Table";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
-import { getProject } from "../../Services/ProjectService";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { IconButton, Tooltip } from "@mui/material";
+import ActiveBIReportsPopup from "./ActiveBIReportsPopup";
+import DeactiveBIReportsPopup from "./DeactiveBIReportsPopup";
 
 function ActiveReports() {
   const [project, setProject] = useState([]);
   const { auth } = useAuth();
+  const location = useLocation();
+  const [bireports, setBiReports] = useState([]);
+  const [openActive, setOpenActive] = useState(false);
+  const [openDeactive, setOpenDeactive] = useState(false);
+  const [activeObject, setActiveObject] = useState([]);
+  const [deactiveObject, setDeactiveObject] = useState([]);
+  const [actSuccessMsg, setActSuccessMsg] = useState(false);
+  const [deactSuccessMsg, setDeactSuccessMsg] = useState(false);
+
+  var TSMapping_Id = location.state.param1 ? location.state.param1 : 0;
+  var projectId = location.state.param2 ? location.state.param2 : 0;
+
+  const activateBIHandler = (e) => {
+    setOpenActive(true);
+    setActiveObject(e);
+  };
+
+  const deactivateBIHandler = (e) => {
+    setOpenDeactive(true);
+    setDeactiveObject(e);
+  };
 
   const columns = [
     {
-      field: "project_name",
+      field: "name",
       headerName: "Testset Name",
       flex: 4,
       headerAlign: "left",
@@ -18,7 +46,7 @@ function ActiveReports() {
       align: "left",
     },
     {
-      field: "project_name",
+      field: "created_at_string",
       headerName: "Execution Date",
       flex: 4,
       headerAlign: "left",
@@ -26,7 +54,7 @@ function ActiveReports() {
       align: "left",
     },
     {
-      field: "project_name",
+      field: "report_result",
       headerName: "Pass/Fail Count",
       flex: 4,
       headerAlign: "left",
@@ -35,39 +63,38 @@ function ActiveReports() {
     },
     {
       field: "",
-      headerName: "",
+      headerName: "Actions",
       flex: 4,
       headerAlign: "left",
       sortable: false,
       align: "left",
-      //   renderCell: (param) => {
-      //     return (
-      //       <>
-      //         <Grid container justifyContent={"flex-end"} spacing={3}>
-      //           <Grid item mt={1.5}>
-      //             <p
-      //               onClick={() => phaseHandler()}
-      //               style={{ color: "#009fee", cursor: "pointer" }}
-      //             >
-      //               {12} Active Reports
-      //             </p>
-      //           </Grid>
-      //           <Grid item>
-      //             <Tooltip title="Delete">
-      //               <IconButton
-      //                 onClick={(e) => {
-      //                   deleteUserHandler(param.row);
-      //                 }}
-      //                 //   sx={{ ml: 4 }}
-      //               >
-      //                 <DeleteOutlineOutlinedIcon />
-      //               </IconButton>
-      //             </Tooltip>
-      //           </Grid>
-      //         </Grid>
-      //       </>
-      //     );
-      //   },
+      renderCell: (param) => {
+        return (
+          <>
+            {param.row.bi_status === 0 ? (
+              <Tooltip title="Inactive">
+                <IconButton
+                  onClick={(e) => {
+                    activateBIHandler(param.row);
+                  }}
+                >
+                  <PersonOffOutlinedIcon></PersonOffOutlinedIcon>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Active">
+                <IconButton
+                  onClick={(e) => {
+                    deactivateBIHandler(param.row);
+                  }}
+                >
+                  <PersonOutlineOutlinedIcon></PersonOutlineOutlinedIcon>
+                </IconButton>
+              </Tooltip>
+            )}
+          </>
+        );
+      },
     },
   ];
 
@@ -81,18 +108,60 @@ function ActiveReports() {
     });
   }, []);
 
+  const getBIReports = () => {
+    TSMapping_Id &&
+      axios.get(`Biservice/configbireport/testset/${TSMapping_Id}`).then((resp) => {
+        console.log(resp?.data?.info?.bireports);
+        const reports = resp?.data?.info ? resp?.data?.info?.bireports : [];
+        setBiReports(reports);
+      });
+  }
+
   useEffect(() => {
-    getProject(setProject, auth.userId);
+    getBIReports();
   }, []);
 
   return (
     <div>
+      {openActive ? (
+          <ActiveBIReportsPopup
+            object={activeObject}
+            openActive={openActive}
+            setOpenActive={setOpenActive}
+            getReports={getBIReports}
+            setActSuccessMsg={setActSuccessMsg}
+          />
+        ) : (
+          ""
+        )}
+        {openDeactive ? (
+          <DeactiveBIReportsPopup
+            object={deactiveObject}
+            openDeactive={openDeactive}
+            setOpenDeactive={setOpenDeactive}
+            getReports={getBIReports}
+            setDeactSuccessMsg={setDeactSuccessMsg}
+          />
+        ) : (
+          ""
+        )}
+        <SnackbarNotify
+          open={actSuccessMsg}
+          close={setActSuccessMsg}
+          msg="Report is active"
+          severity="success"
+        />
+        <SnackbarNotify
+          open={deactSuccessMsg}
+          close={setDeactSuccessMsg}
+          msg="Report is inactive"
+          severity="success"
+        />
       <Table
-        searchPlaceholder="Search Testset"
+        hideSearch={true}
         columns={columns}
-        //   rows={drivenWebTSObject}
-        rows={project}
-        getRowId={(row) => row.project_id}
+        rows={bireports}
+        getRowId={(row) => row? row.report_id : ""}
       />
     </div>
   );
