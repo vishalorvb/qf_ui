@@ -77,7 +77,6 @@ export default function CreateCycle({ testsetData }) {
                       : [
                           ...ps,
                           {
-                            id: "",
                             module_id: a.module_id,
                             testset_id: a.testset_id,
                             report_id: a.report_id,
