@@ -222,11 +222,14 @@ a {
   padding-right: 0 !important;
 }
 .MuiAccordionSummary-root {
-  background: #e8f2fd !important;
+  
+  background: #f0f3f4 !important;
+
+  
 }
 .MuiAccordionSummary-root.Mui-expanded {
   min-height: 48px !important;
-  background: #93999b !important;
+  background: #e8f2fd !important;
   border-radius: 5px 5px 0 0 !important;
   margin: 0 !important;
 }
