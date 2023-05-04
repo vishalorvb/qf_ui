@@ -1,4 +1,4 @@
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -42,13 +42,10 @@ export default function ProjectnApplicationSelector({ isTestset }) {
   }, [applicationList]);
 
   return (
-    <Stack
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      spacing={2}
-      mb={1}
-    >
+
+       <Grid item container spacing={2} justifyContent="flex-end">
+            <Grid item>
+              <label htmlFor="">Projects</label>
       <Autocomplete
         disablePortal
         disableClearable
@@ -61,10 +58,15 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           setglobalProject(value);
         }}
         renderInput={(params) => (
-          <TextField {...params} label="Projects" size="small" />
+          <div ref={params.InputProps.ref}>
+          <input type="text" {...params.inputProps} />
+        </div>
+          
         )}
       />
-
+      </Grid>
+      <Grid item>
+              <label htmlFor="">Applications</label>
       <Autocomplete
         disablePortal
         disableClearable
@@ -78,9 +80,12 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           setglobalApplication(value);
         }}
         renderInput={(params) => (
-          <TextField {...params} label="Applications" size="small" />
+          <div ref={params.InputProps.ref}>
+          <input type="text" {...params.inputProps} />
+        </div>
         )}
       />
-    </Stack>
+      </Grid>
+      </Grid>
   );
 }

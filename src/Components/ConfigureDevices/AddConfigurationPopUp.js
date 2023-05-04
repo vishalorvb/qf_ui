@@ -34,35 +34,17 @@ let postVal = { ...initialval };
 
 const AddConfigurationPopUp = (props) => {
   const { auth } = useAuth();
-  const schema = yup.object().shape({ testcaseName: yup.string().required() });
+
   const organizationId = auth.info.organization_id;
   const userId = auth.info.id;
   const navigate = useNavigate();
   const [snack,setSnack] = useState(false)
   const location = useLocation();
   const { setHeader } = useHead();
-
-
-  useEffect(() => {
-    setHeader((ps) => {
-      return {
-        ...ps,
-
-        name: "Add Mobile Configuration",
-      };
-    });
-  }, []);
-  const {
-    formState: { errors },
-    reset,
-  } = useForm({ resolver: yupResolver(schema) });
-
-  const handleClose = () => {
-    reset();
-
-  };
-  const onSubmitHandler = (params) => {
-    if (validateFormbyName(["name", "platform_type", "config_location","config_obj"], "error")) {
+  let deviceInfo;
+ 
+    const onSubmitHandler = (params) => {
+      postVal.config_obj = JSON.stringify(JSON.parse(deviceInfo))
       postVal.accessKey="";
       postVal.deviceType=1;
       postVal.lastModified="";
@@ -72,7 +54,6 @@ const AddConfigurationPopUp = (props) => {
       postVal.organizationId=organizationId;
       postVal.userId=userId;
       postVal.userName="";
-      console.log(postVal)
       axios.post(`/qfservice/mobileconfiguration/save.do`, postVal)
       .then((resp) => {
           resp?.data?.status === "SUCCESS" && setSnack(true)
@@ -81,9 +62,17 @@ const AddConfigurationPopUp = (props) => {
             state: { projectId: location.state.projectId },
           });
         });
-    }
+    
   };
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
 
+        name: "Add Mobile Configuration",
+      };
+    });
+  }, []);
   useEffect(() => {
     return () => {
       postVal = { ...initialval };
@@ -92,81 +81,10 @@ const AddConfigurationPopUp = (props) => {
 
   return (
     <>
-      {/* <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle className="dialogTitle"> Add Configuration</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} mt={1}>
-            <Grid item xs={2}>
-              <label>Configure Name :</label>
-            </Grid>
-            <Grid item xs={10}>
-              <TextField
-                id="outlined-basic"
-                size="small"
-                variant="outlined"
-                type="text"
-                name="name"
-                sx={{ width: 300 }}
-                onChange={(e) => {postVal.name = e.target.value;}}
-                InputLabelProps={{shrink: true,}}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <label>Platform : </label>
-            </Grid>
-            <Grid item xs={10}>
-              <Select
-                sx={{ width: 150 }}
-                name="platform_type"
-                onChange={(e) => {postVal.platform_type = e.target.value;}}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                <MenuItem value="1">Android</MenuItem>
-                <MenuItem value="2">Ios</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={2}>
-              <label>Execution Environment : </label>
-            </Grid>
-            <Grid item xs={10}>
-              <Select
-                sx={{ width: 150 }}
-                name="config_location"
-                onChange={(e) => {postVal.config_location = e.target.value;}}
-                displayEmpty
-                inputProps={{ "aria-label": "Without label" }}
-              >
-                <MenuItem value={1}>Local</MenuItem>
-                <MenuItem value={2}>Cloud</MenuItem>
-              </Select>
-            </Grid>
-            <Grid item xs={2}>
-              <label>Device Object Info : </label>
-            </Grid>
-            <Grid item xs={10}>
-              <TextareaAutosize
-                style={{ width: 400, height: 200 }}
-                name="config_obj"
-                onChange={(e) => {postVal.config_obj = e.target.value;}}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions
-          style={{ alignItems: "center", justifyContent: "center" }}
-        >
-          <Button variant="contained" type="submit" onClick={handleClose}>
-                    Cancel
-                </Button>
-          <Button variant="contained" type="submit" onClick={onSubmitHandler}>
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog> */}
+       <form onSubmit={onSubmitHandler}>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item xs={2}>
-          <label>Configure Name :</label>
+          <label>Configure Name :  <span className="importantfield">*</span></label>
         </Grid>
         <Grid item xs={10}>
         <TextField
@@ -175,18 +93,20 @@ const AddConfigurationPopUp = (props) => {
                 variant="outlined"
                 type="text"
                 name="name"
+                required
                 sx={{ width: 300 }}
                 onChange={(e) => {postVal.name = e.target.value;}}
                 InputLabelProps={{shrink: true,}}
               />
         </Grid>
         <Grid item xs={2}>
-          <label>Platform : </label>
+          <label>Platform :  <span className="importantfield">*</span></label>
         </Grid>
         <Grid item xs={10}>
         <Select
                 sx={{ width: 150 }}
                 name="plotform_type"
+                required
                 onChange={(e) => {postVal.plotform_type = e.target.value;}}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -196,12 +116,13 @@ const AddConfigurationPopUp = (props) => {
               </Select>
         </Grid>
         <Grid item xs={2}>
-          <label>Execution Environment : </label>
+          <label>Execution Environment :  <span className="importantfield">*</span> </label>
         </Grid>
         <Grid item xs={10}>
         <Select
                 sx={{ width: 150 }}
                 name="config_location"
+                required
                 onChange={(e) => {postVal.config_location = e.target.value;}}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -211,19 +132,23 @@ const AddConfigurationPopUp = (props) => {
               </Select>
         </Grid>
         <Grid item xs={2}>
-          <label>Device Object Info : </label>
+          <label>Device Object Info :  <span className="importantfield">*</span> </label>
         </Grid>
         <Grid item xs={10}>
         <TextareaAutosize
                 placeholder="Device Json obj"
                 style={{ width: 400, height: 200,fontSize : "18px" }}
                 name="config_obj"
-                onChange={(e) => {postVal.config_obj = e.target.value;}}
+                required
+                onChange={(e) => {
+                  deviceInfo = e.target.value
+                  postVal.config_obj = e.target.value;
+                }}
               />
         </Grid>
         <Grid>
           <Grid item xs={6}>
-          <Button variant="contained" type="submit" onClick={onSubmitHandler}>
+          <Button variant="contained" type="submit">
             Save
           </Button>
           </Grid>
@@ -237,6 +162,7 @@ const AddConfigurationPopUp = (props) => {
           severity="success"
         />
       )}
+      </form>
     </>
   );
 };

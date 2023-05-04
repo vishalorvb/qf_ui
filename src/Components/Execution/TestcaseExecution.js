@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Autocomplete, Button, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
@@ -22,6 +22,7 @@ export default function TestcaseExecution() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -38,7 +39,6 @@ export default function TestcaseExecution() {
         return (
           <ListItem
             sx={{
-              display: "block",
               fontSize: "x-small",
             }}
             key={apiItem.name}
@@ -49,12 +49,12 @@ export default function TestcaseExecution() {
               onClick={() => {
                 setSelectedItem(apiItem?.testcase_id);
               }}
+              style={{fontSize: "15px", color : "#009fee"}}
             >
-              <Typography>
-                <b style={{ fontSize: "15px" }}>{apiItem.name}</b>
-                <br />
-                {apiItem.description}
-              </Typography>
+             <b> {apiItem.name}</b>
+                {/* <br />
+                {apiItem.description} */}
+            
             </ListItemButton>
           </ListItem>
         );

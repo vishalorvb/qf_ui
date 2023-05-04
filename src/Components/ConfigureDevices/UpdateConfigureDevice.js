@@ -27,7 +27,6 @@ const UpdateConfigureDevice = () => {
   const { auth } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const schema = yup.object().shape({ testcaseName: yup.string().required() });
   const [snack, setSnack] = useState(false);
   const { setHeader } = useHead();
 
@@ -42,17 +41,10 @@ const UpdateConfigureDevice = () => {
   const organizationId = auth.info.organization_id;
   const userId = auth.info.id;
 
-  const {
-    formState: { errors },
-    reset,
-  } = useForm({ resolver: yupResolver(schema) });
   useEffect(() => {
     axios
       .post(`/qfservice/mobileconfiguration/${location.state.id}/addDevices`)
       .then((res) => {
-        console.log(res?.data?.info?.model.saucelab);
-        console.log(res?.data?.info?.model.saucelab);
-
         const details = res?.info;
         setConfigDetails(details);
         setConfigName(res?.data?.info?.model.saucelab.name);
@@ -106,6 +98,7 @@ const UpdateConfigureDevice = () => {
   }, []);
   return (
     <>
+     <form onSubmit={handleUpdate}>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item xs={2}>
           <label>Configure Name :</label>
@@ -114,6 +107,7 @@ const UpdateConfigureDevice = () => {
           <TextField
             id="outlined-basic"
             value={configName}
+            required
             size="small"
             variant="outlined"
             type="text"
@@ -134,6 +128,7 @@ const UpdateConfigureDevice = () => {
           <Select
             sx={{ width: 150 }}
             value={platformType}
+            required
             onChange={(e) => {
               setPlatformType(e.target.value);
             }}
@@ -151,6 +146,7 @@ const UpdateConfigureDevice = () => {
           <Select
             sx={{ width: 150 }}
             value={executionEnvironment}
+            required
             onChange={(e) => {
               setExecutionEnvironment(e.target.value);
             }}
@@ -167,6 +163,7 @@ const UpdateConfigureDevice = () => {
         <Grid item xs={10}>
           <TextareaAutosize
             value={configObjInfo}
+            required
             onChange={(e) => {
               setConfigObjInfo(e.target.value);
             }}
@@ -179,7 +176,6 @@ const UpdateConfigureDevice = () => {
               variant="contained"
               type="submit"
               style={{ marginTop: "8px" }}
-              onClick={handleUpdate}
             >
               Update
             </Button>
@@ -194,6 +190,7 @@ const UpdateConfigureDevice = () => {
           severity="success"
         />
       )}
+      </form>
     </>
   );
 };
