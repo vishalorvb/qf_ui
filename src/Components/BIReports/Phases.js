@@ -120,7 +120,6 @@ function Phases() {
   useEffect(() => {
     projectId &&
       axios.get(`Biservice/projects/${projectId}/phases`).then((resp) => {
-        console.log(resp?.data?.info?.phases);
         const phases = resp?.data?.info ? resp?.data?.info?.phases : [];
         setPhaseList(phases);
       });
@@ -157,8 +156,6 @@ function Phases() {
                     <ListItemButton
                       onClick={() => {
                         setOpenNewPhase(false);
-                        console.log(phaseList[index]);
-                        console.log(index);
                         setPhaseId(phaseList[index].id);
                         setPhaseName(phaseList[index].phase);
                         setTotalTestcases(phaseList[index].total_tc);
@@ -182,7 +179,7 @@ function Phases() {
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={"Phase"}
+                        primary={phaseList[index]?.phase}
                         secondary="Phase"
                       />
                     </ListItemButton>

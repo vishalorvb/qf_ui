@@ -7,10 +7,21 @@ import axios, { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 function PhaseDetails(props) {
-  const { ProjectId, PhaseId,PhaseName,TotalTestcases,AutomatedTestcases,CompletedTestcases,FunctionalTestcases,RegressionTestcases
-  ,SavedHours,Executed,PhaseChart,IsDefault} = props;
-  console.log(props);
-  const [phaseDetail, setPhaseDetail] = useState([]);
+  const {
+    ProjectId,
+    PhaseId,
+    PhaseName,
+    TotalTestcases,
+    AutomatedTestcases,
+    CompletedTestcases,
+    FunctionalTestcases,
+    RegressionTestcases,
+    SavedHours,
+    Executed,
+    PhaseChart,
+    IsDefault,
+  } = props;
+
   const initialvalues = {
     phaseName: PhaseName,
     totalTestcases: TotalTestcases,
@@ -18,16 +29,9 @@ function PhaseDetails(props) {
     completedTestcases: CompletedTestcases,
     functionalTestcases: FunctionalTestcases,
     regressionTestcases: RegressionTestcases,
-    savedHours: SavedHours
+    savedHours: SavedHours,
   };
-  const [data, setData] = useState(initialvalues);
-  // const [phaseName, setPhaseName] = useState(PhaseName);
-  // const [totalTestcases, setTotalTestcases] = useState(TotalTestcases);
-  // const [automatedTestcases, setAutomatedTestcases] = useState(AutomatedTestcases);
-  // const [completedTestcases, setCompletedTestcases] = useState(CompletedTestcases);
-  // const [functionalTestcases, setFunctionalTestcases] = useState(FunctionalTestcases);
-  // const [regressionTestcases, setRegressionTestcases] = useState(RegressionTestcases);
-  // const [savedHours, setSavedHours] = useState(SavedHours);
+  const [data, setData] = useState();
   const phase_name = useRef();
   const total_testcases = useRef();
   const automated_testcases = useRef();
@@ -51,14 +55,10 @@ function PhaseDetails(props) {
   ];
   let requiredOnlyAlphabets = [phase_name];
 
+  
   useEffect(() => {
-    PhaseId &&
-      axios.post(`Biservice/projects/phases/details?phase_id=${PhaseId}`).then((resp) => {
-        console.log(resp?.data?.info);
-        const phase = resp?.data?.info ? resp?.data?.info : [];
-        setPhaseDetail(phase);
-      });
-  }, [PhaseId])
+    setData({ ...initialvalues });
+  }, [props]);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -67,28 +67,28 @@ function PhaseDetails(props) {
   const submit = (e) => {
     if (
       validateForm(
-        [],
+        requiredOnlyNumbers,
         [],
         [],
         requiredOnlyAlphabets,
-        requiredOnlyNumbers,
+        [],
         [],
         "error"
       )
     ) {
       var data1 = {
-        "id": PhaseId,
-        "project_id": ProjectId,
-        "phase": data.phaseName.trim(),
-        "total_tc": data.totalTestcases,
-        "automated_tc": data.automatedTestcases,
-        "completed_tc": data.completedTestcases,
-        "total_functional_tc": data.functionalTestcases,
-        "total_regression_tc": data.regressionTestcases,
-        "executed": Executed,
-        "has_phase_chart": PhaseChart,
-        "efforts_saving": data.savedHours,
-        "is_default": IsDefault
+        id: PhaseId,
+        project_id: ProjectId,
+        phase: data.phaseName.trim(),
+        total_tc: data.totalTestcases,
+        automated_tc: data.automatedTestcases,
+        completed_tc: data.completedTestcases,
+        total_functional_tc: data.functionalTestcases,
+        total_regression_tc: data.regressionTestcases,
+        executed: Executed,
+        has_phase_chart: PhaseChart,
+        efforts_saving: data.savedHours,
+        is_default: IsDefault,
       };
       console.log(data1);
       axiosPrivate
@@ -100,7 +100,7 @@ function PhaseDetails(props) {
             setAddSuccessMsg(true);
             setTimeout(() => {
               setAddSuccessMsg(false);
-              navigate("/BIReports");
+              // navigate("/BIReports");
             }, 3000);
           } else {
             setAddErrorMsg(true);
@@ -122,7 +122,7 @@ function PhaseDetails(props) {
     <Grid item container md={8.5}>
       <Grid item container direction="row" spacing={1} mt={2}>
         <Grid item md={12}>
-        <Typography variant="h4">Details</Typography>
+          <Typography variant="h4">Details</Typography>
         </Grid>
         <Grid item md={12} mt={3}>
           <Stack spacing={1}>
@@ -132,7 +132,7 @@ function PhaseDetails(props) {
             <input
               type="text"
               ref={phase_name}
-              value={data.phaseName}
+              value={data?.phaseName}
               onChange={handleChange}
               name="phaseName"
               // placeholder=" Enter Phase Name"
@@ -146,10 +146,10 @@ function PhaseDetails(props) {
             </label>
             <input
               type="text"
-              value={data.totalTestcases}
+              value={data?.totalTestcases}
               ref={total_testcases}
               onChange={handleChange}
-              name="totaltestcases"
+              name="totalTestcases"
               // placeholder=" Enter Last Name"
             />
           </Stack>
@@ -161,10 +161,10 @@ function PhaseDetails(props) {
             </label>
             <input
               type="text"
-              value={data.automatedTestcases}
+              value={data?.automatedTestcases}
               ref={automated_testcases}
               onChange={handleChange}
-              name="automatedtestcases"
+              name="automatedTestcases"
               // placeholder=" Enter Unique Id only"
             />
           </Stack>
@@ -176,10 +176,10 @@ function PhaseDetails(props) {
             </label>
             <input
               type="text"
-              value={data.completedTestcases}
+              value={data?.completedTestcases}
               ref={completed_testcases}
               onChange={handleChange}
-              name="completedtestcases"
+              name="completedTestcases"
               // placeholder=" Enter password "
             />
           </Stack>
@@ -191,10 +191,10 @@ function PhaseDetails(props) {
               <span className="importantfield">*</span>
             </label>
             <input
-              name="functionaltestcases"
+              name="functionalTestcases"
               ref={functional_testcases}
               type="text"
-              value={data.functionalTestcases}
+              value={data?.functionalTestcases}
               onChange={handleChange}
               // placeholder=" Enter Email"
             />
@@ -208,10 +208,10 @@ function PhaseDetails(props) {
             </label>
             <input
               type="text"
-              value={data.regressionTestcases}
+              value={data?.regressionTestcases}
               ref={regression_testcases}
               onChange={handleChange}
-              name="regressiontestcases"
+              name="regressionTestcases"
               // placeholder=" Enter password "
             />
           </Stack>
@@ -223,17 +223,17 @@ function PhaseDetails(props) {
               <span className="importantfield">*</span>
             </label>
             <input
-              name="savedhours"
+              name="savedHours"
               ref={saved_hours}
               type="text"
-              value={data.savedHours}
+              value={data?.savedHours}
               onChange={handleChange}
               // placeholder=" Enter Email"
             />
           </Stack>
         </Grid>
       </Grid>
-      <Grid item container spacing={1} direction="row-reverse"  mt={2}>
+      <Grid item container spacing={1} direction="row-reverse" mt={2}>
         <Grid item>
           <Button variant="contained" type="submit" onClick={submit}>
             Update
