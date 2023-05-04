@@ -9,21 +9,6 @@ import { useForm } from 'react-hook-form';
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";
 
-let initialval = {
-  organization_id:"",
-  firstName: "",
-  lastName: "",
-  company: "",
-  adminUserId: "",
-  email: "",
-  phone: "",
-  password: "",
-  confirmPassword: "",
-};
-
-export let postVal = { ...initialval };
-
-
 const schema = yup.object().shape({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
@@ -33,7 +18,7 @@ const schema = yup.object().shape({
   phone: yup.string().required(),
   password: yup.string().required(),
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], "Passwords must match").required(),
-});
+})
 
 const AddOrganization = () => {
   const { setHeader } = useHead();
@@ -47,230 +32,188 @@ const AddOrganization = () => {
   });
 
   const onSubmitHandler = async (data) => {
-    console.log(data);
     try {
-      if(postVal.company.length == 0) {
         const response = await axios.post('/qfuserservice/signup', data);
-      console.log(response.data.status);
-      if(response.data.status == "SUCCESS"){
-        setAddSuccessMsg(true);
-        setTimeout(() => {
-          setAddSuccessMsg(false);
-        }, 3000);
-        // navigate("/Organization");
-        reset();
-      } 
-      else{
+        console.log(response.data.status);
+        if (response.data.status == "SUCCESS") {
+          setAddSuccessMsg(true);
+          setTimeout(() => {
+            setAddSuccessMsg(false);
+          }, 3000);
+          reset();
+        }
+        else {
 
-        setAddFailMsg(true);
-        setTimeout(() => {
-          setAddFailMsg(false);
-        }, 3000);
-        reset();
+          setAddFailMsg(true);
+          setTimeout(() => {
+            setAddFailMsg(false);
+          }, 3000);
+          reset();
 
       }
-      }
-      else{
-        //   const response = await axios.post('/qfuserservice/user/updateorgdetails', data);
-        // console.log(response.data.status);
-        // if(response.data.status == "SUCCESS"){
-        //   setAddSuccessMsg(true);
-        //   setTimeout(() => {
-        //     setAddSuccessMsg(false);
-        //   }, 3000);
-        //   // navigate("/Organization");
-        //   reset();
-        // } 
-        // else{
-  
-        //   setAddFailMsg(true);
-        //   setTimeout(() => {
-        //     setAddFailMsg(false);
-        //   }, 3000);
-        //   reset();
-  
-        // }
-      }
-     
+
     } catch (error) {
       console.error(error); // handle error
     }
   };
 
   useEffect(() => {
-    if(postVal.company.length == 0) {
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name: "Add Organization",
-      };
-    });
-  }
-  else if(postVal.company.length !=0 ){
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name: "Edit Organization",
-      };
-    });
-  }
-
-    return ()=>{
-      postVal ={...initialval}
-    }
+      setHeader((ps) => {
+        return {
+          ...ps,
+          name: "Add Organization",
+        };
+      });
   }, []);
 
 
 
   return (
     <>
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
-      <Grid container justifyContent="flex-start" alignItems="center" spacing={2}>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              first Name
-              <span className="importantfield">*</span></label>
-            <input
-              {...register("firstName")}
-              className={errors.firstName ? "error" : "valid"}
-              fullWidth
-              size="small"
-              defaultValue={""}
-            />
-            {errors.firstName && <span style={{ color: "red" }}>{errors.firstName.message}</span>}
-          </Stack>
-        </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              last Name
-              <span className="importantfield">*</span>
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <Grid container justifyContent="flex-start" alignItems="center" spacing={2}>
+          <Grid item md={4}>
+            <Stack spacing={0.5}>
+              <label>
+                first Name
+                <span className="importantfield">*</span></label>
+              <input
+                {...register("firstName")}
+                className={errors.firstName ? "error" : "valid"}
+                fullWidth
+                size="small"
+              />
+              {errors.firstName && <span style={{ color: "red" }}>{errors.firstName.message}</span>}
+            </Stack>
+          </Grid>
+          <Grid item md={4}>
+            <Stack spacing={0.5}>
+              <label>
+                last Name
+                <span className="importantfield">*</span>
               </label>
-            <input
-              {...register("lastName")}
-              className={errors.lastName ? "error" : "valid"}
-              fullWidth
-              size="small"
-            />
-            {errors.lastName && <span style={{ color: "red" }}>{errors.lastName.message}</span>}
-          </Stack>
-        </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              Organization Name<span className="importantfield">*</span>
-            </label>
-            <input
-              {...register("company")}
-              className={errors.company ? "error" : "valid"}
-              defaultValue={postVal.company}
-              fullWidth
-              size="small"
-            />
-            {errors.company && <span style={{ color: "red" }}>{errors.company.message}</span>}
-          </Stack>
-        </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              Admin User Id<span className="importantfield">*</span>
-            </label>
-            <input
-              {...register("adminUserId")}
-              className={errors.adminUserId ? "error" : "valid"}
-              fullWidth
-              size="small"
-            />
-            {errors.adminUserId && <span style={{ color: "red" }}>{errors.adminUserId.message}</span>}
-          </Stack>
-        </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              Admin Email<span className="importantfield">*</span>
-            </label>
-            <input
-              {...register("email")}
-              className={errors.email ? "error" : "valid"}
-              fullWidth
-              size="small"
-            />
-            {errors.email && <span style={{ color: "red" }}>{errors.email.message}</span>}
-          </Stack>
-        </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              Phone Number
-              <span className="importantfield">*</span></label>
-            <input
-              {...register("phone")}
-              type='number'
-              defaultValue={postVal.phone}
-              className={errors.phone ? "error" : "valid"}
-              fullWidth
-              size="small"
-            />
-            {errors.phone && <span style={{ color: "red" }}>{errors.phone.message}</span>}
-          </Stack>
-        </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              Password
-              <span className="importantfield">*</span>
-            </label>
+              <input
+                {...register("lastName")}
+                className={errors.lastName ? "error" : "valid"}
+                fullWidth
+                size="small"
+              />
+              {errors.lastName && <span style={{ color: "red" }}>{errors.lastName.message}</span>}
+            </Stack>
+          </Grid>
+          <Grid item md={4}>
+            <Stack spacing={0.5}>
+              <label>
+                Organization Name<span className="importantfield">*</span>
+              </label>
+              <input
+                {...register("company")}
+                className={errors.company ? "error" : "valid"}
+                fullWidth
+                size="small"
+              />
+              {errors.company && <span style={{ color: "red" }}>{errors.company.message}</span>}
+            </Stack>
+          </Grid>
+            <Grid item md={4}>
+              <Stack spacing={0.5}>
+                <label>
+                  Admin User Id<span className="importantfield">*</span>
+                </label>
+                <input
+                  {...register("adminUserId")}
+                  className={errors.adminUserId ? "error" : "valid"}
+                  fullWidth
+                  size="small"
+                />
+                {errors.adminUserId && <span style={{ color: "red" }}>{errors.adminUserId.message}</span>}
+              </Stack>
+            </Grid>
+          <Grid item md={4}>
+            <Stack spacing={0.5}>
+              <label>
+                Admin Email<span className="importantfield">*</span>
+              </label>
+              <input
+                {...register("email")}
+                className={errors.email ? "error" : "valid"}
+                fullWidth
+                size="small"
+              />
+              {errors.email && <span style={{ color: "red" }}>{errors.email.message}</span>}
+            </Stack>
+          </Grid>
+          <Grid item md={4}>
+            <Stack spacing={0.5}>
+              <label>
+                Phone Number
+                <span className="importantfield">*</span></label>
+              <input
+                {...register("phone")}
+                type='number'
+                className={errors.phone ? "error" : "valid"}
+                fullWidth
+                size="small"
+              />
+              {errors.phone && <span style={{ color: "red" }}>{errors.phone.message}</span>}
+            </Stack>
+          </Grid>
+            <Grid item md={4}>
+              <Stack spacing={0.5}>
+                <label>
+                  Password
+                  <span className="importantfield">*</span>
+                </label>
 
-            <input
-              {...register("password")}
-              className={errors.password ? "error" : "valid"}
-              fullWidth
-              size="small"
-              type='password'
-            />
-            {errors.password && <span style={{ color: "red" }}>{errors.password.message}</span>}
-          </Stack>
+                <input
+                  {...register("password")}
+                  className={errors.password ? "error" : "valid"}
+                  fullWidth
+                  size="small"
+                  type='password'
+                />
+                {errors.password && <span style={{ color: "red" }}>{errors.password.message}</span>}
+              </Stack>
+            </Grid>
+            <Grid item md={4}>
+              <Stack spacing={0.5}>
+                <label>
+                  Confirm Password<span className="importantfield">*</span>
+                </label>
+                <input
+                  {...register("confirmPassword")}
+                  className={errors.confirmPassword ? "error" : "valid"}
+                  fullWidth
+                  size="small"
+                  type='password'
+                />
+                {errors.confirmPassword && <span style={{ color: "red" }}>{errors.confirmPassword.message}</span>}
+              </Stack>
+            </Grid>
         </Grid>
-        <Grid item md={4}>
-          <Stack spacing={0.5}>
-            <label>
-              Confirm Password<span className="importantfield">*</span>
-            </label>
-            <input
-              {...register("confirmPassword")}
-              className={errors.confirmPassword ? "error" : "valid"}
-              fullWidth
-              size="small"
-              type='password'
-            />
-            {errors.confirmPassword && <span style={{ color: "red" }}>{errors.confirmPassword.message}</span>}
-          </Stack>
+        <Grid container justifyContent="flex-end" alignItems="center" mt={2}>
+          <Grid item md={1.5}>
+            <Button fullWidth variant="contained" type="submit" style={{ backgroundColor: "#009fee" }}>
+              Sign Up
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container justifyContent="flex-end" alignItems="center" mt={2}>
-        <Grid item md={1.5}>
-          <Button fullWidth variant="contained" type="submit" style={{ backgroundColor: "#009fee" }}>
-            Sign Up
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
-            <SnackbarNotify
-            open={addSuccessMsg}
-            close={setAddSuccessMsg}
-            msg="created successfully"
-            severity="success"
-          />
-            <SnackbarNotify
-            open={addFailMsg}
-            close={setAddFailMsg}
-            msg="Admin User Id or Organization name should be unique"
-            severity="error"
-          />
-          </>
+      </form>
+      <SnackbarNotify
+        open={addSuccessMsg}
+        close={setAddSuccessMsg}
+        msg="created successfully"
+        severity="success"
+      />
+      <SnackbarNotify
+        open={addFailMsg}
+        close={setAddFailMsg}
+        msg="Admin User Id or Organization name should be unique"
+        severity="error"
+      />
+    </>
   );
-  
+
 }
 
 export default AddOrganization

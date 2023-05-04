@@ -147,8 +147,9 @@ const EditTestLinkProject = lazy(() =>
 );
 const AddOrganization = lazy(() => import(`../pages/AddOrganization`));
 const Organization = lazy(() => import(`../pages/Organization`));
-
+const OrganizationDashboard = lazy(() => import(`../pages/OrganizationDashboard`));
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
+const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 export const Routes = [
   {
     path: "Application/Recent",
@@ -633,8 +634,22 @@ export const Routes = [
     path: "Organization",
     element: Organization,
     accessRole: [3, 5],
+    subRoute: [
+      {
+        path: "OrganizationDashboard",
+        element: OrganizationDashboard,
+        accessRole: [3, 5],
+      },
+      {
+        path: "UpdateOrganization",
+        element: UpdateOrganization,
+        accessRole: [3, 5],
+      },
+      
+    ],
   },
-
+ 
+  
   {
     path: "/profile",
     element: UserProfile,

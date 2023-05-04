@@ -56,7 +56,6 @@ export default function ReportList(props) {
 
   useEffect(() => {
     setSelectedItem(result[0]);
-    console.log(result[0])
   }, [result]);
 
   return (
