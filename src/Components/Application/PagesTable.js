@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
+import TableActions from "../../CustomComponent/TableActions";
 export default function PagesTable(props) {
   const { location, actionType } = props;
   const { header, setHeader } = useHead();
@@ -71,11 +72,17 @@ export default function PagesTable(props) {
       hide: actionType === "screen",
       renderCell: (param) => {
         return (
-          <IconButton
-            onClick={() => navigate("SelectElements", { state: param?.row })}
-          >
-            <AddToQueueIcon />
-          </IconButton>
+          <>
+            <IconButton
+              onClick={() => navigate("SelectElements", { state: param?.row })}
+            >
+              <AddToQueueIcon />
+            </IconButton>
+            {/* <TableActions>
+              <MenuItem>aa</MenuItem>
+              <MenuItem>aa</MenuItem>
+            </TableActions> */}
+          </>
         );
       },
     },
