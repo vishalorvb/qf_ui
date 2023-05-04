@@ -22,13 +22,16 @@ import PhaseDetails from "./PhaseDetails";
 
 function Phases() {
     const location = useLocation();
-    const [phaseName, setPhaseName] = useState("");
+    const [phaseName, setPhaseName] = useState('');
     const [totalTestcases, setTotalTestcases] = useState(0);
     const [automatedTestcases, setAutomatedTestcases] = useState(0);
     const [completedTestcases, setCompletedTestcases] = useState(0);
     const [functionalTestcases, setFunctionalTestcases] = useState(0);
     const [regressionTestcases, setRegressionTestcases] = useState(0);
-    const [savedHours, setSavedHours] = useState([]);
+    const [savedHours, setSavedHours] = useState(0);
+    const [executed, setExecuted] = useState(0);
+    const [phaseChart, setPhaseChart] = useState(0);
+    const [isDefault, setIsDefault] = useState(false);
     const [phaseList, setPhaseList] = useState([]);
     const phase_name = useRef();
     const total_testcases = useRef(0);
@@ -44,6 +47,7 @@ function Phases() {
     const [msg, setMsg] = useState("");
     const [openNewPhase, setOpenNewPhase] = useState(true);
     const [openPhase, setOpenPhase] = useState(false);
+    const [phaseId, setPhaseId] = useState(false);
     var phases = location.state.param1 ? location.state.param1 : 0;
     var projectId = location.state.param2 ? location.state.param2 : 0;
 
@@ -134,7 +138,7 @@ function Phases() {
                   <ListItemButton
                     onClick={() => {
                       setOpenNewPhase(true);
-                      // setOpenPhase(false);
+                      setOpenPhase(false);
                     }}
                   >
                     <ListItemAvatar>
@@ -153,25 +157,37 @@ function Phases() {
                     <ListItemButton
                       onClick={() => {
                         setOpenNewPhase(false);
-                        // setOpenPhase(true);
-                        <PhaseDetails 
-                          projectId = {projectId}
-                          phaseId = {phaseList[index].id}
-                        />
+                        console.log(phaseList[index]);
+                        console.log(index);
+                        setPhaseId(phaseList[index].id);
+                        setPhaseName(phaseList[index].phase);
+                        setTotalTestcases(phaseList[index].total_tc);
+                        setAutomatedTestcases(phaseList[index].automated_tc);
+                        setCompletedTestcases(phaseList[index].completed_tc);
+                        setFunctionalTestcases(
+                          phaseList[index].total_functional_tc
+                        );
+                        setRegressionTestcases(
+                          phaseList[index].total_regression_tc
+                        );
+                        setSavedHours(phaseList[index].efforts_saving);
+                        setExecuted(phaseList[index].executed);
+                        setPhaseChart(phaseList[index].has_phase_chart);
+                        setOpenPhase(phaseList[index].is_default);
                       }}
                     >
                       <ListItemAvatar>
                         <Avatar>
-                            <AssignmentIcon />
+                          <AssignmentIcon />
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={"Phase " + (index + 1)}
+                        primary={"Phase"}
                         secondary="Phase"
                       />
                     </ListItemButton>
                   </ListItem>
-                  {index != (phases - 1) ? <Divider sx={{ mt: 1 }} /> : ""}
+                  {index != phases - 1 ? <Divider sx={{ mt: 1 }} /> : ""}
                 </Grid>
               ))}
             </List>
@@ -310,7 +326,22 @@ function Phases() {
         ) : (
           ""
         )}
-        {/* {openPhase ? <PhaseDetails/> : ""} */}
+        {!openNewPhase ? 
+        <PhaseDetails 
+          ProjectId={projectId} 
+          PhaseId={phaseId} 
+          PhaseName={phaseName}
+          TotalTestcases={totalTestcases}
+          AutomatedTestcases={automatedTestcases}
+          CompletedTestcases={completedTestcases}
+          FunctionalTestcases={functionalTestcases}
+          RegressionTestcases={regressionTestcases}
+          SavedHours={savedHours}
+          Executed={executed}
+          PhaseChart={phaseChart}
+          IsDefault={isDefault}
+        />
+        : "" }
       </Grid>
 
       <SnackbarNotify
