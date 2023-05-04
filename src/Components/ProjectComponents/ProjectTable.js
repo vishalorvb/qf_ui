@@ -74,7 +74,9 @@ function ProjectTable({ location }) {
       align: "left",
       renderCell: (param) => {
         return (
-          <span style={{color:"rgb(0, 159, 238)"}}>{param.row?.project_name}</span>
+          <span style={{ color: "rgb(0, 159, 238)" }}>
+            {param.row?.project_name}
+          </span>
         );
       },
     },
