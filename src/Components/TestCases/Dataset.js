@@ -31,7 +31,7 @@ import useHead from "../../hooks/useHead";
 
 
 export let DatasetRequest;
-
+let snabarMessage = " "
 
 function Dataset() {
   let [createpopup, setCreatepopup] = useState(false);
@@ -283,9 +283,15 @@ function Dataset() {
       align: "left",
     },
   ];
-  function ReloadDatset() {
+  function ReloadDatset(val) {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
     setDrawer(!drawer);
+    if (val == "Create"){
+      snabarMessage ="Dataset Created Successfully"
+    }
+    if (val == "Update"){
+      snabarMessage ="Dataset Updated Successfully"
+    }
     setSnackbar(true);
   }
   useEffect(() => {
@@ -421,6 +427,8 @@ function Dataset() {
               setDeletepopup(false);
               setDeletedatasetId(null);
               getDataset(setDatasets, projectId, applicationId, testcaseId);
+              snabarMessage = "Data Set deleted successfully"
+              setSnackbar(true)
             }
           });
         }}
@@ -428,7 +436,7 @@ function Dataset() {
       <SnackbarNotify
         open={snackbar}
         close={setSnackbar}
-        msg="Data Set Created successfully"
+        msg={snabarMessage}
         severity="success"
       ></SnackbarNotify>
     </div>
