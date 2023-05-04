@@ -7,6 +7,7 @@ import axios from "../../../api/axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { IconButton } from "@mui/material";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
 export default function ScreenElements() {
   const { setHeader } = useHead();
@@ -16,9 +17,10 @@ export default function ScreenElements() {
   const [order, setOrder] = useState([]);
 
   const [popup, setPopup] = useState(false);
+  const [updated, setUpdated] = useState(false);
   const [elementid, setElementid] = useState(0);
 
-  useEffect(() => {
+  const getScreenElementsList = () => {
     axios
       .get(
         `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
@@ -27,6 +29,10 @@ export default function ScreenElements() {
         console.log(resp?.data?.info);
         setData(resp?.data?.info);
       });
+  };
+
+  useEffect(() => {
+    getScreenElementsList();
 
     setHeader((ps) => {
       return {
@@ -89,8 +95,16 @@ export default function ScreenElements() {
         <ElementsDetails
           ElementId={elementid}
           setPopup={setPopup}
+          getPageElements={getScreenElementsList}
+          setUpdated={setUpdated}
         ></ElementsDetails>
       )}
+      <SnackbarNotify
+        open={updated}
+        close={setUpdated}
+        msg={"Element is updated Successfully"}
+        severity="success"
+      />
       <MaterialReactTable
         columns={columns}
         data={data}

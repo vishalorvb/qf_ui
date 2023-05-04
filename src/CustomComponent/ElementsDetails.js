@@ -21,7 +21,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "../api/axios";
-function ElementsDetails({ ElementId, setPopup, getPageElements }) {
+import SnackbarNotify from "./SnackbarNotify";
+function ElementsDetails({ ElementId, setPopup, getPageElements, setUpdated }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
   useEffect(() => {
@@ -82,85 +83,88 @@ function ElementsDetails({ ElementId, setPopup, getPageElements }) {
       .postForm(`/qfservice/webpages/updateWebPageElementPaths`, elementDetails)
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && getPageElements();
+        resp?.data?.status === "SUCCESS" && setUpdated(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);
       });
   };
 
   return (
-    <Dialog open={true} onClose={() => setPopup(false)}>
-      <DialogTitle className="dialogTitle">Elements Details</DialogTitle>
-      <form onSubmit={handleSubmit(updateElement)}>
-        <DialogContent>
-          <Stack direction="row" spacing={1} mt={3}>
-            <SelectElement
-              label="Path Type"
-              name="pathType"
-              size="medium"
-              onChange={(e) => {
-                const path = allXpath.find((xpath) => xpath?.id === e)?.path;
-                setValue("path", path);
-              }}
-              control={control}
-              sx={{ width: 200 }}
-              options={allXpath || []}
-            />
-            <TextFieldElement
-              id="name"
-              label="Path"
-              variant="outlined"
-              size="small"
-              name="path"
-              fullWidth
-              control={control}
-            />
-          </Stack>
-          <Stack spacing={2} mt={2}>
-            <TextFieldElement
-              id="field-name"
-              label="Field Name"
-              variant="outlined"
-              size="small"
-              name="fieldname"
-              fullWidth
-              control={control}
-            />
-            <SelectElement
-              name="fieldType"
-              label="Field Type"
-              size="medium"
-              fullWidth
-              control={control}
-              options={[
-                { id: "", label: "Nothing Selected" },
-                { id: "Label", label: "Label" },
-                { id: "Button", label: "Button" },
-                { id: "InputText", label: "InputText" },
-                { id: "Link", label: "Link" },
-              ]}
-            />
-            <SelectElement
-              name="otherFieldType"
-              label="Other Field Type"
-              size="medium"
-              fullWidth
-              control={control}
-              options={[
-                { id: "", label: "Nothing Selected" },
-                { id: "DropDown", label: "DropDown" },
-                { id: "MouseOver", label: "MouseOver" },
-                { id: "WindowSwitch", label: "WindowSwitch" },
-                { id: "Alert", label: "Alert" },
-              ]}
-            />
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" type="submit">
-            update
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+    <>
+      <Dialog open={true} onClose={() => setPopup(false)}>
+        <DialogTitle className="dialogTitle">Elements Details</DialogTitle>
+        <form onSubmit={handleSubmit(updateElement)}>
+          <DialogContent>
+            <Stack direction="row" spacing={1} mt={3}>
+              <SelectElement
+                label="Path Type"
+                name="pathType"
+                size="medium"
+                onChange={(e) => {
+                  const path = allXpath.find((xpath) => xpath?.id === e)?.path;
+                  setValue("path", path);
+                }}
+                control={control}
+                sx={{ width: 200 }}
+                options={allXpath || []}
+              />
+              <TextFieldElement
+                id="name"
+                label="Path"
+                variant="outlined"
+                size="small"
+                name="path"
+                fullWidth
+                control={control}
+              />
+            </Stack>
+            <Stack spacing={2} mt={2}>
+              <TextFieldElement
+                id="field-name"
+                label="Field Name"
+                variant="outlined"
+                size="small"
+                name="fieldname"
+                fullWidth
+                control={control}
+              />
+              <SelectElement
+                name="fieldType"
+                label="Field Type"
+                size="medium"
+                fullWidth
+                control={control}
+                options={[
+                  { id: "", label: "Nothing Selected" },
+                  { id: "Label", label: "Label" },
+                  { id: "Button", label: "Button" },
+                  { id: "InputText", label: "InputText" },
+                  { id: "Link", label: "Link" },
+                ]}
+              />
+              <SelectElement
+                name="otherFieldType"
+                label="Other Field Type"
+                size="medium"
+                fullWidth
+                control={control}
+                options={[
+                  { id: "", label: "Nothing Selected" },
+                  { id: "DropDown", label: "DropDown" },
+                  { id: "MouseOver", label: "MouseOver" },
+                  { id: "WindowSwitch", label: "WindowSwitch" },
+                  { id: "Alert", label: "Alert" },
+                ]}
+              />
+            </Stack>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" type="submit">
+              update
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </>
   );
 }
 

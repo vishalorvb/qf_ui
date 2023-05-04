@@ -91,8 +91,6 @@ export default function SelectedPageElements() {
     <div className="apptable">
       <div className="intable">
         <CreateScreenPop
-          open={showCreateScreenPop}
-          close={setShowCreateScreenPop}
           applicationId={location?.state?.module_id}
           pageId={location?.state?.web_page_id}
           elementsList={preSelectedElement.map((id) => {
