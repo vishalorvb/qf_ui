@@ -5,6 +5,7 @@ import {
   Paper,
   Stack,
   TextField,
+  TextareaAutosize,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
@@ -25,6 +26,12 @@ import { useLocation } from "react-router-dom";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 
 function TestsetCreate() {
+  const {
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
   const [testcaseObject, setTestcaseObject] = useState([]);
   const location = useLocation();
   const [testsetName, setTestsetName] = useState("");
@@ -116,27 +123,29 @@ function TestsetCreate() {
       });
   }, []);
 
-  useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      const projects = res?.data?.result?.projects_list;
-      setProjectList(projects);
-      setSelectedProject(projects[0]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+  //     const projects = res?.data?.result?.projects_list;
+  //     setProjectList(projects);
+  //     setSelectedProject(projects[0]);
+  //   });
+  // }, []);
 
   useEffect(() => {
-    selectedProject?.project_id &&
-      getApplicationOfProject(setapplicationList, selectedProject?.project_id);
-  }, [selectedProject]);
+    globalProject?.project_id &&
+      getApplicationOfProject(setapplicationList, globalProject?.project_id);
+  }, [globalProject]);
+
+  // useEffect(() => {
+  //   setSelectedApplication(applicationList[0]);
+  // }, [applicationList]);
 
   useEffect(() => {
-    setSelectedApplication(applicationList[0]);
-  }, [applicationList]);
-
-  useEffect(() => {
-    selectedProject?.project_id && getTestcasesInProjects(setTestcaseObject, selectedProject?.project_id);
-    selectedProject?.project_id && getTestcasesInProjects(setLeftTestcase, selectedProject?.project_id);
-  }, [selectedProject?.project_id]);
+    globalProject?.project_id &&
+      getTestcasesInProjects(setTestcaseObject, globalProject?.project_id);
+      globalProject?.project_id &&
+      getTestcasesInProjects(setLeftTestcase, globalProject?.project_id);
+  }, [globalProject?.project_id]);
 
   const submit = (e) => {
     if (
@@ -157,24 +166,23 @@ function TestsetCreate() {
           }
         }
       }
-      if((selectedApplication?.module_type) == 19){
-      var data = {
-        testset_name: "TS_" + testsetName,
-        testset_desc: "TS_" + testsetDesc,
-        project_id: selectedProject?.project_id,
-        testset_id: 0,
-        module_id: selectedApplication?.module_id,
-        cucumber_tags:command,
-        testcases_list: []
-      };
-    }
-      else{
+      if (globalApplication?.module_type == 19) {
         var data = {
           testset_name: "TS_" + testsetName,
           testset_desc: "TS_" + testsetDesc,
           project_id: selectedProject?.project_id,
           testset_id: 0,
-          module_id: selectedApplication?.module_id,
+          module_id: globalApplication?.module_id,
+          cucumber_tags: command,
+          testcases_list: [],
+        };
+      } else {
+        var data = {
+          testset_name: "TS_" + testsetName,
+          testset_desc: "TS_" + testsetDesc,
+          project_id: globalProject?.project_id,
+          testset_id: 0,
+          module_id: globalApplication?.module_id,
           testcases_list: tcList,
         };
       }
@@ -209,14 +217,18 @@ function TestsetCreate() {
     <div onClick={resetClassName}>
       <div className="datatable" style={{ marginTop: "15px" }}>
         <Grid container direction="row" spacing={2}>
-          <Grid item md={6}>
+          {/* <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Project <span className="importantfield">*</span></label>
+              <label>
+                Project <span className="importantfield">*</span>
+              </label>
               <Autocomplete
                 size="small"
                 value={selectedProject || null}
                 options={projectsList}
-                getOptionLabel={(option) => (option.project_name ? option.project_name : "")}
+                getOptionLabel={(option) =>
+                  option.project_name ? option.project_name : ""
+                }
                 onChange={(e, value) => {
                   console.log(value);
                   setSelectedProject(value);
@@ -238,12 +250,16 @@ function TestsetCreate() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Application <span className="importantfield">*</span></label>
+              <label>
+                Application <span className="importantfield">*</span>
+              </label>
               <Autocomplete
                 size="small"
                 value={selectedApplication || null}
                 options={applicationList}
-                getOptionLabel={(option) => (option.module_name ? option.module_name : "" )}
+                getOptionLabel={(option) =>
+                  option.module_name ? option.module_name : ""
+                }
                 onChange={(e, value) => {
                   console.log(value);
                   setSelectedApplication(value);
@@ -261,10 +277,18 @@ function TestsetCreate() {
                 )}
               />
             </Stack>
-          </Grid>
+          </Grid> */}
+           <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Testset Name <span className="importantfield">*</span></label>
+              <label>
+                Testset Name <span className="importantfield">*</span>
+              </label>
               <input
                 ref={testset_name}
                 type="text"
@@ -276,7 +300,9 @@ function TestsetCreate() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Description <span className="importantfield">*</span></label>
+              <label>
+                Description <span className="importantfield">*</span>
+              </label>
               <input
                 ref={testset_desc}
                 type="text"
@@ -286,92 +312,105 @@ function TestsetCreate() {
               />
             </Stack>
           </Grid>
-          {selectedApplication?.module_type == 19 ?
-            < Grid item md={6}>
-          <Stack spacing={1}>
-            <label>Command <span className="importantfield">*</span></label>
-            <input
-              // ref={command}
-              type="text"
-              name=""
-              style={{ width: "50%vs" , height:100}}
-              
-              placeholder="command"
-              onChange={(e) => setCommand(e.target.value)}
-            />
-          </Stack>
-        </Grid>: <>
-        <Grid item xs={4} sm={4} md={5}>
-          <label>Select Testcase:</label>
-          <select id="left" multiple style={{ padding: "10px", marginTop: "10px" }}>
-            {leftTestcase?.length > 0
-              ? leftTestcase
-                .filter((ts) => ts.datasets != null)
-                .map((ts) => (
-                  <option value={ts.testcase_id}>{ts.name}</option>
-                ))
-              : []}
-          </select>
+           {globalApplication?.module_type == 19 ? (
+
+            <Grid item md={12} >
+              <Stack spacing={1}>
+                <label>
+                  Command <span className="importantfield">*</span>
+                </label>
+                <TextareaAutosize
+                  // ref={command}
+                  type="text"
+                  name=""
+                  style={{ height: 250 }}
+                  // placeholder="command"
+                  onChange={(e) => setCommand(e.target.value)}
+                />
+              </Stack>
+            </Grid>
+          ) : (
+            <>
+              <Grid item xs={4} sm={4} md={5}>
+                <label>Select Testcase:</label>
+                <select
+                  id="left"
+                  multiple
+                  style={{ padding: "10px", marginTop: "10px" }}
+                >
+                  {leftTestcase?.length > 0
+                    ? leftTestcase
+                        .filter((ts) => ts.datasets != null)
+                        .map((ts) => (
+                          <option value={ts.testcase_id}>{ts.name}</option>
+                        ))
+                    : []}
+                </select>
+              </Grid>
+              <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "30px" }}>
+                <Button
+                  sx={{ my: 0.5 }}
+                  variant="outlined"
+                  size="small"
+                  onClick={handleSelect}
+                  aria-label="move all right"
+                >
+                  ≫
+                </Button>
+                <Button
+                  sx={{ my: 0.5 }}
+                  variant="outlined"
+                  size="small"
+                  onClick={handleUnselect}
+                  aria-label="move all right"
+                >
+                  ≪
+                </Button>
+              </Grid>
+              <Grid item xs={4} sm={4} md={6}>
+                <label>Selected Testcases:</label>
+                <select
+                  id="right"
+                  multiple
+                  style={{ padding: "10px", marginTop: "10px" }}
+                >
+                  {rightTestcase.length > 0
+                    ? rightTestcase
+                        .filter((ts) => ts.datasets != null)
+                        .map((ts) => (
+                          <option value={ts.testcase_id}>{ts.name}</option>
+                        ))
+                    : []}
+                </select>
+              </Grid>{" "}
+            </>
+          )}
         </Grid>
-        <Grid item xs={1} sm={1} md={1} sx={{ marginTop: "30px" }}>
-          <Button
-            sx={{ my: 0.5 }}
-            variant="outlined"
-            size="small"
-            onClick={handleSelect}
-            aria-label="move all right"
-          >
-            ≫
+        <Stack mt={2} spacing={2} direction="row-reverse">
+          <Button variant="contained" type="submit" onClick={submit}>
+            Save & Continue
           </Button>
           <Button
-            sx={{ my: 0.5 }}
-            variant="outlined"
-            size="small"
-            onClick={handleUnselect}
-            aria-label="move all right"
+            sx={{ color: "grey", textDecoration: "underline" }}
+            onClick={() => navigate("/testset")}
           >
-            ≪
+            Cancel
           </Button>
-        </Grid>
-        <Grid item xs={4} sm={4} md={6}>
-          <label>Selected Testcases:</label>
-          <select id="right" multiple style={{ padding: "10px", marginTop: "10px" }}>
-            {rightTestcase.length > 0
-              ? rightTestcase
-                .filter((ts) => ts.datasets != null)
-                .map((ts) => (
-                  <option value={ts.testcase_id}>{ts.name}</option>
-                ))
-              : []}
-          </select>
-        </Grid> </>
-        }
-      </Grid>
-      <Stack mt={2} spacing={2} direction="row-reverse">
-        <Button variant="contained" type="submit" onClick={submit}>
-          Save & Continue
-        </Button>
-        <Button
-          sx={{ color: "grey", textDecoration: "underline" }}
-          onClick={() => navigate("/testset")}
-        >
-          Cancel
-        </Button>
-      </Stack>
-      <SnackbarNotify
-        open={validationMsg}
-        close={setValidationMsg}
-        msg="Fill all the required fields"
-        severity="error"
-      />
-      <SnackbarNotify
-        open={TSCreateSuccessMsg}
-        close={setTSCreateSuccessMsg}
-        msg="Testset Created successfully"
-        severity="success"
-      />
+        </Stack>
+        <SnackbarNotify
+          open={validationMsg}
+          close={setValidationMsg}
+          msg="Fill all the required fields"
+          severity="error"
+        />
+        <SnackbarNotify
+          open={TSCreateSuccessMsg}
+          close={setTSCreateSuccessMsg}
+          msg="Testset Created successfully"
+          severity="success"
+        />
+      </div>
     </div>
-    </div >
   );
 }
 

@@ -4,10 +4,6 @@ import { baseUrl } from "../Environment";
 
 
 export function getProject(callback, userId) {
-  // This function except name of state as a callback and set value in that state
-  // axios.get(baseUrl + "/qfservice/projects?user_id=" + userId).then((res) => {
-  //   callback(res.data.result.projects_list);
-  // });
   axios.get(`${baseUrl}/qfservice/getProjectsOfUser?userId=${userId}`).then(res => {
     console.log(res.data.info)
     callback(res.data.info)
@@ -29,7 +25,6 @@ export async function createProject(data) {
       return "error";
     });
   console.log(res);
-  // console.log(res.data.status)
   return res;
 }
 
@@ -54,62 +49,6 @@ export async function deleteProject(projectid, userid) {
   })
   return res;
 }
-
-// export function getTestcases(callback, moduleId) {
-//   axios
-//     .get(baseUrl + "/qfservice/api/workflow/" + moduleId + "/api/testcases")
-//     .then((res) => {
-//       console.log(res.data.data);
-//       callback(res.data.data);
-//     });
-// }
-
-
-
-// export function getWebpages(callback, moduleId) {
-//   console.log("Calling getWebpages");
-//   axios
-//     .get(`${baseUrl}/qfservice/webpages/getWebPagesList?module_id=${moduleId}`)
-//     .then((res) => {
-//       console.log(res.data.info);
-//       callback(res.data.info);
-//     });
-// }
-
-// export function getWebpagesElementList(callback, web_page_id) {
-//   console.log("Calling webpage list");
-//   axios
-//     .get(
-//       `${baseUrl}qfservice/webpages/getWebPageElementsList?web_page_id=${web_page_id}`
-//     )
-//     .then((res) => {
-//       console.log(res.data.info);
-//       callback(res.data.info);
-//     });
-// }
-
-// export function getScreen(callback, moduleId) {
-//   console.log("calling getScreen");
-//   axios
-//     .get(`http://10.11.12.242:8080/qfservice/screen/getScreensList?module_id=${moduleId}`)
-//     .then((res) => {
-//       console.log(res.data.info);
-//       callback(res.data.info);
-//     });
-// }
-
-// export function getModules(callback, projectid) {
-//   console.log("calling getModules");
-//   axios
-//     .get(`${baseUrl}/qfservice/getprojectmodules/${projectid}`)
-//     .then((res) => {
-//       console.log(res.data);
-//       callback(res.data.data);
-//     });
-// }
-
-
-
 
 export function getUsers(callback, orgid, ssoid, token) {
   axios.get(`${baseUrl}/qfauthservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,

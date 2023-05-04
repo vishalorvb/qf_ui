@@ -13,6 +13,8 @@ import DownloadIcon from "@mui/icons-material/Download";
 import Table from "../../CustomComponent/Table";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import useHead from "../../hooks/useHead";
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 
 export default function ReportFields({
   setSelectedProject,
@@ -33,6 +35,13 @@ export default function ReportFields({
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
+  const {
+    setHeader,
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
 
   try {
   } catch (error) {}
@@ -204,27 +213,26 @@ export default function ReportFields({
     },
   ];
 
-  useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      const projects = res?.data?.result?.projects_list;
-      setProjectList(projects);
-      setSelectedProject(projects[0]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+  //     const projects = res?.data?.result?.projects_list;
+  //     setProjectList(projects);
+  //     setSelectedProject(projects[0]);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    setSelectedApplication(applicationList[0]);
-  }, [applicationList]);
+  // useEffect(() => {
+  //   setSelectedApplication(applicationList[0]);
+  // }, [applicationList]);
 
   useEffect(() => {
     submit();
-  }, [selectedApplication]);
+  }, [globalApplication]);
 
   useEffect(() => {
-    setSelectedApplication({ module_name: "Select Project first" });
-    selectedProject &&
-      getApplicationOfProject(setapplicationList, selectedProject?.project_id);
-  }, [selectedProject]);
+    globalProject &&
+      getApplicationOfProject(setapplicationList, globalProject?.project_id);
+  }, [globalProject]);
 
   const submit = (e) => {
     // e.preventDefault();
@@ -234,7 +242,7 @@ export default function ReportFields({
     {
       axiosPrivate
         .post(
-          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${selectedApplication?.module_id}&user_id=${loggedInId}`
+          `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${globalApplication?.module_id}&user_id=${loggedInId}`
         )
         .then((Response) => {
           if (Response.data.info.length > 0) {
@@ -264,14 +272,105 @@ export default function ReportFields({
 
   return (
     <>
-      <Stack
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        display="flex"
+     >
+        <Grid container md={8}
+        justifyContent="flex-start"
+        alignItems="center"
+        spacing={1.3}>
+          <Grid item md={2}>
+            {/* <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          > */}
+            <TextField
+              id="outlined-basic"
+              label="From Date"
+              variant="outlined"
+              type="date"
+              size="small"
+              fullWidth
+              ref={From_Date}
+              defaultValue={values.from_Date}
+              onChange={(newValue) => {
+                setFromDate(newValue.target.value);
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            {/* </Box> */}
+          </Grid>
+          <Grid item md={2}>
+            {/* <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
+            }}
+            noValidate
+            autoComplete="off"
+          > */}
+            <TextField
+              id="outlined-basic"
+              size="small"
+              label="To Date"
+              variant="outlined"
+              type="date"
+              fullWidth
+              ref={to_Date}
+              defaultValue={values.to_Date}
+              onChange={(newValue) => {
+                setToDate(newValue.target.value);
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            {/* </Box> */}
+          </Grid>
+          <Grid item md={1.3}>
+            <Button
+              variant="contained"
+              onClick={submit}
+              startIcon={<SearchOutlinedIcon />}
+              fullWidth
+            >
+              Search
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid item md={4}>
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
+        </Grid>
+      </Grid>
+
+      {/* <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
         spacing={5}
         mb={0}
-      >
-        <Autocomplete
+      > */}
+      {/* <ProjectnApplicationSelector
+          globalProject={globalProject}
+          setglobalProject={setglobalProject}
+          globalApplication={globalApplication}
+          setglobalApplication={setglobalApplication}
+        /> */}
+      {/* <Autocomplete
           disablePortal
           id="project_id"
           options={projectsList}
@@ -298,8 +397,9 @@ export default function ReportFields({
           renderInput={(params) => (
             <TextField {...params} label="Applications" size="small" />
           )}
-        />
-        <Box
+        /> */}
+
+      {/* <Box
           component="form"
           sx={{
             "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
@@ -323,9 +423,9 @@ export default function ReportFields({
               shrink: true,
             }}
           />
-        </Box>
+        </Box> */}
 
-        <Box
+      {/* <Box
           component="form"
           sx={{
             "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
@@ -349,10 +449,9 @@ export default function ReportFields({
               shrink: true,
             }}
           />
-        </Box>
-     
-   
-        <Button
+        </Box> */}
+
+      {/* <Button
           variant="contained"
           onClick={submit}
           startIcon={<SearchOutlinedIcon />}
@@ -364,9 +463,8 @@ export default function ReportFields({
           }}
         >
           Search
-        </Button>
-      
-      </Stack>
+        </Button> */}
+      {/* </Stack> */}
       <SnackbarNotify
         open={reportSuccessMsg}
         close={setReportSuccessMsg}
