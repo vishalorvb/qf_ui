@@ -1,5 +1,5 @@
 import { Button, Grid, Stack } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useRef } from 'react'
 import axios from '../api/axios';
 import useHead from '../hooks/useHead';
 import useAuth from '../hooks/useAuth';
@@ -25,8 +25,33 @@ const UpdateOrganization = () => {
     const [addSuccessMsg, setAddSuccessMsg] = useState(false);
     const [addFailMsg, setAddFailMsg] = useState(false);
 
-    function onSubmitHandler() {
-        console.log(postVal)
+    const firstNameRef = useRef();
+    const lastNameRef = useRef();
+    const companyRef = useRef();
+    const emailRef = useRef();
+    const phoneRef = useRef();
+  
+    const onSubmitHandler = () => {
+  
+     if(postVal.firstName !==""  && postVal.lastName !== "" && postVal.company !== "" && postVal.email  !== "" && postVal.phone !== "" ){
+        (firstNameRef.current.value !== "") ?firstNameRef.current.classList.remove("error") : firstNameRef.current.classList.add("error"); 
+        (lastNameRef.current.value !== "") ? lastNameRef.current.classList.remove("error") :  lastNameRef.current.classList.add("error"); 
+        (companyRef.current.value !== "") ? companyRef.current.classList.remove("error") : companyRef.current.classList.add("error"); 
+        (emailRef.current.value !== "") ?emailRef.current.classList.remove("error") : emailRef.current.classList.add("error"); 
+        (phoneRef.current.value !== "") ?phoneRef.current.classList.remove("error"): phoneRef.current.classList.add("error"); 
+        updateOrganizationDetails()
+     }
+     else{
+        (firstNameRef.current.value === "") && firstNameRef.current.classList.add("error"); 
+         (lastNameRef.current.value === "") && lastNameRef.current.classList.add("error"); 
+         (companyRef.current.value === "") && companyRef.current.classList.add("error"); 
+         (emailRef.current.value === "") && emailRef.current.classList.add("error"); 
+         (phoneRef.current.value === "") && phoneRef.current.classList.add("error") ;
+     }
+
+    };
+
+    function updateOrganizationDetails() {
         try {
             axios({
                 method: 'post',
@@ -40,7 +65,7 @@ const UpdateOrganization = () => {
                     setTimeout(() => {
                       setAddSuccessMsg(false);
                      navigate(-1)
-                    }, 2000);
+                    }, 1500);
                 }
                 else{
                     setAddFailMsg(true);
@@ -79,6 +104,7 @@ const UpdateOrganization = () => {
                             first Name
                             <span className="importantfield">*</span></label>
                         <input
+                            ref={firstNameRef}
                             fullWidth
                             defaultValue={postVal.firstName}
                             size="small"
@@ -93,6 +119,7 @@ const UpdateOrganization = () => {
                             <span className="importantfield">*</span>
                         </label>
                         <input
+                         ref={lastNameRef}
                             fullWidth
                             size="small"
                             defaultValue={postVal.lastName}
@@ -107,6 +134,7 @@ const UpdateOrganization = () => {
                             Organization Name<span className="importantfield">*</span>
                         </label>
                         <input
+                         ref={companyRef}
                             defaultValue={postVal.company}
                             fullWidth
                             size="small"
@@ -121,6 +149,7 @@ const UpdateOrganization = () => {
                             Admin Email<span className="importantfield">*</span>
                         </label>
                         <input
+                         ref={emailRef}
                             fullWidth
                             size="small"
                             defaultValue={postVal.email}
@@ -135,6 +164,8 @@ const UpdateOrganization = () => {
                             Phone Number
                             <span className="importantfield">*</span></label>
                         <input
+                         ref={phoneRef}
+
                             type='number'
                             defaultValue={postVal.phone}
                             fullWidth
