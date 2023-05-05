@@ -19,14 +19,14 @@ function OrganizationDashboard() {
   const [totalProjects, setTotalProjects] = useState();
   const [totalApplication, setTotalApplication] = useState();
   const [totalUsers, setTotalUsers] = useState([]);
-  const data = [totalProjects, 2, totalUsers];
+  const data = [totalProjects, totalApplication, totalUsers];
   const body = ["Total Projects", "Total Applications", "Total Users"];
   const { setHeader } = useHead();
   const location = useLocation()
   const { auth } = useAuth();
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addFailMsg, setAddFailMsg] = useState(false);
-
+  const msg = [];
   function TotalUser() {
     try {
       axios({
@@ -38,6 +38,7 @@ function OrganizationDashboard() {
       }).then(res => {
         if (res.data.message = "users Details found.") {
           res.data.info == null?setTotalUsers(0):setTotalUsers(res.data.info.length)
+          
           // setAddSuccessMsg(true);
           // setTimeout(() => {
           //   setAddSuccessMsg(false);
@@ -65,8 +66,7 @@ function OrganizationDashboard() {
         }
       }).then(res => {
         if (res.data.message = "users Details found.") {
-          console.log(res.data.info);
-          res.data.info == null?setTotalProjects(0):setTotalProjects(res.data.info.length)
+          res.data.info == null?setTotalApplication(0):setTotalApplication(res.data.info.length)
           // setAddSuccessMsg(true);
           // setTimeout(() => {
           //   setAddSuccessMsg(false);
@@ -84,6 +84,37 @@ function OrganizationDashboard() {
       console.error(error); // handle error
     }
   }
+  function totalApplications() {
+    try {
+      axios({
+        method: 'get',
+        url: `/qfservice/getApplicationsOfOrg?orgId=${location.state.orgId}`,
+        headers: {
+          'Authorization': `Bearer ${auth.token}`
+        }
+      }).then(res => {
+        // console.log(Object.keys(res.data.info).length);
+        if (res.data.message = "Applications Details found.") {
+          res.data.info == null?setTotalProjects(0):setTotalProjects(Object.keys(res.data.info).length)
+          setAddSuccessMsg(true);
+          setTimeout(() => {
+            setAddSuccessMsg(false);
+          }, 3000);
+        }
+        else{
+          // setAddFailMsg(true);
+          // setTimeout(() => {
+          //   setAddFailMsg(false);
+          // }, 3000);
+        }
+      }
+      )
+
+    } catch (error) {
+      console.error(error); // handle error
+    }
+  }
+
   const crd = (index) => {
     return (
       <Card sx={{ Width: "100px", display: "flex", height: "70px", backgroundColor: "#e8f2fd !important", alignItems: "center" }}>
@@ -122,6 +153,7 @@ function OrganizationDashboard() {
   useEffect(() => {
     TotalUser();
     TotalProjects();
+    totalApplications();
   }, [])
   
 
