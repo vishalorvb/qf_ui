@@ -5,14 +5,12 @@ import { baseUrl } from "../Environment";
 
 export function getProject(callback, userId) {
   axios.get(`${baseUrl}/qfservice/getProjectsOfUser?userId=${userId}`).then(res => {
-    console.log(res.data.info)
     callback(res.data.info)
   })
 }
 
 
 export async function createProject(data) {
-  console.log("calling createProject");
   let res = await axios({
     method: "post",
     url: `${baseUrl}/qfservice/createProject`,
@@ -24,7 +22,6 @@ export async function createProject(data) {
     .catch((err) => {
       return "error";
     });
-  console.log(res);
   return res;
 }
 
@@ -44,7 +41,6 @@ export async function updateProject(data) {
 export async function deleteProject(projectid, userid) {
 
   let res = await axios.put(`${baseUrl}/qfservice/projects/Delete?project_id=${projectid}&user_id=${userid}`).then(r => {
-    console.log(r.data.status);
     return r.data.status
   })
   return res;
@@ -70,7 +66,6 @@ export function getUserOfProject(callback, projectId) {
 
 export function getJiraProject(callback, url, username, password, itstype, orgname, orgid) {
   axios.post(`${baseUrl}/qfservice/loadJiraProjects?url=${url}&userName=${username}&password=${password}&its_type=${itstype}&org_name=${orgname}&orgId=${orgid}`).then(res => {
-    console.log(res.data.info)
     callback(res.data.info)
   })
 }
