@@ -11,30 +11,35 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import useHead from "../../hooks/useHead";
-import ImageIcon from "@mui/icons-material/Image";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import Divider from "@mui/material/Divider";
 import { Container, Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
-import { useNavigate } from "react-router";
-import { axiosPrivate } from "../../api/axios";
+import { useLocation, useNavigate } from "react-router";
+import axios, { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import PhaseDetails from "./PhaseDetails";
 
 function Phases() {
-    const [phaseName, setPhaseName] = useState("");
+    const location = useLocation();
+    const [phaseName, setPhaseName] = useState('');
     const [totalTestcases, setTotalTestcases] = useState(0);
     const [automatedTestcases, setAutomatedTestcases] = useState(0);
     const [completedTestcases, setCompletedTestcases] = useState(0);
     const [functionalTestcases, setFunctionalTestcases] = useState(0);
     const [regressionTestcases, setRegressionTestcases] = useState(0);
-    const [savedHours, setSavedHours] = useState([]);
+    const [savedHours, setSavedHours] = useState(0);
+    const [executed, setExecuted] = useState(0);
+    const [phaseChart, setPhaseChart] = useState(0);
+    const [isDefault, setIsDefault] = useState(false);
+    const [phaseList, setPhaseList] = useState([]);
     const phase_name = useRef();
-    const total_testcases = useRef();
-    const automated_testcases = useRef();
-    const completed_testcases = useRef();
-    const functional_testcases = useRef();
-    const regression_testcases = useRef();
-    const saved_hours = useRef();
+    const total_testcases = useRef(0);
+    const automated_testcases = useRef(0);
+    const completed_testcases = useRef(0);
+    const functional_testcases = useRef(0);
+    const regression_testcases = useRef(0);
+    const saved_hours = useRef(0);
     const navigate = useNavigate();
     const [validationMsg, setValidationMsg] = useState(false);
     const [addSuccessMsg, setAddSuccessMsg] = useState(false);
@@ -42,61 +47,65 @@ function Phases() {
     const [msg, setMsg] = useState("");
     const [openNewPhase, setOpenNewPhase] = useState(true);
     const [openPhase, setOpenPhase] = useState(false);
+    const [phaseId, setPhaseId] = useState(false);
+    var phases = location.state.param1 ? location.state.param1 : 0;
+    var projectId = location.state.param2 ? location.state.param2 : 0;
 
     let requiredOnlyNumbers = [total_testcases, automated_testcases, completed_testcases,functional_testcases,regression_testcases,saved_hours];
     let requiredOnlyAlphabets = [phase_name];
 
     const submit = (e) => {
-        if (
-          validateForm(
-            [],
-            [],
-            [],
-            requiredOnlyAlphabets,
-            requiredOnlyNumbers,
-            [],
-            "error"
-          )
-        ) {
-          var data = {
-            phaseName: phaseName.trim(),
-            totalTestcases: totalTestcases.trim(),
-            automatedTestcases: automatedTestcases.trim(),
-            completedTestcases: completedTestcases.trim(),
-            functionalTestcases: functionalTestcases.trim(),
-            regressionTestcases: regressionTestcases.trim(),
-            savedHours: savedHours.trim(),
-          };
-    
-          axiosPrivate
-            .post(
-              `/qfuserservice/user/createUser?user_id=0&current_user_id=`,
-              data
-            )
-            .then((res) => {
-              console.log(res.data.message);
-              setMsg(res.data.message);
-              if (res.data.message === "User is created successfully.") {
-                setAddSuccessMsg(true);
-                setTimeout(() => {
-                  setAddSuccessMsg(false);
-                  navigate("/BIReports");
-                }, 3000);
-              } else {
-                setAddErrorMsg(true);
-                setTimeout(() => {
-                  setAddErrorMsg(false);
-                }, 3000);
-              }
-            });
-        } else {
-          setValidationMsg(true);
-          setTimeout(() => {
-            setValidationMsg(false);
-          }, 3000);
-          console.log("Invalid form");
-        }
-      };
+      if (
+        validateForm(
+          requiredOnlyNumbers,
+          [],
+          [],
+          requiredOnlyAlphabets,
+          [],
+          [],
+          "error"
+        )
+      ) {
+        var data = {
+          id: 0,
+          project_id: projectId,
+          phase: phaseName.trim(),
+          total_tc: totalTestcases.trim(),
+          automated_tc: automatedTestcases.trim(),
+          completed_tc: completedTestcases.trim(),
+          total_functional_tc: functionalTestcases.trim(),
+          total_regression_tc: regressionTestcases.trim(),
+          executed: 0,
+          has_phase_chart: 0,
+          efforts_saving: savedHours.trim(),
+        };
+
+        axiosPrivate
+          .post(`/Biservice/projects/phases/create`, data)
+          .then((res) => {
+            console.log(res.data.message);
+            setMsg(res.data.message);
+            if (res.data.message === "Succesfully Created Phase") {
+              setAddSuccessMsg(true);
+              setTimeout(() => {
+                setAddSuccessMsg(false);
+                navigate("/BIReports");
+              }, 3000);
+            } else {
+              setAddErrorMsg(true);
+              setTimeout(() => {
+                setAddErrorMsg(false);
+              }, 3000);
+            }
+          });
+      } else {
+        setValidationMsg(true);
+        setTimeout(() => {
+          setValidationMsg(false);
+        }, 3000);
+        console.log("Invalid form");
+      }
+    };
 
   const { setHeader } = useHead();
   useEffect(() => {
@@ -107,6 +116,15 @@ function Phases() {
       };
     });
   }, []);
+
+  useEffect(() => {
+    projectId &&
+      axios.get(`Biservice/projects/${projectId}/phases`).then((resp) => {
+        const phases = resp?.data?.info ? resp?.data?.info?.phases : [];
+        setPhaseList(phases);
+      });
+  }, [projectId])
+  
 
   return (
     <>
@@ -124,7 +142,7 @@ function Phases() {
                   >
                     <ListItemAvatar>
                       <Avatar>
-                        <ImageIcon />
+                        <AssignmentIcon />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText primary="Add New" secondary="Phase" />
@@ -132,27 +150,41 @@ function Phases() {
                 </ListItem>
                 <Divider sx={{ mt: 1 }} />
               </Grid>
-              {Array.from(Array(6)).map((_, index) => (
+              {Array.from(Array(phases)).map((_, index) => (
                 <Grid item xs={2} sm={4} md={12} key={index} mt={1}>
                   <ListItem button>
                     <ListItemButton
                       onClick={() => {
                         setOpenNewPhase(false);
-                        setOpenPhase(true);
+                        setPhaseId(phaseList[index].id);
+                        setPhaseName(phaseList[index].phase);
+                        setTotalTestcases(phaseList[index].total_tc);
+                        setAutomatedTestcases(phaseList[index].automated_tc);
+                        setCompletedTestcases(phaseList[index].completed_tc);
+                        setFunctionalTestcases(
+                          phaseList[index].total_functional_tc
+                        );
+                        setRegressionTestcases(
+                          phaseList[index].total_regression_tc
+                        );
+                        setSavedHours(phaseList[index].efforts_saving);
+                        setExecuted(phaseList[index].executed);
+                        setPhaseChart(phaseList[index].has_phase_chart);
+                        setOpenPhase(phaseList[index].is_default);
                       }}
                     >
                       <ListItemAvatar>
                         <Avatar>
-                          <ImageIcon />
+                          <AssignmentIcon />
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={"Phase " + (index + 1)}
+                        primary={phaseList[index]?.phase}
                         secondary="Phase"
                       />
                     </ListItemButton>
                   </ListItem>
-                  {index != 5 ? <Divider sx={{ mt: 1 }} /> : ""}
+                  {index != phases - 1 ? <Divider sx={{ mt: 1 }} /> : ""}
                 </Grid>
               ))}
             </List>
@@ -163,12 +195,12 @@ function Phases() {
         </Grid>
         {openNewPhase ? (
           <Grid item container md={8.5}>
-            <Grid item container direction="row" spacing={1} mt={4}>
+            <Grid item container direction="row" spacing={1} mt={2}>
               <Grid item md={12}>
                 <Typography variant="h4">Details</Typography>
                 {/* <h3></h3> */}
               </Grid>
-              <Grid item md={12}>
+              <Grid item md={12} mt={3}>
                 <Stack spacing={1}>
                   <label>
                     Phase name <span className="importantfield">*</span>
@@ -272,7 +304,7 @@ function Phases() {
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item container spacing={1} direction="row-reverse">
+            <Grid item container spacing={1} direction="row-reverse" mt={2}>
               <Grid item>
                 <Button variant="contained" type="submit" onClick={submit}>
                   Save
@@ -291,7 +323,22 @@ function Phases() {
         ) : (
           ""
         )}
-        {openPhase ? <PhaseDetails/> : ""}
+        {!openNewPhase ? 
+        <PhaseDetails 
+          ProjectId={projectId} 
+          PhaseId={phaseId} 
+          PhaseName={phaseName}
+          TotalTestcases={totalTestcases}
+          AutomatedTestcases={automatedTestcases}
+          CompletedTestcases={completedTestcases}
+          FunctionalTestcases={functionalTestcases}
+          RegressionTestcases={regressionTestcases}
+          SavedHours={savedHours}
+          Executed={executed}
+          PhaseChart={phaseChart}
+          IsDefault={isDefault}
+        />
+        : "" }
       </Grid>
 
       <SnackbarNotify

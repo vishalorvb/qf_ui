@@ -18,8 +18,12 @@ function CreateDataSetPopUp({ ReloadDataset,drawer,setDrawer }) {
       DatasetRequest[0].datasets_list = [datasetinfo];
       CreateDataset(DatasetRequest[0]).then((res) => {
         if (res) {
-
-          ReloadDataset();
+          if(datasetinfo.dataset_id == 0){
+            ReloadDataset("Create");
+          }
+         else{
+          ReloadDataset("Update");
+         }
         }
       });
     }
