@@ -13,10 +13,6 @@ export const HeaderProvider = ({ children }) => {
   const [globalProject, setglobalProject] = useState(null)
   const [globalApplication, setglobalApplication] = useState(null)
 
-  useEffect(() => {
-    console.log(globalProject)
-  }, [globalProject])
-
   return (
     <HeadContext.Provider value={{ header, setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication }}>
       {children}
