@@ -4,41 +4,37 @@ import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation
 import Report from "../Components/DevopsComponent/Report";
 
 const Admin = lazy(() => import("../pages/Admin"));
-const ApiApp = lazy(() =>
-  import("../Components/Application/ApiApplication/ApiApp")
-);
-const Execution = lazy(() => import("../pages/Execution"));
-const MobileApp = lazy(() => import("../pages/MobileApp"));
+// const ApiApp = lazy(() =>
+//   import("../Components/Application/ApiApplication/ApiApp")
+// );
+// const Execution = lazy(() => import("../pages/Execution"));
+// const MobileApp = lazy(() => import("../pages/MobileApp"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Pipeline = lazy(() => import("../pages/Pipeline"));
 const Projects = lazy(() => import("../pages/Projects"));
-const QFAdmin = lazy(() => import("../pages/QFAdmin"));
+// const QFAdmin = lazy(() => import("../pages/QFAdmin"));
 const Release = lazy(() => import("../pages/Release"));
 const Reports = lazy(() => import("../pages/Reports"));
 const TestCases = lazy(() => import("../Components/TestCases/TestCases"));
 const Testset = lazy(() => import("../pages/Testset"));
-const Applications = lazy(() => import("../pages/Applications"));
-const Pages = lazy(() =>
-  import("../Components/Application/PagesComponents/Pages")
-);
+// const Applications = lazy(() => import("../pages/Applications"));
+// const Pages = lazy(() =>
+//   import("../Components/Application/PagesComponents/Pages")
+// );
 const PageElements = lazy(() =>
   import("../Components/Application/PagesComponents/PageElements")
 );
 const CreateProject = lazy(() =>
   import("../Components/ProjectComponents/CreateProject")
 );
-const Phases = lazy(() =>
-  import("../Components/BIReports/Phases")
-);
-const Cycles = lazy(() =>
-  import("../Components/BIReports/Cycles")
-);
+const Phases = lazy(() => import("../Components/BIReports/Phases"));
+const Cycles = lazy(() => import("../Components/BIReports/Cycles"));
 const ActiveReports = lazy(() =>
   import("../Components/BIReports/ActiveReports")
 );
-const APIsTable = lazy(() =>
-  import("../Components/Application/ApiApplication/APIsTable")
-);
+// const APIsTable = lazy(() =>
+//   import("../Components/Application/ApiApplication/APIsTable")
+// );
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const ApiDatasets = lazy(() =>
@@ -75,12 +71,12 @@ const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
 const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
-const Screen = lazy(() =>
-  import("../Components/Application/ScreenComponents/Screen")
-);
-const CreateScreen = lazy(() =>
-  import(`../Components/Application/ScreenComponents/CreateScreen`)
-);
+// const Screen = lazy(() =>
+//   import("../Components/Application/ScreenComponents/Screen")
+// );
+// const CreateScreen = lazy(() =>
+//   import(`../Components/Application/ScreenComponents/CreateScreen`)
+// );
 const SelectedPageElements = lazy(() =>
   import("../Components/Application/ScreenComponents/SelectedPageElements")
 );
@@ -88,15 +84,15 @@ const SelectedPageElements = lazy(() =>
 const ScreenElements = lazy(() =>
   import("../Components/Application/ScreenComponents/ScreenElements")
 );
-const UpdateScreen = lazy(() =>
-  import("../Components/Application/ScreenComponents/UpdateScreen")
-);
+// const UpdateScreen = lazy(() =>
+//   import("../Components/Application/ScreenComponents/UpdateScreen")
+// );
 const MapApiTestCase = lazy(() =>
   import("../Components/TestCases/apiTestcase/MapApiTestCase")
 );
-const WebTestcase = lazy(() =>
-  import("../Components/TestCases/webTestcase/WebTestcase")
-);
+// const WebTestcase = lazy(() =>
+//   import("../Components/TestCases/webTestcase/WebTestcase")
+// );
 const MapScreen = lazy(() =>
   import("../Components/TestCases/webTestcase/MapScreen")
 );
@@ -154,7 +150,9 @@ const EditTestLinkProject = lazy(() =>
 );
 const AddOrganization = lazy(() => import(`../pages/AddOrganization`));
 const Organization = lazy(() => import(`../pages/Organization`));
-const OrganizationDashboard = lazy(() => import(`../pages/OrganizationDashboard`));
+const OrganizationDashboard = lazy(() =>
+  import(`../pages/OrganizationDashboard`)
+);
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 export const Routes = [
@@ -657,11 +655,9 @@ export const Routes = [
         element: UpdateOrganization,
         accessRole: [3, 5],
       },
-      
     ],
   },
- 
-  
+
   {
     path: "/profile",
     element: UserProfile,

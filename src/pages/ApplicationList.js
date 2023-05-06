@@ -38,6 +38,7 @@ export default function ApplicationsList() {
   const [application, setApplication] = useState([]);
   const location = useLocation();
   const [snack, setSnack] = useState(false);
+  let [snackbarsuccess, setSnackbarsuccess] = useState(false);
 
   const handleDelete = () => {};
 
@@ -108,7 +109,12 @@ export default function ApplicationsList() {
       flex: 3,
       sortable: false,
       renderCell: (param) => {
-        return ApplicationDescriptionCell(param, setApplication, auth);
+        return ApplicationDescriptionCell(
+          param,
+          setApplication,
+          auth,
+          setSnackbarsuccess
+        );
       },
     },
   ];
@@ -158,14 +164,24 @@ export default function ApplicationsList() {
           severity="error"
         />
       )}
+      <SnackbarNotify
+        open={snackbarsuccess}
+        close={setSnackbarsuccess}
+        msg="Deleted Succesfully"
+        severity="success"
+      />
     </div>
   );
 }
 
-const ApplicationDescriptionCell = (param, setApplication, auth) => {
+const ApplicationDescriptionCell = (
+  param,
+  setApplication,
+  auth,
+  setSnackbarsuccess
+) => {
   const navigate = useNavigate();
   let [popup, setPopup] = useState(false);
-  let [snackbarsuccess, setSnackbarsuccess] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -224,18 +240,12 @@ const ApplicationDescriptionCell = (param, setApplication, auth) => {
       <ConfirmPop
         open={popup}
         handleClose={() => setPopup(false)}
-        heading={"Delete Project"}
-        message={"Are you sure you want to delete this project"}
+        heading={"Delete Application"}
+        message={"Are you sure you want to delete this application"}
         onConfirm={() =>
           handledeleteApplication(param.row.module_id, auth.info.id)
         }
       ></ConfirmPop>
-      <SnackbarNotify
-        open={snackbarsuccess}
-        close={setSnackbarsuccess}
-        msg="Deleted Succesfully"
-        severity="success"
-      />
     </div>
   );
 };

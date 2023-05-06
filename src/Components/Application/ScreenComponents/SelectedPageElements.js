@@ -7,6 +7,7 @@ import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
 import { Button } from "@mui/material";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
 export default function SelectedPageElements() {
   const { setHeader } = useHead();
@@ -16,6 +17,7 @@ export default function SelectedPageElements() {
   let [popup, setPopup] = useState(false);
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
+  const [updated, setUpdated] = useState(false);
 
   const elementColumns = [
     {
@@ -58,7 +60,7 @@ export default function SelectedPageElements() {
       },
     },
   ];
-  useEffect(() => {
+  const getPageElements = () => {
     axios
       .get(
         `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.web_page_id}&selected_elements_only=true`
@@ -75,6 +77,9 @@ export default function SelectedPageElements() {
             return selectedData;
           });
       });
+  };
+  useEffect(() => {
+    getPageElements();
   }, []);
 
   useEffect(() => {
@@ -111,8 +116,16 @@ export default function SelectedPageElements() {
         <ElementsDetails
           ElementId={elementid}
           setPopup={setPopup}
+          getPageElements={getPageElements}
+          setUpdated={setUpdated}
         ></ElementsDetails>
       )}
+      <SnackbarNotify
+        open={updated}
+        close={setUpdated}
+        msg={"Element is updated Successfully"}
+        severity="success"
+      />
     </div>
   );
 }

@@ -12,7 +12,7 @@ export const testManagementList = [
     name: "Organization",
     id: "10",
     route: "",
-    accessRole: [1, 2, 3, 4, 5],
+    accessRole: [3, 5],
     icon: <i className=""></i>,
     subList: [
       {
