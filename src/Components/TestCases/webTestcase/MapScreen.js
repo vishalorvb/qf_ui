@@ -101,7 +101,7 @@ export default function MapScreen() {
       <SnackbarNotify
         open={screenUpdated}
         close={setScreenUpdated}
-        msg={"Screens Updated Successfully"}
+        msg={"Screens Added Successfully"}
         severity="success"
       />
      
