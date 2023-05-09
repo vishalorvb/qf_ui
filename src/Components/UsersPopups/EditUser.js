@@ -37,6 +37,7 @@ function EditUser() {
   const role_id = useRef();
   const [editSuccessMsg, setEditSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
+  const [msg, setMsg] = useState(false);
   const { auth } = useAuth();
   // const token  = localStorage.getItem("token");
   const loggedInId = auth.info.id;
@@ -83,9 +84,18 @@ function EditUser() {
           setEditSuccessMsg(false);
           navigate("/users");
         }, 3000);
+      })
+      .catch((err) => {
+        console.log(err.response.data.error);
+        setValidationMsg(true);
+        setMsg(err.response.data.status + " " + err.response.data.error);
+        setTimeout(() => {
+          setValidationMsg(false);
+        }, 3000);
       });
     } else {
       setValidationMsg(true);
+      setMsg("Fill all the required fields");
       setTimeout(() => {
         setValidationMsg(false);
       }, 3000);
@@ -221,7 +231,7 @@ function EditUser() {
         <SnackbarNotify
           open={validationMsg}
           close={setValidationMsg}
-          msg="Fill all the required fields"
+          msg={msg}
           severity="error"
         />
         <SnackbarNotify
