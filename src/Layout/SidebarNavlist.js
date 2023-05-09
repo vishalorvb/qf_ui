@@ -155,6 +155,20 @@ export const testManagementList = [
     ],
   },
   {
+    name: "Test Design",
+    id: "5", 
+    route: "TestDesign",
+    accessRole: [1, 2, 4],
+    icon: <i className="qf icon-testsets"></i>,
+  },
+  {
+    name: "Test Library",
+    id: "5", 
+    route: "TestLibrary",
+    accessRole: [1, 2, 4],
+    icon: <i className="qf icon-testsets"></i>,
+  },
+  {
     name: "Execution",
     route: "",
     accessRole: [1, 2, 4],

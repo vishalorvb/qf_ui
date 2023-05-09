@@ -149,6 +149,9 @@ const AddOrganization = lazy(() => import(`../pages/AddOrganization`));
 const Organization = lazy(() => import(`../pages/Organization`));
 
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
+
+const TestDesign = lazy(()=> import(`../Components/TestDesign/TestDesign`))
+const TestLibrary = lazy(()=> import(`../Components/TestLibrary/TestLibrary`))
 export const Routes = [
   {
     path: "Application/Recent",
@@ -640,4 +643,14 @@ export const Routes = [
     element: UserProfile,
     accessRole: [1, 2, 3, 4, 5],
   },
+  {
+    path: "/TestDesign",
+    element: TestDesign,
+    accessRole: [1, 2,  4, 5],
+  },
+  {
+    path: "/TestLibrary",
+    element: TestLibrary,
+    accessRole: [1, 2,  4, 5],
+  }
 ];
