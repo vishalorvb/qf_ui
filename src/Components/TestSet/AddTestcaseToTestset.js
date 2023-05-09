@@ -257,7 +257,7 @@ export default function AddTestcaseToTestset() {
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}
-            onClick={() => navigate("/testset")}
+            onClick={() => navigate("/testset/Recent")}
           >
             Cancel
           </Button>

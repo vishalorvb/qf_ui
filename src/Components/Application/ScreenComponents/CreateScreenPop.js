@@ -13,23 +13,21 @@ import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import useAuth from "../../../hooks/useAuth";
 
 export default function CreateScreenPop(props) {
-  const { elementsList, open, close, applicationId, pageId, screenName } =
-    props;
+  const { elementsList, applicationId, pageId, screenName } = props;
   console.log(props);
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const handleClose = () => {
-    close(false);
-  };
 
   const [screenData, setScreenData] = useState(() => {
     return { name: screenName?.name, desc: screenName?.desc };
   });
   const [selectElements, setSelectElements] = useState(false);
   const [emptyDetails, setEmptyDetails] = useState(false);
+
   const saveScreen = () => {
     elementsList.length < 1 && setSelectElements(true);
-    (screenData?.name || screenData?.desc) ?? setEmptyDetails(true);
+    console.log(screenData);
+
     const screendata = {
       screen_name: screenData.name,
       screen_description: screenData.desc,
@@ -38,10 +36,14 @@ export default function CreateScreenPop(props) {
       page_id: pageId,
       elements_list: elementsList,
     };
-    axios.post(`/qfservice/screen/createScreen`, screendata).then((resp) => {
-      console.log(resp);
-      resp?.data?.status === "SUCCESS" && navigate(-1);
-    });
+    screenData?.name && screenData?.desc
+      ? axios
+          .post(`/qfservice/screen/createScreen`, screendata)
+          .then((resp) => {
+            console.log(resp);
+            resp?.data?.status === "SUCCESS" && navigate(-1);
+          })
+      : setEmptyDetails(true);
   };
 
   return (
@@ -58,7 +60,7 @@ export default function CreateScreenPop(props) {
       <SnackbarNotify
         open={emptyDetails}
         close={setEmptyDetails}
-        msg="Enter Details"
+        msg="Enter Screen Details"
         severity="error"
       />
       <Grid container direction="row" spacing={1}>

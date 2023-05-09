@@ -1,16 +1,15 @@
 
 import React, { useEffect, useState } from 'react'
 import Table from '../CustomComponent/Table'
-import { MenuItem } from '@mui/material';
+import { MenuItem,} from '@mui/material';
 import useHead from '../hooks/useHead';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 import TableActions from "../../src/CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useNavigate } from "react-router-dom";
-import { postVal } from './AddOrganization';
+import { postVal } from './UpdateOrganization';
 import moment from 'moment';
-
 const Organization = () => {
 
   const { auth } = useAuth();
@@ -18,23 +17,31 @@ const Organization = () => {
   const navigate = useNavigate();
   const [organizationData, setOrganizationData] = useState([]);
 
-
-
   const columns = [
     {
-      field: "organization_name",
+      field: "company",
       headerName: "Organization Name",
       flex: 2,
       sortable: false,
       align: "left",
       renderCell: (param) => {
         return (
-          <span style={{color:"rgb(0, 159, 238)"}}>{param.row?.organization_name}</span>
+          <span style={{ color: "rgb(0, 159, 238)", cursor: "pointer" }}
+            onClick={(e) => {
+              // console.log(param.row);
+              navigate("/Organization/OrganizationDashboard", {
+                      state: { orgId: param.row.id, company: param.row.company },
+                    })
+              
+            }}
+          >
+            {param.row?.company}</span>
+
         );
       },
     },
     {
-      field: "phone_number",
+      field: "phone",
       headerName: "Contact",
       flex: 3,
       sortable: false,
@@ -48,15 +55,18 @@ const Organization = () => {
       align: "left",
       renderCell: (param) => {
         return (
-          <TableActions heading={ moment(param.row?.last_modified).format("DD/MM/yyyy")}>
+          <TableActions heading={moment(param.row?.last_modified).format("DD/MM/yyyy")}>
             <MenuItem
               onClick={(e) => {
                 console.log(param.row);
-                postVal.company = param.row.organization_name;
-                postVal.phone =  param.row.phone_number;
-                postVal.organization_id = param.row.organization_id;
+                postVal.company = param.row.company;
+                postVal.phone = param.row.phone;
+                postVal.organization_id = param.row.id;
+                postVal.firstName = param.row.firstName;
+                postVal.lastName = param.row.lastName;
+                postVal.email = param.row.email;
                 console.log(postVal);
-                navigate("/AddOrganization");
+                navigate("/Organization/UpdateOrganization");
               }}
             >
               <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
@@ -110,14 +120,16 @@ const Organization = () => {
     }
   };
 
+
   return (
-    // <h1>dfdsfds</h1>  
+
     <Table
       columns={columns}
       hideSearch={false}
       rows={organizationData}
-      getRowId={(row) => row?.organization_id}
+      getRowId={(row) => row?.id}
     />
+
   )
 }
 

@@ -19,7 +19,15 @@ export let TCdata = {
     testcase_name: "",
     testcase_description: "",
     project_id: 0,
+    testcase_sprints: []
 }
+
+let sprintData = {
+    "sprint_id": 0,
+    "sprint_name": "",
+    "issue_id": 0
+}
+let snackbarErrorMsg = ""
 
 function CreateTestCase() {
     let navigate = useNavigate();
@@ -31,7 +39,7 @@ function CreateTestCase() {
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
     let [jiraSprint, setJiraSprint] = useState([]);
     let [jiraIssue, setJiraIssue] = useState([]);
-
+    let [snackbarError, setSnackbarError] = useState(false);
     function handleSubmit(e) {
         if ((globalApplication?.module_type) == 19) {
             setReportFailMsg(true);
@@ -40,10 +48,41 @@ function CreateTestCase() {
             }, 3000);
         }
         else {
+            if (sprintData.sprint_id != 0) {
+                TCdata.testcase_sprints.push(sprintData)
+            }
             if (validateFormbyName(["name", "desc"], "error")) {
                 if (TCdata.testcase_id === undefined) {
                     CreateTestCaseService(TCdata).then(res => {
                         if (res) {
+                            console.log(res)
+                            if (globalApplication.module_type == 1) {
+                                MapAPiTestCaseData.testcase_id = TCdata?.testcase_id
+                                navigate(redirect_url[globalApplication?.module_type])
+                            }
+                            else {
+                                navigate(redirect_url[2], {
+                                    state:
+                                    {
+                                        projectId: globalProject.project_id,
+                                        moduleId: globalApplication.module_id,
+                                        testcaseId: res
+                                    }
+                                })
+                            }
+                        }
+                        else {
+                            snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
+                            setSnackbarError(true)
+                        }
+                    }
+                    )
+                }
+                else {
+                    UpdateTestcase(TCdata.testcase_id, TCdata.testcase_name, TCdata.testcase_description).then(res => {
+                        if (res) {
+                            // MapAPiTestCaseData.testcase_id = res
+                            // navigate(redirect_url[globalApplication?.module_type])
                             if (globalApplication.module_type == 1) {
                                 MapAPiTestCaseData.testcase_id = res
                                 navigate(redirect_url[globalApplication?.module_type])
@@ -59,18 +98,12 @@ function CreateTestCase() {
                                 })
                             }
                         }
-                    }
-                    )
-                }
-                else {
-                    UpdateTestcase(TCdata.testcase_id, TCdata.testcase_name, TCdata.testcase_description).then(res => {
-                        if (res) {
-                            MapAPiTestCaseData.testcase_id = res
-                            navigate(redirect_url[globalApplication?.module_type])
-                        }
                     })
                 }
 
+            }
+            else {
+                console.log("Invalid form")
             }
         }
     }
@@ -116,12 +149,17 @@ function CreateTestCase() {
 
         getProject(setProject, auth.userId)
         return () => {
-
             TCdata = {
                 module_id: 0,
                 testcase_name: "",
                 testcase_description: "",
                 project_id: 0,
+                testcase_sprints: []
+            }
+            sprintData = {
+                "sprint_id": 0,
+                "sprint_name": "2",
+                "issue_id": 0
             }
         };
     }, [])
@@ -134,22 +172,7 @@ function CreateTestCase() {
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
-                <Grid item md={3}>
-                    <label >Sprint</label>
-                    <select
-                        onChange={e => {
-                            getIssues(setJiraIssue, globalApplication.project_id, e.target.value)
-                        }}
-                    >
-                        {jiraSprint.map(s => <option key={s.id} value={s.sprint_name}>{s.sprint_name}</option>)}
-                    </select>
-                </Grid>
-                <Grid item md={3}>
-                    <label >Issues</label>
-                    <select>
-                        {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
-                    </select>
-                </Grid>
+
                 <Grid item md={3}>
                     <label htmlFor="">Projects</label>
                     <Autocomplete
@@ -159,7 +182,7 @@ function CreateTestCase() {
                         options={project}
                         value={globalProject || null}
                         sx={{ width: "100%" }}
-                        getOptionLabel={(option) => option.project_name}
+                        getOptionLabel={(option) => option?.project_name}
                         onChange={(e, value) => {
                             setglobalProject(value);
                         }}
@@ -191,6 +214,27 @@ function CreateTestCase() {
                     />
 
                 </Grid>
+                <Grid item md={3}>
+                    <label >Sprint</label>
+                    <select
+                        onChange={e => {
+                            getIssues(setJiraIssue, globalApplication.project_id, e.target.value)
+                            sprintData.sprint_id = e.target.value
+                        }}
+                    >
+                        {jiraSprint.map(s => <option key={s.id} value={s.sprint_name}>{s.sprint_name}</option>)}
+                    </select>
+                </Grid>
+                <Grid item md={3}>
+                    <label >Issues</label>
+                    <select
+                        onChange={e => {
+                            sprintData.issue_id = e.target.value
+                        }}
+                    >
+                        {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
+                    </select>
+                </Grid>
                 {/* <ProjectnApplicationSelector
                     globalProject={globalProject}
                     setglobalProject={setglobalProject}
@@ -200,6 +244,7 @@ function CreateTestCase() {
                 <Grid item xs={4} md={4}>
                     <label htmlFor="">TestCase Name</label>
                     <input
+                        name="name"
                         defaultValue={TCdata.testcase_name}
                         onChange={e => {
                             TCdata.testcase_name = e.target.value;
@@ -210,6 +255,7 @@ function CreateTestCase() {
                 <Grid item xs={8} md={8}>
                     <label htmlFor="">Description</label>
                     <input
+                        name="desc"
                         defaultValue={TCdata.testcase_description}
                         onChange={e => {
                             TCdata.testcase_description = e.target.value;
@@ -233,6 +279,12 @@ function CreateTestCase() {
                 open={reportFailMsg}
                 close={setReportFailMsg}
                 msg="Testcases can't be created for this Application."
+                severity="error"
+            />
+            <SnackbarNotify
+                open={snackbarError}
+                close={setSnackbarError}
+                msg={snackbarErrorMsg}
                 severity="error"
             />
         </>

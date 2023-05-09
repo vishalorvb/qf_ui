@@ -6,6 +6,7 @@ import { getWebpagesElementList } from "../../../Services/ProjectService";
 import { useLocation } from "react-router";
 import axios from "../../../api/axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 export default function PageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -15,6 +16,7 @@ export default function PageElements() {
   let [popup, setPopup] = useState(false);
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [newchangedElement, setNewchangedElement] = useState({});
+  const [updated, setUpdated] = useState(false);
 
   const elementColumns = [
     {
@@ -113,8 +115,15 @@ export default function PageElements() {
           ElementId={elementid}
           setPopup={setPopup}
           getPageElements={getPageElements}
+          setUpdated={setUpdated}
         ></ElementsDetails>
       )}
+      <SnackbarNotify
+        open={updated}
+        close={setUpdated}
+        msg={"Element is updated Successfully"}
+        severity="success"
+      />
     </div>
   );
 }

@@ -79,11 +79,10 @@ export default function TestCases() {
               onClick={(e) => {
                 console.log(param.row);
                 TCdata.module_id = param.row.module_id;
-                TCdata.project_id = param.row.project.project_id;
+                TCdata.project_id = param.row.project;
                 TCdata.testcase_name = param.row.name;
                 TCdata.testcase_description = param.row.description;
                 TCdata.testcase_id = param.row.testcase_id;
-                console.log(TCdata);
                 navigate("/Testcase/Create");
               }}
             >
@@ -169,9 +168,7 @@ export default function TestCases() {
       );
     }
   }, [globalApplication]);
-  useEffect(() => {
-    console.log(globalApplication)
-  }, [globalApplication])
+
   return (
     <>
       <SnackbarNotify

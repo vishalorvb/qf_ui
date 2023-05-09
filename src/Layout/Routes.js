@@ -4,23 +4,23 @@ import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation
 import Report from "../Components/DevopsComponent/Report";
 
 const Admin = lazy(() => import("../pages/Admin"));
-const ApiApp = lazy(() =>
-  import("../Components/Application/ApiApplication/ApiApp")
-);
-const Execution = lazy(() => import("../pages/Execution"));
-const MobileApp = lazy(() => import("../pages/MobileApp"));
+// const ApiApp = lazy(() =>
+//   import("../Components/Application/ApiApplication/ApiApp")
+// );
+// const Execution = lazy(() => import("../pages/Execution"));
+// const MobileApp = lazy(() => import("../pages/MobileApp"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Pipeline = lazy(() => import("../pages/Pipeline"));
 const Projects = lazy(() => import("../pages/Projects"));
-const QFAdmin = lazy(() => import("../pages/QFAdmin"));
+// const QFAdmin = lazy(() => import("../pages/QFAdmin"));
 const Release = lazy(() => import("../pages/Release"));
 const Reports = lazy(() => import("../pages/Reports"));
 const TestCases = lazy(() => import("../Components/TestCases/TestCases"));
 const Testset = lazy(() => import("../pages/Testset"));
-const Applications = lazy(() => import("../pages/Applications"));
-const Pages = lazy(() =>
-  import("../Components/Application/PagesComponents/Pages")
-);
+// const Applications = lazy(() => import("../pages/Applications"));
+// const Pages = lazy(() =>
+//   import("../Components/Application/PagesComponents/Pages")
+// );
 const PageElements = lazy(() =>
   import("../Components/Application/PagesComponents/PageElements")
 );
@@ -29,9 +29,12 @@ const CreateProject = lazy(() =>
 );
 const Phases = lazy(() => import("../Components/BIReports/Phases"));
 const Cycles = lazy(() => import("../Components/BIReports/Cycles"));
-const APIsTable = lazy(() =>
-  import("../Components/Application/ApiApplication/APIsTable")
+const ActiveReports = lazy(() =>
+  import("../Components/BIReports/ActiveReports")
 );
+// const APIsTable = lazy(() =>
+//   import("../Components/Application/ApiApplication/APIsTable")
+// );
 const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const ApiDatasets = lazy(() =>
@@ -68,12 +71,12 @@ const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
 const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
-const Screen = lazy(() =>
-  import("../Components/Application/ScreenComponents/Screen")
-);
-const CreateScreen = lazy(() =>
-  import(`../Components/Application/ScreenComponents/CreateScreen`)
-);
+// const Screen = lazy(() =>
+//   import("../Components/Application/ScreenComponents/Screen")
+// );
+// const CreateScreen = lazy(() =>
+//   import(`../Components/Application/ScreenComponents/CreateScreen`)
+// );
 const SelectedPageElements = lazy(() =>
   import("../Components/Application/ScreenComponents/SelectedPageElements")
 );
@@ -81,15 +84,15 @@ const SelectedPageElements = lazy(() =>
 const ScreenElements = lazy(() =>
   import("../Components/Application/ScreenComponents/ScreenElements")
 );
-const UpdateScreen = lazy(() =>
-  import("../Components/Application/ScreenComponents/UpdateScreen")
-);
+// const UpdateScreen = lazy(() =>
+//   import("../Components/Application/ScreenComponents/UpdateScreen")
+// );
 const MapApiTestCase = lazy(() =>
   import("../Components/TestCases/apiTestcase/MapApiTestCase")
 );
-const WebTestcase = lazy(() =>
-  import("../Components/TestCases/webTestcase/WebTestcase")
-);
+// const WebTestcase = lazy(() =>
+//   import("../Components/TestCases/webTestcase/WebTestcase")
+// );
 const MapScreen = lazy(() =>
   import("../Components/TestCases/webTestcase/MapScreen")
 );
@@ -147,11 +150,14 @@ const EditTestLinkProject = lazy(() =>
 );
 const AddOrganization = lazy(() => import(`../pages/AddOrganization`));
 const Organization = lazy(() => import(`../pages/Organization`));
-
+const OrganizationDashboard = lazy(() =>
+  import(`../pages/OrganizationDashboard`)
+);
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
 
 const TestDesign = lazy(()=> import(`../Components/TestDesign/TestDesign`))
 const TestLibrary = lazy(()=> import(`../Components/TestLibrary/TestLibrary`))
+const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 export const Routes = [
   {
     path: "Application/Recent",
@@ -296,6 +302,11 @@ export const Routes = [
     accessRole: [2, 3, 4, 5],
   },
 
+  {
+    path: "BIReports/activeReports",
+    element: ActiveReports,
+    accessRole: [2],
+  },
   {
     path: "addUser",
     element: AddUser,
@@ -636,6 +647,18 @@ export const Routes = [
     path: "Organization",
     element: Organization,
     accessRole: [3, 5],
+    subRoute: [
+      {
+        path: "OrganizationDashboard",
+        element: OrganizationDashboard,
+        accessRole: [3, 5],
+      },
+      {
+        path: "UpdateOrganization",
+        element: UpdateOrganization,
+        accessRole: [3, 5],
+      },
+    ],
   },
 
   {

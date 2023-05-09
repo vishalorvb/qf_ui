@@ -9,12 +9,14 @@ import axios from "../../../api/axios";
 import { IconButton, MenuItem, Tooltip, Typography } from "@mui/material";
 import ConfirmPop from "../../../CustomComponent/ConfirmPop";
 import TableActions from "../../../CustomComponent/TableActions";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 export default function Screens({ location }) {
   const { setHeader } = useHead();
   const navigate = useNavigate();
   // const location = useLocation();
   const [page, setPage] = useState([]);
   const [popup, setPopup] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [screenId, setscreenId] = useState();
 
   const pageColumns = [
@@ -132,6 +134,7 @@ export default function Screens({ location }) {
       .then((resp) => {
         console.log(resp);
         resp?.data?.status === "SUCCESS" && getScreens();
+        resp?.data?.status === "SUCCESS" && setDeleted(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);
       });
   };
@@ -167,6 +170,12 @@ export default function Screens({ location }) {
         message={"Are you sure you want to delete this Screen"}
         onConfirm={() => handleDelete(screenId)}
       ></ConfirmPop>
+      <SnackbarNotify
+        open={deleted}
+        close={setDeleted}
+        msg={"Screen deleted Successfully"}
+        severity="success"
+      />
     </>
   );
 }

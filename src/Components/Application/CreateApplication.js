@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 export let moduledata = {
   module_name: "",
   base_url: "",
@@ -28,6 +29,7 @@ export default function CreateApplication() {
   const { auth } = useAuth();
   const { setHeader } = useHead();
   const [selectedType, setSelectedType] = useState(1);
+  let [snackbarerror, setSnackbarerror] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const refName = useRef(null);
@@ -53,13 +55,14 @@ export default function CreateApplication() {
       });
     } else {
       console.log("Invalid form");
+      setSnackbarerror(true);
     }
   }
 
   useEffect(() => {
     refName.current.value = moduledata?.module_name ?? "";
-    refUrl.current.value = moduledata?.module_name ?? "";
-    refDesc.current.value = moduledata?.module_name ?? "";
+    refUrl.current.value = moduledata?.base_url ?? "";
+    refDesc.current.value = moduledata?.module_desc ?? "";
     return () => {
       resetModuledata();
     };
@@ -138,6 +141,7 @@ export default function CreateApplication() {
               onChange={(e) => {
                 moduledata.base_url = e.target.value;
               }}
+              disabled={location?.pathname !== "/Application/Create"}
             />
           </Stack>
         </Grid>
@@ -187,6 +191,12 @@ export default function CreateApplication() {
           Cancel
         </Button>
       </Stack>
+      <SnackbarNotify
+        open={snackbarerror}
+        close={setSnackbarerror}
+        msg={"Fill the mandatory fields"}
+        severity="error"
+      />
     </>
   );
 }
