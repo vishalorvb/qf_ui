@@ -141,9 +141,10 @@ function TestsetCreate() {
   // }, [applicationList]);
 
   useEffect(() => {
-    globalProject?.project_id &&
+    console.log(globalApplication);
+    globalProject?.project_id && globalApplication?.module_id &&
       getTestcasesInProjects(setTestcaseObject, globalProject?.project_id, globalApplication?.module_id);
-      globalProject?.project_id &&
+      globalProject?.project_id && globalApplication?.module_id &&
       getTestcasesInProjects(setLeftTestcase, globalProject?.project_id, globalApplication?.module_id);
   }, [globalProject?.project_id]);
 
@@ -278,7 +279,7 @@ function TestsetCreate() {
               />
             </Stack>
           </Grid> */}
-           <ProjectnApplicationSelector
+          <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}
             globalApplication={globalApplication}
@@ -312,9 +313,8 @@ function TestsetCreate() {
               />
             </Stack>
           </Grid>
-           {globalApplication?.module_type == 19 ? (
-
-            <Grid item md={12} >
+          {globalApplication?.module_type == 19 ? (
+            <Grid item md={12}>
               <Stack spacing={1}>
                 <label>
                   Command <span className="importantfield">*</span>
@@ -338,9 +338,13 @@ function TestsetCreate() {
                   multiple
                   style={{ padding: "10px", marginTop: "10px" }}
                 >
-                  {leftTestcase?.length > 0
+                  {leftTestcase.length > 0
                     ? leftTestcase
-                        .filter((ts) => ts.datasets != null)
+                        .filter((el) => {
+                          return !rightTestcase.some((f) => {
+                            return f.testcase_id === el.testcase_id;
+                          });
+                        })
                         .map((ts) => (
                           <option value={ts.testcase_id}>{ts.name}</option>
                         ))
@@ -376,7 +380,6 @@ function TestsetCreate() {
                 >
                   {rightTestcase.length > 0
                     ? rightTestcase
-                        .filter((ts) => ts.datasets != null)
                         .map((ts) => (
                           <option value={ts.testcase_id}>{ts.name}</option>
                         ))
