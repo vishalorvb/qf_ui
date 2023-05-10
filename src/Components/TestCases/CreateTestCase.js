@@ -57,7 +57,7 @@ function CreateTestCase() {
                         if (res) {
                             console.log(res)
                             if (globalApplication.module_type == 1) {
-                                MapAPiTestCaseData.testcase_id = TCdata?.testcase_id
+                                MapAPiTestCaseData.testcase_id = res
                                 navigate(redirect_url[globalApplication?.module_type])
                             }
                             else {
