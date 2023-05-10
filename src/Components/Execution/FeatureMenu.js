@@ -6,13 +6,20 @@ import RuntimeVar from "./RuntimeVar";
 import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useLocation, useNavigate } from "react-router-dom";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useHead from "../../hooks/useHead";
 
-
-export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDatasets,testsetId,frameworkType,projectId}) {
+export default function FeatureMenu({
+  envId,
+  runtimeVar,
+  testcaseId,
+  selectedDatasets,
+  testsetId,
+  frameworkType,
+  projectId,
+}) {
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
-  const [openFeaturefile,setFeatureFile] = React.useState(false)
+  const [openFeaturefile, setFeatureFile] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -24,12 +31,11 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
     setAnchorEl(null);
   };
   // const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication  } = useHead();
-  
+
   return (
     <>
       <Button
-        fullWidth
-        sx={{backgroundColor: "#009fee"}} 
+        sx={{ backgroundColor: "#009fee" }}
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
@@ -37,64 +43,81 @@ export default function FeatureMenu({envId,runtimeVar,testcaseId,selectedDataset
         onClick={handleClick}
         variant="contained"
       >
-        + Features&nbsp;&nbsp;&nbsp;&nbsp;<ArrowDropDownIcon/>
+        Features
+        <ArrowDropDownIcon />
       </Button>
-      {location.pathname == "/TestcaseExecution" &&
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={() => setOpenRuntimeVar(true)}>
-          Runtime Variables
-        </MenuItem>
-        <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
-        {frameworkType == 4 &&  
-      <MenuItem  onClick={() => {
-                 navigate("/TestcaseExecution/ConfigureDevice", {
-                   state :{
-                     projectId : projectId,
-                     pathname : location.pathname
-                   }
-                 });
-               }}>Configure Device</MenuItem>
+      {location.pathname == "/TestcaseExecution" && (
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={() => setOpenRuntimeVar(true)}>
+            Runtime Variables
+          </MenuItem>
+          <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
+          {frameworkType == 4 && (
+            <MenuItem
+              onClick={() => {
+                navigate("/TestcaseExecution/ConfigureDevice", {
+                  state: {
+                    projectId: projectId,
+                    pathname: location.pathname,
+                  },
+                });
+              }}
+            >
+              Configure Device
+            </MenuItem>
+          )}
+        </Menu>
+      )}
+      {location.pathname == "/TestsetExecution" && (
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={() => setOpenRuntimeVar(true)}>
+            Runtime Variables
+          </MenuItem>
+          {frameworkType == 4 && (
+            <MenuItem
+              onClick={() => {
+                navigate("/TestsetExecution/ConfigureDevice", {
+                  state: {
+                    projectId: projectId,
+                    pathname: location.pathname,
+                  },
+                });
+              }}
+            >
+              Configure Device
+            </MenuItem>
+          )}
+        </Menu>
+      )}
 
-     } 
-      </Menu>
-      }
-      {location.pathname == "/TestsetExecution" &&
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={() => setOpenRuntimeVar(true)}>
-          Runtime Variables
-        </MenuItem>
-        {frameworkType == 4 &&  
-      <MenuItem  onClick={() => {
-                 navigate("/TestsetExecution/ConfigureDevice", {
-                   state :{
-                     projectId : projectId,
-                     pathname: location.pathname
-                   }
-                 });
-               }}>Configure Device</MenuItem>
-
-     } 
-      </Menu>}
-    
-      <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={envId}  runtimeVar = {runtimeVar}/>
-      <FeatureFile open={openFeaturefile} close={setFeatureFile} testcaseId={testcaseId} selectedDatasets={selectedDatasets}/>
-      
+      <RuntimeVariable
+        open={openRuntimeVar}
+        close={setOpenRuntimeVar}
+        envId={envId}
+        runtimeVar={runtimeVar}
+      />
+      <FeatureFile
+        open={openFeaturefile}
+        close={setFeatureFile}
+        testcaseId={testcaseId}
+        selectedDatasets={selectedDatasets}
+      />
     </>
   );
 }

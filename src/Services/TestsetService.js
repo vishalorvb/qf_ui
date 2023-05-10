@@ -20,8 +20,8 @@ export function getTestcaseDetails(callback, workflowID,testcaseId) {
     })
 }
 
-export function getTestcasesInProjects(callback,projectId) {
-    axios.get(baseUrl + `/qfservice/webtestcase/getWebTestcasesInfoByProject?project_id=${projectId}`).then(res => {
+export function getTestcasesInProjects(callback,projectId, applicationId) {
+    axios.get(baseUrl + `/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}&filterTestcases=true`).then(res => {
         callback(res.data.info);
     })
 } 

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import { Button, MenuItem, Select } from "@mui/material";
 import { Stack } from "@mui/system";
+import BackdropLoader from "../../../CustomComponent/BackdropLoader";
 
 export default function Pages({ location }) {
   const { setHeader, header } = useHead();
@@ -16,9 +17,11 @@ export default function Pages({ location }) {
   const [clientInactive, setClientInactive] = useState(false);
   const [jarConnected, setJarConnected] = useState(false);
   const [remoteAPiFails, setRemoteAPiFails] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const createPage = () => {
     console.log(header?.browser);
+    setShowLoading(true);
     axios
       .postForm(`/qfservice/webpages/LaunchJNLPToCreateWebPage`, {
         user_id: auth?.userId,
@@ -44,34 +47,15 @@ export default function Pages({ location }) {
             .then((resp) => {
               console.log(resp);
               setJarConnected(true);
+              setShowLoading(false);
             })
             .catch((err) => {
               console.log(err.message);
               err.message === "Network Error" && setClientInactive(true);
+              setShowLoading(false);
             });
       });
   };
-
-  // useEffect(() => {
-  //   setHeader((ps) => {
-  //     return {
-  //       ...ps,
-  //       name: "Pages",
-  //       plusButton: true,
-  //       buttonName: "Create Page",
-  //       plusCallback: createPage,
-  //     };
-  //   });
-  //   return () =>
-  //     setHeader((ps) => {
-  //       return {
-  //         ...ps,
-  //         name: "",
-  //         plusButton: false,
-  //         plusCallback: () => console.log("null"),
-  //       };
-  //     });
-  // }, [header?.browser]);
 
   return (
     <>
@@ -119,6 +103,7 @@ export default function Pages({ location }) {
           </div>
         </div>
         <PagesTable location={location} />
+        <BackdropLoader open={showLoading} />
       </div>
     </>
   );
