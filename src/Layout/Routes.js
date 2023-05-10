@@ -154,6 +154,9 @@ const OrganizationDashboard = lazy(() =>
   import(`../pages/OrganizationDashboard`)
 );
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
+
+const TestDesign = lazy(()=> import(`../Components/TestDesign/TestDesign`))
+const TestLibrary = lazy(()=> import(`../Components/TestLibrary/TestLibrary`))
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 export const Routes = [
   {
@@ -663,4 +666,14 @@ export const Routes = [
     element: UserProfile,
     accessRole: [1, 2, 3, 4, 5],
   },
+  {
+    path: "/TestDesign",
+    element: TestDesign,
+    accessRole: [1, 2,  4, 5],
+  },
+  {
+    path: "/TestLibrary",
+    element: TestLibrary,
+    accessRole: [1, 2,  4, 5],
+  }
 ];

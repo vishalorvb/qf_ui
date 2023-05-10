@@ -142,9 +142,9 @@ function TestsetCreate() {
 
   useEffect(() => {
     globalProject?.project_id &&
-      getTestcasesInProjects(setTestcaseObject, globalProject?.project_id);
+      getTestcasesInProjects(setTestcaseObject, globalProject?.project_id, globalApplication?.module_id);
       globalProject?.project_id &&
-      getTestcasesInProjects(setLeftTestcase, globalProject?.project_id);
+      getTestcasesInProjects(setLeftTestcase, globalProject?.project_id, globalApplication?.module_id);
   }, [globalProject?.project_id]);
 
   const submit = (e) => {

@@ -21,12 +21,18 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DeleteTestCase, GetTestCase } from "../../Services/TestCaseService";
 import { TCdata } from "./CreateTestCase";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
+
+
+
+let delete_testcase_id = 0;
 
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
   const [snack, setSnack] = useState(false);
   let [project, setProject] = useState([]);
   let [application, setApplication] = useState([]);
+  let [popup,setPopup] = useState(false);
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
@@ -91,15 +97,8 @@ export default function TestCases() {
             </MenuItem>
             <MenuItem
               onClick={(e) => {
-                DeleteTestCase(param.row.testcase_id).then((res) => {
-                  if (res) {
-                    GetTestCase(
-                      setTestcases,
-                      globalProject?.project_id,
-                      globalApplication?.module_id
-                    );
-                  }
-                });
+                delete_testcase_id = param.row.testcase_id;
+                setPopup(true);
               }}
             >
               <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
@@ -147,8 +146,8 @@ export default function TestCases() {
     }
   }, [globalProject]);
   useEffect(() => {
- 
-      setglobalApplication(application[0]);
+
+    setglobalApplication(application[0]);
 
     if (globalApplication?.module_id !== undefined) {
       GetTestCase(
@@ -222,12 +221,12 @@ export default function TestCases() {
                 )}
               />
             </Grid> */}
-              <ProjectnApplicationSelector
-            globalProject={globalProject}
-            setglobalProject={setglobalProject}
-            globalApplication={globalApplication}
-            setglobalApplication={setglobalApplication}
-          />
+            <ProjectnApplicationSelector
+              globalProject={globalProject}
+              setglobalProject={setglobalProject}
+              globalApplication={globalApplication}
+              setglobalApplication={setglobalApplication}
+            />
           </Grid>
         </div>
         <Table
@@ -237,6 +236,25 @@ export default function TestCases() {
           hidefooter={true}
           getRowId={(row) => row.testcase_id}
         ></Table>
+        <ConfirmPop
+          open={popup}
+          handleClose={() => setPopup(false)}
+          heading={"Delete TestCase"}
+          message={"Are you sure you want to delete this TestCase?"}
+          onConfirm={() =>{
+            DeleteTestCase(delete_testcase_id).then((res) => {
+              if (res) {
+                GetTestCase(
+                  setTestcases,
+                  globalProject?.project_id,
+                  globalApplication?.module_id
+                );
+              }
+            })
+            setPopup(false)
+          }
+          }
+        ></ConfirmPop>
       </div>
     </>
   );

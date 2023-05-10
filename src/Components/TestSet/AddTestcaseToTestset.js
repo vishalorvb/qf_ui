@@ -153,11 +153,11 @@ export default function AddTestcaseToTestset() {
 
   useEffect(() => {
     console.log(getTestcasesInProjects(setTestcaseObject, projectId));
-    getTestcasesInProjects(setTestcaseObject, projectId);
-    getTestcasesInProjects(setLeftTestcase, projectId);
+    getTestcasesInProjects(setTestcaseObject, projectId, applicationId);
+    getTestcasesInProjects(setLeftTestcase, projectId, applicationId);
     getTestcasesOfTestset(setRightTestcase, testsetId);
   }, []);
-
+  console.log(applicationId);
   console.log(testcaseObject);
   console.log(leftTestcase);
   console.log(rightTestcase);
@@ -209,12 +209,14 @@ export default function AddTestcaseToTestset() {
           <Grid item xs={4} sm={4} md={5}>
             <label>Select Testcase:</label>
             <select id="left" multiple style={{ padding: "10px" }}>
-              {leftTestcase.length > 0
+              {leftTestcase.length > 0 
                 ? leftTestcase
-                    .filter((ts) => ts.datasets != null)
+                    .filter( (ts) =>
+                    (rightTestcase.find((tc) => tc.testcase_id != ts.testcase_id)))
                     .map((ts) => (
                       <option value={ts.testcase_id}>{ts.name}</option>
                     ))
+                    // leftTestcase.filter(({ testcase_id: id1 }) => !rightTestcase.some(({ testcase_id: id2 }) => id2 === id1))
                 : []}
             </select>
           </Grid>
@@ -241,13 +243,16 @@ export default function AddTestcaseToTestset() {
           <Grid item xs={4} sm={4} md={6}>
             <label>Selected Testcases:</label>
             <select id="right" multiple style={{ padding: "10px" }}>
-              {rightTestcase.length > 0
+              {/* {rightTestcase.length > 0
                 ? rightTestcase
-                    .filter((ts) => ts.datasets != null)
                     .map((ts) => (
                       <option value={ts.testcase_id}>{ts.name}</option>
                     ))
-                : []}
+                : []} */}
+                {rightTestcase.length > 0
+                ? Array.from(rightTestcase.map(JSON.stringify)).map(JSON.parse).map((ts) => (
+                  <option value={ts.testcase_id}>{ts.name}</option>
+                )): []}
             </select>
           </Grid>
         </Grid>

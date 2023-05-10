@@ -283,14 +283,6 @@ export default function ReportFields({
         alignItems="center"
         spacing={1.3}>
           <Grid item md={2}>
-            {/* <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          > */}
             <TextField
               id="outlined-basic"
               label="From Date"
@@ -307,17 +299,8 @@ export default function ReportFields({
                 shrink: true,
               }}
             />
-            {/* </Box> */}
           </Grid>
           <Grid item md={2}>
-            {/* <Box
-            component="form"
-            sx={{
-              "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
-            }}
-            noValidate
-            autoComplete="off"
-          > */}
             <TextField
               id="outlined-basic"
               size="small"
@@ -356,115 +339,6 @@ export default function ReportFields({
           />
         </Grid>
       </Grid>
-
-      {/* <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={5}
-        mb={0}
-      > */}
-      {/* <ProjectnApplicationSelector
-          globalProject={globalProject}
-          setglobalProject={setglobalProject}
-          globalApplication={globalApplication}
-          setglobalApplication={setglobalApplication}
-        /> */}
-      {/* <Autocomplete
-          disablePortal
-          id="project_id"
-          options={projectsList}
-          value={selectedProject}
-          sx={{ width: "20%" }}
-          getOptionLabel={(option) => option.project_name}
-          onChange={(e, value) => {
-            setSelectedProject(value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Projects" size="small" />
-          )}
-        />
-        <Autocomplete
-          disablePortal
-          id="application_id"
-          options={applicationList}
-          value={selectedApplication}
-          sx={{ width: "20%" }}
-          getOptionLabel={(option) => option.module_name}
-          onChange={(e, value) => {
-            setSelectedApplication(value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Applications" size="small" />
-          )}
-        /> */}
-
-      {/* <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-basic"
-            label="From Date"
-            variant="outlined"
-            type="date"
-            size="small"
-            ref={From_Date}
-            defaultValue={values.from_Date}
-            sx={{ width: 220 }}
-            onChange={(newValue) => {
-              setFromDate(newValue.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Box> */}
-
-      {/* <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "35ch", minHeight: "5ch" },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="outlined-basic"
-            size="small"
-            label="To Date"
-            variant="outlined"
-            type="date"
-            ref={to_Date}
-            defaultValue={values.to_Date}
-            sx={{ width: 220 }}
-            onChange={(newValue) => {
-              setToDate(newValue.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Box> */}
-
-      {/* <Button
-          variant="contained"
-          onClick={submit}
-          startIcon={<SearchOutlinedIcon />}
-          sx={{
-            marginLeft: "45%",
-            marginRight: "auto",
-            marginBottom: "10px",
-            marginTop: "25px",
-          }}
-        >
-          Search
-        </Button> */}
-      {/* </Stack> */}
       <SnackbarNotify
         open={reportSuccessMsg}
         close={setReportSuccessMsg}
