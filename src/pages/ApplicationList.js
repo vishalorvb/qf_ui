@@ -226,6 +226,7 @@ const ApplicationDescriptionCell = (
             moduledata.base_url = param.row.base_url;
             moduledata.module_desc = param.row.module_desc;
             moduledata.module_type = param.row.module_type;
+            moduledata.module_id = param.row.module_id;
             navigate("Update", { state: param?.row });
           }}
         >

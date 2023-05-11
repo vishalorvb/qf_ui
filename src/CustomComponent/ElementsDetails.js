@@ -22,7 +22,7 @@ import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "../api/axios";
 import SnackbarNotify from "./SnackbarNotify";
-function ElementsDetails({ ElementId, setPopup, getPageElements, setUpdated }) {
+function ElementsDetails({ ElementId, setPopup, setUpdated }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
   useEffect(() => {
@@ -82,7 +82,6 @@ function ElementsDetails({ ElementId, setPopup, getPageElements, setUpdated }) {
     axios
       .postForm(`/qfservice/webpages/updateWebPageElementPaths`, elementDetails)
       .then((resp) => {
-        resp?.data?.status === "SUCCESS" && getPageElements();
         resp?.data?.status === "SUCCESS" && setUpdated(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);
       });

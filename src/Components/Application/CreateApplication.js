@@ -14,6 +14,7 @@ export let moduledata = {
   module_desc: "",
   is_deleted: false,
   module_type: 1,
+  module_id: 0,
 };
 export function resetModuledata() {
   moduledata = {
@@ -22,6 +23,7 @@ export function resetModuledata() {
     module_desc: "",
     is_deleted: false,
     module_type: 1,
+    module_id: 0,
   };
 }
 
