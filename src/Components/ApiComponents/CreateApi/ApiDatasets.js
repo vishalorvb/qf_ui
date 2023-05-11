@@ -24,6 +24,11 @@ import TableActions from '../../../CustomComponent/TableActions'
 import { DeleteOutlined } from '@mui/icons-material'
 import useHead from '../../../hooks/useHead'
 
+
+let snackbarErrorMsg = ""
+
+
+
 function ApiDatasets() {
 
     let [datasets, setDatasets] = useState([])
@@ -31,6 +36,7 @@ function ApiDatasets() {
     let [selectedApiDetails, setSelectedApiDetails] = useState({})
     let [createDatasets, setCreateDatasets] = useState(false)
     let [save, setSave] = useState(false)
+    let [Errorsnackbar,setErrorsnackbar] = useState(false)
     let [snackbar, setSnackbar] = useState(false)
     let [datasetId, setDatasetId] = useState()
     const { auth } = useAuth();
@@ -54,16 +60,18 @@ function ApiDatasets() {
 
     function handleSave(e) {
         postData.multi_datasets_of_testcase = getData
-        console.log(postData)
         if (validateFormbyName(["name", "desc"], "error")) {
             createApiDataset(auth.info.id, postData).then(res => {
-                if (res) {
+                if (res == false) {
                     getApiDatasets(setDatasets, location.state.testcaseId)
                     setSave(false)
                     setCreateDatasets(false)
                     setSnackbar(true)
                     clearPostData()
-
+                }
+                else {
+                    snackbarErrorMsg = res;
+                    setErrorsnackbar(true)
                 }
             })
         }
@@ -129,7 +137,7 @@ function ApiDatasets() {
             sortable: false,
             align: "left",
         },
- 
+
     ]
     useEffect(() => {
         getApiDatasets(setDatasets, location.state.testcaseId)
@@ -148,10 +156,6 @@ function ApiDatasets() {
 
     }, [selectedApi])
 
-    useEffect(() => {
-        console.log(selectedApiDetails)
-    }, [selectedApiDetails])
-
 
     const { setHeader } = useHead();
     useEffect(() => {
@@ -162,7 +166,7 @@ function ApiDatasets() {
                 name: `${location?.state?.testcaseName} Datasets`,
             };
         });
-        
+
     }, [location.state.testcaseName]);
 
     return (
@@ -175,7 +179,7 @@ function ApiDatasets() {
                             datasetId={datasetId}
                         ></APiListDrawer>
                     </Grid>
-                    <Grid item md={9}>               
+                    <Grid item md={9}>
                         <Grid container spacing={2} justifyContent="flex-end">
                             <Grid item md={2}>
                                 <input type="text" name='name'
@@ -199,9 +203,9 @@ function ApiDatasets() {
                             <Grid item md={1}>
                                 <Button variant="outlined"
                                     onClick={e => {
-                                        setCreateDatasets(false)
                                         clearPostData()
                                         setDatasetId(datasets[0]?.testcase_dataset_id)
+                                        setCreateDatasets(false)
                                     }}
                                 >Cancel</Button>
                             </Grid>
@@ -296,14 +300,20 @@ function ApiDatasets() {
                 ></Table>
             </div>}
             <div>
-               
+
             </div>
             <div>
                 <SnackbarNotify
                     open={snackbar}
                     close={setSnackbar}
-                    msg="Dataset Created successfully"
+                    msg="Saved successfully"
                     severity="success"
+                ></SnackbarNotify>
+                <SnackbarNotify
+                    open={Errorsnackbar}
+                    close={setErrorsnackbar}
+                    msg={snackbarErrorMsg}
+                    severity="error"
                 ></SnackbarNotify>
             </div>
         </div>

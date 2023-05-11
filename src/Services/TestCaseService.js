@@ -100,10 +100,10 @@ export async function CreateDataset(data) {
 
     if (res.data.status === "SUCCESS") {
 
-      return true
+      return false
     }
     else {
-      return false
+      return res.data.message
     }
   })
 

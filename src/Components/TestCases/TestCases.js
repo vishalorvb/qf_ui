@@ -23,7 +23,7 @@ import { TCdata } from "./CreateTestCase";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 
-
+let snakbarmsg = "";
 
 let delete_testcase_id = 0;
 
@@ -32,7 +32,7 @@ export default function TestCases() {
   const [snack, setSnack] = useState(false);
   let [project, setProject] = useState([]);
   let [application, setApplication] = useState([]);
-  let [popup,setPopup] = useState(false);
+  let [popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
@@ -83,7 +83,6 @@ export default function TestCases() {
           <TableActions heading={param.row?.description}>
             <MenuItem
               onClick={(e) => {
-                console.log(param.row);
                 TCdata.module_id = param.row.module_id;
                 TCdata.project_id = param.row.project;
                 TCdata.testcase_name = param.row.name;
@@ -134,21 +133,24 @@ export default function TestCases() {
   useEffect(() => {
     getProject(setProject, auth.userId);
   }, []);
+
   useEffect(() => {
     if (globalProject == null) {
       setglobalProject(project[0]);
     }
-
   }, [project]);
+
+
   useEffect(() => {
     if (globalProject !== null && globalProject?.project_id !== undefined) {
       getApplicationOfProject(setApplication, globalProject?.project_id);
     }
   }, [globalProject]);
+
   useEffect(() => {
-
-    setglobalApplication(application[0]);
-
+    if (globalApplication == null) {
+      setglobalApplication(application[0]);
+    }
     if (globalApplication?.module_id !== undefined) {
       GetTestCase(
         setTestcases,
@@ -156,7 +158,6 @@ export default function TestCases() {
         globalApplication?.module_id
       );
     }
-
   }, [application]);
   useEffect(() => {
     if (globalApplication?.module_id !== undefined) {
@@ -175,13 +176,13 @@ export default function TestCases() {
         close={() => {
           setSnack(false);
         }}
-        msg="Test Case Created SuccessFully"
+        msg={snakbarmsg}
         severity="success"
       ></SnackbarNotify>
       <div className="apptable">
         <div className="intable">
           <Grid item container spacing={2} justifyContent="flex-end">
-            {/* <Grid item>
+            <Grid item>
               <label htmlFor="">Projects</label>
               <Autocomplete
                 disablePortal
@@ -192,7 +193,9 @@ export default function TestCases() {
                 sx={{ width: "100%" }}
                 getOptionLabel={(option) => option.project_name}
                 onChange={(e, value) => {
+                  setglobalApplication(null);
                   setglobalProject(value);
+
                 }}
                 renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
@@ -220,13 +223,13 @@ export default function TestCases() {
                   </div>
                 )}
               />
-            </Grid> */}
-            <ProjectnApplicationSelector
+            </Grid>
+            {/* <ProjectnApplicationSelector
               globalProject={globalProject}
               setglobalProject={setglobalProject}
               globalApplication={globalApplication}
               setglobalApplication={setglobalApplication}
-            />
+            /> */}
           </Grid>
         </div>
         <Table
@@ -241,7 +244,7 @@ export default function TestCases() {
           handleClose={() => setPopup(false)}
           heading={"Delete TestCase"}
           message={"Are you sure you want to delete this TestCase?"}
-          onConfirm={() =>{
+          onConfirm={() => {
             DeleteTestCase(delete_testcase_id).then((res) => {
               if (res) {
                 GetTestCase(
@@ -249,12 +252,15 @@ export default function TestCases() {
                   globalProject?.project_id,
                   globalApplication?.module_id
                 );
+                snakbarmsg="Deleted Successfully"
+                setSnack(true)
               }
             })
             setPopup(false)
           }
           }
         ></ConfirmPop>
+       
       </div>
     </>
   );
