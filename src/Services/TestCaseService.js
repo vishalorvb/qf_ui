@@ -100,10 +100,10 @@ export async function CreateDataset(data) {
 
     if (res.data.status === "SUCCESS") {
 
-      return true
+      return false
     }
     else {
-      return false
+      return res.data.message
     }
   })
 
@@ -170,7 +170,7 @@ export function GetTestCase(callback, projectId, applicationId) {
   axios
     .get(
       // `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${applicationId}&project_id=${projectId}`
-      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}&filterTestcases=true`
+      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
     )
     .then((resp) => {
       const testcases = resp?.data?.info ? resp?.data?.info : [];
