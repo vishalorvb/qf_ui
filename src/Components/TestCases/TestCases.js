@@ -36,8 +36,7 @@ export default function TestCases() {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
-  console.log(globalProject)
-  console.log(globalApplication)
+
   const columns = [
     {
       field: "name",

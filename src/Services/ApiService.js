@@ -60,9 +60,10 @@ export async function createApiDataset(userId, Data) {
     data: Data,
   }).then((res) => {
     if (res.data.error == null) {
-      return true;
-    } else {
       return false;
+    } else {
+      console.log(res.data.error.description);
+      return res.data.error.description;
     }
   });
   return x;

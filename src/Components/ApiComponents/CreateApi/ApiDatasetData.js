@@ -12,8 +12,6 @@ let postDataInitialVal={
 }
 
 export let postData={...postDataInitialVal}
-
-console.log(postData)
 export function setGetData(apiId,objectname,data){
     getData?.forEach(element => {
         if(element.api_id == apiId){
