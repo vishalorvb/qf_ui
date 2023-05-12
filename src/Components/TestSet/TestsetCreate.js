@@ -24,6 +24,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+import { getSprint, getIssues } from "../../Services/TestCaseService"
+
+
 
 function TestsetCreate() {
   const {
@@ -52,7 +55,8 @@ function TestsetCreate() {
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
   const navigate = useNavigate();
-
+  let [jiraSprint, setJiraSprint] = useState([]);
+  let [jiraIssue, setJiraIssue] = useState([]);
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
   const MenuProps = {
@@ -134,6 +138,7 @@ function TestsetCreate() {
   useEffect(() => {
     globalProject?.project_id &&
       getApplicationOfProject(setapplicationList, globalProject?.project_id);
+      getSprint(setJiraSprint, globalProject?.project_id)
   }, [globalProject]);
 
   // useEffect(() => {
@@ -144,7 +149,7 @@ function TestsetCreate() {
     console.log(globalApplication);
     globalProject?.project_id && globalApplication?.module_id &&
       getTestcasesInProjects(setTestcaseObject, globalProject?.project_id, globalApplication?.module_id);
-      globalProject?.project_id && globalApplication?.module_id &&
+    globalProject?.project_id && globalApplication?.module_id &&
       getTestcasesInProjects(setLeftTestcase, globalProject?.project_id, globalApplication?.module_id);
   }, [globalProject?.project_id]);
 
@@ -218,6 +223,32 @@ function TestsetCreate() {
     <div onClick={resetClassName}>
       <div className="datatable" style={{ marginTop: "15px" }}>
         <Grid container direction="row" spacing={2}>
+
+
+          <Grid item md={3}>
+            <label >Sprint</label>
+            <select
+              onChange={e => {
+                getIssues(setJiraIssue, globalApplication.project_id, e.target.value)
+                // sprintData.sprint_id = e.target.value
+              }}
+            >
+              {jiraSprint.map(s => <option key={s.id} value={s.sprint_name}>{s.sprint_name}</option>)}
+            </select>
+          </Grid>
+          <Grid item md={3}>
+            <label >Issues</label>
+            <select
+                // onChange={e => {
+                //   sprintData.issue_id = e.target.value
+                // }}
+            >
+              {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
+            </select>
+          </Grid>
+
+
+
           {/* <Grid item md={6}>
             <Stack spacing={1}>
               <label>
@@ -340,14 +371,14 @@ function TestsetCreate() {
                 >
                   {leftTestcase.length > 0
                     ? leftTestcase
-                        .filter((el) => {
-                          return !rightTestcase.some((f) => {
-                            return f.testcase_id === el.testcase_id;
-                          });
-                        })
-                        .map((ts) => (
-                          <option value={ts.testcase_id}>{ts.name}</option>
-                        ))
+                      .filter((el) => {
+                        return !rightTestcase.some((f) => {
+                          return f.testcase_id === el.testcase_id;
+                        });
+                      })
+                      .map((ts) => (
+                        <option value={ts.testcase_id}>{ts.name}</option>
+                      ))
                     : []}
                 </select>
               </Grid>
@@ -380,9 +411,9 @@ function TestsetCreate() {
                 >
                   {rightTestcase.length > 0
                     ? rightTestcase
-                        .map((ts) => (
-                          <option value={ts.testcase_id}>{ts.name}</option>
-                        ))
+                      .map((ts) => (
+                        <option value={ts.testcase_id}>{ts.name}</option>
+                      ))
                     : []}
                 </select>
               </Grid>{" "}
