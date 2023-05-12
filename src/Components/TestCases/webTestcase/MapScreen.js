@@ -5,7 +5,7 @@ import {
   MultiSelectElement,
   useForm,
 } from "react-hook-form-mui";
-import {  useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import useHead from "../../../hooks/useHead";
 import * as yup from "yup";
@@ -18,6 +18,8 @@ export default function MapScreen() {
   const navigate = useNavigate();
   const [pagesnScreens, setPagesnScreens] = useState([]);
   const [screenUpdated, setScreenUpdated] = useState(false);
+  let [snackbarError, setSnackbarError] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -27,7 +29,6 @@ export default function MapScreen() {
     resolver: yupResolver(yup.object().shape({})),
   });
   const onSubmit = (data) => {
-    console.log(location.state)
     let screens = [];
     for (const key in data) {
       if (data[key]) {
@@ -47,18 +48,18 @@ export default function MapScreen() {
       testcase_sprints: [],
       screens_in_testcase: screens,
     };
-
+    if (screensData.screens_in_testcase.length == 0) {
+      setSnackbarError(true)
+      return 0
+    }
     axios
       .post(`/qfservice/webtestcase/ScreensMapping`, screensData)
       .then((resp) => {
-        console.log(resp);
         resp?.data?.status === "SUCCESS" && setScreenUpdated(true);
         setTimeout(() => {
           resp?.data?.status === "SUCCESS" && navigate(-1);
         }, 1000);
       });
-
-    console.log(screens);
   };
   useEffect(() => {
     axios
@@ -104,7 +105,12 @@ export default function MapScreen() {
         msg={"Screen Mapped Successfully"}
         severity="success"
       />
-     
+      <SnackbarNotify
+        open={snackbarError}
+        close={setSnackbarError}
+        msg="Select Atleast One Screen"
+        severity="error"
+      />
 
       {pagesnScreens.map((page) => {
         return (
