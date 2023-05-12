@@ -1,4 +1,6 @@
 import axios from "../../api/axios";
+import { baseUrl } from "../../Environment";
+
 
 export function GetSprintsOfJiraProject(callback, userId, projectId) {
   axios
@@ -68,4 +70,14 @@ export function UploadManualTestcasesExcelFile(callback,postData) {
     console.log(resp)
      callback(resp)
    });
+}
+
+export async function DeleteManualTestcase(testcaseId) {
+  let x = await axios.post(`${baseUrl}/qfservice/deleteManualTestcase?manual_testcase_id=${testcaseId}`).then(res => {
+    if (res.data.status == "SUCCESS") {
+      return true
+    }
+    return false
+  })
+  return x
 }

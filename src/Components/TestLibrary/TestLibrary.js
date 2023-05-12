@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
 import SearchIcon from "@mui/icons-material/Search";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+
 import {
   Autocomplete,
   Button,
@@ -12,6 +14,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import {
+  DeleteManualTestcase,
   ExportManualTestcases,
   GetIssuesOfTestlibrary,
   GetSprintsOfJiraProject,
@@ -28,7 +31,11 @@ import useAuth from "../../hooks/useAuth";
 import { createformData } from "../ProjectComponents/ProjectData";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useNavigate } from "react-router-dom";
+import TableActions from "../../CustomComponent/TableActions";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
 
+let manual_testcase_id = 0;
+let snakbarmsg = "";
 const TestLibrary = () => {
   const [project, setProject] = useState("");
   const [sprints, setSprints] = useState("");
@@ -50,7 +57,11 @@ const TestLibrary = () => {
   const userId = auth.info.id;
   const [sqeProjectId, setSqeProjectid] = useState();
   const [empty, setNotEmpty] = useState(false);
+  const [delResponse,setDeleteResponse] = useState()
   const navigate = useNavigate();
+  let [popup, setPopup] = useState(false);
+  const [snack, setSnack] = useState(false);
+
 
 
   const columns = [
@@ -110,16 +121,24 @@ const TestLibrary = () => {
       sortable: false,
       align: "left",
       renderCell: (params) => {
+       
         return (
-          <>
-            <DeleteIcon />
-          </>
+          <TableActions>
+            <MenuItem
+              onClick={(e) => {
+                manual_testcase_id = params.row.testcase_id;
+                setPopup(true);
+              }}
+            >
+              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+              Delete
+            </MenuItem>
+          </TableActions>
         );
       },
     },
   ];
   async function handleDownload() {
-    console.log(issues);
     if (issues == undefined) {
       setShowIssueError(true);
       setTimeout(() => {
@@ -136,8 +155,8 @@ const TestLibrary = () => {
             setDownloadSuccesMsg(false);
           }, 3000);
         },
-        263,
-        7,
+        globalProject?.project_id,
+        userId,
         projectKey,
         sprints,
         issues
@@ -314,14 +333,25 @@ const TestLibrary = () => {
       formData.append("file", selectedFile);
       formData.append("sprint_name", sprints);
       formData.append("issue_key", issues);
-      formData.append("user_id", 7);
-      formData.append("project_id", 263);
+      formData.append("user_id", userId);
+      formData.append("project_id", globalProject?.project_id);
       UploadManualTestcasesExcelFile((res) => {
         if (res?.data?.status == "SUCCESS") {
           setUploadFileResponse(true);
           setTimeout(() => {
             setUploadFileResponse(false);
           }, 3000);
+          GetTestLibrary(
+            (res) => {
+              if (res != null) {
+                setTableData(res);
+              }
+            },
+            globalProject?.project_id,
+            userId,
+            projectKey,
+            sprints
+          );
         }
       }, formData);
     };
@@ -625,20 +655,6 @@ const TestLibrary = () => {
             alignItems="center"
           >
             <Grid item md={2.5}>
-              {/* <input
-                // variant="contained"
-                type="file"
-                fullWidth
-                onClick={""}
-                startIcon={<UploadIcon />}
-              >
-                Browse
-              </input> */}
-              {/* <input
-                type="file"
-                accept=".xlsx"
-                onChange={handleFileInputChange}
-              /> */}
               <input
                 type="file"
                 id="fileInput"
@@ -732,6 +748,42 @@ const TestLibrary = () => {
           severity="success"
         />
       )}
+       <ConfirmPop
+          open={popup}
+          handleClose={() => setPopup(false)}
+          heading={"Delete Manual Testcase"}
+          message={"Are you sure you want to delete this testcase?"}
+          onConfirm={() => {
+            DeleteManualTestcase(manual_testcase_id).then((res) => {
+              if (res) {
+                GetTestLibrary(
+                  (res) => {
+                    if (res != null) {
+                      setTableData(res);
+                    }
+                  },
+                  globalProject?.project_id,
+                  userId,
+                  projectKey,
+                  sprints
+                );
+                snakbarmsg="Deleted Successfully"
+                setSnack(true)
+              }
+            })
+            setPopup(false)
+          }
+          }
+        ></ConfirmPop>
+          {snack &&
+           <SnackbarNotify
+            open={snack}
+            close={() => {
+              setSnack(false);
+            }}
+             msg={snakbarmsg}
+            severity="success"
+      ></SnackbarNotify>}
     </>
   );
 };
