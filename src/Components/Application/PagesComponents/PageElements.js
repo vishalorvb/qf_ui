@@ -7,6 +7,8 @@ import { useLocation } from "react-router";
 import axios from "../../../api/axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+import { Button } from "@mui/material";
+import AddElement from "./AddElement";
 export default function PageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -17,6 +19,8 @@ export default function PageElements() {
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [newchangedElement, setNewchangedElement] = useState({});
   const [updated, setUpdated] = useState(false);
+  const [showAddElement, setShowAddElement] = useState(false);
+  const [elementAdded, setelementAdded] = useState(false);
 
   const elementColumns = [
     {
@@ -99,17 +103,24 @@ export default function PageElements() {
   }, [newchangedElement]);
   return (
     <div>
-      <Table
-        searchPlaceholder="Search Elements"
-        rows={elements}
-        columns={elementColumns}
-        getRowId={(row) => row.element_id}
-        checkboxSelection={true}
-        selectionModel={preSelectedElement}
-        setSelectionModel={setPreSelectedElement}
-        setNewchangedElement={setNewchangedElement}
-        hideheaderCheckbox={true}
-      />
+      <div className="apptable">
+        <div className="intable">
+          <Button variant="contained" onClick={() => setShowAddElement(true)}>
+            Add Element
+          </Button>
+        </div>
+        <Table
+          searchPlaceholder="Search Elements"
+          rows={elements}
+          columns={elementColumns}
+          getRowId={(row) => row.element_id}
+          checkboxSelection={true}
+          selectionModel={preSelectedElement}
+          setSelectionModel={setPreSelectedElement}
+          setNewchangedElement={setNewchangedElement}
+          hideheaderCheckbox={true}
+        />
+      </div>
       {popup && (
         <ElementsDetails
           ElementId={elementid}
@@ -118,10 +129,23 @@ export default function PageElements() {
           setUpdated={setUpdated}
         ></ElementsDetails>
       )}
+      {showAddElement && (
+        <AddElement
+          webPageId={location.state.id}
+          setPopup={setShowAddElement}
+          setelementAdded={setelementAdded}
+        ></AddElement>
+      )}
       <SnackbarNotify
         open={updated}
         close={setUpdated}
         msg={"Element is updated Successfully"}
+        severity="success"
+      />
+      <SnackbarNotify
+        open={elementAdded}
+        close={setelementAdded}
+        msg={"Element is Added Successfully"}
         severity="success"
       />
     </div>
