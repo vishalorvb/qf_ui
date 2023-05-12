@@ -36,6 +36,10 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
         }
       });
     }
+    else{
+      snackbarErrormsg = "Fill all required fields"
+      setSnackBarError(true)
+    }
   }
 
   try {
