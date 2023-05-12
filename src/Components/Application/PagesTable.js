@@ -105,7 +105,7 @@ export default function PagesTable(props) {
   useEffect(() => {
     getPages(setPage, location.state.module_id);
     console.log(location.state);
-  }, []);
+  }, [snackbarMsg]);
   return (
     <>
       <Table
