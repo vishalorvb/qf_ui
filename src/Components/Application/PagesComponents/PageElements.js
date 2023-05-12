@@ -64,7 +64,13 @@ export default function PageElements() {
     },
   ];
 
-  const getPageElements = () => {
+  useEffect(() => {
+    setHeader((ps) => {
+      return { ...ps, name: location?.state?.name + " PageElements" };
+    });
+  }, []);
+
+  useEffect(() => {
     axios
       .get(
         `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
@@ -81,15 +87,7 @@ export default function PageElements() {
             return selectedData;
           });
       });
-  };
-
-  useEffect(() => {
-    getPageElements();
-
-    setHeader((ps) => {
-      return { ...ps, name: location?.state?.name + " PageElements" };
-    });
-  }, []);
+  }, [elementAdded, updated]);
 
   useEffect(() => {
     newchangedElement?.id &&
@@ -125,7 +123,6 @@ export default function PageElements() {
         <ElementsDetails
           ElementId={elementid}
           setPopup={setPopup}
-          getPageElements={getPageElements}
           setUpdated={setUpdated}
         ></ElementsDetails>
       )}

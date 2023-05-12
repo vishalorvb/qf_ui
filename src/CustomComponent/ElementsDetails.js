@@ -21,7 +21,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "../api/axios";
-import SnackbarNotify from "./SnackbarNotify";
 function ElementsDetails({ ElementId, setPopup, setUpdated }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
