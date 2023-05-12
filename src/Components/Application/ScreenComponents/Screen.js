@@ -48,13 +48,7 @@ export default function Screens({ location }) {
             <MenuItem
               onClick={() =>
                 navigate("UpdateScreen", {
-                  state: {
-                    screenId: param.row.screen_id,
-                    pageId: param.row.web_page_id,
-                    name: param.row.name,
-                    desc: param.row.description,
-                    applicationId: location?.state?.module_id,
-                  },
+                  state: param?.row,
                 })
               }
             >

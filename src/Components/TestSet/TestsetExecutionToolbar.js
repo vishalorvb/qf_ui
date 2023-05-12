@@ -23,6 +23,7 @@ import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { useNavigate } from "react-router-dom";
+import BackdropLoader from "../../CustomComponent/BackdropLoader";
 
 function TestsetExecutionToolbar({
   applicationId,
@@ -47,6 +48,7 @@ function TestsetExecutionToolbar({
   const [snack, setSnack] = useState(false);
   const [runtimeVariable, setRunTimeVariable] = useState();
   const [buildEnvId, setBuildEnvId] = useState();
+  const [showLoading, setShowLoading] = useState(false);
 
   let appTypes = [
     "API Automation",
@@ -105,6 +107,7 @@ function TestsetExecutionToolbar({
       }
     }
     if (datasets.length != 0) {
+      setShowLoading(true);
       const executionData = {
         testset_id: testsetId,
         module_id: applicationId,
@@ -128,17 +131,20 @@ function TestsetExecutionToolbar({
       axios
         .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
         .then((resp) => {
+          data?.executionLoc !== "local" && setShowLoading(false);
           data?.executionLoc === "local"
             ? axios
-                .postForm(`http://127.0.0.1:8765/connect`, {
+                .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
                   data: resp?.data?.info,
                   jarName: `code`,
                 })
                 .then((resp) => {
                   setJarConnected(true);
+                  setShowLoading(false);
                 })
                 .catch((err) => {
                   err.message === "Network Error" && setClientInactive(true);
+                  setShowLoading(false);
                 })
             : setRemoteExecutionsuccess(true);
         });
@@ -163,6 +169,7 @@ function TestsetExecutionToolbar({
       }
     }
     if (datasets.length != 0) {
+      setShowLoading(true);
       const executionData = {
         testset_id: testsetId,
         module_id: applicationId,
@@ -185,6 +192,7 @@ function TestsetExecutionToolbar({
       axios
         .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
         .then((resp) => {
+          data?.executionLoc !== "local" && setShowLoading(false);
           data?.executionLoc === "local"
             ? axios
                 .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
@@ -193,9 +201,11 @@ function TestsetExecutionToolbar({
                 })
                 .then((resp) => {
                   setJarConnected(true);
+                  setShowLoading(false);
                 })
                 .catch((err) => {
                   err.message === "Network Error" && setClientInactive(true);
+                  setShowLoading(false);
                 })
             : setRemoteExecutionsuccess(true);
         });
@@ -444,6 +454,7 @@ function TestsetExecutionToolbar({
           />
         </Stack>
       )}
+      <BackdropLoader open={showLoading} />
     </form>
   );
 }

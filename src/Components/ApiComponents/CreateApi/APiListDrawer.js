@@ -42,9 +42,9 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
     getDatasetDetails(setApi, datasetId);
   }, []);
 
-  useEffect(() => {
-    getDatasetDetails(setApi, datasetId);
-  }, []);
+  // useEffect(() => {
+  //   getDatasetDetails(setApi, datasetId);
+  // }, []);
 
   useEffect(() => {
     getData = [...Api];
@@ -53,7 +53,6 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
       api_order.push(element.api_id);
     });
     postData.apis_order = api_order;
-    console.log(Api[0]);
     if (Api[0] !== undefined) {
       setSelectedApi(Api[0]);
       setApiId(Api[0].api_id);
@@ -69,65 +68,37 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
       >
         List of Api
       </Typography>
-      {/* {Api?.map(s => {
-                return (
-                    <Stack
-                        mt={1}
-                        ml={1}
-                        sx={{
-                            backgroundColor: ApiId == s.api_id ? "#e8edf2" : "",
-                            cursor: "pointer",
-                        }}
-                        onClick={e => {
-                            console.log(s.api_id)
-                            setApiId(s.api_id)
-                            setSelectedApi({ ...s })
-                        }}
+      
+      {tempApi != undefined && <MaterialReactTable
 
-                    >
-                        <Typography variant="p" sx={{ fontWeight: "bold" }}>
-                            {s.api_name}
-                        </Typography>
-                        <Typography variant="caption">{s.api_description}</Typography>
-                        <Divider />
-                    </Stack>
-                );
-            })} */}
-
-
-
-
-
-            {tempApi != undefined && <MaterialReactTable
-
-                columns={columns}
-                data={tempApi}
-                enableColumnActions={false}
-                enablePagination={false}
-                initialState={{ density: "compact" }}
-                enableToolbarInternalActions={false}
-                muiTableBodyRowProps={{ hover: false }}
-                enableRowOrdering
-                enableSorting={false}
-                enableTopToolbar={false}
-                enableBottomToolbar={false}
-                muiTableBodyRowDragHandleProps={({ table }) => ({
-                    onDragEnd: () => {
-                        const { draggingRow, hoveredRow } = table.getState();
-                        if (hoveredRow && draggingRow) {
-                            let x = [...tempApi]
-                            x.splice(hoveredRow.index, 0, draggingRow.original)
-                            x.splice(draggingRow.index + 1, 1)
-                            setTempApi([...x])
-                        }
-                    },
-                })}
-                muiTablePaperProps={{
-                    elevation: 0,
-                }}
-            />}
-        </div>
-    )
+        columns={columns}
+        data={tempApi}
+        enableColumnActions={false}
+        enablePagination={false}
+        initialState={{ density: "compact" }}
+        enableToolbarInternalActions={false}
+        muiTableBodyRowProps={{ hover: false }}
+        enableRowOrdering
+        enableSorting={false}
+        enableTopToolbar={false}
+        enableBottomToolbar={false}
+        muiTableBodyRowDragHandleProps={({ table }) => ({
+          onDragEnd: () => {
+            const { draggingRow, hoveredRow } = table.getState();
+            if (hoveredRow && draggingRow) {
+              let x = [...tempApi]
+              x.splice(hoveredRow.index, 0, draggingRow.original)
+              x.splice(draggingRow.index + 1, 1)
+              setTempApi([...x])
+            }
+          },
+        })}
+        muiTablePaperProps={{
+          elevation: 0,
+        }}
+      />}
+    </div>
+  )
 }
 
 export default APiListDrawer;

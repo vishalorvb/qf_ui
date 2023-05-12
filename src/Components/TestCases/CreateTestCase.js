@@ -55,9 +55,8 @@ function CreateTestCase() {
                 if (TCdata.testcase_id === undefined) {
                     CreateTestCaseService(TCdata).then(res => {
                         if (res) {
-                            console.log(res)
                             if (globalApplication.module_type == 1) {
-                                MapAPiTestCaseData.testcase_id = TCdata?.testcase_id
+                                MapAPiTestCaseData.testcase_id = res
                                 navigate(redirect_url[globalApplication?.module_type])
                             }
                             else {
@@ -135,7 +134,6 @@ function CreateTestCase() {
 
     useEffect(() => {
         if (globalProject?.project_id !== undefined) {
-            setglobalApplication(null)
             getApplicationOfProject(setApplication, globalProject?.project_id)
             getSprint(setJiraSprint, globalProject?.project_id)
         }
@@ -184,6 +182,7 @@ function CreateTestCase() {
                         sx={{ width: "100%" }}
                         getOptionLabel={(option) => option?.project_name}
                         onChange={(e, value) => {
+                            setglobalApplication(null);
                             setglobalProject(value);
                         }}
                         renderInput={(params) => (

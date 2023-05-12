@@ -31,7 +31,6 @@ export default function ProjectnApplicationSelector({ isTestset }) {
 
   useEffect(() => {
     if (globalProject?.project_id !== undefined) {
-      setglobalApplication(null);
       getApplicationOfProject(setapplicationList, globalProject?.project_id);
     }
   }, [globalProject]);
@@ -55,6 +54,7 @@ export default function ProjectnApplicationSelector({ isTestset }) {
         sx={{ width: "100%" }}
         getOptionLabel={(option) => option.project_name ?? ""}
         onChange={(e, value) => {
+          setglobalApplication(null);
           setglobalProject(value);
         }}
         renderInput={(params) => (

@@ -152,12 +152,10 @@ export default function AddTestcaseToTestset() {
   };
 
   useEffect(() => {
-    console.log(getTestcasesInProjects(setTestcaseObject, projectId));
-    getTestcasesInProjects(setTestcaseObject, projectId);
-    getTestcasesInProjects(setLeftTestcase, projectId);
+    projectId && applicationId && getTestcasesInProjects(setTestcaseObject, projectId, applicationId);
+    projectId && applicationId && getTestcasesInProjects(setLeftTestcase, projectId, applicationId);
     getTestcasesOfTestset(setRightTestcase, testsetId);
   }, []);
-
   console.log(testcaseObject);
   console.log(leftTestcase);
   console.log(rightTestcase);
@@ -180,7 +178,9 @@ export default function AddTestcaseToTestset() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Testset Name <span className="importantfield">*</span></label>
+              <label>
+                Testset Name <span className="importantfield">*</span>
+              </label>
               <input
                 ref={testset_name}
                 value={testsetName}
@@ -194,7 +194,9 @@ export default function AddTestcaseToTestset() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Description <span className="importantfield">*</span></label>
+              <label>
+                Description <span className="importantfield">*</span>
+              </label>
               <input
                 ref={testset_desc}
                 value={testsetDesc}
@@ -211,7 +213,11 @@ export default function AddTestcaseToTestset() {
             <select id="left" multiple style={{ padding: "10px" }}>
               {leftTestcase.length > 0
                 ? leftTestcase
-                    .filter((ts) => ts.datasets != null)
+                    .filter((el) => {
+                      return !rightTestcase.some((f) => {
+                        return f.testcase_id === el.testcase_id;
+                      });
+                    })
                     .map((ts) => (
                       <option value={ts.testcase_id}>{ts.name}</option>
                     ))
@@ -242,8 +248,8 @@ export default function AddTestcaseToTestset() {
             <label>Selected Testcases:</label>
             <select id="right" multiple style={{ padding: "10px" }}>
               {rightTestcase.length > 0
-                ? rightTestcase
-                    .filter((ts) => ts.datasets != null)
+                ? Array.from(rightTestcase.map(JSON.stringify))
+                    .map(JSON.parse)
                     .map((ts) => (
                       <option value={ts.testcase_id}>{ts.name}</option>
                     ))

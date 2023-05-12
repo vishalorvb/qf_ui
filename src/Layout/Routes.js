@@ -84,9 +84,9 @@ const SelectedPageElements = lazy(() =>
 const ScreenElements = lazy(() =>
   import("../Components/Application/ScreenComponents/ScreenElements")
 );
-// const UpdateScreen = lazy(() =>
-//   import("../Components/Application/ScreenComponents/UpdateScreen")
-// );
+const UpdateScreen = lazy(() =>
+  import("../Components/Application/ScreenComponents/UpdateScreen")
+);
 const MapApiTestCase = lazy(() =>
   import("../Components/TestCases/apiTestcase/MapApiTestCase")
 );
@@ -155,8 +155,8 @@ const OrganizationDashboard = lazy(() =>
 );
 const UserProfile = lazy(() => import("../Components/UsersPopups/UserProfile"));
 
-const TestDesign = lazy(()=> import(`../Components/TestDesign/TestDesign`))
-const TestLibrary = lazy(()=> import(`../Components/TestLibrary/TestLibrary`))
+const TestDesign = lazy(() => import(`../Components/TestDesign/TestDesign`));
+const TestLibrary = lazy(() => import(`../Components/TestLibrary/TestLibrary`));
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 export const Routes = [
   {
@@ -192,6 +192,11 @@ export const Routes = [
           {
             path: "SelectElements",
             element: SelectedPageElements,
+            accessRole: [1, 2, 4, 5],
+          },
+          {
+            path: "UpdateScreen",
+            element: UpdateScreen,
             accessRole: [1, 2, 4, 5],
           },
         ],
@@ -236,6 +241,11 @@ export const Routes = [
           {
             path: "SelectElements",
             element: SelectedPageElements,
+            accessRole: [1, 2, 4, 5],
+          },
+          {
+            path: "UpdateScreen",
+            element: UpdateScreen,
             accessRole: [1, 2, 4, 5],
           },
         ],
@@ -669,11 +679,11 @@ export const Routes = [
   {
     path: "/TestDesign",
     element: TestDesign,
-    accessRole: [1, 2,  4, 5],
+    accessRole: [1, 2, 4, 5],
   },
   {
     path: "/TestLibrary",
     element: TestLibrary,
-    accessRole: [1, 2,  4, 5],
-  }
+    accessRole: [1, 2, 4, 5],
+  },
 ];

@@ -80,7 +80,7 @@ export default function SelectedPageElements() {
   };
   useEffect(() => {
     getPageElements();
-  }, []);
+  }, [updated]);
 
   useEffect(() => {
     setHeader((ps) => {
@@ -116,7 +116,6 @@ export default function SelectedPageElements() {
         <ElementsDetails
           ElementId={elementid}
           setPopup={setPopup}
-          getPageElements={getPageElements}
           setUpdated={setUpdated}
         ></ElementsDetails>
       )}

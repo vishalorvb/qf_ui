@@ -22,9 +22,10 @@ function Api() {
         if (res) {
           setSnackbarsuccess(true);
           setTimeout(() => {
-            navigate("/application/apiApp/apiRequests", {
-              state: { id: Apidata.module_id },
-            });
+            // navigate("/application/apiApp/apiRequests", {
+            //   state: { id: Apidata.module_id },
+            // });
+            navigate(-1)
           }, 1000);
         }
       });

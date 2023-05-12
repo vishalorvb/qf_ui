@@ -6,9 +6,9 @@ import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReportPath from "./ReportPath";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-export default function LinkFeatureMenu({runtimeVar,buildEnvId}) {
+export default function LinkFeatureMenu({ runtimeVar, buildEnvId }) {
   // console.log(runtimeVar)
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -16,7 +16,6 @@ export default function LinkFeatureMenu({runtimeVar,buildEnvId}) {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const location = useLocation();
-
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,7 +29,7 @@ export default function LinkFeatureMenu({runtimeVar,buildEnvId}) {
     <>
       <Button
         fullWidth
-        sx={{backgroundColor: "#009fee"}} 
+        sx={{ backgroundColor: "#009fee" }}
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
@@ -38,7 +37,7 @@ export default function LinkFeatureMenu({runtimeVar,buildEnvId}) {
         onClick={handleClick}
         variant="contained"
       >
-        + Features &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<ArrowDropDownIcon/>
+        Features <ArrowDropDownIcon />
       </Button>
       <Menu
         id="basic-menu"
@@ -54,8 +53,17 @@ export default function LinkFeatureMenu({runtimeVar,buildEnvId}) {
         </MenuItem>
         <MenuItem onClick={() => setReportPath(true)}>Report Path</MenuItem>
       </Menu>
-      <RuntimeVariable  open={openRuntimeVar} close={setOpenRuntimeVar} envId ={buildEnvId}  runtimeVar = {runtimeVar}/>
-      <ReportPath open={reportPath} close={setReportPath} buildEnvId={buildEnvId}/>
+      <RuntimeVariable
+        open={openRuntimeVar}
+        close={setOpenRuntimeVar}
+        envId={buildEnvId}
+        runtimeVar={runtimeVar}
+      />
+      <ReportPath
+        open={reportPath}
+        close={setReportPath}
+        buildEnvId={buildEnvId}
+      />
     </>
   );
 }

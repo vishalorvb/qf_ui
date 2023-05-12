@@ -18,12 +18,25 @@ import {
 } from "@mui/material";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import TableActions from "../../CustomComponent/TableActions";
+import axios from "../../api/axios";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 export default function PagesTable(props) {
   const { location } = props;
   const { header, setHeader } = useHead();
   const navigate = useNavigate();
 
   let [page, setPage] = useState([]);
+  const [snackbarMsg, setSnackbarMsg] = useState(false);
+
+  const handleDelete = (pageId) => {
+    axios
+      .delete(
+        `http://10.11.12.243:8083/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`
+      )
+      .then((resp) => {
+        setSnackbarMsg(resp?.data?.message);
+      });
+  };
 
   const pageColumns = [
     {
@@ -79,7 +92,7 @@ export default function PagesTable(props) {
               <MenuItem>
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={() => handleDelete(param?.row?.web_page_id)}>
                 <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
               </MenuItem>
             </TableActions>
@@ -102,6 +115,12 @@ export default function PagesTable(props) {
         getRowId={(row) => row.web_page_id}
       />
       <Outlet />
+      <SnackbarNotify
+        open={snackbarMsg !== false}
+        close={setSnackbarMsg}
+        msg={snackbarMsg}
+        severity="success"
+      />
     </>
   );
 }

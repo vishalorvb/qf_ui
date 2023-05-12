@@ -13,7 +13,7 @@ import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import useAuth from "../../../hooks/useAuth";
 
 export default function CreateScreenPop(props) {
-  const { elementsList, applicationId, pageId, screenName } = props;
+  const { elementsList, applicationId, pageId, screenName, screenId } = props;
   console.log(props);
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ export default function CreateScreenPop(props) {
       module_id: applicationId,
       page_id: pageId,
       elements_list: elementsList,
+      screen_id: screenId,
     };
     screenData?.name && screenData?.desc
       ? axios

@@ -53,7 +53,7 @@ export function resetApiData() {
     Apidata = {
         "api_url": "",
         "api_name": "",
-        "module_id": 3,
+        "module_id": 0,
         "request_type": 1,
         "body_type": 0,
         "api_description": "",
