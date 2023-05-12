@@ -155,20 +155,6 @@ export const testManagementList = [
     ],
   },
   {
-    name: "Test Design",
-    id: "5", 
-    route: "TestDesign",
-    accessRole: [1, 2, 4],
-    icon: <i className="qf icon-testsets"></i>,
-  },
-  {
-    name: "Test Library",
-    id: "5", 
-    route: "TestLibrary",
-    accessRole: [1, 2, 4],
-    icon: <i className="qf icon-testsets"></i>,
-  },
-  {
     name: "Execution",
     route: "",
     accessRole: [1, 2, 4],
@@ -185,8 +171,11 @@ export const testManagementList = [
         accessRole: [1, 2, 4],
       },
     ],
-  },
-  {
+  }
+];
+
+export const reportsManagementList = [
+{
     name: "Reports",
     id: "7",
     route: "reports",
@@ -198,10 +187,25 @@ export const testManagementList = [
     id: "1c",
     route: "BIReports",
     accessRole: [1, 2, 4],
-    icon: <i className="qf icon-bireports"></i>,
+    icon: <i className="qf icon-reports"></i>,
   },
-];
-
+]
+export const functionalManagementList = [
+  {
+    name: "Test Design",
+    id: "5", 
+    route: "TestDesign",
+    accessRole: [1, 2, 4],
+    icon: <i className="qf icon-testsets"></i>,
+  },
+  {
+    name: "Test Library",
+    id: "5", 
+    route: "TestLibrary",
+    accessRole: [1, 2, 4],
+    icon: <i className="qf icon-testsets"></i>,
+  },
+]
 export const opsManagementList = [
   {
     name: "Release",

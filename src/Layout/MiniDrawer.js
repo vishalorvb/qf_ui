@@ -17,6 +17,8 @@ import { ExpandMore } from "../CustomComponent/ExpandMore";
 //navItems
 import {
   testManagementList,
+  reportsManagementList,
+  functionalManagementList,
   opsManagementList,
   qfAdmin,
 } from "./SidebarNavlist";
@@ -253,6 +255,26 @@ export default function MiniDrawer({ open, setOpen }) {
 
           <List className="menuList">
             {navigationItemRender(testManagementList)}
+          </List>
+
+          {open && (
+            <div className="sideNavSections">
+              <span>Reports</span>
+            </div>
+          )}
+
+          <List className="menuList">
+            {navigationItemRender(reportsManagementList)}
+          </List>
+
+          {open && (
+            <div className="sideNavSections">
+              <span>Functional</span>
+            </div>
+          )}
+
+          <List className="menuList">
+            {navigationItemRender(functionalManagementList)}
           </List>
 
           {open && (

@@ -1,12 +1,9 @@
 import axios from "../../api/axios";
 
 
-export function GetJiraProjectsAndSprints(callback, jiraUserId) {
+export function GetJiraProjectsAndSprints(callback, projectId) {
    axios
-      .postForm(`/qfservice/getJiraProjectsAndSprints`, {
-        jira_user_id: jiraUserId
-       
-      })
+      .post(`/qfservice/getJiraProjectsAndSprints?sqe_project_id=${projectId}`)
       .then((resp) => {
        if( resp?.data?.status == 'SUCCESS')
        { 

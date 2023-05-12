@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
+import SearchIcon from "@mui/icons-material/Search";
 import {
+  Autocomplete,
   Button,
   Grid,
   InputLabel,
@@ -20,6 +22,12 @@ import Table from "../../CustomComponent/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as XLSX from "xlsx";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { getProject } from "../../Services/ProjectService";
+import useHead from "../../hooks/useHead";
+import useAuth from "../../hooks/useAuth";
+import { createformData } from "../ProjectComponents/ProjectData";
+import SyncIcon from "@mui/icons-material/Sync";
+import { useNavigate } from "react-router-dom";
 
 const TestLibrary = () => {
   const [project, setProject] = useState("");
@@ -32,9 +40,17 @@ const TestLibrary = () => {
   const [uploadFileResponse, setUploadFileResponse] = useState(false);
   const [showIssueError, setShowIssueError] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [showSuccessMsg,setShowSuccessMsg] = useState(false)
-  const [showErrorMsg,setShowErrorMsg] = useState(false)
-  const [showDowloadSuccessMsg,setDownloadSuccesMsg] = useState(false)
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
+  const [showDowloadSuccessMsg, setDownloadSuccesMsg] = useState(false);
+  const [fileName, setFileName] = useState();
+  const { globalProject, setglobalProject } = useHead();
+  const [projectsList, setProjectList] = useState([]);
+  const { auth } = useAuth();
+  const userId = auth.info.id;
+  const [sqeProjectId, setSqeProjectid] = useState();
+  const [empty, setNotEmpty] = useState(false);
+  const navigate = useNavigate();
 
 
   const columns = [
@@ -94,7 +110,11 @@ const TestLibrary = () => {
       sortable: false,
       align: "left",
       renderCell: (params) => {
-        return <><DeleteIcon /></>;
+        return (
+          <>
+            <DeleteIcon />
+          </>
+        );
       },
     },
   ];
@@ -111,11 +131,10 @@ const TestLibrary = () => {
       ExportManualTestcases(
         (res) => {
           resolve(res);
-          setDownloadSuccesMsg(true)
+          setDownloadSuccesMsg(true);
           setTimeout(() => {
             setDownloadSuccesMsg(false);
           }, 3000);
-
         },
         263,
         7,
@@ -145,12 +164,14 @@ const TestLibrary = () => {
       //   font: { bold: true },
       //   fill: { type: "pattern", patternType: "solid", fgColor: { rgb: "c6efce" } },
       // };
-      const headerStyle = { font: { bold: true } }
-      console.log(Object.keys(worksheet))
-      console.log(worksheet)
-      Object.keys(worksheet).filter((cell) => cell.startsWith("A1")).forEach((cell) => {
-        worksheet[cell].s = headerStyle;
-      });
+      const headerStyle = { font: { bold: true } };
+      console.log(Object.keys(worksheet));
+      console.log(worksheet);
+      Object.keys(worksheet)
+        .filter((cell) => cell.startsWith("A1"))
+        .forEach((cell) => {
+          worksheet[cell].s = headerStyle;
+        });
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
       XLSX.writeFile(workbook, `${issues}.xlsx`);
@@ -171,12 +192,12 @@ const TestLibrary = () => {
           sprint_name,
         }) => ({
           "Issue Key": issue_key,
-          "Given": given_data,
-          "When": when_data,
-          "Then": then_data,
+          Given: given_data,
+          When: when_data,
+          Then: then_data,
           "Actual Result": actual_result,
-          "Defect": defect,
-          "Regression": action,
+          Defect: defect,
+          Regression: action,
           "Created On": created_at,
           "Moved To Automation": moved_automation,
           "Issue Id": issue_id,
@@ -185,25 +206,32 @@ const TestLibrary = () => {
         })
       );
       const workbook = XLSX.utils.book_new();
-      console.log("in line 170")
-      console.log(selectedFields)
+      console.log("in line 170");
+      console.log(selectedFields);
       const worksheet = XLSX.utils.json_to_sheet(selectedFields);
-      console.log(worksheet)
+      console.log(worksheet);
       const headerStyle = {
         font: { bold: true },
-        fill: { type: "pattern", patternType: "solid", fgColor: { rgb: "c6efce" } },
+        fill: {
+          type: "pattern",
+          patternType: "solid",
+          fgColor: { rgb: "c6efce" },
+        },
       };
-      console.log(Object.keys(worksheet))
+      console.log(Object.keys(worksheet));
 
-      Object.keys(worksheet).filter((cell) => cell.startsWith("A1")).forEach((cell) => {
-        worksheet[cell].s = headerStyle;
-      });
+      Object.keys(worksheet)
+        .filter((cell) => cell.startsWith("A1"))
+        .forEach((cell) => {
+          worksheet[cell].s = headerStyle;
+        });
       XLSX.utils.book_append_sheet(workbook, worksheet, "Test Data");
       const filename = `${issues}.xlsx`;
       XLSX.writeFile(workbook, filename);
     }
   }
   const handleFileInputChange = (event) => {
+    setFileName(event.target.files[0].name);
     setSelectedFile(event.target.files[0]);
   };
   const handleUpload = () => {
@@ -288,64 +316,74 @@ const TestLibrary = () => {
       formData.append("issue_key", issues);
       formData.append("user_id", 7);
       formData.append("project_id", 263);
-      UploadManualTestcasesExcelFile(res=>{
-        if(res?.data?.status == 'SUCCESS')
-        {
-        setUploadFileResponse(true)
-        setTimeout(() => {
-          setUploadFileResponse(false);
-        }, 3000);
+      UploadManualTestcasesExcelFile((res) => {
+        if (res?.data?.status == "SUCCESS") {
+          setUploadFileResponse(true);
+          setTimeout(() => {
+            setUploadFileResponse(false);
+          }, 3000);
         }
       }, formData);
     };
     reader.readAsArrayBuffer(selectedFile);
   };
   useEffect(() => {
+    getProject((res) => {
+      setProjectList(res);
+      setglobalProject(res[0]);
+    }, auth.userId);
+    if (globalProject == null) {
+      setglobalProject(projectsList[0]);
+      setSqeProjectid(projectsList[0]?.project_id);
+    }
+  }, []);
+  useEffect(() => {
     async function fetchData() {
       try {
         const data = await new Promise((resolve) => {
           GetSprintsOfJiraProject(
             (res) => {
+              if(res !== null)
+              {
+              setNotEmpty(true)
               setData(res);
               setProject(res[0]?.sprintnamekey.value);
               setProjectKey(res[0]?.sprintnamekey.key);
               setSprints(res[0]?.name);
               resolve(res);
+              }
             },
-            7,
-            263
+            userId,
+            globalProject == null ? sqeProjectId : globalProject?.project_id
           );
         });
         await new Promise((resolve) => {
           GetIssuesOfTestlibrary(
             (res) => {
+              if(res !== null)
+              {
               setIssueData(res?.data?.info);
+              }
             },
             data[0]?.name,
             data[0]?.sprintnamekey?.key,
-            263
+            globalProject == null ? sqeProjectId : globalProject?.project_id
           );
           resolve();
         });
         await new Promise((resolve) => {
           GetTestLibrary(
             (res) => {
-              console.log(Object.keys(res).length)
               if (res != null) {
                 setTableData(res);
-                setShowSuccessMsg(true)
+                setShowSuccessMsg(true);
                 setTimeout(() => {
                   setShowSuccessMsg(false);
                 }, 3000);
               }
-              if (Object.keys(res).length === 0) {
-                console.log("The object is empty");
-              } else {
-                console.log("The object is not empty");
-              }
             },
-            263,
-            7,
+            globalProject == null ? sqeProjectId : globalProject?.project_id,
+            userId,
             data[0]?.sprintnamekey.key,
             data[0]?.name
           );
@@ -357,6 +395,62 @@ const TestLibrary = () => {
     }
     fetchData();
   }, []);
+  //------------------------------- onChange of Project---------------------------
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await new Promise((resolve) => {
+          GetSprintsOfJiraProject(
+            (res) => {
+              if (res !== null) {
+                setNotEmpty(true);
+                setData(res);
+                setProject(res[0]?.sprintnamekey.value);
+                setProjectKey(res[0]?.sprintnamekey.key);
+                setSprints(res[0]?.name);
+                resolve(res);
+              }
+            },
+            userId,
+            globalProject == null ? sqeProjectId : globalProject?.project_id
+          );
+        });
+        await new Promise((resolve) => {
+          GetIssuesOfTestlibrary(
+            (res) => {
+              setIssueData(res?.data?.info);
+            },
+            data[0]?.name,
+            data[0]?.sprintnamekey?.key,
+            globalProject == null ? sqeProjectId : globalProject?.project_id
+          );
+          resolve();
+        });
+        await new Promise((resolve) => {
+          GetTestLibrary(
+            (res) => {
+              console.log(Object.keys(res).length);
+              if (res != null) {
+                setTableData(res);
+                setShowSuccessMsg(true);
+                setTimeout(() => {
+                  setShowSuccessMsg(false);
+                }, 3000);
+              }
+            },
+            globalProject == null ? sqeProjectId : globalProject?.project_id,
+            userId,
+            data[0]?.sprintnamekey.key,
+            data[0]?.name
+          );
+          resolve();
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  }, [globalProject]);
   // -------------------------------onChange of Sprint------------------------------
   useEffect(() => {
     async function fetchData() {
@@ -368,23 +462,22 @@ const TestLibrary = () => {
           },
           sprints,
           projectKey,
-          263
+          globalProject?.project_id
         );
         resolve();
       });
       await new Promise((resolve) => {
         setIssueData([]);
         GetTestLibrary(
-          
           (res) => {
-            console.log(Object.keys(res).length)
-            console.log(res)
+            console.log(Object.keys(res).length);
+            console.log(res);
             if (res != null) {
               setTableData(res);
             }
           },
-          263,
-          7,
+          globalProject?.project_id,
+          userId,
           projectKey,
           sprints
         );
@@ -400,30 +493,32 @@ const TestLibrary = () => {
       (res) => {
         if (res != null) {
           setTableData(res);
-          // setShowSuccessMsg(true)
-          // setTimeout(() => {
-          //   setShowSuccessMsg(false);
-          // }, 3000);
         }
-        // else
-        // {
-        //   setShowErrorMsg(true)
-        //   setTimeout(() => {
-        //    setShowErrorMsg(false);
-        //  }, 3000);
-        //  }
       },
-      263,
-      7,
+      globalProject?.project_id,
+      userId,
       projectKey,
       sprints,
       issues
     );
   }, [issues]);
-  console.log(issueData);
-  console.log(data);
-  console.log(tableData);
-
+  function handleClick() {
+    createformData.projectName = globalProject.project_name
+    createformData.projectDesc= globalProject.description
+    createformData.automation_framework_type = globalProject.automation_framework_type
+    createformData.jira_project_id = globalProject.jira_project_id
+    createformData.sqeProjectId = globalProject.project_id;
+    createformData.userId = auth.info.id;
+    createformData.orgId = 1;
+    createformData.jenkins_token = globalProject.jenkins_token;
+    createformData.jenkins_user_name = globalProject.jenkins_user_name;
+    createformData.jenkins_password = globalProject.jenkins_password;
+    createformData.gitOps = true;
+    createformData.repository_url = globalProject.repository_url;
+    createformData.repository_branch = globalProject.repository_branch;
+    createformData.repository_token = globalProject.repository_token;
+    navigate("/Projects/Recent/Update");
+  }
   return (
     <>
       <Grid
@@ -439,8 +534,29 @@ const TestLibrary = () => {
           alignItems="center"
           spacing={1.3}
         >
-          <Grid item md={2}>
-            <InputLabel id="demo-simple-select-label">Project</InputLabel>
+          <Grid item>
+            <label htmlFor="">Projects</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="project_id"
+              options={projectsList}
+              value={globalProject || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.project_name ?? ""}
+              onChange={(e, value) => {
+                setglobalProject(value);
+                setNotEmpty(false)
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+          { empty ? <><Grid item md={2}>
+            <InputLabel id="demo-simple-select-label">Jira Project</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -451,8 +567,9 @@ const TestLibrary = () => {
             >
               <MenuItem value={project}>{project}</MenuItem>
             </Select>
-          </Grid>
-          <Grid item md={2}>
+          </Grid> 
+         
+        <Grid item md={2}>
             <InputLabel id="demo-simple-select-label">Sprint Name</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -471,7 +588,7 @@ const TestLibrary = () => {
               ))}
             </Select>
           </Grid>
-          <Grid item md={2}>
+         <Grid item md={2}>
             <InputLabel id="demo-simple-select-label">Issue Key</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -489,16 +606,25 @@ const TestLibrary = () => {
                 </MenuItem>
               ))}
             </Select>
-          </Grid>
+          </Grid></> : <Grid item md={3} mt={2}>
+            <Button
+              variant="contained"
+              onClick={handleClick}
+              startIcon={<SyncIcon />}
+              size="small"
+            >
+              Configure JIRA
+            </Button></Grid>}
+       
         </Grid>
-        <Grid item md={4}>
+       { empty && <Grid item md={4}>
           <Grid
             container
             justifyContent="flex-end"
-            spacing={1}
+            spacing={0.5}
             alignItems="center"
           >
-            <Grid item md={3}>
+            <Grid item md={2.5}>
               {/* <input
                 // variant="contained"
                 type="file"
@@ -508,11 +634,37 @@ const TestLibrary = () => {
               >
                 Browse
               </input> */}
-              <input
+              {/* <input
                 type="file"
                 accept=".xlsx"
                 onChange={handleFileInputChange}
+              /> */}
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                accept=".xlsx"
+                onChange={handleFileInputChange}
               />
+              <label
+                for="fileInput"
+                class="fileButton"
+                style={{
+                  backgroundColor: " #4CAF50",
+                  borderRadius: "5px",
+                  border: "none",
+                  color: "white",
+                  padding: "10px 20px",
+                  textAlign: "center",
+                  textDecoration: "none",
+                  display: "inline-block",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  width: "fullWidth",
+                }}
+              >
+                Browse
+              </label>
             </Grid>
             <Grid item md={3}>
               <Button
@@ -533,7 +685,7 @@ const TestLibrary = () => {
               />
             </Grid>
           </Grid>
-        </Grid>
+        </Grid>} 
       </Grid>
       <Table
         columns={columns}
@@ -548,13 +700,15 @@ const TestLibrary = () => {
           severity="error"
         />
       )}
-       {showSuccessMsg && <SnackbarNotify
-        open={showSuccessMsg}
-        close={setShowSuccessMsg}
-        msg="Testcases fetched successfully"
-        severity="success"
-      />}
-       {showErrorMsg && (
+      {showSuccessMsg && (
+        <SnackbarNotify
+          open={showSuccessMsg}
+          close={setShowSuccessMsg}
+          msg="Testcases fetched successfully"
+          severity="success"
+        />
+      )}
+      {showErrorMsg && (
         <SnackbarNotify
           open={showErrorMsg}
           close={setShowErrorMsg}
@@ -562,18 +716,22 @@ const TestLibrary = () => {
           severity="error"
         />
       )}
-        {showDowloadSuccessMsg && <SnackbarNotify
-        open={showDowloadSuccessMsg}
-        close={setDownloadSuccesMsg}
-        msg="File downloaded successfully"
-        severity="success"
-      />}
-       {uploadFileResponse && <SnackbarNotify
-        open={uploadFileResponse}
-        close={setUploadFileResponse}
-        msg="File uploaded successfully"
-        severity="success"
-      />}
+      {showDowloadSuccessMsg && (
+        <SnackbarNotify
+          open={showDowloadSuccessMsg}
+          close={setDownloadSuccesMsg}
+          msg="File downloaded successfully"
+          severity="success"
+        />
+      )}
+      {uploadFileResponse && (
+        <SnackbarNotify
+          open={uploadFileResponse}
+          close={setUploadFileResponse}
+          msg="File uploaded successfully"
+          severity="success"
+        />
+      )}
     </>
   );
 };
