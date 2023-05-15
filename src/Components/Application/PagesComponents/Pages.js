@@ -13,7 +13,7 @@ export default function Pages({ location }) {
   const { setHeader, header } = useHead();
   const { auth } = useAuth();
   // const location = useLocation();
-  console.log(location);
+  console.log(location?.state?.module_type);
   const [clientInactive, setClientInactive] = useState(false);
   const [jarConnected, setJarConnected] = useState(false);
   const [remoteAPiFails, setRemoteAPiFails] = useState(false);
@@ -35,14 +35,12 @@ export default function Pages({ location }) {
       .then((resp) => {
         console.log(resp?.data?.info);
         resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
-        const localFormData = new FormData();
-        localFormData.append("data", resp?.data?.info);
-        localFormData.append("jarName", `webpage`);
         resp?.data?.status === "SUCCESS" &&
           axios
             .postForm(`http://127.0.0.1:8765/connect`, {
               data: resp?.data?.info,
-              jarName: `webpage`,
+              jarName:
+                location?.state?.module_type === 3 ? `mobile` : `webpage`,
             })
             .then((resp) => {
               console.log(resp);

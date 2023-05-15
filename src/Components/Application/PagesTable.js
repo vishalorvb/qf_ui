@@ -30,9 +30,7 @@ export default function PagesTable(props) {
 
   const handleDelete = (pageId) => {
     axios
-      .delete(
-        `http://10.11.12.243:8083/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`
-      )
+      .delete(`/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`)
       .then((resp) => {
         setSnackbarMsg(resp?.data?.message);
       });
