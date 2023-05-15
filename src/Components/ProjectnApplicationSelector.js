@@ -42,50 +42,54 @@ export default function ProjectnApplicationSelector({ isTestset }) {
 
   return (
 
-       <Grid item container spacing={2} justifyContent="flex-end">
-            <Grid item>
-              <label htmlFor="">Projects</label>
-      <Autocomplete
-        disablePortal
-        disableClearable
-        id="project_id"
-        options={projectsList}
-        value={globalProject || null}
-        sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.project_name ?? ""}
-        onChange={(e, value) => {
-          setglobalApplication(null);
-          setglobalProject(value);
-        }}
-        renderInput={(params) => (
-          <div ref={params.InputProps.ref}>
-          <input type="text" {...params.inputProps} />
-        </div>
-          
-        )}
-      />
+    <Grid item container spacing={2} justifyContent="space-around" direction="row">
+      <Grid item>
+        <label htmlFor="">Projects</label>
+        <Autocomplete
+          disablePortal
+          disableClearable
+          id="project_id"
+          options={projectsList}
+          value={globalProject || null}
+          // sx={{ width: "100%" }}
+          fullWidth
+          getOptionLabel={(option) => option.project_name ?? ""}
+          onChange={(e, value) => {
+            setglobalApplication(null);
+            setglobalProject(value);
+          }}
+          renderInput={(params) => (
+            <div ref={params.InputProps.ref}>
+              <input type="text" {...params.inputProps} />
+            </div>
+
+          )}
+        />
       </Grid>
       <Grid item>
-              <label htmlFor="">Applications</label>
-      <Autocomplete
-        disablePortal
-        disableClearable
-        id="application_id"
-        options={applicationList}
-        value={globalApplication || null}
-        sx={{ width: "100%" }}
-        getOptionLabel={(option) => option.module_name}
-        onChange={(e, value) => {
-          // console.log(value);
-          setglobalApplication(value);
-        }}
-        renderInput={(params) => (
-          <div ref={params.InputProps.ref}>
-          <input type="text" {...params.inputProps} />
-        </div>
-        )}
-      />
+        <label htmlFor="">Applications</label>
+        <Autocomplete
+          disablePortal
+          disableClearable
+          id="application_id"
+          options={applicationList}
+          value={globalApplication || null}
+          // sx={{ width: "100%" }}
+          fullWidth
+          getOptionLabel={(option) => option.module_name}
+          onChange={(e, value) => {
+            // console.log(value);
+            setglobalApplication(value);
+          }}
+          renderInput={(params) => (
+            <div ref={params.InputProps.ref}>
+              <input type="text" {...params.inputProps} />
+            </div>
+          )}
+        />
       </Grid>
-      </Grid>
+      
+    </Grid>
+ 
   );
 }
