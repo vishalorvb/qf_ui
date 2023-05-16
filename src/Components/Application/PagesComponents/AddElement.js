@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from "react";
-import MastPop from "./MastPop";
-import { getElementsDetails } from "../Services/ApplicationService";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
-  Grid,
-  Typography,
 } from "@mui/material";
-import {
-  MultiSelectElement,
-  SelectElement,
-  TextFieldElement,
-  useForm,
-} from "react-hook-form-mui";
+import { SelectElement, TextFieldElement, useForm } from "react-hook-form-mui";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
-import axios from "../api/axios";
-function ElementsDetails({ ElementId, setPopup, setUpdated }) {
-  const [details, setDetails] = useState();
-  const [allXpath, setAllXpath] = useState([]);
-  useEffect(() => {
-    getElementsDetails(setDetails, ElementId);
-  }, [ElementId]);
-  const schema = yup.object().shape({});
+import axios from "../../../api/axios";
+export default function AddElement({ setPopup, webPageId, setelementAdded }) {
+  const schema = yup.object().shape({
+    pathType: yup.string().required("select path type"),
+    path: yup.string().required("path is required"),
+    fieldname: yup.string().required("Field name is required"),
+    tagname: yup.string().required("tag name is required"),
+    fieldType: yup.string().required("select the field type"),
+  });
 
   const {
     control,
@@ -39,49 +30,29 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    console.log(details);
-    setAllXpath(() =>
-      details?.all_xpaths
-        ?.split("XPATH_SEPARATOR")
-        ?.filter((d) => d !== "")
-        ?.map((x) => {
-          const splits = x?.split("=FIELD_VALUE=");
-          return {
-            pathntype: x,
-            id: splits[0],
-            label: splits[0],
-            path: splits[1],
-          };
-        })
-    );
-
-    reset({
-      fieldname: details?.name ?? "",
-      path: details?.selected_xpath ?? "",
-      fieldType: details?.input_type ?? "",
-      otherFieldType: details?.secondary_input_type ?? "",
-      pathType: details?.prefered_field ?? "",
-    });
-  }, [details]);
-
-  const updateElement = (elementData) => {
-    console.log(elementData);
-    const elementDetails = {
-      element_id: ElementId,
-      selected_xpath: elementData?.path,
-      prefered: elementData?.pathType,
-      input_type: elementData?.fieldType,
-      secondary_input_type: elementData?.otherFieldType,
-      all_xpaths: details?.all_xpaths,
-      name: elementData?.fieldname,
+  const handleElementSave = (data) => {
+    console.log(data);
+    const elementData = {
+      element_id: 0,
+      web_page_id: webPageId,
+      name: data?.fieldname,
+      input_type: data?.fieldType,
+      tag_name: data?.tagname,
+      prefered: data?.pathType,
+      all_xpaths: `absolute_xpath=FIELD_VALUE=${
+        data?.pathType === "absolute_xpath" ? data?.path : ""
+      }XPATH_SEPARATORxpath_name=FIELD_VALUE=${
+        data?.pathType === "xpath_name" ? data?.path : ""
+      }XPATH_SEPARATORxpath_id=FIELD_VALUE=${
+        data?.pathType === "xpath_id" ? data?.path : ""
+      }`,
+      selected_xpath: data?.path,
+      secondary_input_type: data?.secondaryFieldType,
     };
-    console.log(elementDetails);
-    console.log(details);
     axios
-      .postForm(`/qfservice/webpages/updateWebPageElementPaths`, elementDetails)
+      .postForm(`/qfservice/webpages/addNewPageElement`, elementData)
       .then((resp) => {
-        resp?.data?.status === "SUCCESS" && setUpdated(true);
+        resp?.data?.status === "SUCCESS" && setelementAdded(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);
       });
   };
@@ -90,20 +61,20 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
     <>
       <Dialog open={true} onClose={() => setPopup(false)}>
         <DialogTitle className="dialogTitle">Elements Details</DialogTitle>
-        <form onSubmit={handleSubmit(updateElement)}>
+        <form onSubmit={handleSubmit(handleElementSave)}>
           <DialogContent>
             <Stack direction="row" spacing={1} mt={3}>
               <SelectElement
                 label="Path Type"
                 name="pathType"
                 size="medium"
-                onChange={(e) => {
-                  const path = allXpath.find((xpath) => xpath?.id === e)?.path;
-                  setValue("path", path);
-                }}
                 control={control}
                 sx={{ width: 200 }}
-                options={allXpath || []}
+                options={[
+                  { id: "absolute_xpath", label: "absolute_xpath" },
+                  { id: "xpath_name", label: "xpath_name" },
+                  { id: "xpath_id", label: "xpath_id" },
+                ]}
               />
               <TextFieldElement
                 id="name"
@@ -140,8 +111,8 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
                 ]}
               />
               <SelectElement
-                name="otherFieldType"
-                label="Other Field Type"
+                name="secondaryFieldType"
+                label="Secondary Field Type"
                 size="medium"
                 fullWidth
                 control={control}
@@ -152,6 +123,15 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
                   { id: "WindowSwitch", label: "WindowSwitch" },
                   { id: "Alert", label: "Alert" },
                 ]}
+              />
+              <TextFieldElement
+                id="tag-name"
+                label="Tag Name"
+                variant="outlined"
+                size="small"
+                name="tagname"
+                fullWidth
+                control={control}
               />
             </Stack>
           </DialogContent>
@@ -165,5 +145,3 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
     </>
   );
 }
-
-export default ElementsDetails;

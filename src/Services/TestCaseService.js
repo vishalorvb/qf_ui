@@ -190,7 +190,6 @@ export async function UpdateTestcase(testcaseId, testcaseName, testcaseDescripti
 
 export function getSprint(callback, projectId) {
   axios.get(`${baseUrl}/qfservice/getsprints?project_id=${projectId}`).then(res => {
-    console.log(res.data.data.sprints)
     callback(res.data.data.sprints)
   })
 }

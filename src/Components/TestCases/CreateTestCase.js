@@ -103,6 +103,8 @@ function CreateTestCase() {
             }
             else {
                 console.log("Invalid form")
+                snackbarErrorMsg = "Fill all required fields"
+                setSnackbarError(true)
             }
         }
     }
@@ -214,7 +216,7 @@ function CreateTestCase() {
 
                 </Grid>
                 <Grid item md={3}>
-                    <label >Sprint</label>
+                    <label>Sprint</label>
                     <select
                         onChange={e => {
                             getIssues(setJiraIssue, globalApplication.project_id, e.target.value)
