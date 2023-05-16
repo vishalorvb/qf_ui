@@ -9,13 +9,14 @@ function DeleteTestset(props) {
     console.log(object)
     const tsName = object.testset_name;
     const tsId = object.testsetmap_id;
+    const TsId = object.testset_id;
 
     const handleClose = () => {
         setOpenDelete(false);
     };
 
     const submit = () => {
-        axiosPrivate.post(`/Biservice/bireport/deletetestsets?testset_map_id=${tsId}`).then(
+        tsId && axiosPrivate.post(`/Biservice/bireport/deletetestsets?testset_map_id=${tsId}`).then(
             res => {
                 setDelSuccessMsg(true);
                 getTestsets();
@@ -24,6 +25,16 @@ function DeleteTestset(props) {
                 }, 3000);
             }
         )
+        TsId && axiosPrivate.delete(`/qfservice/webtestset/deleteWebTestset?testset_id=${TsId}`).then(
+            res => {
+                setDelSuccessMsg(true);
+                getTestsets();
+                setTimeout(() => {
+                    setDelSuccessMsg(false)
+                }, 3000);
+            }
+        )
+
         handleClose();
     }
 
