@@ -9,6 +9,7 @@ import {
   executePipeline,
 } from "../../Services/DevopsServices";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import useAuth from "../../hooks/useAuth";
 
 export default function PipelineAutomation() {
   const { setHeader } = useHead();
@@ -17,6 +18,8 @@ export default function PipelineAutomation() {
   const [history, setHistory] = useState([]);
   const [releaseLog, setReleaseLog] = useState([]);
   const [msg, setMsg] = useState(false);
+  const { auth } = useAuth();
+  const loggedInId = auth.info.id;
 
   useEffect(() => {
     getPipelinesHistory(setHistory, setReleaseLog, location.state.id);
@@ -88,7 +91,7 @@ export default function PipelineAutomation() {
         </Typography>
         <Button
           variant="contained"
-          onClick={() => executePipeline(setMsg, location.state.id)}
+          onClick={() => executePipeline(setMsg, location.state.id, loggedInId)}
         >
           Release Now
         </Button>

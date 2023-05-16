@@ -20,6 +20,9 @@ function PhaseDetails(props) {
     Executed,
     PhaseChart,
     IsDefault,
+    getPhases,
+    setOpenNewPhase,
+    setOpenPhase
   } = props;
 
   const initialvalues = {
@@ -98,6 +101,9 @@ function PhaseDetails(props) {
           setMsg(res.data.message);
           if (res.data.message === "Succesfully Created Phase") {
             setAddSuccessMsg(true);
+            setOpenNewPhase(true);
+            setOpenPhase(false);
+            getPhases();
             setTimeout(() => {
               setAddSuccessMsg(false);
               // navigate("/BIReports");
@@ -117,7 +123,7 @@ function PhaseDetails(props) {
       console.log("Invalid form");
     }
   };
-
+console.log(data);
   return (
     <Grid item container md={8.5}>
       <Grid item container direction="row" spacing={1} mt={2}>
