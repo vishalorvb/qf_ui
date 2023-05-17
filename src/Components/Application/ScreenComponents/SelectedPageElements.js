@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
 import { Button } from "@mui/material";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+import BackdropLoader from "../../../CustomComponent/BackdropLoader";
 
 export default function SelectedPageElements() {
   const { setHeader } = useHead();
@@ -18,6 +19,7 @@ export default function SelectedPageElements() {
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
   const [updated, setUpdated] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const elementColumns = [
     {
@@ -61,6 +63,7 @@ export default function SelectedPageElements() {
     },
   ];
   const getPageElements = () => {
+    setShowLoading(true);
     axios
       .get(
         `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.web_page_id}&selected_elements_only=true`
@@ -76,6 +79,10 @@ export default function SelectedPageElements() {
             console.log(selectedData);
             return selectedData;
           });
+        setShowLoading(false);
+      })
+      .catch((err) => {
+        setShowLoading(false);
       });
   };
   useEffect(() => {
@@ -125,6 +132,7 @@ export default function SelectedPageElements() {
         msg={"Element is updated Successfully"}
         severity="success"
       />
+      <BackdropLoader open={showLoading} />
     </div>
   );
 }

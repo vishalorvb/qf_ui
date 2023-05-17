@@ -9,6 +9,7 @@ import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import { Button } from "@mui/material";
 import AddElement from "./AddElement";
+import BackdropLoader from "../../../CustomComponent/BackdropLoader";
 export default function PageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -21,6 +22,7 @@ export default function PageElements() {
   const [updated, setUpdated] = useState(false);
   const [showAddElement, setShowAddElement] = useState(false);
   const [elementAdded, setelementAdded] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const elementColumns = [
     {
@@ -71,6 +73,7 @@ export default function PageElements() {
   }, []);
 
   useEffect(() => {
+    setShowLoading(true);
     axios
       .get(
         `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
@@ -86,6 +89,10 @@ export default function PageElements() {
             console.log(selectedData);
             return selectedData;
           });
+        setShowLoading(false);
+      })
+      .catch((resp) => {
+        setShowLoading(false);
       });
   }, [elementAdded, updated]);
 
@@ -145,6 +152,7 @@ export default function PageElements() {
         msg={"Element is Added Successfully"}
         severity="success"
       />
+      <BackdropLoader open={showLoading} />
     </div>
   );
 }
