@@ -300,7 +300,7 @@ export default function ReportFields({
         alignItems="center"
         display="flex"
      >
-        <Grid container md={8}
+        <Grid item container md={8}
         justifyContent="flex-start"
         alignItems="center"
         spacing={1.3}>
