@@ -1,5 +1,5 @@
 import { Divider, Grid, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -12,10 +12,13 @@ import moment from "moment";
 import { Padding } from '@mui/icons-material';
 
 export default function ReportDetails({ selectedItemData }) {
-
+    const [selectedData,setSelectedData] = useState([])
+    useEffect(() => {
+    setSelectedData(selectedItemData)
+    }, [])
     return (
         <div>
-            <Typography variant="subtitle1"><b style={{ color: "#5C6780", fontSize: "20px" }}>{selectedItemData?.testcase_name}</b></Typography>
+            <Typography variant="subtitle1"><b style={{ color: "#5C6780", fontSize: "20px" }}>{selectedData?.testcase_name}</b></Typography>
 
             <Divider></Divider>
             <Grid container justifyContent="flex-start" columnSpacing={2} marginTop={"15px"} marginLeft={"0.1px"}>
@@ -24,21 +27,21 @@ export default function ReportDetails({ selectedItemData }) {
                 </Grid>
                 <Grid xs={3}>
                     <Typography variant="subtitle1">START TIME</Typography>
-                    <p style={{ color: "#66BB6A" }}><b>{moment(selectedItemData?.start_time).format('DD-MM-yyyy hh:mm:ss')}</b></p>
+                    <p style={{ color: "#66BB6A" }}><b>{moment(selectedData?.start_time).format('DD-MM-yyyy hh:mm:ss')}</b></p>
                 </Grid>
                 <Grid xs={0.5}>
                     <HourglassBottomIcon sx={{ color: "#636161" }} />
                 </Grid>
                 <Grid xs={3}>
                     <Typography variant="subtitle1">END TIME</Typography>
-                    <p style={{ color: "#EF5350" }}><b>{moment(selectedItemData?.end_time).format('DD-MM-yyyy hh:mm:ss')}</b></p>
+                    <p style={{ color: "#EF5350" }}><b>{moment(selectedData?.end_time).format('DD-MM-yyyy hh:mm:ss')}</b></p>
                 </Grid>
                 <Grid xs={0.5}>
                     <SettingsApplicationsIcon sx={{ color: "#636161" }} />
                 </Grid>
                 <Grid xs={3}>
                     <Typography variant="subtitle1">EXECUTION TIME</Typography>
-                    <p style={{ color: "#596981" }}><b>{moment(selectedItemData?.execution_time).format(' hh:mm:ss')}</b></p>
+                    <p style={{ color: "#596981" }}><b>{moment(selectedData?.execution_time).format(' hh:mm:ss')}</b></p>
                 </Grid>
             </Grid><br />
             <Divider></Divider>
