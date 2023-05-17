@@ -45,13 +45,6 @@ export default function ReportFields({
 
   try {
   } catch (error) {}
-
-  //   let autoComplete = [
-  //     "userAutocomplete",
-  //     "projectAutocomplete",
-  //     "workflowAutocomplete",
-  //   ];
-
   let date = new Date();
   date.setDate(date.getDate() - 7);
   let finalDate =
@@ -92,8 +85,12 @@ export default function ReportFields({
       headerAlign: "center",
       sortable: false,
       align: "center",
-      renderCell: (params) => {
-        return moment(params.row.created_at).format("DD/MM/yyyy hh:mm:ss");
+      renderCell: (params) => {      
+        const date = new Date(params.row.created_at);
+        const utcTime = date.toLocaleString('en-US', { timeZone: 'UTC' });
+        return utcTime
+        // moment(params.row.created_at).format("DD/MM/yyyy hh:mm:ss");
+        // moment(params.row.created_at).tz('Asia/Kolkata').format('DD/MM/yyyy hh:mm:ss');
       },
     },
     {
@@ -146,13 +143,13 @@ export default function ReportFields({
       renderCell: (params) => {
         return (
           <>
-            <Button
+            {/* <Button
               sx={{
+                marginLeft: "5px",
                 backgroundColor: "#F0FFF0",
                 color: "#2F4F4F",
                 borderRadius: "10px",
                 height: "25px",
-                width: "110px",
                 marginTop: "5px",
               }}
               variant="outlined"
@@ -188,7 +185,44 @@ export default function ReportFields({
               }}
             >
               View All
-            </Button>
+            </Button> */}
+            <div
+            style={{
+              border: "1px solid grey",
+              display: "flex",
+              padding: "inherit",
+              borderRadius: "15px",
+            }}
+          >
+            <div style={{ color: "green", fontWeight: "600",cursor:"pointer" }}
+               onClick={(e) => {
+                navigate("ViewReport", {
+                  state: { id: params.row.report_id },
+                });
+              }}
+            >
+              View Report
+            </div>
+            &nbsp;<b>|</b>
+            &nbsp;
+            <div style={{ color: "red", fontWeight: "600",cursor:"pointer" }}
+             onClick={(e) => {
+              navigate(
+                "AllReports",
+                {
+                  state: {
+                    id: params.row,
+                    fromDate: fromDate,
+                    toDate: toDate,
+                  },
+                },
+                console.log(fromDate)
+              );
+            }}
+            >
+              View All
+            </div>
+          </div>
             <DownloadIcon
               style={{
                 marginLeft: "5px",
@@ -212,18 +246,6 @@ export default function ReportFields({
       },
     },
   ];
-
-  // useEffect(() => {
-  //   axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-  //     const projects = res?.data?.result?.projects_list;
-  //     setProjectList(projects);
-  //     setSelectedProject(projects[0]);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   setSelectedApplication(applicationList[0]);
-  // }, [applicationList]);
 
   useEffect(() => {
     submit();
