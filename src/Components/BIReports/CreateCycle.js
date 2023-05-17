@@ -37,6 +37,8 @@ export default function CreateCycle({ testsetData }) {
   useEffect(() => {
     console.log(selectedReport);
   }, [selectedReport]);
+
+  console.log(testsetData)
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Stack spacing={1}>
