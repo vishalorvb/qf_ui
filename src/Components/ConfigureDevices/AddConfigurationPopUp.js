@@ -42,8 +42,9 @@ const AddConfigurationPopUp = (props) => {
   const location = useLocation();
   const { setHeader } = useHead();
   let deviceInfo;
- 
-    const onSubmitHandler = (params) => {
+  
+    const onSubmitHandler = (event) => {
+      event.preventDefault();
       postVal.config_obj = JSON.stringify(JSON.parse(deviceInfo))
       postVal.accessKey="";
       postVal.deviceType=1;
@@ -54,12 +55,13 @@ const AddConfigurationPopUp = (props) => {
       postVal.organizationId=organizationId;
       postVal.userId=userId;
       postVal.userName="";
+      console.log(postVal)
       axios.post(`/qfservice/mobileconfiguration/save.do`, postVal)
       .then((resp) => {
           resp?.data?.status === "SUCCESS" && setSnack(true)
           resp?.data?.status === "SUCCESS" &&
           navigate(-1, {
-            state: { projectId: location.state.projectId },
+            state: { projectId: location?.state?.projectId },
           });
         });
     

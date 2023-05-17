@@ -355,7 +355,7 @@ function TestsetExecutionToolbar({
             />
           </Grid>
         )}
-        <Grid item md={2}>
+        <Grid item md={1.8}>
           <FeatureMenu
             frameworkType={frameworkType}
             projectId={projectId}

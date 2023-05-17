@@ -54,7 +54,9 @@ export default function AllReports({}) {
       sortable: false,
       align: "center",
       renderCell: (params) => {
-        return moment(params.row.created_at).format("DD/MM/yyyy hh:mm:ss");
+        const date = new Date(params.row.created_at);
+        const utcTime = date.toLocaleString('en-US', { timeZone: 'UTC' });
+        return utcTime
       },
     },
     {

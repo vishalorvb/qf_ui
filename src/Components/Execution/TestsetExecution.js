@@ -142,7 +142,7 @@ export default function TestsetExecution() {
             />}
           </>
         </Grid>
-        <Grid item md={5.5}>
+        <Grid>
           <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}
@@ -172,7 +172,7 @@ export default function TestsetExecution() {
 
           <Divider orientation="vertical" flexItem />
 
-          <Grid item md={9}>
+          <Grid item md={9} mt={1}>
             <ExecuteTestSetDetails
               projectId={globalProject?.project_id}
               applicationType={globalApplication?.module_type}

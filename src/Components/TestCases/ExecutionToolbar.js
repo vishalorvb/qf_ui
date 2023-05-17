@@ -398,7 +398,7 @@ export default function ExecutionToolbar({
           </Grid>
         )}
 
-        <Grid item md={2}>
+        <Grid item md={1.8}>
           <FeatureMenu
             testcaseId={testcaseId}
             projectId={projectId}

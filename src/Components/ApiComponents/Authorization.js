@@ -7,7 +7,7 @@ import { Apidata } from './Data'
 function Authorization() {
 
   let [type, setType] = useState("")
-
+  console.log(authdata)
 
   return (
     <div>
@@ -52,6 +52,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+              defaultValue={authdata.username}
                 onChange={e => {
                   authdata.username = e.target.value
                   let x = getAuthData()
@@ -64,6 +65,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.password}
                 onChange={e => {
                   authdata.password = e.target.value
                   let x = getAuthData()
@@ -81,6 +83,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.key}
                 onChange={e => {
                   authdata.key = e.target.value
                   let x = getAuthData()
@@ -93,6 +96,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.value}
                 onChange={e => {
                   authdata.value = e.target.value
                   let x = getAuthData()
@@ -128,6 +132,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.token}
                 onChange={e => {
                   authdata.token = e.target.value
                   let x = getAuthData()
@@ -144,6 +149,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.tokenurl}
                 onChange={e => {
                   authdata.tokenurl = e.target.value
                   let x = getAuthData()
@@ -156,6 +162,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.clientid}
                 onChange={e => {
                   authdata.clientid = e.target.value
                   let x = getAuthData()
@@ -168,6 +175,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.clientsecret}
                 onChange={e => {
                   authdata.clientsecret = e.target.value
                   let x = getAuthData()

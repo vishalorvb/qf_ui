@@ -52,6 +52,9 @@ function CreateTestCase() {
                 TCdata.testcase_sprints.push(sprintData)
             }
             if (validateFormbyName(["name", "desc"], "error")) {
+                if(!TCdata.testcase_name.startsWith("TC_")){
+                    TCdata.testcase_name = "TC_"+TCdata.testcase_name
+                }
                 if (TCdata.testcase_id === undefined) {
                     CreateTestCaseService(TCdata).then(res => {
                         if (res) {
