@@ -49,6 +49,19 @@ export let Apidata = {
 }
 
 export function resetApiData() {
+    authdata = {
+        "authtype":"noauth",
+        "username":"",
+        "password":"",
+        "key":"",
+        "value":"",
+        "addto":"header",
+        "token":"",
+        "tokenurl":"",
+        "clientid":"",
+        "clientsecret":"",
+    
+    }
 
     Apidata = {
         "api_url": "",
