@@ -32,80 +32,7 @@ const ConfigureDevice = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location?.state?.projectId
-
-  console.log(location.state.pathname)
-
-
-  function getConfigurations(projectId) {
-    axios
-      .get(`/qfservice/mobileconfiguration?project_id=${792}`)
-      .then((res) => {
-        if (res.data.data.length > 0) {
-          setConfigurations(res?.data?.data);
-          setFetchSuccessMsg(true);
-          setTimeout(() => {
-            setFetchSuccessMsg(false);
-          }, 3000);
-        } else {
-          setConfigurations([]);
-          setFetchFailMsg(true);
-          setTimeout(() => {
-            setFetchFailMsg(false);
-          }, 3000);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  function makeDefault() {
-    const config_id = configurations[0]?.specificationId;
-    axios
-      .post(
-        `/qfservice/mobileconfiguration/${config_id}/makedefault?project_id=${projectId}`
-      )
-      .then((res) => {
-        getConfigurations(projectId);
-        setSuccessMsg(true);
-        setTimeout(() => {
-          setSuccessMsg(false);
-        }, 5000);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  useEffect(() => {
-    getConfigurations(projectId);
-  }, [projectId]);
-
-  function deleteApiRequest(specificationId) {
-    axios
-      .delete(
-        `/qfservice/mobileconfiguration/${specificationId}/deleteconfiguration`
-      )
-      .then((res) => {
-        console.log(res);
-        if (res.data.status == "SUCCESS") {
-          setSuccessDelete(true);
-          getConfigurations(projectId);
-          setTimeout(() => {
-            setSuccessDelete(false);
-          }, 3000);
-          getConfigurations(selectedProject?.project_id);
-        }
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-    setConfirm(false);
-  }
-  useEffect(() => {
-    setSpecificationId(specificationId);
-  }, [specificationId]);
-
+  const { setHeader } = useHead();
   const columns = [
     {
       field: "name",
@@ -136,18 +63,6 @@ const ConfigureDevice = () => {
                 
                 }}>{param.row.name}
                 </span>
-  
-            {/* <Tooltip title="Delete">
-              <IconButton
-                onClick={() => {
-                  setSpecificationId(param.row.specificationId);
-                  console.log(specificationId);
-                  setConfirm(true);
-                }}
-              >
-                <DeleteOutlineIcon />
-              </IconButton>
-            </Tooltip> */}
           </>
         );
       },
@@ -177,15 +92,54 @@ const ConfigureDevice = () => {
       },
     },
   ];
-  const { setHeader } = useHead();
+  function getConfigurations(projectId) {
+    axios
+      .get(`/qfservice/mobileconfiguration?project_id=${projectId}`)
+      .then((res) => {
+        if (res.data.data.length > 0) {
+          setConfigurations(res?.data?.data);
+          setFetchSuccessMsg(true);
+          setTimeout(() => {
+            setFetchSuccessMsg(false);
+          }, 3000);
+        } else {
+          setConfigurations([]);
+          setFetchFailMsg(true);
+          setTimeout(() => {
+            setFetchFailMsg(false);
+          }, 3000);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  function deleteApiRequest(specificationId) {
+    axios
+      .delete(
+        `/qfservice/mobileconfiguration/${specificationId}/deleteconfiguration`
+      )
+      .then((res) => {
+        console.log(res);
+        if (res.data.status == "SUCCESS") {
+          setSuccessDelete(true);
+          getConfigurations(projectId);
+          setTimeout(() => {
+            setSuccessDelete(false);
+          }, 3000);
+          getConfigurations(selectedProject?.project_id);
+        }
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+    setConfirm(false);
+  }
   useEffect(() => {
     setHeader((ps) => {
       return {
         ...ps,
         name: "Configurations",
-        // plusButton: true,
-        // buttonName: "Add Configuration",
-        // plusCallback: () => setPopup(true),
       };
     });
     return () =>
@@ -198,6 +152,14 @@ const ConfigureDevice = () => {
         };
       });
   }, []);
+
+  useEffect(() => {
+    getConfigurations(projectId);
+  }, [projectId]);
+
+  useEffect(() => {
+    setSpecificationId(specificationId);
+  }, [specificationId]);
   return (
     <>
       <Grid  container

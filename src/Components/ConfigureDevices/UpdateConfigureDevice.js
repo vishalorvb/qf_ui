@@ -56,7 +56,8 @@ const UpdateConfigureDevice = () => {
       });
   }, []);
 
-  function handleUpdate() {
+  function handleUpdate(event) {
+    event.preventDefault();
     const postValues = {
       specificationId: location.state.id,
       name: configName,
