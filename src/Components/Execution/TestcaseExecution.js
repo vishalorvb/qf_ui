@@ -103,7 +103,7 @@ export default function TestcaseExecution() {
             onChange={handleSearchChange}
           />
         </Grid>
-        <Grid item md={5.5}>
+        <Grid>
           <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}
@@ -140,7 +140,7 @@ export default function TestcaseExecution() {
           </List>
         </Grid>
         <Divider orientation="vertical" flexItem />
-        <Grid item md={9}>
+        <Grid item md={9} mt={1}>
           <ExecutionDetails
             selectedItem={selectedItem}
             testcaseId={selectedItem}

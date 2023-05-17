@@ -35,6 +35,7 @@ export default function FeatureMenu({
   return (
     <>
       <Button
+      fullWidth
         sx={{ backgroundColor: "#009fee" }}
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
@@ -42,9 +43,10 @@ export default function FeatureMenu({
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         variant="contained"
+        endIcon={<ArrowDropDownIcon sx={{marginLeft:"20px"}} />}
       >
         Features
-        <ArrowDropDownIcon />
+ 
       </Button>
       {location.pathname == "/TestcaseExecution" && (
         <Menu
