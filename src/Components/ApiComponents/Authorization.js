@@ -50,7 +50,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={ authdata.basicauth.username}
+              defaultValue={ authdata.basicauth?.username}
                 onChange={e => {
                   authdata.basicauth.username = e.target.value
                 }}
@@ -61,7 +61,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-              defaultValue={authdata.basicauth.password}
+              defaultValue={authdata.basicauth?.password}
                 onChange={e => {
                   authdata.basicauth.password = e.target.value
                 }}
@@ -77,7 +77,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-               defaultValue={authdata.apikey.key}
+               defaultValue={authdata?.apikey?.key}
                 onChange={e => {
                   authdata.apikey.key = e.target.value
                 }}
@@ -88,7 +88,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-               defaultValue={authdata.apikey.key}
+               defaultValue={authdata?.apikey?.key}
                 onChange={e => {
                   authdata.apikey.key = e.target.value
                 }}
@@ -120,7 +120,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-               defaultValue={authdata.bearertoken.token}
+               defaultValue={authdata?.bearertoken?.token}
                 onChange={e => {
                   authdata.bearertoken.token = e.target.value
                 }}
@@ -135,7 +135,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-               defaultValue={ authdata.oauth2.tokenurl}
+               defaultValue={ authdata?.oauth2?.tokenurl}
                 onChange={e => {
                   authdata.oauth2.tokenurl = e.target.value
                 }}
@@ -146,7 +146,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-               defaultValue={authdata.oauth2.clientid}
+               defaultValue={authdata?.oauth2?.clientid}
                 onChange={e => {
                   authdata.oauth2.clientid = e.target.value
                 }}
@@ -157,7 +157,7 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-               defaultValue={authdata.oauth2.clientsecret}
+               defaultValue={authdata?.oauth2?.clientsecret}
                onChange={e => {
                  authdata.oauth2.clientsecret = e.target.value
                }}

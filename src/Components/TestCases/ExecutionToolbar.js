@@ -24,7 +24,9 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
+import { Controller } from 'react-hook-form';
 
+const options = ["Chrome", "Edge", "Firefox", "Safari"];
 export default function ExecutionToolbar({
   applicationId,
   projectId,
@@ -385,7 +387,6 @@ export default function ExecutionToolbar({
           ""
         ) : (
           <Grid item md={2}>
-            {" "}
             <MultiSelectElement
               menuMaxWidth={5}
               label="Browser"
@@ -393,12 +394,14 @@ export default function ExecutionToolbar({
               size="small"
               control={control}
               fullWidth
-              options={["Chrome", "Edge", "Firefox", "Safari"]}
+              defaultValue={options[0]}
+              options={options}
             />
+            
           </Grid>
         )}
 
-        <Grid item md={1.8}>
+        <Grid item md={2}>
           <FeatureMenu
             testcaseId={testcaseId}
             projectId={projectId}
@@ -412,7 +415,9 @@ export default function ExecutionToolbar({
             }
           />
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={(applicationType == '3' || applicationType == '4') ? 6: 4}  
+        display="flex"
+        justifyContent="flex-end">
           <Stack direction="column">
             <React.Fragment>
               <ButtonGroup

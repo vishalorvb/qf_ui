@@ -49,11 +49,11 @@ export default function TestcaseExecution() {
               onClick={() => {
                 setSelectedItem(apiItem?.testcase_id);
               }}
-              style={{fontSize: "15px", color : "#009fee"}}
+              style={{fontSize: "15px", color : "#009fee",fontWeight:"400" }}
             >
-             <b> {apiItem.name}</b>
+              {apiItem.name}
                 {/* <br />
-                {apiItem.description} */}
+                <p style={{color:"black"}}>{apiItem.description}</p> */}
             
             </ListItemButton>
           </ListItem>
@@ -65,7 +65,9 @@ export default function TestcaseExecution() {
   useEffect(() => {
     GetTestCase(
       (res) => {
+        // console.log(res[0]?.datasets[0]?.testcase_id)
         setTestcases(res);
+        setSelectedItem(res[0]?.datasets[0]?.testcase_id)
       },
       globalProject?.project_id,
       globalApplication?.module_id
@@ -124,7 +126,7 @@ export default function TestcaseExecution() {
             {testcases.length > 0 ? (
               itemRender(testcases)
             ) : (
-              <div style={{ textAlign: "center" }}>
+              <div style={{ textAlign: "center" ,fontWeight:"400" }}>
                 <Typography>No Testcases Found</Typography>
                 <br />
                 <Button
