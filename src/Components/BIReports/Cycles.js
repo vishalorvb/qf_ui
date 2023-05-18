@@ -16,46 +16,61 @@ import ImageIcon from "@mui/icons-material/Image";
 import Divider from "@mui/material/Divider";
 import { Container, Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import axios, { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import CreateCycle from "./CreateCycle";
 import ViewCycle from "./ViewCycle";
 import DeleteIcon from '@mui/icons-material/Delete';
 import TableActions from "../../CustomComponent/TableActions";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
 function Cycles() {
   const { setHeader } = useHead();
-
+  const location = useLocation();
   const [validationMsg, setValidationMsg] = useState(false);
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addErrorMsg, setAddErrorMsg] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
   const [msg, setMsg] = useState("");
   const [openNewPhase, setOpenNewPhase] = useState(true);
-
+  const [confirm, setConfirm] = useState(false);
+  const [cycleId, setCycleId] = useState();
   const [cycleList, setCycleList] = useState([]);
   const [selectedCycleList, setSelectedCycleList] = useState([]);
-
   const [TSList, setTSList] = useState([]);
-  let [popup, setPopup] = useState(false);
 
-
+  let porject_id = location.state.param2;
   const getCycles = () => {
-    axios.get("/Biservice/projects/93/cycles").then((resp) => {
-      console.log(resp);
+    axios.get(`/Biservice/projects/${porject_id}/cycles`).then((resp) => {
+      // console.log(resp);
       setCycleList(resp?.data?.info?.cycles);
       setTSList(resp?.data?.info?.bitestsets);
     });
   };
 
-  const deleteCycle = () => {
-    axios.get(`/Biservice/projects/cycles/delete?cycle_id=${selectedCycleList.cycle_id}`).then((resp) => {
-      console.log(resp);
-      setCycleList(resp?.data?.info?.cycles);
-      setTSList(resp?.data?.info?.bitestsets);
-    });
-  };
+  function deleteCycle(cycleId) {
+    axios
+      .post(
+        `/Biservice/projects/cycles/delete?cycle_id=${cycleId}`
+      )
+      .then((res) => {
+        // console.log(res);
+        if (res.data.status == "SUCCESS") {
+          setSuccessDelete(true);
+          getCycles();
+          setOpenNewPhase(true);
+          setTimeout(() => {
+            setSuccessDelete(false);
+          }, 3000);
 
-  console.log(selectedCycleList.cycle_id)
+        }
+      })
+      .catch((res) => {
+        // console.log(res);
+      });
+    setConfirm(false);
+  }
+
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -106,7 +121,10 @@ function Cycles() {
                       <TableActions>
                         <MenuItem
                           onClick={(e) => {
-                            setPopup(true);
+                            // console.log(cycle.cycle_id)
+                            setCycleId(cycle.cycle_id)
+                            setConfirm(true);
+
                           }}
                         >
                           <DeleteIcon sx={{ color: "black", mr: 1 }} />
@@ -124,7 +142,7 @@ function Cycles() {
           <Divider orientation="vertical" />
         </Grid>
         <Grid item md={9}>
-          {openNewPhase ? <CreateCycle testsetData={TSList} /> : <ViewCycle selectedCycleList={selectedCycleList} />}
+          {openNewPhase ? <CreateCycle testsetData={TSList} getCycles={getCycles} /> : <ViewCycle selectedCycleList={selectedCycleList} />}
         </Grid>
       </Grid>
 
@@ -146,6 +164,21 @@ function Cycles() {
         msg={msg}
         severity="error"
       />
+      {successDelete && <SnackbarNotify
+        open={successDelete}
+        close={setSuccessDelete}
+        msg="Deleted Cycle successfully"
+        severity="success"
+      />}
+      {confirm && (
+        <ConfirmPop
+          open={true}
+          handleClose={(e) => setConfirm(false)}
+          heading={"Delete Cycle"}
+          message={"Are you sure you want to delete the Cycle ?"}
+          onConfirm={(e) => deleteCycle(cycleId)}
+        ></ConfirmPop>
+      )}
     </>
   );
 }

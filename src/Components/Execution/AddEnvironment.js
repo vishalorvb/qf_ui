@@ -19,6 +19,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import axios from "../../api/axios";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import useHead from "../../hooks/useHead";
+import { postVal } from "../Execution/EditEnvironmentPop";
 const AddEnvironemt = () => {
   const [tbData, setTbData] = useState([]);
   const [addEnvironmentPop, setAddEnvironmentPop] = useState(false);
@@ -26,10 +27,8 @@ const AddEnvironemt = () => {
   const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
   const [reportFailMsg, setReportFailMsg] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const [close, setClose] = useState(false);
   const [successDelete, setSuccessDelete] = useState(false);
   const [specificationId, setSpecificationId] = useState();
-  const [editEnvironmentData, setEditEnvironmentData] = useState();
   const location = useLocation();
   const navigate = useNavigate();
   const { setHeader } = useHead();
@@ -59,7 +58,7 @@ const AddEnvironemt = () => {
         `/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`
       )
       .then((res) => {
-        console.log(res.data.data.length);
+        // console.log(res.data.data.length);
         if (res.data.data.length > 0) {
           setTbData(res.data.data);
           setReportSuccessMsg(true);
@@ -121,8 +120,14 @@ const AddEnvironemt = () => {
           <>
             <Tooltip title="Edit">
               <IconButton
-                onClick={() => {
-                  setEditEnvironmentData(param.row);
+                onClick={(e) => {
+                  // console.log(param.row)
+                  postVal.name = param.row.name;
+                  postVal.description = param.row.description;
+                  postVal.base_url = param.row.base_url;
+                  postVal.id = param.row.id;
+                  postVal.project_id = param.row.project_id;
+                  postVal.module_id = param.row.module_id;
                   setEditEnvironmentPop(true);
                 }}
               >
@@ -203,7 +208,6 @@ const AddEnvironemt = () => {
         close={setEditEnvironmentPop}
         row={tbData}
         getBuilEnvironment={getBuilEnvironment}
-        editEnvironmentData={editEnvironmentData}
         projectId={project_id}
         applicationId={application_id}
       />
