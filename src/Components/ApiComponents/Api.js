@@ -8,6 +8,8 @@ import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { createApiRequest } from "../../Services/ApiService";
 import useHead from "../../hooks/useHead";
 import { authdata } from "./Data";
+
+
 function Api() {
   const { setHeader } = useHead();
   let namelist = ["apiname", "apidesc", "apiurl", "resource"];
@@ -17,6 +19,7 @@ function Api() {
   function handleSave(e) {
     if (validateFormbyName(namelist, "error")) {
       Apidata.auth = authdata
+      console.log(Apidata)
       createApiRequest(Apidata).then((res) => {
         if (res) {
           setSnackbarsuccess(true);

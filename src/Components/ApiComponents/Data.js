@@ -47,9 +47,7 @@ export let Apidata = {
         "raw_text": "",
         "raw_type_id": 0
     },
-    "auth": {
-        "auth_data": "{\"authtype\":\"bearertoken\",\"basicauth\":{\"username\":\"\",\"password\":\"\"},\"apikey\":{\"key\":\"\",\"value\":\"\",\"addto\":\"header\"},\"bearertoken\":{\"token\":\"qwert\"},\"oauth2\":{\"tokenurl\":\"\",\"clientid\":\"\",\"clientsecret\":\"\"}}"
-    }
+    "auth": {}
 }
 
 export function resetApiData() {
@@ -89,9 +87,7 @@ export function resetApiData() {
             "raw_text": "",
             "raw_type_id": 0
         },
-        "auth": {
-            "auth_data": "{\"authtype\":\"bearertoken\",\"basicauth\":{\"username\":\"\",\"password\":\"\"},\"apikey\":{\"key\":\"\",\"value\":\"\",\"addto\":\"header\"},\"bearertoken\":{\"token\":\"qwert\"},\"oauth2\":{\"tokenurl\":\"\",\"clientid\":\"\",\"clientsecret\":\"\"}}"
-        }
+        "auth": {}
     }
 }
 
