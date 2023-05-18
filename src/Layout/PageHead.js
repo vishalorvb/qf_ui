@@ -3,6 +3,8 @@ import BreadcrumbsComponent from "./BreadcrumbsComponent";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton, Grid, Typography, Stack } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import GlobalSnackbar from "../CustomComponent/GloablSnackbar";
 
 export default function PageHead() {
   const navigate = useNavigate();
@@ -54,6 +56,7 @@ export default function PageHead() {
             <BreadcrumbsComponent />
           </Grid>
 
+          <GlobalSnackbar />
           <div className="customDivider"></div>
         </>
       )}

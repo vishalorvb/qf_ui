@@ -8,6 +8,7 @@ import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import useSnackbar from "../../hooks/useSnackbar";
 export let moduledata = {
   module_name: "",
   base_url: "",
@@ -30,6 +31,7 @@ export function resetModuledata() {
 export default function CreateApplication() {
   const { auth } = useAuth();
   const { setHeader } = useHead();
+  const { setSnackbarData } = useSnackbar();
   const [selectedType, setSelectedType] = useState(1);
   let [snackbarerror, setSnackbarerror] = useState(false);
   const navigate = useNavigate();
@@ -52,6 +54,11 @@ export default function CreateApplication() {
       createApplication(moduledata, auth.info.id).then((res) => {
         if (res) {
           resetModuledata();
+          setSnackbarData({
+            status: true,
+            message: "New Application Created",
+            severity: "success",
+          });
           navigate("/Application/Recent");
         }
       });

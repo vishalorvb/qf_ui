@@ -21,9 +21,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "../api/axios";
+import BackdropLoader from "./BackdropLoader";
 function ElementsDetails({ ElementId, setPopup, setUpdated }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     getElementsDetails(setDetails, ElementId);
   }, [ElementId]);
@@ -67,6 +69,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
 
   const updateElement = (elementData) => {
     console.log(elementData);
+    setLoading(true);
     const elementDetails = {
       element_id: ElementId,
       selected_xpath: elementData?.path,
@@ -83,6 +86,10 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && setUpdated(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);
+        setLoading(false);
+      })
+      .catch((resp) => {
+        setLoading(false);
       });
   };
 
@@ -162,6 +169,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated }) {
           </DialogActions>
         </form>
       </Dialog>
+      <BackdropLoader open={loading} />
     </>
   );
 }

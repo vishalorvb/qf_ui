@@ -1,12 +1,13 @@
 import { Divider, Grid, MenuItem, Select, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { authdata } from './Data'
 import { authdata } from './Data'
-import { getAuthData } from './Data'
-import { Apidata } from './Data'
+
+
 function Authorization() {
 
   let [type, setType] = useState("")
+
 
 
   return (
@@ -21,12 +22,9 @@ function Authorization() {
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             fullWidth
-            // onChange={handleChange}
             onChange={e => {
               setType(e.target.value)
               authdata.authtype = e.target.value
-              let x = getAuthData()
-              Apidata.auth = x
             }}
           >
             <option value="">Select</option>
@@ -52,10 +50,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+              defaultValue={ authdata.basicauth.username}
                 onChange={e => {
-                  authdata.username = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.basicauth.username = e.target.value
                 }}
               />
             </Grid>
@@ -64,10 +61,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+              defaultValue={authdata.basicauth.password}
                 onChange={e => {
-                  authdata.password = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.basicauth.password = e.target.value
                 }}
               />
             </Grid>
@@ -81,10 +77,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.apikey.key}
                 onChange={e => {
-                  authdata.key = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.apikey.key = e.target.value
                 }}
               />
             </Grid>
@@ -93,10 +88,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.apikey.key}
                 onChange={e => {
-                  authdata.value = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.apikey.key = e.target.value
                 }}
               />
             </Grid>
@@ -110,9 +104,7 @@ function Authorization() {
                 inputProps={{ "aria-label": "Without label" }}
                 fullWidth
                 onChange={e => {
-                  authdata.addto = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.apikey.addto = e.target.value
                 }}
               >
                 <MenuItem value=""></MenuItem>
@@ -128,10 +120,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.bearertoken.token}
                 onChange={e => {
-                  authdata.token = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.bearertoken.token = e.target.value
                 }}
               />
             </Grid>
@@ -144,10 +135,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={ authdata.oauth2.tokenurl}
                 onChange={e => {
-                  authdata.tokenurl = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.oauth2.tokenurl = e.target.value
                 }}
               />
             </Grid>
@@ -156,10 +146,9 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
+               defaultValue={authdata.oauth2.clientid}
                 onChange={e => {
-                  authdata.clientid = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
+                  authdata.oauth2.clientid = e.target.value
                 }}
               />
             </Grid>
@@ -168,11 +157,10 @@ function Authorization() {
             </Grid>
             <Grid item md={10}>
               <input
-                onChange={e => {
-                  authdata.clientsecret = e.target.value
-                  let x = getAuthData()
-                  Apidata.auth = x
-                }}
+               defaultValue={authdata.oauth2.clientsecret}
+               onChange={e => {
+                 authdata.oauth2.clientsecret = e.target.value
+               }}
               />
             </Grid>
           </Grid>}
