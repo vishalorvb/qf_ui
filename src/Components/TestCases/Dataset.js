@@ -3,12 +3,8 @@ import Table from "../../CustomComponent/Table";
 import CreateDataSetPopUp from "./CreateDataSetPopUp";
 import {
   Button,
-  Chip,
   Grid,
-  IconButton,
   MenuItem,
-  TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
@@ -23,7 +19,6 @@ import { datasetinfo } from "./DatasetHelper";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 import { useLocation, useNavigate } from "react-router";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
-import { Stack } from "@mui/system";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import AddIcon from '@mui/icons-material/Add';
 import TableActions from "../../CustomComponent/TableActions";
@@ -34,7 +29,6 @@ export let DatasetRequest;
 let snabarMessage = " "
 
 function Dataset() {
-  let [createpopup, setCreatepopup] = useState(false);
   let [datasets, setDatasets] = useState([]);
   let [drawer, setDrawer] = useState(false);
   let [screens, setScreens] = useState([]);
@@ -286,11 +280,11 @@ function Dataset() {
   function ReloadDatset(val) {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
     setDrawer(!drawer);
-    if (val == "Create"){
-      snabarMessage ="Dataset Created Successfully"
+    if (val == "Create") {
+      snabarMessage = "Dataset Created Successfully"
     }
-    if (val == "Update"){
-      snabarMessage ="Dataset Updated Successfully"
+    if (val == "Update") {
+      snabarMessage = "Dataset Updated Successfully"
     }
     setSnackbar(true);
   }
@@ -343,28 +337,29 @@ function Dataset() {
   const { setHeader } = useHead();
   useEffect(() => {
 
-      setHeader((ps) => {
-          return {
-              ...ps,
-              name: location?.state?.testcaseName,
-          };
-      });
-      
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: location?.state?.testcaseName,
+      };
+    });
+
   }, [location.state.testcaseName]);
 
   return (
     <div>
       {drawer && <div>
 
-          <CreateDataSetPopUp
-            ReloadDataset={ReloadDatset}
-            drawer={drawer}
-            setDrawer={setDrawer}
-          />
+        <CreateDataSetPopUp
+          ReloadDataset={ReloadDatset}
+          drawer={drawer}
+          setDrawer={setDrawer}
+        />
         <Grid container columnSpacing={2}>
           <Grid item md={3}>
             {screeninfo.length > 0 && (
               <PersistentDrawerRight
+                testcaseId={location.state.testcaseId}
                 screen={screeninfo}
                 screenId={selectedScreenIds}
                 setScreenId={setSelectedScreenIds}
