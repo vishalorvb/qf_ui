@@ -7,17 +7,27 @@ import { useEffect, useMemo, useState } from "react";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import { Stack } from "@mui/system";
 import MaterialReactTable from "material-react-table";
+import axios from "../../api/axios";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 const drawerWidth = 240;
 export let selected_screen;
 
+let snackbarMessage = ""
+let snackbarType = "success"
+
 export default function PersistentDrawerRight({
+  testcaseId,
   screen,
   screenId,
   setScreenId,
+
 }) {
 
   const [tempScreen, setTempScreen] = useState()
+  const [order, setOrder] = useState([]);
+  let [snackbar, setSnackbar] = useState(false)
+
 
   const columns = useMemo(
     () => [
@@ -26,11 +36,13 @@ export default function PersistentDrawerRight({
         header: " ",
         Cell: ({ cell, column, row, table }) => {
           return (
-            <div style={{ backgroundColor: screenId.includes(row.original.screen_id) && "#e8edf2",
-            cursor: "pointer",}}
-            onClick={e=>{
-              handleClick(row.original.screen_id)
+            <div style={{
+              backgroundColor: screenId.includes(row.original.screen_id) && "#e8edf2",
+              cursor: "pointer",
             }}
+              onClick={e => {
+                handleClick(row.original.screen_id)
+              }}
             >
               <h4>{row.original.name}</h4>
               <h5>{row.original.description}</h5>
@@ -43,20 +55,36 @@ export default function PersistentDrawerRight({
   );
 
 
+  const updateScreenOrder = () => {
+    axios
+      .post(`/qfservice/webtestcase/updateOrderOfScreensInTestcase`, {
+        testcaseId: testcaseId,
+        screen_ids: order,
+      })
+      .then((resp) => {
+        if (resp.data.status == "SUCCESS") {
+          snackbarMessage = "Screen Order Updated"
+          setSnackbar(true)
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (order != undefined && order.length > 0) {
+      updateScreenOrder();
+    }
+  }, [order]);
+
   function handleClick(e) {
     setScreenId([e]);
   }
 
-  useEffect(() => { }, [screenId]);
 
   useEffect(() => {
     setScreenId([screen[0].screen_id]);
     setTempScreen([...screen]);
   }, [screen]);
 
-  // useEffect(() => {
-  //   console.log(tempScreen)
-  // }, [tempScreen])
 
   return (
     <>
@@ -64,34 +92,8 @@ export default function PersistentDrawerRight({
         List of screens
       </Typography>
 
-      {/* {screen.map((s) => {
-        return (
-          <Stack
-            mt={1}
-            ml={1}
-            direction="column"
-            sx={{
-              backgroundColor: screenId.includes(s.screen_id) && "#e8edf2",
-              cursor: "pointer",
-            }}
-            onClick={() => handleClick(s.screen_id)}
-          >
-            <Typography variant="p" sx={{ fontWeight: "bold" }}>
-              {s.name}
-            </Typography>
-            <Typography variant="caption">{s.description}</Typography>
-            <Divider />
-          </Stack>
-        );
-      })} */}
-
-
-
-
-
-
       {tempScreen != undefined && <MaterialReactTable
-      
+
         columns={columns}
         data={tempScreen}
         enableColumnActions={false}
@@ -111,6 +113,10 @@ export default function PersistentDrawerRight({
               x.splice(hoveredRow.index, 0, draggingRow.original)
               x.splice(draggingRow.index + 1, 1)
               setTempScreen([...x])
+              let id = x?.map(s => {
+                return s.screen_id
+              })
+              setOrder(id)
             }
           },
         })}
@@ -118,7 +124,12 @@ export default function PersistentDrawerRight({
           elevation: 0,
         }}
       />}
-
+      <SnackbarNotify
+        open={snackbar}
+        close={setSnackbar}
+        msg={snackbarMessage}
+        severity={snackbarType}
+      />
     </>
   );
 }

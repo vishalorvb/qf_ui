@@ -7,6 +7,7 @@ import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+import BackdropLoader from "../../../CustomComponent/BackdropLoader";
 
 export default function UpdateScreen() {
   const { setHeader } = useHead();
@@ -17,6 +18,7 @@ export default function UpdateScreen() {
   const [preSelectedElement, setPreSelectedElement] = useState([]);
   const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
   const [updated, setUpdated] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   console.log(location);
   const elementColumns = [
     {
@@ -65,6 +67,7 @@ export default function UpdateScreen() {
     },
   ];
   useEffect(() => {
+    setShowLoading(true);
     axios
       .get(
         `qfservice/webpages/getWebPageElementsList?web_page_id=${location?.state?.web_page_id}&selected_elements_only=true`
@@ -75,7 +78,7 @@ export default function UpdateScreen() {
 
     axios
       .get(
-        `http://10.11.12.243:8083/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
+        `/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((res) => {
         res?.data?.info &&
@@ -87,6 +90,10 @@ export default function UpdateScreen() {
             console.log(selectedData);
             return selectedData;
           });
+        setShowLoading(false);
+      })
+      .catch((err) => {
+        setShowLoading(false);
       });
   }, [updated]);
 
@@ -95,8 +102,6 @@ export default function UpdateScreen() {
       return {
         ...ps,
         name: "Create Screen",
-        plusButton: preSelectedElement.length > 0,
-        plusCallback: () => setShowCreateScreenPop(true),
       };
     });
   }, [preSelectedElement]);
@@ -139,6 +144,7 @@ export default function UpdateScreen() {
         msg={"Element is updated Successfully"}
         severity="success"
       />
+      <BackdropLoader open={showLoading} />
     </div>
   );
 }
