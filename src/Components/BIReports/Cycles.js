@@ -36,6 +36,8 @@ function Cycles() {
   const [selectedCycleList, setSelectedCycleList] = useState([]);
 
   const [TSList, setTSList] = useState([]);
+  let [popup, setPopup] = useState(false);
+
 
   const getCycles = () => {
     axios.get("/Biservice/projects/93/cycles").then((resp) => {
@@ -104,6 +106,7 @@ function Cycles() {
                       <TableActions>
                         <MenuItem
                           onClick={(e) => {
+                            setPopup(true);
                           }}
                         >
                           <DeleteIcon sx={{ color: "black", mr: 1 }} />
