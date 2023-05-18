@@ -405,99 +405,10 @@ const TestDesign = () => {
   console.log(Object.keys(projectSprints));
   return (
     <>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        display="flex"
-      >
-        <Grid
-          container
-          md={8}
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={1.3}
-        >
+      <Grid container>
+         <Grid item xs={2}>
+         {empty && 
           <Grid item>
-            <label htmlFor="">Projects</label>
-            <Autocomplete
-              disablePortal
-              disableClearable
-              id="project_id"
-              options={projectsList}
-              value={globalProject || null}
-              sx={{ width: "100%" }}
-              getOptionLabel={(option) => option.project_name ?? ""}
-              onChange={(e, value) => {
-                setJiraProjectId(value?.jira_project_id);
-                setglobalProject(value);
-                setNotEmpty(false)
-              }}
-              renderInput={(params) => (
-                <div ref={params.InputProps.ref}>
-                  <input type="text" {...params.inputProps} />
-                </div>
-              )}
-            />
-          </Grid>
-          { empty ? <> <Grid item md={2}>
-              <InputLabel id="demo-simple-select-label">
-                Jira Project
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={project}
-                onChange={(e) => setProject(e.target.value)}
-                size="small"
-                fullWidth
-              >
-                 <MenuItem key={projectSprints.key} value={projectSprints.name}>
-                  {projectSprints.name}
-                </MenuItem>
-              </Select>
-            </Grid>
-            <Grid item md={2}>
-              <InputLabel id="demo-simple-select-label">Sprint</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={sprint}
-                onChange={(e) => setSprint(e.target.value)}
-                size="small"
-                fullWidth
-              >
-                {sprintList?.map((sprint, index) => (
-                  <MenuItem key={sprint.id} value={sprint.name}>
-                    {sprint.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item md={1.3} style={{ marginTop: "20px" }}>
-              <Button
-                variant="contained"
-                onClick={""}
-                startIcon={<SyncIcon />}
-                fullWidth
-              >
-                Sync
-              </Button>
-            </Grid> </> : <Grid item md={3} mt={2}>
-            <Button
-              variant="contained"
-              onClick={handleClick}
-              startIcon={<SyncIcon />}
-              size="small"
-            >
-              Configure JIRA
-            </Button></Grid>
-             }
-           
-        </Grid>
-        {empty &&   <Grid item md={4}>
-            <Grid item container justifyContent="flex-end">
-              <Grid item md={4}>
                 <InputLabel id="demo-simple-select-label">
                   Select the status
                 </InputLabel>
@@ -520,9 +431,89 @@ const TestDesign = () => {
                   ))}
                 </Select>
               </Grid>
+            } 
+         </Grid>
+         <Grid item xs={10} container justifyContent="flex-end" spacing={1} alignItems="end">
+         <Grid item>
+            <label htmlFor="">Projects</label>
+            <Autocomplete
+              disablePortal
+              disableClearable
+              id="project_id"
+              options={projectsList}
+              value={globalProject || null}
+              sx={{ width: "100%" }}
+              getOptionLabel={(option) => option.project_name ?? ""}
+              onChange={(e, value) => {
+                setJiraProjectId(value?.jira_project_id);
+                setglobalProject(value);
+                setNotEmpty(false)
+              }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" {...params.inputProps} />
+                </div>
+              )}
+            />
+          </Grid>
+          <Grid item>
+          { empty ? <Stack direction="row" spacing={1}> 
+          <div>
+              <InputLabel id="demo-simple-select-label">
+                Jira Project
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={project}
+                onChange={(e) => setProject(e.target.value)}
+                size="small"
+              >
+                 <MenuItem key={projectSprints.key} value={projectSprints.name}>
+                  {projectSprints.name}
+                </MenuItem>
+              </Select>
+          </div>
+            <Grid item>
+              <InputLabel id="demo-simple-select-label">Sprint</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={sprint}
+                onChange={(e) => setSprint(e.target.value)}
+                size="small"
+                fullWidth
+              >
+                {sprintList?.map((sprint, index) => (
+                  <MenuItem key={sprint.id} value={sprint.name}>
+                    {sprint.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
-          </Grid>}     
-        
+            <Grid item style={{ marginTop: "20px" }}>
+              <Button
+                variant="contained"
+                onClick={""}
+                startIcon={<SyncIcon />}
+                fullWidth
+              >
+                Sync
+              </Button>
+            </Grid>
+             </Stack> : <>
+            <Button
+              variant="contained"
+              onClick={handleClick}
+              startIcon={<SyncIcon />}
+              size="small"
+              style={{marginBottom:"5px"}}
+            >
+              Configure JIRA
+            </Button></>
+             }
+          </Grid>
+         </Grid>
       </Grid>
 
       <Table columns={columns} rows={issues} getRowId={(row) => row.id} />
