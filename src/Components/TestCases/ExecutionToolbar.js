@@ -26,6 +26,7 @@ import MenuList from "@mui/material/MenuList";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
 import { Controller } from 'react-hook-form';
 
+
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
 export default function ExecutionToolbar({
   applicationId,
@@ -45,6 +46,7 @@ export default function ExecutionToolbar({
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [remoteAPiFails, setRemoteAPiFails] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
+  // const [buildEnv,setBuildEnv] = useState("Testing")
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -287,7 +289,6 @@ export default function ExecutionToolbar({
               };
             });
           });
-          console.log(buildEnv[0])
         }) 
 
     applicationId !== undefined &&
@@ -306,16 +307,15 @@ export default function ExecutionToolbar({
           });
           const mergedObj = [...data1, ...data2];
           setExecEnvList(mergedObj);
-          console.log(mergedObj)
         });
   }, [applicationId]);
 
-  // useEffect(()=>{
-  //   reset({
-  //     executionLoc : execEnvList[0],
-  //     buildenvName : buildEnvList[0]
-  //   })
-  // },[execEnvList,buildEnvList])
+  useEffect(()=>{
+    reset({
+      executionLoc :execEnvList[0]?.id,
+      buildenvName : buildEnvList[0]?.id,
+    })
+  },[execEnvList,buildEnvList])
 
   return (
     <form>
