@@ -57,6 +57,8 @@ function Dataset() {
     navigate("/testcase");
   }
 
+    let click = ["input","select"]
+
   let elementcol = [
     {
       field: "fieldname",
@@ -72,7 +74,7 @@ function Dataset() {
       field: "tagname",
       headerName: "Tag Name",
       renderCell: (param) => {
-        return <p>{param.row.web_page_elements.input_type}</p>;
+        return <p>{param.row.web_page_elements.tag_name}</p>;
       },
       flex: 2,
       sortable: false,
@@ -84,10 +86,11 @@ function Dataset() {
       renderCell: (param) => {
         return (
           <div>
-            {param.row.web_page_elements.input_type == "InputText" && (
+            {param.row.web_page_elements.tag_name == "input" && (
               <input
                 type="text"
                 className="datasetInput"
+                placeholder="Enter Value"
                 defaultValue={param.row.dataset_values.input_value}
                 onChange={(e) => {
                   updateDataset(
@@ -98,10 +101,10 @@ function Dataset() {
                 }}
               />
             )}
-            {param.row.web_page_elements.input_type == "Link" && (
+            { !click.includes(param.row.web_page_elements.tag_name)  && (
               <input
                 type="checkbox"
-                checked={param.row.dataset_values.is_click}
+                defaultChecked ={param.row.dataset_values.is_click}
                 onChange={(e) => {
                   updateDataset(
                     param.row.element_id,
@@ -111,7 +114,7 @@ function Dataset() {
                 }}
               />
             )}
-            {param.row.web_page_elements.input_type == "Button" && (
+            {/* {param.row.web_page_elements.tag_name == "Button" && (
               <input
                 type="checkbox"
                 checked={param.row.dataset_values.is_click}
@@ -123,6 +126,11 @@ function Dataset() {
                   );
                 }}
               />
+            )} */}
+            {param.row.web_page_elements.tag_name == "select" && (
+           <select>
+            {param.row.web_page_elements.child_text}
+           </select>
             )}
           </div>
         );
