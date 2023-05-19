@@ -272,12 +272,12 @@ function TestsetExecutionToolbar({
       });
   }, [applicationId]);
 
-  useEffect(()=>{
-    reset({
-      executionLoc : execEnvList[0],
-      buildenvName : buildEnvList[0]
-    })
-  },[execEnvList,buildEnvList])
+  // useEffect(()=>{
+  //   reset({
+  //     executionLoc : execEnvList[0],
+  //     buildenvName : buildEnvList[0]
+  //   })
+  // },[execEnvList,buildEnvList])
 
   return (
     <form>
