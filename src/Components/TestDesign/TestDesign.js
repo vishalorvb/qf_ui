@@ -51,7 +51,6 @@ const TestDesign = () => {
   const [projectKey, setProjectKey] = useState("");
   const [statusName, setStatusName] = React.useState([]);
   const [projectsList, setProjectList] = useState([]);
-
   const { globalProject, setglobalProject } = useHead();
   const [jiraProjectId, setJiraProjectId] = useState();
   const [sqeProjectId, setSqeProjectid] = useState();
@@ -60,6 +59,8 @@ const TestDesign = () => {
   const { auth } = useAuth();
   const userId = auth.info.id;
   const [empty,setNotEmpty] = useState(false)
+  const { setHeader } = useHead();
+
 
   const columns = [
     {
@@ -401,12 +402,18 @@ const TestDesign = () => {
     createformData.repository_token = globalProject.repository_token;
     navigate("/Projects/Recent/Update");
   }
-  console.log(globalProject);
-  console.log(Object.keys(projectSprints));
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Test Design",
+      };
+    });
+  }, []);
   return (
     <>
       <Grid container>
-         <Grid item xs={2}>
+         <Grid item xs={1.5}>
          {empty && 
           <Grid item>
                 <InputLabel id="demo-simple-select-label">
@@ -433,7 +440,7 @@ const TestDesign = () => {
               </Grid>
             } 
          </Grid>
-         <Grid item xs={10} container justifyContent="flex-end" spacing={1} alignItems="end">
+         <Grid item xs={10.5} container justifyContent="flex-end" spacing={1} alignItems="end">
          <Grid item>
             <label htmlFor="">Projects</label>
             <Autocomplete

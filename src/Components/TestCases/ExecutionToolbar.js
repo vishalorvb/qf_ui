@@ -279,7 +279,6 @@ export default function ExecutionToolbar({
           setBuildEnvId(resp?.data?.data[0]?.id);
           setRunTimeVariable(resp?.data?.data[0]?.runtime_variables);
           const buildEnv = resp?.data?.data;
-
           setBuildEnvList(() => {
             return buildEnv.map((be) => {
               return {
@@ -288,7 +287,8 @@ export default function ExecutionToolbar({
               };
             });
           });
-        });
+          console.log(buildEnv[0])
+        }) 
 
     applicationId !== undefined &&
       axios
@@ -309,6 +309,13 @@ export default function ExecutionToolbar({
           console.log(mergedObj)
         });
   }, [applicationId]);
+
+  useEffect(()=>{
+    reset({
+      executionLoc : execEnvList[0],
+      buildenvName : buildEnvList[0]
+    })
+  },[execEnvList,buildEnvList])
 
   return (
     <form>
@@ -360,26 +367,6 @@ export default function ExecutionToolbar({
             onChange={(e) => setExecLoc(e)}
             options={execEnvList}
           />
-        {/* <Controller
-  control={control}
-  name="executionLoc"
-  defaultValue={execEnvList.length > 0 ? execEnvList[0].id : ''}
-  render={({ field }) => (
-    <SelectElement
-      name="executionLoc"
-      label="Execution Location"
-      size="small"
-      fullWidth
-      onChange={(e) => setExecLoc(e)}
-      control={control}
-      options={execEnvList.map((item) => ({
-        value: item.id,
-        label: item.label,
-      }))}
-      {...field}
-    />
-  )}
-/> */}
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">
