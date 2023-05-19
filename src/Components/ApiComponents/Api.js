@@ -18,7 +18,7 @@ function Api() {
 
   function handleSave(e) {
     if (validateFormbyName(namelist, "error")) {
-      Apidata.auth = authdata
+      Apidata.auth.authtype = authdata
       console.log(Apidata)
       createApiRequest(Apidata).then((res) => {
         if (res) {
