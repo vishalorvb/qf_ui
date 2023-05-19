@@ -9,6 +9,7 @@ import { UpdateUser } from '../../Services/UserService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 import { uploadPic } from '../../Services/UserService';
+import axios from 'axios';
 
 let userData = {
     user_id: "",
@@ -31,6 +32,7 @@ function UserProfile() {
     let [showPassword, setShowPassword] = useState("")
     let [snackbarerror, setSnackbarerror] = useState(false);
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
+    const [imageData, setImageData] = useState("");
     const { auth } = useAuth();
     const fileInputRef = useRef(null);
     const { setHeader } = useHead();
@@ -42,7 +44,12 @@ function UserProfile() {
         const formData = new FormData();
         const file = event.target.files[0];
         formData.append('file', file);
-        uploadPic(auth.userId,formData,auth.token)
+        uploadPic(auth.userId,formData,auth.token).then(res=>{
+            if(res){
+                successmsg = "Profile Picture update"
+                setSnackbarsuccess(true)
+            }
+        })
         if (file.size > 2 * 1024 * 1024) {
         }
     };
@@ -96,6 +103,36 @@ function UserProfile() {
         userData.token = auth.token
         userData.ssoid = auth.info.ssoId
     }, [])
+
+
+
+    useEffect(() => {
+        // Make the GET request to fetch the image data
+        axios.get('http://10.11.12.243:8083/qfuserservice/user/profilePic', {
+          params: {
+            user_id: auth.userId
+          },
+          responseType: 'arraybuffer',
+          headers: {
+            'Authorization': `Bearer ${auth.token}`
+          }
+        })
+          .then(response => {
+            // Convert the array buffer to a base64 encoded string
+            console.log(response.data)
+            const base64String = Buffer.from(response.data, 'binary').toString('base64');
+            // setImageData(base64String);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, []);
+
+
+    //   useEffect(() => {
+    //   console.log(imageData)
+    //   }, [imageData])
+
     return (
         <div style={{ padding: "40px" }} >
             <SnackbarNotify
@@ -118,12 +155,14 @@ function UserProfile() {
                     <h5>Primary Info</h5>
                 </Grid>
                 <Grid container md={6} alignItems='center' >
+                 {/* <img src="" alt="User Profile Pic" /> */}
                     <Grid item md={2}>
                         <IconButton
                             onClick={handleUploadClick}
                         >
                             <AccountCircleRoundedIcon fontSize="large"></AccountCircleRoundedIcon>
-                            {/* <img src="logo192.png" width="50" height="60" style={{borderRadius:"20px"}}/> */}
+                            {/* <img src="http://10.11.12.243:8083/qfuserservice/user/profilePic?user_id=7" width="50" height="60" style={{borderRadius:"20px"}}/> */}
+                            
                             <input type="file"
                                 ref={fileInputRef}
                                 accept="image/*"

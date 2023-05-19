@@ -23,14 +23,15 @@ export async function UpdateUser(data) {
 
 
 export async function uploadPic(userId, picfile, token) {
-    let x = await axios.get(`${baseUrl}/qfuserservice/user/profilePic?user_id=${userId}`,{
+    console.log(token)
+    let x = await axios.post(`${baseUrl}/qfuserservice/user/profilePicUpload?user_id=${userId}`,picfile,{
         headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
         }
     })
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             return true
         })
         .catch(error => {
