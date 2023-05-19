@@ -306,6 +306,7 @@ export default function ExecutionToolbar({
           });
           const mergedObj = [...data1, ...data2];
           setExecEnvList(mergedObj);
+          console.log(mergedObj)
         });
   }, [applicationId]);
 
@@ -359,12 +360,32 @@ export default function ExecutionToolbar({
             onChange={(e) => setExecLoc(e)}
             options={execEnvList}
           />
+        {/* <Controller
+  control={control}
+  name="executionLoc"
+  defaultValue={execEnvList.length > 0 ? execEnvList[0].id : ''}
+  render={({ field }) => (
+    <SelectElement
+      name="executionLoc"
+      label="Execution Location"
+      size="small"
+      fullWidth
+      onChange={(e) => setExecLoc(e)}
+      control={control}
+      options={execEnvList.map((item) => ({
+        value: item.id,
+        label: item.label,
+      }))}
+      {...field}
+    />
+  )}
+/> */}
         </Grid>
         <Grid item md={2}>
           <Stack direction="column">
             <SelectElement
               name="buildenvName"
-              label="build env. Name"
+              label="Build Environment"
               size="small"
               fullWidth
               control={control}
@@ -387,16 +408,22 @@ export default function ExecutionToolbar({
           ""
         ) : (
           <Grid item md={2}>
+             <Controller
+             control={control}
+             name="browser"
+             defaultValue={["Chrome"]} // Set the default value to "Chrome"
+             render={({ field }) => (
             <MultiSelectElement
-              menuMaxWidth={5}
-              label="Browser"
-              name="browser"
-              size="small"
-              control={control}
-              fullWidth
-              defaultValue={options[0]}
-              options={options}
-            />
+            menuMaxWidth={5}
+            label="Browser"
+            size="small"
+            fullWidth
+            options={options}
+            control={control} // Pass the control object to the MultiSelectElement
+            {...field}
+          />
+        )}
+      />
             
           </Grid>
         )}
