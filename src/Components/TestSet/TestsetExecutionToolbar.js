@@ -330,7 +330,7 @@ function TestsetExecutionToolbar({
           <Stack direction="column">
             <SelectElement
               name="buildenvName"
-              label="build env. Name"
+              label="Build Environment"
               size="small"
               fullWidth
               control={control}
