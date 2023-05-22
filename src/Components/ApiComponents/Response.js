@@ -15,6 +15,8 @@ function Response() {
       header={["Key","Value","Description"]}
       TableData = {handleResponseData}
       keypair ={["key","value","description"]}
+      prefilled={Apidata.successResponseProperties?.slice(0, -1)}
+      order={["key","value","description"]}
       ></GrowingTable>
     </div>
   )
