@@ -23,6 +23,9 @@ export default function CreateScreenPop(props) {
   });
   const [selectElements, setSelectElements] = useState(false);
   const [emptyDetails, setEmptyDetails] = useState(false);
+  const [updateSnack,setUpdateSnack] = useState(false)
+  const [createSnack,setCreateSnack] = useState(false)
+  
 
   const saveScreen = () => {
     elementsList.length < 1 && setSelectElements(true);
@@ -41,29 +44,48 @@ export default function CreateScreenPop(props) {
       ? axios
           .post(`/qfservice/screen/createScreen`, screendata)
           .then((resp) => {
-            console.log(resp);
-            resp?.data?.status === "SUCCESS" && navigate(-1);
+            if(resp?.data?.message === 'Screen is updated successfully.') { 
+              setUpdateSnack(true)
+             setTimeout(() => {
+              navigate(-1)
+            }, 2000);
+          }
+          if(resp?.data?.message === 'Successfully created a Screen.') { 
+            setCreateSnack(true)
+           setTimeout(() => {
+            navigate(-1)
+          }, 2000);
+        }    
           })
       : setEmptyDetails(true);
   };
 
   return (
     <>
-      {/* // <Dialog open={open} onClose={handleClose}>
-    //   <DialogTitle className="dialogTitle">Create Screen</DialogTitle>
-    //   <DialogContent className="dialogContent"> */}
-      <SnackbarNotify
+     { selectElements && <SnackbarNotify
         open={selectElements}
         close={setSelectElements}
         msg="Select At least one Element"
         severity="error"
-      />
-      <SnackbarNotify
+      />}
+     { emptyDetails && <SnackbarNotify
         open={emptyDetails}
         close={setEmptyDetails}
         msg="Enter Screen Details"
         severity="error"
-      />
+      />}
+     {updateSnack &&  <SnackbarNotify
+     open={updateSnack}
+     close={setUpdateSnack}
+     msg={"Screen is updated Successfully"}
+     severity="success"
+   />} 
+    {createSnack && <SnackbarNotify
+     open={createSnack}
+     close={setCreateSnack}
+     msg={"Screen is created Successfully"}
+     severity="success"
+   />} 
       <Grid container direction="row" spacing={1}>
         <Grid item md={5}>
           <input
@@ -93,21 +115,15 @@ export default function CreateScreenPop(props) {
             }}
           />
         </Grid>
-        {/* // </DialogContent> */}
-        {/* // <DialogActions> */}
         <Grid item md={2}>
           <Button
             variant="contained"
-            //   type="submit"
             onClick={saveScreen}
           >
             Save
           </Button>
         </Grid>
       </Grid>
-
-      {/* // </DialogActions> */}
-      {/* // </Dialog> */}
     </>
   );
 }

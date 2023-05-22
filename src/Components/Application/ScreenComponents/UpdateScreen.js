@@ -34,7 +34,7 @@ export default function UpdateScreen() {
     },
     {
       field: "input_type",
-      headerName: "field Type",
+      headerName: "Field Type",
       flex: 3,
       sortable: false,
     },

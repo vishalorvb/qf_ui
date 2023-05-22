@@ -27,7 +27,7 @@ export async function createApplication(data, userId) {
     }).then(res => {
         console.log(res.data.message)
         if(res.data.message == "Module Created Successfully" || res.data.message == "Module Updated Successfully"){
-            return true
+            return res.data.message
         }
         else{
             return false
