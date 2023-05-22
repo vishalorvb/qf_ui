@@ -8,7 +8,6 @@ function Header() {
 
   function handleHeaderData(tabdata) {
     Apidata.headers_list = tabdata
-    console.log(tabdata)
   }
 
   return (

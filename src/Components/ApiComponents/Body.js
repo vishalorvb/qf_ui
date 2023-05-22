@@ -9,8 +9,6 @@ function Body() {
   let [selected, setSelected] = useState("")
 
   function handleFormData(tabdata){
-    console.log("table data from body")
-    console.log(tabdata)
     Apidata.body_form_data_list = tabdata
   }
    function handleEncoderData(tabdata){
@@ -25,7 +23,7 @@ function Body() {
         <RadioGroup
           row={true}
           aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
+          defaultValue={Apidata.body_type}
           name="radio-buttons-group"
           onChange={e => {
             setSelected(e.target.value)
@@ -64,6 +62,8 @@ function Body() {
           header={["Key", "Value", "Description"]}
           TableData = {handleFormData}
           keypair ={["key", "value", "description"]}
+          prefilled={Apidata.body_form_data_list?.slice(0, -1)}
+          order={["key","value","description"]}
         ></GrowingTable>
       </div>}
       {selected == "3" && <div>
@@ -71,6 +71,8 @@ function Body() {
           header={["Key", "Value", "Description"]}
           TableData ={handleEncoderData}
           keypair ={["key", "value", "description"]}
+          prefilled={Apidata.body_form_url_encoded_list?.slice(0, -1)}
+          order={["key","value","description"]}
         ></GrowingTable>
       </div>}
       { selected == "4" && <div style={{marginTop:"10px"}}>
