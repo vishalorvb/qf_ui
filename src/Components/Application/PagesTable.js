@@ -21,13 +21,14 @@ import TableActions from "../../CustomComponent/TableActions";
 import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import UsbIcon from "@mui/icons-material/Usb";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
 export default function PagesTable(props) {
   const { location } = props;
   const { header, setHeader } = useHead();
   const navigate = useNavigate();
-
   let [page, setPage] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState(false);
+  let [popup, setPopup] = useState(false);
 
   const handleDelete = (pageId) => {
     axios
@@ -35,6 +36,7 @@ export default function PagesTable(props) {
       .then((resp) => {
         setSnackbarMsg(resp?.data?.message);
       });
+    setPopup(false);
   };
 
   const pageColumns = [
@@ -91,7 +93,7 @@ export default function PagesTable(props) {
               <MenuItem>
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
-              <MenuItem onClick={() => handleDelete(param?.row?.web_page_id)}>
+              <MenuItem onClick={() => setPopup(true)}>
                 <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
               </MenuItem>
               <MenuItem
@@ -102,6 +104,15 @@ export default function PagesTable(props) {
                 <UsbIcon sx={{ color: "red", mr: 1 }} /> Map Diff Elements
               </MenuItem>
             </TableActions>
+            {popup && (
+              <ConfirmPop
+                open={popup}
+                handleClose={() => setPopup(false)}
+                heading={"Delete Page"}
+                message={"Are you sure you want to delete this page?"}
+                onConfirm={() => handleDelete(param?.row?.web_page_id)}
+              ></ConfirmPop>
+            )}
           </>
         );
       },

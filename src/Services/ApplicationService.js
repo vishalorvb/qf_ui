@@ -33,7 +33,7 @@ export async function createApplication(data, userId) {
       res.data.message == "Module Created Successfully" ||
       res.data.message == "Module Updated Successfully"
     ) {
-      return true;
+      return res.data.message;
     } else {
       return false;
     }

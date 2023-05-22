@@ -6,8 +6,14 @@ import { Button, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "../../api/axios";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
-export default function CreateCycle({ testsetData }) {
+export default function CreateCycle({ testsetData, getCycles }) {
+
+  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
+  const [addErrorMsg, setAddErrorMsg] = useState(false);
+  const [selectedReport, setSelectedReport] = useState([]);
+
   const schema = yup.object().shape({
     cycleName: yup.string().required("Please Enter a Valid cycle Name"),
   });
@@ -20,26 +26,47 @@ export default function CreateCycle({ testsetData }) {
     resolver: yupResolver(schema),
   });
   const submit = (data) => {
-    console.log(data);
+    // console.log(data);
     const postData = {
       cycle_id: 0,
       cycle_name: data?.cycleName,
       project_id: testsetData[0]?.project_id,
       reports: selectedReport,
     };
-    console.log(postData);
+    // console.log(postData);
     axios
       .post(`/Biservice/projects/cycles/create`, postData)
-      .then((resp) => console.log(resp));
+      .then((resp) =>{ 
+        // console.log(resp)
+        if (resp.data.message == "Succesfully Created Cycle") {
+          setAddSuccessMsg(true);
+          reset();
+          getCycles();
+          setTimeout(() => {
+            setAddSuccessMsg(false);
+          }, 3000);
+        }
+        else{
+          setAddErrorMsg(true);
+          reset();
+          getCycles();
+          setTimeout(() => {
+            setAddErrorMsg(false);
+          }, 3000);
+        }
+        
+
+      
+      });
   };
-  const [selectedReport, setSelectedReport] = useState([]);
 
   useEffect(() => {
-    console.log(selectedReport);
+    // console.log(selectedReport);
   }, [selectedReport]);
 
-  console.log(testsetData)
+  // console.log(testsetData)
   return (
+    <>
     <form onSubmit={handleSubmit(submit)}>
       <Stack spacing={1}>
         <Typography>Cycle Name :</Typography>
@@ -72,7 +99,7 @@ export default function CreateCycle({ testsetData }) {
                     const index = ps.findIndex(
                       (report) => report?.testset_id === testset?.testset_id
                     );
-                    console.log(index);
+                    // console.log(index);
                     if (index !== -1) ps[index].report_id = a?.report_id;
                     return index !== -1
                       ? [...ps]
@@ -86,7 +113,7 @@ export default function CreateCycle({ testsetData }) {
                           },
                         ];
                   });
-                  console.log(e);
+                  // console.log(e);
                 }}
               />
             </Grid>
@@ -99,5 +126,18 @@ export default function CreateCycle({ testsetData }) {
         </Stack>
       </Stack>
     </form>
+          <SnackbarNotify
+          open={addSuccessMsg}
+          close={setAddSuccessMsg}
+          msg={"Created Successfully"}
+          severity="success"
+        />
+        <SnackbarNotify
+          open={addErrorMsg}
+          close={setAddErrorMsg}
+          msg={"Failed"}
+          severity="error"
+        /> 
+        </>
   );
 }

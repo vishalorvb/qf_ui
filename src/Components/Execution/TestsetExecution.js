@@ -77,6 +77,7 @@ export default function TestsetExecution() {
       .then((resp) => {
         const testcases = resp?.data?.info ? resp?.data?.info : [];
         setTestcases(testcases);
+        setSelectedItem(testcases[0]?.testset_id)
       });
   }, [globalProject, globalApplication]);
 
@@ -98,7 +99,7 @@ export default function TestsetExecution() {
             }}
           >
             <Typography>
-              <b style={{ fontSize: "15px" , color : "#009fee" }}>{apiItem.testset_name}</b>
+              <b style={{ fontSize: "15px" , color : "#009fee" ,fontWeight:"400"}}>{apiItem.testset_name}</b>
             </Typography>
           </ListItemButton>
         </ListItem>

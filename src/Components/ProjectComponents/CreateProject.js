@@ -21,7 +21,7 @@ import {
   getApplication,
 } from "../../Services/ApplicationService";
 
-
+let snackbarmasg  =""
 let jiraProjectdata = {
   url: "",
   username: "",
@@ -107,6 +107,7 @@ function CreateProject() {
       if (createformData.sqeProjectId == "") {
         createProject(createformData).then((res) => {
           if (res == "SUCCESS") {
+            snackbarmasg = "Created Successfully"
             setSnackbarsuccess(true);
             setTimeout(() => {
               navigate("/Projects/Recent");
@@ -119,6 +120,7 @@ function CreateProject() {
       } else {
         updateProject(createformData).then((res) => {
           if (res == "SUCCESS") {
+            snackbarmasg = "Updadated Successfully"
             setSnackbarsuccess(true);
             setTimeout(() => {
               navigate("/Projects/Recent");
@@ -263,7 +265,7 @@ function CreateProject() {
         <SnackbarNotify
           open={snackbarsuccess}
           close={setSnackbarsuccess}
-          msg="Saved Succesfully"
+          msg={snackbarmasg}
           severity="success"
         />
         <AccordionTemplate defaultState={true} name="Project Information">

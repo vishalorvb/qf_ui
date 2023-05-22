@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { createApiRequest } from "../../Services/ApiService";
 import useHead from "../../hooks/useHead";
+import { authdata } from "./Data";
+
 
 function Api() {
   const { setHeader } = useHead();
@@ -16,15 +18,12 @@ function Api() {
 
   function handleSave(e) {
     if (validateFormbyName(namelist, "error")) {
-      console.log(Apidata);
-      console.log("Form submited");
+      Apidata.auth.authtype = authdata
+      console.log(Apidata)
       createApiRequest(Apidata).then((res) => {
         if (res) {
           setSnackbarsuccess(true);
           setTimeout(() => {
-            // navigate("/application/apiApp/apiRequests", {
-            //   state: { id: Apidata.module_id },
-            // });
             navigate(-1)
           }, 1000);
         }
@@ -73,7 +72,7 @@ function Api() {
           </Button>
         </Grid>
       </Grid>
-
+      <br/>
       <Grid container spacing={1}>
         <Grid item md={4}>
           <input

@@ -11,6 +11,7 @@ import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import {
   CheckboxButtonGroup,
+  Controller,
   MultiSelectElement,
   SelectElement,
   TextFieldElement,
@@ -25,6 +26,7 @@ import useHead from "../../hooks/useHead";
 import { useNavigate } from "react-router-dom";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
 
+const options = ["Chrome", "Edge", "Firefox", "Safari"];
 function TestsetExecutionToolbar({
   applicationId,
   projectId,
@@ -270,6 +272,13 @@ function TestsetExecutionToolbar({
       });
   }, [applicationId]);
 
+  useEffect(()=>{
+    reset({
+      executionLoc : execEnvList[0]?.id,
+      buildenvName : buildEnvList[0]?.id
+    })
+  },[execEnvList,buildEnvList])
+
   return (
     <form>
       <SnackbarNotify
@@ -321,7 +330,7 @@ function TestsetExecutionToolbar({
           <Stack direction="column">
             <SelectElement
               name="buildenvName"
-              label="build env. Name"
+              label="Build Environment"
               size="small"
               fullWidth
               control={control}
@@ -343,16 +352,22 @@ function TestsetExecutionToolbar({
           ""
         ) : (
           <Grid item md={2}>
-            {" "}
+             <Controller
+             control={control}
+             name="browser"
+             defaultValue={["Chrome"]} // Set the default value to "Chrome"
+             render={({ field }) => (
             <MultiSelectElement
-              menuMaxWidth={5}
-              label="Browser"
-              name="browser"
-              size="small"
-              control={control}
-              fullWidth
-              options={["Chrome", "Edge", "Firefox", "Safari"]}
-            />
+            menuMaxWidth={5}
+            label="Browser"
+            size="small"
+            fullWidth
+            options={options}
+            control={control} // Pass the control object to the MultiSelectElement
+            {...field}
+          />
+        )}
+      />
           </Grid>
         )}
         <Grid item md={1.8}>
@@ -368,7 +383,8 @@ function TestsetExecutionToolbar({
             }
           />
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={(applicationType == '3' || applicationType == '4') ? 6: 4} display="flex"
+        justifyContent="flex-end">
           <Stack direction="column">
             <React.Fragment>
               <ButtonGroup

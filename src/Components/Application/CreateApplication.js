@@ -2,7 +2,7 @@ import { Button, Grid } from "@mui/material";
 
 import { useEffect, useRef, useState } from "react";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { createApplication } from "../../Services/ApplicationService";
+import { createApplication, getApplication } from "../../Services/ApplicationService";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
@@ -27,13 +27,14 @@ export function resetModuledata() {
     module_id: 0,
   };
 }
-
+let moduleNames = []
 export default function CreateApplication() {
   const { auth } = useAuth();
   const { setHeader } = useHead();
   const { setSnackbarData } = useSnackbar();
   const [selectedType, setSelectedType] = useState(1);
   let [snackbarerror, setSnackbarerror] = useState(false);
+  let [duplicateError,setDuplicateError] = useState(false)
   const navigate = useNavigate();
   const location = useLocation();
   const refName = useRef(null);
@@ -49,18 +50,36 @@ export default function CreateApplication() {
   ];
 
   function submitHandler(e) {
+    const isTaken = isModuleNameTaken(moduledata.module_id, moduledata.module_name);
+    if (isTaken) 
+    {
+      setDuplicateError(true)
+      return
+    } else {
+     setDuplicateError(false)
+    }
     if (validateFormbyName(["appname", "url", "desc"], "error")) {
       console.log("valid form");
       createApplication(moduledata, auth.info.id).then((res) => {
-        if (res) {
           resetModuledata();
+         if( res == "Module Created Successfully") 
+         {  
           setSnackbarData({
             status: true,
-            message: "New Application Created",
+            message: "Application created successfully",
             severity: "success",
           });
           navigate("/Application/Recent");
         }
+         if(res == "Module Updated Successfully")
+         { 
+          setSnackbarData({
+            status: true,
+            message: "Application updated successfully",
+            severity: "success",
+          });
+          navigate("/Application/Recent");
+        }   
       });
     } else {
       console.log("Invalid form");
@@ -87,7 +106,17 @@ export default function CreateApplication() {
       };
     });
   }, []);
-
+  useEffect(() => {
+    getApplication((res)=>{
+      moduleNames = res.map(({ module_id,module_name }) => ({ module_id, module_name }));
+      console.log(moduleNames)
+    }, auth.info.id);
+  }, []);
+  function isModuleNameTaken(moduleId, moduleName) {
+    const trimmedName = moduleName.trim();
+    const taken = moduleNames.some(module => module.module_id !== moduleId && module.module_name === trimmedName);
+    return taken;
+  }
   return (
     <>
       <Grid container direction="row" spacing={2}>
@@ -127,7 +156,15 @@ export default function CreateApplication() {
               ref={refName}
               defaultValue={moduledata.module_name}
               onChange={(e) => {
+                console.log(e.target.value)
+                console.log(moduledata.module_id)
                 moduledata.module_name = e.target.value;
+                const isTaken = isModuleNameTaken(moduledata.module_id, moduledata.module_name);
+                if (isTaken) {
+                 setDuplicateError(true)
+                } else {
+                 setDuplicateError(false)
+                }
               }}
             />
           </Stack>
@@ -206,6 +243,12 @@ export default function CreateApplication() {
         msg={"Fill the mandatory fields"}
         severity="error"
       />
+      { duplicateError &&  <SnackbarNotify
+        open={duplicateError}
+        close={setDuplicateError}
+        msg={"Application name already exists!"}
+        severity="error"
+      />}
     </>
   );
 }

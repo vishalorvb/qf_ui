@@ -24,7 +24,10 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
+import { Controller } from 'react-hook-form';
 
+
+const options = ["Chrome", "Edge", "Firefox", "Safari"];
 export default function ExecutionToolbar({
   applicationId,
   projectId,
@@ -43,6 +46,7 @@ export default function ExecutionToolbar({
   const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [remoteAPiFails, setRemoteAPiFails] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
+  // const [buildEnv,setBuildEnv] = useState("Testing")
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -277,7 +281,6 @@ export default function ExecutionToolbar({
           setBuildEnvId(resp?.data?.data[0]?.id);
           setRunTimeVariable(resp?.data?.data[0]?.runtime_variables);
           const buildEnv = resp?.data?.data;
-
           setBuildEnvList(() => {
             return buildEnv.map((be) => {
               return {
@@ -286,7 +289,7 @@ export default function ExecutionToolbar({
               };
             });
           });
-        });
+        }) 
 
     applicationId !== undefined &&
       axios
@@ -306,6 +309,13 @@ export default function ExecutionToolbar({
           setExecEnvList(mergedObj);
         });
   }, [applicationId]);
+
+  useEffect(()=>{
+    reset({
+      executionLoc :execEnvList[0]?.id,
+      buildenvName : buildEnvList[0]?.id,
+    })
+  },[execEnvList,buildEnvList])
 
   return (
     <form>
@@ -362,7 +372,7 @@ export default function ExecutionToolbar({
           <Stack direction="column">
             <SelectElement
               name="buildenvName"
-              label="build env. Name"
+              label="Build Environment"
               size="small"
               fullWidth
               control={control}
@@ -385,20 +395,27 @@ export default function ExecutionToolbar({
           ""
         ) : (
           <Grid item md={2}>
-            {" "}
+             <Controller
+             control={control}
+             name="browser"
+             defaultValue={["Chrome"]} // Set the default value to "Chrome"
+             render={({ field }) => (
             <MultiSelectElement
-              menuMaxWidth={5}
-              label="Browser"
-              name="browser"
-              size="small"
-              control={control}
-              fullWidth
-              options={["Chrome", "Edge", "Firefox", "Safari"]}
-            />
+            menuMaxWidth={5}
+            label="Browser"
+            size="small"
+            fullWidth
+            options={options}
+            control={control} // Pass the control object to the MultiSelectElement
+            {...field}
+          />
+        )}
+      />
+            
           </Grid>
         )}
 
-        <Grid item md={1.8}>
+        <Grid item md={2}>
           <FeatureMenu
             testcaseId={testcaseId}
             projectId={projectId}
@@ -412,7 +429,9 @@ export default function ExecutionToolbar({
             }
           />
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={(applicationType == '3' || applicationType == '4') ? 6: 4}  
+        display="flex"
+        justifyContent="flex-end">
           <Stack direction="column">
             <React.Fragment>
               <ButtonGroup

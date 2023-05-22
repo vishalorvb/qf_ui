@@ -1,59 +1,96 @@
 import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+let list = []
 
 
 
 
 export default function ViewCycle({selectedCycleList }) {
 
-  // console.log(testsetData)
-  // console.log(selectedCycleList.cycle_name)
-
+  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [selectedCycleInfo, setSelectedCycleInfo] = useState([]);
   const [selectedCycleReports, setSelectedCycleReports] = useState([]);
-  const [testsetName, setTestsetName] = useState();
-  const [failedTestcases, setFailedTestcases] = useState([]);
-  const [passedTestcases, setPassedTestcases] = useState();
-  const [defectsTestcases, setDefectsTestcases] = useState();
-
-
-  
-  
-  
-  
-
-
 
 
   const getCyclesReports = () => {
-    axios.get("/Biservice/projects/93/cycles/17").then((resp) => {
-      console.log(resp.data.info.selectedcycles);
+    axios.get(`/Biservice/projects/${selectedCycleReports?.project_id}/cycles/${selectedCycleReports?.cycle_id}`).then((resp) => {
+      // console.log(resp.data.info.selectedcycles);
       setSelectedCycleReports(resp?.data?.info?.selectedcycles);
+      // setReportData(resp?.data?.info?.selectedcycles?.reports)
+      (resp?.data?.info?.selectedcycles?.reports).forEach((r)=>
+      {
+        // console.log(r)
+        let temp ={}
+        temp["id"] = r.id;
+        temp["failed_testcases"]=r.failed_testcases;
+        temp["passed_testcases"] = r.passed_testcases;
+        temp["defects_testcases"] = r.defects_testcases
+        // console.log(temp)
+        list.push(temp)
+      })
+      // console.log(list)
     });
   };
-
-
-
  
-
-
-
-
   useEffect(() => {
     setSelectedCycleInfo(selectedCycleList);
     getCyclesReports();
+    
   }, [selectedCycleList])
 
- 
-console.log(failedTestcases)
+//  console.log(list)
+// console.log(selectedCycleReports)
+// console.log(reportData)
+// console.log(selectedCycleInfo)
 
+const handleInputChange = (id, fieldName, value) => {
+
+  list.forEach((r)=>
+  {
+    if(r.id == id)
+    {
+      r[fieldName] = value;
+      r[fieldName]= value;
+      r[fieldName] = value;
+    }
+    // finalData.push(r)
+  })
+  // console.log(list)
+};
+
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  let data = {
+    cycle_name: selectedCycleReports?.cycle_name,
+    cycle_id:selectedCycleReports?.cycle_id,
+    reports: list
+  }
+  // console.log(data);
+
+  // Here you can perform further actions with the formData
+  axios
+  .post(`/Biservice/projects/cycles/update`, data)
+  .then((resp) =>{ 
+    // console.log(resp)
+    if (resp.data.message == "Succesfully Updated Results") {
+      setAddSuccessMsg(true);
+      getCyclesReports();
+      setTimeout(() => {
+        setAddSuccessMsg(false);
+      }, 3000);
+    }
+    
+  });
+};
   return (
     <>
-      <Grid item md={12}>
+      <Grid item md={12} mt={2}>
         <Typography variant="h4">Details</Typography>
       </Grid>
-      <form  >
+      <form  onSubmit={handleSubmit}>
         <Stack spacing={1} mt={1}>
           <lable>Cycle Name :</lable>
           <input
@@ -75,25 +112,26 @@ console.log(failedTestcases)
 
           {selectedCycleReports?.reports?.map((testset) => (
             <Grid container direction="row" spacing={1} alignItems="center" mt={0.5}>
-              <Grid item md={2.5}>
+              <Grid item md={2.5} >
                 <input
                 type="text"
+                readOnly
                   defaultValue={testset.testset_name}
-                  onChange={(e) => { setTestsetName(e.target.value) }}
-
                 />
               </Grid>
               <Grid item md={1}>
                 <input
                   defaultValue={testset.failed_testcases}
-                  onChange={(e) => { }}
+                  onChange={(e) => {
+                    // console.log(testset)
+                    handleInputChange(testset.id,'failed_testcases', e.target.value)}}
                 />
               </Grid>
 
               <Grid item md={1}>
                 <input
                   defaultValue={testset.passed_testcases}
-                  onChange={(e) => { setPassedTestcases(e.target.value) }}
+                  onChange={(e) => handleInputChange(testset.id,'passed_testcases', e.target.value)}
 
                 />
               </Grid>
@@ -101,8 +139,7 @@ console.log(failedTestcases)
               <Grid item md={1}>
                 <input
                   defaultValue={testset.defects_testcases}
-                  onChange={(e) => { setDefectsTestcases(e.target.value) }}
-
+                  onChange={(e) => handleInputChange(testset.id,'defects_testcases', e.target.value)}
                 />
               </Grid>
             </Grid> 
@@ -116,6 +153,12 @@ console.log(failedTestcases)
           </Stack>
         </Stack>
       </form>
+      <SnackbarNotify
+          open={addSuccessMsg}
+          close={setAddSuccessMsg}
+          msg={"Updated Successfully"}
+          severity="success"
+        />
     </>
   )
 

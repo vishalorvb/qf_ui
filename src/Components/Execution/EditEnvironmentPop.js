@@ -22,11 +22,10 @@ let initialValue = {
   is_default: false,
   runtime_variables: "",
 };
-let postVal = { ...initialValue };
+export let postVal = { ...initialValue };
 
 function EditEnvironmentPop(props) {
-  const { row, editEnvironmentPop, close, editEnvironmentData ,getBuilEnvironment,projectId,applicationId} = props;
-  console.log(editEnvironmentData);
+  const { editEnvironmentPop, close ,getBuilEnvironment,} = props;
   const [editSuccessMsg,setEditSuccessMsg] = useState(false)
   const handleClose = () => {
     close(false);
@@ -35,16 +34,15 @@ function EditEnvironmentPop(props) {
   const onUpdateHandler = (params) => {
     {
       //   postVal.project_id=projectId;
-      console.log(postVal);
-      postVal.id = editEnvironmentData.id;
-      postVal.base_url = "";
-      postVal.module_id = applicationId;
-      postVal.project_id = projectId;
+      postVal.id = postVal.id;
+      postVal.module_id = postVal.module_id;
+      postVal.project_id = postVal.project_id;
       postVal.url = "";
+      // console.log(postVal);
         axios.post(`/qfservice/CreateBuildEnvironment`, postVal)
         .then((resp) => {
-          console.log(resp?.data?.error?.description)
-          console.log(resp?.data?.message)
+          // console.log(resp?.data?.error?.description)
+          // console.log(resp?.data?.message)
           if ( resp?.data?.message === "Successfully updatedBuild Environment") { 
               setEditSuccessMsg(true)
               setTimeout(() => {
@@ -65,6 +63,8 @@ function EditEnvironmentPop(props) {
          });
     }
   };
+
+  // console.log(postVal);
 
   return (
     <>
@@ -94,15 +94,28 @@ function EditEnvironmentPop(props) {
               id="outlined-basic"
               variant="outlined"
               name="name"
-              defaultValue={editEnvironmentData?.name}
+              defaultValue={postVal?.name}
               sx={{ width: "340px" }}
               onChange={(e) => {postVal.name = e.target.value;}}
             ></TextField>
-            {/* <input type="text" defaultValue={editEnvironmentData?.name}
-                    onChange={e=>{
-                        console.log(e.target.value)
-                    }}
-                    ></input> */}
+          </Grid>
+          <Grid xs={3} sx={{ marginTop: "30px" }}>
+            {" "}
+            Base URL{" "}
+          </Grid>
+
+          <Grid xs={9}>
+            <TextField
+              size="small"
+              id="outlined-basic"
+              name="base_url"
+              defaultValue={postVal?.base_url}
+              variant="outlined"
+              sx={{ marginTop: "15px", width: "340px" }}
+              onChange={(e) => {
+                postVal.base_url = e.target.value;
+              }}
+            ></TextField>
           </Grid>
           <Grid xs={3} sx={{ marginTop: "30px" }}>
             {" "}
@@ -114,7 +127,8 @@ function EditEnvironmentPop(props) {
               size="small"
               id="outlined-basic"
               name="description"
-              defaultValue={editEnvironmentData?.description}
+              // defaultValue={editEnvironmentData?.description}
+              placeholder=" Environment Description"
               variant="outlined"
               sx={{ marginTop: "15px", width: "340px" }}
               onChange={(e) => {

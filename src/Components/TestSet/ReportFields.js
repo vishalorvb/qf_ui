@@ -143,49 +143,6 @@ export default function ReportFields({
       renderCell: (params) => {
         return (
           <>
-            {/* <Button
-              sx={{
-                marginLeft: "5px",
-                backgroundColor: "#F0FFF0",
-                color: "#2F4F4F",
-                borderRadius: "10px",
-                height: "25px",
-                marginTop: "5px",
-              }}
-              variant="outlined"
-              onClick={(e) => {
-                navigate("ViewReport", {
-                  state: { id: params.row.report_id },
-                });
-              }}
-            >
-              View Report
-            </Button>
-            <Button
-              sx={{
-                marginLeft: "5px",
-                backgroundColor: "#EDFAF9",
-                borderRadius: "10px",
-                height: "25px",
-                marginTop: "5px",
-              }}
-              variant="outlined"
-              onClick={(e) => {
-                navigate(
-                  "AllReports",
-                  {
-                    state: {
-                      id: params.row,
-                      fromDate: fromDate,
-                      toDate: toDate,
-                    },
-                  },
-                  console.log(fromDate)
-                );
-              }}
-            >
-              View All
-            </Button> */}
             <div
             style={{
               border: "1px solid grey",
@@ -294,17 +251,9 @@ export default function ReportFields({
 
   return (
     <>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        display="flex"
-     >
-        <Grid item container md={8}
-        justifyContent="flex-start"
-        alignItems="center"
-        spacing={1.3}>
-          <Grid item md={2}>
+      <Grid container>
+      <Grid item xs={8} container justifyContent="flex-start" spacing={1}>
+           <Grid item>
             <TextField
               id="outlined-basic"
               label="From Date"
@@ -322,7 +271,7 @@ export default function ReportFields({
               }}
             />
           </Grid>
-          <Grid item md={2}>
+          <Grid item>
             <TextField
               id="outlined-basic"
               size="small"
@@ -339,20 +288,21 @@ export default function ReportFields({
                 shrink: true,
               }}
             />
-            {/* </Box> */}
           </Grid>
-          <Grid item md={1.3}>
+          <Grid item >
             <Button
               variant="contained"
               onClick={submit}
               startIcon={<SearchOutlinedIcon />}
               fullWidth
+              style={{marginBottom:"8px"}}
             >
               Search
             </Button>
           </Grid>
-        </Grid>
-        <Grid item md={4}>
+      </Grid>
+      <Grid item xs={4}>
+      <Grid item>
           <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}
@@ -360,6 +310,7 @@ export default function ReportFields({
             setglobalApplication={setglobalApplication}
           />
         </Grid>
+      </Grid>
       </Grid>
       <SnackbarNotify
         open={reportSuccessMsg}
