@@ -57,7 +57,9 @@ function Dataset() {
     navigate("/testcase");
   }
 
-    let click = ["input","select"]
+  let click = ["input", "select"]
+
+
 
   let elementcol = [
     {
@@ -85,7 +87,7 @@ function Dataset() {
       headerName: "DataSets",
       renderCell: (param) => {
         return (
-          <div>
+          <div style={{ width: "100%" }}>
             {param.row.web_page_elements.tag_name == "input" && (
               <input
                 type="text"
@@ -101,10 +103,10 @@ function Dataset() {
                 }}
               />
             )}
-            { !click.includes(param.row.web_page_elements.tag_name)  && (
+            {!click.includes(param.row.web_page_elements.tag_name) && (
               <input
                 type="checkbox"
-                defaultChecked ={param.row.dataset_values.is_click}
+                defaultChecked={param.row.dataset_values.is_click}
                 onChange={(e) => {
                   updateDataset(
                     param.row.element_id,
@@ -128,17 +130,19 @@ function Dataset() {
               />
             )} */}
             {param.row.web_page_elements.tag_name == "select" && (
-           <select
-           onChange={(e) => {
-            updateDataset(
-              param.row.element_id,
-              "input_value",
-              e.target.value
-            );
-          }}
-           >
-            {param.row.web_page_elements.child_text}
-           </select>
+              <select
+                onChange={(e) => {
+                  updateDataset(
+                    param.row.element_id,
+                    "input_value",
+                    e.target.value
+                  );
+                }}
+              >
+                <option value="0">Select</option>
+                {/* {console.log(param.row.web_page_elements.child_text)} */}
+                {param.row.web_page_elements.child_text}
+              </select>
             )}
           </div>
         );
@@ -176,6 +180,14 @@ function Dataset() {
             id: "is_random",
             val: "Random",
           },
+          {
+            id: "is_enter",
+            val: "Enter",
+          },
+          {
+            id: "is_validate",
+            val: "Validate",
+          },
         ];
         let alllist = [
           "custom_code",
@@ -185,6 +197,7 @@ function Dataset() {
           "scrolldown",
           "is_random",
           "is_enter",
+          "is_validate"
         ];
         let flag = false;
         let preselect = opt.filter((e) => {

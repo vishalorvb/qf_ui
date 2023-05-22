@@ -6,7 +6,7 @@ import { authdata } from './Data'
 
 function Authorization() {
 
-  let [type, setType] = useState("")
+  let [type, setType] = useState(authdata.authtype)
 
 
 
