@@ -131,7 +131,7 @@ export default function ApplicationsList() {
   }, [location?.state]);
 
   useEffect(() => {
-    getApplication(setApplication, auth.info.id);
+    getApplication(setApplication, auth?.info?.id);
   }, []);
 
   return (
@@ -153,7 +153,7 @@ export default function ApplicationsList() {
             : application
         }
         columns={applicationColumns}
-        getRowId={(row) => row.module_id}
+        getRowId={(row) => row?.module_id}
         searchPlaceholder="Search Applications"
       />
       {snack && (
@@ -193,7 +193,7 @@ const ApplicationDescriptionCell = (
   const handledeleteApplication = (module_id, id) => {
     deleteApplication(module_id, id).then((res) => {
       if (res) {
-        getApplication(setApplication, auth.info.id);
+        getApplication(setApplication, auth?.info?.id);
         setSnackbarsuccess(true);
       }
     });
@@ -244,7 +244,7 @@ const ApplicationDescriptionCell = (
         heading={"Delete Application"}
         message={"Are you sure you want to delete this application"}
         onConfirm={() =>
-          handledeleteApplication(param.row.module_id, auth.info.id)
+          handledeleteApplication(param?.row?.module_id, auth?.info?.id)
         }
       ></ConfirmPop>
     </div>

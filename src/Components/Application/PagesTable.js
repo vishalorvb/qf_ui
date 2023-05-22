@@ -20,6 +20,7 @@ import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import TableActions from "../../CustomComponent/TableActions";
 import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import UsbIcon from "@mui/icons-material/Usb";
 export default function PagesTable(props) {
   const { location } = props;
   const { header, setHeader } = useHead();
@@ -48,7 +49,7 @@ export default function PagesTable(props) {
             onClick={() =>
               navigate("PageElements", {
                 state: {
-                  id: param.row.web_page_id,
+                  id: param?.row?.web_page_id,
                   name: param?.row?.name,
                 },
               })
@@ -93,6 +94,13 @@ export default function PagesTable(props) {
               <MenuItem onClick={() => handleDelete(param?.row?.web_page_id)}>
                 <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
               </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  navigate("MapDiffElements", { state: param?.row })
+                }
+              >
+                <UsbIcon sx={{ color: "red", mr: 1 }} /> Map Diff Elements
+              </MenuItem>
             </TableActions>
           </>
         );
@@ -101,8 +109,8 @@ export default function PagesTable(props) {
   ];
 
   useEffect(() => {
-    getPages(setPage, location.state.module_id);
-    console.log(location.state);
+    getPages(setPage, location?.state?.module_id);
+    console.log(location?.state);
   }, [snackbarMsg]);
   return (
     <>
@@ -110,7 +118,7 @@ export default function PagesTable(props) {
         searchPlaceholder="Search Pages"
         rows={page}
         columns={pageColumns}
-        getRowId={(row) => row.web_page_id}
+        getRowId={(row) => row?.web_page_id}
       />
       <Outlet />
       <SnackbarNotify
