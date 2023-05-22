@@ -14,6 +14,8 @@ function handleLinkData(tabdata){
       header={["Key","Value","Description"]}
       TableData = {handleLinkData}
       keypair ={["key","value","description"]}
+      prefilled={Apidata.apiLinkProperties?.slice(0, -1)}
+      order={["key","value","description"]}
       ></GrowingTable>
     </div>
   )

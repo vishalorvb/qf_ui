@@ -21,6 +21,7 @@ function Authorization() {
             size='small'
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
+            defaultValue={authdata.authtype}
             fullWidth
             onChange={e => {
               setType(e.target.value)

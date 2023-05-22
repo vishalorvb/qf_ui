@@ -128,7 +128,15 @@ function Dataset() {
               />
             )} */}
             {param.row.web_page_elements.tag_name == "select" && (
-           <select>
+           <select
+           onChange={(e) => {
+            updateDataset(
+              param.row.element_id,
+              "input_value",
+              e.target.value
+            );
+          }}
+           >
             {param.row.web_page_elements.child_text}
            </select>
             )}
