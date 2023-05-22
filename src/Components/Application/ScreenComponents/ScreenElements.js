@@ -18,8 +18,9 @@ export default function ScreenElements() {
 
   const [popup, setPopup] = useState(false);
   const [updated, setUpdated] = useState(false);
+  const [updatedOrder, setUpdatedOrder] = useState(false);
   const [elementid, setElementid] = useState(0);
-
+const [elementOrder, setElementOrder] = useState(0);
   const getScreenElementsList = () => {
     axios
       .get(
@@ -50,9 +51,19 @@ export default function ScreenElements() {
         screen_element_ids: order,
       })
       .then((resp) => {
-        console.log(resp);
+        // console.log(resp.data.message);
+        if(elementOrder === 1){
+          if (resp.data.message == "Order of Elements updated successfully.") {
+          setUpdatedOrder(true);
+          setTimeout(() => {
+            setUpdatedOrder(false);
+          }, 3000);
+        }}
+        setElementOrder(1)
       });
   };
+
+  console.log(elementOrder);
 
   useEffect(() => {
     updateScreenOrder();
@@ -103,6 +114,12 @@ export default function ScreenElements() {
         open={updated}
         close={setUpdated}
         msg={"Element is updated Successfully"}
+        severity="success"
+      />
+      <SnackbarNotify
+        open={updatedOrder}
+        close={setUpdatedOrder}
+        msg={"Order updated Successfully"}
         severity="success"
       />
       <MaterialReactTable
