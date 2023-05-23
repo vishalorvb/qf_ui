@@ -167,7 +167,7 @@ function Cycles() {
       {successDelete && <SnackbarNotify
         open={successDelete}
         close={setSuccessDelete}
-        msg="Deleted Cycle successfully"
+        msg="Cycle deleted successfully"
         severity="success"
       />}
       {confirm && (
