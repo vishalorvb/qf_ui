@@ -21,6 +21,8 @@ import TableActions from "../../CustomComponent/TableActions";
 import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import UpdatePage from "./ScreenComponents/UpdatePage";
+import { postVal } from "./ScreenComponents/UpdatePage";
 export default function PagesTable(props) {
   const { location } = props;
   const { header, setHeader } = useHead();
@@ -28,6 +30,8 @@ export default function PagesTable(props) {
   let [page, setPage] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState(false);
   let [popup, setPopup] = useState(false);
+  const [updatePage, setUpdatePage] = useState(false);
+
 
   const handleDelete = (pageId) => {
     axios
@@ -89,7 +93,14 @@ export default function PagesTable(props) {
               </IconButton>
             </Tooltip>
             <TableActions>
-              <MenuItem>
+              <MenuItem
+                 onClick={()=> {
+                  console.log(param?.row)
+                  postVal.page_name = param.row.name;
+                  postVal.page_description = param.row.description;
+                  postVal.web_page_id = param.row.web_page_id;
+                  setUpdatePage(true)}} 
+              >
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
               <MenuItem onClick={() =>setPopup(true)}>
@@ -130,6 +141,13 @@ export default function PagesTable(props) {
         msg={snackbarMsg}
         severity="success"
       />
+{ updatePage &&  <UpdatePage
+        open={updatePage}
+        close={setUpdatePage}
+        location = {location}
+         getPages={getPages}
+         setPage={setPage}
+      />}
     </>
   );
 }

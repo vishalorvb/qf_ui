@@ -162,6 +162,7 @@ const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 const MapDiffElements = lazy(() =>
   import(`../Components/Application/MapDiffElements`)
 );
+const UpdatePage = lazy(()=>import(`../Components/Application/ScreenComponents/UpdatePage`))
 export const Routes = [
   {
     path: "Application/Recent",
@@ -201,6 +202,11 @@ export const Routes = [
           {
             path: "UpdateScreen",
             element: UpdateScreen,
+            accessRole: [1, 2, 4, 5],
+          },
+          {
+            path: "UpdatePage",
+            element: UpdatePage,
             accessRole: [1, 2, 4, 5],
           },
           {
