@@ -87,7 +87,7 @@ function Dataset() {
       headerName: "DataSets",
       renderCell: (param) => {
         return (
-          <div style={{ width: "100%" }}>
+          <div >
             {param.row.web_page_elements.tag_name == "input" && (
               <input
                 type="text"
@@ -138,10 +138,8 @@ function Dataset() {
                     e.target.value
                   );
                 }}
+                dangerouslySetInnerHTML={{ __html: param?.row?.web_page_elements?.child_text }}
               >
-                <option value="0">Select</option>
-                {/* {console.log(param.row.web_page_elements.child_text)} */}
-                {param.row.web_page_elements.child_text}
               </select>
             )}
           </div>
@@ -291,7 +289,6 @@ function Dataset() {
             </MenuItem>
             <MenuItem
               onClick={(e) => {
-                // console.log(param.row.dataset_id);
                 setDeletedatasetId(param.row.dataset_id);
                 setDeletepopup(true);
               }}
@@ -374,6 +371,7 @@ function Dataset() {
     });
 
   }, [location.state.testcaseName]);
+
 
   return (
     <div>
