@@ -40,3 +40,23 @@ export async function uploadPic(userId, picfile, token) {
         });
     return x
 }
+
+
+export function getPhoto(callback,userId,token){
+    axios.get(`${baseUrl}/qfuserservice/user/profilePic`, {
+        params: {
+          user_id: userId
+        },
+        responseType: 'arraybuffer',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          const blob = new Blob([response.data], { type: 'image/png' });
+          callback( URL.createObjectURL(blob))
+        })
+        .catch(error => {
+          console.error(error);
+        });
+}

@@ -9,7 +9,7 @@ import { UpdateUser } from '../../Services/UserService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 import { uploadPic } from '../../Services/UserService';
-import axios from 'axios';
+import { getPhoto } from '../../Services/UserService';
 
 let userData = {
     user_id: "",
@@ -32,7 +32,7 @@ function UserProfile() {
     let [showPassword, setShowPassword] = useState("")
     let [snackbarerror, setSnackbarerror] = useState(false);
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-    const [imageData, setImageData] = useState("");
+    let [imageUrl, setImageUrl] = useState(" ");
     const { auth } = useAuth();
     const fileInputRef = useRef(null);
     const { setHeader } = useHead();
@@ -48,6 +48,7 @@ function UserProfile() {
             if(res){
                 successmsg = "Profile Picture update"
                 setSnackbarsuccess(true)
+                getPhoto(setImageUrl,auth.userId,auth.token)
             }
         })
         if (file.size > 2 * 1024 * 1024) {
@@ -79,8 +80,8 @@ function UserProfile() {
         }
     }
 
-
     useEffect(() => {
+        getPhoto(setImageUrl,auth.userId,auth.token)
         setHeader((ps) => {
             return {
                 name: "User Profile",
@@ -106,34 +107,6 @@ function UserProfile() {
 
 
 
-    useEffect(() => {
-        // Make the GET request to fetch the image data
-        axios.get('http://10.11.12.243:8083/qfuserservice/user/profilePic', {
-          params: {
-            user_id: auth.userId
-          },
-          responseType: 'arraybuffer',
-          headers: {
-            'Authorization': `Bearer ${auth.token}`
-          }
-        })
-          .then(response => {
-            // Convert the array buffer to a base64 encoded string
-            console.log(response.data)
-            // const base64String = Buffer.from(response.data, 'binary').toString('base64');
-            const base64String =  new String(base64String.getEncoder().encode(response.data))
-            setImageData(base64String);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }, []);
-
-
-    //   useEffect(() => {
-    //   console.log(imageData)
-    //   }, [imageData])
-
     return (
         <div style={{ padding: "40px" }} >
             <SnackbarNotify
@@ -156,21 +129,17 @@ function UserProfile() {
                     <h5>Primary Info</h5>
                 </Grid>
                 <Grid container md={6} alignItems='center' >
-                 <img src={`data:image/png;base64${setImageData}`} alt="User Profile Pic" />
-                    <Grid item md={2}>
-                        <IconButton
-                            onClick={handleUploadClick}
-                        >
-                            <AccountCircleRoundedIcon fontSize="large"></AccountCircleRoundedIcon>
-                            {/* <img src="http://10.11.12.243:8083/qfuserservice/user/profilePic?user_id=7" width="50" height="60" style={{borderRadius:"20px"}}/> */}
-                            
+               
+                    <Grid item md={2}>         
                             <input type="file"
                                 ref={fileInputRef}
-                                accept="image/*"
+                                accept="image/png, image/gif, image/jpeg"
                                 style={{ display: "none" }}
                                 onChange={handleFileInputChange}
                             />
-                        </IconButton>
+                     
+                        {imageUrl!= " " && <img src={imageUrl } onClick={handleUploadClick} alt="Array of Bytes"  width="60" height="60" style={{borderRadius: "50%"}}/>}
+                        {imageUrl==" "&& <img src="profile.jpg" alt="Array of Bytes"  width="60" height="60" style={{borderRadius: "50%"}}  onClick={handleUploadClick}/>}
                     </Grid>
                     <Grid item md={7}>
                         <label >Email Address</label>

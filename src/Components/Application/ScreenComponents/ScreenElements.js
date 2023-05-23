@@ -27,7 +27,7 @@ const [elementOrder, setElementOrder] = useState(0);
         `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((resp) => {
-        console.log(resp?.data?.info);
+        // console.log(resp?.data?.info);
         setData(resp?.data?.info);
       });
   };
@@ -63,7 +63,7 @@ const [elementOrder, setElementOrder] = useState(0);
       });
   };
 
-  console.log(elementOrder);
+  // console.log(elementOrder);
 
   useEffect(() => {
     updateScreenOrder();
@@ -86,7 +86,7 @@ const [elementOrder, setElementOrder] = useState(0);
         Cell: ({ cell, column, row, table }) => (
           <IconButton
             onClick={() => {
-              console.log(row.original);
+              // console.log(row.original);
               setElementid(row.original.element_id);
               setPopup(true);
             }}
@@ -119,7 +119,7 @@ const [elementOrder, setElementOrder] = useState(0);
       <SnackbarNotify
         open={updatedOrder}
         close={setUpdatedOrder}
-        msg={"Order updated Successfully"}
+        msg={"Order of Elements updated successfully."}
         severity="success"
       />
       <MaterialReactTable
@@ -144,7 +144,7 @@ const [elementOrder, setElementOrder] = useState(0);
               setOrder(() => {
                 return data.map((d) => d.screen_element_id);
               });
-              console.log(data);
+              // console.log(data);
             }
           },
         })}

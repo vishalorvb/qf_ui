@@ -1,23 +1,18 @@
 import {
-  Avatar,
-  Button,
   Grid,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   MenuItem,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,useState } from "react";
 import useHead from "../../hooks/useHead";
 import ImageIcon from "@mui/icons-material/Image";
 import Divider from "@mui/material/Divider";
-import { Container, Stack } from "@mui/system";
-import { validateForm } from "../../CustomComponent/FormValidation";
-import { useLocation, useNavigate } from "react-router";
-import axios, { axiosPrivate } from "../../api/axios";
+import { useLocation } from "react-router";
+import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import CreateCycle from "./CreateCycle";
 import ViewCycle from "./ViewCycle";
@@ -167,7 +162,7 @@ function Cycles() {
       {successDelete && <SnackbarNotify
         open={successDelete}
         close={setSuccessDelete}
-        msg="Deleted Cycle successfully"
+        msg="Cycle deleted successfully"
         severity="success"
       />}
       {confirm && (

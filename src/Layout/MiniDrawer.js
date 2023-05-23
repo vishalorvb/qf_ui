@@ -14,6 +14,7 @@ import MuiListItemText from "@mui/material/ListItemText";
 import { useLocation, useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
+import { getPhoto } from "../Services/UserService";
 //navItems
 import {
   testManagementList,
@@ -135,7 +136,9 @@ export default function MiniDrawer({ open, setOpen }) {
   const [opensubNav, setOpensubNav] = useState(["Application"]);
   const [selectedNavItem, setSelectedNavItem] = useState("22");
   const location = useLocation();
+  let [imageUrl, setImageUrl] = useState(" ");
   useEffect(() => {
+    getPhoto(setImageUrl, auth.userId, auth.token)
     !open && setOpensubNav([]);
   }, [open]);
 
@@ -221,14 +224,25 @@ export default function MiniDrawer({ open, setOpen }) {
             className="profile"
             style={{ width: drawerWidth - 20, overflow: "hidden" }}
           >
-            <Avatar sx={{ bgcolor: "white", color: "black" }}
+            {/* <Avatar sx={{ bgcolor: "white", color: "black" }}
             onClick={e=>{
               navigate("/profile")
             }}
             >
               {auth?.user?.charAt(0)?.toUpperCase() +
                 auth?.user?.charAt(1)?.toUpperCase()}
-            </Avatar>
+            </Avatar> */}
+           {imageUrl !=" "&& <img onClick={e => {
+              navigate("/profile")
+            }}
+              src={imageUrl} width="40" height="40" style={{ borderRadius: "50%" }} />}
+
+            { imageUrl ==" "&&<img onClick={e => {
+              navigate("/profile")
+            }}
+              src="profile.jpg" width="40" height="40" style={{ borderRadius: "50%" }} />}
+
+              
             {open && (
               <div>
                 <Typography

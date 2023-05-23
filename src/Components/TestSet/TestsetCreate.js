@@ -163,7 +163,7 @@ function TestsetCreate() {
     console.log("Submit call")
     console.log(sprintData.current)
     if (
-      validateForm([], [], [], requiredOnlyAlphabets, [], autoComplete, "error")
+      validateForm(requiredOnlyAlphabets, [], [], [], [], autoComplete, "error")
     ) {
       e.preventDefault();
       const tcList = [];
