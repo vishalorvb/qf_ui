@@ -132,16 +132,15 @@ function Dataset() {
             {param.row.web_page_elements.tag_name == "select" && (
               <select
                 onChange={(e) => {
+                  console.log(e.target.value)
                   updateDataset(
                     param.row.element_id,
                     "input_value",
                     e.target.value
                   );
                 }}
+                dangerouslySetInnerHTML={{ __html: param?.row?.web_page_elements?.child_text }}
               >
-                <option value="0">Select</option>
-                {/* {console.log(param.row.web_page_elements.child_text)} */}
-                {param.row.web_page_elements.child_text}
               </select>
             )}
           </div>
@@ -374,6 +373,17 @@ function Dataset() {
     });
 
   }, [location.state.testcaseName]);
+
+
+
+  // useEffect(() => {
+  //   console.log(selectedScreen)
+  //   if(selectedScreen !=undefined && selectedScreen.length>0){
+  //     console.log(selectedScreen[0].screen_elements)
+  //     console.log("PRitnting")
+
+  //   }
+  // }, [selectedScreen])
 
   return (
     <div>
