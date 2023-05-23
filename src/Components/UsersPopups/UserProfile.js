@@ -9,7 +9,7 @@ import { UpdateUser } from '../../Services/UserService';
 import { validateFormbyName } from '../../CustomComponent/FormValidation';
 import SnackbarNotify from '../../CustomComponent/SnackbarNotify';
 import { uploadPic } from '../../Services/UserService';
-import axios from 'axios';
+import { getPhoto } from '../../Services/UserService';
 
 let userData = {
     user_id: "",
@@ -48,7 +48,7 @@ function UserProfile() {
             if(res){
                 successmsg = "Profile Picture update"
                 setSnackbarsuccess(true)
-                getImage()
+                getPhoto(setImageUrl,auth.userId,auth.token)
             }
         })
         if (file.size > 2 * 1024 * 1024) {
@@ -80,28 +80,8 @@ function UserProfile() {
         }
     }
 
-    function getImage(){
-        axios.get('http://10.11.12.243:8083/qfuserservice/user/profilePic', {
-            params: {
-              user_id: auth.userId
-            },
-            responseType: 'arraybuffer',
-            headers: {
-              'Authorization': `Bearer ${auth.token}`
-            }
-          })
-            .then(response => {
-              console.log(response.data)
-              const blob = new Blob([response.data], { type: 'image/png' });
-              setImageUrl( URL.createObjectURL(blob))
-            })
-            .catch(error => {
-              console.error(error);
-            });
-    }
-
     useEffect(() => {
-        getImage()
+        getPhoto(setImageUrl,auth.userId,auth.token)
         setHeader((ps) => {
             return {
                 name: "User Profile",
