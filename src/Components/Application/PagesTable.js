@@ -20,7 +20,10 @@ import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import TableActions from "../../CustomComponent/TableActions";
 import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import UsbIcon from "@mui/icons-material/Usb";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import UpdatePage from "./ScreenComponents/UpdatePage";
+import { postVal } from "./ScreenComponents/UpdatePage";
 export default function PagesTable(props) {
   const { location } = props;
   const { header, setHeader } = useHead();
@@ -28,6 +31,9 @@ export default function PagesTable(props) {
   let [page, setPage] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState(false);
   let [popup, setPopup] = useState(false);
+  const [updatePage, setUpdatePage] = useState(false);
+
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const handleDelete = (pageId) => {
     axios
@@ -50,7 +56,7 @@ export default function PagesTable(props) {
             onClick={() =>
               navigate("PageElements", {
                 state: {
-                  id: param.row.web_page_id,
+                  id: param?.row?.web_page_id,
                   name: param?.row?.name,
                 },
               })
@@ -89,22 +95,35 @@ export default function PagesTable(props) {
               </IconButton>
             </Tooltip>
             <TableActions>
-              <MenuItem>
+              <MenuItem 
+                onClick={()=> {
+                postVal.page_name = param.row.name;
+                postVal.page_description = param.row.description;
+                postVal.web_page_id = param.row.web_page_id;
+                setUpdatePage(true)}} 
+              >
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
-              <MenuItem onClick={() =>setPopup(true)}>
+              <MenuItem onClick={() => setPopup(true)}>
                 <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
               </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  navigate("MapDiffElements", { state: param?.row })
+                }
+              >
+                <UsbIcon sx={{ color: "red", mr: 1 }} /> Map Diff Elements
+              </MenuItem>
             </TableActions>
-          { popup && <ConfirmPop
-            open={popup}
-            handleClose={() => setPopup(false)}
-            heading={"Delete Page"}
-          message={"Are you sure you want to delete this page?"}
-          onConfirm={() =>
-            handleDelete(param?.row?.web_page_id)
-        }
-      ></ConfirmPop>}
+            {popup && (
+              <ConfirmPop
+                open={popup}
+                handleClose={() => setPopup(false)}
+                heading={"Delete Page"}
+                message={"Are you sure you want to delete this page?"}
+                onConfirm={() => handleDelete(param?.row?.web_page_id)}
+              ></ConfirmPop>
+            )}
           </>
         );
       },
@@ -112,8 +131,8 @@ export default function PagesTable(props) {
   ];
 
   useEffect(() => {
-    getPages(setPage, location.state.module_id);
-    console.log(location.state);
+    getPages(setPage, location?.state?.module_id);
+    console.log(location?.state);
   }, [snackbarMsg]);
   return (
     <>
@@ -121,7 +140,7 @@ export default function PagesTable(props) {
         searchPlaceholder="Search Pages"
         rows={page}
         columns={pageColumns}
-        getRowId={(row) => row.web_page_id}
+        getRowId={(row) => row?.web_page_id}
       />
       <Outlet />
       <SnackbarNotify
@@ -130,6 +149,13 @@ export default function PagesTable(props) {
         msg={snackbarMsg}
         severity="success"
       />
+      { updatePage &&  <UpdatePage
+        open={updatePage}
+        close={setUpdatePage}
+        location = {location}
+         getPages={getPages}
+         setPage={setPage}
+      />}
     </>
   );
 }

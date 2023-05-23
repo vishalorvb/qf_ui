@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import MapDiffElements from "../Components/Application/MapDiffElements";
 
 import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation";
 import Report from "../Components/DevopsComponent/Report";
@@ -159,10 +160,17 @@ const TestDesign = lazy(() => import(`../Components/TestDesign/TestDesign`));
 const TestLibrary = lazy(() => import(`../Components/TestLibrary/TestLibrary`));
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 
-const MapDiffElements = lazy(() =>
-  import(`../Components/Application/MapDiffElements`)
-);
+// const MapDiffElements = lazy(() =>
+//   import(`../Components/Application/MapDiffElements`)
+// );
+const UpdatePage = lazy(()=>import(`../Components/Application/ScreenComponents/UpdatePage`))
+
 export const Routes = [
+  {
+    path: "MapDiffElements",
+    element: MapDiffElements,
+    accessRole: [1, 2, 4, 5],
+  },
   {
     path: "Application/Recent",
     element: applicationList,
@@ -201,6 +209,11 @@ export const Routes = [
           {
             path: "UpdateScreen",
             element: UpdateScreen,
+            accessRole: [1, 2, 4, 5],
+          },
+          {
+            path: "UpdatePage",
+            element: UpdatePage,
             accessRole: [1, 2, 4, 5],
           },
           {

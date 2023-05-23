@@ -101,7 +101,7 @@ function ProjectTable({ location }) {
       <SnackbarNotify
         open={snackbarsuccess}
         close={setSnackbarsuccess}
-        msg="Deleted Succesfully"
+        msg="Project deleted Succesfully"
         severity="success"
       />
       <div className="apptable">

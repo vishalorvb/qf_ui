@@ -22,12 +22,12 @@ import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "../api/axios";
 import BackdropLoader from "./BackdropLoader";
-function ElementsDetails({ ElementId, setPopup, setUpdated }) {
+function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    getElementsDetails(setDetails, ElementId);
+    getElementsDetails(setDetails, ElementId, isDiffElement === true);
   }, [ElementId]);
   const schema = yup.object().shape({});
 
