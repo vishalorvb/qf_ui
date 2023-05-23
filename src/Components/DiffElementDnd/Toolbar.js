@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 
-export default function Toolbar() {
+export default function Toolbar({ dustbins }) {
   const location = useLocation();
   const { auth } = useAuth();
   console.log(location.state);
@@ -18,6 +18,7 @@ export default function Toolbar() {
           web_page_url: pageData?.page_url,
           user_name: auth?.info?.firstName,
           mobile_os: ``,
+          diff_page_id: pageData?.web_page_id,
         },
       })
       .then((resp) => {
@@ -35,16 +36,27 @@ export default function Toolbar() {
 
   const saveDiffElement = () => {
     console.log("first");
+    console.log(
+      dustbins
+        ?.filter((dustbin) => dustbin?.lastDroppedItem)
+        ?.map((dustbin) => {
+          return {
+            old_element_id: dustbin?.elementData?.element_id,
+            new_element_id: dustbin?.lastDroppedItem?.element_id,
+          };
+        })
+    );
     const saveDiffElementData = {
-      web_page_id: "5067",
+      web_page_id: pageData?.web_page_id,
 
-      mapped_elements: [
-        {
-          old_element_id: 3365537,
-
-          new_element_id: 11478,
-        },
-      ],
+      mapped_elements: dustbins
+        ?.filter((dustbin) => dustbin?.lastDroppedItem)
+        ?.map((dustbin) => {
+          return {
+            old_element_id: dustbin?.elementData?.element_id,
+            new_element_id: dustbin?.lastDroppedItem?.element_id,
+          };
+        }),
 
       unmapped_old_elements: [],
 
