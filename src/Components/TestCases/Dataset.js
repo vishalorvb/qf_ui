@@ -87,7 +87,7 @@ function Dataset() {
       headerName: "DataSets",
       renderCell: (param) => {
         return (
-          <div style={{ width: "100%" }}>
+          <div >
             {param.row.web_page_elements.tag_name == "input" && (
               <input
                 type="text"
