@@ -286,17 +286,17 @@ function Dataset() {
                 datasetinfo.dataset_id = param.row.dataset_id;
               }}
             >
-              <EditOutlinedIcon></EditOutlinedIcon>
+              <EditOutlinedIcon  sx={{ color: "blue", mr: 1 }} ></EditOutlinedIcon>
               Edit
             </MenuItem>
             <MenuItem
               onClick={(e) => {
-                console.log(param.row.dataset_id);
+                // console.log(param.row.dataset_id);
                 setDeletedatasetId(param.row.dataset_id);
                 setDeletepopup(true);
               }}
             >
-              <DeleteOutlined></DeleteOutlined>
+              <DeleteOutlined sx={{ color: "red", mr: 1 }}></DeleteOutlined>
               Delete
             </MenuItem>
           </TableActions>
