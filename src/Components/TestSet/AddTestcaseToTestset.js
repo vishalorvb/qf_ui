@@ -54,6 +54,7 @@ export default function AddTestcaseToTestset() {
           (ts) => ts.testcase_id != e.options[i].value
         );
         if (temp.length > 0) {
+          console.log(temp);
           setRightTestcase((pv) => [...pv, temp[0]]);
         }
       }
@@ -213,7 +214,7 @@ export default function AddTestcaseToTestset() {
             <select id="left" multiple style={{ padding: "10px" }}>
               {leftTestcase.length > 0
                 ? leftTestcase
-                    .filter((el) => {
+                    .filter((el) => { 
                       return !rightTestcase.some((f) => {
                         return f.testcase_id === el.testcase_id;
                       });
