@@ -11,21 +11,22 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import useAuth from "../../../hooks/useAuth";
+import useSnackbar from "../../../hooks/useSnackbar";
 
 export default function CreateScreenPop(props) {
   const { elementsList, applicationId, pageId, screenName, screenId } = props;
   console.log(props);
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const { setSnackbarData } = useSnackbar();
 
   const [screenData, setScreenData] = useState(() => {
     return { name: screenName?.name, desc: screenName?.desc };
   });
   const [selectElements, setSelectElements] = useState(false);
   const [emptyDetails, setEmptyDetails] = useState(false);
-  const [updateSnack,setUpdateSnack] = useState(false)
-  const [createSnack,setCreateSnack] = useState(false)
-  
+  const [updateSnack, setUpdateSnack] = useState(false);
+  const [createSnack, setCreateSnack] = useState(false);
 
   const saveScreen = () => {
     elementsList.length < 1 && setSelectElements(true);
@@ -44,48 +45,50 @@ export default function CreateScreenPop(props) {
       ? axios
           .post(`/qfservice/screen/createScreen`, screendata)
           .then((resp) => {
-            if(resp?.data?.message === 'Screen is updated successfully.') { 
-              setUpdateSnack(true)
-             setTimeout(() => {
-              navigate(-1)
-            }, 2000);
-          }
-          if(resp?.data?.message === 'Successfully created a Screen.') { 
-            setCreateSnack(true)
-           setTimeout(() => {
-            navigate(-1)
-          }, 2000);
-        }    
+            setSnackbarData({
+              status: true,
+              message: resp?.data?.message,
+              severity: resp?.data?.status === "SUCCESS" ? "success" : "error",
+            });
+            resp?.data?.status === "SUCCESS" && navigate(-1);
           })
       : setEmptyDetails(true);
   };
 
   return (
     <>
-     { selectElements && <SnackbarNotify
-        open={selectElements}
-        close={setSelectElements}
-        msg="Select At least one Element"
-        severity="error"
-      />}
-     { emptyDetails && <SnackbarNotify
-        open={emptyDetails}
-        close={setEmptyDetails}
-        msg="Enter Screen Details"
-        severity="error"
-      />}
-     {updateSnack &&  <SnackbarNotify
-     open={updateSnack}
-     close={setUpdateSnack}
-     msg={"Screen is updated Successfully"}
-     severity="success"
-   />} 
-    {createSnack && <SnackbarNotify
-     open={createSnack}
-     close={setCreateSnack}
-     msg={"Screen is created Successfully"}
-     severity="success"
-   />} 
+      {selectElements && (
+        <SnackbarNotify
+          open={selectElements}
+          close={setSelectElements}
+          msg="Select At least one Element"
+          severity="error"
+        />
+      )}
+      {emptyDetails && (
+        <SnackbarNotify
+          open={emptyDetails}
+          close={setEmptyDetails}
+          msg="Enter Screen Details"
+          severity="error"
+        />
+      )}
+      {updateSnack && (
+        <SnackbarNotify
+          open={updateSnack}
+          close={setUpdateSnack}
+          msg={"Screen is updated Successfully"}
+          severity="success"
+        />
+      )}
+      {createSnack && (
+        <SnackbarNotify
+          open={createSnack}
+          close={setCreateSnack}
+          msg={"Screen is created Successfully"}
+          severity="success"
+        />
+      )}
       <Grid container direction="row" spacing={1}>
         <Grid item md={5}>
           <input
@@ -116,10 +119,7 @@ export default function CreateScreenPop(props) {
           />
         </Grid>
         <Grid item md={2}>
-          <Button
-            variant="contained"
-            onClick={saveScreen}
-          >
+          <Button variant="contained" onClick={saveScreen}>
             Save
           </Button>
         </Grid>
