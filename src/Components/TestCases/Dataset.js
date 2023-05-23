@@ -132,7 +132,6 @@ function Dataset() {
             {param.row.web_page_elements.tag_name == "select" && (
               <select
                 onChange={(e) => {
-                  console.log(e.target.value)
                   updateDataset(
                     param.row.element_id,
                     "input_value",
@@ -290,7 +289,6 @@ function Dataset() {
             </MenuItem>
             <MenuItem
               onClick={(e) => {
-                console.log(param.row.dataset_id);
                 setDeletedatasetId(param.row.dataset_id);
                 setDeletepopup(true);
               }}
@@ -374,16 +372,6 @@ function Dataset() {
 
   }, [location.state.testcaseName]);
 
-
-
-  // useEffect(() => {
-  //   console.log(selectedScreen)
-  //   if(selectedScreen !=undefined && selectedScreen.length>0){
-  //     console.log(selectedScreen[0].screen_elements)
-  //     console.log("PRitnting")
-
-  //   }
-  // }, [selectedScreen])
 
   return (
     <div>
