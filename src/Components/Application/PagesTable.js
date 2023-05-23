@@ -22,6 +22,7 @@ import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import UsbIcon from "@mui/icons-material/Usb";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import UpdatePage from "./UpdatePage";
 export default function PagesTable(props) {
   const { location } = props;
   const { header, setHeader } = useHead();
@@ -29,6 +30,7 @@ export default function PagesTable(props) {
   let [page, setPage] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState(false);
   let [popup, setPopup] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const handleDelete = (pageId) => {
     axios
@@ -90,7 +92,7 @@ export default function PagesTable(props) {
               </IconButton>
             </Tooltip>
             <TableActions>
-              <MenuItem>
+              <MenuItem onClick={() => setShowUpdateModal(true)}>
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
               <MenuItem onClick={() => setPopup(true)}>
@@ -138,6 +140,7 @@ export default function PagesTable(props) {
         msg={snackbarMsg}
         severity="success"
       />
+      <UpdatePage open={showUpdateModal} setOpen={setShowUpdateModal} />
     </>
   );
 }
