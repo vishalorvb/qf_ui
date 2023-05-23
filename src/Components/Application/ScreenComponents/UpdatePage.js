@@ -10,7 +10,8 @@ import { Grid } from "@mui/material";
 import axios from "../../../api/axios";
 import TextField from "@mui/material/TextField";
 import useSnackbar from "../../../hooks/useSnackbar";
-
+import { validateFormbyName } from "../../../CustomComponent/FormValidation";
+import { useRef } from "react";
 let initialValue = {
   web_page_id: "",
   page_name: "",
@@ -21,13 +22,19 @@ export let postVal = { ...initialValue };
 function UpdatePage(props) {
   const { open, close, location, getPages, setPage } = props;
   const { setSnackbarData } = useSnackbar();
+  const pageName = useRef();
+  const pageDesc = useRef();
 
   const handleClose = () => {
     close(false);
   };
   const onUpdateHandler = (params) => {
     {
-      axios
+      if(postVal.page_name !== "" && postVal.page_description !== "")
+      {
+        (pageName.current.value !== "") ?pageName.current.classList.remove("error") : pageName.current.classList.add("error"); 
+        (pageDesc.current.value !== "") ? pageDesc.current.classList.remove("error") :  pageName.current.classList.add("error");
+       axios
         .post(
           `/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
         )
@@ -42,6 +49,11 @@ function UpdatePage(props) {
             handleClose();
           }
         });
+      }
+      else{
+        (pageName.current.value === "") && pageName.current.classList.add("error"); 
+         (pageDesc.current.value === "") && pageDesc.current.classList.add("error"); 
+      }
     }
   };
   return (
@@ -57,48 +69,48 @@ function UpdatePage(props) {
             sx={{ marginTop: "5px" }}
           >
             <Grid xs={3} sx={{ marginTop: "15px" }}>
-              {" "}
-              Name{" "}
+            <label>
+              Name :<span className="importantfield">*</span>
+            </label>
             </Grid>
 
             <Grid xs={9}>
-              <TextField
+              <input
+                ref={pageName}
+                type="text"
                 size="small"
-                id="outlined-basic"
-                variant="outlined"
-                name="name"
+                name="pagename"
                 defaultValue={postVal?.page_name}
                 sx={{ width: "340px" }}
                 onChange={(e) => {
                   postVal.page_name = e.target.value;
+                  console.log(e.target.value)
                 }}
-              ></TextField>
+              ></input>
             </Grid>
             <Grid xs={3} sx={{ marginTop: "30px" }}>
-              {" "}
-              Description{" "}
+            <label>
+              Description :<span className="importantfield">*</span>
+            </label>
             </Grid>
 
-            <Grid xs={9}>
-              <TextField
+            <Grid xs={9} sx={{ marginTop: "30px" }} >
+              <input
+                ref={pageDesc}
+                type="text"
                 size="small"
-                id="outlined-basic"
                 name="description"
                 defaultValue={postVal?.page_description}
                 placeholder="Page description"
-                variant="outlined"
                 sx={{ marginTop: "15px", width: "340px" }}
                 onChange={(e) => {
                   postVal.page_description = e.target.value;
                 }}
-              ></TextField>
+              ></input>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" type="submit" onClick={handleClose}>
-            Cancel
-          </Button>
           <Button variant="contained" type="submit" onClick={onUpdateHandler}>
             Update
           </Button>
