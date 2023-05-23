@@ -26,7 +26,7 @@ export default function Pages({ location }) {
       .postForm(`/qfservice/webpages/LaunchJNLPToCreateWebPage`, {
         user_id: auth?.userId,
         module_id: location?.state?.module_id,
-        web_page_url: location.state.base_url,
+        web_page_url: location?.state?.base_url,
         user_name: auth?.user,
         mobile_os: "",
         diff_page_id: 0,
@@ -49,7 +49,7 @@ export default function Pages({ location }) {
             })
             .catch((err) => {
               console.log(err.message);
-              err.message === "Network Error" && setClientInactive(true);
+              err?.message === "Network Error" && setClientInactive(true);
               setShowLoading(false);
             });
       });
@@ -86,7 +86,7 @@ export default function Pages({ location }) {
                 size="small"
                 onChange={(e) => {
                   setHeader((ps) => {
-                    return { ...ps, browser: e.target.value };
+                    return { ...ps, browser: e?.target?.value };
                   });
                 }}
               >

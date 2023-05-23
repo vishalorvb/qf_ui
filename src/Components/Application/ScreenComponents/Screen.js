@@ -56,8 +56,8 @@ export default function Screens({ location }) {
             </MenuItem>
             <MenuItem
               onClick={(e) => {
-                console.log(param.row.screen_id);
-                setscreenId(param.row.screen_id);
+                console.log(param?.row?.screen_id);
+                setscreenId(param?.row?.screen_id);
                 setPopup(true);
               }}
             >
@@ -154,7 +154,7 @@ export default function Screens({ location }) {
         searchPlaceholder="Search Screens"
         rows={page}
         columns={pageColumns}
-        getRowId={(row) => row.screen_id}
+        getRowId={(row) => row?.screen_id}
       />
       <Outlet />
       <ConfirmPop

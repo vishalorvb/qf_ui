@@ -120,8 +120,9 @@ function UserProfile() {
           .then(response => {
             // Convert the array buffer to a base64 encoded string
             console.log(response.data)
-            const base64String = Buffer.from(response.data, 'binary').toString('base64');
-            // setImageData(base64String);
+            // const base64String = Buffer.from(response.data, 'binary').toString('base64');
+            const base64String =  new String(base64String.getEncoder().encode(response.data))
+            setImageData(base64String);
           })
           .catch(error => {
             console.error(error);
@@ -155,7 +156,7 @@ function UserProfile() {
                     <h5>Primary Info</h5>
                 </Grid>
                 <Grid container md={6} alignItems='center' >
-                 {/* <img src="" alt="User Profile Pic" /> */}
+                 <img src={`data:image/png;base64${setImageData}`} alt="User Profile Pic" />
                     <Grid item md={2}>
                         <IconButton
                             onClick={handleUploadClick}
