@@ -95,7 +95,13 @@ export default function PagesTable(props) {
               </IconButton>
             </Tooltip>
             <TableActions>
-              <MenuItem>
+              <MenuItem 
+                onClick={()=> {
+                postVal.page_name = param.row.name;
+                postVal.page_description = param.row.description;
+                postVal.web_page_id = param.row.web_page_id;
+                setUpdatePage(true)}} 
+              >
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
               <MenuItem onClick={() => setPopup(true)}>
@@ -143,6 +149,13 @@ export default function PagesTable(props) {
         msg={snackbarMsg}
         severity="success"
       />
+      { updatePage &&  <UpdatePage
+        open={updatePage}
+        close={setUpdatePage}
+        location = {location}
+         getPages={getPages}
+         setPage={setPage}
+      />}
     </>
   );
 }
