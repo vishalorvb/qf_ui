@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Button,
   Dialog,
@@ -8,10 +7,9 @@ import {
 } from "@mui/material";
 import { Grid } from "@mui/material";
 import axios from "../../../api/axios";
-import TextField from "@mui/material/TextField";
 import useSnackbar from "../../../hooks/useSnackbar";
-import { validateFormbyName } from "../../../CustomComponent/FormValidation";
 import { useRef } from "react";
+
 let initialValue = {
   web_page_id: "",
   page_name: "",
@@ -53,6 +51,11 @@ function UpdatePage(props) {
       else{
         (pageName.current.value === "") && pageName.current.classList.add("error"); 
          (pageDesc.current.value === "") && pageDesc.current.classList.add("error"); 
+         setSnackbarData({
+          status: true,
+          message: "Fill required fields",
+          severity: "error",
+        });
       }
     }
   };
@@ -84,7 +87,6 @@ function UpdatePage(props) {
                 sx={{ width: "340px" }}
                 onChange={(e) => {
                   postVal.page_name = e.target.value;
-                  console.log(e.target.value)
                 }}
               ></input>
             </Grid>
