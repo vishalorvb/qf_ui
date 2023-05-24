@@ -36,7 +36,7 @@ function ApiDatasets() {
     let [selectedApiDetails, setSelectedApiDetails] = useState({})
     let [createDatasets, setCreateDatasets] = useState(false)
     let [save, setSave] = useState(false)
-    let [Errorsnackbar,setErrorsnackbar] = useState(false)
+    let [Errorsnackbar, setErrorsnackbar] = useState(false)
     let [snackbar, setSnackbar] = useState(false)
     let [datasetId, setDatasetId] = useState()
     const { auth } = useAuth();
@@ -76,7 +76,8 @@ function ApiDatasets() {
             })
         }
         else {
-            console.log("Form in not valid: Fill required fields")
+            snackbarErrorMsg = "Form in not valid: Fill required fields"
+            setErrorsnackbar(true)
         }
 
     }
