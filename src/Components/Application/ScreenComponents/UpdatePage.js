@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Button,
   Dialog,
@@ -57,6 +56,11 @@ function UpdatePage(props) {
           pageName.current.classList.add("error");
         pageDesc.current.value === "" &&
           pageDesc.current.classList.add("error");
+        setSnackbarData({
+          status: true,
+          message: "Fill required fields",
+          severity: "error",
+        });
       }
     }
   };
@@ -88,7 +92,6 @@ function UpdatePage(props) {
                 sx={{ width: "340px" }}
                 onChange={(e) => {
                   postVal.page_name = e.target.value;
-                  console.log(e.target.value);
                 }}
               ></input>
             </Grid>

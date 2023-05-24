@@ -252,7 +252,7 @@ export default function TestCases() {
                   globalProject?.project_id,
                   globalApplication?.module_id
                 );
-                snakbarmsg="Deleted Successfully"
+                snakbarmsg="Testcase deleted Successfully"
                 setSnack(true)
               }
             })
