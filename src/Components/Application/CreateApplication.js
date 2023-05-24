@@ -1,14 +1,18 @@
 import { Button, Grid } from "@mui/material";
-
 import { useEffect, useRef, useState } from "react";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { createApplication, getApplication } from "../../Services/ApplicationService";
+import {
+  createApplication,
+  getApplication,
+} from "../../Services/ApplicationService";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useSnackbar from "../../hooks/useSnackbar";
+
+// Global module data -- create and update
+
 export let moduledata = {
   module_name: "",
   base_url: "",
@@ -17,6 +21,7 @@ export let moduledata = {
   module_type: 1,
   module_id: 0,
 };
+
 export function resetModuledata() {
   moduledata = {
     module_name: "",
@@ -27,19 +32,24 @@ export function resetModuledata() {
     module_id: 0,
   };
 }
-let moduleNames = []
+
+// list of modules -- for duplicate checking
+let moduleNames = [];
+
 export default function CreateApplication() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { auth } = useAuth();
   const { setHeader } = useHead();
   const { setSnackbarData } = useSnackbar();
-  const [selectedType, setSelectedType] = useState(1);
-  let [snackbarerror, setSnackbarerror] = useState(false);
-  let [duplicateError,setDuplicateError] = useState(false)
-  const navigate = useNavigate();
-  const location = useLocation();
+
   const refName = useRef(null);
   const refUrl = useRef(null);
   const refDesc = useRef(null);
+
+  const [selectedType, setSelectedType] = useState(1);
+
   const APPLICATION_TYPES = [
     { value: 1, label: "API" },
     { value: 2, label: "Web" },
@@ -49,21 +59,24 @@ export default function CreateApplication() {
     { value: 19, label: "Link Project" },
   ];
 
-  function submitHandler(e) {
-    const isTaken = isModuleNameTaken(moduledata.module_id, moduledata.module_name);
-    if (isTaken) 
-    {
-      setDuplicateError(true)
-      return
-    } else {
-     setDuplicateError(false)
+  const submitHandler = (e) => {
+    const isTaken = isModuleNameTaken(
+      moduledata.module_id,
+      moduledata.module_name
+    );
+    if (isTaken) {
+      setSnackbarData({
+        status: true,
+        message: "Application name already exists!",
+        severity: "error",
+      });
+      return;
     }
     if (validateFormbyName(["appname", "url", "desc"], "error")) {
       console.log("valid form");
       createApplication(moduledata, auth.info.id).then((res) => {
-          resetModuledata();
-         if( res == "Module Created Successfully") 
-         {  
+        resetModuledata();
+        if (res == "Module Created Successfully") {
           setSnackbarData({
             status: true,
             message: "Application created successfully",
@@ -71,21 +84,24 @@ export default function CreateApplication() {
           });
           navigate("/Application/Recent");
         }
-         if(res == "Module Updated Successfully")
-         { 
+        if (res == "Module Updated Successfully") {
           setSnackbarData({
             status: true,
             message: "Application updated successfully",
             severity: "success",
           });
           navigate("/Application/Recent");
-        }   
+        }
       });
     } else {
       console.log("Invalid form");
-      setSnackbarerror(true);
+      setSnackbarData({
+        status: true,
+        message: "Fill the mandatory fields",
+        severity: "error",
+      });
     }
-  }
+  };
 
   useEffect(() => {
     refName.current.value = moduledata?.module_name ?? "";
@@ -106,17 +122,25 @@ export default function CreateApplication() {
       };
     });
   }, []);
+
   useEffect(() => {
-    getApplication((res)=>{
-      moduleNames = res.map(({ module_id,module_name }) => ({ module_id, module_name }));
-      console.log(moduleNames)
+    getApplication((res) => {
+      moduleNames = res.map(({ module_id, module_name }) => ({
+        module_id,
+        module_name,
+      }));
     }, auth.info.id);
   }, []);
-  function isModuleNameTaken(moduleId, moduleName) {
+
+  const isModuleNameTaken = (moduleId, moduleName) => {
     const trimmedName = moduleName.trim();
-    const taken = moduleNames.some(module => module.module_id !== moduleId && module.module_name === trimmedName);
+    const taken = moduleNames.some(
+      (module) =>
+        module.module_id !== moduleId && module.module_name === trimmedName
+    );
     return taken;
-  }
+  };
+
   return (
     <>
       <Grid container direction="row" spacing={2}>
@@ -130,14 +154,11 @@ export default function CreateApplication() {
                 moduledata.module_type = e.target.value;
                 setSelectedType(e.target.value);
               }}
+              defaultValue={moduledata.module_type}
             >
               {APPLICATION_TYPES.map((appType) => {
                 return (
-                  <option
-                    key={appType.value}
-                    value={appType.value}
-                    selected={appType.value == moduledata.module_type}
-                  >
+                  <option key={appType.value} value={appType.value}>
                     {appType.label}
                   </option>
                 );
@@ -156,14 +177,17 @@ export default function CreateApplication() {
               ref={refName}
               defaultValue={moduledata.module_name}
               onChange={(e) => {
-                console.log(e.target.value)
-                console.log(moduledata.module_id)
                 moduledata.module_name = e.target.value;
-                const isTaken = isModuleNameTaken(moduledata.module_id, moduledata.module_name);
+                const isTaken = isModuleNameTaken(
+                  moduledata.module_id,
+                  moduledata.module_name
+                );
                 if (isTaken) {
-                 setDuplicateError(true)
-                } else {
-                 setDuplicateError(false)
+                  setSnackbarData({
+                    status: true,
+                    message: "Application name already exists!",
+                    severity: "error",
+                  });
                 }
               }}
             />
@@ -192,22 +216,6 @@ export default function CreateApplication() {
           </Stack>
         </Grid>
 
-        {/* {selectedType === "3" && (
-          <Grid item md={3}>
-            <Stack spacing={1}>
-              <label>APK</label>
-              <input
-                type="text"
-                name="apk_name"
-                placeholder="Apk Name"
-                defaultValue={moduledata.apk_name}
-                onChange={(e) => {
-                  moduledata.apk_name = e.target.value;
-                }}
-              />
-            </Stack>
-          </Grid>
-        )} */}
         <Grid item md={12}>
           <Stack spacing={1}>
             <label>
@@ -237,18 +245,6 @@ export default function CreateApplication() {
           Cancel
         </Button>
       </Stack>
-      <SnackbarNotify
-        open={snackbarerror}
-        close={setSnackbarerror}
-        msg={"Fill the mandatory fields"}
-        severity="error"
-      />
-      { duplicateError &&  <SnackbarNotify
-        open={duplicateError}
-        close={setDuplicateError}
-        msg={"Application name already exists!"}
-        severity="error"
-      />}
     </>
   );
 }

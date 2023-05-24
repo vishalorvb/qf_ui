@@ -6,7 +6,7 @@ export const SnackbarProvider = ({ children }) => {
   const [snackbarData, setSnackbarData] = useState({
     status: false,
     message: "",
-    severity: "",
+    severity: "success",
   });
 
   return (

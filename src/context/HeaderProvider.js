@@ -10,11 +10,23 @@ export const HeaderProvider = ({ children }) => {
     plusCallback: () => console.log("null"),
     browser: "custom",
   });
-  const [globalProject, setglobalProject] = useState(null)
-  const [globalApplication, setglobalApplication] = useState(null)
+  const [globalProject, setglobalProject] = useState(null);
+  const [globalApplication, setglobalApplication] = useState(null);
+  const [showLoader, setShowloader] = useState(false);
 
   return (
-    <HeadContext.Provider value={{ header, setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication }}>
+    <HeadContext.Provider
+      value={{
+        header,
+        setHeader,
+        globalProject,
+        setglobalProject,
+        globalApplication,
+        setglobalApplication,
+        showLoader,
+        setShowloader,
+      }}
+    >
       {children}
     </HeadContext.Provider>
   );
