@@ -11,14 +11,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import useAuth from "../../../hooks/useAuth";
-import useSnackbar from "../../../hooks/useSnackbar";
+import useHead from "../../../hooks/useHead";
 
 export default function CreateScreenPop(props) {
   const { elementsList, applicationId, pageId, screenName, screenId } = props;
   console.log(props);
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const { setSnackbarData } = useSnackbar();
+  const { setSnackbarData } = useHead();
 
   const [screenData, setScreenData] = useState(() => {
     return { name: screenName?.name, desc: screenName?.desc };

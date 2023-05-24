@@ -1,8 +1,8 @@
 import { Snackbar, Alert } from "@mui/material";
-import useSnackbar from "../hooks/useSnackbar";
+import useHead from "../hooks/useHead";
 
 export default function GlobalSnackbar(props) {
-  const { snackbarData, setSnackbarData } = useSnackbar();
+  const { snackbarData, setSnackbarData } = useHead();
 
   const handleClose = () => {
     setSnackbarData({ status: false, message: "", severity: "" });

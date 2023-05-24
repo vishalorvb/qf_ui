@@ -13,6 +13,11 @@ export const HeaderProvider = ({ children }) => {
   const [globalProject, setglobalProject] = useState(null);
   const [globalApplication, setglobalApplication] = useState(null);
   const [showLoader, setShowloader] = useState(false);
+  const [snackbarData, setSnackbarData] = useState({
+    status: false,
+    message: "",
+    severity: "success",
+  });
 
   return (
     <HeadContext.Provider
@@ -25,6 +30,8 @@ export const HeaderProvider = ({ children }) => {
         setglobalApplication,
         showLoader,
         setShowloader,
+        snackbarData,
+        setSnackbarData,
       }}
     >
       {children}
