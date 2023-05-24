@@ -1,5 +1,4 @@
 import PageHead from "./PageHead";
-import AppHeader from "./AppHeader";
 import MiniDrawer from "./MiniDrawer";
 import { Box } from "@mui/system";
 
@@ -18,7 +17,6 @@ export default function AppLayout() {
     <Box sx={{ display: "flex" }}>
       <MiniDrawer open={open} setOpen={setOpen} />
       <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
-        {/* <AppHeader setOpen={setOpen} /> */}
         <Box className="mainContent">
           <HeaderProvider>
             <PageHead />
