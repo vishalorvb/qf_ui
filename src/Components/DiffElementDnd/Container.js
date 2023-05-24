@@ -12,7 +12,8 @@ import { useLocation } from "react-router-dom";
 import useHead from "../../hooks/useHead.js";
 const Container = memo(function Container() {
   const location = useLocation();
-  const { setShowloader, setSnackbarData } = useHead();
+  const { setShowloader, setSnackbarData, setHeader } = useHead();
+
   const [dustbins, setDustbins] = useState([]);
   const [boxes, setBoxes] = useState([]);
   const [droppedBoxNames, setDroppedBoxNames] = useState([]);
@@ -101,6 +102,12 @@ const Container = memo(function Container() {
 
   useEffect(() => {
     getElementsData();
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Mapp DiffElements",
+      };
+    });
   }, []);
 
   useEffect(() => {
