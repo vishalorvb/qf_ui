@@ -132,6 +132,12 @@ function TestcaseSelectAndExecute({
         .then((resp) => {
           console.log(resp?.data?.info);
           settestcaseList(resp?.data?.info);
+          // settestcaseList(
+          //   (resp?.data?.info).filter(
+          //     (obj, index, self) =>
+          //       index === self.findIndex((o) => o['name'] === obj['name'])
+          //   )
+          // );
         });
   }, [open, testsetId]);
 

@@ -24,8 +24,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
-import { Controller } from 'react-hook-form';
-
+import { Controller } from "react-hook-form";
 
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
 export default function ExecutionToolbar({
@@ -50,7 +49,8 @@ export default function ExecutionToolbar({
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
-    browser: yup.array().required(),
+    browser:
+      applicationType !== 3 && applicationType !== 4 && yup.array().required(),
     commitMsg: execLoc !== "local" && yup.string().required(),
   });
   const {
@@ -72,6 +72,7 @@ export default function ExecutionToolbar({
   };
 
   const executionMethodSelector = (data) => {
+    console.log(data);
     applicationType === 1 ? onApiSubmitExecute(data) : onSubmitExecute(data);
   };
 
@@ -289,7 +290,7 @@ export default function ExecutionToolbar({
               };
             });
           });
-        }) 
+        });
 
     applicationId !== undefined &&
       axios
@@ -310,12 +311,12 @@ export default function ExecutionToolbar({
         });
   }, [applicationId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     reset({
-      executionLoc :execEnvList[0]?.id,
-      buildenvName : buildEnvList[0]?.id,
-    })
-  },[execEnvList,buildEnvList])
+      executionLoc: execEnvList[0]?.id,
+      buildenvName: buildEnvList[0]?.id,
+    });
+  }, [execEnvList, buildEnvList]);
 
   return (
     <form>
@@ -395,23 +396,22 @@ export default function ExecutionToolbar({
           ""
         ) : (
           <Grid item md={2}>
-             <Controller
-             control={control}
-             name="browser"
-             defaultValue={["Chrome"]} // Set the default value to "Chrome"
-             render={({ field }) => (
-            <MultiSelectElement
-            menuMaxWidth={5}
-            label="Browser"
-            size="small"
-            fullWidth
-            options={options}
-            control={control} // Pass the control object to the MultiSelectElement
-            {...field}
-          />
-        )}
-      />
-            
+            <Controller
+              control={control}
+              name="browser"
+              defaultValue={["Chrome"]} // Set the default value to "Chrome"
+              render={({ field }) => (
+                <MultiSelectElement
+                  menuMaxWidth={5}
+                  label="Browser"
+                  size="small"
+                  fullWidth
+                  options={options}
+                  control={control} // Pass the control object to the MultiSelectElement
+                  {...field}
+                />
+              )}
+            />
           </Grid>
         )}
 
@@ -429,9 +429,12 @@ export default function ExecutionToolbar({
             }
           />
         </Grid>
-        <Grid item md={(applicationType == '3' || applicationType == '4') ? 6: 4}  
-        display="flex"
-        justifyContent="flex-end">
+        <Grid
+          item
+          md={applicationType == "3" || applicationType == "4" ? 6 : 4}
+          display="flex"
+          justifyContent="flex-end"
+        >
           <Stack direction="column">
             <React.Fragment>
               <ButtonGroup

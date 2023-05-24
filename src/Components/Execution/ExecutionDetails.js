@@ -11,7 +11,7 @@
     applicationType,
     frameworkType,
   }) {
-    console.log(applicationType)
+    // console.log(applicationType)
     const [datasetList, setDataList] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const columns = [

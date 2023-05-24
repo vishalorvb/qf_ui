@@ -5,6 +5,7 @@ import { IconButton, Grid, Typography, Stack } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import GlobalSnackbar from "../CustomComponent/GloablSnackbar";
+import BackdropLoader from "../CustomComponent/BackdropLoader";
 
 export default function PageHead() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function PageHead() {
         !["Application", "Projects", "Testcase", "Testset"].includes(path)
       );
     }).length > 1;
-  const { header } = useHead();
+  const { header, showLoader } = useHead();
 
   return (
     <>
@@ -57,6 +58,8 @@ export default function PageHead() {
           </Grid>
 
           <GlobalSnackbar />
+          <BackdropLoader open={showLoader} />
+
           <div className="customDivider"></div>
         </>
       )}

@@ -31,11 +31,11 @@ function ProjectTable({ location }) {
     setPid(pid);
   }
   function DeleteProjectFromUser(projectId) {
-    console.log(projectId);
+    // console.log(projectId);
     deleteProject(projectId, loggedInId).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res === "SUCCESS") {
-        console.log("dletred");
+        // console.log("dletred");
         setSnackbarsuccess(true);
         getProject(setProject, loggedInId);
       }
@@ -61,7 +61,7 @@ function ProjectTable({ location }) {
     createformData.repository_branch = project.repository_branch;
     createformData.repository_token = project.repository_token;
 
-    console.log(project);
+    // console.log(project);
     navigate("Update");
   }
 

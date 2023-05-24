@@ -87,7 +87,7 @@ function Dataset() {
       headerName: "DataSets",
       renderCell: (param) => {
         return (
-          <div style={{ width: "100%" }}>
+          <div >
             {param.row.web_page_elements.tag_name == "input" && (
               <input
                 type="text"
@@ -138,10 +138,8 @@ function Dataset() {
                     e.target.value
                   );
                 }}
+                dangerouslySetInnerHTML={{ __html: param?.row?.web_page_elements?.child_text }}
               >
-                <option value="0">Select</option>
-                {/* {console.log(param.row.web_page_elements.child_text)} */}
-                {param.row.web_page_elements.child_text}
               </select>
             )}
           </div>
@@ -286,17 +284,16 @@ function Dataset() {
                 datasetinfo.dataset_id = param.row.dataset_id;
               }}
             >
-              <EditOutlinedIcon></EditOutlinedIcon>
+              <EditOutlinedIcon  sx={{ color: "blue", mr: 1 }} ></EditOutlinedIcon>
               Edit
             </MenuItem>
             <MenuItem
               onClick={(e) => {
-                console.log(param.row.dataset_id);
                 setDeletedatasetId(param.row.dataset_id);
                 setDeletepopup(true);
               }}
             >
-              <DeleteOutlined></DeleteOutlined>
+              <DeleteOutlined sx={{ color: "red", mr: 1 }}></DeleteOutlined>
               Delete
             </MenuItem>
           </TableActions>
@@ -374,6 +371,7 @@ function Dataset() {
     });
 
   }, [location.state.testcaseName]);
+
 
   return (
     <div>

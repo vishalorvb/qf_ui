@@ -94,7 +94,7 @@ const Container = memo(function Container() {
   }, [elementid]);
   return (
     <>
-      <Toolbar />
+      <Toolbar dustbins={dustbins} />
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <div>
           <Stack direction="row" gap={2} alignItems="center">

@@ -222,10 +222,7 @@ a {
   padding-right: 0 !important;
 }
 .MuiAccordionSummary-root {
-  
   background: #f0f3f4 !important;
-
-  
 }
 .MuiAccordionSummary-root.Mui-expanded {
   min-height: 48px !important;
@@ -508,7 +505,6 @@ select {
 }
 
 .descColumn {
-  // background-color: #00236b;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -528,11 +524,6 @@ select {
   cursor: pointer;
 }
 
-// label::after {
-//   content: "*";
-//   color: red;
-//   margin-left: 2px;
-// }
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   text-transform: none !important;
   background-color: $accent;
@@ -552,19 +543,10 @@ select {
   margin-left: -20px;
 }
 
-button.MuiButtonBase-root.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.MuiButton-root.MuiButton-text.MuiButton-textPrimary.MuiButton-sizeMedium.MuiButton-textSizeMedium.css-ilfnjt-MuiButtonBase-root-MuiButton-root {
-  text-transform: none !important;
-  background-color: $accent;
-}
-
-button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary.MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
-  text-transform: none !important;
-  background-color: $accent;
-}
-
 .importantfield {
   color: red;
 }
-// .css-qp6sd5-MuiTableCell-root{
-//   display: none !important;
-// }
+
+label {
+  font-weight: 400;
+}
