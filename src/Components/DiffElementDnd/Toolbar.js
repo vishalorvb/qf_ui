@@ -3,13 +3,17 @@ import { Stack } from "@mui/system";
 import { useLocation } from "react-router-dom";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
+import useHead from "../../hooks/useHead";
 
 export default function Toolbar({ dustbins }) {
   const location = useLocation();
+  const { setShowloader, setSnackbarData } = useHead();
   const { auth } = useAuth();
-  console.log(location.state);
   const pageData = location?.state;
+
   const syncPage = () => {
+    console.log("first");
+    setShowloader(true);
     axios
       .post(`/qfservice/webpages/LaunchJNLPToCreateWebPage`, null, {
         params: {
@@ -30,51 +34,88 @@ export default function Toolbar({ dustbins }) {
           })
           .then((resp) => {
             console.log(resp);
+            setShowloader(false);
+            setSnackbarData({
+              status: true,
+              message: "Local client launched successfully",
+              severity: "success",
+            });
+          })
+          .catch((err) => {
+            setShowloader(false);
+            setSnackbarData({
+              status: true,
+              message: "Local client is not running",
+              severity: "error",
+            });
           });
+      })
+      .catch((err) => {
+        setShowloader(false);
+        setSnackbarData({
+          status: true,
+          message: "Something went wrong, Try Refreshing...",
+          severity: "error",
+        });
       });
   };
 
   const saveDiffElement = () => {
-    console.log("first");
-    console.log(
-      dustbins
-        ?.filter((dustbin) => dustbin?.lastDroppedItem)
-        ?.map((dustbin) => {
-          return {
-            old_element_id: dustbin?.elementData?.element_id,
-            new_element_id: dustbin?.lastDroppedItem?.element_id,
-          };
-        })
-    );
-    const saveDiffElementData = {
-      web_page_id: pageData?.web_page_id,
-
-      mapped_elements: dustbins
-        ?.filter((dustbin) => dustbin?.lastDroppedItem)
-        ?.map((dustbin) => {
-          return {
-            old_element_id: dustbin?.elementData?.element_id,
-            new_element_id: dustbin?.lastDroppedItem?.element_id,
-          };
-        }),
-
-      unmapped_old_elements: [],
-
-      initial_check: false,
-    };
-    axios
-      .post(`/qfservice/SyncDiffElements`, saveDiffElementData)
-      .then((resp) => {
-        console.log(resp);
+    const mappedElements = dustbins
+      ?.filter((dustbin) => dustbin?.lastDroppedItem)
+      ?.map((dustbin) => {
+        return {
+          old_element_id: dustbin?.elementData?.element_id,
+          new_element_id: dustbin?.lastDroppedItem?.element_id,
+        };
       });
+
+    if (mappedElements.length > 0) {
+      setShowloader(true);
+
+      const saveDiffElementData = {
+        web_page_id: pageData?.web_page_id,
+
+        mapped_elements: mappedElements,
+
+        unmapped_old_elements: [],
+
+        initial_check: false,
+      };
+      axios
+        .post(`/qfservice/SyncDiffElements`, saveDiffElementData)
+        .then((resp) => {
+          console.log(resp);
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: resp?.data?.message,
+            severity: "success",
+          });
+        })
+        .catch((err) => {
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: "Something went wrong, Try Refreshing...",
+            severity: "error",
+          });
+        });
+    } else {
+      setSnackbarData({
+        status: true,
+        message: "Please add atleast one mapping",
+        severity: "error",
+      });
+    }
   };
 
   return (
     <Stack direction="row" gap={1} justifyContent="flex-end" mb={5}>
-      <Button variant="contained" onClick={syncPage}>
+      <Button variant="contained" size="small" onClick={syncPage}>
         Sync Page
       </Button>
-      <Button variant="contained" onClick={saveDiffElement}>
+      <Button variant="contained" size="small" onClick={saveDiffElement}>
         Save Diff Elements
       </Button>
     </Stack>
