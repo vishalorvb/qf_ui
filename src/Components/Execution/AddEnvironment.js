@@ -61,9 +61,9 @@ const AddEnvironemt = () => {
         // console.log(res.data.data.length);
         if (res.data.data.length > 0) {
           setTbData(res.data.data);
-          setReportSuccessMsg(true);
+          // setReportSuccessMsg(true);
           setTimeout(() => {
-            setReportSuccessMsg(false);
+            // setReportSuccessMsg(false);
           }, 3000);
         } else {
           setTbData("");
@@ -170,12 +170,12 @@ const AddEnvironemt = () => {
           + Add Environment
         </Button>
       </Grid>
-      <SnackbarNotify
+      {/* <SnackbarNotify
         open={reportSuccessMsg}
         close={setReportSuccessMsg}
         msg="We got the report successfully"
         severity="success"
-      />
+      /> */}
       <SnackbarNotify
         open={reportFailMsg}
         close={setReportFailMsg}
