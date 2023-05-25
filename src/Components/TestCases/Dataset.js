@@ -28,6 +28,43 @@ import useHead from "../../hooks/useHead";
 export let DatasetRequest;
 let snabarMessage = " "
 
+let opt = [
+  {
+    id: "custom_code",
+    val: "Custom Code",
+  },
+  {
+    id: "displayed",
+    val: "Displayed",
+  },
+  {
+    id: "element_wait",
+    val: "Element Wait",
+  },
+  {
+    id: "scrollup",
+    val: "Scroll Up",
+  },
+  {
+    id: "scrolldown",
+    val: "Scroll Down",
+  },
+  {
+    id: "is_random",
+    val: "Random",
+  },
+  {
+    id: "is_enter",
+    val: "Enter",
+  },
+  {
+    id: "is_validate",
+    val: "Validate",
+  },
+];
+
+
+
 function Dataset() {
   let [datasets, setDatasets] = useState([]);
   let [drawer, setDrawer] = useState(false);
@@ -43,6 +80,7 @@ function Dataset() {
 
   let location = useLocation();
   let navigate = useNavigate();
+  let [inputList,setInputList] = useState([]);
   let projectId;
   let applicationId;
   let testcaseId;
@@ -116,19 +154,6 @@ function Dataset() {
                 }}
               />
             )}
-            {/* {param.row.web_page_elements.tag_name == "Button" && (
-              <input
-                type="checkbox"
-                checked={param.row.dataset_values.is_click}
-                onChange={(e) => {
-                  updateDataset(
-                    param.row.element_id,
-                    "is_click",
-                    e.target.checked
-                  );
-                }}
-              />
-            )} */}
             {param.row.web_page_elements.tag_name == "select" && (
               <select
                 onChange={(e) => {
@@ -153,40 +178,7 @@ function Dataset() {
       field: "elements",
       headerName: "Elements",
       renderCell: (param) => {
-        let opt = [
-          {
-            id: "custom_code",
-            val: "Custom Code",
-          },
-          {
-            id: "displayed",
-            val: "Displayed",
-          },
-          {
-            id: "element_wait",
-            val: "Element Wait",
-          },
-          {
-            id: "scrollup",
-            val: "Scroll Up",
-          },
-          {
-            id: "scrolldown",
-            val: "Scroll Down",
-          },
-          {
-            id: "is_random",
-            val: "Random",
-          },
-          {
-            id: "is_enter",
-            val: "Enter",
-          },
-          {
-            id: "is_validate",
-            val: "Validate",
-          },
-        ];
+
         let alllist = [
           "custom_code",
           "displayed",
@@ -204,23 +196,15 @@ function Dataset() {
           }
         });
         return (
-          <div>
-            <MuiltiSelect
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline":
-                {
-                  border: "none",
-                },
-              }}
-              preselect={preselect}
-              // preselect ={opt}
-              options={opt}
-              value="val"
-              id="id"
-              stateList={(list) => {
-                let templist = list.map((obj) => obj["id"]);
-                if (flag || preselect.length !== templist.length) {
-                  flag = true;
+          <div style={{ display: "flex" }}>
+            <div>
+              <MuiltiSelect
+                preselect={preselect}
+                options={opt}
+                value="val"
+                id="id"
+                stateList={(list) => {
+                  let templist = list.map((obj) => obj["id"]);
                   alllist.forEach((l) => {
                     if (templist.includes(l)) {
                       updateDataset(param.row.element_id, l, true);
@@ -228,13 +212,31 @@ function Dataset() {
                       updateDataset(param.row.element_id, l, false);
                     }
                   });
-                }
-              }}
-            ></MuiltiSelect>
+                  if(templist.includes("is_validate")){
+                    let tmp = [...inputList]
+                    tmp.push(param.row.element_id)
+                    setInputList([...tmp])   
+                  }
+                  else{
+                    let tmp = [...inputList]
+                    tmp = tmp.filter(t=>t != param.row.element_id)
+                    setInputList([...tmp])
+                  }
+                }}
+              ></MuiltiSelect>
+            </div>
+           {inputList.includes(param.row.element_id) &&<div style={{ marginTop: "22px" }}>
+              <input
+                onChange={e => {
+                  updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
+                }}
+                defaultValue={param.row.dataset_values.validate_text}
+                type="text" placeholder="Enter Value" />
+            </div>}
           </div>
         );
       },
-      flex: 2,
+      flex: inputList.length==0?3:6,
       sortable: false,
       align: "left",
     },
@@ -284,7 +286,7 @@ function Dataset() {
                 datasetinfo.dataset_id = param.row.dataset_id;
               }}
             >
-              <EditOutlinedIcon  sx={{ color: "blue", mr: 1 }} ></EditOutlinedIcon>
+              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} ></EditOutlinedIcon>
               Edit
             </MenuItem>
             <MenuItem
@@ -326,7 +328,7 @@ function Dataset() {
     DatasetRequest = [data];
     try {
       setScreens(data.screens_in_testcase);
-    } catch (error) { console.log(error) }
+    } catch (error) { }
   }, [data]);
 
   useEffect(() => {
