@@ -251,6 +251,15 @@ const TestDesign = () => {
     } = event;
     setStatusName(typeof value === "string" ? value.split(",") : value);
   };
+
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Test Design",
+      };
+    });
+  }, []);
   useEffect(() => {
     console.log(globalProject);
     async function fetchData() {

@@ -42,7 +42,7 @@ const TestLibrary = () => {
   const [projectKey, setProjectKey] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState();
-  const { globalProject, setglobalProject,setSnackbarData } = useHead();
+  const { globalProject, setglobalProject,setSnackbarData,setHeader } = useHead();
   const [projectsList, setProjectList] = useState([]);
   const { auth } = useAuth();
   const userId = auth.info.id;
@@ -358,6 +358,14 @@ const TestLibrary = () => {
     };
     reader.readAsArrayBuffer(selectedFile);
   };
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Test Library",
+      };
+    });
+  }, []);
   useEffect(() => {
     getProject((res) => {
       setProjectList(res);
