@@ -11,7 +11,7 @@ import { getApis } from "../../../Services/ApiService";
 import { deleteApiRequest } from "../../../Services/ApiService";
 import TableActions from "../../../CustomComponent/TableActions";
 export default function APIsTable() {
-  const { setHeader } = useHead();
+  const { setHeader, setSnackbarData } = useHead();
   const location = useLocation();
   const navigate = useNavigate();
   let [apis, setApis] = useState([]);
@@ -22,6 +22,11 @@ export default function APIsTable() {
     deleteApiRequest(apiid).then((res) => {
       if (res) {
         getApis(setApis, location.state.module_id);
+        setSnackbarData({
+          status: true,
+          message: "API deleted successfully",
+          severity: "success",
+        });
       }
       setPopup(false);
     });
