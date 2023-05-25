@@ -185,7 +185,7 @@ const AddEnvironemt = () => {
       <SnackbarNotify
         open={successDelete}
         close={setSuccessDelete}
-        msg="Deleted successfully"
+        msg="Environment deleted successfully"
         severity="success"
       />
       <div className="datatable" style={{ marginTop: "15px" }}>

@@ -9,7 +9,6 @@ import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
-import useSnackbar from "../../hooks/useSnackbar";
 
 // Global module data -- create and update
 
@@ -41,8 +40,7 @@ export default function CreateApplication() {
   const location = useLocation();
 
   const { auth } = useAuth();
-  const { setHeader } = useHead();
-  const { setSnackbarData } = useSnackbar();
+  const { setHeader, setSnackbarData } = useHead();
 
   const refName = useRef(null);
   const refUrl = useRef(null);

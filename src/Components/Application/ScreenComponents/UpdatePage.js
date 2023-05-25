@@ -7,9 +7,10 @@ import {
 } from "@mui/material";
 import { Grid } from "@mui/material";
 import axios from "../../../api/axios";
-import useSnackbar from "../../../hooks/useSnackbar";
+import TextField from "@mui/material/TextField";
+import { validateFormbyName } from "../../../CustomComponent/FormValidation";
 import { useRef } from "react";
-
+import useHead from "../../../hooks/useHead";
 let initialValue = {
   web_page_id: "",
   page_name: "",
@@ -19,7 +20,7 @@ export let postVal = { ...initialValue };
 
 function UpdatePage(props) {
   const { open, close, location, getPages, setPage } = props;
-  const { setSnackbarData } = useSnackbar();
+  const { setSnackbarData } = useHead();
   const pageName = useRef();
   const pageDesc = useRef();
 
@@ -28,30 +29,34 @@ function UpdatePage(props) {
   };
   const onUpdateHandler = (params) => {
     {
-      if(postVal.page_name !== "" && postVal.page_description !== "")
-      {
-        (pageName.current.value !== "") ?pageName.current.classList.remove("error") : pageName.current.classList.add("error"); 
-        (pageDesc.current.value !== "") ? pageDesc.current.classList.remove("error") :  pageName.current.classList.add("error");
-       axios
-        .post(
-          `/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
-        )
-        .then((resp) => {
-          if (resp?.data?.status === "SUCCESS") {
-            setSnackbarData({
-              status: true,
-              message: "Page updated successfully",
-              severity: "success",
-            });
-            getPages(setPage, location.state.module_id);
-            handleClose();
-          }
-        });
-      }
-      else{
-        (pageName.current.value === "") && pageName.current.classList.add("error"); 
-         (pageDesc.current.value === "") && pageDesc.current.classList.add("error"); 
-         setSnackbarData({
+      if (postVal.page_name !== "" && postVal.page_description !== "") {
+        pageName.current.value !== ""
+          ? pageName.current.classList.remove("error")
+          : pageName.current.classList.add("error");
+        pageDesc.current.value !== ""
+          ? pageDesc.current.classList.remove("error")
+          : pageName.current.classList.add("error");
+        axios
+          .post(
+            `/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
+          )
+          .then((resp) => {
+            if (resp?.data?.status === "SUCCESS") {
+              setSnackbarData({
+                status: true,
+                message: "Page updated successfully",
+                severity: "success",
+              });
+              getPages(setPage, location.state.module_id);
+              handleClose();
+            }
+          });
+      } else {
+        pageName.current.value === "" &&
+          pageName.current.classList.add("error");
+        pageDesc.current.value === "" &&
+          pageDesc.current.classList.add("error");
+        setSnackbarData({
           status: true,
           message: "Fill required fields",
           severity: "error",
@@ -72,9 +77,9 @@ function UpdatePage(props) {
             sx={{ marginTop: "5px" }}
           >
             <Grid xs={3} sx={{ marginTop: "15px" }}>
-            <label>
-              Name :<span className="importantfield">*</span>
-            </label>
+              <label>
+                Name :<span className="importantfield">*</span>
+              </label>
             </Grid>
 
             <Grid xs={9}>
@@ -91,12 +96,12 @@ function UpdatePage(props) {
               ></input>
             </Grid>
             <Grid xs={3} sx={{ marginTop: "30px" }}>
-            <label>
-              Description :<span className="importantfield">*</span>
-            </label>
+              <label>
+                Description :<span className="importantfield">*</span>
+              </label>
             </Grid>
 
-            <Grid xs={9} sx={{ marginTop: "30px" }} >
+            <Grid xs={9} sx={{ marginTop: "30px" }}>
               <input
                 ref={pageDesc}
                 type="text"

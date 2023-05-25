@@ -9,21 +9,25 @@ import { Dustbin } from "./Dustbin.js";
 import Toolbar from "./Toolbar.js";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useLocation } from "react-router-dom";
+import useHead from "../../hooks/useHead.js";
 const Container = memo(function Container() {
   const location = useLocation();
-  console.log(location.state);
+  const { setShowloader, setSnackbarData, setHeader } = useHead();
+
   const [dustbins, setDustbins] = useState([]);
   const [boxes, setBoxes] = useState([]);
   const [droppedBoxNames, setDroppedBoxNames] = useState([]);
   const [dustbinSearchString, setDustbinSearchString] = useState("");
   const [boxSearchString, setBoxSearchString] = useState("");
-  let [elementid, setElementid] = useState(0);
-  let [popup, setPopup] = useState(false);
+  const [elementid, setElementid] = useState(0);
+  const [popup, setPopup] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [isDiffElement, setIsDiffElement] = useState(false);
+
   function isDropped(boxName) {
     return droppedBoxNames.indexOf(boxName) > -1;
   }
+
   const handleDrop = useCallback(
     (index, item) => {
       const { elementData } = item;
@@ -40,6 +44,7 @@ const Container = memo(function Container() {
     },
     [droppedBoxNames, dustbins]
   );
+
   const clearSelected = useCallback(
     (index, item) => {
       console.log(index);
@@ -63,6 +68,7 @@ const Container = memo(function Container() {
   };
 
   const getElementsData = () => {
+    setShowloader(true);
     axios
       .post(
         `http://10.11.12.243:8083/qfservice/check-diff-page/${location?.state?.web_page_id}`
@@ -82,16 +88,36 @@ const Container = memo(function Container() {
             return { elementData: element, type: "all" };
           });
         });
+        setShowloader(false);
+      })
+      .catch((err) => {
+        setShowloader(false);
+        setSnackbarData({
+          status: true,
+          message: "Something went wrong, Try Refreshing...",
+          severity: "error",
+        });
       });
   };
 
   useEffect(() => {
     getElementsData();
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Mapp DiffElements",
+      };
+    });
   }, []);
 
   useEffect(() => {
     elementid !== 0 && setPopup(true);
   }, [elementid]);
+
+  useEffect(() => {
+    !popup && setElementid(0);
+  }, [popup]);
+
   return (
     <>
       <Toolbar dustbins={dustbins} />
@@ -111,7 +137,7 @@ const Container = memo(function Container() {
               overflow: "hidden",
               clear: "both",
               height: "45rem",
-              overflowY: "scroll",
+              overflowY: "auto",
             }}
           >
             <List>
@@ -160,7 +186,7 @@ const Container = memo(function Container() {
               overflow: "hidden",
               clear: "both",
               height: "45rem",
-              overflowY: "scroll",
+              overflowY: "auto",
             }}
           >
             <List>

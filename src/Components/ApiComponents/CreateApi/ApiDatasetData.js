@@ -22,5 +22,10 @@ export function setGetData(apiId,objectname,data){
 
 
 export function clearPostData(){
-    postData={...postDataInitialVal}
+    postData.testcase_dataset_name = ""
+    postData.apis_order = []
+    postData.description = ""
+    postData.tc_dataset_id=0
+    postData.multi_datasets_of_testcase = []
+
 }
