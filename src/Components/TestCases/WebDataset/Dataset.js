@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Table from "../../CustomComponent/Table";
+import Table from "../../../CustomComponent/Table";
 import CreateDataSetPopUp from "./CreateDataSetPopUp";
 import {
   Button,
@@ -9,22 +9,20 @@ import {
 } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { deleteDataset, getDataset } from "../../Services/TestCaseService";
+import { deleteDataset, getDataset } from "../../../Services/TestCaseService";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import PersistentDrawerRight from "./PersistentDrawerRight";
-import { getData_for_createDataset } from "../../Services/TestCaseService";
+import { getData_for_createDataset } from "../../../Services/TestCaseService";
 import { updateDataset } from "./DatasetHelper";
 import { clearDatasetinfo } from "./DatasetHelper";
 import { datasetinfo } from "./DatasetHelper";
-import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
+import MuiltiSelect from "../../../CustomComponent/MuiltiSelect";
 import { useLocation, useNavigate } from "react-router";
-import ConfirmPop from "../../CustomComponent/ConfirmPop";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import ConfirmPop from "../../../CustomComponent/ConfirmPop";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import AddIcon from '@mui/icons-material/Add';
-import TableActions from "../../CustomComponent/TableActions";
-import useHead from "../../hooks/useHead";
-
-
+import TableActions from "../../../CustomComponent/TableActions";
+import useHead from "../../../hooks/useHead";
 export let DatasetRequest;
 let snabarMessage = " "
 
@@ -189,7 +187,6 @@ function Dataset() {
           "is_enter",
           "is_validate"
         ];
-        let flag = false;
         let preselect = opt.filter((e) => {
           if (param.row.dataset_values[e.id]) {
             return e;

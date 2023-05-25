@@ -36,7 +36,7 @@ const ActiveReports = lazy(() =>
 // const APIsTable = lazy(() =>
 //   import("../Components/Application/ApiApplication/APIsTable")
 // );
-const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
+const Dataset = lazy(() => import("../Components/TestCases/WebDataset/Dataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const ApiDatasets = lazy(() =>
   import("../Components/ApiComponents/CreateApi/ApiDatasets")

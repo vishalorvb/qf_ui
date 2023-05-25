@@ -7,8 +7,8 @@ import { useEffect, useMemo, useState } from "react";
 import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import { Stack } from "@mui/system";
 import MaterialReactTable from "material-react-table";
-import axios from "../../api/axios";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import axios from "../../../api/axios";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
 const drawerWidth = 240;
 export let selected_screen;
