@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UploadIcon from "@mui/icons-material/Upload";
 import DownloadIcon from "@mui/icons-material/Download";
-import SearchIcon from "@mui/icons-material/Search";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
 import {
   Autocomplete,
   Button,
@@ -22,9 +20,7 @@ import {
   UploadManualTestcasesExcelFile,
 } from "./TestLibraryService";
 import Table from "../../CustomComponent/Table";
-import DeleteIcon from "@mui/icons-material/Delete";
 import * as XLSX from "xlsx";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { getProject } from "../../Services/ProjectService";
 import useHead from "../../hooks/useHead";
 import useAuth from "../../hooks/useAuth";
@@ -33,6 +29,7 @@ import SyncIcon from "@mui/icons-material/Sync";
 import { useNavigate } from "react-router-dom";
 import TableActions from "../../CustomComponent/TableActions";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import useSnackbar from "../../hooks/useSnackbar";
 
 let manual_testcase_id = 0;
 let snakbarmsg = "";
@@ -44,12 +41,7 @@ const TestLibrary = () => {
   const [issueData, setIssueData] = useState();
   const [tableData, setTableData] = useState([]);
   const [projectKey, setProjectKey] = useState("");
-  const [uploadFileResponse, setUploadFileResponse] = useState(false);
-  const [showIssueError, setShowIssueError] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
-  const [showErrorMsg, setShowErrorMsg] = useState(false);
-  const [showDowloadSuccessMsg, setDownloadSuccesMsg] = useState(false);
   const [fileName, setFileName] = useState();
   const { globalProject, setglobalProject } = useHead();
   const [projectsList, setProjectList] = useState([]);
@@ -57,12 +49,10 @@ const TestLibrary = () => {
   const userId = auth.info.id;
   const [sqeProjectId, setSqeProjectid] = useState();
   const [empty, setNotEmpty] = useState(false);
-  const [delResponse,setDeleteResponse] = useState()
   const navigate = useNavigate();
   let [popup, setPopup] = useState(false);
   const [snack, setSnack] = useState(false);
-
-
+  const { setSnackbarData } = useSnackbar();
 
   const columns = [
     {
@@ -121,7 +111,6 @@ const TestLibrary = () => {
       sortable: false,
       align: "left",
       renderCell: (params) => {
-       
         return (
           <TableActions>
             <MenuItem
@@ -140,20 +129,22 @@ const TestLibrary = () => {
   ];
   async function handleDownload() {
     if (issues == undefined) {
-      setShowIssueError(true);
-      setTimeout(() => {
-        setShowIssueError(false);
-      }, 3000);
+      setSnackbarData({
+        status: true,
+        message: "Please select Issue Key",
+        severity: "error",
+      });
       return;
     }
     const jsonData = await new Promise((resolve) => {
       ExportManualTestcases(
         (res) => {
           resolve(res);
-          setDownloadSuccesMsg(true);
-          setTimeout(() => {
-            setDownloadSuccesMsg(false);
-          }, 3000);
+          setSnackbarData({
+            status: true,
+            message: "File downloaded successfully",
+            severity: "success",
+          });
         },
         globalProject?.project_id,
         userId,
@@ -250,11 +241,13 @@ const TestLibrary = () => {
     }
   }
   const handleFileInputChange = (event) => {
+    var label = document.getElementById("myLabel");
+    label.textContent = event.target.files[0].name;
+    setSelectedFile(null);
     setFileName(event.target.files[0].name);
     setSelectedFile(event.target.files[0]);
   };
   const handleUpload = () => {
-    console.log(selectedFile);
     if (!selectedFile) {
       alert("Please select a file");
       return;
@@ -337,10 +330,11 @@ const TestLibrary = () => {
       formData.append("project_id", globalProject?.project_id);
       UploadManualTestcasesExcelFile((res) => {
         if (res?.data?.status == "SUCCESS") {
-          setUploadFileResponse(true);
-          setTimeout(() => {
-            setUploadFileResponse(false);
-          }, 3000);
+          setSnackbarData({
+            status: true,
+            message: "File uploaded successfully",
+            severity: "success",
+          });
           GetTestLibrary(
             (res) => {
               if (res != null) {
@@ -352,6 +346,15 @@ const TestLibrary = () => {
             projectKey,
             sprints
           );
+        }
+        if (res?.data?.status == "FAIL") {
+          setSnackbarData({
+            status: true,
+            message:
+              res?.data?.message +
+              ".Please select relevant issue key before uploading!",
+            severity: "error",
+          });
         }
       }, formData);
     };
@@ -373,14 +376,13 @@ const TestLibrary = () => {
         const data = await new Promise((resolve) => {
           GetSprintsOfJiraProject(
             (res) => {
-              if(res !== null)
-              {
-              setNotEmpty(true)
-              setData(res);
-              setProject(res[0]?.sprintnamekey.value);
-              setProjectKey(res[0]?.sprintnamekey.key);
-              setSprints(res[0]?.name);
-              resolve(res);
+              if (res !== null) {
+                setNotEmpty(true);
+                setData(res);
+                setProject(res[0]?.sprintnamekey.value);
+                setProjectKey(res[0]?.sprintnamekey.key);
+                setSprints(res[0]?.name);
+                resolve(res);
               }
             },
             userId,
@@ -390,9 +392,8 @@ const TestLibrary = () => {
         await new Promise((resolve) => {
           GetIssuesOfTestlibrary(
             (res) => {
-              if(res !== null)
-              {
-              setIssueData(res?.data?.info);
+              if (res !== null) {
+                setIssueData(res?.data?.info);
               }
             },
             data[0]?.name,
@@ -406,10 +407,11 @@ const TestLibrary = () => {
             (res) => {
               if (res != null) {
                 setTableData(res);
-                setShowSuccessMsg(true);
-                setTimeout(() => {
-                  setShowSuccessMsg(false);
-                }, 3000);
+                setSnackbarData({
+                  status: true,
+                  message: "Testcases fetched successfully",
+                  severity: "success",
+                });
               }
             },
             globalProject == null ? sqeProjectId : globalProject?.project_id,
@@ -462,10 +464,11 @@ const TestLibrary = () => {
               console.log(Object.keys(res).length);
               if (res != null) {
                 setTableData(res);
-                setShowSuccessMsg(true);
-                setTimeout(() => {
-                  setShowSuccessMsg(false);
-                }, 3000);
+                setSnackbarData({
+                  status: true,
+                  message: "Testcases fetched successfully",
+                  severity: "success",
+                });
               }
             },
             globalProject == null ? sqeProjectId : globalProject?.project_id,
@@ -533,10 +536,11 @@ const TestLibrary = () => {
     );
   }, [issues]);
   function handleClick() {
-    createformData.projectName = globalProject.project_name
-    createformData.projectDesc= globalProject.description
-    createformData.automation_framework_type = globalProject.automation_framework_type
-    createformData.jira_project_id = globalProject.jira_project_id
+    createformData.projectName = globalProject.project_name;
+    createformData.projectDesc = globalProject.description;
+    createformData.automation_framework_type =
+      globalProject.automation_framework_type;
+    createformData.jira_project_id = globalProject.jira_project_id;
     createformData.sqeProjectId = globalProject.project_id;
     createformData.userId = auth.info.id;
     createformData.orgId = 1;
@@ -551,204 +555,181 @@ const TestLibrary = () => {
   }
   return (
     <>
-      <Grid
-        container
-        justifyContent="space-between"
-        alignItems="center"
-        display="flex"
-      >
-        <Grid
-          container
-          md={8}
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={1.3}
-        >
-          <Grid item>
-            <label htmlFor="">Projects</label>
-            <Autocomplete
-              disablePortal
-              disableClearable
-              id="project_id"
-              options={projectsList}
-              value={globalProject || null}
-              sx={{ width: "100%" }}
-              getOptionLabel={(option) => option.project_name ?? ""}
-              onChange={(e, value) => {
-                setglobalProject(value);
-                setNotEmpty(false)
-              }}
-              renderInput={(params) => (
-                <div ref={params.InputProps.ref}>
-                  <input type="text" {...params.inputProps} />
-                </div>
-              )}
-            />
-          </Grid>
-          { empty ? <><Grid item md={2}>
-            <InputLabel id="demo-simple-select-label">Jira Project</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={project}
-              onChange={(e) => setProject(e.target.value)}
-              size="small"
-              fullWidth
-            >
-              <MenuItem value={project}>{project}</MenuItem>
-            </Select>
-          </Grid> 
-         
-        <Grid item md={2}>
-            <InputLabel id="demo-simple-select-label">Sprint Name</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={sprints}
-              onChange={(e) => {
-                setSprints(e.target.value);
-              }}
-              size="small"
-              fullWidth
-            >
-              {data?.map((sprint) => (
-                <MenuItem key={sprint.id} value={sprint.name}>
-                  {sprint.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-         <Grid item md={2}>
-            <InputLabel id="demo-simple-select-label">Issue Key</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={issues}
-              onChange={(e) => {
-                setIssues(e.target.value);
-              }}
-              size="small"
-              fullWidth
-            >
-              {issueData?.map((issue) => (
-                <MenuItem key={issue.issue_id} value={issue.key}>
-                  {issue.key}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid></> : <Grid item md={3} mt={2}>
-            <Button
-              variant="contained"
-              onClick={handleClick}
-              startIcon={<SyncIcon />}
-              size="small"
-            >
-              Configure JIRA
-            </Button></Grid>}
-       
-        </Grid>
-       { empty && <Grid item md={4}>
+      <Grid container>
+        <Grid item xs={12}>
           <Grid
             container
             justifyContent="flex-end"
-            spacing={0.5}
-            alignItems="center"
+            spacing={1}
+            alignItems="end"
           >
-            <Grid item md={2.5}>
-              <input
-                type="file"
-                id="fileInput"
-                style={{ display: "none" }}
-                accept=".xlsx"
-                onChange={handleFileInputChange}
-              />
-              <label
-                for="fileInput"
-                class="fileButton"
-                style={{
-                  backgroundColor: " #4CAF50",
-                  borderRadius: "5px",
-                  border: "none",
-                  color: "white",
-                  padding: "10px 20px",
-                  textAlign: "center",
-                  textDecoration: "none",
-                  display: "inline-block",
-                  fontSize: "16px",
-                  cursor: "pointer",
-                  width: "fullWidth",
+            <Grid item>
+              <label htmlFor="">Projects</label>
+              <Autocomplete
+                disablePortal
+                disableClearable
+                id="project_id"
+                options={projectsList}
+                value={globalProject || null}
+                sx={{ width: "100%" }}
+                getOptionLabel={(option) => option.project_name ?? ""}
+                onChange={(e, value) => {
+                  setglobalProject(value);
+                  setNotEmpty(false);
+                  setTableData([]);
                 }}
-              >
-                Browse
-              </label>
-            </Grid>
-            <Grid item md={3}>
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={handleUpload}
-                type="button"
-                id="upload-btn"
-                startIcon={<UploadIcon />}
-              >
-                Upload
-              </Button>
-            </Grid>
-            <Grid item md={1}>
-              <DownloadIcon
-                onClick={handleDownload}
-                style={{ cursor: "pointer" }}
+                renderInput={(params) => (
+                  <div ref={params.InputProps.ref}>
+                    <input type="text" {...params.inputProps} />
+                  </div>
+                )}
               />
+            </Grid>
+            {empty ? (
+              <>
+                {" "}
+                <Grid item>
+                  <InputLabel id="demo-simple-select-label">
+                    Jira Project
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={project}
+                    onChange={(e) => setProject(e.target.value)}
+                    size="small"
+                    fullWidth
+                  >
+                    <MenuItem value={project}>{project}</MenuItem>
+                  </Select>
+                </Grid>
+                <Grid item>
+                  <InputLabel id="demo-simple-select-label">
+                    Sprint Name
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={sprints}
+                    onChange={(e) => {
+                      setSprints(e.target.value);
+                    }}
+                    size="small"
+                    fullWidth
+                  >
+                    {data?.map((sprint) => (
+                      <MenuItem key={sprint.id} value={sprint.name}>
+                        {sprint.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item>
+                  <InputLabel id="demo-simple-select-label">
+                    Issue Key
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={issues}
+                    onChange={(e) => {
+                      setIssues(e.target.value);
+                    }}
+                    size="small"
+                    fullWidth
+                  >
+                    {issueData?.map((issue) => (
+                      <MenuItem key={issue.issue_id} value={issue.key}>
+                        {issue.key}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={handleClick}
+                    startIcon={<SyncIcon />}
+                    size="small"
+                    style={{ marginBottom: "4px" }}
+                  >
+                    Configure JIRA
+                  </Button>
+                </Grid>
+              </>
+            )}
+          </Grid>
+        </Grid>
+        {empty && (
+          <Grid item xs={12} mt={1}>
+            <Grid
+              container
+              justifyContent="flex-end"
+              spacing={1}
+              alignItems="end"
+            >
+              <Grid item>
+                <input
+                  type="file"
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  accept=".xlsx"
+                  onChange={handleFileInputChange}
+                />
+                <label
+                  id="myLabel"
+                  for="fileInput"
+                  class="fileButton"
+                  style={{
+                    backgroundColor: " #4CAF50",
+                    borderRadius: "5px",
+                    border: "none",
+                    color: "white",
+                    padding: "5px 20px",
+                    textAlign: "center",
+                    textDecoration: "none",
+                    display: "inline-block",
+                    fontSize: "16px",
+                    cursor: "pointer",
+                    width: "fullWidth",
+                  }}
+                >
+                  Browse
+                </label>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={handleUpload}
+                  type="button"
+                  id="upload-btn"
+                  startIcon={<UploadIcon />}
+                  size="small"
+                >
+                  Upload
+                </Button>
+              </Grid>
+              <Grid item>
+                <DownloadIcon
+                  onClick={handleDownload}
+                  style={{ cursor: "pointer", outline: "2px solid #1976d2" }}
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>} 
+        )}
       </Grid>
       <Table
         columns={columns}
         rows={tableData}
         getRowId={(row) => row?.testcase_id}
       />
-      {showIssueError && (
-        <SnackbarNotify
-          open={showIssueError}
-          close={setShowIssueError}
-          msg="Please select Issue Key"
-          severity="error"
-        />
-      )}
-      {showSuccessMsg && (
-        <SnackbarNotify
-          open={showSuccessMsg}
-          close={setShowSuccessMsg}
-          msg="Testcases fetched successfully"
-          severity="success"
-        />
-      )}
-      {showErrorMsg && (
-        <SnackbarNotify
-          open={showErrorMsg}
-          close={setShowErrorMsg}
-          msg="No testcases found"
-          severity="error"
-        />
-      )}
-      {showDowloadSuccessMsg && (
-        <SnackbarNotify
-          open={showDowloadSuccessMsg}
-          close={setDownloadSuccesMsg}
-          msg="File downloaded successfully"
-          severity="success"
-        />
-      )}
-      {uploadFileResponse && (
-        <SnackbarNotify
-          open={uploadFileResponse}
-          close={setUploadFileResponse}
-          msg="File uploaded successfully"
-          severity="success"
-        />
-      )}
-       <ConfirmPop
+      {popup && (
+        <ConfirmPop
           open={popup}
           handleClose={() => setPopup(false)}
           heading={"Delete Manual Testcase"}
@@ -767,23 +748,14 @@ const TestLibrary = () => {
                   projectKey,
                   sprints
                 );
-                snakbarmsg="Deleted Successfully"
-                setSnack(true)
+                snakbarmsg = "Deleted Successfully";
+                setSnack(true);
               }
-            })
-            setPopup(false)
-          }
-          }
+            });
+            setPopup(false);
+          }}
         ></ConfirmPop>
-          {snack &&
-           <SnackbarNotify
-            open={snack}
-            close={() => {
-              setSnack(false);
-            }}
-             msg={snakbarmsg}
-            severity="success"
-      ></SnackbarNotify>}
+      )}
     </>
   );
 };
