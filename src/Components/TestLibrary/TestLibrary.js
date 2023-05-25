@@ -29,7 +29,6 @@ import SyncIcon from "@mui/icons-material/Sync";
 import { useNavigate } from "react-router-dom";
 import TableActions from "../../CustomComponent/TableActions";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
-import useSnackbar from "../../hooks/useSnackbar";
 
 let manual_testcase_id = 0;
 let snakbarmsg = "";
@@ -43,7 +42,7 @@ const TestLibrary = () => {
   const [projectKey, setProjectKey] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState();
-  const { globalProject, setglobalProject } = useHead();
+  const { globalProject, setglobalProject,setSnackbarData } = useHead();
   const [projectsList, setProjectList] = useState([]);
   const { auth } = useAuth();
   const userId = auth.info.id;
@@ -52,7 +51,6 @@ const TestLibrary = () => {
   const navigate = useNavigate();
   let [popup, setPopup] = useState(false);
   const [snack, setSnack] = useState(false);
-  const { setSnackbarData } = useSnackbar();
 
   const columns = [
     {
