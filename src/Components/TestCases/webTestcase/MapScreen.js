@@ -48,10 +48,11 @@ export default function MapScreen() {
       testcase_sprints: [],
       screens_in_testcase: screens,
     };
-    if (screensData.screens_in_testcase.length == 0) {
-      setSnackbarError(true)
-      return 0
+    if(screensData.screens_in_testcase.length == 0)
+    {
+      navigate(-1)
     }
+    if (screensData.screens_in_testcase.length !== 0) {
     axios
       .post(`/qfservice/webtestcase/ScreensMapping`, screensData)
       .then((resp) => {
@@ -60,6 +61,7 @@ export default function MapScreen() {
           resp?.data?.status === "SUCCESS" && navigate(-1);
         }, 1000);
       });
+    }
   };
   useEffect(() => {
     axios
@@ -102,7 +104,7 @@ export default function MapScreen() {
       <SnackbarNotify
         open={screenUpdated}
         close={setScreenUpdated}
-        msg={"Screen Mapped Successfully"}
+        msg={"Screens mapped to testcase successfully"}
         severity="success"
       />
       <SnackbarNotify
