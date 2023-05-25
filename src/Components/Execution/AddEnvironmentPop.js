@@ -126,7 +126,7 @@ function AddEnvironmentPop(props) {
             <SnackbarNotify
                 open={reportSuccessMsg}
                 close={setReportSuccessMsg}
-                msg="Created successfully"
+                msg="Environment created successfully"
                 severity="success"
             />
             <SnackbarNotify

@@ -150,7 +150,7 @@ function EditEnvironmentPop(props) {
     <SnackbarNotify
         open={editSuccessMsg}
         close={setEditSuccessMsg}
-        msg="Updated successfully"
+        msg="Environment updated successfully"
         severity="success"
     />
     </>
