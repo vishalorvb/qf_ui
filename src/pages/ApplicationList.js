@@ -54,22 +54,22 @@ export default function ApplicationsList() {
             {{
               1: (
                 <Tooltip title="API">
-                  <ApiIcon sx={{ color: "yellow" }} />
+                  <ApiIcon sx={{ color: "#ffd700 " }} />
                 </Tooltip>
               ),
               2: (
                 <Tooltip title="Web">
-                  <LanguageIcon sx={{ color: "lightblue" }} />
+                  <LanguageIcon sx={{ color: "#0000A5" }} />
                 </Tooltip>
               ),
               3: (
                 <Tooltip title="Android">
-                  <AndroidIcon sx={{ color: "green" }} />
+                  <AndroidIcon sx={{ color: "#a4c639" }} />
                 </Tooltip>
               ),
               4: (
                 <Tooltip title="Ios">
-                  <AppleIcon sx={{ color: "pink" }} />
+                  <AppleIcon sx={{ color: "#A2AAAD" }} />
                 </Tooltip>
               ),
               5: (
