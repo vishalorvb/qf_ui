@@ -2,11 +2,13 @@ import {
   Avatar,
   Button,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
@@ -19,6 +21,8 @@ import { useLocation, useNavigate } from "react-router";
 import axios, { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import PhaseDetails from "./PhaseDetails";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeletePhase from "./DeletePhase";
 
 function Phases() {
   const location = useLocation();
@@ -48,8 +52,13 @@ function Phases() {
   const [openNewPhase, setOpenNewPhase] = useState(true);
   const [openPhase, setOpenPhase] = useState(false);
   const [phaseId, setPhaseId] = useState(false);
-  var phases = location.state.param1 ? location.state.param1 : 0;
+  const [phases, setPhases] = useState(location.state.param1 ? location.state.param1 : 0);
+  // var phases = location.state.param1 ? location.state.param1 : 0;
+  // var phases;
   var projectId = location.state.param2 ? location.state.param2 : 0;
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteObject, setDeleteObject] = useState([]);
+  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
 
   let requiredOnlyNumbers = [
     total_testcases,
@@ -74,8 +83,10 @@ function Phases() {
   const getPhases = () => {
     projectId &&
       axios.get(`Biservice/projects/${projectId}/phases`).then((resp) => {
-        const phases = resp?.data?.info ? resp?.data?.info?.phases : [];
-        setPhaseList(phases);
+        // console.log(resp?.data?.info?.phases?.length);
+        // phases = resp?.data?.info?.phases?.length;
+        const phasesList = resp?.data?.info ? resp?.data?.info?.phases : [];
+        setPhaseList(phasesList);
       });
   };
 
@@ -98,6 +109,12 @@ function Phases() {
     setPhaseChart(phaseList[index].has_phase_chart);
     setIsDefault(phaseList[index].is_default);
   };
+
+  const deleteHandler = (index) => {
+    console.log(phaseList[index].id);
+    setOpenDelete(true);
+    setDeleteObject(phaseList[index]);
+  }
 
   const submit = (e) => {
     if (
@@ -178,7 +195,19 @@ function Phases() {
               </Grid>
               {Array.from(Array(phases)).map((_, index) => (
                 <Grid item xs={2} sm={4} md={12} key={index} mt={1}>
-                  <ListItem button>
+                  <ListItem
+                    button
+                    secondaryAction={
+                      <Tooltip title="Delete">
+                        <IconButton
+                          aria-label="delete"
+                          onClick={() => deleteHandler(index)}
+                        >
+                          <DeleteOutlineIcon />
+                        </IconButton>
+                      </Tooltip>
+                    }
+                  >
                     <ListItemButton
                       onClick={() => {
                         clickHandler(index);
@@ -356,7 +385,25 @@ function Phases() {
           ""
         )}
       </Grid>
-
+      {openDelete ? (
+        <DeletePhase
+          object={deleteObject}
+          openDelete={openDelete}
+          setOpenDelete={setOpenDelete}
+          getPhases={getPhases}
+          phases={phases}
+          setDelSuccessMsg={setDelSuccessMsg}
+          setPhases={setPhases}
+        />
+      ) : (
+        ""
+      )}
+      <SnackbarNotify
+        open={delSuccessMsg}
+        close={setDelSuccessMsg}
+        msg="Phase deleted successfully"
+        severity="success"
+      />
       <SnackbarNotify
         open={validationMsg}
         close={setValidationMsg}
