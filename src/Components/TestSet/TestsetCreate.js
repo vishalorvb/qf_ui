@@ -1,20 +1,14 @@
 import {
-  Autocomplete,
   Button,
   Grid,
-  Paper,
   Stack,
-  TextField,
   TextareaAutosize,
 } from "@mui/material";
-import { Container } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import useAuth from "../../hooks/useAuth";
-import { getProject } from "../../Services/ProjectService";
 import { getApplicationOfProject } from "../../Services/ApplicationService";
 import { getTestcasesInProjects } from "../../Services/TestsetService";
-import axios, { axiosPrivate } from "../../api/axios";
+import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import {
@@ -36,7 +30,6 @@ function TestsetCreate() {
     setglobalApplication,
   } = useHead();
   const [testcaseObject, setTestcaseObject] = useState([]);
-  const location = useLocation();
   const [testsetName, setTestsetName] = useState("");
   const [testsetDesc, setTestsetDesc] = useState("");
   const [command, setCommand] = useState("");
@@ -46,11 +39,8 @@ function TestsetCreate() {
   const [leftTestcase, setLeftTestcase] = useState([]);
   const [rightTestcase, setRightTestcase] = useState([]);
   const [TSCreateSuccessMsg, setTSCreateSuccessMsg] = useState(false);
-  const [projectsList, setProjectList] = useState([]);
   const [applicationList, setapplicationList] = useState([]);
   const [selectedProject, setSelectedProject] = useState({});
-  const [selectedApplication, setSelectedApplication] = useState({});
-  const { auth } = useAuth();
   let requiredOnlyAlphabets = [testset_name, testset_desc];
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
@@ -182,8 +172,8 @@ function TestsetCreate() {
       }
       if (globalApplication?.module_type == 19) {
         var data = {
-          testset_name: "TS_" + testsetName,
-          testset_desc: "TS_" + testsetDesc,
+          testset_name: "TS_" + (testsetName.trim()),
+          testset_desc: "TS_" + (testsetDesc.trim()),
           project_id: selectedProject?.project_id,
           testset_id: 0,
           module_id: globalApplication?.module_id,
@@ -193,8 +183,8 @@ function TestsetCreate() {
         };
       } else {
         var data = {
-          testset_name: "TS_" + testsetName,
-          testset_desc: "TS_" + testsetDesc,
+          testset_name: "TS_" + (testsetName.trim()),
+          testset_desc: "TS_" + (testsetDesc.trim()),
           project_id: globalProject?.project_id,
           testset_id: 0,
           module_id: globalApplication?.module_id,

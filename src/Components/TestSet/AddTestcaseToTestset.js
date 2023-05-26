@@ -107,7 +107,7 @@ export default function AddTestcaseToTestset() {
   }, []);
 
   const submit = (e) => {
-    if (validateForm([], [], [], requiredOnlyAlphabets, [], [], "error")) {
+    if (validateForm(requiredOnlyAlphabets, [], [], [], [], [], "error")) {
       e.preventDefault();
       const tcList = [];
       for (let i = 0; i < rightTestcase.length; i++) {
@@ -123,8 +123,8 @@ export default function AddTestcaseToTestset() {
         }
       }
       var data = {
-        testset_name: "TS_" + testsetName,
-        testset_desc: "TS_" + testsetDesc,
+        testset_name: "TS_" + (testsetName.trim()),
+        testset_desc: "TS_" + (testsetDesc.trim()),
         project_id: projectId,
         testset_id: testsetId,
         module_id: applicationId,

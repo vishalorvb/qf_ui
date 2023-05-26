@@ -1,9 +1,9 @@
 import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router";
-import axios, { axiosPrivate } from "../../api/axios";
+import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 function PhaseDetails(props) {
@@ -82,7 +82,7 @@ function PhaseDetails(props) {
       var data1 = {
         id: PhaseId,
         project_id: ProjectId,
-        phase: data.phaseName.trim(),
+        phase: (data.phaseName).trim(),
         total_tc: data.totalTestcases,
         automated_tc: data.automatedTestcases,
         completed_tc: data.completedTestcases,
