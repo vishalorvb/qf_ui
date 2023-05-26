@@ -11,7 +11,7 @@ import { DeleteOutlined } from "@mui/icons-material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { deleteDataset, getDataset } from "../../../Services/TestCaseService";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
-import PersistentDrawerRight from "./PersistentDrawerRight";
+import PersistentDrawerRight from "./ScreenList";
 import { getData_for_createDataset } from "../../../Services/TestCaseService";
 import { updateDataset } from "./DatasetHelper";
 import { clearDatasetinfo } from "./DatasetHelper";
@@ -369,7 +369,7 @@ function Dataset() {
       };
     });
 
-  }, [location.state.testcaseName]);
+  }, [location?.state?.testcaseName]);
 
 
   return (

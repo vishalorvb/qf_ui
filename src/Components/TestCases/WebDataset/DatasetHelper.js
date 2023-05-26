@@ -20,10 +20,16 @@ export function updateDataset(elementId, tagname, value) {
             console.log(error)
         }
     });
-  
+
 }
 
-
+export function getScreenList(data) {
+    let screenList = []
+    data?.screens_in_testcase?.forEach(screens => {
+        screenList.push(screens.screen)
+    });
+    return screenList
+}
 
 export let datasetinfo = {
     "name": "",

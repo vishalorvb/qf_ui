@@ -3,7 +3,7 @@ import {
 
   Grid,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { validateFormbyName } from "../../../CustomComponent/FormValidation";
 import { CreateDataset } from "../../../Services/TestCaseService";
 import { datasetinfo } from "./DatasetHelper";
@@ -15,7 +15,7 @@ let snackbarErrormsg = ""
 
 function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
   let navigate = useNavigate();
-
+  // const setToogle = useContext(Toogle);
   let [snackBarError, setSnackBarError] = useState(false)
 
   function handleSubmit(e) {
@@ -89,7 +89,7 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
           <Grid item md={1}>
             <Button variant="outlined"
               onClick={(e) => {
-                setDrawer(!drawer);
+                // setToogle(true);
               }}
             >
               Cancel
