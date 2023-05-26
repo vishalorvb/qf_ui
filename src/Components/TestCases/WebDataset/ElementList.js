@@ -82,7 +82,6 @@ function ElementList({ elementList,updateDataset }) {
                                 placeholder="Enter Value"
                                 defaultValue={param.row.dataset_values.input_value}
                             onChange={(e) => {
-                                console.log("Inputrr")
                                 updateDataset(
                                     param.row.element_id,
                                     "input_value",
@@ -145,9 +144,9 @@ function ElementList({ elementList,updateDataset }) {
                                     let templist = list.map((obj) => obj["id"]);
                                     opt.forEach((l) => {
                                         if (templist.includes(l.id)) {
-                                            updateDataset(param.row.element_id, l, true);
+                                            updateDataset(param.row.element_id, l.id, true);
                                         } else {
-                                            updateDataset(param.row.element_id, l, false);
+                                            updateDataset(param.row.element_id, l.id, false);
                                         }
                                     });
                                     if (templist.includes("is_validate")) {
@@ -182,10 +181,6 @@ function ElementList({ elementList,updateDataset }) {
 
 
     useEffect(() => {
-        if(elementList === undefined) { 
-            
-        }
-        // console.log(elementList)
     }, [elementList])
 
 

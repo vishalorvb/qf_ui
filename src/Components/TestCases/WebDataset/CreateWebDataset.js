@@ -38,13 +38,12 @@ function CreateWebDataset(props) {
                 });
             });
         });
-        console.log(requestData.current)
     }
 
 
 
     useEffect(() => {
-        getData_for_createDataset(setData, 616)
+        getData_for_createDataset(setData, props.testcaseId)
     }, [props])
 
     useEffect(() => {
@@ -52,13 +51,21 @@ function CreateWebDataset(props) {
         requestData.current = data
     }, [data])
 
-    useEffect(() => {
 
+    useEffect(() => {
+        setSelectedScreenIds(screenList[0]?.screen_id)
+        console.log(screenList)
+    }, [screenList])
+
+    useEffect(() => {
+     
     }, [selectedScreenIds])
 
     return (
         <div>
-            <CreateDataSetPopUp></CreateDataSetPopUp>
+            <CreateDataSetPopUp
+            setToogle={props.setToogle}
+            ></CreateDataSetPopUp>
 
             <Grid container columnSpacing={2}>
                 <Grid item md={3}>

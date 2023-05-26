@@ -1,21 +1,15 @@
-import {
-  Button,
-
-  Grid,
-} from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { Button, Grid, } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { validateFormbyName } from "../../../CustomComponent/FormValidation";
 import { CreateDataset } from "../../../Services/TestCaseService";
 import { datasetinfo } from "./DatasetHelper";
 import { DatasetRequest } from "./Dataset";
-import { useNavigate } from "react-router";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+import { clearDatasetinfo } from "./DatasetHelper";
 
 let snackbarErrormsg = ""
 
-function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
-  let navigate = useNavigate();
-  // const setToogle = useContext(Toogle);
+function CreateDataSetPopUp({ ReloadDataset, setToogle }) {
   let [snackBarError, setSnackBarError] = useState(false)
 
   function handleSubmit(e) {
@@ -36,12 +30,16 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
         }
       });
     }
-    else{
+    else {
       snackbarErrormsg = "Fill all required fields"
       setSnackBarError(true)
     }
   }
-
+  useEffect(() => {
+    return () => {
+      clearDatasetinfo()
+    };
+  }, [])
 
   try {
     return (
@@ -89,7 +87,7 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
           <Grid item md={1}>
             <Button variant="outlined"
               onClick={(e) => {
-                // setToogle(true);
+                setToogle(true);
               }}
             >
               Cancel
