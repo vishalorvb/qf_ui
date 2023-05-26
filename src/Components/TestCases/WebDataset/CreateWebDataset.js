@@ -27,6 +27,22 @@ function CreateWebDataset(props) {
     let [screenList, setScreenList] = useState([]);
     let [selectedScreenIds, setSelectedScreenIds] = useState(0)
     let requestData = useRef()
+
+    function updateDataset(elementId, tagname, value) {
+        requestData.current.screens_in_testcase.forEach(screens => {
+            screens.screen_elements.forEach(screenElements => {
+                screenElements.forEach(element => {
+                    if (element.element_id == elementId) {
+                        element.dataset_values[tagname] = value
+                    }
+                });
+            });
+        });
+        console.log(requestData.current)
+    }
+
+
+
     useEffect(() => {
         getData_for_createDataset(setData, 616)
     }, [props])
@@ -37,9 +53,6 @@ function CreateWebDataset(props) {
     }, [data])
 
     useEffect(() => {
-
-
-
 
     }, [selectedScreenIds])
 
@@ -62,6 +75,7 @@ function CreateWebDataset(props) {
                                 return screens
                             }
                         })[0]?.screen_elements[0]}
+                        updateDataset={updateDataset}
                     ></ElementList>
 
                 </Grid>

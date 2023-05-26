@@ -42,7 +42,7 @@ let opt = [
 let click = ["input", "select"]
 
 
-function ElementList({ elementList }) {
+function ElementList({ elementList,updateDataset }) {
 
 
     let [inputList, setInputList] = useState([]);
@@ -81,37 +81,38 @@ function ElementList({ elementList }) {
                                 className="datasetInput"
                                 placeholder="Enter Value"
                                 defaultValue={param.row.dataset_values.input_value}
-                            // onChange={(e) => {
-                            //     updateDataset(
-                            //         param.row.element_id,
-                            //         "input_value",
-                            //         e.target.value
-                            //     );
-                            // }}
+                            onChange={(e) => {
+                                console.log("Inputrr")
+                                updateDataset(
+                                    param.row.element_id,
+                                    "input_value",
+                                    e.target.value
+                                );
+                            }}
                             />
                         )}
                         {!click.includes(param.row.web_page_elements.tag_name) && (
                             <input
                                 type="checkbox"
                                 defaultChecked={param.row.dataset_values.is_click}
-                            // onChange={(e) => {
-                            //     updateDataset(
-                            //         param.row.element_id,
-                            //         "is_click",
-                            //         e.target.checked
-                            //     );
-                            // }}
+                            onChange={(e) => {
+                                updateDataset(
+                                    param.row.element_id,
+                                    "is_click",
+                                    e.target.checked
+                                );
+                            }}
                             />
                         )}
                         {param.row.web_page_elements.tag_name == "select" && (
                             <select
-                                // onChange={(e) => {
-                                //     updateDataset(
-                                //         param.row.element_id,
-                                //         "input_value",
-                                //         e.target.value
-                                //     );
-                                // }}
+                                onChange={(e) => {
+                                    updateDataset(
+                                        param.row.element_id,
+                                        "input_value",
+                                        e.target.value
+                                    );
+                                }}
                                 dangerouslySetInnerHTML={{ __html: param?.row?.web_page_elements?.child_text }}
                             >
                             </select>
@@ -144,9 +145,9 @@ function ElementList({ elementList }) {
                                     let templist = list.map((obj) => obj["id"]);
                                     opt.forEach((l) => {
                                         if (templist.includes(l.id)) {
-                                            // updateDataset(param.row.element_id, l, true);
+                                            updateDataset(param.row.element_id, l, true);
                                         } else {
-                                            // updateDataset(param.row.element_id, l, false);
+                                            updateDataset(param.row.element_id, l, false);
                                         }
                                     });
                                     if (templist.includes("is_validate")) {
@@ -164,9 +165,9 @@ function ElementList({ elementList }) {
                         </div>
                         {inputList.includes(param.row.element_id) && <div style={{ marginTop: "22px" }}>
                             <input
-                                // onChange={e => {
-                                //     updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
-                                // }}
+                                onChange={e => {
+                                    updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
+                                }}
                                 defaultValue={param.row.dataset_values.validate_text}
                                 type="text" placeholder="Enter Value" />
                         </div>}
@@ -184,7 +185,7 @@ function ElementList({ elementList }) {
         if(elementList === undefined) { 
             
         }
-        console.log(elementList)
+        // console.log(elementList)
     }, [elementList])
 
 
