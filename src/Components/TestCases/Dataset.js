@@ -178,18 +178,6 @@ function Dataset() {
       field: "elements",
       headerName: "Elements",
       renderCell: (param) => {
-
-        let alllist = [
-          "custom_code",
-          "displayed",
-          "element_wait",
-          "scrollup",
-          "scrolldown",
-          "is_random",
-          "is_enter",
-          "is_validate"
-        ];
-        let flag = false;
         let preselect = opt.filter((e) => {
           if (param.row.dataset_values[e.id]) {
             return e;
@@ -205,8 +193,8 @@ function Dataset() {
                 id="id"
                 stateList={(list) => {
                   let templist = list.map((obj) => obj["id"]);
-                  alllist.forEach((l) => {
-                    if (templist.includes(l)) {
+                  opt.forEach((l) => {
+                    if (templist.includes(l.id)) {
                       updateDataset(param.row.element_id, l, true);
                     } else {
                       updateDataset(param.row.element_id, l, false);
@@ -307,6 +295,10 @@ function Dataset() {
   ];
   function ReloadDatset(val) {
     getDataset(setDatasets, projectId, applicationId, testcaseId);
+    console.log("resey datarequest")
+    DatasetRequest={}
+    clearDatasetinfo()
+    // getData_for_createDataset(setData, testcaseId);
     setDrawer(!drawer);
     if (val == "Create") {
       snabarMessage = "Dataset Created Successfully"
@@ -322,9 +314,6 @@ function Dataset() {
   }, []);
 
   useEffect(() => {
-    if (data != undefined && data.screens_in_testcase.length == 0) {
-      // navigate("/testcase")
-    }
     DatasetRequest = [data];
     try {
       setScreens(data.screens_in_testcase);
@@ -351,10 +340,9 @@ function Dataset() {
     } catch (error) {
       console.log(error)
     }
-
   }, [selectedScreenIds]);
 
-  useEffect(() => { }, [selectedScreen]);
+
 
   useEffect(() => {
     return () => {
