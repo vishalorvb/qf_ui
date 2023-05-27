@@ -37,6 +37,10 @@ export default function ScreenList({
   let [snackbar, setSnackbar] = useState(false)
   let [selectedScreenIds, setSelectedScreenIds] = useState(0)
 
+  useEffect(() => {
+  console.log(selectedScreenIds)
+  }, [selectedScreenIds])
+
   const columns = useMemo(
     () => [
       {

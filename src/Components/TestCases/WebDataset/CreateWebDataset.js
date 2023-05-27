@@ -26,7 +26,11 @@ function CreateWebDataset(props) {
     let [data, setData] = useState();
     let [screenList, setScreenList] = useState([]);
     let [selectedScreenIds, setSelectedScreenIds] = useState(0)
+    let [selectedScreenName, setSelectedScreenName] = useState()
     let requestData = useRef()
+
+
+
 
     function updateDataset(elementId, tagname, value) {
         requestData.current.screens_in_testcase.forEach(screens => {
@@ -40,10 +44,19 @@ function CreateWebDataset(props) {
         });
     }
 
+    function getScreenName(screenId) {
+        let sName = "hwllo"
+        requestData.current?.screens_in_testcase.forEach(screens => {
+            if (screens.screen_id == screenId) {
+                sName =  screens.screen.name
+            }
+        })
+        return sName
+    }
 
 
     useEffect(() => {
-        getData_for_createDataset(setData, props.testcaseId)
+        getData_for_createDataset(setData, 616)
     }, [props])
 
     useEffect(() => {
@@ -54,17 +67,21 @@ function CreateWebDataset(props) {
 
     useEffect(() => {
         setSelectedScreenIds(screenList[0]?.screen_id)
-        console.log(screenList)
     }, [screenList])
 
     useEffect(() => {
-     
+        if(selectedScreenIds !== undefined && selectedScreenIds !== 0) {
+            setSelectedScreenName(getScreenName(selectedScreenIds))
+        }
     }, [selectedScreenIds])
+
+    useEffect(() => {
+    }, [selectedScreenName])
 
     return (
         <div>
             <CreateDataSetPopUp
-            setToogle={props.setToogle}
+                setToogle={props.setToogle}
             ></CreateDataSetPopUp>
 
             <Grid container columnSpacing={2}>
@@ -83,6 +100,7 @@ function CreateWebDataset(props) {
                             }
                         })[0]?.screen_elements[0]}
                         updateDataset={updateDataset}
+                        screenName={selectedScreenName}
                     ></ElementList>
 
                 </Grid>

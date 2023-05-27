@@ -42,7 +42,7 @@ let opt = [
 let click = ["input", "select"]
 
 
-function ElementList({ elementList,updateDataset }) {
+function ElementList({ elementList,updateDataset,screenName}) {
 
 
     let [inputList, setInputList] = useState([]);
@@ -181,14 +181,14 @@ function ElementList({ elementList,updateDataset }) {
 
 
     useEffect(() => {
-    }, [elementList])
+    }, [elementList,updateDataset,screenName])
 
 
 
     return (
         <div>
             <Typography mt={2} mb={-2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>
-                {/* {elementList.screeninfo.name} */}
+                {screenName}
             </Typography>
             <Table
                 hideSearch={true}
