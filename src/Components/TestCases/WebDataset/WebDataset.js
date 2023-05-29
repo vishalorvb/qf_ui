@@ -12,14 +12,13 @@ Result:
 */
 
 
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, lazy, useEffect, useState } from 'react'
 import WebDatasetList from './WebDatasetList'
-import CreateWebDataset from './CreateWebDataset';
 import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useHead from '../../../hooks/useHead';
-
+const CreateWebDataset = lazy(() => import("./CreateWebDataset"));
 
 
 function WebDataset() {
@@ -30,20 +29,19 @@ function WebDataset() {
     let location = useLocation();
 
 
-    let projectId = 793;
-    let applicationId = 1222;
-    let testcaseId = 1138;
-    let testcaseName = "My testcase";
+    let projectId 
+    let applicationId
+    let testcaseId 
+    let testcaseName 
 
-    // try {
-    //   projectId = location.state.projectId;
-    //   applicationId = location.state.applicationId;
-    //   testcaseId = location.state.testcaseId;
-    //   testcaseName = location.state.testcaseName;
-    //   console.log(testcaseName)
-    // } catch (error) {
-    //   navigate("/Testcase/Recent");
-    // }
+    try {
+      projectId = location.state.projectId;
+      applicationId = location.state.applicationId;
+      testcaseId = location.state.testcaseId;
+      testcaseName = location.state.testcaseName;
+    } catch (error) {
+      navigate("/Testcase/Recent");
+    }
 
 
 
@@ -51,46 +49,49 @@ function WebDataset() {
         setHeader((ps) => {
             return {
                 ...ps,
-                name: testcaseName,
+                name: location.state?.testcaseName,
             };
         });
 
     }, [testcaseName]);
 
+
+    
+
     return (
         <div>
 
 
-                {toogle === true ? <div>
-                    <div className="apptable">
-                        <div className="intable">
-                            <div style={{ marginTop: "12px", float: "right" }}>
-                                <Button
-                                    variant="contained"
-                                    startIcon={<AddIcon />}
-                                    size="small"
-                                    onClick={(e) => {
-                                        setToogle(!toogle);
-                                    }}
-                                >
-                                    Add Datasets
-                                </Button>
-                            </div>
+            {toogle === true ? <div>
+                <div className="apptable">
+                    <div className="intable">
+                        <div style={{ marginTop: "12px", float: "right" }}>
+                            <Button
+                                variant="contained"
+                                startIcon={<AddIcon />}
+                                size="small"
+                                onClick={(e) => {
+                                    setToogle(!toogle);
+                                }}
+                            >
+                                Add Datasets
+                            </Button>
                         </div>
-                        <WebDatasetList
-                            projectId={projectId}
-                            applicationId={applicationId}
-                            testcaseId={testcaseId}
-                        ></WebDatasetList>
                     </div>
-                </div> :
-                    <div>
-                        <CreateWebDataset
-                            testcaseId={testcaseId}
-                            setToogle={setToogle}
-                        ></CreateWebDataset>
-                    </div>
-                }
+                    <WebDatasetList
+                        projectId={projectId}
+                        applicationId={applicationId}
+                        testcaseId={testcaseId}
+                    ></WebDatasetList>
+                </div>
+            </div> :
+                <div>
+                    <CreateWebDataset
+                        testcaseId={testcaseId}
+                        setToogle={setToogle}
+                    ></CreateWebDataset>
+                </div>
+            }
 
 
         </div>

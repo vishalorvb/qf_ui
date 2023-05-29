@@ -178,13 +178,8 @@ function ElementList({ elementList,updateDataset,screenName}) {
             align: "left",
         },
     ];
-
-
     useEffect(() => {
     }, [elementList,updateDataset,screenName])
-
-
-
     return (
         <div>
             <Typography mt={2} mb={-2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>

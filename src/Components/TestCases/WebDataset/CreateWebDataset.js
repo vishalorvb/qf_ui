@@ -17,9 +17,11 @@ import { getScreenList } from './DatasetHelper';
 import ScreenList from './ScreenList';
 import ElementList from './ElementList';
 import { Grid } from '@mui/material';
+import { CreateDataset } from '../../../Services/TestCaseService';
+import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
 
-
-
+let snackbarmsg = ""
+let snackbarType = "info"
 
 function CreateWebDataset(props) {
 
@@ -27,6 +29,7 @@ function CreateWebDataset(props) {
     let [screenList, setScreenList] = useState([]);
     let [selectedScreenIds, setSelectedScreenIds] = useState(0)
     let [selectedScreenName, setSelectedScreenName] = useState()
+    let [snackbar, setSnackbar] = useState(false)
     let requestData = useRef()
 
 
@@ -45,14 +48,34 @@ function CreateWebDataset(props) {
     }
 
     function getScreenName(screenId) {
-        let sName = "hwllo"
+        let sName = ""
         requestData.current?.screens_in_testcase.forEach(screens => {
             if (screens.screen_id == screenId) {
-                sName =  screens.screen.name
+                sName = screens.screen.name
             }
         })
         return sName
     }
+
+    function handleSubmit(datasetInfo) {
+        requestData.current.datasets_list = [datasetInfo]
+        CreateDataset(requestData.current).then((res) => {
+            if (res == false) {
+                snackbarmsg = "Dataset Created successfully"
+                snackbarType = "success"
+                setSnackbar(true)
+                setTimeout(() => {
+                    props.setToogle(true)
+                }, 1000);
+            }
+            else {
+                snackbarmsg = res
+                snackbarType = "error"
+                setSnackbar(true)
+            }
+        });
+    }
+
 
 
     useEffect(() => {
@@ -70,7 +93,7 @@ function CreateWebDataset(props) {
     }, [screenList])
 
     useEffect(() => {
-        if(selectedScreenIds !== undefined && selectedScreenIds !== 0) {
+        if (selectedScreenIds !== undefined && selectedScreenIds !== 0) {
             setSelectedScreenName(getScreenName(selectedScreenIds))
         }
     }, [selectedScreenIds])
@@ -81,6 +104,10 @@ function CreateWebDataset(props) {
     return (
         <div>
             <CreateDataSetPopUp
+                func={handleSubmit}
+                dsName={""}
+                dsDesciption={" "}
+                dsType={false}
                 setToogle={props.setToogle}
             ></CreateDataSetPopUp>
 
@@ -105,6 +132,14 @@ function CreateWebDataset(props) {
 
                 </Grid>
             </Grid>
+
+
+            <SnackbarNotify
+                open={snackbar}
+                close={setSnackbar}
+                msg={snackbarmsg}
+                severity={snackbarType}
+            ></SnackbarNotify>
         </div>
     )
 }

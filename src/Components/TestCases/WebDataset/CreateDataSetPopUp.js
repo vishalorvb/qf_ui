@@ -1,34 +1,56 @@
+
+/*
+**********  Vishal Kumar (4734) ********
+
+input parameters (in Props):
+        Callback (to pass dataset Info);
+        Callback (to call when clicked on save button);
+Result:
+       It will pass dataset type,name and description
+*/
+
+
+
+
+
+
 import { Button, Grid, } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { validateFormbyName } from "../../../CustomComponent/FormValidation";
-import { CreateDataset } from "../../../Services/TestCaseService";
-import { datasetinfo } from "./DatasetHelper";
-import { DatasetRequest } from "./Dataset";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
-import { clearDatasetinfo } from "./DatasetHelper";
+
 
 let snackbarErrormsg = ""
 
-function CreateDataSetPopUp({ ReloadDataset, setToogle }) {
+function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
+  // console.log(func)
   let [snackBarError, setSnackBarError] = useState(false)
 
+  let datasetinfo = useRef({
+    "name": "",
+    "description": "",
+    "is_db_dataset": false
+  })
+
   function handleSubmit(e) {
+
+    // console.log(datasetinfo.current)
     if (validateFormbyName(["name", "desc"], "error")) {
-      DatasetRequest[0].datasets_list = [datasetinfo];
-      CreateDataset(DatasetRequest[0]).then((res) => {
-        if (res == false) {
-          if (datasetinfo.dataset_id == 0) {
-            ReloadDataset("Create");
-          }
-          else {
-            ReloadDataset("Update");
-          }
-        }
-        else {
-          snackbarErrormsg = res
-          setSnackBarError(true)
-        }
-      });
+      func(datasetinfo.current)
+    //   CreateDataset(DatasetRequest[0]).then((res) => {
+    //     if (res == false) {
+    //       if (datasetinfo.dataset_id == 0) {
+    //         ReloadDataset("Create");
+    //       }
+    //       else {
+    //         ReloadDataset("Update");
+    //       }
+    //     }
+    //     else {
+    //       snackbarErrormsg = res
+    //       setSnackBarError(true)
+    //     }
+    //   });
     }
     else {
       snackbarErrormsg = "Fill all required fields"
@@ -36,9 +58,9 @@ function CreateDataSetPopUp({ ReloadDataset, setToogle }) {
     }
   }
   useEffect(() => {
-    return () => {
-      clearDatasetinfo()
-    };
+    datasetinfo.current.name = dsName
+    datasetinfo.current.description = dsDesciption
+    datasetinfo.current.is_db_dataset = dsType
   }, [])
 
   try {
@@ -49,7 +71,8 @@ function CreateDataSetPopUp({ ReloadDataset, setToogle }) {
         <Grid container spacing={1} justifyContent='flex-end'>
           <Grid item sm={2} md={2}>
             <select
-              onChange={(e) => (datasetinfo.is_db_dataset = e.target.value)}
+            defaultValue={dsType}
+              onChange={(e) => (datasetinfo.current.is_db_dataset = e.target.value)}
             >
               <option value={false}>Regular</option>
               <option value={true}>DB</option>
@@ -61,9 +84,9 @@ function CreateDataSetPopUp({ ReloadDataset, setToogle }) {
               type="text"
               name="name"
               placeholder="Dataset Name"
-              defaultValue={datasetinfo.name}
+              defaultValue={dsName}
               onChange={(e) => {
-                datasetinfo.name = e.target.value;
+                datasetinfo.current.name = e.target.value;
               }}
             />
           </Grid>
@@ -73,9 +96,9 @@ function CreateDataSetPopUp({ ReloadDataset, setToogle }) {
               type="text"
               name="desc"
               placeholder="Dataset Description"
-              defaultValue={datasetinfo.description}
+              defaultValue={dsDesciption}
               onChange={(e) => {
-                datasetinfo.description = e.target.value;
+                datasetinfo.current.description = e.target.value;
               }}
             />
           </Grid>

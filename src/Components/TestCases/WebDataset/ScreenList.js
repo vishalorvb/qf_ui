@@ -37,10 +37,7 @@ export default function ScreenList({
   let [snackbar, setSnackbar] = useState(false)
   let [selectedScreenIds, setSelectedScreenIds] = useState(0)
 
-  useEffect(() => {
-  console.log(selectedScreenIds)
-  }, [selectedScreenIds])
-
+  
   const columns = useMemo(
     () => [
       {
@@ -49,12 +46,12 @@ export default function ScreenList({
         Cell: ({ cell, column, row, table }) => {
           return (
             <div style={{
-              backgroundColor: selectedScreenIds === row.original.screen_id?"#e8edf2":"",
+              backgroundColor: selectedScreenIds === row.original.screen_id ? "#e8edf2" : "",
               cursor: "pointer",
             }}
               onClick={e => {
-               setSelectedScreenIds(row.original.screen_id)
-               setScreenId(row.original.screen_id)
+                setSelectedScreenIds(row.original.screen_id)
+                setScreenId(row.original.screen_id)
               }}
             >
               <h4>{row.original.name}</h4>
@@ -94,7 +91,9 @@ export default function ScreenList({
   useEffect(() => {
     setScreenId([screen.screen_id]);
     setTempScreen([...screen]);
+    setSelectedScreenIds(screen[0]?.screen_id)
   }, [screen]);
+
 
 
   return (
