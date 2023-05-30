@@ -1,14 +1,24 @@
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import { Button, Grid, Paper, Typography } from "@mui/material";
+/*
+**********  Vishal Kumar (4734) ********
+
+input parameters (in State):
+       ;
+        testcaseId ;
+        ScreenList[] ;
+        Callback(selected_ScreenId) ;
+
+Result:
+        Create and update dataset of web type
+*/
+
+
+
+
+import { Typography } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
-import { Stack } from "@mui/system";
 import MaterialReactTable from "material-react-table";
-import axios from "../../api/axios";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import axios from "../../../api/axios";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
 const drawerWidth = 240;
 export let selected_screen;
@@ -16,19 +26,18 @@ export let selected_screen;
 let snackbarMessage = ""
 let snackbarType = "success"
 
-export default function PersistentDrawerRight({
+export default function ScreenList({
   testcaseId,
   screen,
-  screenId,
   setScreenId,
-
 }) {
 
   const [tempScreen, setTempScreen] = useState()
   const [order, setOrder] = useState([]);
   let [snackbar, setSnackbar] = useState(false)
+  let [selectedScreenIds, setSelectedScreenIds] = useState(0)
 
-
+  
   const columns = useMemo(
     () => [
       {
@@ -37,11 +46,12 @@ export default function PersistentDrawerRight({
         Cell: ({ cell, column, row, table }) => {
           return (
             <div style={{
-              backgroundColor: screenId.includes(row.original.screen_id) && "#e8edf2",
+              backgroundColor: selectedScreenIds === row.original.screen_id ? "#e8edf2" : "",
               cursor: "pointer",
             }}
               onClick={e => {
-                handleClick(row.original.screen_id)
+                setSelectedScreenIds(row.original.screen_id)
+                setScreenId(row.original.screen_id)
               }}
             >
               <h4>{row.original.name}</h4>
@@ -51,7 +61,7 @@ export default function PersistentDrawerRight({
         },
       },
     ],
-    []
+    [selectedScreenIds]
   );
 
 
@@ -75,15 +85,15 @@ export default function PersistentDrawerRight({
     }
   }, [order]);
 
-  function handleClick(e) {
-    setScreenId([e]);
-  }
+
 
 
   useEffect(() => {
-    setScreenId([screen[0].screen_id]);
+    setScreenId([screen.screen_id]);
     setTempScreen([...screen]);
+    setSelectedScreenIds(screen[0]?.screen_id)
   }, [screen]);
+
 
 
   return (
