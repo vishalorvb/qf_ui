@@ -55,17 +55,10 @@ function WebDatasetList(props) {
                             Copy
                         </MenuItem>
                         <MenuItem
-                        //   onClick={(e) => {
-                        //     getData_for_createDataset(
-                        //       setData,
-                        //       param.row.testcase_id,
-                        //       param.row.dataset_id
-                        //     );
-                        //     setDrawer(!drawer);
-                        //     datasetinfo.name = param.row.name;
-                        //     datasetinfo.description = param.row.description;
-                        //     datasetinfo.dataset_id = param.row.dataset_id;
-                        //   }}
+                          onClick={(e) => {
+                            props.setEditDatasetId(param.row.dataset_id)
+                            props.setToogle(false)
+                          }}
                         >
                             <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} ></EditOutlinedIcon>
                             Edit
@@ -89,7 +82,7 @@ function WebDatasetList(props) {
 
     useEffect(() => {
         getDataset(setDatasets, props.projectId, props.applicationId, props.testcaseId)
-    }, [props])
+    }, [])
 
     return (
         <div>

@@ -23,7 +23,6 @@ import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 let snackbarErrormsg = ""
 
 function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
-  // console.log(func)
   let [snackBarError, setSnackBarError] = useState(false)
 
   let datasetinfo = useRef({
@@ -36,6 +35,7 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
 
     // console.log(datasetinfo.current)
     if (validateFormbyName(["name", "desc"], "error")) {
+      console.log(datasetinfo.current)
       func(datasetinfo.current)
     //   CreateDataset(DatasetRequest[0]).then((res) => {
     //     if (res == false) {
@@ -61,7 +61,7 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
     datasetinfo.current.name = dsName
     datasetinfo.current.description = dsDesciption
     datasetinfo.current.is_db_dataset = dsType
-  }, [])
+  }, [dsName,dsDesciption,dsType])
 
   try {
     return (
@@ -109,9 +109,7 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
           </Grid>
           <Grid item md={1}>
             <Button variant="outlined"
-              onClick={(e) => {
-                setToogle(true);
-              }}
+              onClick={setToogle}
             >
               Cancel
             </Button>

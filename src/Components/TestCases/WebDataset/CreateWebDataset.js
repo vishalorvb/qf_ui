@@ -3,6 +3,7 @@
 
 input parameters (in Props):
         testcaseId ;
+        dataetId ;
 Result:
        1.This component will fetch data for create Dataset of a above TestcaseId for web Type
 */
@@ -23,7 +24,9 @@ import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
 let snackbarmsg = ""
 let snackbarType = "info"
 
-function CreateWebDataset(props) {
+
+
+function CreateWebDataset({ datasetId, testcaseId, setToogle}) {
 
     let [data, setData] = useState();
     let [screenList, setScreenList] = useState([]);
@@ -58,6 +61,7 @@ function CreateWebDataset(props) {
     }
 
     function handleSubmit(datasetInfo) {
+        datasetInfo.dataset_id = datasetId
         requestData.current.datasets_list = [datasetInfo]
         CreateDataset(requestData.current).then((res) => {
             if (res == false) {
@@ -65,7 +69,7 @@ function CreateWebDataset(props) {
                 snackbarType = "success"
                 setSnackbar(true)
                 setTimeout(() => {
-                    props.setToogle(true)
+                    setToogle(true)
                 }, 1000);
             }
             else {
@@ -79,8 +83,8 @@ function CreateWebDataset(props) {
 
 
     useEffect(() => {
-        getData_for_createDataset(setData, 616)
-    }, [props])
+        getData_for_createDataset(setData, testcaseId,datasetId)
+    }, [])
 
     useEffect(() => {
         setScreenList(getScreenList(data))
@@ -105,16 +109,16 @@ function CreateWebDataset(props) {
         <div>
             <CreateDataSetPopUp
                 func={handleSubmit}
-                dsName={""}
-                dsDesciption={" "}
+                dsName={requestData.current?.datasets_list[0]?.name}
+                dsDesciption={requestData.current?.datasets_list[0]?.description}
                 dsType={false}
-                setToogle={props.setToogle}
+                setToogle={setToogle}
             ></CreateDataSetPopUp>
 
             <Grid container columnSpacing={2}>
                 <Grid item md={3}>
                     <ScreenList
-                        testcaseId={props.testcaseId}
+                        testcaseId={testcaseId}
                         screen={screenList}
                         setScreenId={setSelectedScreenIds}
                     ></ScreenList>
