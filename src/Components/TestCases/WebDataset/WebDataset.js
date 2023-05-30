@@ -28,6 +28,7 @@ function WebDataset() {
     let navigate = useNavigate();
     let location = useLocation();
     let [editDatasetId,setEditDatasetId]=useState(0)
+    let [copy,setCopy] =useState(false)
 
     let projectId 
     let applicationId
@@ -84,15 +85,18 @@ function WebDataset() {
                         testcaseId={testcaseId}
                         setEditDatasetId={setEditDatasetId}
                         setToogle={setToogle}
+                        setCopy = {setCopy}
                     ></WebDatasetList>
                 </div>
             </div> :
                 <div>
                     <CreateWebDataset
                         testcaseId={testcaseId}
+                        copy={copy}
                         setToogle={()=>{
                             setToogle(true)
                             setEditDatasetId(0)
+                            setCopy(false)
                         }}
                         datasetId = {editDatasetId}
                     ></CreateWebDataset>

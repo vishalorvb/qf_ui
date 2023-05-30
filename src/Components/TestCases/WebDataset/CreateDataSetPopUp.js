@@ -32,25 +32,8 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
   })
 
   function handleSubmit(e) {
-
-    // console.log(datasetinfo.current)
     if (validateFormbyName(["name", "desc"], "error")) {
-      console.log(datasetinfo.current)
       func(datasetinfo.current)
-    //   CreateDataset(DatasetRequest[0]).then((res) => {
-    //     if (res == false) {
-    //       if (datasetinfo.dataset_id == 0) {
-    //         ReloadDataset("Create");
-    //       }
-    //       else {
-    //         ReloadDataset("Update");
-    //       }
-    //     }
-    //     else {
-    //       snackbarErrormsg = res
-    //       setSnackBarError(true)
-    //     }
-    //   });
     }
     else {
       snackbarErrormsg = "Fill all required fields"

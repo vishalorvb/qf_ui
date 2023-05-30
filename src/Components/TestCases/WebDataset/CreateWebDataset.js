@@ -26,7 +26,9 @@ let snackbarType = "info"
 
 
 
-function CreateWebDataset({ datasetId, testcaseId, setToogle}) {
+function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
+
+    console.log(datasetId)
 
     let [data, setData] = useState();
     let [screenList, setScreenList] = useState([]);
@@ -61,7 +63,13 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle}) {
     }
 
     function handleSubmit(datasetInfo) {
-        datasetInfo.dataset_id = datasetId
+        if (copy) {
+            datasetInfo.dataset_id = 0
+        }
+        else {
+            datasetInfo.dataset_id = datasetId
+        }
+
         requestData.current.datasets_list = [datasetInfo]
         CreateDataset(requestData.current).then((res) => {
             if (res == false) {
@@ -83,7 +91,7 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle}) {
 
 
     useEffect(() => {
-        getData_for_createDataset(setData, testcaseId,datasetId)
+        getData_for_createDataset(setData, testcaseId, datasetId)
     }, [])
 
     useEffect(() => {

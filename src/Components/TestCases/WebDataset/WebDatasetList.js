@@ -50,6 +50,11 @@ function WebDatasetList(props) {
                         //     );
                         //     setDrawer(!drawer);
                         //   }}
+                        onClick={(e) => {
+                            props.setEditDatasetId(param.row.dataset_id)
+                            props.setToogle(false)
+                            props.setCopy(true)
+                          }}
                         >
                             <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
                             Copy
