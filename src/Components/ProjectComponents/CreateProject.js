@@ -279,7 +279,7 @@ function CreateProject() {
                 type="text"
                 name="projectname"
                 onChange={(e) => {
-                  createformData.projectName = e.target.value;
+                  createformData.projectName = e.target.value.trim();
                 }}
                 disabled={createformData.sqeProjectId == "" ? false : true}
               />

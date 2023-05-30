@@ -167,7 +167,7 @@ export default function ApplicationsList() {
       <SnackbarNotify
         open={snackbarsuccess}
         close={setSnackbarsuccess}
-        msg="Deleted Succesfully"
+        msg="Application deleted succesfully"
         severity="success"
       />
     </div>

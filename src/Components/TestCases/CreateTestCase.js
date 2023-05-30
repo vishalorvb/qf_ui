@@ -262,7 +262,7 @@ function CreateTestCase() {
                         name="name"
                         defaultValue={TCdata.testcase_name}
                         onChange={e => {
-                            TCdata.testcase_name = e.target.value;
+                            TCdata.testcase_name = e.target.value.trim();
                         }}
                     />
                 </Grid>
