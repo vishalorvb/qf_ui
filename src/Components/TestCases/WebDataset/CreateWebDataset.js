@@ -4,6 +4,8 @@
 input parameters (in Props):
         testcaseId ;
         dataetId ;
+        setToogle : is a function to call when click on cancel button
+        copy : is a boolean value for is this create dataset is a copy of the dataset or not
 Result:
        1.This component will fetch data for create Dataset of a above TestcaseId for web Type
 */
@@ -27,9 +29,6 @@ let snackbarType = "info"
 
 
 function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
-
-    console.log(datasetId)
-
     let [data, setData] = useState();
     let [screenList, setScreenList] = useState([]);
     let [selectedScreenIds, setSelectedScreenIds] = useState(0)

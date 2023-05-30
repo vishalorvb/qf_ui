@@ -3,8 +3,11 @@
 **********  Vishal Kumar (4734) ********
 
 input parameters (in Props):
-        Callback (to pass dataset Info);
-        Callback (to call when clicked on save button);
+          func (is call when click on save button and pass the input value of dataset name and description)
+          dsName (dataset name for prefilled)
+          dsDesciption (dataset desc for prefilled)
+          dsType (dataset Type for prefilled)
+          setToogle (function to call on cancel button clicked)
 Result:
        It will pass dataset type,name and description
 */

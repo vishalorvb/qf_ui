@@ -1,3 +1,21 @@
+
+/*
+**********  Vishal Kumar (4734) ********
+
+input parameters (in Props):
+        projectId
+        applicationId
+        testcaseId
+        setEditDatasetId
+        setToogle
+        setCopy
+Result:
+       It will pass dataset type,name and description
+*/
+
+
+
+
 import React, { useEffect, useState } from 'react'
 import Table from '../../../CustomComponent/Table';
 import { getDataset } from '../../../Services/TestCaseService';
@@ -20,7 +38,7 @@ function WebDatasetList(props) {
     let [datasets, setDatasets] = useState([]);
     let [deletepopup, setDeletepopup] = useState(false);
     let [deletedatasetId, setDeletedatasetId] = useState();
-    let [snackbar,setSnackbar] = useState(false)
+    let [snackbar, setSnackbar] = useState(false)
 
 
     let column = [
@@ -42,37 +60,29 @@ function WebDatasetList(props) {
                         heading={param.row?.description}
                     >
                         <MenuItem
-                        //   onClick={(e) => {
-                        //     getData_for_createDataset(
-                        //       setData,
-                        //       param.row.testcase_id,
-                        //       param.row.dataset_id
-                        //     );
-                        //     setDrawer(!drawer);
-                        //   }}
-                        onClick={(e) => {
-                            props.setEditDatasetId(param.row.dataset_id)
-                            props.setToogle(false)
-                            props.setCopy(true)
-                          }}
+                            onClick={(e) => {
+                                props.setEditDatasetId(param.row.dataset_id)
+                                props.setToogle(false)
+                                props.setCopy(true)
+                            }}
                         >
                             <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
                             Copy
                         </MenuItem>
                         <MenuItem
-                          onClick={(e) => {
-                            props.setEditDatasetId(param.row.dataset_id)
-                            props.setToogle(false)
-                          }}
+                            onClick={(e) => {
+                                props.setEditDatasetId(param.row.dataset_id)
+                                props.setToogle(false)
+                            }}
                         >
                             <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} ></EditOutlinedIcon>
                             Edit
                         </MenuItem>
                         <MenuItem
-                          onClick={(e) => {
-                            setDeletedatasetId(param.row.dataset_id);
-                            setDeletepopup(true);
-                          }}
+                            onClick={(e) => {
+                                setDeletedatasetId(param.row.dataset_id);
+                                setDeletepopup(true);
+                            }}
                         >
                             <DeleteOutlined sx={{ color: "red", mr: 1 }}></DeleteOutlined>
                             Delete
