@@ -1,46 +1,53 @@
-import {
-  Button,
 
-  Grid,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { CreateDataset } from "../../Services/TestCaseService";
-import { datasetinfo } from "./DatasetHelper";
-import { DatasetRequest } from "./Dataset";
-import { useNavigate } from "react-router";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+/*
+**********  Vishal Kumar (4734) ********
+
+input parameters (in Props):
+          func (is call when click on save button and pass the input value of dataset name and description)
+          dsName (dataset name for prefilled)
+          dsDesciption (dataset desc for prefilled)
+          dsType (dataset Type for prefilled)
+          setToogle (function to call on cancel button clicked)
+Result:
+       It will pass dataset type,name and description
+*/
+
+
+
+
+
+
+import { Button, Grid, } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { validateFormbyName } from "../../../CustomComponent/FormValidation";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+
 
 let snackbarErrormsg = ""
 
-function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
-  let navigate = useNavigate();
-
+function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
   let [snackBarError, setSnackBarError] = useState(false)
+
+  let datasetinfo = useRef({
+    "name": "",
+    "description": "",
+    "is_db_dataset": false
+  })
 
   function handleSubmit(e) {
     if (validateFormbyName(["name", "desc"], "error")) {
-      DatasetRequest[0].datasets_list = [datasetinfo];
-      CreateDataset(DatasetRequest[0]).then((res) => {
-        if (res == false) {
-          if (datasetinfo.dataset_id == 0) {
-            ReloadDataset("Create");
-          }
-          else {
-            ReloadDataset("Update");
-          }
-        }
-        else {
-          snackbarErrormsg = res
-          setSnackBarError(true)
-        }
-      });
+      func(datasetinfo.current)
     }
     else {
       snackbarErrormsg = "Fill all required fields"
       setSnackBarError(true)
     }
   }
+  useEffect(() => {
+    datasetinfo.current.name = dsName
+    datasetinfo.current.description = dsDesciption
+    datasetinfo.current.is_db_dataset = dsType
+  }, [dsName,dsDesciption,dsType])
 
   useEffect(() => {
     return () => {
@@ -56,7 +63,8 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
         <Grid container spacing={1} justifyContent='flex-end'>
           <Grid item sm={2} md={2}>
             <select
-              onChange={(e) => (datasetinfo.is_db_dataset = e.target.value)}
+            defaultValue={dsType}
+              onChange={(e) => (datasetinfo.current.is_db_dataset = e.target.value)}
             >
               <option value={false}>Regular</option>
               <option value={true}>DB</option>
@@ -68,9 +76,9 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
               type="text"
               name="name"
               placeholder="Dataset Name"
-              defaultValue={datasetinfo.name}
+              defaultValue={dsName}
               onChange={(e) => {
-                datasetinfo.name = e.target.value;
+                datasetinfo.current.name = e.target.value;
               }}
             />
           </Grid>
@@ -80,9 +88,9 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
               type="text"
               name="desc"
               placeholder="Dataset Description"
-              defaultValue={datasetinfo.description}
+              defaultValue={dsDesciption}
               onChange={(e) => {
-                datasetinfo.description = e.target.value;
+                datasetinfo.current.description = e.target.value;
               }}
             />
           </Grid>
@@ -93,9 +101,7 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
           </Grid>
           <Grid item md={1}>
             <Button variant="outlined"
-              onClick={(e) => {
-                setDrawer(!drawer);
-              }}
+              onClick={setToogle}
             >
               Cancel
             </Button>

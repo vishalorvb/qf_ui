@@ -36,7 +36,8 @@ const ActiveReports = lazy(() =>
 // const APIsTable = lazy(() =>
 //   import("../Components/Application/ApiApplication/APIsTable")
 // );
-const Dataset = lazy(() => import("../Components/TestCases/Dataset"));
+const Dataset = lazy(() => import("../Components/TestCases/WebDataset/WebDataset"));
+const TempDataset = lazy(() => import("../Components/TestCases/WebDataset/WebDataset"));
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const ApiDatasets = lazy(() =>
   import("../Components/ApiComponents/CreateApi/ApiDatasets")
@@ -624,6 +625,11 @@ export const Routes = [
       {
         path: "datasets",
         element: Dataset,
+        accessRole: [1, 2, 4, 5],
+      },
+      {
+        path: "tempdatasets",
+        element: TempDataset,
         accessRole: [1, 2, 4, 5],
       },
       {
