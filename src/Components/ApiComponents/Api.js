@@ -56,7 +56,7 @@ function Api() {
       <SnackbarNotify
         open={snackbarsuccess}
         close={setSnackbarsuccess}
-        msg="Saved Succesfully"
+        msg="API updated succesfully"
         severity="success"
       />
       <Grid

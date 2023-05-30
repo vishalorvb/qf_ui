@@ -8,6 +8,8 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Menu,
+  MenuItem,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -23,8 +25,9 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import PhaseDetails from "./PhaseDetails";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeletePhase from "./DeletePhase";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-function Phases() {
+export default function Phases() {
   const location = useLocation();
   const [phaseName, setPhaseName] = useState("");
   const [totalTestcases, setTotalTestcases] = useState(0);
@@ -132,14 +135,14 @@ function Phases() {
         id: 0,
         project_id: projectId,
         phase: phaseName.trim(),
-        total_tc: totalTestcases.trim(),
-        automated_tc: automatedTestcases.trim(),
-        completed_tc: completedTestcases.trim(),
-        total_functional_tc: functionalTestcases.trim(),
-        total_regression_tc: regressionTestcases.trim(),
+        total_tc: totalTestcases,
+        automated_tc: automatedTestcases,
+        completed_tc: completedTestcases,
+        total_functional_tc: functionalTestcases,
+        total_regression_tc: regressionTestcases,
         executed: 0,
         has_phase_chart: 0,
-        efforts_saving: savedHours.trim(),
+        efforts_saving: savedHours,
       };
 
       axiosPrivate
@@ -188,7 +191,15 @@ function Phases() {
                         <AssignmentIcon />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Add New" secondary="Phase" />
+                    <ListItemText
+                      sx={{
+                        fontSize: "15px",
+                        color: "#009fee",
+                        fontWeight: "400",
+                      }}
+                      primary="Add New"
+                      secondary="Phase"
+                    />
                   </ListItemButton>
                 </ListItem>
                 <Divider sx={{ mt: 1 }} />
@@ -198,14 +209,15 @@ function Phases() {
                   <ListItem
                     button
                     secondaryAction={
-                      <Tooltip title="Delete">
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => deleteHandler(index)}
-                        >
-                          <DeleteOutlineIcon />
-                        </IconButton>
-                      </Tooltip>
+                      AdminActionCell(index, deleteHandler)
+                      // <Tooltip title="Delete">
+                      //   <IconButton
+                      //     aria-label="delete"
+                      //     onClick={() => deleteHandler(index)}
+                      //   >
+                      //     <DeleteOutlineIcon />
+                      //   </IconButton>
+                      // </Tooltip>
                     }
                   >
                     <ListItemButton
@@ -219,6 +231,11 @@ function Phases() {
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
+                        sx={{
+                          fontSize: "15px",
+                          color: "#009fee",
+                          fontWeight: "400",
+                        }}
                         primary={phaseList[index]?.phase}
                         secondary="Phase"
                       />
@@ -426,4 +443,41 @@ function Phases() {
   );
 }
 
-export default Phases;
+const AdminActionCell = (index, deletePhaseHandler) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div className="descColumn">
+      {/* <Typography variant="p">{}</Typography> */}
+      <MoreVertIcon
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="descOption"
+      />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={() => deletePhaseHandler(index)}>
+          <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+          Delete
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};

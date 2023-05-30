@@ -33,6 +33,8 @@ export default function AddTestcaseToTestset() {
   const [TSUpdateSuccessMsg, setTSUpdateSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
   const navigate = useNavigate();
+  const [tcListValidationMsg, setTcListValidationMsg] = useState(false);
+  const [TSCreateErrorMsg, setTSCreateErrorMsg] = useState(false);
 
   console.log(location.state.param3);
   console.log(location.state.param2);
@@ -107,42 +109,55 @@ export default function AddTestcaseToTestset() {
   }, []);
 
   const submit = (e) => {
-    if (validateForm([], [], [], requiredOnlyAlphabets, [], [], "error")) {
+    if (validateForm(requiredOnlyAlphabets, [], [], [], [], [], "error")) {
       e.preventDefault();
       const tcList = [];
-      for (let i = 0; i < rightTestcase.length; i++) {
-        console.log(rightTestcase[i].datasets);
-        if (rightTestcase[i].datasets != null) {
-          for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
-            tcList.push({
-              testcase_id: rightTestcase[i].testcase_id,
-              testcase_order: rightTestcase[i].tc_order,
-              testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
-            });
+      if (rightTestcase.length) {
+        for (let i = 0; i < rightTestcase.length; i++) {
+          console.log(rightTestcase[i].datasets);
+          if (rightTestcase[i].datasets != null) {
+            for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
+              tcList.push({
+                testcase_id: rightTestcase[i].testcase_id,
+                testcase_order: rightTestcase[i].tc_order,
+                testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
+              });
+            }
           }
         }
-      }
-      var data = {
-        testset_name: "TS_" + testsetName,
-        testset_desc: "TS_" + testsetDesc,
-        project_id: projectId,
-        testset_id: testsetId,
-        module_id: applicationId,
-        testcases_list: tcList,
-      };
-      console.log(data);
+        var data = {
+          testset_name: "TS_" + testsetName.trim(),
+          testset_desc: "TS_" + testsetDesc.trim(),
+          project_id: projectId,
+          testset_id: testsetId,
+          module_id: applicationId,
+          testcases_list: tcList,
+        };
+        console.log(data);
 
-      axiosPrivate
-        .post(`qfservice/webtestset/createWebTestset`, data)
-        .then((res) => {
-          console.log(res.data.message);
-          // setTestsetObject(res.data.message);
-          setTSUpdateSuccessMsg(true);
-          setTimeout(() => {
-            setTSUpdateSuccessMsg(false);
-            navigate("/testset/Recent");
-          }, 3000);
-        });
+        axiosPrivate
+          .post(`qfservice/webtestset/createWebTestset`, data)
+          .then((res) => {
+            console.log(res.data.message);
+            if (res.data.message === "Testset already exists.") {
+              setTSCreateErrorMsg(true);
+              setTimeout(() => {
+                setTSCreateErrorMsg(false);
+              }, 3000);
+            } else {
+              setTSUpdateSuccessMsg(true);
+              setTimeout(() => {
+                setTSUpdateSuccessMsg(false);
+                navigate("/testset/Recent");
+              }, 3000);
+            }
+          });
+      } else {
+        setTcListValidationMsg(true);
+        setTimeout(() => {
+          setTcListValidationMsg(false);
+        }, 3000);
+      }
     } else {
       setValidationMsg(true);
       setTimeout(() => {
@@ -280,6 +295,18 @@ export default function AddTestcaseToTestset() {
         ) : (
           ""
         )}
+        <SnackbarNotify
+          open={tcListValidationMsg}
+          close={setTcListValidationMsg}
+          msg="Select atleast one testcase"
+          severity="error"
+        />
+        <SnackbarNotify
+          open={TSCreateErrorMsg}
+          close={setTSCreateErrorMsg}
+          msg="Testset already exists.Please change the name"
+          severity="error"
+        />
       </div>
     </div>
   );

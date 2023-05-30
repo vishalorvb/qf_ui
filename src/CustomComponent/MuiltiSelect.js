@@ -26,6 +26,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
     const {
       target: { value },
     } = event;
+    stateList([...value]);
     setSelectedval(value);
   };
 
@@ -35,7 +36,6 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
       t.push(val[id]);
     });
     setCheckbox([...t]);
-    stateList([...selectedval]);
   }, [selectedval]);
 
   useEffect(() => {
@@ -47,11 +47,9 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label"> Select  <ArrowDropDownIcon></ArrowDropDownIcon> </InputLabel>
+      <FormControl sx={{ m: 1, width: 200 }}>
+        <InputLabel id="demo-multiple-checkbox-label"> Select  </InputLabel>
         <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
           multiple
           emptyRecordMsg = {"No Options Available"}
           value={selectedval}

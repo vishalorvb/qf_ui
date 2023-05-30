@@ -36,11 +36,17 @@ function CreateDataSetPopUp({ ReloadDataset, drawer, setDrawer }) {
         }
       });
     }
-    else{
+    else {
       snackbarErrormsg = "Fill all required fields"
       setSnackBarError(true)
     }
   }
+
+  useEffect(() => {
+    return () => {
+      console.log("Cleared")
+    };
+  }, [])
 
   try {
     return (

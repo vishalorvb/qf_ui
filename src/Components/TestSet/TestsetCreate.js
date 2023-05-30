@@ -1,20 +1,9 @@
-import {
-  Autocomplete,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  TextField,
-  TextareaAutosize,
-} from "@mui/material";
-import { Container } from "@mui/system";
+import { Button, Grid, Stack, TextareaAutosize } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import useAuth from "../../hooks/useAuth";
-import { getProject } from "../../Services/ProjectService";
 import { getApplicationOfProject } from "../../Services/ApplicationService";
 import { getTestcasesInProjects } from "../../Services/TestsetService";
-import axios, { axiosPrivate } from "../../api/axios";
+import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import {
@@ -24,9 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
-import { getSprint, getIssues } from "../../Services/TestCaseService"
-
-
+import { getSprint, getIssues } from "../../Services/TestCaseService";
 
 function TestsetCreate() {
   const {
@@ -36,7 +23,6 @@ function TestsetCreate() {
     setglobalApplication,
   } = useHead();
   const [testcaseObject, setTestcaseObject] = useState([]);
-  const location = useLocation();
   const [testsetName, setTestsetName] = useState("");
   const [testsetDesc, setTestsetDesc] = useState("");
   const [command, setCommand] = useState("");
@@ -46,23 +32,22 @@ function TestsetCreate() {
   const [leftTestcase, setLeftTestcase] = useState([]);
   const [rightTestcase, setRightTestcase] = useState([]);
   const [TSCreateSuccessMsg, setTSCreateSuccessMsg] = useState(false);
-  const [projectsList, setProjectList] = useState([]);
+  const [TSCreateErrorMsg, setTSCreateErrorMsg] = useState(false);
   const [applicationList, setapplicationList] = useState([]);
   const [selectedProject, setSelectedProject] = useState({});
-  const [selectedApplication, setSelectedApplication] = useState({});
-  const { auth } = useAuth();
   let requiredOnlyAlphabets = [testset_name, testset_desc];
   let autoComplete = ["projectAutocomplete", "applicationAutocomplete"];
   const [validationMsg, setValidationMsg] = useState(false);
+  const [tcListValidationMsg, setTcListValidationMsg] = useState(false);
   const navigate = useNavigate();
   let [jiraSprint, setJiraSprint] = useState([]);
   let [jiraIssue, setJiraIssue] = useState([]);
 
   let sprintData = useRef({
-    "sprint_id": "",
-    "sprint_name": "",
-    "issue_id": 0
-  })
+    sprint_id: "",
+    sprint_name: "",
+    issue_id: 0,
+  });
   const ITEM_HEIGHT = 18;
   const ITEM_PADDING_TOP = 4;
   const MenuProps = {
@@ -144,82 +129,95 @@ function TestsetCreate() {
   useEffect(() => {
     globalProject?.project_id &&
       getApplicationOfProject(setapplicationList, globalProject?.project_id);
-    getSprint(setJiraSprint, globalProject?.project_id)
+    getSprint(setJiraSprint, globalProject?.project_id);
   }, [globalProject]);
 
-  // useEffect(() => {
-  //   setSelectedApplication(applicationList[0]);
-  // }, [applicationList]);
-
   useEffect(() => {
-    console.log(globalApplication);
-    globalProject?.project_id && globalApplication?.module_id &&
-      getTestcasesInProjects(setTestcaseObject, globalProject?.project_id, globalApplication?.module_id);
-    globalProject?.project_id && globalApplication?.module_id &&
-      getTestcasesInProjects(setLeftTestcase, globalProject?.project_id, globalApplication?.module_id);
-  }, [globalProject?.project_id]);
+    console.log("Durgarao");
+    console.log(globalProject);
+    console.log(globalProject?.project_id);
+    if(globalProject?.project_id && globalApplication?.module_id){
+      console.log("MVGTR");
+      getTestcasesInProjects(setTestcaseObject,globalProject?.project_id,globalApplication?.module_id);
+      getTestcasesInProjects(setLeftTestcase,globalProject?.project_id,globalApplication?.module_id);
+    }
+    // globalProject?.project_id && globalApplication?.module_id && getTestcasesInProjects(setTestcaseObject,globalProject?.project_id,globalApplication?.module_id);
+    // globalProject?.project_id &&globalApplication?.module_id && getTestcasesInProjects(setLeftTestcase,globalProject?.project_id,globalApplication?.module_id);
+  }, [globalProject?.project_id, globalApplication?.module_id]);
 
   const submit = (e) => {
-    console.log("Submit call")
-    console.log(sprintData.current)
     if (
       validateForm(requiredOnlyAlphabets, [], [], [], [], autoComplete, "error")
     ) {
       e.preventDefault();
       const tcList = [];
-      for (let i = 0; i < rightTestcase.length; i++) {
-        console.log(rightTestcase[i].datasets);
-        if (rightTestcase[i].datasets != null) {
-          console.log(rightTestcase[i].datasets.length);
-          for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
-            tcList.push({
-              testcase_id: rightTestcase[i].testcase_id,
-              testcase_order: rightTestcase[i].tc_order,
-              testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
-            });
+      if (rightTestcase.length) {
+        for (let i = 0; i < rightTestcase.length; i++) {
+          console.log(rightTestcase[i].datasets);
+          if (rightTestcase[i].datasets != null) {
+            console.log(rightTestcase[i].datasets.length);
+            for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
+              tcList.push({
+                testcase_id: rightTestcase[i].testcase_id,
+                testcase_order: rightTestcase[i].tc_order,
+                testcase_dataset_id: rightTestcase[i].datasets[j].dataset_id,
+              });
+            }
           }
         }
-      }
-      if (globalApplication?.module_type == 19) {
-        var data = {
-          testset_name: "TS_" + testsetName,
-          testset_desc: "TS_" + testsetDesc,
-          project_id: selectedProject?.project_id,
-          testset_id: 0,
-          module_id: globalApplication?.module_id,
-          cucumber_tags: command,
-          testcases_list: [],
-          testset_sprints:sprintData.current
-        };
-      } else {
-        var data = {
-          testset_name: "TS_" + testsetName,
-          testset_desc: "TS_" + testsetDesc,
-          project_id: globalProject?.project_id,
-          testset_id: 0,
-          module_id: globalApplication?.module_id,
-          testcases_list: tcList,
-          testset_sprints: sprintData.current
-        };
-      }
-      console.log(data);
+        if (globalApplication?.module_type == 19) {
+          var data = {
+            testset_name: "TS_" + testsetName.trim(),
+            testset_desc: "TS_" + testsetDesc.trim(),
+            project_id: selectedProject?.project_id,
+            testset_id: 0,
+            module_id: globalApplication?.module_id,
+            cucumber_tags: command,
+            testcases_list: [],
+            testset_sprints: sprintData.current,
+          };
+        } else {
+          var data = {
+            testset_name: "TS_" + testsetName.trim(),
+            testset_desc: "TS_" + testsetDesc.trim(),
+            project_id: globalProject?.project_id,
+            testset_id: 0,
+            module_id: globalApplication?.module_id,
+            testcases_list: tcList,
+            testset_sprints: sprintData.current,
+          };
+        }
+        console.log(data);
 
-      axiosPrivate
-        .post(`qfservice/webtestset/createWebTestset`, data)
-        .then((res) => {
-          console.log(res.data.message);
-          setTSCreateSuccessMsg(true);
-          setTimeout(() => {
-            setTSCreateSuccessMsg(false);
-            navigate("/Testset/Recent");
-          }, 3000);
-          setTestsetName("");
-          setTestsetDesc("");
-          setLeftTestcase([]);
-          setRightTestcase([]);
-        });
-      setTestsetName("");
-      setTestsetDesc("");
+        axiosPrivate
+          .post(`qfservice/webtestset/createWebTestset`, data)
+          .then((res) => {
+            console.log(res.data.message);
+            if (res.data.message === "Testset already exists.") {
+              setTSCreateErrorMsg(true);
+              setTimeout(() => {
+                setTSCreateErrorMsg(false);
+              }, 3000);
+            } else {
+              setTSCreateSuccessMsg(true);
+              setTimeout(() => {
+                setTSCreateSuccessMsg(false);
+                navigate("/Testset/Recent");
+              }, 3000);
+              setTestsetName("");
+              setTestsetDesc("");
+              setLeftTestcase([]);
+              setRightTestcase([]);
+            }
+          });
+        setTestsetName("");
+        setTestsetDesc("");
+      } else {
+        setTcListValidationMsg(true);
+        setTimeout(() => {
+          setTcListValidationMsg(false);
+        }, 3000);
+      }
     } else {
       setValidationMsg(true);
       setTimeout(() => {
@@ -234,30 +232,40 @@ function TestsetCreate() {
       <div className="datatable" style={{ marginTop: "15px" }}>
         <Grid container direction="row" spacing={2}>
           <Grid item md={3}>
-            <label >Sprint</label>
+            <label>Sprint</label>
             <select
               defaultValue={jiraSprint[0]}
-              onChange={e => {
-                getIssues(setJiraIssue, globalApplication.project_id, e.target.value)
-                sprintData.current.sprint_id = e.target.value
-                sprintData.current.sprint_name = " "
+              onChange={(e) => {
+                getIssues(
+                  setJiraIssue,
+                  globalApplication.project_id,
+                  e.target.value
+                );
+                sprintData.current.sprint_id = e.target.value;
+                sprintData.current.sprint_name = " ";
               }}
             >
-              {jiraSprint?.map(s => <option key={s.id} value={s.sprint_name}>{s.sprint_name}</option>)}
+              {jiraSprint?.map((s) => (
+                <option key={s.id} value={s.sprint_name}>
+                  {s.sprint_name}
+                </option>
+              ))}
             </select>
           </Grid>
           <Grid item md={3}>
-            <label >Issues</label>
+            <label>Issues</label>
             <select
-            onChange={e => {
-              sprintData.current.issue_id = e.target.value
-            }}
+              onChange={(e) => {
+                sprintData.current.issue_id = e.target.value;
+              }}
             >
-              {jiraIssue?.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
+              {jiraIssue?.map((s) => (
+                <option key={s.id} value={s.issue_id}>
+                  {s.key}
+                </option>
+              ))}
             </select>
           </Grid>
-
-
 
           {/* <Grid item md={6}>
             <Stack spacing={1}>
@@ -381,16 +389,16 @@ function TestsetCreate() {
                   multiple
                   style={{ padding: "10px", marginTop: "10px" }}
                 >
-                  {leftTestcase.length > 0
+                  {leftTestcase?.length > 0
                     ? leftTestcase
-                      .filter((el) => {
-                        return !rightTestcase.some((f) => {
-                          return f.testcase_id === el.testcase_id;
-                        });
-                      })
-                      .map((ts) => (
-                        <option value={ts.testcase_id}>{ts.name}</option>
-                      ))
+                        .filter((el) => {
+                          return !rightTestcase.some((f) => {
+                            return f.testcase_id === el.testcase_id;
+                          });
+                        })
+                        .map((ts) => (
+                          <option value={ts.testcase_id}>{ts.name}</option>
+                        ))
                     : []}
                 </select>
               </Grid>
@@ -422,8 +430,7 @@ function TestsetCreate() {
                   style={{ padding: "10px", marginTop: "10px" }}
                 >
                   {rightTestcase.length > 0
-                    ? rightTestcase
-                      .map((ts) => (
+                    ? rightTestcase.map((ts) => (
                         <option value={ts.testcase_id}>{ts.name}</option>
                       ))
                     : []}
@@ -450,10 +457,22 @@ function TestsetCreate() {
           severity="error"
         />
         <SnackbarNotify
+          open={tcListValidationMsg}
+          close={setTcListValidationMsg}
+          msg="Select atleast one testcase"
+          severity="error"
+        />
+        <SnackbarNotify
           open={TSCreateSuccessMsg}
           close={setTSCreateSuccessMsg}
           msg="Testset Created successfully"
           severity="success"
+        />
+        <SnackbarNotify
+          open={TSCreateErrorMsg}
+          close={setTSCreateErrorMsg}
+          msg="Testset already exists.Please change the name"
+          severity="error"
         />
       </div>
     </div>

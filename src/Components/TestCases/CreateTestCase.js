@@ -35,7 +35,7 @@ function CreateTestCase() {
     let [project, setProject] = useState([])
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
-    const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+    const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication,setSnackbarData } = useHead();
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
     let [jiraSprint, setJiraSprint] = useState([]);
     let [jiraIssue, setJiraIssue] = useState([]);
@@ -57,6 +57,7 @@ function CreateTestCase() {
                 }
                 if (TCdata.testcase_id === undefined) {
                     CreateTestCaseService(TCdata).then(res => {
+                        console.log(res)
                         if (res) {
                             if (globalApplication.module_type == 1) {
                                 MapAPiTestCaseData.testcase_id = res
@@ -72,6 +73,11 @@ function CreateTestCase() {
                                     }
                                 })
                             }
+                             setSnackbarData({
+                            status: true,
+                            message: "Testcase created successfully",
+                            severity: "success",
+                                 })
                         }
                         else {
                             snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
@@ -99,6 +105,11 @@ function CreateTestCase() {
                                     }
                                 })
                             }
+                            setSnackbarData({
+                                status: true,
+                                message: "Testcase updated successfully",
+                                severity: "success",
+                            })
                         }
                     })
                 }
