@@ -123,18 +123,22 @@ export default function CreateApplication() {
 
   useEffect(() => {
     getApplication((res) => {
-      moduleNames = res.map(({ module_id, module_name }) => ({
+      moduleNames = res.map(({ module_id, module_name, is_deleted }) => ({
         module_id,
         module_name,
+        is_deleted,
       }));
     }, auth.info.id);
   }, []);
 
   const isModuleNameTaken = (moduleId, moduleName) => {
+    console.log(moduleNames);
     const trimmedName = moduleName.trim();
     const taken = moduleNames.some(
       (module) =>
-        module.module_id !== moduleId && module.module_name === trimmedName
+        module.module_id !== moduleId &&
+        module.module_name === trimmedName &&
+        module.is_deleted === false
     );
     return taken;
   };
