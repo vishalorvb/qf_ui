@@ -48,6 +48,7 @@ function TestsetExecutionToolbar({
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
   const [snack, setSnack] = useState(false);
+  const [snackbar, setSnackbar] = useState(false);
   const [runtimeVariable, setRunTimeVariable] = useState();
   const [buildEnvId, setBuildEnvId] = useState();
   const [showLoading, setShowLoading] = useState(false);
@@ -97,63 +98,82 @@ function TestsetExecutionToolbar({
 
   const onSubmitExecute = (data) => {
     let datasets = [];
-    if (selectedtestcases.length == selecteddatasets.length) {
-      datasets = selecteddatasets;
-    } else {
-      for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selecteddatasets.length; j++) {
-          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
-            datasets.push(selecteddatasets[j]);
+    let selecteddataset = [];
+    if (selectedtestcases.length != 0) {
+      selecteddataset = selecteddatasets.filter(dt => 
+        // console.log(dt.selected_testcase_dataset_ids),
+        (dt.selected_testcase_dataset_ids).length != 0);
+      // if (selectedtestcases.length == selecteddataset.length) {
+      //   datasets = selecteddataset;
+      // } else {
+        for (let i = 0; i < selectedtestcases.length; i++) {
+          for (let j = 0; j < selecteddataset.length; j++) {
+            if (selectedtestcases[i] == selecteddataset[j].testcase_id) {
+              console.log(selecteddataset[j]);
+              datasets.push(selecteddataset[j]);
+            }
           }
         }
-      }
-    }
-    if (datasets.length != 0) {
-      setShowLoading(true);
-      const executionData = {
-        testset_id: testsetId,
-        module_id: applicationId,
-        web_testcases_list_to_execute: datasets,
-        mobile_platform: appType,
-        config_id: null,
-        config_name: null,
-        build_environment_name: data?.buildenvName?.split("&")[1],
-        build_environment_id: data?.buildenvName?.split("&")[0],
-        browser_type: data?.browser?.toString(),
-        execution_location: data?.executionLoc,
-        repository_commit_message: "",
-        testcase_overwrite: true,
-        runtimevariables: data?.buildenvName?.split("&")[2],
-        is_execute: true,
-        is_generate: data?.regenerateScript?.length > 0,
-        client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        user_id: auth?.userId,
-      };
+      // }
+      console.log(selectedtestcases);
+      console.log(selecteddatasets);
+      console.log(selecteddataset);
+      if (
+        datasets.length != 0 &&
+        selecteddataset.length != 0 && datasets.length == selectedtestcases.length
+      ) {
+        console.log(datasets);
+        setShowLoading(true);
+        const executionData = {
+          testset_id: testsetId,
+          module_id: applicationId,
+          web_testcases_list_to_execute: datasets,
+          mobile_platform: appType,
+          config_id: null,
+          config_name: null,
+          build_environment_name: data?.buildenvName?.split("&")[1],
+          build_environment_id: data?.buildenvName?.split("&")[0],
+          browser_type: data?.browser?.toString(),
+          execution_location: data?.executionLoc,
+          repository_commit_message: "",
+          testcase_overwrite: true,
+          runtimevariables: data?.buildenvName?.split("&")[2],
+          is_execute: true,
+          is_generate: data?.regenerateScript?.length > 0,
+          client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          user_id: auth?.userId,
+        };
 
-      axios
-        .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
-        .then((resp) => {
-          data?.executionLoc !== "local" && setShowLoading(false);
-          data?.executionLoc === "local"
-            ? axios
-                .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
-                  data: resp?.data?.info,
-                  jarName: `code`,
-                })
-                .then((resp) => {
-                  setJarConnected(true);
-                  setShowLoading(false);
-                })
-                .catch((err) => {
-                  err.message === "Network Error" && setClientInactive(true);
-                  setShowLoading(false);
-                })
-            : setRemoteExecutionsuccess(true);
-        });
+        axios
+          .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
+          .then((resp) => {
+            data?.executionLoc !== "local" && setShowLoading(false);
+            data?.executionLoc === "local"
+              ? axios
+                  .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
+                    data: resp?.data?.info,
+                    jarName: `code`,
+                  })
+                  .then((resp) => {
+                    setJarConnected(true);
+                    setShowLoading(false);
+                  })
+                  .catch((err) => {
+                    err.message === "Network Error" && setClientInactive(true);
+                    setShowLoading(false);
+                  })
+              : setRemoteExecutionsuccess(true);
+          });
+      } else {
+        setSnack(true);
+        setTimeout(() => {
+          setSnack(false);
+        }, 3000);
+      }
     } else {
-      setSnack(true);
+      setSnackbar(true);
       setTimeout(() => {
-        setSnack(false);
+        setSnackbar(false);
       }, 3000);
     }
   };
@@ -304,6 +324,14 @@ function TestsetExecutionToolbar({
           open={snack}
           close={setSnack}
           msg={"Please select atleast one dataset"}
+          severity="error"
+        />
+      )}
+      {snackbar && (
+        <SnackbarNotify
+          open={snackbar}
+          close={setSnackbar}
+          msg={"Please select atleast one Testcase"}
           severity="error"
         />
       )}
