@@ -25,3 +25,12 @@ export function GetJiraProjectsAndSprints(callback, projectId) {
        callback(details)
       });
   }
+
+  export function syncJiraSprintsIssues(callback,projectId) {
+    axios
+       .post(`/qfservice/syncJiraSprintsIssues?project_id=${projectId}`)
+       .then((resp) => {
+        console.log(resp)
+        callback(resp)
+       });
+   }
