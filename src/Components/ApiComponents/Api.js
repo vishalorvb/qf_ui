@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Grid } from "@mui/material";
 import ApiTabs from "./ApiTabs";
 import { Apidata, resetApiData } from "./Data";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import { useNavigate } from "react-router-dom";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { createApiRequest } from "../../Services/ApiService";
 import useHead from "../../hooks/useHead";
@@ -11,10 +9,8 @@ import { authdata } from "./Data";
 
 
 function Api() {
-  const { setHeader } = useHead();
+  const { setHeader,setSnackbarData } = useHead();
   let namelist = ["apiname", "apidesc", "apiurl", "resource"];
-  let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-  let navigate = useNavigate();
 
   function handleSave(e) {
     if (validateFormbyName(namelist, "error")) {
@@ -22,10 +18,11 @@ function Api() {
       console.log(Apidata)
       createApiRequest(Apidata).then((res) => {
         if (res) {
-          setSnackbarsuccess(true);
-          setTimeout(() => {
-            navigate(-1)
-          }, 1000);
+          setSnackbarData({
+            status: true,
+            message: "API created successfully",
+            severity: "success",
+          });
         }
       });
     } else {
@@ -53,12 +50,6 @@ function Api() {
         paddingRight: "10px",
       }}
     >
-      <SnackbarNotify
-        open={snackbarsuccess}
-        close={setSnackbarsuccess}
-        msg="API updated succesfully"
-        severity="success"
-      />
       <Grid
         container
         direction="row"

@@ -61,7 +61,7 @@ function ApiAuthorization({ApiDetails}) {
               setAuthdata({ ...temp })
             }}
           >
-            <option value="">Select</option>
+            {/* <option value="">Select</option> */}
             <option selected={ApiDetails?.auth?.authtype == "noauth"} value={'noauth'} >No Auth</option>
             <option selected={ApiDetails?.auth?.authtype == "basicauth"} value={'basicauth'}>Basic Auth</option>
             <option selected={ApiDetails?.auth?.authtype == "apikey"} value={"apikey"}>API Key</option>
