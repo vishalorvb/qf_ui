@@ -335,15 +335,9 @@ function TestsetExecutionToolbar({
           severity="error"
         />
       )}
-      <Grid
-        container
-        direction="row"
-        display="flex"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        spacing={1}
-      >
-        <Grid item md={2}>
+      <Grid container>
+      <Grid item container xs={10} spacing={1} justifyContent="flex-start">
+        <Grid item xs={2} sm={4} md={4} lg={2.5}>
           <SelectElement
             name="executionLoc"
             label="Execution Location"
@@ -354,7 +348,7 @@ function TestsetExecutionToolbar({
             options={execEnvList}
           />
         </Grid>
-        <Grid item md={2}>
+        <Grid item xs={2} sm={4} md={4} lg={2.5}>
           <Stack direction="column">
             <SelectElement
               name="buildenvName"
@@ -379,26 +373,26 @@ function TestsetExecutionToolbar({
         {applicationType == 3 || applicationType == 4 ? (
           ""
         ) : (
-          <Grid item md={2}>
-             <Controller
-             control={control}
-             name="browser"
-             defaultValue={["Chrome"]} // Set the default value to "Chrome"
-             render={({ field }) => (
-            <MultiSelectElement
-            menuMaxWidth={5}
-            label="Browser"
-            size="small"
-            fullWidth
-            options={options}
-            control={control} // Pass the control object to the MultiSelectElement
-            {...field}
-          />
-        )}
-      />
-          </Grid>
-        )}
-        <Grid item md={1.8}>
+          <Grid item >
+          <Controller
+          control={control}
+          name="browser"
+          defaultValue={["Chrome"]} // Set the default value to "Chrome"
+          render={({ field }) => (
+         <MultiSelectElement
+         menuMaxWidth={5}
+         label="Browser"
+         size="small"
+         fullWidth
+         options={options}
+         control={control} // Pass the control object to the MultiSelectElement
+         {...field}
+       />
+     )}
+   />
+       </Grid>
+     )}
+     <Grid item xs={2} sm={3} md={2} lg={4}>
           <FeatureMenu
             frameworkType={frameworkType}
             projectId={projectId}
@@ -410,9 +404,11 @@ function TestsetExecutionToolbar({
                 : ""
             }
           />
-        </Grid>
-        <Grid item md={(applicationType == '3' || applicationType == '4') ? 6: 4} display="flex"
-        justifyContent="flex-end">
+     </Grid>
+      </Grid>
+
+      <Grid item xs={2} sm={2} md={2} lg={2}>
+      <Grid item>
           <Stack direction="column">
             <React.Fragment>
               <ButtonGroup
@@ -484,6 +480,8 @@ function TestsetExecutionToolbar({
             />
           </Stack>
         </Grid>
+      </Grid>
+       
       </Grid>
 
       {(execLoc == "docker" || execLoc == "jenkins") && (
