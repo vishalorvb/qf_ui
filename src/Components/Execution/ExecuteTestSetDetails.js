@@ -47,7 +47,13 @@ function ExecuteTestSetDetails({
                                 border: "none",
                               },
                           }}
-                          preselect={[param.row?.datasets[0]]}
+                          preselect={[]}
+                          // {[param.row?.datasets[0]]}
+                          // {(param.row.datasets).filter((e) => {
+                          //   if (param.row.dataset_values[e.id]) {
+                          //     return e;
+                          //   }
+                          // })}
                           options={param.row.datasets}
                           value="name"
                           id="dataset_id"
