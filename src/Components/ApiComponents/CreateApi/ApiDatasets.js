@@ -61,6 +61,7 @@ function ApiDatasets() {
     function handleSave(e) {
         postData.multi_datasets_of_testcase = getData
         if (validateFormbyName(["name", "desc"], "error")) {
+            postData.testcase_dataset_name.trim()
             createApiDataset(auth.info.id, postData).then(res => {
                 if (res == false) {
                     getApiDatasets(setDatasets, location.state.testcaseId)
@@ -186,7 +187,7 @@ function ApiDatasets() {
                                 <input type="text" name='name'
                                     placeholder='Dataset Name'
                                     defaultValue={postData.testcase_dataset_name}
-                                    onChange={e => postData.testcase_dataset_name = e.target.value}
+                                    onChange={e => postData.testcase_dataset_name = e.target.value.trim()}
                                 />
                             </Grid>
                             <Grid item md={2}>

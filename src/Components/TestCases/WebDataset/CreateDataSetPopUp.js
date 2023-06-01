@@ -78,7 +78,7 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
               placeholder="Dataset Name"
               defaultValue={dsName}
               onChange={(e) => {
-                datasetinfo.current.name = e.target.value;
+                datasetinfo.current.name = e.target.value.trim();
               }}
             />
           </Grid>
@@ -90,7 +90,7 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
               placeholder="Dataset Description"
               defaultValue={dsDesciption}
               onChange={(e) => {
-                datasetinfo.current.description = e.target.value;
+                datasetinfo.current.description = e.target.value.trim();
               }}
             />
           </Grid>

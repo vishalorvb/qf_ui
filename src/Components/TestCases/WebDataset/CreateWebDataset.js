@@ -70,9 +70,10 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
         }
 
         requestData.current.datasets_list = [datasetInfo]
+        requestData.current.datasets_list[0]?.name.trim()
         CreateDataset(requestData.current).then((res) => {
-            if (res == false) {
-                snackbarmsg = "Dataset Created successfully"
+            if (res?.status === 'SUCCESS') {
+                snackbarmsg = res?.message
                 snackbarType = "success"
                 setSnackbar(true)
                 setTimeout(() => {
@@ -80,7 +81,7 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
                 }, 1000);
             }
             else {
-                snackbarmsg = res
+                snackbarmsg = res?.message
                 snackbarType = "error"
                 setSnackbar(true)
             }

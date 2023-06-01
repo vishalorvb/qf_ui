@@ -97,14 +97,7 @@ export async function CreateDataset(data) {
     data: data,
     url: `${baseUrl}/qfservice/webdataset/web-createDataset`
   }).then(res => {
-
-    if (res.data.status === "SUCCESS") {
-
-      return false
-    }
-    else {
-      return res.data.message
-    }
+      return res?.data
   })
 
   return x
