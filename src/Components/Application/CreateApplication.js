@@ -62,8 +62,6 @@ export default function CreateApplication() {
       moduledata.module_id,
       moduledata.module_name
     );
-    console.log(isTaken.taken)
-    console.log(isTaken.hasSpecialCharacters)
     if (isTaken.taken) {
       setSnackbarData({
         status: true,
@@ -75,7 +73,7 @@ export default function CreateApplication() {
     if (isTaken.hasSpecialCharacters) {
       setSnackbarData({
         status: true,
-        message: "Special characters are not allowed!",
+        message: "Application name should not start with special characters!",
         severity: "error",
       });
       return;
@@ -143,7 +141,7 @@ export default function CreateApplication() {
 
   const isModuleNameTaken = (moduleId, moduleName) => {
     const trimmedName = moduleName.trim().toLowerCase();
-    const hasSpecialCharacters = /[!@#$%^&*(),.?":{}|<>_-]/.test(moduleName);
+    const hasSpecialCharacters = /^[^a-zA-Z0-9]/.test(moduleName);;
     const taken = moduleNames.some(
       (module) => 
        module.module_id !== moduleId && 
@@ -152,9 +150,7 @@ export default function CreateApplication() {
     );
     return {taken,hasSpecialCharacters};
   };
-// const hasSpecialCharacters = (moduleName) => {
-  
-// }
+
   return (
     <>
       <Grid container direction="row" spacing={2}>
@@ -206,7 +202,7 @@ export default function CreateApplication() {
                 if (isTaken.hasSpecialCharacters) {
                   setSnackbarData({
                     status: true,
-                    message: "Special characters are not allowed!",
+                    message: "Application name should not start with special characters!",
                     severity: "error",
                   });
                 }
