@@ -165,6 +165,7 @@ const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 //   import(`../Components/Application/MapDiffElements`)
 // );
 const UpdatePage = lazy(()=>import(`../Components/Application/ScreenComponents/UpdatePage`))
+const Logs = lazy(()=> import(`../CustomComponent/Logs`))
 
 export const Routes = [
   {
@@ -712,6 +713,11 @@ export const Routes = [
   {
     path: "/TestLibrary",
     element: TestLibrary,
+    accessRole: [1, 2, 4, 5],
+  },
+  {
+    path: "logs",
+    element: Logs,
     accessRole: [1, 2, 4, 5],
   },
 ];
