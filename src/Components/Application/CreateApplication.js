@@ -132,13 +132,12 @@ export default function CreateApplication() {
   }, []);
 
   const isModuleNameTaken = (moduleId, moduleName) => {
-    console.log(moduleNames);
-    const trimmedName = moduleName.trim();
+    const trimmedName = moduleName.trim().toLowerCase();;
     const taken = moduleNames.some(
-      (module) =>
-        module.module_id !== moduleId &&
-        module.module_name === trimmedName &&
-        module.is_deleted === false
+      (module) => 
+       module.module_id !== moduleId && 
+       module.module_name.toLowerCase() === trimmedName && 
+       module.is_deleted === false
     );
     return taken;
   };
