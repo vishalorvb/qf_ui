@@ -67,6 +67,12 @@ export default function AddTestcaseToTestset() {
   function handleUnselect(event) {
     let e = document.getElementById("right");
     let remaining = rightTestcase.filter((ts) => ts.datasets != null);
+    console.log(rightTestcase);
+    let leftTestcases = leftTestcase.filter((el) => { 
+      return !rightTestcase.some((f) => {
+        return f.testcase_id === el.testcase_id;
+      });
+    })
     for (let i = 0; i < e.options.length; i++) {
       console.log(e.options[i].selected);
       if (e.options[i].selected) {
@@ -80,7 +86,7 @@ export default function AddTestcaseToTestset() {
           (ts) => ts.testcase_id != e.options[i].value
         );
         if (temp.length > 0) {
-          setLeftTestcase((pv) => [...pv, temp[0]]);
+          setLeftTestcase(() => [...leftTestcases, temp[0]]);
         }
       }
       setRightTestcase(remaining);
@@ -173,7 +179,11 @@ export default function AddTestcaseToTestset() {
     getTestcasesOfTestset(setRightTestcase, testsetId);
   }, []);
   console.log(testcaseObject);
-  console.log(leftTestcase);
+  console.log(leftTestcase.filter((el) => { 
+    return !rightTestcase.some((f) => {
+      return f.testcase_id === el.testcase_id;
+    });
+  }));
   console.log(rightTestcase);
 
   return (
