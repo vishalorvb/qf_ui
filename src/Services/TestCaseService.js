@@ -200,3 +200,17 @@ export function getIssues(callback, projectId, sprintname) {
     callback(res.data.data.issues)
   })
 }
+
+
+export function getPagesForTestcase(callback, projectId, moduleId) {
+  axios.get(`${baseUrl}/qfservice/webtestcase/getScreensForTestcase?module_id=${moduleId}&project_id=${projectId}`)
+    .then(res => {
+      callback(res.data.info[0]?.webpagesList)
+    })
+}
+export function getPagesIntestcase(callback, projectId, moduleId, testcaseId) {
+  axios.get(`${baseUrl}/qfservice/webtestcase/getScreensInTestcase?module_id=${moduleId}&project_id=${projectId}&testcase_id=${testcaseId}`)
+    .then(res => {
+      callback(res.data.info[0]?.webpagesList)
+    })
+}

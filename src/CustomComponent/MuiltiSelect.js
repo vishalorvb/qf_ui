@@ -48,7 +48,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 200 }}>
-        <InputLabel id="demo-multiple-checkbox-label"> Select  </InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label">  </InputLabel>
         <Select
           multiple
           emptyRecordMsg = {"No Options Available"}

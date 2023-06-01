@@ -14,6 +14,7 @@ import { UpdateTestcase } from "../../Services/TestCaseService"
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
 import { getSprint, getIssues } from "../../Services/TestCaseService"
+import MapScreen from "./webTestcase/MapScreen"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -35,11 +36,14 @@ function CreateTestCase() {
     let [project, setProject] = useState([])
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
-    const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication,setSnackbarData } = useHead();
+    const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication, setSnackbarData } = useHead();
     let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
     let [jiraSprint, setJiraSprint] = useState([]);
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
+    let [api, setApi] = useState([]);
+    let [screens,setScreens] = useState([]);
+
     function handleSubmit(e) {
         if ((globalApplication?.module_type) == 19) {
             setReportFailMsg(true);
@@ -52,8 +56,8 @@ function CreateTestCase() {
                 TCdata.testcase_sprints.push(sprintData)
             }
             if (validateFormbyName(["name", "desc"], "error")) {
-                if(!TCdata.testcase_name.startsWith("TC_")){
-                    TCdata.testcase_name = "TC_"+TCdata.testcase_name
+                if (!TCdata.testcase_name.startsWith("TC_")) {
+                    TCdata.testcase_name = "TC_" + TCdata.testcase_name
                 }
                 if (TCdata.testcase_id === undefined) {
                     CreateTestCaseService(TCdata).then(res => {
@@ -73,11 +77,11 @@ function CreateTestCase() {
                                     }
                                 })
                             }
-                             setSnackbarData({
-                            status: true,
-                            message: "Testcase created successfully",
-                            severity: "success",
-                                 })
+                            setSnackbarData({
+                                status: true,
+                                message: "Testcase created successfully",
+                                severity: "success",
+                            })
                         }
                         else {
                             snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
@@ -183,6 +187,8 @@ function CreateTestCase() {
         }
     }, [project])
 
+
+
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
@@ -277,19 +283,25 @@ function CreateTestCase() {
                         }}
                     />
                 </Grid>
-                <br />
-                <Grid item xs={12} md={12}>
-                    <Stack
-                        direction="row"
-                        justifyContent="flex-end"
-                        alignItems="center"
-                        spacing={2}
-                    >
-                        <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
-                        <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
-                    </Stack>
-                </Grid>
+
             </Grid >
+            <br />
+            <Divider></Divider>
+            <MapScreen
+            projectId={globalProject?.project_id}
+            moduleId={globalApplication?.module_id}
+            testcaseId = {TCdata.testcase_id}
+            callback={setScreens}
+            ></MapScreen>
+            <Stack
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={2}
+            >
+                <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+            </Stack>
             <SnackbarNotify
                 open={reportFailMsg}
                 close={setReportFailMsg}
