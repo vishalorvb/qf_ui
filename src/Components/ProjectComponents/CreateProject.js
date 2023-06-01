@@ -107,7 +107,7 @@ function CreateProject() {
       if (createformData.sqeProjectId == "") {
         createProject(createformData).then((res) => {
           if (res == "SUCCESS") {
-            snackbarmasg = "Project created Successfully"
+            snackbarmasg = "Project created successfully"
             setSnackbarsuccess(true);
             setTimeout(() => {
               navigate("/Projects/Recent");
@@ -120,7 +120,7 @@ function CreateProject() {
       } else {
         updateProject(createformData).then((res) => {
           if (res == "SUCCESS") {
-            snackbarmasg = "Project updadated Successfully"
+            snackbarmasg = "Project updated successfully"
             setSnackbarsuccess(true);
             setTimeout(() => {
               navigate("/Projects/Recent");
