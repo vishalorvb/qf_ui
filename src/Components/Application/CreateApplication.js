@@ -62,10 +62,20 @@ export default function CreateApplication() {
       moduledata.module_id,
       moduledata.module_name
     );
-    if (isTaken) {
+    console.log(isTaken.taken)
+    console.log(isTaken.hasSpecialCharacters)
+    if (isTaken.taken) {
       setSnackbarData({
         status: true,
         message: "Application name already exists!",
+        severity: "error",
+      });
+      return;
+    }
+    if (isTaken.hasSpecialCharacters) {
+      setSnackbarData({
+        status: true,
+        message: "Special characters are not allowed!",
         severity: "error",
       });
       return;
@@ -132,16 +142,19 @@ export default function CreateApplication() {
   }, []);
 
   const isModuleNameTaken = (moduleId, moduleName) => {
-    const trimmedName = moduleName.trim().toLowerCase();;
+    const trimmedName = moduleName.trim().toLowerCase();
+    const hasSpecialCharacters = /[!@#$%^&*(),.?":{}|<>_-]/.test(moduleName);
     const taken = moduleNames.some(
       (module) => 
        module.module_id !== moduleId && 
        module.module_name.toLowerCase() === trimmedName && 
        module.is_deleted === false
     );
-    return taken;
+    return {taken,hasSpecialCharacters};
   };
-
+// const hasSpecialCharacters = (moduleName) => {
+  
+// }
   return (
     <>
       <Grid container direction="row" spacing={2}>
@@ -183,10 +196,17 @@ export default function CreateApplication() {
                   moduledata.module_id,
                   moduledata.module_name
                 );
-                if (isTaken) {
+                if (isTaken.taken) {
                   setSnackbarData({
                     status: true,
                     message: "Application name already exists!",
+                    severity: "error",
+                  });
+                }
+                if (isTaken.hasSpecialCharacters) {
+                  setSnackbarData({
+                    status: true,
+                    message: "Special characters are not allowed!",
                     severity: "error",
                   });
                 }
