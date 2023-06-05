@@ -66,7 +66,7 @@ function WebDatasetList(props) {
                                 props.setCopy(true)
                             }}
                         >
-                            <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
+                            <ContentCopyOutlinedIcon  sx={{ color: "green", mr: 1 }}></ContentCopyOutlinedIcon>
                             Copy
                         </MenuItem>
                         <MenuItem
@@ -110,15 +110,15 @@ function WebDatasetList(props) {
             <ConfirmPop
                 open={deletepopup}
                 handleClose={() => setDeletepopup(false)}
-                heading="Delete Data Set"
-                message="Are you sure you want to delete?"
+                heading="Delete Dataset"
+                message="Are you sure you want to delete this dataset?"
                 onConfirm={() => {
                     deleteDataset(deletedatasetId).then((res) => {
                         if (res) {
                             setDeletepopup(false);
                             setDeletedatasetId(null);
                             getDataset(setDatasets, props.projectId, props.applicationId, props.testcaseId);
-                            snackbarmsg = "Data Set deleted successfully"
+                            snackbarmsg = "Dataset deleted successfully"
                             setSnackbar(true)
                         }
                     });

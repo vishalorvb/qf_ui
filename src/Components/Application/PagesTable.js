@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
-import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import useHead from "../../hooks/useHead";
-import useAuth from "../../hooks/useAuth";
+import { Outlet, useNavigate } from "react-router-dom";
 import { getPages } from "../../Services/ApplicationService";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Table from "../../CustomComponent/Table";
 import {
-  FormControl,
   IconButton,
-  InputLabel,
   MenuItem,
-  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -26,14 +20,13 @@ import UpdatePage from "./ScreenComponents/UpdatePage";
 import { postVal } from "./ScreenComponents/UpdatePage";
 export default function PagesTable(props) {
   const { location } = props;
-  const { header, setHeader } = useHead();
   const navigate = useNavigate();
   let [page, setPage] = useState([]);
   const [snackbarMsg, setSnackbarMsg] = useState(false);
   let [popup, setPopup] = useState(false);
   const [updatePage, setUpdatePage] = useState(false);
+  const [pageId,setPageId] = useState()
 
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const handleDelete = (pageId) => {
     axios
@@ -95,16 +88,19 @@ export default function PagesTable(props) {
               </IconButton>
             </Tooltip>
             <TableActions>
-              <MenuItem 
-                onClick={()=> {
-                postVal.page_name = param.row.name;
-                postVal.page_description = param.row.description;
-                postVal.web_page_id = param.row.web_page_id;
-                setUpdatePage(true)}} 
+              <MenuItem
+                onClick={() => {
+                  postVal.page_name = param.row.name;
+                  postVal.page_description = param.row.description;
+                  postVal.web_page_id = param.row.web_page_id;
+                  setUpdatePage(true);
+                }}
               >
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
-              <MenuItem onClick={() => setPopup(true)}>
+              <MenuItem onClick={() => {
+                setPageId(param?.row?.web_page_id)
+                setPopup(true)}}>
                 <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
               </MenuItem>
               <MenuItem
@@ -115,15 +111,6 @@ export default function PagesTable(props) {
                 <UsbIcon sx={{ color: "red", mr: 1 }} /> Map Diff Elements
               </MenuItem>
             </TableActions>
-            {popup && (
-              <ConfirmPop
-                open={popup}
-                handleClose={() => setPopup(false)}
-                heading={"Delete Page"}
-                message={"Are you sure you want to delete this page?"}
-                onConfirm={() => handleDelete(param?.row?.web_page_id)}
-              ></ConfirmPop>
-            )}
           </>
         );
       },
@@ -132,7 +119,6 @@ export default function PagesTable(props) {
 
   useEffect(() => {
     getPages(setPage, location?.state?.module_id);
-    console.log(location?.state);
   }, [snackbarMsg]);
   return (
     <>
@@ -149,13 +135,24 @@ export default function PagesTable(props) {
         msg={snackbarMsg}
         severity="success"
       />
-      { updatePage &&  <UpdatePage
-        open={updatePage}
-        close={setUpdatePage}
-        location = {location}
-         getPages={getPages}
-         setPage={setPage}
-      />}
+      {updatePage && (
+        <UpdatePage
+          open={updatePage}
+          close={setUpdatePage}
+          location={location}
+          getPages={getPages}
+          setPage={setPage}
+        />
+      )}
+      {popup && (
+        <ConfirmPop
+          open={popup}
+          handleClose={() => setPopup(false)}
+          heading={"Delete Page"}
+          message={"Are you sure you want to delete this page?"}
+          onConfirm={() => handleDelete(pageId)}
+        ></ConfirmPop>
+      )}
     </>
   );
 }
