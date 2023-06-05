@@ -7,6 +7,7 @@ function TableActions(props) {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    // handleClose();
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -28,6 +29,7 @@ function TableActions(props) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        onClick={handleClose}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
