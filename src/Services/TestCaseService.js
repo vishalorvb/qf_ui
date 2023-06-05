@@ -148,6 +148,7 @@ export async function CreateTestCaseService(data) {
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
     data: data
   }).then(res => {
+    console.log(res.data.message)
     if (res.data.info != null) { return res.data.message }
     else { return false }
   })
@@ -212,4 +213,11 @@ export function getPagesIntestcase(callback, projectId, moduleId, testcaseId) {
     .then(res => {
       callback(res.data.info[0]?.webpagesList)
     })
+}
+
+
+export function getApiOfApplication(callback,moduleId){
+  axios.get(`${baseUrl}/qfservice//testcase/${moduleId}/apisByModuleId`).then(res=>{
+    callback(res.data.data.apisList)
+  })
 }

@@ -2,7 +2,6 @@ import { Autocomplete, Button, Divider, Grid } from "@mui/material"
 import { useNavigate } from "react-router"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
 import { useEffect, useState } from "react"
-import { MapAPiTestCaseData } from "./apiTestcase/MapApiTestCase"
 import { Stack } from "@mui/system"
 import useHead from "../../hooks/useHead"
 import { getProject } from "../../Services/ProjectService"
@@ -12,6 +11,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
 import { getSprint, getIssues } from "../../Services/TestCaseService"
 import MapScreen from "./webTestcase/MapScreen"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
+import MapApiTestCase from "./apiTestcase/MapApiTestCase"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -37,6 +37,31 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [screens, setScreens] = useState([]);
+    const navigate = useNavigate();
+
+
+    function WebTestcase(data) {
+        CreateTestCaseService(data).then(res => {
+            console.log(res)
+            if (res) {
+                setSnackbarData({
+                    status: true,
+                    message: res,
+                    severity: "success",
+                })
+                navigate("/Testcase/Recent")
+            }
+            else {
+                snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
+                setSnackbarError(true)
+            }
+        }
+        )
+    }
+
+    function ApiTestcase(data) {
+
+    }
 
     function handleSubmit(e) {
         if ((globalApplication?.module_type) === 19) {
@@ -62,21 +87,7 @@ function CreateTestCase() {
                     TCdata.testcase_name = "TC_" + TCdata.testcase_name
                 }
                 console.log(TCdata)
-                CreateTestCaseService(TCdata).then(res => {
-                    console.log(res)
-                    // if (res!== false) {
-                    //     setSnackbarData({
-                    //         status: true,
-                    //         message: {res},
-                    //         severity: "success",
-                    //     })
-                    // }
-                    // else {
-                    //     snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
-                    //     setSnackbarError(true)
-                    // }
-                }
-                )
+                WebTestcase(TCdata)
 
             }
             else {
@@ -105,8 +116,6 @@ function CreateTestCase() {
             TCdata.module_id = globalApplication.module_id
             TCdata.project_id = globalProject.project_id
         } catch (error) { }
-        MapAPiTestCaseData.module_id = globalApplication?.module_id
-        MapAPiTestCaseData.project_id = globalProject?.project_id
     }, [globalProject, globalApplication])
 
 
@@ -245,12 +254,17 @@ function CreateTestCase() {
             </Grid >
             <br />
             <Divider></Divider>
-            <MapScreen
+            {globalApplication?.module_type === 2 && <MapScreen
                 projectId={globalProject?.project_id}
                 moduleId={globalApplication?.module_id}
                 testcaseId={TCdata.testcase_id}
                 callback={setScreens}
-            ></MapScreen>
+            ></MapScreen>}
+
+            {globalApplication?.module_type === 1 && <MapApiTestCase
+                testcaseId={TCdata.testcase_id}
+                moduleId={globalApplication.module_id}
+            ></MapApiTestCase>}
             <Stack
                 direction="row"
                 justifyContent="flex-end"
