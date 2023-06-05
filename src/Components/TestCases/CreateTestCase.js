@@ -1,20 +1,17 @@
-import { Autocomplete, Button, Divider, Grid, TextField, Typography } from "@mui/material"
-import { useLocation, useNavigate } from "react-router"
-import { CreateTestCaseService } from "../../Services/TestCaseService"
+import { Autocomplete, Button, Divider, Grid } from "@mui/material"
+import { useNavigate } from "react-router"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
 import { useEffect, useState } from "react"
 import { MapAPiTestCaseData } from "./apiTestcase/MapApiTestCase"
-// import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import { Stack } from "@mui/system"
 import useHead from "../../hooks/useHead"
 import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
-import { UpdateTestcase } from "../../Services/TestCaseService"
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
-import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
 import { getSprint, getIssues } from "../../Services/TestCaseService"
 import MapScreen from "./webTestcase/MapScreen"
+import { CreateTestCaseService } from "../../Services/TestCaseService"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -31,92 +28,55 @@ let sprintData = {
 let snackbarErrorMsg = ""
 
 function CreateTestCase() {
-    let navigate = useNavigate();
     const [reportFailMsg, setReportFailMsg] = useState(false);
     let [project, setProject] = useState([])
     let [application, setApplication] = useState([])
     const { auth } = useAuth();
     const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication, setSnackbarData } = useHead();
-    let redirect_url = [" ", "/Testcase/Recent/MapApiTestCase", "/Testcase/Recent/MapScreen",]
     let [jiraSprint, setJiraSprint] = useState([]);
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
-    let [api, setApi] = useState([]);
-    let [screens,setScreens] = useState([]);
+    let [screens, setScreens] = useState([]);
 
     function handleSubmit(e) {
-        if ((globalApplication?.module_type) == 19) {
+        if ((globalApplication?.module_type) === 19) {
             setReportFailMsg(true);
             setTimeout(() => {
                 setReportFailMsg(false);
             }, 3000);
         }
         else {
-            if (sprintData.sprint_id != 0) {
+            if (sprintData.sprint_id !== 0) {
                 TCdata.testcase_sprints.push(sprintData)
             }
+            let scr = []
+            screens.forEach(sc => {
+                sc.screenList.forEach(screen => {
+                    let temp = { screen_id: screen?.screen_id }
+                    scr.push(temp)
+                })
+            })
+            TCdata.screens_in_testcase = scr
             if (validateFormbyName(["name", "desc"], "error")) {
                 if (!TCdata.testcase_name.startsWith("TC_")) {
                     TCdata.testcase_name = "TC_" + TCdata.testcase_name
                 }
-                if (TCdata.testcase_id === undefined) {
-                    CreateTestCaseService(TCdata).then(res => {
-                        console.log(res)
-                        if (res) {
-                            if (globalApplication.module_type == 1) {
-                                MapAPiTestCaseData.testcase_id = res
-                                navigate(redirect_url[globalApplication?.module_type])
-                            }
-                            else {
-                                navigate(redirect_url[2], {
-                                    state:
-                                    {
-                                        projectId: globalProject.project_id,
-                                        moduleId: globalApplication.module_id,
-                                        testcaseId: res
-                                    }
-                                })
-                            }
-                            setSnackbarData({
-                                status: true,
-                                message: "Testcase created successfully",
-                                severity: "success",
-                            })
-                        }
-                        else {
-                            snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
-                            setSnackbarError(true)
-                        }
-                    }
-                    )
+                console.log(TCdata)
+                CreateTestCaseService(TCdata).then(res => {
+                    console.log(res)
+                    // if (res!== false) {
+                    //     setSnackbarData({
+                    //         status: true,
+                    //         message: {res},
+                    //         severity: "success",
+                    //     })
+                    // }
+                    // else {
+                    //     snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
+                    //     setSnackbarError(true)
+                    // }
                 }
-                else {
-                    UpdateTestcase(TCdata.testcase_id, TCdata.testcase_name, TCdata.testcase_description).then(res => {
-                        if (res) {
-                            // MapAPiTestCaseData.testcase_id = res
-                            // navigate(redirect_url[globalApplication?.module_type])
-                            if (globalApplication.module_type == 1) {
-                                MapAPiTestCaseData.testcase_id = res
-                                navigate(redirect_url[globalApplication?.module_type])
-                            }
-                            else {
-                                navigate(redirect_url[2], {
-                                    state:
-                                    {
-                                        projectId: globalProject.project_id,
-                                        moduleId: globalApplication.module_id,
-                                        testcaseId: res
-                                    }
-                                })
-                            }
-                            setSnackbarData({
-                                status: true,
-                                message: "Testcase updated successfully",
-                                severity: "success",
-                            })
-                        }
-                    })
-                }
+                )
 
             }
             else {
@@ -144,9 +104,7 @@ function CreateTestCase() {
         try {
             TCdata.module_id = globalApplication.module_id
             TCdata.project_id = globalProject.project_id
-        } catch (error) {
-
-        }
+        } catch (error) { }
         MapAPiTestCaseData.module_id = globalApplication?.module_id
         MapAPiTestCaseData.project_id = globalProject?.project_id
     }, [globalProject, globalApplication])
@@ -288,10 +246,10 @@ function CreateTestCase() {
             <br />
             <Divider></Divider>
             <MapScreen
-            projectId={globalProject?.project_id}
-            moduleId={globalApplication?.module_id}
-            testcaseId = {TCdata.testcase_id}
-            callback={setScreens}
+                projectId={globalProject?.project_id}
+                moduleId={globalApplication?.module_id}
+                testcaseId={TCdata.testcase_id}
+                callback={setScreens}
             ></MapScreen>
             <Stack
                 direction="row"

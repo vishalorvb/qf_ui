@@ -1,5 +1,4 @@
 import axios from "axios";
-import { async } from "q";
 import { baseUrl } from "../Environment";
 
 // export async function createWebTestCase(data) {
@@ -149,7 +148,7 @@ export async function CreateTestCaseService(data) {
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
     data: data
   }).then(res => {
-    if (res.data.info != null) { return res.data.info.testcase_id }
+    if (res.data.info != null) { return res.data.message }
     else { return false }
   })
   return x
