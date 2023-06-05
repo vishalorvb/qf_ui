@@ -23,6 +23,7 @@ import AddIcon from '@mui/icons-material/Add';
 import TableActions from '../../../CustomComponent/TableActions'
 import { DeleteOutlined } from '@mui/icons-material'
 import useHead from '../../../hooks/useHead'
+import ConfirmPop from '../../../CustomComponent/ConfirmPop'
 
 
 let snackbarErrorMsg = ""
@@ -42,6 +43,10 @@ function ApiDatasets() {
     const { auth } = useAuth();
     const location = useLocation()
     const navigate = useNavigate()
+    const { setSnackbarData } = useHead();
+
+  let [popup, setPopup] = useState(false);
+
     let projectId
     let testcaseId
     let applicationId
@@ -96,21 +101,18 @@ function ApiDatasets() {
             headerName: "Description",
             flex: 6,
             renderCell: param => {
-
                 return (
-                    <TableActions
-                        heading={param.row?.description}
-                    >
-                        <MenuItem
-                            onClick={() => {
+                    <>
+                    <TableActions heading={param.row?.description} >
+                    <MenuItem
+                      onClick={() => {
                                 setDatasetId(param.row.testcase_dataset_id)
-                                setCreateDatasets(true)
-                            }}
+                                setCreateDatasets(true)}}
                         >
-                            <ContentCopyOutlinedIcon></ContentCopyOutlinedIcon>
-                            Copy
-                        </MenuItem>
-                        <MenuItem
+                        <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }}></ContentCopyOutlinedIcon>
+                        Copy
+                    </MenuItem>
+                    <MenuItem
                             onClick={() => {
                                 postData.tc_dataset_id = param.row.testcase_dataset_id
                                 postData.testcase_dataset_name = param.row.dataset_name_in_testcase
@@ -119,21 +121,19 @@ function ApiDatasets() {
                                 setCreateDatasets(true)
                             }}
                         >
-                            <EditOutlinedIcon></EditOutlinedIcon>
+                            <EditOutlinedIcon sx={{ color: "blue", mr: 1 }}></EditOutlinedIcon>
                             Edit
-                        </MenuItem>
-                        <MenuItem
+                    </MenuItem>
+                    <MenuItem
                             onClick={() => {
-                                // console.log(param.row.testcase_dataset_id)
-                                DeleteApiDataset(param.row.testcase_dataset_id).then(res => {
-                                    getApiDatasets(setDatasets, location.state.testcaseId)
-                                })
-                            }}
+                                setDatasetId(param.row.testcase_dataset_id)
+                                setPopup(true)}}
                         >
-                            <DeleteOutlined></DeleteOutlined>
+                            <DeleteOutlined sx={{ color: "red", mr: 1 }}></DeleteOutlined>
                             Delete
-                        </MenuItem>
+                    </MenuItem>
                     </TableActions>
+                    </> 
                 )
             },
             sortable: false,
@@ -300,6 +300,23 @@ function ApiDatasets() {
                     hidefooter={true}
                     getRowId={(row) => row.testcase_dataset_id}
                 ></Table>
+                  {popup && (
+                    <ConfirmPop
+                     open={popup}
+                    handleClose={() => setPopup(false)}
+                    heading={"Delete Dataset"}
+                    message={"Are you sure you want to delete this dataset?"}
+                    onConfirm={() => DeleteApiDataset(datasetId).then(res => {
+                        setPopup(false)
+                        setSnackbarData({
+                            status: true,
+                            message: "Dataset deleted successfully",
+                            severity: "success",
+                          });
+                        getApiDatasets(setDatasets, location.state.testcaseId)
+                    })}
+              ></ConfirmPop>
+            )}
             </div>}
             <div>
 
