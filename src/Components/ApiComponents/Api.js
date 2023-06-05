@@ -6,16 +6,39 @@ import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { createApiRequest } from "../../Services/ApiService";
 import useHead from "../../hooks/useHead";
 import { authdata } from "./Data";
+import { getApis } from "../../Services/ApiService";
+import { useLocation } from "react-router-dom";
 
 
 function Api() {
   const { setHeader,setSnackbarData } = useHead();
+  const location = useLocation();
+  let [apis, setApis] = useState([]);
   let namelist = ["apiname", "apidesc", "apiurl", "resource"];
+  let apiNames = [];
 
   function handleSave(e) {
+    const isTaken = isApiNameTaken(
+      Apidata.api_name,apis
+    );
+    if (isTaken.taken) {
+      setSnackbarData({
+        status: true,
+        message: "API name already exists!",
+        severity: "error",
+      });
+      return;
+    }
+    if (isTaken.hasSpecialCharacters) {
+      setSnackbarData({
+        status: true,
+        message: "API name should not start with special characters!",
+        severity: "error",
+      });
+      return;
+    }
     if (validateFormbyName(namelist, "error")) {
       Apidata.auth.authtype = authdata
-      console.log(Apidata)
       createApiRequest(Apidata).then((res) => {
         if (res) {
           setSnackbarData({
@@ -29,6 +52,15 @@ function Api() {
       console.log("requird field");
     }
   }
+  const isApiNameTaken = (apiName,apiNames) => {
+    const trimmedName = apiName.trim().toLowerCase();
+    const hasSpecialCharacters = /^[^a-zA-Z0-9]/.test(apiName);;
+    const taken = apiNames.some(
+      (api) => 
+       api.api_name.trim().toLowerCase() === trimmedName
+    );
+    return {taken,hasSpecialCharacters};
+  };
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -41,6 +73,17 @@ function Api() {
       resetApiData();
     };
   }, []);
+
+  useEffect(() => {
+    getApis((res)=>
+    {
+      apiNames = res.map(({ api_id, api_name }) => ({ api_id, api_name }));
+      setApis(apiNames)
+    }, location.state?.id)
+  }, [])
+
+  
+
   return (
     <div
       style={{
@@ -74,6 +117,21 @@ function Api() {
             defaultValue={Apidata.api_name}
             onChange={(e) => {
               Apidata.api_name = e.target.value;
+              const isTaken = isApiNameTaken(Apidata.api_name, apis);
+              if (isTaken.taken) {
+                setSnackbarData({
+                  status: true,
+                  message: "API name already exists!",
+                  severity: "error",
+                });
+              }
+              if (isTaken.hasSpecialCharacters) {
+                setSnackbarData({
+                  status: true,
+                  message: "API name should not start with special characters!",
+                  severity: "error",
+                });
+              }
             }}
           />
         </Grid>
