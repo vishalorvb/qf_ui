@@ -93,7 +93,6 @@ function CreateTestCase() {
                     WebTestcase(TCdata)
                 }
                 if(globalApplication?.module_type == 1){
-                    console.log("Calling apiu")
                     TCdata.apis_list = selectedApiList
                     WebTestcase(TCdata)
                 }
