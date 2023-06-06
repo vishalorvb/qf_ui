@@ -157,9 +157,10 @@ import Table from "../../../CustomComponent/Table";
 
 
 
-function MapApiTestCase({ moduleId, testcaseId }) {
+function MapApiTestCase({ moduleId, testcaseId ,preSelectedElement,setPreSelectedElement}) {
 
   let [api, setApi] = useState([])
+  // let [preSelectedElement, setPreSelectedElement] = useState([])
 
   const columns = [
     {
@@ -182,6 +183,18 @@ function MapApiTestCase({ moduleId, testcaseId }) {
     getApiOfApplication(setApi, moduleId)
   }, [])
 
+  useEffect(() => {
+    console.log(api)
+    setPreSelectedElement(() =>
+      api
+        .filter((api) => api.is_selected === true)
+        .map((api) => api.api_id)
+    );
+  }, [api])
+
+useEffect(() => {
+console.log(preSelectedElement)
+}, [preSelectedElement])
 
   return (
     <div>
@@ -192,10 +205,8 @@ function MapApiTestCase({ moduleId, testcaseId }) {
         hidefooter={true}
         checkboxSelection={true}
         getRowId={(row) => row.api_id}
-        
-        setSelectionModel={data => {
-          console.log(data)
-        }}
+        selectionModel={preSelectedElement}
+        setSelectionModel={setPreSelectedElement}
       ></Table>
     </div>
   )

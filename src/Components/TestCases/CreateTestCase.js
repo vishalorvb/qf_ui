@@ -37,6 +37,8 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [screens, setScreens] = useState([]);
+    let [selectedApiList, setSelectedApiList] = useState([]);
+
     const navigate = useNavigate();
 
 
@@ -74,20 +76,27 @@ function CreateTestCase() {
             if (sprintData.sprint_id !== 0) {
                 TCdata.testcase_sprints.push(sprintData)
             }
-            let scr = []
-            screens.forEach(sc => {
-                sc.screenList.forEach(screen => {
-                    let temp = { screen_id: screen?.screen_id }
-                    scr.push(temp)
-                })
-            })
-            TCdata.screens_in_testcase = scr
+
             if (validateFormbyName(["name", "desc"], "error")) {
                 if (!TCdata.testcase_name.startsWith("TC_")) {
                     TCdata.testcase_name = "TC_" + TCdata.testcase_name
                 }
-                console.log(TCdata)
-                WebTestcase(TCdata)
+                if (globalApplication?.module_type === 2) {
+                    let scr = []
+                    screens.forEach(sc => {
+                        sc.screenList.forEach(screen => {
+                            let temp = { screen_id: screen?.screen_id }
+                            scr.push(temp)
+                        })
+                    })
+                    TCdata.screens_in_testcase = scr
+                    WebTestcase(TCdata)
+                }
+                if(globalApplication?.module_type == 1){
+                    console.log("Calling apiu")
+                    TCdata.apis_list = selectedApiList
+                    WebTestcase(TCdata)
+                }
 
             }
             else {
@@ -264,6 +273,8 @@ function CreateTestCase() {
             {globalApplication?.module_type === 1 && <MapApiTestCase
                 testcaseId={TCdata.testcase_id}
                 moduleId={globalApplication.module_id}
+                preSelectedElement={selectedApiList}
+                setPreSelectedElement={setSelectedApiList}
             ></MapApiTestCase>}
             <Stack
                 direction="row"
