@@ -4,12 +4,17 @@ import { useLocation } from "react-router-dom";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
+import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import { useState } from "react";
 
 export default function Toolbar({ dustbins }) {
   const location = useLocation();
   const { setShowloader, setSnackbarData } = useHead();
   const { auth } = useAuth();
   const pageData = location?.state;
+
+  const [popup, setPopup] = useState(false);
+  const [message, setMessage] = useState(false);
 
   const syncPage = () => {
     console.log("first");
@@ -60,7 +65,7 @@ export default function Toolbar({ dustbins }) {
       });
   };
 
-  const saveDiffElement = () => {
+  const saveDiffElement = (check) => {
     const mappedElements = dustbins
       ?.filter((dustbin) => dustbin?.lastDroppedItem)
       ?.map((dustbin) => {
@@ -80,18 +85,23 @@ export default function Toolbar({ dustbins }) {
 
         unmapped_old_elements: [],
 
-        initial_check: false,
+        initial_check: check,
       };
       axios
         .post(`/qfservice/SyncDiffElements`, saveDiffElementData)
         .then((resp) => {
           console.log(resp);
           setShowloader(false);
-          setSnackbarData({
-            status: true,
-            message: resp?.data?.message,
-            severity: "success",
-          });
+          if (check) {
+            setMessage(resp?.data?.message);
+            setPopup(true);
+          } else {
+            setSnackbarData({
+              status: true,
+              message: resp?.data?.message,
+              severity: "success",
+            });
+          }
         })
         .catch((err) => {
           setShowloader(false);
@@ -111,13 +121,29 @@ export default function Toolbar({ dustbins }) {
   };
 
   return (
-    <Stack direction="row" gap={1} justifyContent="flex-end" mb={5}>
-      <Button variant="contained" size="small" onClick={syncPage}>
-        Sync Page
-      </Button>
-      <Button variant="contained" size="small" onClick={saveDiffElement}>
-        Save Diff Elements
-      </Button>
-    </Stack>
+    <>
+      <Stack direction="row" gap={1} justifyContent="flex-end" mb={5}>
+        <Button variant="contained" size="small" onClick={syncPage}>
+          Sync Page
+        </Button>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => saveDiffElement(true)}
+        >
+          Save Diff Elements
+        </Button>
+      </Stack>
+      <ConfirmPop
+        open={popup}
+        handleClose={() => setPopup(false)}
+        heading={"Map the selected Elements"}
+        message={message}
+        onConfirm={() => {
+          saveDiffElement(false);
+          setPopup(false);
+        }}
+      />
+    </>
   );
 }
