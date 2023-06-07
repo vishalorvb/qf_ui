@@ -21,7 +21,7 @@ import {
   getApplication,
 } from "../../Services/ApplicationService";
 
-let snackbarmasg  =""
+let snackbarmasg = ""
 let jiraProjectdata = {
   url: "",
   username: "",
@@ -76,8 +76,8 @@ function CreateProject() {
     let userlist = [];
     rigthtuser.forEach((user) => {
       let temp = {
-        user_id: user.id,
-        grafana_role: 4,
+        user_id: user.id.toString(),
+        grafana_role: "4",
       };
       userlist.push(temp);
     });
@@ -92,10 +92,11 @@ function CreateProject() {
   }
   function submitHandler() {
     let x = getUserlist();
+    console.log(x)
     x = JSON.stringify(x);
     let app = getApplicationlist();
     app = app.toString();
-    createformData.user_access_permissions = x;
+    createformData.userAccessPermissions = x;
     createformData.applicationsProjectMapping = "[" + app + "]";
     createformData.userId = auth.info.id;
     if (
@@ -152,20 +153,41 @@ function CreateProject() {
     }
   }
 
+  // function handleUnselect(event) {
+  //   let e = document.getElementById("right");
+  //   let selected = []
+  //   let remaining = rigthtuser;
+  //   for (let i = 0; i < e.options.length; i++) {
+  //     if (e.options[i].selected) {
+  //       selected.push(e.options[i].value);
+  //       let temp = users.filter((user) => user.id == e.options[i].value);
+  //       remaining = remaining.filter((user) => user.id != e.options[i].value);
+  //       if (temp.length > 0) {
+  //         setLeftuser((pv) => [...pv, temp[0]]);
+  //       }
+  //     }
+  //     console.log(selected)
+  //     setRightuser(remaining);
+  //   }
+  // }
+  useEffect(() => {
+    console.log(rigthtuser)
+  }, [rigthtuser])
+
   function handleUnselect(event) {
     let e = document.getElementById("right");
-    let remaining = rigthtuser;
+    let selected = []
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        let temp = users.filter((user) => user.id == e.options[i].value);
-        remaining = remaining.filter((user) => user.id != e.options[i].value);
-        if (temp.length > 0) {
-          setLeftuser((pv) => [...pv, temp[0]]);
-        }
+        selected.push(e.options[i].value);
       }
-      setRightuser(remaining);
     }
+    let temp = rigthtuser.filter(user => !selected.includes(user.id.toString()))
+    setRightuser([...temp])
+    
+
   }
+
   function handleSelectApp(event) {
     let e = document.getElementById("leftapp");
     let remaining = leftApplication;
@@ -619,11 +641,10 @@ function CreateProject() {
                 </Button>
               </Grid>
               <Grid item xs={4} sm={4} md={4}>
-                <label>Select User:</label>
+                <label>Selected User:</label>
                 <select id="right" multiple style={{ padding: "10px" }}>
-                  <option value="">Select user</option>
-                  {rigthtuser.map((user) => (
-                    <option value={user.id} key={user.id}>{user.firstName}</option>
+                  {rigthtuser.map(user => (
+                    <option value={user.id} >{user.firstName}</option>
                   ))}
                 </select>
               </Grid>

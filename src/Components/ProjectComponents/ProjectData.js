@@ -28,7 +28,7 @@ export let createformData = {
     "jira_password": "",
     "jira_user_name": "",
     "jira_project_key": "",
-    "user_access_permissions": [],
+    "userAccessPermissions": [],
     "gitOps": true
 }
 
@@ -61,7 +61,7 @@ export function clearProjectData(){
         "jira_password": "",
         "jira_user_name": "",
         "jira_project_key": "",
-        "user_access_permissions": [],
+        "userAccessPermissions": [],
         "gitOps": true
     }
 }

@@ -45,6 +45,7 @@ function ProjectTable({ location }) {
   }
 
   function handleEdit(project) {
+    console.log(project)
     createformData.projectName = project.project_name;
     createformData.projectDesc = project.description;
     createformData.jira_project_id = project.jira_project_key;
@@ -54,8 +55,9 @@ function ProjectTable({ location }) {
     createformData.jenkins_token = project.jenkins_token;
     createformData.jenkins_user_name = project.jenkins_user_name;
     createformData.jenkins_password = project.jenkins_password;
+    createformData.jenkins_url = project.jenkins_url;
     createformData.automation_framework_type =
-      project.automation_framework_type;
+    project.automation_framework_type;
     createformData.gitOps = true;
     createformData.repository_url = project.repository_url;
     createformData.repository_branch = project.repository_branch;
