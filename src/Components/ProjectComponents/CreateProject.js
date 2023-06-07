@@ -160,7 +160,7 @@ function CreateProject() {
         let temp = users.filter((user) => user.id == e.options[i].value);
         remaining = remaining.filter((user) => user.id != e.options[i].value);
         if (temp.length > 0) {
-          setLeftuser((pv) => [temp[0],...pv ]);
+          setLeftuser((pv) => [temp[0], ...pv]);
         }
       }
       setRightuser(remaining);
@@ -213,18 +213,28 @@ function CreateProject() {
   }
   useEffect(() => {
     getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
-    getUsers(
-      setLeftuser,
-      auth.info.organization_id,
-      auth.info.ssoId,
-      usertoken
-    );
     getApplication(setApplications, auth.info.id);
     if (createformData.sqeProjectId != "") {
       getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
     }
     if (createformData.sqeProjectId != "") {
-      getUserOfProject(setRightuser, createformData.sqeProjectId,auth.info.id);
+      getUserOfProject(setRightuser, createformData.sqeProjectId, auth.info.id).then(res => {
+        let ids = res?.map(pro => pro.id)
+        getUsers(
+          (val) => { },
+          auth.info.organization_id,
+          auth.info.ssoId,
+          usertoken
+        ).then(resp => setLeftuser(resp.filter(pro => !ids.includes(pro.id))))
+      })
+    }
+    else {
+      getUsers(
+        setLeftuser,
+        auth.info.organization_id,
+        auth.info.ssoId,
+        usertoken
+      );
     }
   }, []);
 
@@ -234,7 +244,6 @@ function CreateProject() {
         return a
       }
     })
-
     setLeftApplication(x)
   }, [automation_type, applications])
 

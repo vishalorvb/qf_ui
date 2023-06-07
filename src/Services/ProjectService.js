@@ -46,22 +46,22 @@ export async function deleteProject(projectid, userid) {
   return res;
 }
 
-export function getUsers(callback, orgid, ssoid, token) {
-  axios.get(`${baseUrl}/qfauthservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
+export async function getUsers(callback, orgid, ssoid, token) {
+  return await axios.get(`${baseUrl}/qfauthservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then(res => {
       callback(res.data.info);
-
+      return res.data.info
     })
 }
 
-export function getUserOfProject(callback, projectId,userId) {
-  axios.get(`${baseUrl}/qfservice/projects/getUsersDetailsByProjectId?project_id=${projectId}`).then(res => {
-    console.log(res.data.data)
+export async function getUserOfProject(callback, projectId,userId) {
+  return await axios.get(`${baseUrl}/qfservice/projects/getUsersDetailsByProjectId?project_id=${projectId}`).then(res => {
     callback(res.data.data?.filter(data => data.id !== userId));
+    return res.data.data?.filter(data => data.id !== userId)
   })
 }
 

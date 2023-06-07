@@ -31,11 +31,8 @@ function ProjectTable({ location }) {
     setPid(pid);
   }
   function DeleteProjectFromUser(projectId) {
-    // console.log(projectId);
     deleteProject(projectId, loggedInId).then((res) => {
-      // console.log(res);
       if (res === "SUCCESS") {
-        // console.log("dletred");
         setSnackbarsuccess(true);
         getProject(setProject, loggedInId);
       }
@@ -45,7 +42,6 @@ function ProjectTable({ location }) {
   }
 
   function handleEdit(project) {
-    console.log(project)
     createformData.projectName = project.project_name;
     createformData.projectDesc = project.description;
     createformData.jira_project_id = project.jira_project_key;
@@ -62,8 +58,6 @@ function ProjectTable({ location }) {
     createformData.repository_url = project.repository_url;
     createformData.repository_branch = project.repository_branch;
     createformData.repository_token = project.repository_token;
-
-    // console.log(project);
     navigate("Update");
   }
 
