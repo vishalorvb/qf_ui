@@ -92,7 +92,6 @@ function CreateProject() {
   }
   function submitHandler() {
     let x = getUserlist();
-    console.log(x)
     x = JSON.stringify(x);
     let app = getApplicationlist();
     app = app.toString();
@@ -149,44 +148,29 @@ function CreateProject() {
           setRightuser((pv) => [...pv, temp[0]]);
         }
       }
-      setLeftuser(remaining);
+      // setLeftuser(remaining);
     }
   }
-
-  // function handleUnselect(event) {
-  //   let e = document.getElementById("right");
-  //   let selected = []
-  //   let remaining = rigthtuser;
-  //   for (let i = 0; i < e.options.length; i++) {
-  //     if (e.options[i].selected) {
-  //       selected.push(e.options[i].value);
-  //       let temp = users.filter((user) => user.id == e.options[i].value);
-  //       remaining = remaining.filter((user) => user.id != e.options[i].value);
-  //       if (temp.length > 0) {
-  //         setLeftuser((pv) => [...pv, temp[0]]);
-  //       }
-  //     }
-  //     console.log(selected)
-  //     setRightuser(remaining);
-  //   }
-  // }
-  useEffect(() => {
-    console.log(rigthtuser)
-  }, [rigthtuser])
 
   function handleUnselect(event) {
     let e = document.getElementById("right");
-    let selected = []
+    let remaining = rigthtuser;
     for (let i = 0; i < e.options.length; i++) {
       if (e.options[i].selected) {
-        selected.push(e.options[i].value);
+        let temp = users.filter((user) => user.id == e.options[i].value);
+        remaining = remaining.filter((user) => user.id != e.options[i].value);
+        if (temp.length > 0) {
+          setLeftuser((pv) => [temp[0],...pv ]);
+        }
       }
+      setRightuser(remaining);
     }
-    let temp = rigthtuser.filter(user => !selected.includes(user.id.toString()))
-    setRightuser([...temp])
-    
-
   }
+
+  useEffect(() => {
+    let rightlist = rigthtuser.map(user => user.id)
+    setLeftuser(users.filter(user => !rightlist.includes(user.id)))
+  }, [rigthtuser])
 
   function handleSelectApp(event) {
     let e = document.getElementById("leftapp");
@@ -225,8 +209,6 @@ function CreateProject() {
     }
   }
   function handleJiraProject() {
-    // console.log(jiraProjectdata)
-
     getJiraProject(setJiraproject, jiraProjectdata.url, jiraProjectdata.username, jiraProjectdata.password, jiraProjectdata.itstype, "prolifics", auth.info.organization_id)
   }
   useEffect(() => {
@@ -238,12 +220,11 @@ function CreateProject() {
       usertoken
     );
     getApplication(setApplications, auth.info.id);
-    // getApplication(setLeftApplication, auth.info.id);
     if (createformData.sqeProjectId != "") {
       getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
     }
     if (createformData.sqeProjectId != "") {
-      getUserOfProject(setRightuser, createformData.sqeProjectId);
+      getUserOfProject(setRightuser, createformData.sqeProjectId,auth.info.id);
     }
   }, []);
 

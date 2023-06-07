@@ -58,9 +58,10 @@ export function getUsers(callback, orgid, ssoid, token) {
     })
 }
 
-export function getUserOfProject(callback, projectId) {
+export function getUserOfProject(callback, projectId,userId) {
   axios.get(`${baseUrl}/qfservice/projects/getUsersDetailsByProjectId?project_id=${projectId}`).then(res => {
-    callback(res.data.data);
+    console.log(res.data.data)
+    callback(res.data.data?.filter(data => data.id !== userId));
   })
 }
 
