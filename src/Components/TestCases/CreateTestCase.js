@@ -1,7 +1,7 @@
 import { Autocomplete, Button, Divider, Grid } from "@mui/material"
 import { useNavigate } from "react-router"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Stack } from "@mui/system"
 import useHead from "../../hooks/useHead"
 import { getProject } from "../../Services/ProjectService"
@@ -36,15 +36,17 @@ function CreateTestCase() {
     let [jiraSprint, setJiraSprint] = useState([]);
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
-    let [screens, setScreens] = useState([]);
+    // let [screens, setScreens] = useState([]);
     let [selectedApiList, setSelectedApiList] = useState([]);
+
+
+    let screens = useRef()
 
     const navigate = useNavigate();
 
 
     function WebTestcase(data) {
         CreateTestCaseService(data).then(res => {
-            console.log(res)
             if (res) {
                 setSnackbarData({
                     status: true,
@@ -83,7 +85,7 @@ function CreateTestCase() {
                 }
                 if (globalApplication?.module_type === 2) {
                     let scr = []
-                    screens.forEach(sc => {
+                    screens.current.forEach(sc => {
                         sc.screenList.forEach(screen => {
                             let temp = { screen_id: screen?.screen_id }
                             scr.push(temp)
@@ -260,7 +262,7 @@ function CreateTestCase() {
                 projectId={globalProject?.project_id}
                 moduleId={globalApplication?.module_id}
                 testcaseId={TCdata.testcase_id}
-                callback={setScreens}
+                callback={val => screens.current = val}
             ></MapScreen>}
 
             {globalApplication?.module_type === 1 && <MapApiTestCase
