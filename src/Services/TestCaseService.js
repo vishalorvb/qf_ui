@@ -58,7 +58,6 @@ export async function CreateTestCaseService(data) {
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
     data: data
   }).then(res => {
-    console.log(res.data.message)
     if (res.data.info != null) { return res.data.message }
     else { return false }
   })
@@ -70,7 +69,6 @@ export async function createApitestcase(data) {
     url: `${baseUrl}/qfservice/createApiTestCaseAddApisToTestcase`,
     data: data
   }).then(res => {
-    console.log(res.data.message)
     if (res.data.info != null) { return res.data.message }
     else { return false }
   })
@@ -117,7 +115,6 @@ export function getSprint(callback, projectId) {
 
 export function getIssues(callback, projectId, sprintname) {
   axios.get(`${baseUrl}/qfservice/getissues?${projectId}=681&sprint_name=${sprintname}`).then(res => {
-    console.log(res.data.data.issues)
     callback(res.data.data.issues)
   })
 }
@@ -126,13 +123,13 @@ export function getIssues(callback, projectId, sprintname) {
 export function getPagesForTestcase(callback, projectId, moduleId) {
   axios.get(`${baseUrl}/qfservice/webtestcase/getScreensForTestcase?module_id=${moduleId}&project_id=${projectId}`)
     .then(res => {
-      callback(res.data.info[0]?.webpagesList)
+      callback(res.data.info === null?[]:res.data.info[0]?.webpagesList)
     })
 }
 export function getPagesIntestcase(callback, projectId, moduleId, testcaseId) {
   axios.get(`${baseUrl}/qfservice/webtestcase/getScreensInTestcase?module_id=${moduleId}&project_id=${projectId}&testcase_id=${testcaseId}`)
     .then(res => {
-      callback(res.data.info[0]?.webpagesList)
+      callback(res.data.info === null?[]:res.data.info[0]?.webpagesList)
     })
 }
 

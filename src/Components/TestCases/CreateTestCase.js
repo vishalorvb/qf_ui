@@ -231,12 +231,6 @@ function CreateTestCase() {
                         {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
                     </select>
                 </Grid>
-                {/* <ProjectnApplicationSelector
-                    globalProject={globalProject}
-                    setglobalProject={setglobalProject}
-                    globalApplication={globalApplication}
-                    setglobalApplication={setglobalApplication}
-                /> */}
                 <Grid item xs={4} md={4}>
                     <label htmlFor="">TestCase Name</label>
                     <input

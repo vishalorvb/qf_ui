@@ -203,7 +203,7 @@ function CreateProject() {
     }
   }
   function handleJiraProject() {
-    // console.log(jiraProjectdata)
+    // console.log(jiraProjectdata) 
 
     getJiraProject(setJiraproject, jiraProjectdata.url, jiraProjectdata.username, jiraProjectdata.password, jiraProjectdata.itstype, "prolifics", auth.info.organization_id)
   }

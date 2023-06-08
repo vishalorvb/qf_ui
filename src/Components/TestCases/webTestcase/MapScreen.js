@@ -12,7 +12,6 @@ function MapScreen({ callback, projectId, moduleId, testcaseId }) {
   const [pages, setpages] = useState([])
   let selected = useRef([])
 
-
   function updateList(pageId, list) {
     selected.current.forEach(page => {
       if (page.web_page_id === pageId) {
@@ -20,6 +19,7 @@ function MapScreen({ callback, projectId, moduleId, testcaseId }) {
       }
     })
   }
+
 
   useEffect(() => {
     if (testcaseId === undefined) {
@@ -66,7 +66,6 @@ function MapScreen({ callback, projectId, moduleId, testcaseId }) {
             id={"screen_id"}
             value={"name"}
             stateList={(list) => {
-              console.log(list)
               updateList(page.web_page_id, list)
               let temp = selected.current
               callback([...temp])
