@@ -1,95 +1,6 @@
 import axios from "axios";
-import { async } from "q";
 import { baseUrl } from "../Environment";
 
-// export async function createWebTestCase(data) {
-//   let res = await axios({
-//     method: "post",
-//     url: `${baseUrl}/qfservice/webtestcase/web-createTestcase`,
-//     data: data,
-//   })
-//     .then((response) => {
-//       return response.data.status;
-//     })
-//     .catch((err) => {
-//       return "error";
-//     });
-//   return res;
-// }
-
-// export async function createApitestcase(data) {
-//   let res = await axios({
-//     method: "post",
-//     url: `${baseUrl}/qfservice/CreateNewTestcase`,
-//     data: data,
-//   })
-//     .then((response) => {
-//       return response.data.status;
-//     })
-//     .catch((err) => {
-//       return "error";
-//     });
-//   return res;
-// }
-
-// export async function createNewtestCase(data) {
-//   let pid = data.project_id;
-//   let aid = data.application_id;
-//   delete data.application_id;
-//   delete data.project_id;
-//   let res = axios({
-//     method: "post",
-//     url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
-//     data: data,
-//   })
-//     .then((response) => {
-//       return response.data.status;
-//     })
-//     .catch((err) => {
-//       return "error";
-//     });
-//   return res;
-// }
-// export async function createNewtestCase(data) {
-//     let pid = data.project_id
-//     let aid = data.application_id
-//     delete data.application_id
-//     delete data.project_id
-//     let res = axios({
-//         method: 'post',
-//         url: `${baseUrl}/qfservice/webtestcase/web-createTestcase?projectId=${pid}&applicationId=${aid}`,
-//         data: data
-//     }).then(response => {
-//         return response.data.status
-//     })
-//         .catch(err => {
-//             return "error"
-//         })
-//     return res
-// }
-
-
-// export function getTestcase(callback, project_id) {
-//   axios
-//     .get(
-//       `${baseUrl}/qfservice/webtestcase/getWebTestcasesInModule?project_id=${project_id}`
-//     )
-//     .then((res) => {
-//       if (res.data.info != null) {
-//         callback(res.data.info);
-//       }
-//     });
-// }
-
-// export function getElementsList(callback, screenId) {
-//   axios
-//     .get(
-//       `${baseUrl}/qfservice/screen/getScreenElementsList?screen_id=${screenId}`
-//     )
-//     .then((res) => {
-//       callback(res.data.info);
-//     });
-// }
 
 export async function CreateDataset(data) {
   let x = await axios({
@@ -97,7 +8,12 @@ export async function CreateDataset(data) {
     data: data,
     url: `${baseUrl}/qfservice/webdataset/web-createDataset`
   }).then(res => {
-      return res?.data
+    if (res.data.status === "SUCCESS") {
+      return false
+    }
+    else {
+      return res.data.message
+    }
   })
 
   return x
@@ -142,12 +58,22 @@ export async function CreateTestCaseService(data) {
     url: `${baseUrl}/qfservice/webtestcase/CreateWebTestCase`,
     data: data
   }).then(res => {
-    if (res.data.info != null) { return res.data.info.testcase_id }
+    if (res.data.info != null) { return res.data.message }
     else { return false }
   })
   return x
 }
-
+export async function createApitestcase(data) {
+  let x = await axios({
+    method: "post",
+    url: `${baseUrl}/qfservice/createApiTestCaseAddApisToTestcase`,
+    data: data
+  }).then(res => {
+    if (res.data.info != null) { return res.data.message }
+    else { return false }
+  })
+  return x
+}
 
 export async function DeleteTestCase(testcaseId) {
   let x = await axios.delete(`${baseUrl}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`).then(res => {
@@ -171,15 +97,15 @@ export function GetTestCase(callback, projectId, applicationId) {
     });
 }
 
-export async function UpdateTestcase(testcaseId, testcaseName, testcaseDescription) {
-  let x = await axios.post(`${baseUrl}/qfservice/webtestcase/updateWebTestcaseInfo?testcase_id=${testcaseId}&testcase_desc=${testcaseDescription}&testcase_name=${testcaseName}`).then(res => {
-    if (res.data.status == "SUCCESS") {
-      return res.data.info.testcase_id
-    }
-    return false
-  })
-  return x
-}
+// export async function UpdateTestcase(testcaseId, testcaseName, testcaseDescription) {
+//   let x = await axios.post(`${baseUrl}/qfservice/webtestcase/updateWebTestcaseInfo?testcase_id=${testcaseId}&testcase_desc=${testcaseDescription}&testcase_name=${testcaseName}`).then(res => {
+//     if (res.data.status == "SUCCESS") {
+//       return res.data.info.testcase_id
+//     }
+//     return false
+//   })
+//   return x
+// }
 
 export function getSprint(callback, projectId) {
   axios.get(`${baseUrl}/qfservice/getsprints?project_id=${projectId}`).then(res => {
@@ -189,7 +115,35 @@ export function getSprint(callback, projectId) {
 
 export function getIssues(callback, projectId, sprintname) {
   axios.get(`${baseUrl}/qfservice/getissues?${projectId}=681&sprint_name=${sprintname}`).then(res => {
-    console.log(res.data.data.issues)
     callback(res.data.data.issues)
   })
 }
+
+
+export function getPagesForTestcase(callback, projectId, moduleId) {
+  axios.get(`${baseUrl}/qfservice/webtestcase/getScreensForTestcase?module_id=${moduleId}&project_id=${projectId}`)
+    .then(res => {
+      callback(res.data.info === null?[]:res.data.info[0]?.webpagesList)
+    })
+}
+export function getPagesIntestcase(callback, projectId, moduleId, testcaseId) {
+  axios.get(`${baseUrl}/qfservice/webtestcase/getScreensInTestcase?module_id=${moduleId}&project_id=${projectId}&testcase_id=${testcaseId}`)
+    .then(res => {
+      callback(res.data.info === null?[]:res.data.info[0]?.webpagesList)
+    })
+}
+
+
+export function getApiOfApplication(callback, moduleId) {
+  axios.get(`${baseUrl}/qfservice//testcase/${moduleId}/apisByModuleId`).then(res => {
+    callback(res.data.data.apisList)
+  })
+}
+
+
+export function getApiOfTestcase(callback,testcaseId){
+  axios.get(`${baseUrl}/qfservice/testcase/${testcaseId}/apis`).then(res=>{
+    callback(res.data.data.apisList)
+  })
+}
+

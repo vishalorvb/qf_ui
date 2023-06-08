@@ -209,6 +209,11 @@ function CreateProject() {
     }
   }
   function handleJiraProject() {
+<<<<<<< HEAD
+=======
+    // console.log(jiraProjectdata) 
+
+>>>>>>> project
     getJiraProject(setJiraproject, jiraProjectdata.url, jiraProjectdata.username, jiraProjectdata.password, jiraProjectdata.itstype, "prolifics", auth.info.organization_id)
   }
   useEffect(() => {

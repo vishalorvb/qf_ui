@@ -7,7 +7,6 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -48,7 +47,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 200 }}>
-        <InputLabel id="demo-multiple-checkbox-label"> Select  </InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label">  </InputLabel>
         <Select
           multiple
           emptyRecordMsg = {"No Options Available"}
