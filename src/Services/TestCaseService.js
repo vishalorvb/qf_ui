@@ -141,3 +141,9 @@ export function getApiOfApplication(callback, moduleId) {
 }
 
 
+export function getApiOfTestcase(callback,testcaseId){
+  axios.get(`${baseUrl}/qfservice/testcase/${testcaseId}/apis`).then(res=>{
+    callback(res.data.data.apisList)
+  })
+}
+

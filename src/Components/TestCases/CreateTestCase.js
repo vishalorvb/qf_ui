@@ -36,7 +36,6 @@ function CreateTestCase() {
     let [jiraSprint, setJiraSprint] = useState([]);
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
-    // let [screens, setScreens] = useState([]);
     let [selectedApiList, setSelectedApiList] = useState([]);
 
 
@@ -277,8 +276,8 @@ function CreateTestCase() {
                 alignItems="center"
                 spacing={2}
             >
-                <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
-                <Button variant="contained" onClick={handleSubmit}>Save & Continue</Button>
+                {/* <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button> */}
+                <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined?"Save":"Update"} </Button>
             </Stack>
             <SnackbarNotify
                 open={reportFailMsg}

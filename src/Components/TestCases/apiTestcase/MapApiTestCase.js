@@ -154,13 +154,12 @@
 import React, { useEffect, useState } from 'react'
 import { getApiOfApplication } from '../../../Services/TestCaseService';
 import Table from "../../../CustomComponent/Table";
-
+import { getApiOfTestcase } from '../../../Services/TestCaseService';
 
 
 function MapApiTestCase({ moduleId, testcaseId ,preSelectedElement,setPreSelectedElement}) {
 
   let [api, setApi] = useState([])
-  // let [preSelectedElement, setPreSelectedElement] = useState([])
 
   const columns = [
     {
@@ -180,11 +179,16 @@ function MapApiTestCase({ moduleId, testcaseId ,preSelectedElement,setPreSelecte
   ];
 
   useEffect(() => {
-    getApiOfApplication(setApi, moduleId)
+    if(testcaseId === undefined){
+      getApiOfApplication(setApi, moduleId)
+    }
+    else{
+      getApiOfTestcase(setApi, testcaseId)
+    }
+    
   }, [])
 
   useEffect(() => {
-    console.log(api)
     setPreSelectedElement(() =>
       api
         .filter((api) => api.is_selected === true)
@@ -192,9 +196,9 @@ function MapApiTestCase({ moduleId, testcaseId ,preSelectedElement,setPreSelecte
     );
   }, [api])
 
-useEffect(() => {
-console.log(preSelectedElement)
-}, [preSelectedElement])
+// useEffect(() => {
+// console.log(preSelectedElement)
+// }, [preSelectedElement])
 
   return (
     <div>
