@@ -58,6 +58,13 @@ function ProjectTable({ location }) {
     createformData.repository_url = project.repository_url;
     createformData.repository_branch = project.repository_branch;
     createformData.repository_token = project.repository_token;
+
+    createformData.db_type = project.testdata_db_config?.db_type;
+    createformData.db_name = project.testdata_db_config?.db_name;
+    createformData.db_host = project.testdata_db_config?.db_host;
+    createformData.db_user_name = project.testdata_db_config?.db_user_name;
+    createformData.db_port = project.testdata_db_config?.db_port;
+    createformData.db_password = project.testdata_db_config?.db_password;
     navigate("Update");
   }
 
