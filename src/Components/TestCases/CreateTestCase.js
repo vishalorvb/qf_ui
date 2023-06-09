@@ -8,7 +8,7 @@ import { getProject } from "../../Services/ProjectService"
 import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
-import { getSprint, getIssues } from "../../Services/TestCaseService"
+import { getSprint, getIssues, createApitestcase } from "../../Services/TestCaseService"
 import MapScreen from "./webTestcase/MapScreen"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
 import MapApiTestCase from "./apiTestcase/MapApiTestCase"
@@ -37,7 +37,7 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
-
+console.log(TCdata.testcase_name)
 
     let screens = useRef()
 
@@ -63,7 +63,21 @@ function CreateTestCase() {
     }
 
     function ApiTestcase(data) {
-
+        createApitestcase(data).then(res => {
+            if (res) {
+                setSnackbarData({
+                    status: true,
+                    message: TCdata.testcase_id === undefined?res:"TestCase Updated Successfully",
+                    severity: "success",
+                })
+                navigate("/Testcase/Recent")
+            }
+            else {
+                snackbarErrorMsg = "Error, Make sure Testcase Name is Unique"
+                setSnackbarError(true)
+            }
+        }
+        )
     }
 
     function handleSubmit(e) {
@@ -94,8 +108,13 @@ function CreateTestCase() {
                     WebTestcase(TCdata)
                 }
                 if(globalApplication?.module_type == 1){
-                    TCdata.apis_list = selectedApiList
-                    WebTestcase(TCdata)
+                    let desc =  TCdata.testcase_description
+                    delete TCdata.testcase_description
+                    TCdata.testcase_desc = desc
+                    TCdata.apis_list = selectedApiList?.map(api => {
+                        return {api_id: api}
+                    })
+                    ApiTestcase(TCdata)
                 }
 
             }
