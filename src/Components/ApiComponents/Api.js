@@ -7,12 +7,13 @@ import { createApiRequest } from "../../Services/ApiService";
 import useHead from "../../hooks/useHead";
 import { authdata } from "./Data";
 import { getApis } from "../../Services/ApiService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function Api() {
   const { setHeader,setSnackbarData } = useHead();
   const location = useLocation();
+  let navigate = useNavigate()
   let [apis, setApis] = useState([]);
   let namelist = ["apiname", "apidesc", "apiurl", "resource"];
   let apiNames = [];
@@ -46,6 +47,7 @@ function Api() {
             message: "API created successfully",
             severity: "success",
           });
+          navigate(-1)
         }
       });
     } else {
