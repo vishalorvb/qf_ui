@@ -72,8 +72,9 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
         requestData.current.datasets_list = [datasetInfo]
         requestData.current.datasets_list[0]?.name.trim()
         CreateDataset(requestData.current).then((res) => {
-            if (res?.status === 'SUCCESS') {
-                snackbarmsg = res?.message
+            console.log(res)
+            if (res === false) {
+                snackbarmsg = datasetInfo.dataset_id==0?"Dataset Created Successfully ":"Dataset Updated Successfully"
                 snackbarType = "success"
                 setSnackbar(true)
                 setTimeout(() => {
