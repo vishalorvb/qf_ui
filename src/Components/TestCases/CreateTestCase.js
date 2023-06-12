@@ -37,7 +37,6 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
-console.log(TCdata.testcase_name)
 
     let screens = useRef()
 
@@ -63,6 +62,15 @@ console.log(TCdata.testcase_name)
     }
 
     function ApiTestcase(data) {
+        if(TCdata.apis_list.length<1){
+            setSnackbarData({
+                status: true,
+                message: "Select Atleat One Api",
+                severity: "warning",
+            })
+            return 0;
+        }
+       
         createApitestcase(data).then(res => {
             if (res) {
                 setSnackbarData({

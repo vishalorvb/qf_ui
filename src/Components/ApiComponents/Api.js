@@ -15,9 +15,8 @@ function Api() {
   const location = useLocation();
   let navigate = useNavigate()
   let [apis, setApis] = useState([]);
-  let namelist = ["apiname", "apidesc", "apiurl", "resource"];
+  let namelist = ["apiname", "apidesc", "apiurl"];
   let apiNames = [];
-
   function handleSave(e) {
     const isTaken = isApiNameTaken(
       Apidata.api_name,apis
@@ -41,10 +40,11 @@ function Api() {
     if (validateFormbyName(namelist, "error")) {
       Apidata.auth.authtype = authdata
       createApiRequest(Apidata).then((res) => {
+       
         if (res) {
           setSnackbarData({
             status: true,
-            message: "API created successfully",
+            message: Apidata.api_id===undefined?"API created successfully":"API Updated successfully",
             severity: "success",
           });
           navigate(-1)
@@ -52,6 +52,11 @@ function Api() {
       });
     } else {
       console.log("requird field");
+      setSnackbarData({
+        status: true,
+        message: "Fill Requirded Field",
+        severity: "error",
+      });
     }
   }
   const isApiNameTaken = (apiName,apiNames) => {
