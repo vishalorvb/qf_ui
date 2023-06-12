@@ -196,6 +196,7 @@ export default function ExecutionToolbar({
         is_execute: true,
         is_generate: data?.regenerateScript?.length > 0,
         client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        project_id: projectId,
       };
       axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
         resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
@@ -351,150 +352,159 @@ export default function ExecutionToolbar({
         severity="error"
       />
       <Grid container>
-      <Grid item container xs={10} spacing={1} justifyContent="flex-start">
-        <Grid item xs={2} sm={4} md={4} lg={2.5}>
+        <Grid item container xs={10} spacing={1} justifyContent="flex-start">
+          <Grid item xs={2} sm={4} md={4} lg={2.5}>
             <SelectElement
-            name="executionLoc"
-            label="Execution Location"
-            size="small"
-            fullWidth
-            control={control}
-            onChange={(e) => setExecLoc(e)}
-            options={execEnvList}
-          />
-        </Grid>
-        <Grid item xs={2} sm={4} md={4} lg={2.5}>
-          <Stack direction="column">
-            <SelectElement
-              name="buildenvName"
-              label="Build Environment"
+              name="executionLoc"
+              label="Execution Location"
               size="small"
               fullWidth
               control={control}
-              options={buildEnvList}
-            ></SelectElement>
-            <h5
-              style={{ cursor: "pointer", color: "#009fee", marginTop: "3px" }}
-              onClick={() => {
-                navigate("/TestcaseExecution/AddEnvironment", {
-                  state: { projectId: projectId, applicationId: applicationId },
-                });
-              }}
-            >
-              + Add Environment
-            </h5>
-          </Stack>
-        </Grid>
-        {applicationType == 3 || applicationType == 4 ? (
-          ""
-        ) : (
-          <Grid item >
-          <Controller
-            control={control}
-            name="browser"
-            defaultValue={["Chrome"]} // Set the default value to "Chrome"
-            render={({ field }) => (
-              <MultiSelectElement
-                menuMaxWidth={5}
-                label="Browser"
+              onChange={(e) => setExecLoc(e)}
+              options={execEnvList}
+            />
+          </Grid>
+          <Grid item xs={2} sm={4} md={4} lg={2.5}>
+            <Stack direction="column">
+              <SelectElement
+                name="buildenvName"
+                label="Build Environment"
                 size="small"
                 fullWidth
-                options={options}
-                control={control} // Pass the control object to the MultiSelectElement
-                {...field}
+                control={control}
+                options={buildEnvList}
+              ></SelectElement>
+              <h5
+                style={{
+                  cursor: "pointer",
+                  color: "#009fee",
+                  marginTop: "3px",
+                }}
+                onClick={() => {
+                  navigate("/TestcaseExecution/AddEnvironment", {
+                    state: {
+                      projectId: projectId,
+                      applicationId: applicationId,
+                    },
+                  });
+                }}
+              >
+                + Add Environment
+              </h5>
+            </Stack>
+          </Grid>
+          {applicationType == 3 || applicationType == 4 ? (
+            ""
+          ) : (
+            <Grid item>
+              <Controller
+                control={control}
+                name="browser"
+                defaultValue={["Chrome"]} // Set the default value to "Chrome"
+                render={({ field }) => (
+                  <MultiSelectElement
+                    menuMaxWidth={5}
+                    label="Browser"
+                    size="small"
+                    fullWidth
+                    options={options}
+                    control={control} // Pass the control object to the MultiSelectElement
+                    {...field}
+                  />
+                )}
               />
-            )}
-          />
+            </Grid>
+          )}
+          <Grid item xs={2} sm={3} md={2} lg={4}>
+            <FeatureMenu
+              testcaseId={testcaseId}
+              projectId={projectId}
+              frameworkType={frameworkType}
+              selectedDatasets={selectedDatasets}
+              envId={buildEnvId}
+              runtimeVar={
+                runtimeVariable != undefined || runtimeVariable != null
+                  ? runtimeVariable
+                  : ""
+              }
+            />
+          </Grid>
         </Grid>
-        )}
-         <Grid item xs={2} sm={3} md={2} lg={4}>
-          <FeatureMenu
-            testcaseId={testcaseId}
-            projectId={projectId}
-            frameworkType={frameworkType}
-            selectedDatasets={selectedDatasets}
-            envId={buildEnvId}
-            runtimeVar={
-              runtimeVariable != undefined || runtimeVariable != null
-                ? runtimeVariable
-                : ""
-            }
-          />
-        </Grid>
-      </Grid>
-          
+
         <Grid item xs={2} sm={2} md={2} lg={2}>
           <Grid item>
-          <Stack direction="column">
-            <React.Fragment>
-              <ButtonGroup
-                variant="contained"
-                ref={anchorRef}
-                aria-label="split button"
-              >
-                <Button
-                  fullWidth
-                  // type="submit"
-                  sx={{ backgroundColor: "#009fee" }}
-                  onClick={handleSubmit(executionMethodSelector)}
+            <Stack direction="column">
+              <React.Fragment>
+                <ButtonGroup
+                  variant="contained"
+                  ref={anchorRef}
+                  aria-label="split button"
                 >
-                  Execute
-                </Button>
-                <Button
-                  sx={{ backgroundColor: "#009fee" }}
-                  size="small"
-                  aria-controls={open ? "split-button-menu" : undefined}
-                  aria-expanded={open ? "true" : undefined}
-                  aria-label="select merge strategy"
-                  aria-haspopup="menu"
-                  onClick={handleToggle}
-                >
-                  <ArrowDropDownIcon />
-                </Button>
-              </ButtonGroup>
-              <Popper
-                sx={{
-                  zIndex: 1,
-                }}
-                open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                transition
-                disablePortal
-              >
-                {({ TransitionProps, placement }) => (
-                  <Grow
-                    {...TransitionProps}
-                    style={{
-                      transformOrigin:
-                        placement === "bottom" ? "center top" : "center bottom",
-                    }}
+                  <Button
+                    fullWidth
+                    // type="submit"
+                    sx={{ backgroundColor: "#009fee" }}
+                    onClick={handleSubmit(executionMethodSelector)}
                   >
-                    <Paper>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        <MenuItem
-                          onClick={handleSubmit(generateMethodSelector)}
-                          size="small"
-                        >
-                          GENERATE Script
-                        </MenuItem>
-                      </MenuList>
-                    </Paper>
-                  </Grow>
-                )}
-              </Popper>
-            </React.Fragment>
-            <CheckboxButtonGroup
-              name="regenerateScript"
-              control={control}
-              options={[
-                {
-                  id: "1",
-                  label: "Regenrate Script",
-                },
-              ]}
-            />
-          </Stack>
+                    Execute
+                  </Button>
+                  <Button
+                    sx={{ backgroundColor: "#009fee" }}
+                    size="small"
+                    aria-controls={open ? "split-button-menu" : undefined}
+                    aria-expanded={open ? "true" : undefined}
+                    aria-label="select merge strategy"
+                    aria-haspopup="menu"
+                    onClick={handleToggle}
+                  >
+                    <ArrowDropDownIcon />
+                  </Button>
+                </ButtonGroup>
+                <Popper
+                  sx={{
+                    zIndex: 1,
+                  }}
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  role={undefined}
+                  transition
+                  disablePortal
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === "bottom"
+                            ? "center top"
+                            : "center bottom",
+                      }}
+                    >
+                      <Paper>
+                        <MenuList id="split-button-menu" autoFocusItem>
+                          <MenuItem
+                            onClick={handleSubmit(generateMethodSelector)}
+                            size="small"
+                          >
+                            GENERATE Script
+                          </MenuItem>
+                        </MenuList>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </React.Fragment>
+              <CheckboxButtonGroup
+                name="regenerateScript"
+                control={control}
+                options={[
+                  {
+                    id: "1",
+                    label: "Regenrate Script",
+                  },
+                ]}
+              />
+            </Stack>
           </Grid>
         </Grid>
       </Grid>{" "}
