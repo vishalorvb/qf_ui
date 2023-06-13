@@ -28,7 +28,6 @@ function Authorization() {
               authdata.authtype = e.target.value
             }}
           >
-            <option value="">Select</option>
             <option value={'noauth'}>No Auth</option>
             <option value={'basicauth'}>Basic Auth</option>
             <option value={"apikey"}>API Key</option>

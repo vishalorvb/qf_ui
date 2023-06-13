@@ -4,7 +4,7 @@ import { Apidata } from './Data'
 
 
 function Header() {
-  let displayorder = ["key", "value", "description"]
+  let displayorder = ["header_key", "header_value", "header_desc"]
 
   function handleHeaderData(tabdata) {
     Apidata.headers_list = tabdata
@@ -15,7 +15,7 @@ function Header() {
       <GrowingTable
         header={["Key", "Value", "Description"]}
         TableData={handleHeaderData}
-        keypair={["key", "value", "description"]}
+        keypair={["header_key", "header_value", "header_desc"]}
         // prefilled ={Apidata.headers_list==undefined?[]: Apidata.headers_list.slice(0,-1)}
         prefilled={Apidata.headers_list?.slice(0, -1)}
         order={displayorder}

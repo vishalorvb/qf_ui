@@ -31,7 +31,6 @@ export default function APIsTable() {
       setPopup(false);
     });
   }
-
   function handleEdit(row) {
     Apidata.api_url = row.api_url;
     Apidata.api_name = row.api_name;
@@ -79,7 +78,7 @@ export default function APIsTable() {
             <MenuItem
               onClick={(e) => {
                 handleEdit(param.row);
-                navigate("Update");
+                navigate("Create", { state: { application: location.state} })
               }}
             >
               <EditIcon sx={{ color: "blue", mr: 1 }} /> Edit
@@ -96,41 +95,6 @@ export default function APIsTable() {
         );
       },
     },
-
-    // {
-    //   field: "Actions",
-    //   headerName: "Actions",
-    //   flex: 2,
-    //   sortable: false,
-    //   align: "center",
-    //   headerAlign: "center",
-    //   renderCell: (param) => {
-    //     return (
-    //       <div>
-    //         <Tooltip title="Edit">
-    //           <IconButton
-    //             onClick={(e) => {
-    //               handleEdit(param.row);
-    //               navigate("Update");
-    //             }}
-    //           >
-    //             <EditIcon className="editIcon" />
-    //           </IconButton>
-    //         </Tooltip>
-    //         <Tooltip title="Delete">
-    //           <IconButton
-    //             onClick={(e) => {
-    //               setApiid(param.row.api_id);
-    //               setPopup(true);
-    //             }}
-    //           >
-    //             <DeleteIcon />
-    //           </IconButton>
-    //         </Tooltip>
-    //       </div>
-    //     );
-    //   },
-    // },
   ];
 
   return (
@@ -139,7 +103,7 @@ export default function APIsTable() {
         <Button
           variant="contained"
           onClick={() =>
-            navigate("Create", { state: { id: location.state.module_id } })
+            navigate("Create", { state: { application: location.state} })
           }
         >
           Create API
