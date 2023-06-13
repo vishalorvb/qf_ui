@@ -32,15 +32,9 @@ export let Apidata = {
     "request_type": 1,
     "body_type": 0,
     "api_description": "",
-    "params_list": [
-
-    ],
-    "apiLinkProperties": [
-
-    ],
-    "successResponseProperties": [
-
-    ],
+    "params_list": [],
+    "apiLinkProperties": [],
+    "successResponseProperties": [],
     "body_form_data_list": [],
     "body_form_url_encoded_list": [],
     "body_raw": {

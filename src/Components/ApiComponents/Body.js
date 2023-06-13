@@ -1,21 +1,19 @@
-import { FormControl, FormControlLabel,  MenuItem, Radio, RadioGroup, Select } from '@mui/material'
-import React, { useState } from 'react'
+import { FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, Select } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import GrowingTable from '../../CustomComponent/GrowingTable'
 import { Apidata } from './Data'
 
 
 function Body() {
 
-  let [selected, setSelected] = useState("")
+  let [selected, setSelected] = useState(Apidata.body_type.toString())
 
-  function handleFormData(tabdata){
+  function handleFormData(tabdata) {
     Apidata.body_form_data_list = tabdata
   }
-   function handleEncoderData(tabdata){
+  function handleEncoderData(tabdata) {
     Apidata.body_form_url_encoded_list = tabdata
-   }
-
-
+  }
 
   return (
     <div>
@@ -34,11 +32,12 @@ function Body() {
           <FormControlLabel value="2" control={<Radio />} label="form-data" />
           <FormControlLabel value="3" control={<Radio />} label="x-www-form-urlencoded" />
           <FormControlLabel value="4" control={<Radio />} label="raw" />
-          {selected == "4" &&<Select
+          {selected == "4" && <Select
             size='small'
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
-            onChange={e=>{
+            defaultValue={Apidata.body_raw.raw_type_id}
+            onChange={e => {
               Apidata.body_raw.raw_type_id = e.target.value;
             }}
           >
@@ -60,27 +59,28 @@ function Body() {
       {selected == "2" && <div>
         <GrowingTable
           header={["Key", "Value", "Description"]}
-          TableData = {handleFormData}
-          keypair ={["key", "value", "description"]}
+          TableData={handleFormData}
+          keypair={["key", "value", "description"]}
           prefilled={Apidata.body_form_data_list?.slice(0, -1)}
-          order={["key","value","description"]}
+          order={["key", "value", "description"]}
         ></GrowingTable>
       </div>}
       {selected == "3" && <div>
         <GrowingTable
           header={["Key", "Value", "Description"]}
-          TableData ={handleEncoderData}
-          keypair ={["key", "value", "description"]}
+          TableData={handleEncoderData}
+          keypair={["key", "value", "description"]}
           prefilled={Apidata.body_form_url_encoded_list?.slice(0, -1)}
-          order={["key","value","description"]}
+          order={["key", "value", "description"]}
         ></GrowingTable>
       </div>}
-      { selected == "4" && <div style={{marginTop:"10px"}}>
-        <textarea 
-        onChange={e=>{
-          Apidata.body_raw.raw_text = e.target.value;
-        }}
-        rows="12" cols="100"></textarea>
+      {selected == "4" && <div style={{ marginTop: "10px" }}>
+        <textarea
+        defaultValue={Apidata.body_raw.raw_text}
+          onChange={e => {
+            Apidata.body_raw.raw_text = e.target.value;
+          }}
+          rows="12" cols="100"></textarea>
       </div>}
     </div>
   )

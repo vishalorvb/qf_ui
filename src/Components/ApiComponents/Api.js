@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 
 function Api() {
-  const { setHeader,setSnackbarData } = useHead();
+  const { setHeader, setSnackbarData } = useHead();
   const location = useLocation();
   let navigate = useNavigate()
   let [apis, setApis] = useState([]);
@@ -19,7 +19,7 @@ function Api() {
   let apiNames = [];
   function handleSave(e) {
     const isTaken = isApiNameTaken(
-      Apidata.api_name,apis
+      Apidata.api_name, apis
     );
     if (isTaken.taken) {
       setSnackbarData({
@@ -40,18 +40,17 @@ function Api() {
     if (validateFormbyName(namelist, "error")) {
       Apidata.auth.authtype = authdata
       createApiRequest(Apidata).then((res) => {
-       
+
         if (res) {
           setSnackbarData({
             status: true,
-            message: Apidata.api_id===undefined?"API created successfully":"API Updated successfully",
+            message: Apidata.api_id === undefined ? "API created successfully" : "API Updated successfully",
             severity: "success",
           });
           navigate(-1)
         }
       });
     } else {
-      console.log("requird field");
       setSnackbarData({
         status: true,
         message: "Fill Requirded Field",
@@ -59,14 +58,14 @@ function Api() {
       });
     }
   }
-  const isApiNameTaken = (apiName,apiNames) => {
+  const isApiNameTaken = (apiName, apiNames) => {
     const trimmedName = apiName.trim().toLowerCase();
     const hasSpecialCharacters = /^[^a-zA-Z0-9]/.test(apiName);;
     const taken = apiNames.some(
-      (api) => 
-       api.api_name.trim().toLowerCase() === trimmedName
+      (api) =>
+        api.api_name.trim().toLowerCase() === trimmedName
     );
-    return {taken,hasSpecialCharacters};
+    return { taken, hasSpecialCharacters };
   };
   useEffect(() => {
     setHeader((ps) => {
@@ -82,14 +81,12 @@ function Api() {
   }, []);
 
   useEffect(() => {
-    getApis((res)=>
-    {
+    getApis((res) => {
       apiNames = res.map(({ api_id, api_name }) => ({ api_id, api_name }));
       setApis(apiNames)
-    }, location.state?.id)
+    }, location.state?.application.module_id)
   }, [])
-
-  
+  // console.log(location.state?.application)
 
   return (
     <div
@@ -113,7 +110,7 @@ function Api() {
           </Button>
         </Grid>
       </Grid>
-      <br/>
+      <br />
       <Grid container spacing={1}>
         <Grid item md={4}>
           <input
@@ -150,7 +147,6 @@ function Api() {
             name="apidesc"
             defaultValue={Apidata.api_description}
             onChange={(e) => {
-              console.log("caling api description");
               Apidata.api_description = e.target.value;
             }}
           />
@@ -161,6 +157,7 @@ function Api() {
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             fullWidth
+            // defaultValue={Apidata.request_type}
             onChange={(e) => {
               Apidata.request_type = e.target.value;
             }}
@@ -196,15 +193,22 @@ function Api() {
             type="text"
             style={{ width: "100%", height: "35px" }}
             placeholder="URL"
-            name="apiurl"
-            defaultValue={Apidata.api_url}
+            defaultValue={location.state?.application.base_url}
+            disabled
             onChange={(e) => {
               Apidata.api_url = e.target.value;
             }}
           />
         </Grid>
         <Grid item md={6}>
-          <input placeholder="Resource" name="resource" />
+          <input
+            name="apiurl"
+            defaultValue={Apidata.api_url}
+            placeholder="Resource"
+            onChange={(e) => {
+              Apidata.api_url = e.target.value;
+            }}
+          />
         </Grid>
       </Grid>
       <ApiTabs></ApiTabs>
