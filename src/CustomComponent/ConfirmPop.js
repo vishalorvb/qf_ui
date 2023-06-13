@@ -28,6 +28,7 @@ function ConfirmPop(props) {
         sx={{
           padding: 0.5,
           backgroundColor: "#009fee",
+          color: "white",
         }}
       >
         <Grid
