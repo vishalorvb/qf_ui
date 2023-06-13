@@ -82,3 +82,11 @@ export async function DeleteApiDataset(datasetId) {
   });
   return x;
 }
+
+
+export async function getApiDetails(callback,apiId) {
+return axios.post(`${baseUrl}/qfservice/getapibyid?api_id=${apiId}`).then(res=>{
+  callback(res.data?.data)
+  return res.data?.data
+})
+}

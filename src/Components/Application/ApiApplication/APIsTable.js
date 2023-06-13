@@ -78,7 +78,7 @@ export default function APIsTable() {
             <MenuItem
               onClick={(e) => {
                 handleEdit(param.row);
-                navigate("Update");
+                navigate("Create", { state: { application: location.state} })
               }}
             >
               <EditIcon sx={{ color: "blue", mr: 1 }} /> Edit

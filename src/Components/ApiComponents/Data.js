@@ -32,6 +32,7 @@ export let Apidata = {
     "request_type": 1,
     "body_type": 0,
     "api_description": "",
+    "headers_list":[],
     "params_list": [],
     "apiLinkProperties": [],
     "successResponseProperties": [],
@@ -46,18 +47,25 @@ export let Apidata = {
 
 export function resetApiData() {
     authdata = {
-        "authtype":"noauth",
-        "username":"",
-        "password":"",
-        "key":"",
-        "value":"",
-        "addto":"header",
-        "token":"",
-        "tokenurl":"",
-        "clientid":"",
-        "clientsecret":"",
-    
-    }
+        "authtype": "",
+        "basicauth": {
+            "username": "",
+            "password": ""
+        },
+        "apikey": {
+            "key": "",
+            "value": "",
+            "addto": "header"
+        },
+        "bearertoken": {
+            "token": ""
+        },
+        "oauth2": {
+            "tokenurl": "",
+            "clientid": "",
+            "clientsecret": ""
+        }
+}
 
     Apidata = {
         "api_url": "",
@@ -66,6 +74,7 @@ export function resetApiData() {
         "request_type": 1,
         "body_type": 0,
         "api_description": "",
+        "headers_list":[],
         "params_list": [
 
         ],
