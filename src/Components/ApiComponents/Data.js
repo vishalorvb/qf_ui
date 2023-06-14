@@ -40,7 +40,7 @@ export let Apidata = {
     "body_form_url_encoded_list": [],
     "body_raw": {
         "raw_text": "",
-        "raw_type_id": 0
+        "raw_type_id": 1
     },
     "auth": {}
 }
@@ -88,7 +88,7 @@ export function resetApiData() {
         "body_form_url_encoded_list": [],
         "body_raw": {
             "raw_text": "",
-            "raw_type_id": 0
+            "raw_type_id": 1
         },
         "auth": {}
     }

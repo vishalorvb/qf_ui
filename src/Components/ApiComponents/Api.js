@@ -7,7 +7,7 @@ import { createApiRequest, getApiDetails } from "../../Services/ApiService";
 import useHead from "../../hooks/useHead";
 import { authdata } from "./Data";
 import { getApis } from "../../Services/ApiService";
-import { json, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 
 
 function Api() {
@@ -86,39 +86,6 @@ function Api() {
       setApis(apiNames)
     }, location.state?.application.module_id)
   }, [])
-  // console.log(location.state?.application)
-
-  useEffect(() => {
-  if(Apidata.api_id !== undefined) {
-    getApiDetails(()=>{},Apidata.api_id).then(res =>{
-      console.log(res)
-      Apidata.headers_list = res.headersList === null ? [] : res.headersList
-      Apidata.params_list = res.params_list === null ? [] : res.params_list
-      Apidata.apiLinkProperties = res.apiLinkProperties == null ? [] : res.apiLinkProperties
-      Apidata.successResponseProperties = res.successResponseProperties == null ? []: res.successResponseProperties
-
-      Apidata.body_form_data_list = res.bodyFormDataList == null ? [] : res.bodyFormDataList
-      Apidata.body_form_url_encoded_list = res.bodyFormUrlEncodedList == null ? [] : res.bodyFormUrlEncodedList
-
-      Apidata.request_type = res.request_type
-      Apidata.body_type = res.body_type
-      
-      let auth = JSON.parse(res.auth?.auth_data)
-
-      authdata.authtype = auth.authtype
-      authdata.basicauth.username = auth.basicauth.username
-      authdata.basicauth.password = auth.basicauth.password
-      authdata.apikey.key   = auth.apikey.key
-      authdata.apikey.value  = auth.apikey.value
-      authdata.apikey.addto  = auth.apikey.addto
-      authdata.bearertoken.token = auth.bearertoken.token
-      authdata.oauth2.clientid = auth.oauth2.clientid
-      authdata.oauth2.clientsecret = auth.oauth2.clientsecret
-      authdata.oauth2.tokenurl = auth.oauth2.tokenurl
-
-    })
-  }
-  }, [])
 
   return (
     <div
@@ -138,7 +105,7 @@ function Api() {
       >
         <Grid item md={1}>
           <Button onClick={handleSave} variant="contained">
-            Save
+        { Apidata.api_id === undefined ? "Save" : "Update"}
           </Button>
         </Grid>
       </Grid>

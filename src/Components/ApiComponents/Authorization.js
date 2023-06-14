@@ -8,8 +8,6 @@ function Authorization() {
 
   let [type, setType] = useState(authdata.authtype)
 
-
-
   return (
     <div>
       <Grid container alignItems="center" justifyContent="space-between" spacing={4}>

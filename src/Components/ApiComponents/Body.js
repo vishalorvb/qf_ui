@@ -76,9 +76,9 @@ function Body() {
       </div>}
       {selected == "4" && <div style={{ marginTop: "10px" }}>
         <textarea
-        defaultValue={Apidata.body_raw.raw_text}
+        defaultValue={JSON.parse(Apidata.body_raw.raw_text)}
           onChange={e => {
-            Apidata.body_raw.raw_text = e.target.value;
+            Apidata.body_raw.raw_text =  JSON.stringify(e.target.value) ;
           }}
           rows="12" cols="100"></textarea>
       </div>}
