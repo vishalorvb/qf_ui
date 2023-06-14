@@ -44,7 +44,7 @@ export default function APIsTable() {
     getApiDetails(()=>{},Apidata.api_id).then(res =>{
       console.log(res)
       Apidata.headers_list = res.headersList === null ? [] : res.headersList
-      Apidata.params_list = res.params_list === null ? [] : res.params_list
+      Apidata.params_list = res.paramsList === null ? [] : res.paramsList
       Apidata.apiLinkProperties = res.apiLinkProperties == null ? [] : res.apiLinkProperties
       Apidata.successResponseProperties = res.successResponseProperties == null ? []: res.successResponseProperties
 
