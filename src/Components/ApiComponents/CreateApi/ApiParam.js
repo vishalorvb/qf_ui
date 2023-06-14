@@ -7,11 +7,8 @@ import { setGetData } from './ApiDatasetData'
 
 
 function ApiParam({ApiDetails}) {
-
-    console.log(ApiDetails)
     let displayorder = ["param_key", "param_value", "param_desc"]
     function haldleTableData(data){
-        console.log(data)
         setGetData(ApiDetails.api_id,"paramsList",data.slice(0, -1))
     }
     return (

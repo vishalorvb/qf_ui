@@ -27,7 +27,7 @@ import ConfirmPop from '../../../CustomComponent/ConfirmPop'
 
 
 let snackbarErrorMsg = ""
-
+let snackbarMsg = " "
 
 
 function ApiDatasets() {
@@ -45,7 +45,7 @@ function ApiDatasets() {
     const navigate = useNavigate()
     const { setSnackbarData } = useHead();
 
-  let [popup, setPopup] = useState(false);
+    let [popup, setPopup] = useState(false);
 
     let projectId
     let testcaseId
@@ -72,6 +72,7 @@ function ApiDatasets() {
                     getApiDatasets(setDatasets, location.state.testcaseId)
                     setSave(false)
                     setCreateDatasets(false)
+                    snackbarMsg = postData.tc_dataset_id === 0? "Dataset Created Successfully":"Dataset Updated Successfully"
                     setSnackbar(true)
                     clearPostData()
                 }
@@ -103,37 +104,39 @@ function ApiDatasets() {
             renderCell: param => {
                 return (
                     <>
-                    <TableActions heading={param.row?.description} >
-                    <MenuItem
-                      onClick={() => {
-                                setDatasetId(param.row.testcase_dataset_id)
-                                setCreateDatasets(true)}}
-                        >
-                        <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }}></ContentCopyOutlinedIcon>
-                        Copy
-                    </MenuItem>
-                    <MenuItem
-                            onClick={() => {
-                                postData.tc_dataset_id = param.row.testcase_dataset_id
-                                postData.testcase_dataset_name = param.row.dataset_name_in_testcase
-                                postData.description = param.row.description
-                                setDatasetId(param.row.testcase_dataset_id)
-                                setCreateDatasets(true)
-                            }}
-                        >
-                            <EditOutlinedIcon sx={{ color: "blue", mr: 1 }}></EditOutlinedIcon>
-                            Edit
-                    </MenuItem>
-                    <MenuItem
-                            onClick={() => {
-                                setDatasetId(param.row.testcase_dataset_id)
-                                setPopup(true)}}
-                        >
-                            <DeleteOutlined sx={{ color: "red", mr: 1 }}></DeleteOutlined>
-                            Delete
-                    </MenuItem>
-                    </TableActions>
-                    </> 
+                        <TableActions heading={param.row?.description} >
+                            <MenuItem
+                                onClick={() => {
+                                    setDatasetId(param.row.testcase_dataset_id)
+                                    setCreateDatasets(true)
+                                }}
+                            >
+                                <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }}></ContentCopyOutlinedIcon>
+                                Copy
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => {
+                                    postData.tc_dataset_id = param.row.testcase_dataset_id
+                                    postData.testcase_dataset_name = param.row.dataset_name_in_testcase
+                                    postData.description = param.row.description
+                                    setDatasetId(param.row.testcase_dataset_id)
+                                    setCreateDatasets(true)
+                                }}
+                            >
+                                <EditOutlinedIcon sx={{ color: "blue", mr: 1 }}></EditOutlinedIcon>
+                                Edit
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => {
+                                    setDatasetId(param.row.testcase_dataset_id)
+                                    setPopup(true)
+                                }}
+                            >
+                                <DeleteOutlined sx={{ color: "red", mr: 1 }}></DeleteOutlined>
+                                Delete
+                            </MenuItem>
+                        </TableActions>
+                    </>
                 )
             },
             sortable: false,
@@ -249,7 +252,7 @@ function ApiDatasets() {
                                             inputProps={{ "aria-label": "Without label" }}
                                             fullWidth
                                             onChange={e => {
-
+                                                setGetData(selectedApi?.api_id, "request_type", e.target.value)
                                             }}
                                         >
 
@@ -261,7 +264,14 @@ function ApiDatasets() {
                                     </Grid>
                                     <Grid item md={4}>
                                         <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
-                                            value={selectedApiDetails.api_url}
+                                            defaultValue={selectedApiDetails.api_url}
+                                            disabled
+                                        />
+                                    </Grid>
+                                    <Grid item md={6}>
+                                        <input
+                                            name="apiurl"
+                                            placeholder='Resource'
                                             onChange={e => {
                                                 setGetData(selectedApi?.api_id, "api_url", e.target.value)
                                                 setSelectedApiDetails(pv => {
@@ -269,9 +279,6 @@ function ApiDatasets() {
                                                 })
                                             }}
                                         />
-                                    </Grid>
-                                    <Grid item md={6}>
-                                        <input placeholder='Resource' />
                                     </Grid>
                                 </Grid>
                             </div>
@@ -300,23 +307,23 @@ function ApiDatasets() {
                     hidefooter={true}
                     getRowId={(row) => row.testcase_dataset_id}
                 ></Table>
-                  {popup && (
+                {popup && (
                     <ConfirmPop
-                     open={popup}
-                    handleClose={() => setPopup(false)}
-                    heading={"Delete Dataset"}
-                    message={"Are you sure you want to delete this dataset?"}
-                    onConfirm={() => DeleteApiDataset(datasetId).then(res => {
-                        setPopup(false)
-                        setSnackbarData({
-                            status: true,
-                            message: "Dataset deleted successfully",
-                            severity: "success",
-                          });
-                        getApiDatasets(setDatasets, location.state.testcaseId)
-                    })}
-              ></ConfirmPop>
-            )}
+                        open={popup}
+                        handleClose={() => setPopup(false)}
+                        heading={"Delete Dataset"}
+                        message={"Are you sure you want to delete this dataset?"}
+                        onConfirm={() => DeleteApiDataset(datasetId).then(res => {
+                            setPopup(false)
+                            setSnackbarData({
+                                status: true,
+                                message: "Dataset deleted successfully",
+                                severity: "success",
+                            });
+                            getApiDatasets(setDatasets, location.state.testcaseId)
+                        })}
+                    ></ConfirmPop>
+                )}
             </div>}
             <div>
 
@@ -325,7 +332,7 @@ function ApiDatasets() {
                 <SnackbarNotify
                     open={snackbar}
                     close={setSnackbar}
-                    msg="Saved successfully"
+                    msg={snackbarMsg}
                     severity="success"
                 ></SnackbarNotify>
                 <SnackbarNotify

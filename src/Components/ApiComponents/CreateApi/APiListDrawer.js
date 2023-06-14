@@ -8,7 +8,6 @@ import { postData } from "./ApiDatasetData";
 export let getData;
 
 function APiListDrawer({ setSelectedApi, datasetId }) {
-  let [showApi, setShowApi] = useState(true);
   let [Api, setApi] = useState([]);
   let [ApiId, setApiId] = useState(0);
   let [tempApi, setTempApi] = useState([]);
@@ -41,10 +40,6 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
   useEffect(() => {
     getDatasetDetails(setApi, datasetId);
   }, []);
-
-  // useEffect(() => {
-  //   getDatasetDetails(setApi, datasetId);
-  // }, []);
 
   useEffect(() => {
     getData = [...Api];

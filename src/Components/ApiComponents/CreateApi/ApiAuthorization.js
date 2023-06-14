@@ -1,45 +1,20 @@
 import { Divider, Grid, MenuItem, Select, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { setGetData } from './ApiDatasetData'
+import { useRef } from 'react'
 
 
-function ApiAuthorization({ApiDetails}) {
-  let [authdata, setAuthdata] = useState({
-    "authtype": "",
-    "basicauth": {
-      "username": "",
-      "password": ""
-    },
-    "apikey": {
-      "key": "",
-      "value": "",
-      "addto": "header"
-    },
-    "bearertoken": {
-      "token": ""
-    },
-    "oauth2": {
-      "tokenurl": "",
-      "clientid": "",
-      "clientsecret": ""
-    }
-  })
-  let [type, setType] = useState("")
+function ApiAuthorization({ ApiDetails }) {
+  console.log(ApiDetails)
+  // console.log(JSON.parse(ApiDetails.auth.auth_data))
 
-  useEffect(() => {
-  if(ApiDetails.auth != null){
-    setType(ApiDetails.auth.authtype)
-    let temp = ApiDetails.auth
-    setAuthdata({ ...temp} )
-  }
+  let Auth = useRef(JSON.parse(ApiDetails.auth.auth_data))
+  console.log(Auth.current)
+  let [type, setType] = useState(Auth.current.authtype)
 
-  }, [])
 
-  useEffect(() => {
-    if(authdata.authtype != ""){
-      setGetData(ApiDetails.api_id,"auth",authdata)
-    }
-  }, [authdata])
+
+
 
   return (
     <div>
@@ -56,9 +31,10 @@ function ApiAuthorization({ApiDetails}) {
 
             onChange={e => {
               setType(e.target.value)
-              let temp = authdata
+              let temp = ApiDetails.auth
               temp.authtype = e.target.value
-              setAuthdata({ ...temp })
+              temp.auth_data = JSON.stringify(Auth.current)
+              setGetData(ApiDetails.api_id, "auth", temp)
             }}
           >
             {/* <option value="">Select</option> */}
@@ -84,11 +60,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.basicauth?.username}
+                defaultValue={Auth.current.basicauth.username}
                 onChange={e => {
-                  let temp = authdata
-                  temp.basicauth.username = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.basicauth.username = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -97,11 +74,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.basicauth?.password}
+                defaultValue={Auth.current.basicauth.password}
                 onChange={e => {
-                  let temp = authdata
-                  temp.basicauth.password = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.basicauth.password = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -115,11 +93,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.apikey?.key}
+                defaultValue={Auth.current.apikey.key}
                 onChange={e => {
-                  let temp = authdata
-                  temp.apikey.key = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.currentapikey.key = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -128,11 +107,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.apikey?.value}
+                defaultValue={Auth.current.apikey.value}
                 onChange={e => {
-                  let temp = authdata
-                  temp.apikey.value = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.apikey.value = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -145,11 +125,12 @@ function ApiAuthorization({ApiDetails}) {
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
                 fullWidth
-
+                defaultValue={Auth.current.apikey.addto}
                 onChange={e => {
-                  let temp = authdata
-                  temp.apikey.addto = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.apikey.addto = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               >
                 <MenuItem value=""></MenuItem>
@@ -165,11 +146,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.bearertoken?.token}
+                defaultValue={Auth.current.bearertoken.token}
                 onChange={e => {
-                  let temp = authdata
-                  temp.bearertoken = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.bearertoken.token = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -182,11 +164,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.oauth2?.tokenurl}
+                defaultValue={Auth.current.oauth2.tokenurl}
                 onChange={e => {
-                  let temp = authdata
-                  temp.oauth2.tokenurl = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.oauth2.tokenurl = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -195,11 +178,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.oauth2?.clientid}
+                defaultValue={Auth.current.oauth2.clientid}
                 onChange={e => {
-                  let temp = authdata
-                  temp.oauth2.clientid = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.oauth2.clientid = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
@@ -208,11 +192,12 @@ function ApiAuthorization({ApiDetails}) {
             </Grid>
             <Grid item md={10}>
               <input
-                value={authdata.oauth2?.clientid}
+                defaultValue={Auth.current.oauth2.clientsecret}
                 onChange={e => {
-                  let temp = authdata
-                  temp.oauth2.clientsecret = e.target.value
-                  setAuthdata({ ...temp })
+                  Auth.current.oauth2.clientsecret = e.target.value;
+                  let temp = ApiDetails.auth
+                  temp.auth_data = JSON.stringify(Auth.current)
+                  setGetData(ApiDetails.api_id, "auth", temp)
                 }}
               />
             </Grid>
