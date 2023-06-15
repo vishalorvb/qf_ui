@@ -44,7 +44,7 @@ function ApiDatasets() {
     const location = useLocation()
     const navigate = useNavigate()
     const { setSnackbarData } = useHead();
-
+    const { globalApplication } = useHead();
     let [popup, setPopup] = useState(false);
 
     let projectId
@@ -72,7 +72,7 @@ function ApiDatasets() {
                     getApiDatasets(setDatasets, location.state.testcaseId)
                     setSave(false)
                     setCreateDatasets(false)
-                    snackbarMsg = postData.tc_dataset_id === 0? "Dataset Created Successfully":"Dataset Updated Successfully"
+                    snackbarMsg = postData.tc_dataset_id === 0 ? "Dataset Created Successfully" : "Dataset Updated Successfully"
                     setSnackbar(true)
                     clearPostData()
                 }
@@ -173,7 +173,6 @@ function ApiDatasets() {
         });
 
     }, [location.state.testcaseName]);
-
     return (
         <div>
             {createDatasets && <div>
@@ -263,8 +262,8 @@ function ApiDatasets() {
                                         </select>
                                     </Grid>
                                     <Grid item md={4}>
-                                        <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
-                                            defaultValue={selectedApiDetails.api_url}
+                                        <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL'
+                                            defaultValue={globalApplication.base_url}
                                             disabled
                                         />
                                     </Grid>
@@ -272,6 +271,7 @@ function ApiDatasets() {
                                         <input
                                             name="apiurl"
                                             placeholder='Resource'
+                                            defaultValue={selectedApiDetails.api_url}
                                             onChange={e => {
                                                 setGetData(selectedApi?.api_id, "api_url", e.target.value)
                                                 setSelectedApiDetails(pv => {

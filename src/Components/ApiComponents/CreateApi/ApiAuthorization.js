@@ -5,11 +5,7 @@ import { useRef } from 'react'
 
 
 function ApiAuthorization({ ApiDetails }) {
-  console.log(ApiDetails)
-  // console.log(JSON.parse(ApiDetails.auth.auth_data))
-
   let Auth = useRef(JSON.parse(ApiDetails.auth.auth_data))
-  console.log(Auth.current)
   let [type, setType] = useState(Auth.current.authtype)
 
 
