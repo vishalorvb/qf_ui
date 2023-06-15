@@ -39,7 +39,7 @@ let opt = [
     },
 ];
 
-let click = ["input", "select"]
+let click = ["InputText", "select"]
 
 
 function ElementList({ elementList, updateDataset, screenName }) {
@@ -78,10 +78,8 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         {param.row.web_page_elements.input_type == "InputText" && (
                             <input
                                 type="text"
-                                className="datasetInput"
                                 placeholder="Enter Value"
                                 defaultValue={param.row.dataset_values.input_value}
-
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -181,6 +179,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
             align: "left",
         },
     ];
+    useEffect(() => {
+    console.log(inputList)
+    }, [inputList])
     useEffect(() => {
     }, [elementList, updateDataset, screenName])
     return (
