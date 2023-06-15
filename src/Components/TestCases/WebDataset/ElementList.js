@@ -80,6 +80,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                 type="text"
                                 placeholder="Enter Value"
                                 defaultValue={param.row.dataset_values.input_value}
+                                onKeyDown={(event) => {
+                                    event.stopPropagation();
+                                  }}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -165,6 +168,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         </div>
                         {inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
                             <input
+                              onKeyDown={(event) => {
+                                event.stopPropagation();
+                              }}
                                 onChange={e => {
                                     updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
                                 }}
