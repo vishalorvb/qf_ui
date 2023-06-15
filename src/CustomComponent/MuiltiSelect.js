@@ -47,13 +47,15 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   return (
     <div>
       <FormControl sx={{ m: 1, width: 200 }}>
-        <InputLabel id="demo-multiple-checkbox-label">  </InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label"></InputLabel>
         <Select
+        sx={{height:"40px"}}
           multiple
           emptyRecordMsg = {"No Options Available"}
           value={selectedval}
           onChange={handleChange}
-          input={<OutlinedInput label="" />}
+          input={<OutlinedInput  />}
+          placeholder="Select"
           renderValue={(selected) => selected.map((v) => v[value] + ",")}
           MenuProps={MenuProps}
         >

@@ -101,6 +101,7 @@ export default function Table(props) {
         }}
         selectionModel={selectionModel}
         components={{ Toolbar: !hideSearch && QuickSearchToolbar }}
+        {...props}
       />
     </div>
   );
