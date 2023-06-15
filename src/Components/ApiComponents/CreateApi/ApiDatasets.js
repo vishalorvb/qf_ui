@@ -7,9 +7,7 @@ import CreateApiTabs from './CreateApiTabs'
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { setGetData } from './ApiDatasetData'
 import { getData } from './APiListDrawer'
-import MastPop from '../../../CustomComponent/MastPop'
 import { postData } from './ApiDatasetData'
-import { Stack } from "@mui/system";
 import { createApiDataset } from '../../../Services/ApiService'
 import { validateFormbyName } from '../../../CustomComponent/FormValidation'
 import useAuth from '../../../hooks/useAuth'
@@ -18,7 +16,6 @@ import SnackbarNotify from '../../../CustomComponent/SnackbarNotify'
 import { clearPostData } from './ApiDatasetData'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { DeleteApiDataset } from '../../../Services/ApiService'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import TableActions from '../../../CustomComponent/TableActions'
 import { DeleteOutlined } from '@mui/icons-material'
@@ -173,6 +170,7 @@ function ApiDatasets() {
         });
 
     }, [location.state.testcaseName]);
+
     return (
         <div>
             {createDatasets && <div>
@@ -246,6 +244,7 @@ function ApiDatasets() {
                                     </Grid>
                                     <Grid item md={2}>
                                         <select
+                                        defaultValue={selectedApiDetails?.request_type}
                                             size='small'
                                             displayEmpty
                                             inputProps={{ "aria-label": "Without label" }}
