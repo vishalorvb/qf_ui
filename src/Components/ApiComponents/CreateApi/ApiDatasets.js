@@ -7,9 +7,7 @@ import CreateApiTabs from './CreateApiTabs'
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { setGetData } from './ApiDatasetData'
 import { getData } from './APiListDrawer'
-import MastPop from '../../../CustomComponent/MastPop'
 import { postData } from './ApiDatasetData'
-import { Stack } from "@mui/system";
 import { createApiDataset } from '../../../Services/ApiService'
 import { validateFormbyName } from '../../../CustomComponent/FormValidation'
 import useAuth from '../../../hooks/useAuth'
@@ -18,7 +16,6 @@ import SnackbarNotify from '../../../CustomComponent/SnackbarNotify'
 import { clearPostData } from './ApiDatasetData'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { DeleteApiDataset } from '../../../Services/ApiService'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import TableActions from '../../../CustomComponent/TableActions'
 import { DeleteOutlined } from '@mui/icons-material'
@@ -44,7 +41,7 @@ function ApiDatasets() {
     const location = useLocation()
     const navigate = useNavigate()
     const { setSnackbarData } = useHead();
-
+    const { globalApplication } = useHead();
     let [popup, setPopup] = useState(false);
 
     let projectId
@@ -72,7 +69,7 @@ function ApiDatasets() {
                     getApiDatasets(setDatasets, location.state.testcaseId)
                     setSave(false)
                     setCreateDatasets(false)
-                    snackbarMsg = postData.tc_dataset_id === 0? "Dataset Created Successfully":"Dataset Updated Successfully"
+                    snackbarMsg = postData.tc_dataset_id === 0 ? "Dataset Created Successfully" : "Dataset Updated Successfully"
                     setSnackbar(true)
                     clearPostData()
                 }
@@ -247,6 +244,7 @@ function ApiDatasets() {
                                     </Grid>
                                     <Grid item md={2}>
                                         <select
+                                        defaultValue={selectedApiDetails?.request_type}
                                             size='small'
                                             displayEmpty
                                             inputProps={{ "aria-label": "Without label" }}
@@ -263,8 +261,8 @@ function ApiDatasets() {
                                         </select>
                                     </Grid>
                                     <Grid item md={4}>
-                                        <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL' name="apiurl"
-                                            defaultValue={selectedApiDetails.api_url}
+                                        <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL'
+                                            defaultValue={globalApplication.base_url}
                                             disabled
                                         />
                                     </Grid>
@@ -272,6 +270,7 @@ function ApiDatasets() {
                                         <input
                                             name="apiurl"
                                             placeholder='Resource'
+                                            defaultValue={selectedApiDetails.api_url}
                                             onChange={e => {
                                                 setGetData(selectedApi?.api_id, "api_url", e.target.value)
                                                 setSelectedApiDetails(pv => {
