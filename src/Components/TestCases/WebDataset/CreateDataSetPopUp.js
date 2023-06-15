@@ -49,11 +49,6 @@ function CreateDataSetPopUp({ func,dsName,dsDesciption,dsType, setToogle }) {
     datasetinfo.current.is_db_dataset = dsType
   }, [dsName,dsDesciption,dsType])
 
-  useEffect(() => {
-    return () => {
-      console.log("Cleared")
-    };
-  }, [])
 
   try {
     return (

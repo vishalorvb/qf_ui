@@ -42,7 +42,7 @@ let opt = [
 let click = ["input", "select"]
 
 
-function ElementList({ elementList,updateDataset,screenName}) {
+function ElementList({ elementList, updateDataset, screenName }) {
 
 
     let [inputList, setInputList] = useState([]);
@@ -75,35 +75,37 @@ function ElementList({ elementList,updateDataset,screenName}) {
             renderCell: (param) => {
                 return (
                     <div >
-                        {param.row.web_page_elements.tag_name == "input" && (
+                        {param.row.web_page_elements.input_type == "InputText" && (
                             <input
                                 type="text"
                                 className="datasetInput"
                                 placeholder="Enter Value"
                                 defaultValue={param.row.dataset_values.input_value}
-                            onChange={(e) => {
-                                updateDataset(
-                                    param.row.element_id,
-                                    "input_value",
-                                    e.target.value
-                                );
-                            }}
+
+                                onChange={(e) => {
+                                    updateDataset(
+                                        param.row.element_id,
+                                        "input_value",
+                                        e.target.value
+                                    );
+                                }}
                             />
                         )}
-                        {!click.includes(param.row.web_page_elements.tag_name) && (
+                        {!click.includes(param.row.web_page_elements.input_type) && (
                             <input
                                 type="checkbox"
                                 defaultChecked={param.row.dataset_values.is_click}
-                            onChange={(e) => {
-                                updateDataset(
-                                    param.row.element_id,
-                                    "is_click",
-                                    e.target.checked
-                                );
-                            }}
+                                style={{ height: "22px", width: "22px", margin: "4px", padding: "4px"}}
+                                onChange={(e) => {
+                                    updateDataset(
+                                        param.row.element_id,
+                                        "is_click",
+                                        e.target.checked
+                                    );
+                                }}
                             />
                         )}
-                        {param.row.web_page_elements.tag_name == "select" && (
+                        {param.row.web_page_elements.input_type == "select" && (
                             <select
                                 onChange={(e) => {
                                     updateDataset(
@@ -134,12 +136,13 @@ function ElementList({ elementList,updateDataset,screenName}) {
                 });
                 return (
                     <div style={{ display: "flex" }}>
-                        <div>
+                        <div >
                             <MuiltiSelect
                                 preselect={preselect}
                                 options={opt}
                                 value="val"
                                 id="id"
+                                size="small"
                                 stateList={(list) => {
                                     let templist = list.map((obj) => obj["id"]);
                                     opt.forEach((l) => {
@@ -162,7 +165,7 @@ function ElementList({ elementList,updateDataset,screenName}) {
                                 }}
                             ></MuiltiSelect>
                         </div>
-                        {inputList.includes(param.row.element_id) && <div style={{ marginTop: "22px" }}>
+                        {inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
                             <input
                                 onChange={e => {
                                     updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
@@ -179,7 +182,7 @@ function ElementList({ elementList,updateDataset,screenName}) {
         },
     ];
     useEffect(() => {
-    }, [elementList,updateDataset,screenName])
+    }, [elementList, updateDataset, screenName])
     return (
         <div>
             <Typography mt={2} mb={-2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>
@@ -187,10 +190,11 @@ function ElementList({ elementList,updateDataset,screenName}) {
             </Typography>
             <Table
                 hideSearch={true}
-                rows={elementList==undefined ?[]:elementList}
+                rows={elementList == undefined ? [] : elementList}
                 columns={elementcol}
                 hidefooter={true}
                 getRowId={row => row.element_id}
+                rowHeight={70}
             ></Table>
         </div>
     )
