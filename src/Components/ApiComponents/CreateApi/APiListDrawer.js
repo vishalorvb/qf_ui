@@ -21,6 +21,7 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
             <div
               style={{
                 cursor: "pointer",
+                backgroundColor:row.original.api_id==ApiId? "#e8edf2":""
               }}
               onClick={(e) => {
                 setApiId(row.original.api_id);
@@ -34,7 +35,7 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
         },
       },
     ],
-    []
+    [ApiId]
   );
 
   useEffect(() => {
