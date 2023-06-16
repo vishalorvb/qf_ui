@@ -79,13 +79,19 @@ export default function AddEnvironemt() {
     {
       field: "name",
       headerName: "Name",
+      flex: 1,
+      sortable: false,
+    },
+    {
+      field: "base_url",
+      headerName: "URL",
       flex: 3,
       sortable: false,
     },
     {
       field: "description",
       headerName: "Desription",
-      flex: 3,
+      flex: 2,
       sortable: false,
     },
     {

@@ -36,8 +36,12 @@ const ActiveReports = lazy(() =>
 // const APIsTable = lazy(() =>
 //   import("../Components/Application/ApiApplication/APIsTable")
 // );
-const Dataset = lazy(() => import("../Components/TestCases/WebDataset/WebDataset"));
-const TempDataset = lazy(() => import("../Components/TestCases/WebDataset/WebDataset"));
+const Dataset = lazy(() =>
+  import("../Components/TestCases/WebDataset/WebDataset")
+);
+const TempDataset = lazy(() =>
+  import("../Components/TestCases/WebDataset/WebDataset")
+);
 const Api = lazy(() => import("../Components/ApiComponents/Api"));
 const ApiDatasets = lazy(() =>
   import("../Components/ApiComponents/CreateApi/ApiDatasets")
@@ -161,11 +165,7 @@ const TestDesign = lazy(() => import(`../Components/TestDesign/TestDesign`));
 const TestLibrary = lazy(() => import(`../Components/TestLibrary/TestLibrary`));
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 
-// const MapDiffElements = lazy(() =>
-//   import(`../Components/Application/MapDiffElements`)
-// );
-const UpdatePage = lazy(()=>import(`../Components/Application/ScreenComponents/UpdatePage`))
-const Logs = lazy(()=> import(`../CustomComponent/Logs`))
+const Logs = lazy(() => import(`../CustomComponent/Logs`));
 
 export const Routes = [
   {
@@ -213,11 +213,7 @@ export const Routes = [
             element: UpdateScreen,
             accessRole: [1, 2, 4, 5],
           },
-          {
-            path: "UpdatePage",
-            element: UpdatePage,
-            accessRole: [1, 2, 4, 5],
-          },
+
           {
             path: "MapDiffElements",
             element: MapDiffElements,
@@ -270,6 +266,11 @@ export const Routes = [
           {
             path: "UpdateScreen",
             element: UpdateScreen,
+            accessRole: [1, 2, 4, 5],
+          },
+          {
+            path: "MapDiffElements",
+            element: MapDiffElements,
             accessRole: [1, 2, 4, 5],
           },
         ],

@@ -1,38 +1,47 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { getPages } from "../../Services/ApplicationService";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Table from "../../CustomComponent/Table";
-import {
-  IconButton,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { IconButton, MenuItem, Tooltip, Typography } from "@mui/material";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import TableActions from "../../CustomComponent/TableActions";
 import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import UsbIcon from "@mui/icons-material/Usb";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
-import UpdatePage from "./ScreenComponents/UpdatePage";
-import { postVal } from "./ScreenComponents/UpdatePage";
+import UpdatePage from "./PagesComponents/UpdatePage";
+import { postVal } from "./PagesComponents/UpdatePage";
+import useHead from "../../hooks/useHead";
 export default function PagesTable(props) {
-  const { location } = props;
+  const { location, pages, callGetPages } = props;
   const navigate = useNavigate();
-  let [page, setPage] = useState([]);
+  const { setSnackbarData, setShowloader } = useHead();
   const [snackbarMsg, setSnackbarMsg] = useState(false);
   let [popup, setPopup] = useState(false);
   const [updatePage, setUpdatePage] = useState(false);
-  const [pageId,setPageId] = useState()
-
+  const [pageId, setPageId] = useState();
 
   const handleDelete = (pageId) => {
+    setShowloader(true);
     axios
       .delete(`/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`)
       .then((resp) => {
-        setSnackbarMsg(resp?.data?.message);
+        setShowloader(false);
+        callGetPages();
+        setSnackbarData({
+          status: true,
+          message: resp?.data?.message,
+          severity: resp?.data?.status,
+        });
+      })
+      .catch((resp) => {
+        setShowloader(false);
+        setSnackbarData({
+          status: true,
+          message: "Network Error",
+          severity: "error",
+        });
       });
     setPopup(false);
   };
@@ -98,9 +107,12 @@ export default function PagesTable(props) {
               >
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} /> Edit
               </MenuItem>
-              <MenuItem onClick={() => {
-                setPageId(param?.row?.web_page_id)
-                setPopup(true)}}>
+              <MenuItem
+                onClick={() => {
+                  setPageId(param?.row?.web_page_id);
+                  setPopup(true);
+                }}
+              >
                 <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} /> Delete
               </MenuItem>
               <MenuItem
@@ -118,13 +130,13 @@ export default function PagesTable(props) {
   ];
 
   useEffect(() => {
-    getPages(setPage, location?.state?.module_id);
-  }, [snackbarMsg]);
+    callGetPages();
+  }, []);
   return (
     <>
       <Table
         searchPlaceholder="Search Pages"
-        rows={page}
+        rows={pages}
         columns={pageColumns}
         getRowId={(row) => row?.web_page_id}
       />
@@ -140,8 +152,7 @@ export default function PagesTable(props) {
           open={updatePage}
           close={setUpdatePage}
           location={location}
-          getPages={getPages}
-          setPage={setPage}
+          callGetPages={callGetPages}
         />
       )}
       {popup && (

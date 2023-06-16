@@ -19,7 +19,7 @@ let initialValue = {
 export let postVal = { ...initialValue };
 
 function UpdatePage(props) {
-  const { open, close, location, getPages, setPage } = props;
+  const { open, close, callGetPages } = props;
   const { setSnackbarData } = useHead();
   const pageName = useRef();
   const pageDesc = useRef();
@@ -41,15 +41,13 @@ function UpdatePage(props) {
             `/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
           )
           .then((resp) => {
-            if (resp?.data?.status === "SUCCESS") {
-              setSnackbarData({
-                status: true,
-                message: "Page updated successfully",
-                severity: "success",
-              });
-              getPages(setPage, location.state.module_id);
-              handleClose();
-            }
+            setSnackbarData({
+              status: true,
+              message: resp?.data?.message,
+              severity: resp?.data?.status,
+            });
+            callGetPages();
+            handleClose();
           });
       } else {
         pageName.current.value === "" &&
@@ -67,7 +65,7 @@ function UpdatePage(props) {
   return (
     <>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle className="dialogTitle">Update Page</DialogTitle>
+        <DialogTitle className="dialogTitle">Edit Page Details</DialogTitle>
         <DialogContent>
           <Grid
             container
