@@ -39,7 +39,7 @@ let opt = [
     },
 ];
 
-let click = ["InputText", "select"]
+let click = ["InputText", "Link"]
 
 
 function ElementList({ elementList, updateDataset, screenName }) {
@@ -106,7 +106,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                 }}
                             />
                         )}
-                        {param.row.web_page_elements.input_type == "select" && (
+                        {param.row.web_page_elements.input_type == "Link" && (
                             <select
                                 onChange={(e) => {
                                     updateDataset(
