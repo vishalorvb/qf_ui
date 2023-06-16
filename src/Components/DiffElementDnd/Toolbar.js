@@ -7,7 +7,7 @@ import useHead from "../../hooks/useHead";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { useState } from "react";
 
-export default function Toolbar({ dustbins }) {
+export default function Toolbar({ dustbins, getElementsData }) {
   const location = useLocation();
   const { setShowloader, setSnackbarData } = useHead();
   const { auth } = useAuth();
@@ -96,6 +96,7 @@ export default function Toolbar({ dustbins }) {
             setMessage(resp?.data?.message);
             setPopup(true);
           } else {
+            getElementsData();
             setSnackbarData({
               status: true,
               message: resp?.data?.message,

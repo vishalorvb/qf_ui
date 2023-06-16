@@ -1,6 +1,5 @@
 import { Divider, IconButton, List, ListItem, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
-import axios from "axios";
 import { useEffect } from "react";
 import { memo, useCallback, useState } from "react";
 import ElementsDetails from "../../CustomComponent/ElementsDetails.js";
@@ -10,6 +9,7 @@ import Toolbar from "./Toolbar.js";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useLocation } from "react-router-dom";
 import useHead from "../../hooks/useHead.js";
+import axios from "../../api/axios.js";
 const Container = memo(function Container() {
   const location = useLocation();
   const { setShowloader, setSnackbarData, setHeader } = useHead();
@@ -70,9 +70,7 @@ const Container = memo(function Container() {
   const getElementsData = () => {
     setShowloader(true);
     axios
-      .post(
-        `http://10.11.12.243:8083/qfservice/check-diff-page/${location?.state?.web_page_id}`
-      )
+      .post(`qfservice/check-diff-page/${location?.state?.web_page_id}`)
       .then((resp) => {
         const currentElements = resp?.data?.data?.currentElements;
         const newElements = resp?.data?.data?.newElements;
@@ -120,7 +118,7 @@ const Container = memo(function Container() {
 
   return (
     <>
-      <Toolbar dustbins={dustbins} />
+      <Toolbar dustbins={dustbins} getElementsData={getElementsData} />
       <div style={{ display: "flex", justifyContent: "space-evenly" }}>
         <div>
           <Stack direction="row" gap={2} alignItems="center">

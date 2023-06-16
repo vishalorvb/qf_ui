@@ -4,8 +4,13 @@ import useHead from "../hooks/useHead";
 export default function GlobalSnackbar(props) {
   const { snackbarData, setSnackbarData } = useHead();
 
+  const severity =
+    snackbarData?.severity?.toUpperCase() === "SUCCESS" ? "success" : "error";
+
   const handleClose = () => {
-    setSnackbarData({ status: false, message: "", severity: "" });
+    setSnackbarData((ps) => {
+      return { ...ps, status: false };
+    });
   };
 
   return (
@@ -15,11 +20,7 @@ export default function GlobalSnackbar(props) {
       autoHideDuration={3000}
       onClose={handleClose}
     >
-      <Alert
-        onClose={handleClose}
-        severity={snackbarData?.severity}
-        sx={{ width: "100%" }}
-      >
+      <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
         {snackbarData?.message}
       </Alert>
     </Snackbar>

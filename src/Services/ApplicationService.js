@@ -42,8 +42,6 @@ export async function createApplication(data, userId) {
 }
 
 export function getPages(callback, applicationId) {
-  console.log("get pages called");
-  console.log(applicationId);
   axios
     .get(
       `${baseUrl}/qfservice/webpages/getWebPagesList?module_id=${applicationId}`

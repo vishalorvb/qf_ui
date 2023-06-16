@@ -136,10 +136,18 @@ function TestsetCreate() {
     console.log("Durgarao");
     console.log(globalProject);
     console.log(globalProject?.project_id);
-    if(globalProject?.project_id && globalApplication?.module_id){
+    if (globalProject?.project_id && globalApplication?.module_id) {
       console.log("MVGTR");
-      getTestcasesInProjects(setTestcaseObject,globalProject?.project_id,globalApplication?.module_id);
-      getTestcasesInProjects(setLeftTestcase,globalProject?.project_id,globalApplication?.module_id);
+      getTestcasesInProjects(
+        setTestcaseObject,
+        globalProject?.project_id,
+        globalApplication?.module_id
+      );
+      getTestcasesInProjects(
+        setLeftTestcase,
+        globalProject?.project_id,
+        globalApplication?.module_id
+      );
     }
     // globalProject?.project_id && globalApplication?.module_id && getTestcasesInProjects(setTestcaseObject,globalProject?.project_id,globalApplication?.module_id);
     // globalProject?.project_id &&globalApplication?.module_id && getTestcasesInProjects(setLeftTestcase,globalProject?.project_id,globalApplication?.module_id);
@@ -445,7 +453,7 @@ function TestsetCreate() {
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}
-            onClick={() => navigate("/testset")}
+            onClick={() => navigate("/Testset/Recent")}
           >
             Cancel
           </Button>
