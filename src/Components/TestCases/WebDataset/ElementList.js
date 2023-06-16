@@ -39,7 +39,7 @@ let opt = [
     },
 ];
 
-let click = ["input", "select"]
+let click = ["InputText", "select"]
 
 
 function ElementList({ elementList, updateDataset, screenName }) {
@@ -78,10 +78,11 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         {param.row.web_page_elements.input_type == "InputText" && (
                             <input
                                 type="text"
-                                className="datasetInput"
                                 placeholder="Enter Value"
                                 defaultValue={param.row.dataset_values.input_value}
-
+                                onKeyDown={(event) => {
+                                    event.stopPropagation();
+                                  }}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -95,7 +96,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                             <input
                                 type="checkbox"
                                 defaultChecked={param.row.dataset_values.is_click}
-                                style={{ height: "22px", width: "22px", margin: "4px", padding: "4px"}}
+                                style={{ height: "22px", width: "22px", margin: "4px", padding: "4px" }}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -129,6 +130,13 @@ function ElementList({ elementList, updateDataset, screenName }) {
             field: "elements",
             headerName: "Elements",
             renderCell: (param) => {
+                if (param.row.dataset_values["is_validate"]) {
+                    let tmp = [...inputList]
+                    if (!tmp.includes(param.row.element_id)) {
+                        tmp.push(param.row.element_id)
+                        setInputList([...tmp])
+                    }
+                }
                 let preselect = opt.filter((e) => {
                     if (param.row.dataset_values[e.id]) {
                         return e;
@@ -167,6 +175,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         </div>
                         {inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
                             <input
+                              onKeyDown={(event) => {
+                                event.stopPropagation();
+                              }}
                                 onChange={e => {
                                     updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
                                 }}
@@ -181,6 +192,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
             align: "left",
         },
     ];
+
     useEffect(() => {
     }, [elementList, updateDataset, screenName])
     return (

@@ -5,9 +5,9 @@ import { useRef } from 'react'
 
 
 function ApiAuthorization({ ApiDetails }) {
+
   let Auth = useRef(JSON.parse(ApiDetails.auth.auth_data))
   let [type, setType] = useState(Auth.current.authtype)
-
 
 
 
@@ -24,11 +24,11 @@ function ApiAuthorization({ ApiDetails }) {
             displayEmpty
             inputProps={{ "aria-label": "Without label" }}
             fullWidth
-
+            defaultValue={type}
             onChange={e => {
               setType(e.target.value)
+              Auth.current.authtype = e.target.value
               let temp = ApiDetails.auth
-              temp.authtype = e.target.value
               temp.auth_data = JSON.stringify(Auth.current)
               setGetData(ApiDetails.api_id, "auth", temp)
             }}
