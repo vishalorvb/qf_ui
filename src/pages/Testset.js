@@ -22,9 +22,15 @@ import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelect
 import TestcaseSelectAndExecute from "../Components/Execution/TestcaseSelectAndExecute";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import { getProject } from "../Services/ProjectService";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 function Testset() {
-  const {  globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+  const {
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
   const [testsetObject, setTestsetObject] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openExecute, setOpenExecute] = useState(false);
@@ -121,8 +127,8 @@ function Testset() {
     setSelectedProject(project[0]);
   }, [project]);
   useEffect(() => {
-    globalProject?.project_id && getApplicationOfProject(setApplication, globalProject?.project_id);
-    
+    globalProject?.project_id &&
+      getApplicationOfProject(setApplication, globalProject?.project_id);
   }, [globalProject]);
   useEffect(() => {
     setSelectedApplication(application[0]);
@@ -296,6 +302,14 @@ const TestsetDescriptionCell = (
           "aria-labelledby": "basic-button",
         }}
       >
+        <MenuItem
+          onClick={(e) => {
+            console.log(e);
+          }}
+        >
+          <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
+          Copy
+        </MenuItem>
         <MenuItem
           onClick={() =>
             navigate("Update", {

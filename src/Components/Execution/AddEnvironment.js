@@ -90,7 +90,7 @@ export default function AddEnvironemt() {
     },
     {
       field: "description",
-      headerName: "Desription",
+      headerName: "Description",
       flex: 2,
       sortable: false,
     },
