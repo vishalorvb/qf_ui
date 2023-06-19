@@ -241,13 +241,14 @@ function CreateProject() {
   }, []);
 
   useEffect(() => {
+    let selectApp  =  rightApplication.map(app => app.module_id)
     let x = applications.filter(a => {
-      if (filterApplication[automation_type]?.includes(a.module_type)) {
+      if (filterApplication[automation_type]?.includes(a.module_type) &&!selectApp.includes(a.module_id)) {
         return a
       }
     })
     setLeftApplication(x)
-  }, [automation_type, applications])
+  }, [automation_type, applications,rightApplication])
 
   useEffect(() => {
     return () => {

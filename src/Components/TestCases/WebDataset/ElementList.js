@@ -39,7 +39,7 @@ let opt = [
     },
 ];
 
-let click = ["InputText", "select"]
+let click = ["InputText", "Link"]
 
 
 function ElementList({ elementList, updateDataset, screenName }) {
@@ -82,7 +82,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                 defaultValue={param.row.dataset_values.input_value}
                                 onKeyDown={(event) => {
                                     event.stopPropagation();
-                                  }}
+                                }}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -106,8 +106,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                 }}
                             />
                         )}
-                        {param.row.web_page_elements.input_type == "select" && (
+                        {param.row.web_page_elements.input_type == "Link" && (
                             <select
+                                defaultValue={param.row.dataset_values.input_value}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -175,9 +176,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         </div>
                         {inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
                             <input
-                              onKeyDown={(event) => {
-                                event.stopPropagation();
-                              }}
+                                onKeyDown={(event) => {
+                                    event.stopPropagation();
+                                }}
                                 onChange={e => {
                                     updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
                                 }}
