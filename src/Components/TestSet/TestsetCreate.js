@@ -104,27 +104,9 @@ function TestsetCreate() {
       return {
         ...ps,
         name: "Create Testset",
-        plusButton: false,
       };
     });
-    return () =>
-      setHeader((ps) => {
-        return {
-          ...ps,
-          name: "",
-          plusButton: false,
-          plusCallback: () => console.log("null"),
-        };
-      });
   }, []);
-
-  // useEffect(() => {
-  //   axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-  //     const projects = res?.data?.result?.projects_list;
-  //     setProjectList(projects);
-  //     setSelectedProject(projects[0]);
-  //   });
-  // }, []);
 
   useEffect(() => {
     globalProject?.project_id &&
@@ -133,11 +115,7 @@ function TestsetCreate() {
   }, [globalProject]);
 
   useEffect(() => {
-    console.log("Durgarao");
-    console.log(globalProject);
-    console.log(globalProject?.project_id);
     if (globalProject?.project_id && globalApplication?.module_id) {
-      console.log("MVGTR");
       getTestcasesInProjects(
         setTestcaseObject,
         globalProject?.project_id,
@@ -149,8 +127,6 @@ function TestsetCreate() {
         globalApplication?.module_id
       );
     }
-    // globalProject?.project_id && globalApplication?.module_id && getTestcasesInProjects(setTestcaseObject,globalProject?.project_id,globalApplication?.module_id);
-    // globalProject?.project_id &&globalApplication?.module_id && getTestcasesInProjects(setLeftTestcase,globalProject?.project_id,globalApplication?.module_id);
   }, [globalProject?.project_id, globalApplication?.module_id]);
 
   const submit = (e) => {
@@ -161,9 +137,7 @@ function TestsetCreate() {
       const tcList = [];
       if (rightTestcase.length) {
         for (let i = 0; i < rightTestcase.length; i++) {
-          console.log(rightTestcase[i].datasets);
           if (rightTestcase[i].datasets != null) {
-            console.log(rightTestcase[i].datasets.length);
             for (let j = 0; j < rightTestcase[i].datasets.length; j++) {
               tcList.push({
                 testcase_id: rightTestcase[i].testcase_id,
@@ -195,12 +169,10 @@ function TestsetCreate() {
             testset_sprints: sprintData.current,
           };
         }
-        console.log(data);
 
         axiosPrivate
           .post(`qfservice/webtestset/createWebTestset`, data)
           .then((res) => {
-            console.log(res.data.message);
             if (res.data.message === "Testset already exists.") {
               setTSCreateErrorMsg(true);
               setTimeout(() => {
@@ -275,67 +247,6 @@ function TestsetCreate() {
             </select>
           </Grid>
 
-          {/* <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Project <span className="importantfield">*</span>
-              </label>
-              <Autocomplete
-                size="small"
-                value={selectedProject || null}
-                options={projectsList}
-                getOptionLabel={(option) =>
-                  option.project_name ? option.project_name : ""
-                }
-                onChange={(e, value) => {
-                  console.log(value);
-                  setSelectedProject(value);
-                  setRightTestcase([]);
-                }}
-                noOptionsText={"Project not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="projectAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
-            </Stack>
-          </Grid>
-          <Grid item md={6}>
-            <Stack spacing={1}>
-              <label>
-                Application <span className="importantfield">*</span>
-              </label>
-              <Autocomplete
-                size="small"
-                value={selectedApplication || null}
-                options={applicationList}
-                getOptionLabel={(option) =>
-                  option.module_name ? option.module_name : ""
-                }
-                onChange={(e, value) => {
-                  console.log(value);
-                  setSelectedApplication(value);
-                }}
-                noOptionsText={"Applications not found"}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input
-                      type="text"
-                      name="applicationAutocomplete"
-                      {...params.inputProps}
-                      placeholder="Please Select"
-                    />
-                  </div>
-                )}
-              />
-            </Stack>
-          </Grid> */}
           <Grid item md={6}>
             <ProjectnApplicationSelector
               globalProject={globalProject}

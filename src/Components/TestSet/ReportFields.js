@@ -1,5 +1,4 @@
-import { Autocomplete, Button, Grid, Tooltip } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Button, Grid, Tooltip } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
@@ -16,13 +15,7 @@ import { useNavigate } from "react-router-dom";
 import useHead from "../../hooks/useHead";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 
-export default function ReportFields({
-  setSelectedProject,
-  selectedProject,
-  selectedApplication,
-  setSelectedApplication,
-}) {
-  const [projectsList, setProjectList] = useState([]);
+export default function ReportFields() {
   const [applicationList, setapplicationList] = useState([]);
   const From_Date = useRef();
   const to_Date = useRef();
@@ -36,7 +29,6 @@ export default function ReportFields({
   const loggedInId = auth.info.id;
   const navigate = useNavigate();
   const {
-    setHeader,
     globalProject,
     setglobalProject,
     globalApplication,
@@ -85,12 +77,10 @@ export default function ReportFields({
       headerAlign: "center",
       sortable: false,
       align: "center",
-      renderCell: (params) => {      
+      renderCell: (params) => {
         const date = new Date(params.row.created_at);
-        const utcTime = date.toLocaleString('en-US', { timeZone: 'UTC' });
-        return utcTime
-        // moment(params.row.created_at).format("DD/MM/yyyy hh:mm:ss");
-        // moment(params.row.created_at).tz('Asia/Kolkata').format('DD/MM/yyyy hh:mm:ss');
+        const utcTime = date.toLocaleString("en-US", { timeZone: "UTC" });
+        return utcTime;
       },
     },
     {
@@ -139,47 +129,48 @@ export default function ReportFields({
       flex: 3,
       headerAlign: "center",
       align: "center",
-      // justifyContent:"space-between",
       renderCell: (params) => {
         return (
           <>
             <div
-            style={{
-              border: "1px solid grey",
-              display: "flex",
-              padding: "inherit",
-              borderRadius: "15px",
-            }}
-          >
-            <div style={{ color: "green", fontWeight: "600",cursor:"pointer" }}
-               onClick={(e) => {
-                navigate("ViewReport", {
-                  state: { id: params.row.report_id },
-                });
+              style={{
+                border: "1px solid grey",
+                display: "flex",
+                padding: "inherit",
+                borderRadius: "15px",
               }}
             >
-              View Report
+              <div
+                style={{ color: "green", fontWeight: "600", cursor: "pointer" }}
+                onClick={(e) => {
+                  navigate("ViewReport", {
+                    state: { id: params.row.report_id },
+                  });
+                }}
+              >
+                View Report
+              </div>
+              &nbsp;<b>|</b>
+              &nbsp;
+              <div
+                style={{ color: "red", fontWeight: "600", cursor: "pointer" }}
+                onClick={(e) => {
+                  navigate(
+                    "AllReports",
+                    {
+                      state: {
+                        id: params.row,
+                        fromDate: fromDate,
+                        toDate: toDate,
+                      },
+                    },
+                    console.log(fromDate)
+                  );
+                }}
+              >
+                View All
+              </div>
             </div>
-            &nbsp;<b>|</b>
-            &nbsp;
-            <div style={{ color: "red", fontWeight: "600",cursor:"pointer" }}
-             onClick={(e) => {
-              navigate(
-                "AllReports",
-                {
-                  state: {
-                    id: params.row,
-                    fromDate: fromDate,
-                    toDate: toDate,
-                  },
-                },
-                console.log(fromDate)
-              );
-            }}
-            >
-              View All
-            </div>
-          </div>
             <DownloadIcon
               style={{
                 marginLeft: "5px",
@@ -214,10 +205,6 @@ export default function ReportFields({
   }, [globalProject]);
 
   const submit = (e) => {
-    // e.preventDefault();
-    // if (
-    //   validateForm(requiredsFields, [], [], [], [], "error")
-    // )
     {
       axiosPrivate
         .post(
@@ -240,20 +227,13 @@ export default function ReportFields({
         })
         .catch((error) => {});
     }
-    //  else {
-    //   setValidationMsg(true);
-    //   setTimeout(() => {
-    //     setValidationMsg(false);
-    //   }, 3000);
-    //   console.log("Invalid form");
-    // }
   };
 
   return (
     <>
       <Grid container>
-      <Grid item xs={8} container justifyContent="flex-start" spacing={1}>
-           <Grid item>
+        <Grid item xs={8} container justifyContent="flex-start" spacing={1}>
+          <Grid item>
             <TextField
               id="outlined-basic"
               label="From Date"
@@ -289,28 +269,28 @@ export default function ReportFields({
               }}
             />
           </Grid>
-          <Grid item >
+          <Grid item>
             <Button
               variant="contained"
               onClick={submit}
               startIcon={<SearchOutlinedIcon />}
               fullWidth
-              style={{marginBottom:"8px"}}
+              style={{ marginBottom: "8px" }}
             >
               Search
             </Button>
           </Grid>
-      </Grid>
-      <Grid item xs={4}>
-      <Grid item>
-          <ProjectnApplicationSelector
-            globalProject={globalProject}
-            setglobalProject={setglobalProject}
-            globalApplication={globalApplication}
-            setglobalApplication={setglobalApplication}
-          />
         </Grid>
-      </Grid>
+        <Grid item xs={4}>
+          <Grid item>
+            <ProjectnApplicationSelector
+              globalProject={globalProject}
+              setglobalProject={setglobalProject}
+              globalApplication={globalApplication}
+              setglobalApplication={setglobalApplication}
+            />
+          </Grid>
+        </Grid>
       </Grid>
       <SnackbarNotify
         open={reportSuccessMsg}

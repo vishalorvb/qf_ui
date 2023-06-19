@@ -19,14 +19,12 @@ function Reports() {
   }, []);
 
   return (
-    <div>
-      <ReportFields
-        selectedProject={selectedProject}
-        setSelectedProject={setSelectedProject}
-        selectedApplication={selectedApplication}
-        setSelectedApplication={setSelectedApplication}
-      />
-    </div>
+    <ReportFields
+      selectedProject={selectedProject}
+      setSelectedProject={setSelectedProject}
+      selectedApplication={selectedApplication}
+      setSelectedApplication={setSelectedApplication}
+    />
   );
 }
 
