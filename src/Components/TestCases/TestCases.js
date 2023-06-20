@@ -22,6 +22,7 @@ import { DeleteTestCase, GetTestCase } from "../../Services/TestCaseService";
 import { TCdata } from "./CreateTestCase";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 let snakbarmsg = "";
 
@@ -35,7 +36,13 @@ export default function TestCases() {
   let [popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const { auth } = useAuth();
-  const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead();
+  const {
+    setHeader,
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
 
   const columns = [
     {
@@ -51,21 +58,21 @@ export default function TestCases() {
             onClick={() =>
               globalApplication?.module_type === 1
                 ? navigate("apidatasets", {
-                  state: {
-                    applicationId: param.row.module_id,
-                    testcaseId: param.row.testcase_id,
-                    projectId: globalProject?.project_id,
-                    testcaseName: param.row.name
-                  },
-                })
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: globalProject?.project_id,
+                      testcaseName: param.row.name,
+                    },
+                  })
                 : navigate("datasets", {
-                  state: {
-                    applicationId: param.row.module_id,
-                    testcaseId: param.row.testcase_id,
-                    projectId: globalProject?.project_id,
-                    testcaseName: param.row.name
-                  },
-                })
+                    state: {
+                      applicationId: param.row.module_id,
+                      testcaseId: param.row.testcase_id,
+                      projectId: globalProject?.project_id,
+                      testcaseName: param.row.name,
+                    },
+                  })
             }
           >
             {param.row.name}
@@ -81,6 +88,10 @@ export default function TestCases() {
       renderCell: (param) => {
         return (
           <TableActions heading={param.row?.description}>
+            <MenuItem>
+              <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
+              Copy
+            </MenuItem>
             <MenuItem
               onClick={(e) => {
                 TCdata.module_id = param.row.module_id;
@@ -140,7 +151,6 @@ export default function TestCases() {
     }
   }, [project]);
 
-
   useEffect(() => {
     if (globalProject !== null && globalProject?.project_id !== undefined) {
       getApplicationOfProject(setApplication, globalProject?.project_id);
@@ -195,7 +205,6 @@ export default function TestCases() {
                 onChange={(e, value) => {
                   setglobalApplication(null);
                   setglobalProject(value);
-
                 }}
                 renderInput={(params) => (
                   <div ref={params.InputProps.ref}>
@@ -252,15 +261,13 @@ export default function TestCases() {
                   globalProject?.project_id,
                   globalApplication?.module_id
                 );
-                snakbarmsg="Testcase deleted Successfully"
-                setSnack(true)
+                snakbarmsg = "Testcase deleted Successfully";
+                setSnack(true);
               }
-            })
-            setPopup(false)
-          }
-          }
+            });
+            setPopup(false);
+          }}
         ></ConfirmPop>
-       
       </div>
     </>
   );
