@@ -5,7 +5,6 @@ import {
   getTestcasesInProjects,
   getTestcasesOfTestset,
 } from "../../Services/TestsetService";
-import DeleteTestset from "./DeleteTestset";
 import { axiosPrivate } from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
@@ -68,11 +67,11 @@ export default function AddTestcaseToTestset() {
     let e = document.getElementById("right");
     let remaining = rightTestcase.filter((ts) => ts.datasets != null);
     console.log(rightTestcase);
-    let leftTestcases = leftTestcase.filter((el) => { 
+    let leftTestcases = leftTestcase.filter((el) => {
       return !rightTestcase.some((f) => {
         return f.testcase_id === el.testcase_id;
       });
-    })
+    });
     for (let i = 0; i < e.options.length; i++) {
       console.log(e.options[i].selected);
       if (e.options[i].selected) {
@@ -174,16 +173,22 @@ export default function AddTestcaseToTestset() {
   };
 
   useEffect(() => {
-    projectId && applicationId && getTestcasesInProjects(setTestcaseObject, projectId, applicationId);
-    projectId && applicationId && getTestcasesInProjects(setLeftTestcase, projectId, applicationId);
+    projectId &&
+      applicationId &&
+      getTestcasesInProjects(setTestcaseObject, projectId, applicationId);
+    projectId &&
+      applicationId &&
+      getTestcasesInProjects(setLeftTestcase, projectId, applicationId);
     getTestcasesOfTestset(setRightTestcase, testsetId);
   }, []);
   console.log(testcaseObject);
-  console.log(leftTestcase.filter((el) => { 
-    return !rightTestcase.some((f) => {
-      return f.testcase_id === el.testcase_id;
-    });
-  }));
+  console.log(
+    leftTestcase.filter((el) => {
+      return !rightTestcase.some((f) => {
+        return f.testcase_id === el.testcase_id;
+      });
+    })
+  );
   console.log(rightTestcase);
 
   return (
@@ -239,7 +244,7 @@ export default function AddTestcaseToTestset() {
             <select id="left" multiple style={{ padding: "10px" }}>
               {leftTestcase.length > 0
                 ? leftTestcase
-                    .filter((el) => { 
+                    .filter((el) => {
                       return !rightTestcase.some((f) => {
                         return f.testcase_id === el.testcase_id;
                       });
@@ -291,12 +296,12 @@ export default function AddTestcaseToTestset() {
             sx={{ color: "grey", textDecoration: "underline" }}
             onClick={() => navigate("/testset/Recent")}
           >
-            Cancel
+            Cancell
           </Button>
         </Stack>
       </div>
       <div className="datatable" style={{ marginTop: "15px" }}>
-        {openDelete ? (
+        {/* {openDelete ? (
           <DeleteTestset
             object={deleteObject}
             openDelete={openDelete}
@@ -304,7 +309,7 @@ export default function AddTestcaseToTestset() {
           />
         ) : (
           ""
-        )}
+        )} */}
         <SnackbarNotify
           open={tcListValidationMsg}
           close={setTcListValidationMsg}
