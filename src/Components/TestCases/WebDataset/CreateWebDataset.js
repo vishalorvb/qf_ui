@@ -82,7 +82,7 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
                 }, 1000);
             }
             else {
-                snackbarmsg = res?.message
+                snackbarmsg = res
                 snackbarType = "error"
                 setSnackbar(true)
             }
