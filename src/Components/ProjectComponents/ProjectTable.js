@@ -16,6 +16,7 @@ import useAuth from "../../hooks/useAuth";
 import { createformData } from "./ProjectData";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 
 function ProjectTable({ location }) {
   let [popup, setPopup] = useState(false);
@@ -53,7 +54,7 @@ function ProjectTable({ location }) {
     createformData.jenkins_password = project.jenkins_password;
     createformData.jenkins_url = project.jenkins_url;
     createformData.automation_framework_type =
-    project.automation_framework_type;
+      project.automation_framework_type;
     createformData.gitOps = true;
     createformData.repository_url = project.repository_url;
     createformData.repository_branch = project.repository_branch;
@@ -176,6 +177,19 @@ const ProjectDescriptionCell = (param, handleEdit, handleDeletePopup) => {
           "aria-labelledby": "basic-button",
         }}
       >
+        <MenuItem
+          onClick={() => {
+            navigate("CopyProject", {
+              state: {
+                name: param?.row?.project_name,
+                id: param?.row?.project_id,
+              },
+            });
+          }}
+        >
+          <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
+          Copy
+        </MenuItem>
         <MenuItem
           onClick={() => {
             handleEdit(param.row);
