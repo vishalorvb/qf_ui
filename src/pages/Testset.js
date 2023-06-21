@@ -89,7 +89,13 @@ export default function Testset() {
           <TableActions heading={param?.testset_desc}>
             <MenuItem
               onClick={(e) => {
-                console.log(e);
+                navigate("CopyTestset", {
+                  state: {
+                    name: param?.row?.testset_name,
+                    id: param?.row?.testset_id,
+                    projectId: globalProject?.project_id,
+                  },
+                });
               }}
             >
               <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
@@ -131,7 +137,7 @@ export default function Testset() {
         name: "Recent Testsets",
       };
     });
-  }, []);
+  }, [setHeader]);
 
   useEffect(() => {
     globalApplication?.module_id && onChangeHandler();
