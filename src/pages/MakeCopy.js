@@ -24,7 +24,7 @@ const MakeCopy = () => {
       ? `/qfservice/webtestcase/copyTestcase?testcase_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testcase_name=TC_${name}&testcase_desc=${description}`
       : location?.pathname?.includes("CopyTestset")
       ? `/qfservice/webtestset/copyTestSet?testset_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testset_name=TS_${name}&testset_desc=${description}`
-      : "";
+      : `/qfservice/copyProject?project_id=${location?.state?.id}&project_name=${name}&project_desc=${description}`;
 
     axios.post(url).then((resp) => {
       setSnackbarData({
