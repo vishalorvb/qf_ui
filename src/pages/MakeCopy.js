@@ -18,7 +18,7 @@ const MakeCopy = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data); // Handle form submission here
+    console.log(data);
     const { name, description } = data;
     const url = location?.pathname?.includes("CopyTestcase")
       ? `/qfservice/webtestcase/copyTestcase?testcase_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testcase_name=TC_${name}&testcase_desc=${description}`
@@ -67,9 +67,11 @@ const MakeCopy = () => {
           size="small"
         />
       </Stack>
-      <Button type="submit" variant="contained">
-        Submit
-      </Button>
+      <Stack direction="row-reverse">
+        <Button type="submit" variant="contained">
+          Submit
+        </Button>
+      </Stack>
     </form>
   );
 };
