@@ -1,55 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MuiltiSelect from '../../../CustomComponent/MuiltiSelect';
-import { Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import Table from '../../../CustomComponent/Table';
 import MastPop from '../../../CustomComponent/MastPop';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
-
-
-let opt = [
-    {
-        id: "custom_code",
-        val: "Custom Code",
-    },
-    {
-        id: "displayed",
-        val: "Displayed",
-    },
-    {
-        id: "element_wait",
-        val: "Element Wait",
-    },
-    {
-        id: "scrollup",
-        val: "Scroll Up",
-    },
-    {
-        id: "scrolldown",
-        val: "Scroll Down",
-    },
-    {
-        id: "is_random",
-        val: "Random",
-    },
-    {
-        id: "is_enter",
-        val: "Enter",
-    },
-    {
-        id: "is_validate",
-        val: "Validate",
-    },
-];
 
 let click = ["InputText", "Link"]
 
@@ -57,8 +10,71 @@ let click = ["InputText", "Link"]
 function ElementList({ elementList, updateDataset, screenName }) {
 
     let [inputList, setInputList] = useState([]);
-    let [popUp, setPopup] = useState(true);
+    let [popUp, setPopup] = useState(false);
+    let [elementId, setElementId] = useState()
+    let opt = useRef([
+        {
+            id: "custom_code",
+            val: "Custom Code",
+            mark: true
+        },
+        {
+            id: "displayed",
+            val: "Displayed",
+            mark: true
+        },
+        {
+            id: "element_wait",
+            val: "Element Wait",
+            mark: false
+        },
+        {
+            id: "scrollup",
+            val: "Scroll Up",
+            mark: true
+        },
+        {
+            id: "scrolldown",
+            val: "Scroll Down",
+            mark: true
+        },
+        {
+            id: "is_random",
+            val: "Random",
+            mark: true
+        },
+        {
+            id: "is_enter",
+            val: "Enter",
+            mark: true
+        },
+        {
+            id: "is_validate",
+            val: "Validate",
+            mark: true
+        },
+    ])
 
+    let inputopt = useRef([
+        {
+            id: "validate_text",
+            label: "Validate",
+            value: ""
+        }
+    ])
+    function updateElementInfo(e) {
+        let elements = document.getElementsByName("info")
+        elements.forEach(ele => {
+            updateDataset(elementId, ele.value, ele.checked);
+        })
+        inputopt.current.forEach(ele=>{
+            let x = document.getElementById(ele.id).value
+            updateDataset(elementId, ele.id, x);
+        })
+
+
+        setPopup(false)
+    }
     let elementcol = [
         {
             field: "fieldname",
@@ -120,6 +136,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         {param.row.web_page_elements.input_type == "Link" && (
                             <select
                                 defaultValue={param.row.dataset_values.input_value}
+                                style={{width:"100%"}}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -142,22 +159,36 @@ function ElementList({ elementList, updateDataset, screenName }) {
             field: "elements",
             headerName: "Elements",
             renderCell: (param) => {
-                if (param.row.dataset_values["is_validate"]) {
-                    let tmp = [...inputList]
-                    if (!tmp.includes(param.row.element_id)) {
-                        tmp.push(param.row.element_id)
-                        setInputList([...tmp])
-                    }
-                }
-                let preselect = opt.filter((e) => {
-                    if (param.row.dataset_values[e.id]) {
-                        return e;
-                    }
-                });
+                //if (param.row.dataset_values["is_validate"]) {
+                //    let tmp = [...inputList]
+                //    if (!tmp.includes(param.row.element_id)) {
+                //        tmp.push(param.row.element_id)
+                //        setInputList([...tmp])
+                //    }
+                //}
+                //let preselect = opt.filter((e) => {
+                //    if (param.row.dataset_values[e.id]) {
+                //        return e;
+                //    }
+                //});
                 return (
                     <div style={{ display: "flex" }}>
                         <div >
-                            <MuiltiSelect
+                            <button
+                                onClick={e => {
+                                    console.log(param.row)
+                                    opt.current.forEach(ele => {
+                                        ele.mark = param.row.dataset_values[ele.id]
+                                    })
+                                    inputopt.current.forEach(ele => {
+                                        ele.value = param.row.dataset_values[ele.id]
+                                    })
+                                    setElementId(param.row.element_id)
+                                    setPopup(true)
+                                }}
+
+                                type="">click</button>
+                            {/*<MuiltiSelect
                                 preselect={preselect}
                                 options={opt}
                                 value="val"
@@ -183,9 +214,9 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                         setInputList([...tmp])
                                     }
                                 }}
-                            ></MuiltiSelect>
+                            ></MuiltiSelect>*/}
                         </div>
-                        {inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
+                        {/*{inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
                             <input
                                 onKeyDown={(event) => {
                                     event.stopPropagation();
@@ -195,11 +226,11 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                 }}
                                 defaultValue={param.row.dataset_values.validate_text}
                                 type="text" placeholder="Enter Value" />
-                        </div>}
+                        </div>}*/}
                     </div>
                 );
             },
-            flex: inputList.length == 0 ? 3 : 6,
+            flex: 1,
             sortable: false,
             align: "left",
         },
@@ -225,13 +256,43 @@ function ElementList({ elementList, updateDataset, screenName }) {
                 setOpen={setPopup}
                 heading="Dataset Element Info"
             >
-                {opt.map(val =>{
-                    return(<>
-                    <label for="">{val.val}</label>
-                    <input type="checkbox"  value={val.id}/>
-                    </>)
-                })}
+                <Grid container spacing={2}>
+                    {opt.current.map(val => {
+                        return (
+                            <Grid item xs={4} md={4}>
+                                <span><label for="">{val.val}</label></span> <input defaultChecked={val.mark} type="checkbox" value={val.id} name='info' />
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+                <br />
+                <Grid container spacing={2} justifyContent="center"
+                    alignItems="center">
 
+                    {inputopt.current.map(val => {
+                        return (
+                            <Grid item xs={12} md={12}>
+                                <label for="">{val.label}</label>
+                                <br />
+                                <input type="text" name={val.id} id={val.id} defaultValue={val.value} />
+                            </Grid>
+                        )
+                    })}
+
+                </Grid>
+                <br />
+                <Grid container spacing={2} justifyContent="flex-end" alignItems="center">
+                    <Grid item xs={1.5} md={1.5}>
+                        <Button variant="text"
+                            onClick={e => setPopup(false)}
+                        >Cancel</Button>
+                    </Grid>
+                    <Grid item xs={1.5} md={1.5}>
+                        <Button variant="contained"
+                            onClick={e => updateElementInfo(e)}
+                        >Save</Button>
+                    </Grid>
+                </Grid>
             </MastPop>
         </div>
     )
