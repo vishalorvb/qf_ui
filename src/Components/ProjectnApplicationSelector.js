@@ -41,8 +41,13 @@ export default function ProjectnApplicationSelector({ isTestset }) {
   }, [applicationList]);
 
   return (
-
-    <Grid item container spacing={2} justifyContent="space-around" direction="row">
+    <Grid
+      item
+      container
+      spacing={2}
+      justifyContent="space-around"
+      direction="row"
+    >
       <Grid item>
         <label htmlFor="">Projects</label>
         <Autocomplete
@@ -51,7 +56,6 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           id="project_id"
           options={projectsList}
           value={globalProject || null}
-          // sx={{ width: "100%" }}
           fullWidth
           getOptionLabel={(option) => option.project_name ?? ""}
           onChange={(e, value) => {
@@ -62,7 +66,6 @@ export default function ProjectnApplicationSelector({ isTestset }) {
             <div ref={params.InputProps.ref}>
               <input type="text" {...params.inputProps} />
             </div>
-
           )}
         />
       </Grid>
@@ -88,8 +91,6 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           )}
         />
       </Grid>
-      
     </Grid>
- 
   );
 }
