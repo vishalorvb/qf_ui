@@ -120,16 +120,18 @@ export function getIssues(callback, projectId, sprintname) {
 }
 
 
-export function getPagesForTestcase(callback, projectId, moduleId) {
-  axios.get(`${baseUrl}/qfservice/webtestcase/getScreensForTestcase?module_id=${moduleId}&project_id=${projectId}`)
+export async function getPagesForTestcase(callback, projectId, moduleId) {
+  return await axios.get(`${baseUrl}/qfservice/webtestcase/getScreensForTestcase?module_id=${moduleId}&project_id=${projectId}`)
     .then(res => {
       callback(res.data.info === null?[]:res.data.info[0]?.webpagesList)
+        return res.data.info === null?[]:res.data.info[0]?.webpagesList
     })
 }
-export function getPagesIntestcase(callback, projectId, moduleId, testcaseId) {
-  axios.get(`${baseUrl}/qfservice/webtestcase/getScreensInTestcase?module_id=${moduleId}&project_id=${projectId}&testcase_id=${testcaseId}`)
+export async function getPagesIntestcase(callback, projectId, moduleId, testcaseId) {
+  return await axios.get(`${baseUrl}/qfservice/webtestcase/getScreensInTestcase?module_id=${moduleId}&project_id=${projectId}&testcase_id=${testcaseId}`)
     .then(res => {
       callback(res.data.info === null?[]:res.data.info[0]?.webpagesList)
+      console.log(res.data.info === null?[]:res.data.info[0]?.webpagesList)
     })
 }
 

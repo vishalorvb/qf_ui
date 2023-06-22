@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
-// import CreateTestCasePopUp from "./CreateTestCasePopUp";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
@@ -88,7 +87,17 @@ export default function TestCases() {
       renderCell: (param) => {
         return (
           <TableActions heading={param.row?.description}>
-            <MenuItem>
+            <MenuItem
+              onClick={(e) => {
+                navigate("CopyTestcase", {
+                  state: {
+                    name: param?.row?.testcase_name,
+                    id: param?.row?.testcase_id,
+                    projectId: globalProject?.project_id,
+                  },
+                });
+              }}
+            >
               <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
               Copy
             </MenuItem>
