@@ -11,7 +11,7 @@ function MastPop(props) {
         <h2>
           {props.heading}
           <span>
-            <IconButton sx={{ float: "right" }} onClick={props.setOpen}>
+            <IconButton sx={{ float: "right" }} onClick={e=>props.setOpen(false)}>
               <CloseIcon></CloseIcon>
             </IconButton>
           </span>

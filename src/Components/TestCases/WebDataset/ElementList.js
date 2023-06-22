@@ -2,6 +2,18 @@ import React, { useEffect, useState } from 'react'
 import MuiltiSelect from '../../../CustomComponent/MuiltiSelect';
 import { Typography } from '@mui/material';
 import Table from '../../../CustomComponent/Table';
+import MastPop from '../../../CustomComponent/MastPop';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
 
 
 let opt = [
@@ -44,9 +56,8 @@ let click = ["InputText", "Link"]
 
 function ElementList({ elementList, updateDataset, screenName }) {
 
-
     let [inputList, setInputList] = useState([]);
-
+    let [popUp, setPopup] = useState(true);
 
     let elementcol = [
         {
@@ -209,6 +220,19 @@ function ElementList({ elementList, updateDataset, screenName }) {
                 getRowId={row => row.element_id}
                 rowHeight={70}
             ></Table>
+            <MastPop
+                open={popUp}
+                setOpen={setPopup}
+                heading="Dataset Element Info"
+            >
+                {opt.map(val =>{
+                    return(<>
+                    <label for="">{val.val}</label>
+                    <input type="checkbox"  value={val.id}/>
+                    </>)
+                })}
+
+            </MastPop>
         </div>
     )
 }
