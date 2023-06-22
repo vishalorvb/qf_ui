@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import MuiltiSelect from '../../../CustomComponent/MuiltiSelect';
+import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
+import IconButton from '@mui/material/IconButton';
 import { Button, Grid, Typography } from '@mui/material';
 import Table from '../../../CustomComponent/Table';
 import MastPop from '../../../CustomComponent/MastPop';
@@ -9,7 +10,6 @@ let click = ["InputText", "Link"]
 
 function ElementList({ elementList, updateDataset, screenName }) {
 
-    let [inputList, setInputList] = useState([]);
     let [popUp, setPopup] = useState(false);
     let [elementId, setElementId] = useState()
     let opt = useRef([
@@ -159,74 +159,25 @@ function ElementList({ elementList, updateDataset, screenName }) {
             field: "elements",
             headerName: "Elements",
             renderCell: (param) => {
-                //if (param.row.dataset_values["is_validate"]) {
-                //    let tmp = [...inputList]
-                //    if (!tmp.includes(param.row.element_id)) {
-                //        tmp.push(param.row.element_id)
-                //        setInputList([...tmp])
-                //    }
-                //}
-                //let preselect = opt.filter((e) => {
-                //    if (param.row.dataset_values[e.id]) {
-                //        return e;
-                //    }
-                //});
                 return (
                     <div style={{ display: "flex" }}>
                         <div >
-                            <button
-                                onClick={e => {
-                                    console.log(param.row)
-                                    opt.current.forEach(ele => {
-                                        ele.mark = param.row.dataset_values[ele.id]
-                                    })
-                                    inputopt.current.forEach(ele => {
-                                        ele.value = param.row.dataset_values[ele.id]
-                                    })
-                                    setElementId(param.row.element_id)
-                                    setPopup(true)
-                                }}
-
-                                type="">click</button>
-                            {/*<MuiltiSelect
-                                preselect={preselect}
-                                options={opt}
-                                value="val"
-                                id="id"
-                                size="small"
-                                stateList={(list) => {
-                                    let templist = list.map((obj) => obj["id"]);
-                                    opt.forEach((l) => {
-                                        if (templist.includes(l.id)) {
-                                            updateDataset(param.row.element_id, l.id, true);
-                                        } else {
-                                            updateDataset(param.row.element_id, l.id, false);
-                                        }
-                                    });
-                                    if (templist.includes("is_validate")) {
-                                        let tmp = [...inputList]
-                                        tmp.push(param.row.element_id)
-                                        setInputList([...tmp])
-                                    }
-                                    else {
-                                        let tmp = [...inputList]
-                                        tmp = tmp.filter(t => t != param.row.element_id)
-                                        setInputList([...tmp])
-                                    }
-                                }}
-                            ></MuiltiSelect>*/}
+                        <IconButton
+                         onClick={e => {
+                            console.log(param.row)
+                            opt.current.forEach(ele => {
+                                ele.mark = param.row.dataset_values[ele.id]
+                            })
+                            inputopt.current.forEach(ele => {
+                                ele.value = param.row.dataset_values[ele.id]
+                            })
+                            setElementId(param.row.element_id)
+                            setPopup(true)
+                        }}
+                        >
+                            <NearMeOutlinedIcon></NearMeOutlinedIcon>
+                        </IconButton>
                         </div>
-                        {/*{inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
-                            <input
-                                onKeyDown={(event) => {
-                                    event.stopPropagation();
-                                }}
-                                onChange={e => {
-                                    updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
-                                }}
-                                defaultValue={param.row.dataset_values.validate_text}
-                                type="text" placeholder="Enter Value" />
-                        </div>}*/}
                     </div>
                 );
             },
