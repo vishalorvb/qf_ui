@@ -89,6 +89,8 @@ function CreateTestCase() {
     }
 
     function handleSubmit(e) {
+        console.log("calling save")
+        console.log(globalApplication?.module_type)
         if ((globalApplication?.module_type) === 19) {
             setReportFailMsg(true);
             setTimeout(() => {
@@ -104,7 +106,7 @@ function CreateTestCase() {
                 if (!TCdata.testcase_name.startsWith("TC_")) {
                     TCdata.testcase_name = "TC_" + TCdata.testcase_name
                 }
-                if (globalApplication?.module_type === 2) {
+                if (globalApplication?.module_type != 1) {
                     let scr = []
                     screens.current.forEach(sc => {
                         sc.screenList.forEach(screen => {
