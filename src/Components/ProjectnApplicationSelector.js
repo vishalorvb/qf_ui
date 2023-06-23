@@ -48,7 +48,7 @@ export default function ProjectnApplicationSelector({ isTestset }) {
       justifyContent="space-around"
       direction="row"
     >
-      <Grid item>
+      <Grid item md={6}>
         <label htmlFor="">Projects</label>
         <Autocomplete
           disablePortal
@@ -69,7 +69,7 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           )}
         />
       </Grid>
-      <Grid item>
+      <Grid item md={6}>
         <label htmlFor="">Applications</label>
         <Autocomplete
           disablePortal
