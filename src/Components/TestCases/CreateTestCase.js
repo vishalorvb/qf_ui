@@ -286,7 +286,7 @@ function CreateTestCase() {
             </Grid >
             <br />
             <Divider></Divider>
-            {globalApplication?.module_type === 2 && <MapScreen
+            {globalApplication?.module_type !== 1 && <MapScreen
                 projectId={globalProject?.project_id}
                 moduleId={globalApplication?.module_id}
                 testcaseId={TCdata.testcase_id}
