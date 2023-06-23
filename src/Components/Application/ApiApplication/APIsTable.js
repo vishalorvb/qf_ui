@@ -57,17 +57,17 @@ export default function APIsTable() {
       Apidata.body_raw.raw_type_id = res.bodyRaw === null ? " " : res.bodyRaw.raw_type_id
 
 
-      let auth = JSON.parse(res.auth?.auth_data)
-      authdata.authtype = auth.authtype
-      authdata.basicauth.username = auth.basicauth.username
-      authdata.basicauth.password = auth.basicauth.password
-      authdata.apikey.key   = auth.apikey.key
-      authdata.apikey.value  = auth.apikey.value
-      authdata.apikey.addto  = auth.apikey.addto
-      authdata.bearertoken.token = auth.bearertoken.token
-      authdata.oauth2.clientid = auth.oauth2.clientid
-      authdata.oauth2.clientsecret = auth.oauth2.clientsecret
-      authdata.oauth2.tokenurl = auth.oauth2.tokenurl
+      let auth = res.auth==null?{}:JSON.parse(res.auth?.auth_data)
+      authdata.authtype = auth?.authtype
+      authdata.basicauth.username = auth?.basicauth?.username
+      authdata.basicauth.password = auth?.basicauth?.password
+      authdata.apikey.key   = auth?.apikey?.key
+      authdata.apikey.value  = auth?.apikey?.value
+      authdata.apikey.addto  = auth?.apikey?.addto
+      authdata.bearertoken.token = auth?.bearertoken?.token
+      authdata.oauth2.clientid = auth?.oauth2?.clientid
+      authdata.oauth2.clientsecret = auth?.oauth2?.clientsecret
+      authdata.oauth2.tokenurl = auth?.oauth2?.tokenurl
       
       navigate("Create", { state: { application: location.state} })
     })
