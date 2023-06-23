@@ -101,7 +101,6 @@ const AddConfigurationPopUp = (props) => {
             <TextField
               size="small"
               id="outlined-basic"
-              size="small"
               variant="outlined"
               type="text"
               name="name"
