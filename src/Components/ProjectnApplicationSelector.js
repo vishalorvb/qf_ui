@@ -8,19 +8,21 @@ import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
 export default function ProjectnApplicationSelector({ isTestset }) {
-  const [projectsList, setProjectList] = useState([]);
-  const [applicationList, setapplicationList] = useState([]);
   const {
     globalProject,
     setglobalProject,
     globalApplication,
     setglobalApplication,
+    projectsList,
+    setProjectList,
+    applicationList,
+    setapplicationList,
   } = useHead();
 
   const { auth } = useAuth();
 
   useEffect(() => {
-    getProject(setProjectList, auth.userId);
+    projectsList.length <= 0 && getProject(setProjectList, auth.userId);
   }, []);
 
   useEffect(() => {
