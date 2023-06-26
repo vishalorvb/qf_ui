@@ -70,6 +70,7 @@ function TestsetCreate() {
     let testcaseObjFlag = true;
     if (globalApplication?.module_type != 19) {
       if (preSelectedElement.length <= 0) {
+        testcaseObjFlag = false;
         setSnackbarData({
           status: true,
           message: "Select at least 1 testcase",
@@ -115,7 +116,14 @@ function TestsetCreate() {
     testcaseObjFlag &&
       axiosPrivate
         .post(`qfservice/webtestset/createWebTestset`, testsetData)
-        .then((res) => {});
+        .then((res) => {
+          setSnackbarData({
+            status: true,
+            message: res?.data?.message,
+            severity: res?.data?.status,
+          });
+          navigate("/Testset/Recent");
+        });
   };
   const handleDataset = (row, e) => {
     console.log(e.target.value);
@@ -150,13 +158,21 @@ function TestsetCreate() {
               size="small"
               onChange={(e) => handleDataset(params?.row, e)}
             >
-              {params?.row?.datasets?.map((dataset) => {
-                return (
-                  <MenuItem value={dataset?.dataset_id}>
-                    {dataset?.name}
-                  </MenuItem>
-                );
-              })}
+              {globalApplication?.module_type == 1
+                ? params?.row?.api_datasets?.map((dataset) => {
+                    return (
+                      <MenuItem value={dataset?.testcase_dataset_id}>
+                        {dataset?.dataset_name_in_testcase}
+                      </MenuItem>
+                    );
+                  })
+                : params?.row?.datasets?.map((dataset) => {
+                    return (
+                      <MenuItem value={dataset?.dataset_id}>
+                        {dataset?.name}
+                      </MenuItem>
+                    );
+                  })}
             </Select>
           </FormControl>
         );
