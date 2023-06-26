@@ -86,7 +86,7 @@ export default function Testset() {
       sortable: false,
       renderCell: (param) => {
         return (
-          <TableActions heading={param?.testset_desc}>
+          <TableActions heading={param?.row?.testset_desc}>
             <MenuItem
               onClick={(e) => {
                 navigate("CopyTestset", {

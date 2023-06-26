@@ -51,7 +51,8 @@ export default function ExecutionToolbar({
     buildenvName: yup.string().required(),
     browser:
       applicationType !== 3 && applicationType !== 4 && yup.array().required(),
-    commitMsg: execLoc !== "local" && yup.string().required(),
+    commitMsg:
+      (execLoc == "docker" || execLoc == "jenkins") && yup.string().required(),
   });
   const {
     control,

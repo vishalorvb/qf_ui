@@ -67,20 +67,22 @@ export default function CreatePage({ callGetPages }) {
       <Button variant="contained" onClick={callGetPages}>
         <RefreshIcon />
       </Button>
-      <Select
-        id="Browser"
-        value={header?.browser}
-        size="small"
-        onChange={(e) => {
-          setHeader((ps) => {
-            return { ...ps, browser: e?.target?.value };
-          });
-        }}
-      >
-        <MenuItem value={"custom"}>Custom</MenuItem>
-        <MenuItem value={"chrome"}>Chrome</MenuItem>
-        <MenuItem value={"mozilla"}>Mozilla</MenuItem>
-      </Select>
+      {location?.state?.module_type === 2 && (
+        <Select
+          id="Browser"
+          value={header?.browser}
+          size="small"
+          onChange={(e) => {
+            setHeader((ps) => {
+              return { ...ps, browser: e?.target?.value };
+            });
+          }}
+        >
+          <MenuItem value={"custom"}>Custom</MenuItem>
+          <MenuItem value={"chrome"}>Chrome</MenuItem>
+          <MenuItem value={"mozilla"}>Mozilla</MenuItem>
+        </Select>
+      )}
       <Button variant="contained" onClick={createPage}>
         Create Page
       </Button>
