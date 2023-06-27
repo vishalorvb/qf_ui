@@ -23,7 +23,7 @@ import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
 
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
@@ -38,6 +38,8 @@ function TestsetExecutionToolbar({
 }) {
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [execEnvList, setExecEnvList] = useState([]);
   const [clientInactive, setClientInactive] = useState(false);
@@ -100,27 +102,30 @@ function TestsetExecutionToolbar({
     let datasets = [];
     let selecteddataset = [];
     if (selectedtestcases.length != 0) {
-      selecteddataset = selecteddatasets.filter(dt => 
-        // console.log(dt.selected_testcase_dataset_ids),
-        (dt.selected_testcase_dataset_ids).length != 0);
+      selecteddataset = selecteddatasets.filter(
+        (dt) =>
+          // console.log(dt.selected_testcase_dataset_ids),
+          dt.selected_testcase_dataset_ids.length != 0
+      );
       // if (selectedtestcases.length == selecteddataset.length) {
       //   datasets = selecteddataset;
       // } else {
-        for (let i = 0; i < selectedtestcases.length; i++) {
-          for (let j = 0; j < selecteddataset.length; j++) {
-            if (selectedtestcases[i] == selecteddataset[j].testcase_id) {
-              console.log(selecteddataset[j]);
-              datasets.push(selecteddataset[j]);
-            }
+      for (let i = 0; i < selectedtestcases.length; i++) {
+        for (let j = 0; j < selecteddataset.length; j++) {
+          if (selectedtestcases[i] == selecteddataset[j].testcase_id) {
+            console.log(selecteddataset[j]);
+            datasets.push(selecteddataset[j]);
           }
         }
+      }
       // }
       console.log(selectedtestcases);
       console.log(selecteddatasets);
       console.log(selecteddataset);
       if (
         datasets.length != 0 &&
-        selecteddataset.length != 0 && datasets.length == selectedtestcases.length
+        selecteddataset.length != 0 &&
+        datasets.length == selectedtestcases.length
       ) {
         console.log(datasets);
         setShowLoading(true);
@@ -292,12 +297,12 @@ function TestsetExecutionToolbar({
       });
   }, [applicationId]);
 
-  useEffect(()=>{
+  useEffect(() => {
     reset({
-      executionLoc : execEnvList[0]?.id,
-      buildenvName : buildEnvList[0]?.id
-    })
-  },[execEnvList,buildEnvList])
+      executionLoc: execEnvList[0]?.id,
+      buildenvName: buildEnvList[0]?.id,
+    });
+  }, [execEnvList, buildEnvList]);
 
   return (
     <form>
@@ -336,152 +341,179 @@ function TestsetExecutionToolbar({
         />
       )}
       <Grid container>
-      <Grid item container xs={10} spacing={1} justifyContent="flex-start">
-        <Grid item xs={2} sm={4} md={4} lg={2.5}>
-          <SelectElement
-            name="executionLoc"
-            label="Execution Location"
-            size="small"
-            fullWidth
-            control={control}
-            onChange={(e) => setExecLoc(e)}
-            options={execEnvList}
-          />
-        </Grid>
-        <Grid item xs={2} sm={4} md={4} lg={2.5}>
-          <Stack direction="column">
+        <Grid item container xs={10} spacing={1} justifyContent="flex-start">
+          <Grid item xs={2} sm={4} md={4} lg={2.5}>
             <SelectElement
-              name="buildenvName"
-              label="Build Environment"
+              name="executionLoc"
+              label="Execution Location"
               size="small"
               fullWidth
               control={control}
-              options={buildEnvList}
+              onChange={(e) => setExecLoc(e)}
+              options={execEnvList}
             />
-            <h5
-              style={{ cursor: "pointer", color: "#009fee", marginTop: "3px" }}
-              onClick={() => {
-                navigate("/TestsetExecution/AddEnvironment", {
-                  state: { projectId: projectId, applicationId: applicationId },
-                });
-              }}
-            >
-              + Add Environment
-            </h5>
-          </Stack>
-        </Grid>
-        {applicationType == 3 || applicationType == 4 ? (
-          ""
-        ) : (
-          <Grid item >
-          <Controller
-          control={control}
-          name="browser"
-          defaultValue={["Chrome"]} // Set the default value to "Chrome"
-          render={({ field }) => (
-         <MultiSelectElement
-         menuMaxWidth={5}
-         label="Browser"
-         size="small"
-         fullWidth
-         options={options}
-         control={control} // Pass the control object to the MultiSelectElement
-         {...field}
-       />
-     )}
-   />
-       </Grid>
-     )}
-     <Grid item xs={2} sm={3} md={2} lg={4}>
-          <FeatureMenu
-            frameworkType={frameworkType}
-            projectId={projectId}
-            testsetId={testsetId}
-            envId={buildEnvId}
-            runtimeVar={
-              runtimeVariable != undefined || runtimeVariable != null
-                ? runtimeVariable
-                : ""
-            }
-          />
-     </Grid>
-      </Grid>
-
-      <Grid item xs={2} sm={2} md={2} lg={2}>
-      <Grid item>
-          <Stack direction="column">
-            <React.Fragment>
-              <ButtonGroup
-                variant="contained"
-                ref={anchorRef}
-                aria-label="split button"
-              >
-                <Button
-                  sx={{ backgroundColor: "#009fee" }}
-                  fullWidth
-                  type="submit"
-                  onClick={handleSubmit(onSubmitExecute)}
-                >
-                  Execute
-                </Button>
-                <Button
-                  sx={{ backgroundColor: "#009fee" }}
-                  size="small"
-                  aria-controls={open ? "split-button-menu" : undefined}
-                  aria-expanded={open ? "true" : undefined}
-                  aria-label="select merge strategy"
-                  aria-haspopup="menu"
-                  onClick={handleToggle}
-                >
-                  <ArrowDropDownIcon />
-                </Button>
-              </ButtonGroup>
-              <Popper
-                sx={{
-                  zIndex: 1,
+            {frameworkType == 4 && (
+              <h5
+                style={{
+                  cursor: "pointer",
+                  color: "#009fee",
+                  marginTop: "3px",
                 }}
-                open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                transition
-                disablePortal
+                onClick={() => {
+                  navigate("/TestsetExecution/ConfigureDevice", {
+                    state: {
+                      projectId: projectId,
+                      pathname: location.pathname,
+                    },
+                  });
+                }}
               >
-                {({ TransitionProps, placement }) => (
-                  <Grow
-                    {...TransitionProps}
-                    style={{
-                      transformOrigin:
-                        placement === "bottom" ? "center top" : "center bottom",
-                    }}
-                  >
-                    <Paper>
-                      <MenuList id="split-button-menu" autoFocusItem>
-                        <MenuItem
-                          size="small"
-                          onClick={handleSubmit(onSubmitGenerate)}
-                        >
-                          GENERATE Script
-                        </MenuItem>
-                      </MenuList>
-                    </Paper>
-                  </Grow>
+                Configure Device
+              </h5>
+            )}
+          </Grid>
+          <Grid item xs={2} sm={4} md={4} lg={2.5}>
+            <Stack direction="column">
+              <SelectElement
+                name="buildenvName"
+                label="Build Environment"
+                size="small"
+                fullWidth
+                control={control}
+                options={buildEnvList}
+              />
+              <h5
+                style={{
+                  cursor: "pointer",
+                  color: "#009fee",
+                  marginTop: "3px",
+                }}
+                onClick={() => {
+                  navigate("/TestsetExecution/AddEnvironment", {
+                    state: {
+                      projectId: projectId,
+                      applicationId: applicationId,
+                    },
+                  });
+                }}
+              >
+                + Add Environment
+              </h5>
+            </Stack>
+          </Grid>
+          {applicationType == 3 || applicationType == 4 ? (
+            ""
+          ) : (
+            <Grid item>
+              <Controller
+                control={control}
+                name="browser"
+                defaultValue={["Chrome"]} // Set the default value to "Chrome"
+                render={({ field }) => (
+                  <MultiSelectElement
+                    menuMaxWidth={5}
+                    label="Browser"
+                    size="small"
+                    fullWidth
+                    options={options}
+                    control={control} // Pass the control object to the MultiSelectElement
+                    {...field}
+                  />
                 )}
-              </Popper>
-            </React.Fragment>
-            <CheckboxButtonGroup
-              name="regenerateScript"
-              control={control}
-              options={[
-                {
-                  id: "1",
-                  label: "Regenrate Script",
-                },
-              ]}
+              />
+            </Grid>
+          )}
+          <Grid item xs={2} sm={3} md={2} lg={4}>
+            <FeatureMenu
+              frameworkType={frameworkType}
+              projectId={projectId}
+              testsetId={testsetId}
+              envId={buildEnvId}
+              runtimeVar={
+                runtimeVariable != undefined || runtimeVariable != null
+                  ? runtimeVariable
+                  : ""
+              }
             />
-          </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-       
+
+        <Grid item xs={2} sm={2} md={2} lg={2}>
+          <Grid item>
+            <Stack direction="column">
+              <React.Fragment>
+                <ButtonGroup
+                  variant="contained"
+                  ref={anchorRef}
+                  aria-label="split button"
+                >
+                  <Button
+                    sx={{ backgroundColor: "#009fee" }}
+                    fullWidth
+                    type="submit"
+                    onClick={handleSubmit(onSubmitExecute)}
+                  >
+                    Execute
+                  </Button>
+                  <Button
+                    sx={{ backgroundColor: "#009fee" }}
+                    size="small"
+                    aria-controls={open ? "split-button-menu" : undefined}
+                    aria-expanded={open ? "true" : undefined}
+                    aria-label="select merge strategy"
+                    aria-haspopup="menu"
+                    onClick={handleToggle}
+                  >
+                    <ArrowDropDownIcon />
+                  </Button>
+                </ButtonGroup>
+                <Popper
+                  sx={{
+                    zIndex: 1,
+                  }}
+                  open={open}
+                  anchorEl={anchorRef.current}
+                  role={undefined}
+                  transition
+                  disablePortal
+                >
+                  {({ TransitionProps, placement }) => (
+                    <Grow
+                      {...TransitionProps}
+                      style={{
+                        transformOrigin:
+                          placement === "bottom"
+                            ? "center top"
+                            : "center bottom",
+                      }}
+                    >
+                      <Paper>
+                        <MenuList id="split-button-menu" autoFocusItem>
+                          <MenuItem
+                            size="small"
+                            onClick={handleSubmit(onSubmitGenerate)}
+                          >
+                            GENERATE Script
+                          </MenuItem>
+                        </MenuList>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </React.Fragment>
+              <CheckboxButtonGroup
+                name="regenerateScript"
+                control={control}
+                options={[
+                  {
+                    id: "1",
+                    label: "Regenrate Script",
+                  },
+                ]}
+              />
+            </Stack>
+          </Grid>
+        </Grid>
       </Grid>
 
       {(execLoc == "docker" || execLoc == "jenkins") && (

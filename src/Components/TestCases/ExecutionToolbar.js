@@ -15,7 +15,7 @@ import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import MenuItem from "@mui/material/MenuItem";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -38,6 +38,7 @@ export default function ExecutionToolbar({
   console.log(applicationType);
   const { auth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [execEnvList, setExecEnvList] = useState([]);
   const [clientInactive, setClientInactive] = useState(false);
@@ -364,6 +365,25 @@ export default function ExecutionToolbar({
               onChange={(e) => setExecLoc(e)}
               options={execEnvList}
             />
+            {frameworkType == 4 && (
+              <h5
+                style={{
+                  cursor: "pointer",
+                  color: "#009fee",
+                  marginTop: "3px",
+                }}
+                onClick={() => {
+                  navigate("/TestcaseExecution/ConfigureDevice", {
+                    state: {
+                      projectId: projectId,
+                      pathname: location.pathname,
+                    },
+                  });
+                }}
+              >
+                Configure Device
+              </h5>
+            )}
           </Grid>
           <Grid item xs={2} sm={4} md={4} lg={2.5}>
             <Stack direction="column">
