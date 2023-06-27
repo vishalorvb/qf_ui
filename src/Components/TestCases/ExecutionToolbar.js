@@ -108,9 +108,8 @@ export default function ExecutionToolbar({
           resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
           resp?.data?.status === "FAIL" && setShowLoading(false);
           data?.executionLoc !== "local" && setShowLoading(false);
-          data?.executionLoc === "local"
-            ? resp?.data?.status === "SUCCESS" &&
-              axios
+          resp?.data?.status === "SUCCESS" && resp?.data?.info
+            ? axios
                 .postForm(`http://127.0.0.1:8765/connect`, {
                   data: resp?.data?.info,
                   jarName: `code`,
@@ -158,9 +157,8 @@ export default function ExecutionToolbar({
           resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
           resp?.data?.status === "FAIL" && setShowLoading(false);
           data?.executionLoc !== "local" && setShowLoading(false);
-          data?.executionLoc === "local"
-            ? resp?.data?.status === "SUCCESS" &&
-              axios
+          resp?.data?.status === "SUCCESS" && resp?.data?.info
+            ? axios
                 .postForm(`http://127.0.0.1:8765/connect`, {
                   data: resp?.data?.info,
                   jarName: `code`,

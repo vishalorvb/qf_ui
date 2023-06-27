@@ -153,7 +153,7 @@ function TestsetExecutionToolbar({
           .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
           .then((resp) => {
             data?.executionLoc !== "local" && setShowLoading(false);
-            data?.executionLoc === "local"
+            resp?.data?.status === "SUCCESS" && resp?.data?.info
               ? axios
                   .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
                     data: resp?.data?.info,
@@ -220,7 +220,7 @@ function TestsetExecutionToolbar({
         .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
         .then((resp) => {
           data?.executionLoc !== "local" && setShowLoading(false);
-          data?.executionLoc === "local"
+          resp?.data?.status === "SUCCESS" && resp?.data?.info
             ? axios
                 .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
                   data: resp?.data?.info,
