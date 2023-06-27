@@ -49,7 +49,7 @@ export function getTestcasesInProjects(callback, projectId, applicationId) {
         `/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
     )
     .then((res) => {
-      callback(res.data.info);
+      callback(res.data.info ?? []);
     });
 }
 
