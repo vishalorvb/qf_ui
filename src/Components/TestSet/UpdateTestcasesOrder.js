@@ -7,7 +7,7 @@ import useHead from "../../hooks/useHead";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 function UpdateTestcasesOrder() {
-    const { setHeader } = useHead();
+  const { setHeader } = useHead();
   const location = useLocation();
   const [data, setData] = useState([]);
   const [order, setOrder] = useState([]);
@@ -15,14 +15,23 @@ function UpdateTestcasesOrder() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(
-        `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${location?.state?.testsetId}`
-      )
-      .then((resp) => {
-        const data = resp?.data?.info;
-        setData(data);
-      });
+    location?.state?.moduleType === 1
+      ? axios
+          .get(
+            `/qfservice/GetTestcasesInTestset?testset_id=${location?.state?.testsetId}`
+          )
+          .then((resp) => {
+            const data = resp?.data?.data;
+            setData(data);
+          })
+      : axios
+          .get(
+            `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${location?.state?.testsetId}`
+          )
+          .then((resp) => {
+            const data = resp?.data?.info;
+            setData(data);
+          });
 
     setHeader((ps) => {
       return {
@@ -34,14 +43,25 @@ function UpdateTestcasesOrder() {
   }, []);
 
   const updateTestcasesOrder = () => {
-    axios
-      .post(`/qfservice/webtestset/updateWebTestcasesOrderInTestset`, {
-        testset_id: location?.state?.testsetId,
-        web_testcases_list: order,
-      })
-      .then((resp) => {
-        console.log(resp);
-      });
+    location?.state?.moduleType === 1
+      ? axios
+          .post(`/qfservice/UpdateTestcasesOrderInTestset`, {
+            testset_id: location?.state?.testsetId,
+            testcases_list: order.map((testcase) => {
+              return { testcase_id: testcase };
+            }),
+          })
+          .then((resp) => {
+            console.log(resp);
+          })
+      : axios
+          .post(`/qfservice/webtestset/updateWebTestcasesOrderInTestset`, {
+            testset_id: location?.state?.testsetId,
+            web_testcases_list: order,
+          })
+          .then((resp) => {
+            console.log(resp);
+          });
   };
 
   useEffect(() => {
@@ -107,7 +127,7 @@ function UpdateTestcasesOrder() {
         severity="success"
       />
     </>
-  )
+  );
 }
 
-export default UpdateTestcasesOrder
+export default UpdateTestcasesOrder;

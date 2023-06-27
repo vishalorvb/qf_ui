@@ -68,6 +68,7 @@ export default function Testset() {
                   applicationId: globalApplication?.module_id,
                   testsetId: param.row.testset_id,
                   projectId: globalProject?.project_id,
+                  moduleType: globalApplication?.module_type,
                 },
               })
             }
