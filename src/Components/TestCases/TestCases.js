@@ -1,19 +1,10 @@
-import {
-  Autocomplete,
-  Grid,
-  IconButton,
-  MenuItem,
-  TextField,
-  Tooltip,
-} from "@mui/material";
+import { Grid, MenuItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { useNavigate } from "react-router";
-import { getProject } from "../../Services/ProjectService";
-import { getApplicationOfProject } from "../../Services/ApplicationService";
 import useAuth from "../../hooks/useAuth";
 import TableActions from "../../CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -46,7 +37,7 @@ export default function TestCases() {
   const columns = [
     {
       field: "name",
-      headerName: "Test case name",
+      headerName: "Testcase name",
       flex: 2,
       sortable: false,
       align: "left",
@@ -134,50 +125,10 @@ export default function TestCases() {
       return {
         ...ps,
         name: "Recent Testcases",
-        plusCallback: () => {
-          console.log("");
-        },
       };
     });
-    return () =>
-      setHeader((ps) => {
-        return {
-          ...ps,
-          name: "",
-          plusButton: false,
-          plusCallback: () => console.log("null"),
-        };
-      });
   }, []);
 
-  useEffect(() => {
-    getProject(setProject, auth.userId);
-  }, []);
-
-  useEffect(() => {
-    if (globalProject == null) {
-      setglobalProject(project[0]);
-    }
-  }, [project]);
-
-  useEffect(() => {
-    if (globalProject !== null && globalProject?.project_id !== undefined) {
-      getApplicationOfProject(setApplication, globalProject?.project_id);
-    }
-  }, [globalProject]);
-
-  useEffect(() => {
-    if (globalApplication == null) {
-      setglobalApplication(application[0]);
-    }
-    if (globalApplication?.module_id !== undefined) {
-      GetTestCase(
-        setTestcases,
-        globalProject?.project_id,
-        globalApplication?.module_id
-      );
-    }
-  }, [application]);
   useEffect(() => {
     if (globalApplication?.module_id !== undefined) {
       GetTestCase(
@@ -201,53 +152,12 @@ export default function TestCases() {
       <div className="apptable">
         <div className="intable">
           <Grid item container spacing={2} justifyContent="flex-end">
-            <Grid item>
-              <label htmlFor="">Projects</label>
-              <Autocomplete
-                disablePortal
-                disableClearable
-                id="project_id"
-                options={project}
-                value={globalProject || null}
-                sx={{ width: "100%" }}
-                getOptionLabel={(option) => option.project_name}
-                onChange={(e, value) => {
-                  setglobalApplication(null);
-                  setglobalProject(value);
-                }}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input type="text" {...params.inputProps} />
-                  </div>
-                )}
-              />
-            </Grid>
-            <Grid item>
-              <label htmlFor="">Application</label>
-              <Autocomplete
-                disablePortal
-                disableClearable
-                id="model_id"
-                options={application}
-                value={globalApplication || null}
-                sx={{ width: "100%" }}
-                getOptionLabel={(option) => option.module_name}
-                onChange={(e, value) => {
-                  setglobalApplication(value);
-                }}
-                renderInput={(params) => (
-                  <div ref={params.InputProps.ref}>
-                    <input type="text" {...params.inputProps} />
-                  </div>
-                )}
-              />
-            </Grid>
-            {/* <ProjectnApplicationSelector
+            <ProjectnApplicationSelector
               globalProject={globalProject}
               setglobalProject={setglobalProject}
               globalApplication={globalApplication}
               setglobalApplication={setglobalApplication}
-            /> */}
+            />
           </Grid>
         </div>
         <Table
