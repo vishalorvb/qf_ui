@@ -284,7 +284,7 @@ export const Routes = [
     accessRole: [1, 2, 4, 5],
   },
   {
-    path: "Projects/Recent",
+    path: "Projects/favourite",
     element: Projects,
     accessRole: [1, 2, 4, 5],
     subRoute: [

@@ -66,7 +66,6 @@ export default function TransferList({ left, setLeft, right, setRight,name}) {
             <ListItem
               key={value[name]}
               role="listitem"
-            
               onClick={handleToggle(value)}
             >
                 <Checkbox

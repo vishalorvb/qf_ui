@@ -1,6 +1,5 @@
 import { Button, Container, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { resetClassName } from "../../CustomComponent/FormValidation";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import useHead from "../../hooks/useHead";
@@ -8,13 +7,14 @@ import useAuth from "../../hooks/useAuth";
 import { createformData } from "./ProjectData";
 import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
     getUsers,
     createProject,
     updateProject,
     getUserOfProject,
-    getJiraProject
+    getJiraProject,
+    getProjectDetails
 } from "../../Services/ProjectService";
 import {
     getApplicationOfProject,
@@ -53,16 +53,9 @@ function CreateProject() {
     const { auth } = useAuth();
     const usertoken = localStorage.getItem("token");
     const navigate = useNavigate();
-
-    useEffect(() => {
-        setHeader((ps) => {
-            return {
-                ...ps,
-                name: createformData.sqeProjectId == "" ? "Create Project" : "Edit Project",
-            };
-        });
-    }, []);
-
+    let location = useLocation()
+    let projectId = location.state.id
+    let [projectDetails, setProjectDetails] = useState([])
     let [snackbarerror, setSnackbarerror] = useState(false);
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     let [users, setUsers] = useState([]);
@@ -73,6 +66,21 @@ function CreateProject() {
     let [applications, setApplications] = useState([]);
     let [jiraProject, setJiraproject] = useState(null);
     let [automation_type, setAutomationType] = useState("1")
+    let submitData = useRef({
+        userId:auth.info.id,
+        orgId:1,
+        automation_framework_type:1,
+        org_name:"",
+        jira_url :"",
+        jira_password :"",
+        jira_user_name :"",
+        jira_project_key :"",
+        userAccessPermissions :"",
+        gitOps :true
+
+    })
+
+    console.log(projectId)
 
     function getUserlist() {
         let userlist = [];
@@ -106,7 +114,7 @@ function CreateProject() {
                 "error"
             ) == true
         ) {
-            if (createformData.sqeProjectId == "") {
+            if (projectId == undefined) {
                 createProject(createformData).then((res) => {
                     if (res == "SUCCESS") {
                         snackbarmasg = "Project created successfully"
@@ -152,11 +160,9 @@ function CreateProject() {
     useEffect(() => {
         getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
         getApplication(setApplications, auth.info.id);
-        if (createformData.sqeProjectId != "") {
-            getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
-        }
-        if (createformData.sqeProjectId != "") {
-            getUserOfProject(setRightuser, createformData.sqeProjectId, auth.info.id).then(res => {
+        if (projectId != undefined) {
+            getApplicationOfProject(setRightApplication, projectId);
+            getUserOfProject(setRightuser, projectId, auth.info.id).then(res => {
                 let ids = res?.map(pro => pro.id)
                 getUsers(
                     (val) => { },
@@ -199,8 +205,47 @@ function CreateProject() {
             }
         };
     }, []);
+    useEffect(() => {
+        setHeader((ps) => {
+            return {
+                ...ps,
+                name: projectId === undefined ? "Create Project" : "Edit Project",
+            };
+        });
+    }, []);
 
+    useEffect(() => {
+        if (projectId !== undefined) {
+            getProjectDetails(setProjectDetails, auth.info.id, projectId)
+        }
+    }, [])
 
+    useEffect(() => {
+    console.log(projectDetails)
+    if(projectDetails.length != 0){
+        submitData.current.projectName = projectDetails.project_name
+        submitData.current.projectDesc = projectDetails.description
+        submitData.current.jira_project_id = projectDetails.jira_project_id
+        submitData.current.sqeProjectId = projectId
+        submitData.current.repository_url = projectDetails.repository_url
+        submitData.current.repository_token = projectDetails.repository_token   
+        submitData.current.repository_branch = projectDetails.repository_branch
+        submitData.current.jenkins_token = projectDetails.jenkins_token
+        submitData.current.jenkins_url = projectDetails.jenkins_url
+        submitData.current.jenkins_user_name = projectDetails.jenkins_user_name
+        submitData.current.jenkins_password = projectDetails.jenkins_password
+        submitData.current.automation_framework_type = projectDetails.automation_framework_type
+        submitData.current.db_type = projectDetails.testdata_db_config.db_type
+        submitData.current.db_name = projectDetails.testdata_db_config.db_name.db_password
+        submitData.current.db_user_name = projectDetails.testdata_db_config.db_user_name
+        submitData.current.db_password = projectDetails.testdata_db_config.db_password
+        submitData.current.db_port = projectDetails.testdata_db_config.db_port
+        submitData.current.db_host = projectDetails.testdata_db_config.db_host
+
+    }
+   
+    console.log(submitData)
+    }, [projectDetails])
 
     const ref = useRef(null);
     return (
