@@ -10,7 +10,6 @@ export default function ExecutionDetails({
   applicationType,
   frameworkType,
 }) {
-  // console.log(applicationType)
   const [datasetList, setDataList] = useState([]);
   const [selectedDatasets, setSelectedDatasets] = useState([]);
   const columns = [
