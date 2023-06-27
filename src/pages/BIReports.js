@@ -23,7 +23,7 @@ import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import DeleteTestset from "../Components/TestSet/DeleteTestset";
+// import DeleteTestset from "../Components/TestSet/DeleteTestset";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -60,22 +60,22 @@ function BIReports() {
     setSelectedOptions(e.target.value);
   };
 
-  const phaseHandler = (phase,projectId) => {
+  const phaseHandler = (phase, projectId) => {
     navigate("phases", {
-        state: {
-          param1: phase,
-          param2: projectId,
-        },
+      state: {
+        param1: phase,
+        param2: projectId,
+      },
     });
   };
 
-  const cyclesHandler = (cycle,projectId,testsets) => {
+  const cyclesHandler = (cycle, projectId, testsets) => {
     navigate("cycles", {
-        state: {
-          param1: cycle,
-          param2: projectId,
-          param3: testsets,
-        },
+      state: {
+        param1: cycle,
+        param2: projectId,
+        param3: testsets,
+      },
     });
   };
 
@@ -84,7 +84,7 @@ function BIReports() {
     console.log(e);
     setDeleteObject(e);
   };
-  
+
   const data = [];
   const addHandler = () => {
     testset.map((ts) =>
@@ -123,7 +123,7 @@ function BIReports() {
             <p htmlFor="">
               Total Phases {item.total_phases}{" "}
               <span
-                onClick={() => phaseHandler(item.total_phases,item.project_id)}
+                onClick={() => phaseHandler(item.total_phases, item.project_id)}
                 style={{ color: "#009fee", cursor: "pointer" }}
               >
                 Click
@@ -132,7 +132,13 @@ function BIReports() {
             <p htmlFor="">
               Total Cycles {item.total_cycles}{" "}
               <span
-                onClick={() => cyclesHandler(item.total_cycles,item.project_id,item.testsets)}
+                onClick={() =>
+                  cyclesHandler(
+                    item.total_cycles,
+                    item.project_id,
+                    item.testsets
+                  )
+                }
                 style={{ color: "#009fee", cursor: "pointer" }}
               >
                 Click
@@ -209,7 +215,7 @@ function BIReports() {
         const testsets = resp?.data?.info ? resp?.data?.info?.bitestsets : [];
         setBiTestset(testsets);
       });
-  }
+  };
 
   useEffect(() => {
     getTestsets();
@@ -284,7 +290,9 @@ function BIReports() {
               <Select
                 multiple
                 options={testset}
-                getOptionLabel={(option) => (option.testset_name ? option.testset_name : "")}
+                getOptionLabel={(option) =>
+                  option.testset_name ? option.testset_name : ""
+                }
                 value={selectedOptions}
                 onChange={handleSelectChange}
                 // onChange={(key,value) => (console.log(value))}
@@ -309,7 +317,7 @@ function BIReports() {
         </Grid>
       </Grid>
       {TestsetsData(bitestset, columns, phaseHandler, cyclesHandler)}
-      {openDelete ? (
+      {/* {openDelete ? (
         <DeleteTestset
           object={deleteObject}
           openDelete={openDelete}
@@ -320,7 +328,7 @@ function BIReports() {
         />
       ) : (
         ""
-      )}
+      )} */}
       <SnackbarNotify
         open={delSuccessMsg}
         close={setDelSuccessMsg}

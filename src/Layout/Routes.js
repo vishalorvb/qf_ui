@@ -166,13 +166,9 @@ const TestLibrary = lazy(() => import(`../Components/TestLibrary/TestLibrary`));
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 
 const Logs = lazy(() => import(`../CustomComponent/Logs`));
+const MakeCopy = lazy(() => import(`../pages/MakeCopy`));
 
 export const Routes = [
-  {
-    path: "MapDiffElements",
-    element: MapDiffElements,
-    accessRole: [1, 2, 4, 5],
-  },
   {
     path: "Application/Recent",
     element: applicationList,
@@ -297,6 +293,11 @@ export const Routes = [
         element: CreateProject,
         accessRole: [1, 2, 4, 5],
       },
+      {
+        path: "CopyProject",
+        element: MakeCopy,
+        accessRole: [1, 2, 4, 5],
+      },
     ],
   },
   {
@@ -309,15 +310,15 @@ export const Routes = [
         element: CreateProject,
         accessRole: [1, 2, 4, 5],
       },
+      {
+        path: "CopyProject",
+        element: MakeCopy,
+        accessRole: [1, 2, 4, 5],
+      },
     ],
   },
   {
     path: "Projects/Create",
-    element: CreateProject,
-    accessRole: [1, 2, 4, 5],
-  },
-  {
-    path: "Projects/Search",
     element: CreateProject,
     accessRole: [1, 2, 4, 5],
   },
@@ -649,6 +650,11 @@ export const Routes = [
         element: ApiDatasets,
         accessRole: [1, 2, 4, 5],
       },
+      {
+        path: "CopyTestcase",
+        element: MakeCopy,
+        accessRole: [1, 2, 4, 5],
+      },
     ],
   },
   {
@@ -669,6 +675,11 @@ export const Routes = [
       {
         path: "Reorder",
         element: UpdateTestcasesOrder,
+        accessRole: [1, 2, 4, 5],
+      },
+      {
+        path: "CopyTestset",
+        element: MakeCopy,
         accessRole: [1, 2, 4, 5],
       },
     ],

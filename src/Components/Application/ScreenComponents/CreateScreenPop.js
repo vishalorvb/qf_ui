@@ -33,8 +33,8 @@ export default function CreateScreenPop(props) {
     console.log(screenData);
 
     const screendata = {
-      screen_name: screenData.name.trim(),
-      screen_description: screenData.desc.trim(),
+      screen_name: screenData?.name?.trim(),
+      screen_description: screenData?.desc?.trim(),
       user_id: auth?.userId,
       module_id: applicationId,
       page_id: pageId,

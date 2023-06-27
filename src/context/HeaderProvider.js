@@ -12,6 +12,8 @@ export const HeaderProvider = ({ children }) => {
   });
   const [globalProject, setglobalProject] = useState(null);
   const [globalApplication, setglobalApplication] = useState(null);
+  const [projectsList, setProjectList] = useState([]);
+  const [applicationList, setapplicationList] = useState([]);
   const [showLoader, setShowloader] = useState(false);
   const [snackbarData, setSnackbarData] = useState({
     status: false,
@@ -32,6 +34,10 @@ export const HeaderProvider = ({ children }) => {
         setShowloader,
         snackbarData,
         setSnackbarData,
+        projectsList,
+        setProjectList,
+        applicationList,
+        setapplicationList,
       }}
     >
       {children}

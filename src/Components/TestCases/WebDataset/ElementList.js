@@ -1,53 +1,104 @@
-import React, { useEffect, useState } from 'react'
-import MuiltiSelect from '../../../CustomComponent/MuiltiSelect';
-import { Typography } from '@mui/material';
-import Table from '../../../CustomComponent/Table';
+import React, { useEffect, useRef, useState } from "react";
+import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
+import IconButton from "@mui/material/IconButton";
+import { Button, Checkbox, Grid, Typography } from "@mui/material";
+import Table from "../../../CustomComponent/Table";
+import MastPop from "../../../CustomComponent/MastPop";
 
-
-let opt = [
-    {
-        id: "custom_code",
-        val: "Custom Code",
-    },
-    {
-        id: "displayed",
-        val: "Displayed",
-    },
-    {
-        id: "element_wait",
-        val: "Element Wait",
-    },
-    {
-        id: "scrollup",
-        val: "Scroll Up",
-    },
-    {
-        id: "scrolldown",
-        val: "Scroll Down",
-    },
-    {
-        id: "is_random",
-        val: "Random",
-    },
-    {
-        id: "is_enter",
-        val: "Enter",
-    },
-    {
-        id: "is_validate",
-        val: "Validate",
-    },
-];
-
-let click = ["InputText", "Link"]
-
+let click = ["InputText", "Link"];
 
 function ElementList({ elementList, updateDataset, screenName }) {
+    let [popUp, setPopup] = useState(false);
+    let [elementId, setElementId] = useState();
+    let opt = useRef([
+        {
+            id: "custom_code",
+            val: "Custom Code",
+            mark: true,
+        },
 
+        {
+            id: "displayed",
+            val: "Displayed",
+            mark: true,
+        },
+        {
+            id: "is_optional_element",
+            val: "Skip",
+            mark: true,
+        },
+        {
+            id: "skip_mobile_element",
+            val: "Skip Mobile Element",
+            mark: true,
+        },
+        {
+            id: "Skip Web Element",
+            val: "skip_web_element",
+            mark: true,
+        },
+        {
+            id: "element_wait",
+            val: "Element Wait",
+            mark: false,
+        },
+        {
+            id: "scrollup",
+            val: "Scroll Up",
+            mark: true,
+        },
+        {
+            id: "scrolldown",
+            val: "Scroll Down",
+            mark: true,
+        },
+        {
+            id: "is_random",
+            val: "Random",
+            mark: true,
+        },
+        {
+            id: "is_enter",
+            val: "Enter",
+            mark: true,
+        },
+        {
+            id: "is_validate",
+            val: "Validate",
+            mark: true,
+        },
 
-    let [inputList, setInputList] = useState([]);
+    ]);
 
+    let inputopt = useRef([
+        {
+            id: "validate_text",
+            label: "Validate",
+            value: "",
+        },
+        {
+            id: "wait_time",
+            label: "Element Wait Time",
+            value: "",
+        },
+        {
+            id: "link_testcase",
+            label: "link test case",
+            value: "",
+        },
+    ]);
+    function updateElementInfo(e) {
+        let elements = document.getElementsByName("info");
+        elements.forEach((ele) => {
+            updateDataset(elementId, ele.value, ele.checked);
+        });
+        inputopt.current.forEach((ele) => {
+            let x = document.getElementById(ele.id).value;
+            updateDataset(elementId, ele.id, x);
+        });
 
+        setPopup(false);
+    }
     let elementcol = [
         {
             field: "fieldname",
@@ -74,7 +125,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
             headerName: "DataSets",
             renderCell: (param) => {
                 return (
-                    <div >
+                    <div>
                         {param.row.web_page_elements.input_type == "InputText" && (
                             <input
                                 type="text"
@@ -96,7 +147,12 @@ function ElementList({ elementList, updateDataset, screenName }) {
                             <input
                                 type="checkbox"
                                 defaultChecked={param.row.dataset_values.is_click}
-                                style={{ height: "22px", width: "22px", margin: "4px", padding: "4px" }}
+                                style={{
+                                    height: "22px",
+                                    width: "22px",
+                                    margin: "4px",
+                                    padding: "4px",
+                                }}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -109,6 +165,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                         {param.row.web_page_elements.input_type == "Link" && (
                             <select
                                 defaultValue={param.row.dataset_values.input_value}
+                                style={{ width: "100%" }}
                                 onChange={(e) => {
                                     updateDataset(
                                         param.row.element_id,
@@ -116,9 +173,10 @@ function ElementList({ elementList, updateDataset, screenName }) {
                                         e.target.value
                                     );
                                 }}
-                                dangerouslySetInnerHTML={{ __html: param?.row?.web_page_elements?.child_text }}
-                            >
-                            </select>
+                                dangerouslySetInnerHTML={{
+                                    __html: param?.row?.web_page_elements?.child_text,
+                                }}
+                            ></select>
                         )}
                     </div>
                 );
@@ -131,74 +189,42 @@ function ElementList({ elementList, updateDataset, screenName }) {
             field: "elements",
             headerName: "Elements",
             renderCell: (param) => {
-                if (param.row.dataset_values["is_validate"]) {
-                    let tmp = [...inputList]
-                    if (!tmp.includes(param.row.element_id)) {
-                        tmp.push(param.row.element_id)
-                        setInputList([...tmp])
-                    }
-                }
-                let preselect = opt.filter((e) => {
-                    if (param.row.dataset_values[e.id]) {
-                        return e;
-                    }
-                });
                 return (
                     <div style={{ display: "flex" }}>
-                        <div >
-                            <MuiltiSelect
-                                preselect={preselect}
-                                options={opt}
-                                value="val"
-                                id="id"
-                                size="small"
-                                stateList={(list) => {
-                                    let templist = list.map((obj) => obj["id"]);
-                                    opt.forEach((l) => {
-                                        if (templist.includes(l.id)) {
-                                            updateDataset(param.row.element_id, l.id, true);
-                                        } else {
-                                            updateDataset(param.row.element_id, l.id, false);
-                                        }
+                        <div>
+                            <IconButton
+                                onClick={(e) => {
+                                    console.log(param.row);
+                                    opt.current.forEach((ele) => {
+                                        ele.mark = param.row.dataset_values[ele.id];
                                     });
-                                    if (templist.includes("is_validate")) {
-                                        let tmp = [...inputList]
-                                        tmp.push(param.row.element_id)
-                                        setInputList([...tmp])
-                                    }
-                                    else {
-                                        let tmp = [...inputList]
-                                        tmp = tmp.filter(t => t != param.row.element_id)
-                                        setInputList([...tmp])
-                                    }
+                                    inputopt.current.forEach((ele) => {
+                                        ele.value = param.row.dataset_values[ele.id];
+                                    });
+                                    setElementId(param.row.element_id);
+                                    setPopup(true);
                                 }}
-                            ></MuiltiSelect>
+                            >
+                                <NearMeOutlinedIcon></NearMeOutlinedIcon>
+                            </IconButton>
                         </div>
-                        {inputList.includes(param.row.element_id) && <div style={{ marginTop: "10px" }}>
-                            <input
-                                onKeyDown={(event) => {
-                                    event.stopPropagation();
-                                }}
-                                onChange={e => {
-                                    updateDataset(param.row.element_id, "validate_text", e.target.value.trim())
-                                }}
-                                defaultValue={param.row.dataset_values.validate_text}
-                                type="text" placeholder="Enter Value" />
-                        </div>}
                     </div>
                 );
             },
-            flex: inputList.length == 0 ? 3 : 6,
+            flex: 1,
             sortable: false,
             align: "left",
         },
     ];
 
-    useEffect(() => {
-    }, [elementList, updateDataset, screenName])
+    useEffect(() => { }, [elementList, updateDataset, screenName]);
     return (
         <div>
-            <Typography mt={2} mb={-2} sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}>
+            <Typography
+                mt={2}
+                mb={-2}
+                sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}
+            >
                 {screenName}
             </Typography>
             <Table
@@ -206,11 +232,65 @@ function ElementList({ elementList, updateDataset, screenName }) {
                 rows={elementList == undefined ? [] : elementList}
                 columns={elementcol}
                 hidefooter={true}
-                getRowId={row => row.element_id}
+                getRowId={(row) => row.element_id}
                 rowHeight={70}
             ></Table>
+            <MastPop open={popUp} setOpen={setPopup} heading="Dataset Element Info">
+                <Grid container spacing={2}>
+                    {opt.current.map((val) => {
+                        return (
+                            <Grid item md={4}>
+                                <span>
+                                    <label for="">{val.val}</label>
+                                </span>{" "}
+                                <Checkbox
+                                    defaultChecked={val.mark}
+                                    type="checkbox"
+                                    value={val.id}
+                                    name="info"
+                                />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+                <br />
+                <Grid container spacing={2} justifyContent="center" alignItems="center">
+                    {inputopt.current.map((val) => {
+                        return (
+                            <Grid item xs={12} md={12}>
+                                <label for="">{val.label}</label>
+                                <br />
+                                <input
+                                    type="text"
+                                    name={val.id}
+                                    id={val.id}
+                                    defaultValue={val.value}
+                                />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+                <br />
+                <Grid
+                    container
+                    spacing={2}
+                    justifyContent="flex-end"
+                    alignItems="center"
+                >
+                    <Grid item xs={1.5} md={1.5}>
+                        <Button variant="text" onClick={(e) => setPopup(false)}>
+                            Cancel
+                        </Button>
+                    </Grid>
+                    <Grid item xs={1.5} md={1.5}>
+                        <Button variant="contained" onClick={(e) => updateElementInfo(e)}>
+                            Save
+                        </Button>
+                    </Grid>
+                </Grid>
+            </MastPop>
         </div>
-    )
+    );
 }
 
-export default ElementList
+export default ElementList;

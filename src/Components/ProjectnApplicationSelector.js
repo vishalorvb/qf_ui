@@ -8,19 +8,21 @@ import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
 export default function ProjectnApplicationSelector({ isTestset }) {
-  const [projectsList, setProjectList] = useState([]);
-  const [applicationList, setapplicationList] = useState([]);
   const {
     globalProject,
     setglobalProject,
     globalApplication,
     setglobalApplication,
+    projectsList,
+    setProjectList,
+    applicationList,
+    setapplicationList,
   } = useHead();
 
   const { auth } = useAuth();
 
   useEffect(() => {
-    getProject(setProjectList, auth.userId);
+    projectsList.length <= 0 && getProject(setProjectList, auth.userId);
   }, []);
 
   useEffect(() => {
@@ -41,9 +43,14 @@ export default function ProjectnApplicationSelector({ isTestset }) {
   }, [applicationList]);
 
   return (
-
-    <Grid item container spacing={2} justifyContent="space-around" direction="row">
-      <Grid item>
+    <Grid
+      item
+      container
+      spacing={2}
+      justifyContent="space-around"
+      direction="row"
+    >
+      <Grid item md={6}>
         <label htmlFor="">Projects</label>
         <Autocomplete
           disablePortal
@@ -51,7 +58,6 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           id="project_id"
           options={projectsList}
           value={globalProject || null}
-          // sx={{ width: "100%" }}
           fullWidth
           getOptionLabel={(option) => option.project_name ?? ""}
           onChange={(e, value) => {
@@ -62,11 +68,10 @@ export default function ProjectnApplicationSelector({ isTestset }) {
             <div ref={params.InputProps.ref}>
               <input type="text" {...params.inputProps} />
             </div>
-
           )}
         />
       </Grid>
-      <Grid item>
+      <Grid item md={6}>
         <label htmlFor="">Applications</label>
         <Autocomplete
           disablePortal
@@ -88,8 +93,6 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           )}
         />
       </Grid>
-      
     </Grid>
- 
   );
 }

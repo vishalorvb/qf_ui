@@ -8,7 +8,7 @@ export default function NotFound() {
     setHeader((ps) => {
       return { ...ps, name: "notFound" };
     });
-  }, []);
+  }, [setHeader]);
 
   return <>Not Found</>;
 }
