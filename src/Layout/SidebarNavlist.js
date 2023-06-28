@@ -98,9 +98,9 @@ export const testManagementList = [
         accessRole: [1, 2, 4],
       },
       {
-        name: "Recent",
+        name: "Favourite",
         id: "32",
-        route: "Projects/Recent",
+        route: "Projects/favourite",
         state: "recentProjects",
         accessRole: [1, 2, 4],
       },
