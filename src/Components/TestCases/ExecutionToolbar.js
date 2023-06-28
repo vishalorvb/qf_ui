@@ -107,22 +107,24 @@ export default function ExecutionToolbar({
         .then((resp) => {
           resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
           resp?.data?.status === "FAIL" && setShowLoading(false);
-          data?.executionLoc !== "local" && setShowLoading(false);
-          resp?.data?.status === "SUCCESS" && resp?.data?.info
-            ? axios
-                .postForm(`http://127.0.0.1:8765/connect`, {
-                  data: resp?.data?.info,
-                  jarName: `code`,
-                })
-                .then((resp) => {
-                  setJarConnected(true);
-                  setShowLoading(false);
-                })
-                .catch((err) => {
-                  err.message === "Network Error" && setClientInactive(true);
-                  setShowLoading(false);
-                })
-            : setRemoteExecutionsuccess(true);
+          if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
+            axios
+              .postForm(`http://127.0.0.1:8765/connect`, {
+                data: resp?.data?.info,
+                jarName: `code`,
+              })
+              .then((resp) => {
+                setJarConnected(true);
+                setShowLoading(false);
+              })
+              .catch((err) => {
+                err.message === "Network Error" && setClientInactive(true);
+                setShowLoading(false);
+              });
+          } else {
+            setRemoteExecutionsuccess(true);
+            setShowLoading(false);
+          }
         });
     } else {
       setSnack(true);
@@ -156,22 +158,24 @@ export default function ExecutionToolbar({
         .then((resp) => {
           resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
           resp?.data?.status === "FAIL" && setShowLoading(false);
-          data?.executionLoc !== "local" && setShowLoading(false);
-          resp?.data?.status === "SUCCESS" && resp?.data?.info
-            ? axios
-                .postForm(`http://127.0.0.1:8765/connect`, {
-                  data: resp?.data?.info,
-                  jarName: `code`,
-                })
-                .then((resp) => {
-                  setJarConnected(true);
-                  setShowLoading(false);
-                })
-                .catch((err) => {
-                  err.message === "Network Error" && setClientInactive(true);
-                  setShowLoading(false);
-                })
-            : setRemoteExecutionsuccess(true);
+          if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
+            axios
+              .postForm(`http://127.0.0.1:8765/connect`, {
+                data: resp?.data?.info,
+                jarName: `code`,
+              })
+              .then((resp) => {
+                setJarConnected(true);
+                setShowLoading(false);
+              })
+              .catch((err) => {
+                err.message === "Network Error" && setClientInactive(true);
+                setShowLoading(false);
+              });
+          } else {
+            setRemoteExecutionsuccess(true);
+            setShowLoading(false);
+          }
         });
     } else {
       setSnack(true);
@@ -201,23 +205,24 @@ export default function ExecutionToolbar({
       axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
         resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         resp?.data?.status === "FAIL" && setShowLoading(false);
-        data?.executionLoc !== "local" && setShowLoading(false);
-        data?.executionLoc === "local"
-          ? resp?.data?.status === "SUCCESS" &&
-            axios
-              .postForm(`http://127.0.0.1:8765/connect`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-                setShowLoading(false);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-                setShowLoading(false);
-              })
-          : setRemoteExecutionsuccess(true);
+        if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
+          axios
+            .postForm(`http://127.0.0.1:8765/connect`, {
+              data: resp?.data?.info,
+              jarName: `code`,
+            })
+            .then((resp) => {
+              setJarConnected(true);
+              setShowLoading(false);
+            })
+            .catch((err) => {
+              err.message === "Network Error" && setClientInactive(true);
+              setShowLoading(false);
+            });
+        } else {
+          setRemoteExecutionsuccess(true);
+          setShowLoading(false);
+        }
       });
     } else {
       setSnack(true);
@@ -246,23 +251,24 @@ export default function ExecutionToolbar({
       axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
         resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
         resp?.data?.status === "FAIL" && setShowLoading(false);
-        data?.executionLoc !== "local" && setShowLoading(false);
-        data?.executionLoc === "local"
-          ? resp?.data?.status === "SUCCESS" &&
-            axios
-              .postForm(`http://127.0.0.1:8765/connect`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-                setShowLoading(false);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-                setShowLoading(false);
-              })
-          : setRemoteExecutionsuccess(true);
+        if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
+          axios
+            .postForm(`http://127.0.0.1:8765/connect`, {
+              data: resp?.data?.info,
+              jarName: `code`,
+            })
+            .then((resp) => {
+              setJarConnected(true);
+              setShowLoading(false);
+            })
+            .catch((err) => {
+              err.message === "Network Error" && setClientInactive(true);
+              setShowLoading(false);
+            });
+        } else {
+          setRemoteExecutionsuccess(true);
+          setShowLoading(false);
+        }
       });
     } else {
       setSnack(true);
