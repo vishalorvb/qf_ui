@@ -16,7 +16,7 @@ function intersection(a, b) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function TransferList({ left, setLeft, right, setRight }) {
+export default function TransferList({ left, setLeft, right, setRight,name}) {
   const [checked, setChecked] = React.useState([]);
 
   const leftChecked = intersection(checked, left);
@@ -62,25 +62,18 @@ export default function TransferList({ left, setLeft, right, setRight }) {
       <List dense component="div" role="list">
         {items.map((value) => {
           const labelId = `transfer-list-item-${value}-label`;
-
           return (
             <ListItem
-              key={value.name}
+              key={value[name]}
               role="listitem"
-              button
               onClick={handleToggle(value)}
             >
-              <ListItemIcon>
                 <Checkbox
                   checked={checked.indexOf(value) !== -1}
                   tabIndex={-1}
                   disableRipple
-                  inputProps={{
-                    "aria-labelledby": labelId,
-                  }}
                 />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={value.name} />
+              <ListItemText id={labelId} primary={value[name]} />
             </ListItem>
           );
         })}

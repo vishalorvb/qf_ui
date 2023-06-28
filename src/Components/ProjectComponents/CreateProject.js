@@ -1,724 +1,592 @@
 import { Button, Container, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { resetClassName } from "../../CustomComponent/FormValidation";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import useHead from "../../hooks/useHead";
 import useAuth from "../../hooks/useAuth";
-import { createformData } from "./ProjectData";
-import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  getUsers,
-  createProject,
-  updateProject,
-  getUserOfProject,
-  getJiraProject
+    getUsers,
+    createProject,
+    updateProject,
+    getUserOfProject,
+    getJiraProject,
+    getProjectDetails
 } from "../../Services/ProjectService";
 import {
-  getApplicationOfProject,
-  getApplication,
+    getApplicationOfProject,
+    getApplication,
 } from "../../Services/ApplicationService";
+import TransferList from "../../CustomComponent/TransferList";
 
-let snackbarmasg = ""
 let jiraProjectdata = {
-  url: "",
-  username: "",
-  password: "",
-  itstype: 1,
+    url: "",
+    username: "",
+    password: "",
+    itstype: 1,
 }
 
 let filterApplication = {
-  // "automation_type": "module type list"
-  1: [1, 2],
-  3: [1, 2],
-  4: [3, 4, 13],
-  6: [19]
+    // "automation_type": "module type list"
+    1: [1, 2],
+    3: [1, 2],
+    4: [3, 4, 13],
+    6: [19]
 }
 let automationType = [
-  { "Name": "Selenium", "Val": 1 },
-  { "Name": "BDD", "Val": 2 },
-  { "Name": "Cucumber Automation", "Val": 3 },
-  { "Name": "Link Project", "Val": 6 },
-  { "Name": "Mobile", "Val": 4 }
+    { "Name": "Selenium", "Val": 1 },
+    { "Name": "BDD", "Val": 2 },
+    { "Name": "Cucumber Automation", "Val": 3 },
+    { "Name": "Link Project", "Val": 6 },
+    { "Name": "Mobile", "Val": 4 }
 ]
 
-let errorMsg = ""
-
 function CreateProject() {
-  const { setHeader } = useHead();
-  const { auth } = useAuth();
-  const usertoken = localStorage.getItem("token");
-  const navigate = useNavigate();
+    const { setHeader, setSnackbarData } = useHead();
+    const { auth } = useAuth();
+    const usertoken = localStorage.getItem("token");
+    const navigate = useNavigate();
+    let location = useLocation()
+    let projectId = location.state.id
+    let [projectDetails, setProjectDetails] = useState([])
+    let [users, setUsers] = useState([]);
+    let [leftuser, setLeftuser] = useState([]);
+    let [rigthtuser, setRightuser] = useState([]);
+    let [leftApplication, setLeftApplication] = useState([]);
+    let [rightApplication, setRightApplication] = useState([]);
+    let [applications, setApplications] = useState([]);
+    let [jiraProject, setJiraproject] = useState(null);
+    let [automation_type, setAutomationType] = useState("1")
+    let submitData = useRef({
+        issueTrackerType: 1,
+        jira_project_id: "",
+        userId: auth.info.id,
+        orgId: 1,
+        automation_framework_type: 1,
+        org_name: "",
+        userAccessPermissions: "",
+        gitOps: true,
+        jira_project_key: "",
+        sqeProjectId: "",
+        db_type: "",
+        db_name: "",
+        db_host: "",
+        db_user_name: "",
+        db_port: "",
+        db_password: "",
 
-  useEffect(() => {
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name: createformData.sqeProjectId == "" ? "Create Project" : "Edit Project",
-      };
-    });
-  }, []);
-
-  let [snackbarerror, setSnackbarerror] = useState(false);
-  let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-  let [users, setUsers] = useState([]);
-  let [leftuser, setLeftuser] = useState([]);
-  let [rigthtuser, setRightuser] = useState([]);
-  let [leftApplication, setLeftApplication] = useState([]);
-  let [rightApplication, setRightApplication] = useState([]);
-  let [applications, setApplications] = useState([]);
-  let [jiraProject, setJiraproject] = useState(null);
-  let [automation_type, setAutomationType] = useState("1")
-
-  function getUserlist() {
-    let userlist = [];
-    rigthtuser.forEach((user) => {
-      let temp = {
-        user_id: user.id.toString(),
-        grafana_role: "4",
-      };
-      userlist.push(temp);
-    });
-    return userlist;
-  }
-  function getApplicationlist() {
-    let applist = [];
-    rightApplication.forEach((app) => {
-      applist.push(app.module_id);
-    });
-    return applist;
-  }
-  function submitHandler() {
-    let x = getUserlist();
-    x = JSON.stringify(x);
-    let app = getApplicationlist();
-    app = app.toString();
-    createformData.userAccessPermissions = x;
-    createformData.applicationsProjectMapping = "[" + app + "]";
-    createformData.userId = auth.info.id;
-    if (
-      validateFormbyName(
-        ["projectname", "automation_framework_type", "desc",],
-        "error"
-      ) == true
-    ) {
-      if (createformData.sqeProjectId == "") {
-        createProject(createformData).then((res) => {
-          if (res == "SUCCESS") {
-            snackbarmasg = "Project created successfully"
-            setSnackbarsuccess(true);
-            setTimeout(() => {
-              navigate("/Projects/Recent");
-            }, 1000);
-          } else {
-            errorMsg = "Project Name already exists"
-            setSnackbarerror(true);
-          }
-        });
-      } else {
-        updateProject(createformData).then((res) => {
-          if (res == "SUCCESS") {
-            snackbarmasg = "Project updated successfully"
-            setSnackbarsuccess(true);
-            setTimeout(() => {
-              navigate("/Projects/Recent");
-            }, 1000);
-          } else {
-
-            setSnackbarerror(true);
-          }
-        });
-      }
-    } else {
-      errorMsg = "Fill Required Fields"
-      setSnackbarerror(true);
-    }
-  }
-
-  function handleSelect(event) {
-    let e = document.getElementById("left");
-    let remaining = leftuser;
-    for (let i = 0; i < e.options.length; i++) {
-      if (e.options[i].selected) {
-        let temp = users.filter((user) => user.id == e.options[i].value);
-        remaining = remaining.filter((user) => user.id != e.options[i].value);
-        if (temp.length > 0) {
-          setRightuser((pv) => [...pv, temp[0]]);
-        }
-      }
-      // setLeftuser(remaining);
-    }
-  }
-
-  function handleUnselect(event) {
-    let e = document.getElementById("right");
-    let remaining = rigthtuser;
-    for (let i = 0; i < e.options.length; i++) {
-      if (e.options[i].selected) {
-        let temp = users.filter((user) => user.id == e.options[i].value);
-        remaining = remaining.filter((user) => user.id != e.options[i].value);
-        if (temp.length > 0) {
-          setLeftuser((pv) => [temp[0], ...pv]);
-        }
-      }
-      setRightuser(remaining);
-    }
-  }
-
-  useEffect(() => {
-    let rightlist = rigthtuser.map(user => user.id)
-    setLeftuser(users.filter(user => !rightlist.includes(user.id)))
-  }, [rigthtuser])
-
-  function handleSelectApp(event) {
-    let e = document.getElementById("leftapp");
-    let remaining = leftApplication;
-    for (let i = 0; i < e.options.length; i++) {
-      if (e.options[i].selected) {
-        let temp = applications.filter(
-          (app) => app.module_id == e.options[i].value
-        );
-        remaining = remaining.filter(
-          (user) => user.module_id != e.options[i].value
-        );
-        if (temp.length > 0) {
-          setRightApplication((pv) => [...pv, temp[0]]);
-        }
-      }
-      setLeftApplication(remaining);
-    }
-  }
-  function handleUnSelectApp(event) {
-    let e = document.getElementById("rightapp");
-    let remaining = rightApplication;
-    for (let i = 0; i < e.options.length; i++) {
-      if (e.options[i].selected) {
-        let temp = applications.filter(
-          (app) => app.module_id == e.options[i].value
-        );
-        remaining = remaining.filter(
-          (app) => app.module_id != e.options[i].value
-        );
-        if (temp.length > 0) {
-          setLeftApplication((pv) => [...pv, temp[0]]);
-        }
-      }
-      setRightApplication(remaining);
-    }
-  }
-  function handleJiraProject() {
-
-
-    getJiraProject(setJiraproject, jiraProjectdata.url, jiraProjectdata.username, jiraProjectdata.password, jiraProjectdata.itstype, "prolifics", auth.info.organization_id)
-  }
-  useEffect(() => {
-    getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
-    getApplication(setApplications, auth.info.id);
-    if (createformData.sqeProjectId != "") {
-      getApplicationOfProject(setRightApplication, createformData.sqeProjectId);
-    }
-    if (createformData.sqeProjectId != "") {
-      getUserOfProject(setRightuser, createformData.sqeProjectId, auth.info.id).then(res => {
-        let ids = res?.map(pro => pro.id)
-        getUsers(
-          (val) => { },
-          auth.info.organization_id,
-          auth.info.ssoId,
-          usertoken
-        ).then(resp => setLeftuser(resp.filter(pro => !ids.includes(pro.id))))
-      })
-    }
-    else {
-      getUsers(
-        setLeftuser,
-        auth.info.organization_id,
-        auth.info.ssoId,
-        usertoken
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    let selectApp  =  rightApplication.map(app => app.module_id)
-    let x = applications.filter(a => {
-      if (filterApplication[automation_type]?.includes(a.module_type) &&!selectApp.includes(a.module_id)) {
-        return a
-      }
     })
-    setLeftApplication(x)
-  }, [automation_type, applications,rightApplication])
 
-  useEffect(() => {
-    return () => {
-      ref?.current?.reset();
-      clearProjectData();
+    function getUserlist() {
+        let userlist = [];
+        rigthtuser.forEach((user) => {
+            let temp = {
+                user_id: user.id.toString(),
+                grafana_role: "4",
+            };
+            userlist.push(temp);
+        });
+        return userlist;
+    }
+    function getApplicationlist() {
+        let applist = [];
+        rightApplication.forEach((app) => {
+            applist.push(app.module_id);
+        });
+        return applist;
+    }
+    function submitHandler() {
+        let x = getUserlist();
+        x = JSON.stringify(x);
+        let app = getApplicationlist();
+        app = app.toString();
+        submitData.current.userAccessPermissions = x;
+        submitData.current.applicationsProjectMapping = "[" + app + "]";
+        submitData.current.userId = auth.info.id;
+        if (
+            validateFormbyName(
+                ["projectname", "automation_framework_type", "desc",],
+                "error"
+            ) == true
+        ) {
+            if (projectId == undefined) {
+                createProject(submitData.current).then((res) => {
+                    if (res == "SUCCESS") {
+                        setSnackbarData({
+                            status: true,
+                            message: "Project successfully created",
+                            severity: "success",
+                        })
+                        navigate("/Projects/search");
+                    } else {
+                        setSnackbarData({
+                            status: true,
+                            message: "Project Name already exists",
+                            severity: "error",
+                        })
+                    }
+                });
+            } else {
+                updateProject(submitData.current).then((res) => {
+                    if (res == "SUCCESS") {
+                        setSnackbarData({
+                            status: true,
+                            message: "Project updated successfully",
+                            severity: "success",
+                        })
+                        navigate("/Projects/search");
+                    } else {
+                        setSnackbarData({
+                            status: true,
+                            message: "Something went wrong",
+                            severity: "error",
+                        })
 
-      jiraProjectdata = {
-        url: "",
-        username: "",
-        password: "",
-        itstype: 1,
-      }
-    };
-  }, []);
+                    }
+                });
+            }
+        } else {
+            setSnackbarData({
+                status: true,
+                message: "Fill Required Fields",
+                severity: "error",
+            })
+        }
+    }
+
+    useEffect(() => {
+        let rightlist = rigthtuser.map(user => user.id)
+        setLeftuser(users.filter(user => !rightlist.includes(user.id)))
+    }, [rigthtuser])
 
 
 
-  const ref = useRef(null);
-  return (
-    <form ref={ref}>
+    function handleJiraProject() {
+        getJiraProject(setJiraproject, jiraProjectdata.url, jiraProjectdata.username, jiraProjectdata.password, jiraProjectdata.itstype, "prolifics", auth.info.organization_id)
+    }
+    useEffect(() => {
+        getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
+        getApplication(setApplications, auth.info.id);
+        if (projectId != undefined) {
+            getApplicationOfProject(setRightApplication, projectId);
+            getUserOfProject(setRightuser, projectId, auth.info.id).then(res => {
+                let ids = res?.map(pro => pro.id)
+                getUsers(
+                    (val) => { },
+                    auth.info.organization_id,
+                    auth.info.ssoId,
+                    usertoken
+                ).then(resp => setLeftuser(resp.filter(pro => !ids.includes(pro.id))))
+            })
+        }
+        else {
+            getUsers(
+                setLeftuser,
+                auth.info.organization_id,
+                auth.info.ssoId,
+                usertoken
+            );
+        }
+    }, []);
 
-      <div className="accordionParent" onClick={resetClassName}>
-        <SnackbarNotify
-          open={snackbarerror}
-          close={setSnackbarerror}
-          msg={errorMsg}
-          severity="error"
-        />
-        <SnackbarNotify
-          open={snackbarsuccess}
-          close={setSnackbarsuccess}
-          msg={snackbarmasg}
-          severity="success"
-        />
-        <AccordionTemplate defaultState={true} name="Project Information">
-          <Grid container spacing={2} sx={{ marginBottom: "10px" }} >
-            <Grid item xs={6} sm={6} md={6}>
-              <label>
-                Project Name <span className="importantfield">*</span>:
-              </label>
-              <input
-                defaultValue={createformData.projectName}
-                type="text"
-                name="projectname"
-                onChange={(e) => {
-                  createformData.projectName = e.target.value.trim();
-                }}
-                disabled={createformData.sqeProjectId == "" ? false : true}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <label>
-                Automation Framework Type{" "}
-                <span className="importantfield">*</span>:
-              </label>
-              <select
-                onChange={(e) => {
-                  createformData.automation_framework_type = e.target.value;
-                  setAutomationType(e.target.value);
-                }}
-                name="automation_framework_type"
-                defaultValue={1}
-                disabled={createformData.sqeProjectId == "" ? false : true}
-              >
-                {automationType.map(opt => <option key={opt.Val}
-                  value={opt.Val}
-                >
-                  {opt.Name}
-                </option>)}
-              </select>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <label>
-                Description <span className="importantfield">*</span>:
-              </label>
-              <input
-                onChange={(e) => {
-                  createformData.projectDesc = e.target.value;
-                }}
-                defaultValue={createformData.projectDesc}
-                name="desc"
+    useEffect(() => {
+        let selectApp = rightApplication.map(app => app.module_id)
+        let x = applications.filter(a => {
+            if (filterApplication[automation_type]?.includes(a.module_type) && !selectApp.includes(a.module_id)) {
+                return a
+            }
+        })
+        setLeftApplication(x)
+    }, [automation_type, applications, rightApplication])
 
-              />
-            </Grid>
-          </Grid>
-        </AccordionTemplate>
-        <AccordionTemplate name="Repository">
+    useEffect(() => {
+        return () => {
+            ref?.current?.reset();
+            jiraProjectdata = {
+                url: "",
+                username: "",
+                password: "",
+                itstype: 1,
+            }
+        };
+    }, []);
+    useEffect(() => {
+        setHeader((ps) => {
+            return {
+                ...ps,
+                name: projectId === undefined ? "Create Project" : "Edit Project",
+            };
+        });
+    }, []);
 
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            sx={{ marginBottom: "10px" }}
-            spacing={2}
-          >
-            <Grid item xs={6} sm={6} md={6}>
-              <label>Git URL :</label>
-              <input
-                defaultValue={createformData.repository_url}
-                type="text"
-                onChange={(e) => {
-                  createformData.repository_url = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <label>Git Access Token :</label>
-              <input
-                defaultValue={createformData.repository_token}
-                type="text"
-                onChange={(e) => {
-                  createformData.repository_token = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <label>Branch :</label>
-              <input
-                type="text"
-                defaultValue={createformData.repository_branch}
-                onChange={(e) => {
-                  createformData.repository_branch = e.target.value;
-                }}
-              />
-            </Grid>
-          </Grid>
-        </AccordionTemplate>
+    useEffect(() => {
+        if (projectId !== undefined) {
+            getProjectDetails(setProjectDetails, auth.info.id, projectId)
+        }
+    }, [])
 
-        <AccordionTemplate name="CICD Pipeline">
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            spacing={2}
-            sx={{ marginBottom: "10px" }}
-          >
-            <Grid item xs={6} sm={6} md={6}>
-              <label>Jenkins URL :</label>
-              <input
-                defaultValue={createformData.jenkins_url}
-                type="text"
-                onChange={(e) => {
-                  createformData.jenkins_url = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <label>Jenkins Token :</label>
-              <input
-                defaultValue={createformData.jenkins_token}
-                type="text"
-                name="jenkins_token"
 
-                onChange={(e) => {
-                  createformData.jenkins_token = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <label>Jenkins UserName :</label>
-              <input
-                defaultValue={createformData.jenkins_user_name}
-                autoComplete="off"
-                type="text"
-                onChange={(e) => {
-                  createformData.jenkins_user_name = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={6} md={6}>
-              <label>Jenkins Password :</label>
-              <input
-                defaultValue={createformData.jenkins_password}
-                type="password"
-                autoComplete="off"
-                onChange={(e) => {
-                  createformData.jenkins_password = e.target.value;
-                }}
-              />
-            </Grid>
-          </Grid>
-        </AccordionTemplate>
+    useEffect(() => {
+        if (projectDetails.length != 0) {
+            submitData.current.projectName = projectDetails.project_name
+            submitData.current.projectDesc = projectDetails.description
+            submitData.current.jira_project_id = projectDetails.jira_project_id
+            submitData.current.sqeProjectId = projectId
+            submitData.current.repository_url = projectDetails.repository_url
+            submitData.current.repository_token = projectDetails.repository_token
+            submitData.current.repository_branch = projectDetails.repository_branch
+            submitData.current.jenkins_token = projectDetails.jenkins_token
+            submitData.current.jenkins_url = projectDetails.jenkins_url
+            submitData.current.jenkins_user_name = projectDetails.jenkins_user_name
+            submitData.current.jenkins_password = projectDetails.jenkins_password
+            submitData.current.automation_framework_type = projectDetails.automation_framework_type
+            submitData.current.db_type = projectDetails.testdata_db_config?.db_type
+            submitData.current.db_name = projectDetails.testdata_db_config?.db_name.db_password
+            submitData.current.db_user_name = projectDetails.testdata_db_config?.db_user_name
+            submitData.current.db_password = projectDetails.testdata_db_config?.db_password
+            submitData.current.db_port = projectDetails.testdata_db_config?.db_port
+            submitData.current.db_host = projectDetails.testdata_db_config?.db_hosts
+        }
+    }, [projectDetails])
 
-        <AccordionTemplate name="Database">
+    const ref = useRef(null);
+    return (
+        <form ref={ref}>
+            <div className="accordionParent" >
+                <AccordionTemplate defaultState={true} name="Project Information">
+                    <Grid container spacing={2} sx={{ marginBottom: "10px" }} >
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>
+                                Project Name <span className="importantfield">*</span>:
+                            </label>
+                            <input
+                                defaultValue={projectDetails?.project_name}
+                                type="text"
+                                name="projectname"
+                                onChange={(e) => {
+                                    submitData.current.projectName = e.target.value.trim();
+                                }}
+                                disabled={projectId == undefined ? false : true}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>
+                                Automation Framework Type{" "}
+                                <span className="importantfield">*</span>:
+                            </label>
+                            <select
+                                onChange={(e) => {
+                                    submitData.current.automation_framework_type = e.target.value;
+                                    setAutomationType(e.target.value);
+                                }}
+                                name="automation_framework_type"                               
+                                disabled={projectId == undefined ? false : true}
+                            >
+                                {automationType.map(opt => <option key={opt.Val}
+                                    value={opt.Val}
+                                    selected={projectDetails?.automation_framework_type == opt.Val}
+                                >
+                                    {opt.Name}
+                                </option>)}
+                            </select>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12}>
+                            <label>
+                                Description <span className="importantfield">*</span>:
+                            </label>
+                            <input
+                                onChange={(e) => {
+                                    submitData.current.projectDesc = e.target.value;
+                                }}
+                                defaultValue={projectDetails?.description}
+                                name="desc"
 
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            sx={{ marginBottom: "10px" }}
-            spacing={2}
-          >
-            <Grid item xs={4} sm={4} md={4}>
-              <label>Database Type :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  createformData.db_type = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>Database Name :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  createformData.db_name = e.target.value;
-                }}
-              />
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionTemplate>
+                <AccordionTemplate name="Repository">
 
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>Host Name :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  createformData.db_name = e.target.value;
-                }}
-              />
+                    <Grid
+                        container
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        sx={{ marginBottom: "10px" }}
+                        spacing={2}
+                    >
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>Git URL :</label>
+                            <input
+                                defaultValue={projectDetails?.repository_url}
+                                type="text"
+                                onChange={(e) => {
+                                    submitData.current.repository_url = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>Git Access Token :</label>
+                            <input
+                                defaultValue={projectDetails?.repository_token}
+                                type="text"
+                                onChange={(e) => {
+                                    submitData.current.repository_token = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12}>
+                            <label>Branch :</label>
+                            <input
+                                type="text"
+                                defaultValue={projectDetails?.repository_branch}
+                                onChange={(e) => {
+                                    submitData.current.repository_branch = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionTemplate>
 
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>DB UserName :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  createformData.db_user_name = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>Port Number :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  createformData.db_port = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>DB Password :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  createformData.db_password = e.target.value;
-                }}
-              />
-            </Grid>
-          </Grid>
-        </AccordionTemplate>
-        <AccordionTemplate name="Collaboration">
+                <AccordionTemplate name="CICD Pipeline">
+                    <Grid
+                        container
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        spacing={2}
+                        sx={{ marginBottom: "10px" }}
+                    >
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>Jenkins URL :</label>
+                            <input
+                                defaultValue={projectDetails?.jenkins_url}
+                                type="text"
+                                onChange={(e) => {
+                                    submitData.current.jenkins_url = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>Jenkins Token :</label>
+                            <input
+                                defaultValue={projectDetails?.jenkins_token}
+                                type="text"
+                                name="jenkins_token"
 
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            sx={{ marginBottom: "10px" }}
-            spacing={2}
+                                onChange={(e) => {
+                                    submitData.current.jenkins_token = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>Jenkins UserName :</label>
+                            <input
+                                defaultValue={projectDetails.jenkins_user_name}
+                                autoComplete="off"
+                                type="text"
+                                onChange={(e) => {
+                                    submitData.current.jenkins_user_name = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} sm={6} md={6}>
+                            <label>Jenkins Password :</label>
+                            <input
+                                defaultValue={projectDetails.jenkins_password}
+                                type="password"
+                                autoComplete="off"
+                                onChange={(e) => {
+                                    submitData.current.jenkins_password = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionTemplate>
 
-          >
-            <Grid item xs={4} sm={4} md={4}>
-              <label>
-                Select Issue Tracker <span className="importantfield">*</span>
-                :
-              </label>
-              <select
-                // defaultValue={createformData.issueTrackerType}
-                onChange={(e) => {
-                  // createformData.issueTrackerType = e.target.value;
-                  jiraProjectdata.itstype = e.target.value;
+                <AccordionTemplate name="Database">
 
-                }}
-                name="issueTracker"
-              >
-                <option value={1}>Jira</option>
-                <option value={2}>Azure</option>
-              </select>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>URL :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  // createformData.jenkins_url = e.target.value;
-                  jiraProjectdata.url = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>User Name :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  // createformData.jenkins_user_name = e.target.value;
-                  jiraProjectdata.username = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid item xs={4} sm={4} md={4}>
-              <label>Token :</label>
-              <input
-                type="text"
-                onChange={(e) => {
-                  // createformData.jenkins_token = e.target.value;
-                  jiraProjectdata.password = e.target.value;
-                }}
-              />
-            </Grid>
-            {jiraProject != null && <Grid item xs={4} sm={4} md={4}>
-              <label>Projects :</label>
-              {/* <input type="text" /> */}
-              <select>
-                {jiraProject.map(v => <option value={v.jira_project_id}>{v.name}</option>)}
-              </select>
-            </Grid>}
-            <Grid item xs={4} sm={4} md={4} justifyContent="center">
-              <br />
-              <Button variant="contained"
-                onClick={handleJiraProject}
-              >
-                Verify
-              </Button>
-            </Grid>
-          </Grid>
+                    <Grid
+                        container
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        sx={{ marginBottom: "10px" }}
+                        spacing={2}
+                    >
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>Database Type :</label>
+                            <input
+                                type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_type}
+                                onChange={(e) => {
+                                    submitData.current.db_type = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>Database Name :</label>
+                            <input
+                                type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_name}
+                                onChange={(e) => {
+                                    submitData.current.db_name = e.target.value;
+                                }}
+                            />
 
-        </AccordionTemplate>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>Host Name :</label>
+                            <input
+                                type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_host}
+                                onChange={(e) => {
+                                    submitData.current.db_host = e.target.value;
+                                }}
+                            />
 
-        <AccordionTemplate name="Add User">
-          <Container
-            component={"div"}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
-          >
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid item xs={4} sm={4} md={4}>
-                <label>Select User:</label>
-                <select id="left" multiple style={{ padding: "10px" }}>
-                  {leftuser.map((user) => (
-                    <option value={user.id} key={user.id}>{user.firstName}</option>
-                  ))}
-                </select>
-              </Grid>
-              <Grid item xs={1} sm={1} md={1}>
-                <Button
-                  sx={{ my: 0.5 }}
-                  variant="outlined"
-                  size="small"
-                  onClick={handleSelect}
-                  aria-label="move all right"
-                >
-                  ≫
-                </Button>
-                <Button
-                  sx={{ my: 0.5 }}
-                  variant="outlined"
-                  size="small"
-                  onClick={handleUnselect}
-                  aria-label="move all right"
-                >
-                  ≪
-                </Button>
-              </Grid>
-              <Grid item xs={4} sm={4} md={4}>
-                <label>Selected User:</label>
-                <select id="right" multiple style={{ padding: "10px" }}>
-                  {rigthtuser.map(user => (
-                    <option value={user.id} >{user.firstName}</option>
-                  ))}
-                </select>
-              </Grid>
-            </Grid>
-          </Container>
-        </AccordionTemplate>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>DB UserName :</label>
+                            <input
+                                type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_user_name}
+                                onChange={(e) => {
+                                    submitData.current.db_user_name = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>Port Number :</label>
+                            <input
+                                type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_port}
+                                onChange={(e) => {
+                                    submitData.current.db_port = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>DB Password :</label>
+                            <input
+                                type="password"
+                                defaultValue={projectDetails?.testdata_db_config?.db_password}
+                                onChange={(e) => {
+                                    submitData.current.db_password = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </AccordionTemplate>
+                <AccordionTemplate name="Collaboration">
 
-        <AccordionTemplate name="Add Application">
-          <Container
-            component={"div"}
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
-          >
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              md={12}
-              sx={{ marginBottom: "10px" }}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Grid item xs={4} sm={4} md={4}>
-                <label>Select Application:</label>
-                <select id="leftapp" multiple style={{ padding: "10px" }}>
-                  {leftApplication.map((app) => (
-                    <option value={app.module_id} key={app.module_id}>{app.module_name}</option>
-                  ))}
-                </select>
-              </Grid>
-              <Grid item xs={1} sm={1} md={1}>
-                <Button
-                  sx={{ my: 0.5 }}
-                  variant="outlined"
-                  size="small"
-                  onClick={handleSelectApp}
-                  aria-label="move all right"
-                >
-                  ≫
-                </Button>
-                <Button
-                  sx={{ my: 0.5 }}
-                  variant="outlined"
-                  size="small"
-                  onClick={handleUnSelectApp}
-                  aria-label="move all right"
-                >
-                  ≪
-                </Button>
-              </Grid>
-              <Grid item xs={4} sm={4} md={4}>
-                <label>Selected Application:</label>
-                <select id="rightapp" multiple style={{ padding: "10px" }}>
-                  {rightApplication.map((app) => (
-                    <option value={app.module_id} key={app.module_id}>{app.module_name}</option>
-                  ))}
-                </select>
-              </Grid>
-            </Grid>
-          </Container>
-        </AccordionTemplate>
-        <Grid item xs={12} md={12}>
-          <Stack
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={2}
-          >
-            <Button variant="contained" onClick={submitHandler} >Save & Continue</Button>
-          </Stack>
-        </Grid>
+                    <Grid
+                        container
+                        item
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        sx={{ marginBottom: "10px" }}
+                        spacing={2}
 
-      </div>
-    </form>
-  );
+                    >
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>
+                                Select Issue Tracker <span className="importantfield">*</span>
+                                :
+                            </label>
+                            <select
+                                onChange={(e) => {
+                                    jiraProjectdata.itstype = e.target.value;
+                                }}
+                                name="issueTracker"
+                            >
+                                <option value={1}>Jira</option>
+                                <option value={2}>Azure</option>
+                            </select>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>URL :</label>
+                            <input
+                                type="text"
+                                onChange={(e) => {
+                                    jiraProjectdata.url = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>User Name :</label>
+                            <input
+                                type="text"
+                                onChange={(e) => {
+                                    jiraProjectdata.username = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                            <label>Token :</label>
+                            <input
+                                type="text"
+                                onChange={(e) => {
+                                    jiraProjectdata.password = e.target.value;
+                                }}
+                            />
+                        </Grid>
+                        {jiraProject != null && <Grid item xs={4} sm={4} md={4}>
+                            <label>Projects :</label>
+                            <select>
+                                {jiraProject.map(v => <option value={v.jira_project_id}>{v.name}</option>)}
+                            </select>
+                        </Grid>}
+                        <Grid item xs={4} sm={4} md={4} justifyContent="center">
+                            <br />
+                            <Button variant="contained"
+                                onClick={handleJiraProject}
+                            >
+                                Verify
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                </AccordionTemplate>
+
+                <AccordionTemplate name="Add User">
+                    <TransferList
+                        left={leftuser}
+                        setLeft={setLeftuser}
+                        right={rigthtuser}
+                        setRight={setRightuser}
+                        name='firstName'
+                    ></TransferList>
+                </AccordionTemplate>
+
+                <AccordionTemplate name="Add Application">
+                    <TransferList
+                        left={leftApplication}
+                        setLeft={setLeftApplication}
+                        right={rightApplication}
+                        setRight={setRightApplication}
+                        name='module_name'
+                    ></TransferList>
+                </AccordionTemplate>
+                <Grid item xs={12} md={12}>
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        spacing={2}
+                    >
+                        <Button variant="contained" onClick={submitHandler} >Save & Continue</Button>
+                    </Stack>
+                </Grid>
+
+            </div>
+
+        </form>
+    );
 }
 
 export default CreateProject;

@@ -9,6 +9,16 @@ export function getProject(callback, userId) {
   })
 }
 
+export function getProjectDetails(callback,userId,projectId){
+axios.get(`${baseUrl}/qfservice/projects/getProjectDetailsByProjectIdAndUserId?user_id=${userId}&project_id=${projectId}`).then(res =>{
+    callback(res.data.data)
+})
+}
+
+export async function makeProjectFav(userId,projectId,value){
+    return await axios.post(`${baseUrl}/qfservice/makeFavourateProject?userId=${userId}&projectId=${projectId}&isFav=${value}`).then(res=>{
+    })
+}
 
 export async function createProject(data) {
   let res = await axios({
