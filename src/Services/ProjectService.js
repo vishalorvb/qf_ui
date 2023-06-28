@@ -19,7 +19,6 @@ axios.get(`${baseUrl}/qfservice/projects/getProjectDetailsByProjectIdAndUserId?u
 
 export async function makeProjectFav(userId,projectId,value){
     return await axios.post(`${baseUrl}/qfservice/makeFavourateProject?userId=${userId}&projectId=${projectId}&isFav=${value}`).then(res=>{
-        return res.data.status
     })
 }
 

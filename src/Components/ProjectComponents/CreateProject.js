@@ -1,11 +1,8 @@
 import { Button, Container, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import useHead from "../../hooks/useHead";
 import useAuth from "../../hooks/useAuth";
-import { createformData } from "./ProjectData";
-import { clearProjectData } from "./ProjectData";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -22,8 +19,6 @@ import {
 } from "../../Services/ApplicationService";
 import TransferList from "../../CustomComponent/TransferList";
 
-
-let snackbarmasg = ""
 let jiraProjectdata = {
     url: "",
     username: "",
@@ -46,10 +41,8 @@ let automationType = [
     { "Name": "Mobile", "Val": 4 }
 ]
 
-let errorMsg = ""
-
 function CreateProject() {
-    const { setHeader } = useHead();
+    const { setHeader, setSnackbarData } = useHead();
     const { auth } = useAuth();
     const usertoken = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -67,20 +60,24 @@ function CreateProject() {
     let [jiraProject, setJiraproject] = useState(null);
     let [automation_type, setAutomationType] = useState("1")
     let submitData = useRef({
+        issueTrackerType: 1,
+        jira_project_id: "",
         userId: auth.info.id,
         orgId: 1,
         automation_framework_type: 1,
         org_name: "",
-        jira_url: "",
-        jira_password: "",
-        jira_user_name: "",
-        jira_project_key: "",
         userAccessPermissions: "",
-        gitOps: true
+        gitOps: true,
+        jira_project_key: "",
+        sqeProjectId: "",
+        db_type: "",
+        db_name: "",
+        db_host: "",
+        db_user_name: "",
+        db_port: "",
+        db_password: "",
 
     })
-
-    console.log(projectId)
 
     function getUserlist() {
         let userlist = [];
@@ -117,33 +114,45 @@ function CreateProject() {
             if (projectId == undefined) {
                 createProject(submitData.current).then((res) => {
                     if (res == "SUCCESS") {
-                        snackbarmasg = "Project created successfully"
-                        setSnackbarsuccess(true);
-                        setTimeout(() => {
-                            navigate("/Projects/Recent");
-                        }, 1000);
+                        setSnackbarData({
+                            status: true,
+                            message: res,
+                            severity: "Project created successfully",
+                        })
+                        navigate("/Projects/search");
                     } else {
-                        errorMsg = "Project Name already exists"
-                        setSnackbarerror(true);
+                        setSnackbarData({
+                            status: true,
+                            message: "Project Name already exists",
+                            severity: "error",
+                        })
                     }
                 });
             } else {
                 updateProject(submitData.current).then((res) => {
                     if (res == "SUCCESS") {
-                        snackbarmasg = "Project updated successfully"
-                        setSnackbarsuccess(true);
-                        setTimeout(() => {
-                            navigate("/Projects/Recent");
-                        }, 1000);
+                        setSnackbarData({
+                            status: true,
+                            message: "Project updated successfully",
+                            severity: "success",
+                        })
+                        navigate("/Projects/search");
                     } else {
+                        setSnackbarData({
+                            status: true,
+                            message: "Something went wrong",
+                            severity: "error",
+                        })
 
-                        setSnackbarerror(true);
                     }
                 });
             }
         } else {
-            errorMsg = "Fill Required Fields"
-            setSnackbarerror(true);
+            setSnackbarData({
+                status: true,
+                message: "Fill Required Fields",
+                severity: "error",
+            })
         }
     }
 
@@ -195,8 +204,6 @@ function CreateProject() {
     useEffect(() => {
         return () => {
             ref?.current?.reset();
-            clearProjectData();
-
             jiraProjectdata = {
                 url: "",
                 username: "",
@@ -221,7 +228,6 @@ function CreateProject() {
     }, [])
 
     useEffect(() => {
-        console.log(projectDetails)
         if (projectDetails.length != 0) {
             submitData.current.projectName = projectDetails.project_name
             submitData.current.projectDesc = projectDetails.description
@@ -235,33 +241,19 @@ function CreateProject() {
             submitData.current.jenkins_user_name = projectDetails.jenkins_user_name
             submitData.current.jenkins_password = projectDetails.jenkins_password
             submitData.current.automation_framework_type = projectDetails.automation_framework_type
-            submitData.current.db_type = projectDetails.testdata_db_config.db_type
-            submitData.current.db_name = projectDetails.testdata_db_config.db_name.db_password
-            submitData.current.db_user_name = projectDetails.testdata_db_config.db_user_name
-            submitData.current.db_password = projectDetails.testdata_db_config.db_password
-            submitData.current.db_port = projectDetails.testdata_db_config.db_port
-            submitData.current.db_host = projectDetails.testdata_db_config.db_hosts
+            submitData.current.db_type = projectDetails.testdata_db_config?.db_type
+            submitData.current.db_name = projectDetails.testdata_db_config?.db_name.db_password
+            submitData.current.db_user_name = projectDetails.testdata_db_config?.db_user_name
+            submitData.current.db_password = projectDetails.testdata_db_config?.db_password
+            submitData.current.db_port = projectDetails.testdata_db_config?.db_port
+            submitData.current.db_host = projectDetails.testdata_db_config?.db_hosts
         }
-
-        console.log(submitData)
     }, [projectDetails])
 
     const ref = useRef(null);
     return (
         <form ref={ref}>
             <div className="accordionParent" >
-                <SnackbarNotify
-                    open={snackbarerror}
-                    close={setSnackbarerror}
-                    msg={errorMsg}
-                    severity="error"
-                />
-                <SnackbarNotify
-                    open={snackbarsuccess}
-                    close={setSnackbarsuccess}
-                    msg={snackbarmasg}
-                    severity="success"
-                />
                 <AccordionTemplate defaultState={true} name="Project Information">
                     <Grid container spacing={2} sx={{ marginBottom: "10px" }} >
                         <Grid item xs={6} sm={6} md={6}>
@@ -289,7 +281,7 @@ function CreateProject() {
                                     setAutomationType(e.target.value);
                                 }}
                                 name="automation_framework_type"
-                                defaultValue={1}
+                                defaultValue={projectDetails?.automation_framework_type}
                                 disabled={projectId == undefined ? false : true}
                             >
                                 {automationType.map(opt => <option key={opt.Val}
@@ -481,7 +473,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>DB Password :</label>
                             <input
-                                type="text"
+                                type="password"
                                 defaultValue={projectDetails?.testdata_db_config?.db_password}
                                 onChange={(e) => {
                                     submitData.current.db_password = e.target.value;
