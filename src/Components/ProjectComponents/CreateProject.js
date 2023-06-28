@@ -49,8 +49,6 @@ function CreateProject() {
     let location = useLocation()
     let projectId = location.state.id
     let [projectDetails, setProjectDetails] = useState([])
-    let [snackbarerror, setSnackbarerror] = useState(false);
-    let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     let [users, setUsers] = useState([]);
     let [leftuser, setLeftuser] = useState([]);
     let [rigthtuser, setRightuser] = useState([]);
@@ -116,8 +114,8 @@ function CreateProject() {
                     if (res == "SUCCESS") {
                         setSnackbarData({
                             status: true,
-                            message: res,
-                            severity: "Project created successfully",
+                            message: "Project successfully created",
+                            severity: "success",
                         })
                         navigate("/Projects/search");
                     } else {
