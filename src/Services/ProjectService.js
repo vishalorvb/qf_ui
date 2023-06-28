@@ -10,9 +10,7 @@ export function getProject(callback, userId) {
 }
 
 export function getProjectDetails(callback,userId,projectId){
-    console.log("Project Details Called")
 axios.get(`${baseUrl}/qfservice/projects/getProjectDetailsByProjectIdAndUserId?user_id=${userId}&project_id=${projectId}`).then(res =>{
-    console.log(res.data.data)
     callback(res.data.data)
 })
 }

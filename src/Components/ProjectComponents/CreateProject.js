@@ -225,6 +225,7 @@ function CreateProject() {
         }
     }, [])
 
+
     useEffect(() => {
         if (projectDetails.length != 0) {
             submitData.current.projectName = projectDetails.project_name
@@ -278,12 +279,12 @@ function CreateProject() {
                                     submitData.current.automation_framework_type = e.target.value;
                                     setAutomationType(e.target.value);
                                 }}
-                                name="automation_framework_type"
-                                defaultValue={projectDetails?.automation_framework_type}
+                                name="automation_framework_type"                               
                                 disabled={projectId == undefined ? false : true}
                             >
                                 {automationType.map(opt => <option key={opt.Val}
                                     value={opt.Val}
+                                    selected={projectDetails?.automation_framework_type == opt.Val}
                                 >
                                     {opt.Name}
                                 </option>)}
