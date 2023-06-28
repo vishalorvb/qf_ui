@@ -67,16 +67,16 @@ function CreateProject() {
     let [jiraProject, setJiraproject] = useState(null);
     let [automation_type, setAutomationType] = useState("1")
     let submitData = useRef({
-        userId:auth.info.id,
-        orgId:1,
-        automation_framework_type:1,
-        org_name:"",
-        jira_url :"",
-        jira_password :"",
-        jira_user_name :"",
-        jira_project_key :"",
-        userAccessPermissions :"",
-        gitOps :true
+        userId: auth.info.id,
+        orgId: 1,
+        automation_framework_type: 1,
+        org_name: "",
+        jira_url: "",
+        jira_password: "",
+        jira_user_name: "",
+        jira_project_key: "",
+        userAccessPermissions: "",
+        gitOps: true
 
     })
 
@@ -105,9 +105,9 @@ function CreateProject() {
         x = JSON.stringify(x);
         let app = getApplicationlist();
         app = app.toString();
-        createformData.userAccessPermissions = x;
-        createformData.applicationsProjectMapping = "[" + app + "]";
-        createformData.userId = auth.info.id;
+        submitData.current.userAccessPermissions = x;
+        submitData.current.applicationsProjectMapping = "[" + app + "]";
+        submitData.current.userId = auth.info.id;
         if (
             validateFormbyName(
                 ["projectname", "automation_framework_type", "desc",],
@@ -115,7 +115,7 @@ function CreateProject() {
             ) == true
         ) {
             if (projectId == undefined) {
-                createProject(createformData).then((res) => {
+                createProject(submitData.current).then((res) => {
                     if (res == "SUCCESS") {
                         snackbarmasg = "Project created successfully"
                         setSnackbarsuccess(true);
@@ -128,7 +128,7 @@ function CreateProject() {
                     }
                 });
             } else {
-                updateProject(createformData).then((res) => {
+                updateProject(submitData.current).then((res) => {
                     if (res == "SUCCESS") {
                         snackbarmasg = "Project updated successfully"
                         setSnackbarsuccess(true);
@@ -221,30 +221,29 @@ function CreateProject() {
     }, [])
 
     useEffect(() => {
-    console.log(projectDetails)
-    if(projectDetails.length != 0){
-        submitData.current.projectName = projectDetails.project_name
-        submitData.current.projectDesc = projectDetails.description
-        submitData.current.jira_project_id = projectDetails.jira_project_id
-        submitData.current.sqeProjectId = projectId
-        submitData.current.repository_url = projectDetails.repository_url
-        submitData.current.repository_token = projectDetails.repository_token   
-        submitData.current.repository_branch = projectDetails.repository_branch
-        submitData.current.jenkins_token = projectDetails.jenkins_token
-        submitData.current.jenkins_url = projectDetails.jenkins_url
-        submitData.current.jenkins_user_name = projectDetails.jenkins_user_name
-        submitData.current.jenkins_password = projectDetails.jenkins_password
-        submitData.current.automation_framework_type = projectDetails.automation_framework_type
-        submitData.current.db_type = projectDetails.testdata_db_config.db_type
-        submitData.current.db_name = projectDetails.testdata_db_config.db_name.db_password
-        submitData.current.db_user_name = projectDetails.testdata_db_config.db_user_name
-        submitData.current.db_password = projectDetails.testdata_db_config.db_password
-        submitData.current.db_port = projectDetails.testdata_db_config.db_port
-        submitData.current.db_host = projectDetails.testdata_db_config.db_host
+        console.log(projectDetails)
+        if (projectDetails.length != 0) {
+            submitData.current.projectName = projectDetails.project_name
+            submitData.current.projectDesc = projectDetails.description
+            submitData.current.jira_project_id = projectDetails.jira_project_id
+            submitData.current.sqeProjectId = projectId
+            submitData.current.repository_url = projectDetails.repository_url
+            submitData.current.repository_token = projectDetails.repository_token
+            submitData.current.repository_branch = projectDetails.repository_branch
+            submitData.current.jenkins_token = projectDetails.jenkins_token
+            submitData.current.jenkins_url = projectDetails.jenkins_url
+            submitData.current.jenkins_user_name = projectDetails.jenkins_user_name
+            submitData.current.jenkins_password = projectDetails.jenkins_password
+            submitData.current.automation_framework_type = projectDetails.automation_framework_type
+            submitData.current.db_type = projectDetails.testdata_db_config.db_type
+            submitData.current.db_name = projectDetails.testdata_db_config.db_name.db_password
+            submitData.current.db_user_name = projectDetails.testdata_db_config.db_user_name
+            submitData.current.db_password = projectDetails.testdata_db_config.db_password
+            submitData.current.db_port = projectDetails.testdata_db_config.db_port
+            submitData.current.db_host = projectDetails.testdata_db_config.db_hosts
+        }
 
-    }
-   
-    console.log(submitData)
+        console.log(submitData)
     }, [projectDetails])
 
     const ref = useRef(null);
@@ -270,13 +269,13 @@ function CreateProject() {
                                 Project Name <span className="importantfield">*</span>:
                             </label>
                             <input
-                                defaultValue={createformData.projectName}
+                                defaultValue={projectDetails?.project_name}
                                 type="text"
                                 name="projectname"
                                 onChange={(e) => {
-                                    createformData.projectName = e.target.value.trim();
+                                    submitData.current.projectName = e.target.value.trim();
                                 }}
-                                disabled={createformData.sqeProjectId == "" ? false : true}
+                                disabled={projectId == undefined ? false : true}
                             />
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
@@ -286,12 +285,12 @@ function CreateProject() {
                             </label>
                             <select
                                 onChange={(e) => {
-                                    createformData.automation_framework_type = e.target.value;
+                                    submitData.current.automation_framework_type = e.target.value;
                                     setAutomationType(e.target.value);
                                 }}
                                 name="automation_framework_type"
                                 defaultValue={1}
-                                disabled={createformData.sqeProjectId == "" ? false : true}
+                                disabled={projectId == undefined ? false : true}
                             >
                                 {automationType.map(opt => <option key={opt.Val}
                                     value={opt.Val}
@@ -306,9 +305,9 @@ function CreateProject() {
                             </label>
                             <input
                                 onChange={(e) => {
-                                    createformData.projectDesc = e.target.value;
+                                    submitData.current.projectDesc = e.target.value;
                                 }}
-                                defaultValue={createformData.projectDesc}
+                                defaultValue={projectDetails?.description}
                                 name="desc"
 
                             />
@@ -329,20 +328,20 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Git URL :</label>
                             <input
-                                defaultValue={createformData.repository_url}
+                                defaultValue={projectDetails?.repository_url}
                                 type="text"
                                 onChange={(e) => {
-                                    createformData.repository_url = e.target.value;
+                                    submitData.current.repository_url = e.target.value;
                                 }}
                             />
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Git Access Token :</label>
                             <input
-                                defaultValue={createformData.repository_token}
+                                defaultValue={projectDetails?.repository_token}
                                 type="text"
                                 onChange={(e) => {
-                                    createformData.repository_token = e.target.value;
+                                    submitData.current.repository_token = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -350,9 +349,9 @@ function CreateProject() {
                             <label>Branch :</label>
                             <input
                                 type="text"
-                                defaultValue={createformData.repository_branch}
+                                defaultValue={projectDetails?.repository_branch}
                                 onChange={(e) => {
-                                    createformData.repository_branch = e.target.value;
+                                    submitData.current.repository_branch = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -372,44 +371,44 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins URL :</label>
                             <input
-                                defaultValue={createformData.jenkins_url}
+                                defaultValue={projectDetails?.jenkins_url}
                                 type="text"
                                 onChange={(e) => {
-                                    createformData.jenkins_url = e.target.value;
+                                    submitData.current.jenkins_url = e.target.value;
                                 }}
                             />
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins Token :</label>
                             <input
-                                defaultValue={createformData.jenkins_token}
+                                defaultValue={projectDetails?.jenkins_token}
                                 type="text"
                                 name="jenkins_token"
 
                                 onChange={(e) => {
-                                    createformData.jenkins_token = e.target.value;
+                                    submitData.current.jenkins_token = e.target.value;
                                 }}
                             />
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins UserName :</label>
                             <input
-                                defaultValue={createformData.jenkins_user_name}
+                                defaultValue={projectDetails.jenkins_user_name}
                                 autoComplete="off"
                                 type="text"
                                 onChange={(e) => {
-                                    createformData.jenkins_user_name = e.target.value;
+                                    submitData.current.jenkins_user_name = e.target.value;
                                 }}
                             />
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins Password :</label>
                             <input
-                                defaultValue={createformData.jenkins_password}
+                                defaultValue={projectDetails.jenkins_password}
                                 type="password"
                                 autoComplete="off"
                                 onChange={(e) => {
-                                    createformData.jenkins_password = e.target.value;
+                                    submitData.current.jenkins_password = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -431,8 +430,9 @@ function CreateProject() {
                             <label>Database Type :</label>
                             <input
                                 type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_type}
                                 onChange={(e) => {
-                                    createformData.db_type = e.target.value;
+                                    submitData.current.db_type = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -440,8 +440,9 @@ function CreateProject() {
                             <label>Database Name :</label>
                             <input
                                 type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_name}
                                 onChange={(e) => {
-                                    createformData.db_name = e.target.value;
+                                    submitData.current.db_name = e.target.value;
                                 }}
                             />
 
@@ -450,8 +451,9 @@ function CreateProject() {
                             <label>Host Name :</label>
                             <input
                                 type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_host}
                                 onChange={(e) => {
-                                    createformData.db_name = e.target.value;
+                                    submitData.current.db_host = e.target.value;
                                 }}
                             />
 
@@ -460,8 +462,9 @@ function CreateProject() {
                             <label>DB UserName :</label>
                             <input
                                 type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_user_name}
                                 onChange={(e) => {
-                                    createformData.db_user_name = e.target.value;
+                                    submitData.current.db_user_name = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -469,8 +472,9 @@ function CreateProject() {
                             <label>Port Number :</label>
                             <input
                                 type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_port}
                                 onChange={(e) => {
-                                    createformData.db_port = e.target.value;
+                                    submitData.current.db_port = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -478,8 +482,9 @@ function CreateProject() {
                             <label>DB Password :</label>
                             <input
                                 type="text"
+                                defaultValue={projectDetails?.testdata_db_config?.db_password}
                                 onChange={(e) => {
-                                    createformData.db_password = e.target.value;
+                                    submitData.current.db_password = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -503,11 +508,8 @@ function CreateProject() {
                                 :
                             </label>
                             <select
-                                // defaultValue={createformData.issueTrackerType}
                                 onChange={(e) => {
-                                    // createformData.issueTrackerType = e.target.value;
                                     jiraProjectdata.itstype = e.target.value;
-
                                 }}
                                 name="issueTracker"
                             >
@@ -520,7 +522,6 @@ function CreateProject() {
                             <input
                                 type="text"
                                 onChange={(e) => {
-                                    // createformData.jenkins_url = e.target.value;
                                     jiraProjectdata.url = e.target.value;
                                 }}
                             />
@@ -530,7 +531,6 @@ function CreateProject() {
                             <input
                                 type="text"
                                 onChange={(e) => {
-                                    // createformData.jenkins_user_name = e.target.value;
                                     jiraProjectdata.username = e.target.value;
                                 }}
                             />
@@ -540,14 +540,12 @@ function CreateProject() {
                             <input
                                 type="text"
                                 onChange={(e) => {
-                                    // createformData.jenkins_token = e.target.value;
                                     jiraProjectdata.password = e.target.value;
                                 }}
                             />
                         </Grid>
                         {jiraProject != null && <Grid item xs={4} sm={4} md={4}>
                             <label>Projects :</label>
-                            {/* <input type="text" /> */}
                             <select>
                                 {jiraProject.map(v => <option value={v.jira_project_id}>{v.name}</option>)}
                             </select>
