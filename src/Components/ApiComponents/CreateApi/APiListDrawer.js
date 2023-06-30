@@ -2,14 +2,17 @@ import { Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { getDatasetDetails } from "../../../Services/ApiService";
 import MaterialReactTable from "material-react-table";
-
 import { postData } from "./ApiDatasetData";
+import useHead from "../../../hooks/useHead";
+import { updateApiOrder } from "../../../Services/ApiService";
 export let getData;
 
-function APiListDrawer({ setSelectedApi, datasetId }) {
+function APiListDrawer({ setSelectedApi, datasetId ,testcaseId }) {
     let [Api, setApi] = useState([]);
     let [ApiId, setApiId] = useState(0);
     let [tempApi, setTempApi] = useState([]);
+    const {setSnackbarData } = useHead();
+
     const columns = useMemo(
         () => [
             {
@@ -55,12 +58,6 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
         setTempApi([...Api]);
     }, [Api]);
 
-
-    useEffect(() => {
-        console.log("order updated")
-        console.log(tempApi)
-    }, [tempApi])
-
     return (
         <div>
             <Typography
@@ -91,7 +88,20 @@ function APiListDrawer({ setSelectedApi, datasetId }) {
                             let x = [...tempApi]
                             x.splice(hoveredRow.index, 0, draggingRow.original)
                             x.splice(draggingRow.index + 1, 1)
-                            setTempApi([...x])
+                            let data = {
+                                testcaseId: testcaseId,
+                                api_ids:[]
+                            }
+                            data.api_ids = x.map(api => api.api_id)
+                            updateApiOrder(data).then(res=>{
+                                setTempApi([...x])
+                                setSnackbarData({
+                                    status: true,
+                                    message: res.message,
+                                    severity: "success",
+                                })
+                            })
+                           
                         }
                     },
                 })}

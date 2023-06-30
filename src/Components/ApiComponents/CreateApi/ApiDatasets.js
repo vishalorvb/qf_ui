@@ -179,6 +179,7 @@ function ApiDatasets() {
                         <APiListDrawer
                             setSelectedApi={setSelectedApi}
                             datasetId={datasetId}
+                            testcaseId={testcaseId}
                         ></APiListDrawer>
                     </Grid>
                     <Grid item md={9}>
@@ -262,7 +263,7 @@ function ApiDatasets() {
                                     </Grid>
                                     <Grid item md={4}>
                                         <input type="text" style={{ width: "100%", height: "35px" }} placeholder='URL'
-                                            defaultValue={globalApplication.base_url}
+                                            defaultValue={globalApplication?.base_url}
                                             disabled
                                         />
                                     </Grid>

@@ -90,3 +90,13 @@ return axios.post(`${baseUrl}/qfservice/getapibyid?api_id=${apiId}`).then(res=>{
   return res.data?.data
 })
 }
+
+export async function updateApiOrder(data){
+   return await axios({
+    method: 'post',
+    url:`${baseUrl}/qfservice/UpdateOrderOfAPIsInTestcase`,
+    data:data
+   }).then(res => {
+    return res.data
+   })
+}
