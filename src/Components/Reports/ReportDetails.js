@@ -11,6 +11,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import moment from "moment";
 
 export default function ReportDetails({ selectedItemData }) {
+  console.log(selectedItemData);
   return (
     <Stack gap={1}>
       <Typography sx={{ color: "#5C6780", fontWeight: "bold" }} variant="h5">
@@ -29,7 +30,7 @@ export default function ReportDetails({ selectedItemData }) {
             variant="p"
             style={{ color: "#66BB6A", fontWeight: "bold" }}
           >
-            {moment(selectedItemData?.start_time).format("DD-MM-yyyy hh:mm:ss")}
+            {selectedItemData?.start_time_st}
           </Typography>
         </Stack>
         <Stack>
@@ -41,7 +42,7 @@ export default function ReportDetails({ selectedItemData }) {
             variant="p"
             style={{ color: "#EF5350", fontWeight: "bold" }}
           >
-            {moment(selectedItemData?.end_time).format("DD-MM-yyyy hh:mm:ss")}
+            {selectedItemData?.end_time_st}
           </Typography>
         </Stack>
         <Stack>
@@ -53,7 +54,7 @@ export default function ReportDetails({ selectedItemData }) {
             variant="p"
             style={{ color: "#596981", fontWeight: "bold" }}
           >
-            {moment(selectedItemData?.execution_time).format(" hh:mm:ss")}
+            {selectedItemData?.execution_time_st}
           </Typography>
         </Stack>
       </Stack>

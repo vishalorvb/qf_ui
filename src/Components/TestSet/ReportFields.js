@@ -183,9 +183,12 @@ export default function ReportFields() {
               variant="contained"
               onClick={(e) => {
                 axios
-                  .get(`/qfreportservice/reportResult/${params.id}.json`)
+                  .get(`/qfreportservice/reportResult/${params.id}.pdf`, {
+                    responseType: "blob",
+                  })
                   .then((res) => {
                     setJson(res.data);
+                    window.open(URL.createObjectURL(res.data));
                   });
               }}
             ></DownloadIcon>

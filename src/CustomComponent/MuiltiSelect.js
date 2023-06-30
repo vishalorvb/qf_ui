@@ -38,8 +38,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   }, [selectedval]);
 
   useEffect(() => {
-
-    if(preselect.length !== 0) {
+    if (preselect.length !== 0) {
       setSelectedval(preselect);
     }
   }, [preselect]);
@@ -49,17 +48,17 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
       <FormControl sx={{ m: 1, width: 200 }}>
         <InputLabel id="demo-multiple-checkbox-label"></InputLabel>
         <Select
-        sx={{height:"40px"}}
+          sx={{ height: "40px" }}
           multiple
-          emptyRecordMsg = {"No Options Available"}
+          emptyRecordMsg={"No Options Available"}
           value={selectedval}
           onChange={handleChange}
-          input={<OutlinedInput  />}
+          input={<OutlinedInput />}
           placeholder="Select"
-          renderValue={(selected) => selected.map((v) => v[value] + ",")}
+          renderValue={(selected) => selected?.map((v) => v && v[value] + ",")}
           MenuProps={MenuProps}
         >
-          {options.map((opt) => {
+          {options?.map((opt) => {
             return (
               <MenuItem key={opt[id]} value={opt}>
                 <Checkbox checked={checkbox.indexOf(opt[id]) > -1} />

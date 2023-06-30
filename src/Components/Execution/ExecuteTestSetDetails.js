@@ -36,6 +36,29 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
+        const defaultDataset =
+          applicationType === 1
+            ? param?.row?.api_datasets?.find(
+                (dataset) => dataset?.is_default === true
+              )
+            : param?.row?.datasets?.find(
+                (dataset) => dataset?.is_default === true
+              );
+        console.log(
+          param?.row?.api_datasets?.find(
+            (dataset) => dataset?.is_default === true
+          )
+        );
+        // data.push({
+        //   testcase_id: param.row.testcase_id,
+        //   selected_testcase_dataset_ids: defaultDataset
+        //     ? [
+        //         applicationType === 1
+        //           ? defaultDataset?.testcase_dataset_id
+        //           : defaultDataset?.dataset_id,
+        //       ]
+        //     : [],
+        // });
         return (
           <div>
             <MuiltiSelect
@@ -45,23 +68,30 @@ function ExecuteTestSetDetails({
                     border: "none",
                   },
               }}
-              preselect={[]}
-              // {[param.row?.datasets[0]]}
-              // {(param.row.datasets).filter((e) => {
-              //   if (param.row.dataset_values[e.id]) {
-              //     return e;
-              //   }
-              // })}
-              options={param.row.datasets}
-              value="name"
+              preselect={
+                // defaultDataset ? [defaultDataset] :
+                []
+              }
+              options={
+                applicationType === 1
+                  ? param?.row?.api_datasets
+                  : param?.row?.datasets
+              }
+              value={
+                applicationType === 1 ? "dataset_name_in_testcase" : "name"
+              }
               id="dataset_id"
               stateList={(list) => {
+                console.log(list);
                 const obj = {
                   testcase_id: param.row.testcase_id,
-                  selected_testcase_dataset_ids: list.map(
-                    (val) => val.dataset_id
+                  selected_testcase_dataset_ids: list.map((val) =>
+                    applicationType === 1
+                      ? val?.testcase_dataset_id
+                      : val?.dataset_id
                   ),
                 };
+                console.log(obj);
                 const index = data.findIndex(
                   (obj) => obj.testcase_id === param.row.testcase_id
                 );
@@ -83,13 +113,21 @@ function ExecuteTestSetDetails({
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
-      )
-      .then((resp) => {
-        settestcaseList(resp?.data?.info);
-      });
+    applicationType === 1
+      ? axios
+          .get(`/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`)
+          .then((resp) => {
+            const data = resp?.data?.data;
+            settestcaseList(data);
+          })
+      : axios
+          .get(
+            `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
+          )
+          .then((resp) => {
+            const data = resp?.data?.info;
+            settestcaseList(data);
+          });
   }, [testsetId]);
 
   return (
