@@ -62,20 +62,20 @@ function CreateTestCase() {
     }
 
     function ApiTestcase(data) {
-        if(TCdata.apis_list.length<1){
+        if (TCdata.apis_list.length < 1) {
             setSnackbarData({
                 status: true,
-                message: "Select Atleat One Api",
+                message: "Select Atleast One Api",
                 severity: "warning",
             })
             return 0;
         }
-       
+
         createApitestcase(data).then(res => {
             if (res) {
                 setSnackbarData({
                     status: true,
-                    message: TCdata.testcase_id === undefined?res:"TestCase Updated Successfully",
+                    message: TCdata.testcase_id === undefined ? res : "TestCase Updated Successfully",
                     severity: "success",
                 })
                 navigate("/Testcase/Recent")
@@ -89,8 +89,6 @@ function CreateTestCase() {
     }
 
     function handleSubmit(e) {
-        console.log("calling save")
-        console.log(globalApplication?.module_type)
         if ((globalApplication?.module_type) === 19) {
             setReportFailMsg(true);
             setTimeout(() => {
@@ -117,12 +115,12 @@ function CreateTestCase() {
                     TCdata.screens_in_testcase = scr
                     WebTestcase(TCdata)
                 }
-                if(globalApplication?.module_type == 1){
-                    let desc =  TCdata.testcase_description
+                if (globalApplication?.module_type == 1) {
+                    let desc = TCdata.testcase_description
                     delete TCdata.testcase_description
                     TCdata.testcase_desc = desc
                     TCdata.apis_list = selectedApiList?.map(api => {
-                        return {api_id: api}
+                        return { api_id: api }
                     })
                     ApiTestcase(TCdata)
                 }
@@ -141,7 +139,6 @@ function CreateTestCase() {
                 ...ps,
                 name: "Create Testcases",
                 plusButton: false,
-                //   buttonName: "Create Testcase",
                 plusCallback: () => {
 
                 },
@@ -306,7 +303,7 @@ function CreateTestCase() {
                 spacing={2}
             >
                 {/* <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button> */}
-                <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined?"Save":"Update"} </Button>
+                <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined ? "Save" : "Update"} </Button>
             </Stack>
             <SnackbarNotify
                 open={reportFailMsg}

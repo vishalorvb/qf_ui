@@ -1,5 +1,4 @@
-import { Button, Divider, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { getDatasetDetails } from "../../../Services/ApiService";
 import MaterialReactTable from "material-react-table";
@@ -8,93 +7,100 @@ import { postData } from "./ApiDatasetData";
 export let getData;
 
 function APiListDrawer({ setSelectedApi, datasetId }) {
-  let [Api, setApi] = useState([]);
-  let [ApiId, setApiId] = useState(0);
-  let [tempApi, setTempApi] = useState([]);
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "locators",
-        header: " ",
-        Cell: ({ cell, column, row, table }) => {
-          return (
-            <div
-              style={{
-                cursor: "pointer",
-                backgroundColor:row.original.api_id==ApiId? "#e8edf2":""
-              }}
-              onClick={(e) => {
-                setApiId(row.original.api_id);
-                setSelectedApi({ ...row.original });
-              }}
+    let [Api, setApi] = useState([]);
+    let [ApiId, setApiId] = useState(0);
+    let [tempApi, setTempApi] = useState([]);
+    const columns = useMemo(
+        () => [
+            {
+                accessorKey: "locators",
+                header: " ",
+                Cell: ({ cell, column, row, table }) => {
+                    return (
+                        <div
+                            style={{
+                                cursor: "pointer",
+                                backgroundColor: row.original.api_id == ApiId ? "#e8edf2" : ""
+                            }}
+                            onClick={(e) => {
+                                setApiId(row.original.api_id);
+                                setSelectedApi({ ...row.original });
+                            }}
+                        >
+                            <h4>{row.original.api_name}</h4>
+                            <h5>{row.original.api_description}</h5>
+                        </div>
+                    );
+                },
+            },
+        ],
+        [ApiId]
+    );
+
+    useEffect(() => {
+        getDatasetDetails(setApi, datasetId);
+    }, []);
+
+    useEffect(() => {
+        getData = [...Api];
+        let api_order = [];
+        getData?.forEach((element) => {
+            api_order.push(element.api_id);
+        });
+        postData.apis_order = api_order;
+        if (Api[0] !== undefined) {
+            setSelectedApi(Api[0]);
+            setApiId(Api[0].api_id);
+        }
+        setTempApi([...Api]);
+    }, [Api]);
+
+
+    useEffect(() => {
+        console.log("order updated")
+        console.log(tempApi)
+    }, [tempApi])
+
+    return (
+        <div>
+            <Typography
+                align="center"
+                m={2}
+                sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}
             >
-              <h4>{row.original.api_name}</h4>
-              <h5>{row.original.api_description}</h5>
-            </div>
-          );
-        },
-      },
-    ],
-    [ApiId]
-  );
+                List of Api
+            </Typography>
 
-  useEffect(() => {
-    getDatasetDetails(setApi, datasetId);
-  }, []);
+            {tempApi != undefined && <MaterialReactTable
 
-  useEffect(() => {
-    getData = [...Api];
-    let api_order = [];
-    getData?.forEach((element) => {
-      api_order.push(element.api_id);
-    });
-    postData.apis_order = api_order;
-    if (Api[0] !== undefined) {
-      setSelectedApi(Api[0]);
-      setApiId(Api[0].api_id);
-    }
-    setTempApi([...Api]);
-  }, [Api]);
-  return (
-    <div>
-      <Typography
-        align="center"
-        m={2}
-        sx={{ backgroundColor: "#e8edf2", padding: "10px", color: "002980" }}
-      >
-        List of Api
-      </Typography>
-      
-      {tempApi != undefined && <MaterialReactTable
-
-        columns={columns}
-        data={tempApi}
-        enableColumnActions={false}
-        enablePagination={false}
-        initialState={{ density: "compact" }}
-        enableToolbarInternalActions={false}
-        muiTableBodyRowProps={{ hover: false }}
-        enableRowOrdering
-        enableSorting={false}
-        enableTopToolbar={false}
-        enableBottomToolbar={false}
-        muiTableBodyRowDragHandleProps={({ table }) => ({
-          onDragEnd: () => {
-            const { draggingRow, hoveredRow } = table.getState();
-            if (hoveredRow && draggingRow) {
-              let x = [...tempApi]
-              x.splice(hoveredRow.index, 0, draggingRow.original)
-              x.splice(draggingRow.index + 1, 1)
-              setTempApi([...x])
-            }
-          },
-        })}
-        muiTablePaperProps={{
-          elevation: 0,
-        }}
-      />}
-    </div>
-  )
+                columns={columns}
+                data={tempApi}
+                enableColumnActions={false}
+                enablePagination={false}
+                initialState={{ density: "compact" }}
+                enableToolbarInternalActions={false}
+                muiTableBodyRowProps={{ hover: false }}
+                enableRowOrdering
+                enableSorting={false}
+                enableTopToolbar={false}
+                enableBottomToolbar={false}
+                muiTableBodyRowDragHandleProps={({ table }) => ({
+                    onDragEnd: () => {
+                        const { draggingRow, hoveredRow } = table.getState();
+                        if (hoveredRow && draggingRow) {
+                            let x = [...tempApi]
+                            x.splice(hoveredRow.index, 0, draggingRow.original)
+                            x.splice(draggingRow.index + 1, 1)
+                            setTempApi([...x])
+                        }
+                    },
+                })}
+                muiTablePaperProps={{
+                    elevation: 0,
+                }}
+            />}
+        </div>
+    )
 }
 
 export default APiListDrawer;
