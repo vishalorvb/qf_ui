@@ -171,27 +171,21 @@ export default function ReportFields() {
                 View All
               </div>
             </div>
-            <DownloadIcon
-              style={{
-                marginLeft: "5px",
-                border: "1px solid #c4cbe1",
-                width: "30px",
-                height: "22px",
-                cursor: "pointer",
-                marginTop: "5px",
-              }}
-              variant="contained"
-              onClick={(e) => {
-                axios
-                  .get(`/qfreportservice/reportResult/${params.id}.pdf`, {
-                    responseType: "blob",
-                  })
-                  .then((res) => {
-                    console.log(res);
-                    window.open(URL.createObjectURL(res.data));
-                  });
-              }}
-            ></DownloadIcon>
+            <a
+              href={`//10.11.12.243:8083/qfreportservice/reportResult/${params.id}.pdf`}
+            >
+              <DownloadIcon
+                style={{
+                  marginLeft: "5px",
+                  border: "1px solid #c4cbe1",
+                  width: "30px",
+                  height: "22px",
+                  cursor: "pointer",
+                  marginTop: "5px",
+                }}
+                variant="contained"
+              />
+            </a>
           </>
         );
       },
