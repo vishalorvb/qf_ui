@@ -187,7 +187,7 @@ export default function ReportFields() {
                     responseType: "blob",
                   })
                   .then((res) => {
-                    setJson(res.data);
+                    console.log(res);
                     window.open(URL.createObjectURL(res.data));
                   });
               }}
