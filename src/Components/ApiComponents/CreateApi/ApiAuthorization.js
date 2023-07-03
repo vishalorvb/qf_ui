@@ -6,8 +6,6 @@ import { useRef } from 'react'
 
 function ApiAuthorization({ ApiDetails }) {
 
-    console.log(ApiDetails)
-    //let Auth = useRef(JSON.parse(ApiDetails.auth.auth_data))
     let Auth = useRef(JSON.parse(ApiDetails.auth==null ?"{\"authtype\":\"basicauth\",\"basicauth\":{\"username\":\"\",\"password\":\"\"},\"apikey\":{\"key\":\"\",\"value\":\"\",\"addto\":\"header\"},\"bearertoken\":{\"token\":\"token\"},\"oauth2\":{\"tokenurl\":\"\",\"clientid\":\"\",\"clientsecret\":\"\"}}":ApiDetails.auth.auth_data))
     let [type, setType] = useState(Auth.current.authtype)
 

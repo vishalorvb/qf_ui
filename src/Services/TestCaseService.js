@@ -105,7 +105,6 @@ export async function DeleteTestCase(testcaseId) {
 export function GetTestCase(callback, projectId, applicationId) {
   axios
     .get(
-      // `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByApplicationId?application_id=${applicationId}&project_id=${projectId}`
       `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
     )
     .then((resp) => {
@@ -114,15 +113,6 @@ export function GetTestCase(callback, projectId, applicationId) {
     });
 }
 
-// export async function UpdateTestcase(testcaseId, testcaseName, testcaseDescription) {
-//   let x = await axios.post(`${baseUrl}/qfservice/webtestcase/updateWebTestcaseInfo?testcase_id=${testcaseId}&testcase_desc=${testcaseDescription}&testcase_name=${testcaseName}`).then(res => {
-//     if (res.data.status == "SUCCESS") {
-//       return res.data.info.testcase_id
-//     }
-//     return false
-//   })
-//   return x
-// }
 
 export function getSprint(callback, projectId) {
   axios

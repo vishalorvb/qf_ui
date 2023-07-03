@@ -252,7 +252,7 @@ function CreateProject() {
     const ref = useRef(null);
     return (
         <form ref={ref}>
-            <div className="accordionParent" >
+           <div className="accordionParent" >
                 <AccordionTemplate defaultState={true} name="Project Information">
                     <Grid container spacing={2} sx={{ marginBottom: "10px" }} >
                         <Grid item xs={6} sm={6} md={6}>
