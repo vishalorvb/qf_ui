@@ -54,7 +54,7 @@ export default function APIsTable() {
       Apidata.request_type = res.request_type
       Apidata.body_type = res.body_type
       Apidata.body_raw.raw_text = res.bodyRaw === null ? " " : res.bodyRaw.raw_text
-      Apidata.body_raw.raw_type_id = res.bodyRaw === null ? " " : res.bodyRaw.raw_type_id
+      Apidata.body_raw.raw_type_id = res.bodyRaw === null ? 1 : res.bodyRaw.raw_type_id
 
 
       let auth = res.auth==null?{}:JSON.parse(res.auth?.auth_data)
