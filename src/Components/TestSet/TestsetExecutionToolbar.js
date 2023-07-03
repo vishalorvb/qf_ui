@@ -132,16 +132,16 @@ function TestsetExecutionToolbar({
         const executionData = {
           testset_id: testsetId,
           module_id: applicationId,
-          web_testcases_list_to_execute: datasets,
+          testcases_list_to_execute: datasets,
           mobile_platform: appType,
           config_id: null,
           config_name: null,
           build_environment_name: data?.buildenvName?.split("&")[1],
-          build_environment_id: data?.buildenvName?.split("&")[0],
+          build_environment_id: parseInt(data?.buildenvName?.split("&")[0]),
           browser_type: data?.browser?.toString(),
           execution_location: data?.executionLoc,
           repository_commit_message: "",
-          testcase_overwrite: true,
+          testcase_overwrite: false,
           runtimevariables: data?.buildenvName?.split("&")[2],
           is_execute: true,
           is_generate: data?.regenerateScript?.length > 0,
@@ -149,26 +149,24 @@ function TestsetExecutionToolbar({
           user_id: auth?.userId,
         };
 
-        axios
-          .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
-          .then((resp) => {
-            data?.executionLoc !== "local" && setShowLoading(false);
-            resp?.data?.status === "SUCCESS" && resp?.data?.info
-              ? axios
-                  .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
-                    data: resp?.data?.info,
-                    jarName: `code`,
-                  })
-                  .then((resp) => {
-                    setJarConnected(true);
-                    setShowLoading(false);
-                  })
-                  .catch((err) => {
-                    err.message === "Network Error" && setClientInactive(true);
-                    setShowLoading(false);
-                  })
-              : setRemoteExecutionsuccess(true);
-          });
+        axios.post(`/qfservice/ExecuteTestset`, executionData).then((resp) => {
+          data?.executionLoc !== "local" && setShowLoading(false);
+          resp?.data?.status === "SUCCESS" && resp?.data?.info
+            ? axios
+                .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
+                  data: resp?.data?.info,
+                  jarName: `code`,
+                })
+                .then((resp) => {
+                  setJarConnected(true);
+                  setShowLoading(false);
+                })
+                .catch((err) => {
+                  err.message === "Network Error" && setClientInactive(true);
+                  setShowLoading(false);
+                })
+            : setRemoteExecutionsuccess(true);
+        });
       } else {
         setSnack(true);
         setTimeout(() => {
@@ -200,12 +198,12 @@ function TestsetExecutionToolbar({
       const executionData = {
         testset_id: testsetId,
         module_id: applicationId,
-        web_testcases_list_to_execute: datasets,
+        testcases_list_to_execute: datasets,
         mobile_platform: appType,
         config_id: null,
         config_name: null,
         build_environment_name: data?.buildenvName?.split("&")[1],
-        build_environment_id: data?.buildenvName?.split("&")[0],
+        build_environment_id: parseInt(data?.buildenvName?.split("&")[0]),
         browser_type: data?.browser?.toString(),
         execution_location: data?.executionLoc,
         repository_commit_message: "",
@@ -216,26 +214,24 @@ function TestsetExecutionToolbar({
         client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
         user_id: auth?.userId,
       };
-      axios
-        .post(`/qfservice/ExecuteWebTestset_v11`, executionData)
-        .then((resp) => {
-          data?.executionLoc !== "local" && setShowLoading(false);
-          resp?.data?.status === "SUCCESS" && resp?.data?.info
-            ? axios
-                .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
-                  data: resp?.data?.info,
-                  jarName: `code`,
-                })
-                .then((resp) => {
-                  setJarConnected(true);
-                  setShowLoading(false);
-                })
-                .catch((err) => {
-                  err.message === "Network Error" && setClientInactive(true);
-                  setShowLoading(false);
-                })
-            : setRemoteExecutionsuccess(true);
-        });
+      axios.post(`/qfservice/ExecuteTestset`, executionData).then((resp) => {
+        data?.executionLoc !== "local" && setShowLoading(false);
+        resp?.data?.status === "SUCCESS" && resp?.data?.info
+          ? axios
+              .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
+                data: resp?.data?.info,
+                jarName: `code`,
+              })
+              .then((resp) => {
+                setJarConnected(true);
+                setShowLoading(false);
+              })
+              .catch((err) => {
+                err.message === "Network Error" && setClientInactive(true);
+                setShowLoading(false);
+              })
+          : setRemoteExecutionsuccess(true);
+      });
     } else {
       setSnack(true);
       setTimeout(() => {
