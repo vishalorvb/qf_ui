@@ -43,15 +43,9 @@ export default function ProjectnApplicationSelector({ isTestset }) {
   }, [applicationList]);
 
   return (
-    <Grid
-      item
-      container
-      spacing={2}
-      justifyContent="space-around"
-      direction="row"
-    >
+    <Grid container spacing={2} justifyContent="space-around" direction="row">
       <Grid item md={6}>
-        <label htmlFor="">Projects</label>
+        <label>Projects</label>
         <Autocomplete
           disablePortal
           disableClearable
@@ -65,14 +59,12 @@ export default function ProjectnApplicationSelector({ isTestset }) {
             setglobalProject(value);
           }}
           renderInput={(params) => (
-            <div ref={params.InputProps.ref}>
-              <input type="text" {...params.inputProps} />
-            </div>
+            <TextField {...params} size="small" fullWidth />
           )}
         />
       </Grid>
       <Grid item md={6}>
-        <label htmlFor="">Applications</label>
+        <label>Applications</label>
         <Autocomplete
           disablePortal
           disableClearable
@@ -83,14 +75,9 @@ export default function ProjectnApplicationSelector({ isTestset }) {
           fullWidth
           getOptionLabel={(option) => option.module_name}
           onChange={(e, value) => {
-            // console.log(value);
             setglobalApplication(value);
           }}
-          renderInput={(params) => (
-            <div ref={params.InputProps.ref}>
-              <input type="text" {...params.inputProps} />
-            </div>
-          )}
+          renderInput={(params) => <TextField {...params} size="small" />}
         />
       </Grid>
     </Grid>

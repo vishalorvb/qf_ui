@@ -339,9 +339,10 @@ function TestsetExecutionToolbar({
       <Grid container>
         <Grid item container xs={10} spacing={1} justifyContent="flex-start">
           <Grid item xs={2} sm={4} md={4} lg={2.5}>
+            <label>Execution Location</label>
             <SelectElement
               name="executionLoc"
-              label="Execution Location"
+              // label="Execution Location"
               size="small"
               fullWidth
               control={control}
@@ -364,15 +365,16 @@ function TestsetExecutionToolbar({
                   });
                 }}
               >
-                Configure Device
+                + Configure Device
               </h5>
             )}
           </Grid>
           <Grid item xs={2} sm={4} md={4} lg={2.5}>
             <Stack direction="column">
+              <label>Build Environment</label>
               <SelectElement
                 name="buildenvName"
-                label="Build Environment"
+                // label="Build Environment"
                 size="small"
                 fullWidth
                 control={control}
@@ -401,6 +403,7 @@ function TestsetExecutionToolbar({
             ""
           ) : (
             <Grid item>
+              <label>Browser</label>
               <Controller
                 control={control}
                 name="browser"
@@ -408,7 +411,7 @@ function TestsetExecutionToolbar({
                 render={({ field }) => (
                   <MultiSelectElement
                     menuMaxWidth={5}
-                    label="Browser"
+                    // label="Browser"
                     size="small"
                     fullWidth
                     options={options}
@@ -419,7 +422,7 @@ function TestsetExecutionToolbar({
               />
             </Grid>
           )}
-          <Grid item xs={2} sm={3} md={2} lg={4}>
+          <Grid item xs={2} sm={3} md={2} lg={4} mt={2.3}>
             <FeatureMenu
               frameworkType={frameworkType}
               projectId={projectId}
@@ -434,7 +437,7 @@ function TestsetExecutionToolbar({
           </Grid>
         </Grid>
 
-        <Grid item xs={2} sm={2} md={2} lg={2}>
+        <Grid item xs={2} sm={2} md={2} lg={2} mt={2.3}>
           <Grid item>
             <Stack direction="column">
               <React.Fragment>

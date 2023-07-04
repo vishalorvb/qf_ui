@@ -183,6 +183,14 @@ function TestsetCreate() {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Grid container direction="row" spacing={2}>
+        <Grid item md={6}>
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
+        </Grid>
         <Grid item md={3}>
           <label>Sprint</label>
           <Select
@@ -215,14 +223,6 @@ function TestsetCreate() {
           </Select>
         </Grid>
 
-        <Grid item md={6}>
-          <ProjectnApplicationSelector
-            globalProject={globalProject}
-            setglobalProject={setglobalProject}
-            globalApplication={globalApplication}
-            setglobalApplication={setglobalApplication}
-          />
-        </Grid>
         <Grid item md={6}>
           <Stack spacing={1}>
             <label>

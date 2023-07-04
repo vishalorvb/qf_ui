@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   Stack,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -268,7 +269,7 @@ function BIReports() {
               id="project_id"
               options={project}
               value={selectedProject || null}
-              sx={{ width: "100%" }}
+              // sx={{ width: "100%" }}
               getOptionLabel={(option) =>
                 option.project_name ? option.project_name : ""
               }
@@ -276,34 +277,35 @@ function BIReports() {
                 setSelectedProject(value);
               }}
               renderInput={(params) => (
-                <div ref={params.InputProps.ref}>
-                  <input type="text" {...params.inputProps} />
-                </div>
+                <TextField {...params} size="small" fullWidth />
               )}
             />
           </Grid>
           <Grid item md={2}>
-            <label htmlFor="">
-              Testsets <span className="importantfield">*</span>
-            </label>
-            <FormControl sx={{ m: 1, width: 180 }}>
-              <Select
-                multiple
-                options={testset}
-                getOptionLabel={(option) =>
-                  option.testset_name ? option.testset_name : ""
-                }
-                value={selectedOptions}
-                onChange={handleSelectChange}
-                // onChange={(key,value) => (console.log(value))}
-              >
-                {testset.map((name) => (
-                  <MenuItem key={name.testset_id} value={name.testset_name}>
-                    {name.testset_name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Stack>
+              <label htmlFor="">
+                Testsets <span className="importantfield">*</span>
+              </label>
+              <FormControl>
+                <Select
+                  size="small"
+                  multiple
+                  options={testset}
+                  getOptionLabel={(option) =>
+                    option.testset_name ? option.testset_name : ""
+                  }
+                  value={selectedOptions}
+                  onChange={handleSelectChange}
+                  // onChange={(key,value) => (console.log(value))}
+                >
+                  {testset.map((name) => (
+                    <MenuItem key={name.testset_id} value={name.testset_name}>
+                      {name.testset_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
           </Grid>
           <Grid item md={6} mt={2.5} ml={3}>
             <Button

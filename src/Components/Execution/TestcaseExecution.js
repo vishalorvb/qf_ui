@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Typography } from "@mui/material";
+import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
@@ -96,14 +96,16 @@ export default function TestcaseExecution() {
     <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
-          <input
+          <TextField
+            size="small"
             type="text"
             placeholder="Search..."
             value={searchTerm}
             onChange={handleSearchChange}
+            fullWidth
           />
         </Grid>
-        <Grid>
+        <Grid item md={3}>
           <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}

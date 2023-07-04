@@ -282,9 +282,10 @@ const LinkProjectExecution = () => {
       >
         <Grid item md={8} container spacing={1} display="flex">
           <Grid item md={2}>
+            <label>Execution Location</label>
             <SelectElement
               name="executionLoc"
-              label="Execution Location"
+              // label="Execution Location"
               size="small"
               fullWidth
               control={control}
@@ -292,11 +293,11 @@ const LinkProjectExecution = () => {
               options={execEnvList}
             />
           </Grid>
-          <Grid item md={2}>
+          <Grid item md={2} mt={2.3}>
             {" "}
             <LinkFeatureMenu buildEnvId={buildEnvId} />{" "}
           </Grid>
-          <Grid item md={2}>
+          <Grid item md={2} mt={2.3}>
             <Button
               fullWidth
               variant="contained"
@@ -314,7 +315,7 @@ const LinkProjectExecution = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid item md={1.3}>
+        <Grid item md={1.3} mt={2.3}>
           <Button
             fullWidth
             variant="contained"
