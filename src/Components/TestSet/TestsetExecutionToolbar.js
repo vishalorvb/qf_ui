@@ -506,7 +506,7 @@ function TestsetExecutionToolbar({
                 options={[
                   {
                     id: "1",
-                    label: "Regenrate Script",
+                    label: "Regenerate Script",
                   },
                 ]}
               />

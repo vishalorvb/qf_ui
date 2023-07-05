@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Divider, Grid } from "@mui/material"
+import { Autocomplete, Button, Divider, Grid, TextField } from "@mui/material"
 import { useNavigate } from "react-router"
 import { validateFormbyName } from "../../CustomComponent/FormValidation"
 import { useEffect, useRef, useState } from "react"
@@ -203,16 +203,14 @@ function CreateTestCase() {
                         id="project_id"
                         options={project}
                         value={globalProject || null}
-                        sx={{ width: "100%" }}
+                        fullWidth
                         getOptionLabel={(option) => option?.project_name}
                         onChange={(e, value) => {
                             setglobalApplication(null);
                             setglobalProject(value);
                         }}
                         renderInput={(params) => (
-                            <div ref={params.InputProps.ref}>
-                                <input type="text" {...params.inputProps} />
-                            </div>
+                            <TextField {...params} size="small" fullWidth />
                         )}
                     />
                 </Grid>
@@ -224,15 +222,13 @@ function CreateTestCase() {
                         id="model_id"
                         options={application}
                         value={globalApplication || null}
-                        sx={{ width: "100%" }}
+                        fullWidth
                         getOptionLabel={(option) => option.module_name}
                         onChange={(e, value) => {
                             setglobalApplication(value);
                         }}
                         renderInput={(params) => (
-                            <div ref={params.InputProps.ref}>
-                                <input type="text" {...params.inputProps} />
-                            </div>
+                            <TextField {...params} size="small" fullWidth />
                         )}
                     />
 

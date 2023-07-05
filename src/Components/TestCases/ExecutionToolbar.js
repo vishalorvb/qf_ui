@@ -529,7 +529,7 @@ export default function ExecutionToolbar({
                 options={[
                   {
                     id: "1",
-                    label: "Regenrate Script",
+                    label: "Regenerate Script",
                   },
                 ]}
               />

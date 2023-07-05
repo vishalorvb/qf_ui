@@ -377,7 +377,7 @@ const TestDesign = () => {
   useEffect(() => {
     getProject((res) => {
       setProjectList(res);
-      setglobalProject(res[0]);
+    //  setglobalProject(res[0]);
       setJiraProjectId(res[0]?.jira_project_id);
     }, auth.userId);
   }, []);

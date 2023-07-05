@@ -369,7 +369,9 @@ const TestLibrary = () => {
   useEffect(() => {
     getProject((res) => {
       setProjectList(res);
-      setglobalProject(res[0]);
+      if(globalProject == null){
+     setglobalProject(res[0]);
+      }
     }, auth.userId);
     if (globalProject == null) {
       setglobalProject(projectsList[0]);

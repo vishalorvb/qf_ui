@@ -11,8 +11,8 @@ import useAuth from "../../hooks/useAuth";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import TableActions from "../../CustomComponent/TableActions";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 function ProjectTable({ location }) {
     let [popup, setPopup] = useState(false);
     let [pid, setPid] = useState();
@@ -68,14 +68,14 @@ function ProjectTable({ location }) {
                         })
 
                     }}>
-                        <FavoriteIcon></FavoriteIcon>
+                        <StarIcon></StarIcon>
                     </div>
                     : <div onClick={e => {
                         makeProjectFav(loggedInId, param.row.project_id, true).then(res => {
                             getProject(setProject, loggedInId)
                         })
                     }}>
-                        <FavoriteBorderIcon></FavoriteBorderIcon>
+                        <StarBorderIcon></StarBorderIcon>
                     </div>;
             },
         },

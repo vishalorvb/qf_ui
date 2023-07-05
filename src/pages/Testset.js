@@ -148,12 +148,15 @@ export default function Testset() {
     <>
       <div className="apptable">
         <div className="intable">
-          <ProjectnApplicationSelector
+            <div style={{marginTop:"-30px"}}>
+            <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}
             globalApplication={globalApplication}
             setglobalApplication={setglobalApplication}
           />
+            </div>
+        
         </div>
 
         <SnackbarNotify
