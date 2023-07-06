@@ -110,9 +110,11 @@ export default function PageElements() {
     <div>
       <div className="apptable">
         <div className="intable">
-          <Button variant="contained" onClick={() => setShowAddElement(true)}>
-            Add Element
-          </Button>
+          <div style={{ float: "right" }}>
+            <Button variant="contained" onClick={() => setShowAddElement(true)}>
+              Add Element
+            </Button>
+          </div>
         </div>
         <Table
           searchPlaceholder="Search Elements"

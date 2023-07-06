@@ -17,7 +17,7 @@ export default function TestcaseExecution() {
     setglobalApplication,
   } = useHead();
   const [testcases, setTestcases] = useState([]);
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(0);
   const [reportFailMsg, setReportFailMsg] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,15 +61,20 @@ export default function TestcaseExecution() {
   };
 
   useEffect(() => {
-    GetTestCase(
-      (res) => {
-        // console.log(res[0]?.datasets[0]?.testcase_id)
-        setTestcases(res);
-        setSelectedItem(res[0]?.datasets[0]?.testcase_id);
-      },
-      globalProject?.project_id,
-      globalApplication?.module_id
-    );
+    if (globalApplication) {
+      GetTestCase(
+        (res) => {
+          // console.log(res[0]?.datasets[0]?.testcase_id)
+          setTestcases(res);
+          setSelectedItem(res[0]?.datasets[0]?.testcase_id);
+        },
+        globalProject?.project_id,
+        globalApplication?.module_id
+      );
+    } else {
+      setTestcases([]);
+      setSelectedItem(0);
+    }
   }, [globalProject, globalApplication]);
 
   useEffect(() => {
@@ -105,7 +110,7 @@ export default function TestcaseExecution() {
             fullWidth
           />
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={5}>
           <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}

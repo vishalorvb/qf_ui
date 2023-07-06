@@ -280,6 +280,8 @@ export default function ExecutionToolbar({
 
   useEffect(() => {
     reset();
+    setBuildEnvList([]);
+    setExecEnvList([]);
     applicationId !== undefined &&
       axios
         .get(

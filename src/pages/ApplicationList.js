@@ -59,7 +59,7 @@ export default function ApplicationsList() {
               ),
               2: (
                 <Tooltip title="Web">
-                  <LanguageIcon sx={{ color: "#0000A5" }} />
+                  <LanguageIcon sx={{ color: "#0fadc8" }} />
                 </Tooltip>
               ),
               3: (
@@ -72,7 +72,7 @@ export default function ApplicationsList() {
                   <AppleIcon sx={{ color: "#A2AAAD" }} />
                 </Tooltip>
               ),
-              5: (
+              13: (
                 <Tooltip title="Mobile-Web">
                   <AdUnitsIcon sx={{ color: "green" }} />
                 </Tooltip>
@@ -106,7 +106,7 @@ export default function ApplicationsList() {
     {
       field: "module_desc",
       headerName: "Description",
-      flex: 3,
+      flex: 6,
       sortable: false,
       renderCell: (param) => {
         return ApplicationDescriptionCell(

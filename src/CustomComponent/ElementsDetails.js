@@ -103,7 +103,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
               <SelectElement
                 label="Path Type"
                 name="pathType"
-                size="medium"
+                size="small"
                 onChange={(e) => {
                   const path = allXpath.find((xpath) => xpath?.id === e)?.path;
                   setValue("path", path);
@@ -135,7 +135,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
               <SelectElement
                 name="fieldType"
                 label="Field Type"
-                size="medium"
+                size="small"
                 fullWidth
                 control={control}
                 options={[
@@ -149,7 +149,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
               <SelectElement
                 name="otherFieldType"
                 label="Other Field Type"
-                size="medium"
+                size="small"
                 fullWidth
                 control={control}
                 options={[

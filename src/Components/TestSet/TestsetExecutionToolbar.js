@@ -241,46 +241,50 @@ function TestsetExecutionToolbar({
   };
   useEffect(() => {
     reset();
-    axios
-      .get(
-        `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
-      )
-      .then((resp) => {
-        const buildEnv = resp?.data?.data;
-        setBuildEnvId(resp?.data?.data[0]?.id);
-        setRunTimeVariable(resp?.data?.data[0]?.runtime_variables);
+    setBuildEnvList([]);
+    setExecEnvList([]);
+    applicationId &&
+      axios
+        .get(
+          `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
+        )
+        .then((resp) => {
+          const buildEnv = resp?.data?.data;
+          setBuildEnvId(resp?.data?.data[0]?.id);
+          setRunTimeVariable(resp?.data?.data[0]?.runtime_variables);
 
-        setBuildEnvList(() => {
-          return buildEnv.map((be) => {
-            return {
-              id: be.id + "&" + be.name + "&" + be.runtime_variables,
-              label: be.name,
-            };
+          setBuildEnvList(() => {
+            return buildEnv.map((be) => {
+              return {
+                id: be.id + "&" + be.name + "&" + be.runtime_variables,
+                label: be.name,
+              };
+            });
           });
         });
-      });
 
-    axios
-      .get(
-        `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
-      )
-      .then((resp) => {
-        const execEnv = resp?.data?.data;
-        const data1 = execEnv.map((ee) => {
-          return { id: ee.value, label: ee.name };
+    applicationId &&
+      axios
+        .get(
+          `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
+        )
+        .then((resp) => {
+          const execEnv = resp?.data?.data;
+          const data1 = execEnv.map((ee) => {
+            return { id: ee.value, label: ee.name };
+          });
+          const execConfig = resp?.data?.data1;
+          const data2 = execConfig.map((ee) => {
+            return { id: ee.specificationId, label: ee.name };
+          });
+          const mergedObj = [...data1, ...data2];
+          setExecEnvList(mergedObj);
+          // setExecEnvList(() => {
+          //   return execEnv.map((ee) => {
+          //     return { id: ee.value, label: ee.name };
+          //   });
+          // });
         });
-        const execConfig = resp?.data?.data1;
-        const data2 = execConfig.map((ee) => {
-          return { id: ee.specificationId, label: ee.name };
-        });
-        const mergedObj = [...data1, ...data2];
-        setExecEnvList(mergedObj);
-        // setExecEnvList(() => {
-        //   return execEnv.map((ee) => {
-        //     return { id: ee.value, label: ee.name };
-        //   });
-        // });
-      });
   }, [applicationId]);
 
   useEffect(() => {
