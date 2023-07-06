@@ -261,6 +261,14 @@ function CreateTestCase() {
                         defaultValue={TCdata.testcase_name}
                         onChange={e => {
                             TCdata.testcase_name = e.target.value.trim();
+                            if(TCdata.testcase_name.length>30){
+                                setSnackbarData({
+                                    status: true,
+                                    message: "TestCase Name should not more than 10 characters",
+                                    severity: "warning",
+                                })
+                                e.target.value = e.target.value.slice(0,-1)
+                            }
                         }}
                     />
                 </Grid>
@@ -272,6 +280,15 @@ function CreateTestCase() {
                         defaultValue={TCdata.testcase_description}
                         onChange={e => {
                             TCdata.testcase_description = e.target.value;
+                            if(TCdata.testcase_name.length>50){
+                                setSnackbarData({
+                                    status: true,
+                                    message: "TestCase Name should not more than 10 characters",
+                                    severity: "warning",
+                                })
+                                e.target.value = e.target.value.slice(0,-1)
+
+                            }
                         }}
                     />
                 </Grid>
