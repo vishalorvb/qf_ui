@@ -106,7 +106,7 @@ export default function ApplicationsList() {
     {
       field: "module_desc",
       headerName: "Description",
-      flex: 3,
+      flex: 6,
       sortable: false,
       renderCell: (param) => {
         return ApplicationDescriptionCell(

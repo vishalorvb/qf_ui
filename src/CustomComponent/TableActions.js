@@ -1,4 +1,4 @@
-import { Menu, Typography } from "@mui/material";
+import { Menu, Tooltip, Typography } from "@mui/material";
 import { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
@@ -14,7 +14,13 @@ function TableActions(props) {
   };
   return (
     <div className="descColumn">
-      <Typography variant="p">{props?.heading}</Typography>
+      <Tooltip title={props?.heading?.length <= 140 ? "" : props?.heading}>
+        <Typography variant="p">
+          {props?.heading?.length <= 140
+            ? props?.heading
+            : props?.heading?.substr(0, 140) + "..."}
+        </Typography>
+      </Tooltip>
       <MoreVertIcon
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
