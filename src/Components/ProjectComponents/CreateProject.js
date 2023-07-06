@@ -573,7 +573,10 @@ function CreateProject() {
                         setLeft={setLeftuser}
                         right={rigthtuser}
                         setRight={setRightuser}
+                        id="id"
                         name="firstName"
+                        lastName = "lastName"
+                        display ={value=>`${value.firstName} ${value.lastName} (${value.id})`}
                     ></TransferList>
                 </AccordionTemplate>
 
@@ -583,7 +586,9 @@ function CreateProject() {
                         setLeft={setLeftApplication}
                         right={rightApplication}
                         setRight={setRightApplication}
+                        id="module_id"
                         name="module_name"
+                        display={value => `${value.module_name}`}
                     ></TransferList>
                 </AccordionTemplate>
                 <Grid item xs={12} md={12}>

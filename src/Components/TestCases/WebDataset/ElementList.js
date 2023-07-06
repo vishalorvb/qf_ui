@@ -5,7 +5,7 @@ import { Button, Checkbox, Grid, Typography } from "@mui/material";
 import Table from "../../../CustomComponent/Table";
 import MastPop from "../../../CustomComponent/MastPop";
 
-let click = ["InputText", "Link"];
+let click = ["InputText", "Link",];
 
 function ElementList({ elementList, updateDataset, screenName }) {
     let [popUp, setPopup] = useState(false);

@@ -21,8 +21,6 @@ let delete_testcase_id = 0;
 export default function TestCases() {
   const [testcases, setTestcases] = useState([]);
   const [snack, setSnack] = useState(false);
-  let [project, setProject] = useState([]);
-  let [application, setApplication] = useState([]);
   let [popup, setPopup] = useState(false);
   const navigate = useNavigate();
   const { auth } = useAuth();
