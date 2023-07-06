@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import {
@@ -53,7 +53,7 @@ export default function CreateApplication() {
     { value: 2, label: "Web" },
     { value: 3, label: "Mobile-Android" },
     { value: 4, label: "Mobile-iOS" },
-    { value: 0, label: "Mobile-web" },
+    { value: 13, label: "Mobile-web" },
     { value: 19, label: "Link Project" },
   ];
 
@@ -141,14 +141,14 @@ export default function CreateApplication() {
 
   const isModuleNameTaken = (moduleId, moduleName) => {
     const trimmedName = moduleName.trim().toLowerCase();
-    const hasSpecialCharacters = /^[^a-zA-Z0-9]/.test(moduleName);;
+    const hasSpecialCharacters = /^[^a-zA-Z0-9]/.test(moduleName);
     const taken = moduleNames.some(
-      (module) => 
-       module.module_id !== moduleId && 
-       module.module_name.toLowerCase() === trimmedName && 
-       module.is_deleted === false
+      (module) =>
+        module.module_id !== moduleId &&
+        module.module_name.toLowerCase() === trimmedName &&
+        module.is_deleted === false
     );
-    return {taken,hasSpecialCharacters};
+    return { taken, hasSpecialCharacters };
   };
 
   return (
@@ -159,21 +159,23 @@ export default function CreateApplication() {
             <label>
               Application Type<span className="importantfield">*</span>
             </label>
-            <select
+            <Select
+              size="small"
               onChange={(e) => {
                 moduledata.module_type = e.target.value;
                 setSelectedType(e.target.value);
               }}
               defaultValue={moduledata.module_type}
+              disabled={location?.pathname !== "/Application/Create"}
             >
               {APPLICATION_TYPES.map((appType) => {
                 return (
-                  <option key={appType.value} value={appType.value}>
+                  <MenuItem key={appType.value} value={appType.value}>
                     {appType.label}
-                  </option>
+                  </MenuItem>
                 );
               })}
-            </select>
+            </Select>
           </Stack>
         </Grid>
         <Grid item md={4}>
@@ -181,7 +183,8 @@ export default function CreateApplication() {
             <label>
               Name<span className="importantfield">*</span>
             </label>
-            <input
+            <TextField
+              size="small"
               type="text"
               name="appname"
               ref={refName}
@@ -202,7 +205,8 @@ export default function CreateApplication() {
                 if (isTaken.hasSpecialCharacters) {
                   setSnackbarData({
                     status: true,
-                    message: "Application name should not start with special characters!",
+                    message:
+                      "Application name should not start with special characters!",
                     severity: "error",
                   });
                 }
@@ -220,7 +224,8 @@ export default function CreateApplication() {
                 : "URL"}
               <span className="importantfield">*</span>
             </label>
-            <input
+            <TextField
+              size="small"
               type="text"
               name="url"
               ref={refUrl}
@@ -238,7 +243,8 @@ export default function CreateApplication() {
             <label>
               Description<span className="importantfield">*</span>
             </label>
-            <input
+            <TextField
+              size="small"
               type="text"
               row="5"
               name="desc"
