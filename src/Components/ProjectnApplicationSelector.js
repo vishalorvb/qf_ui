@@ -35,6 +35,7 @@ export default function ProjectnApplicationSelector({ isTestset }) {
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setapplicationList, globalProject?.project_id);
         }
+        setapplicationList([])
     }, [globalProject]);
     useEffect(() => {
         if (globalApplication == null) {

@@ -137,6 +137,10 @@ export default function TestCases() {
     }
   }, [globalApplication]);
 
+  useEffect(() => {
+    setTestcases([])
+  }, [globalProject])
+
   return (
     <>
       <SnackbarNotify
