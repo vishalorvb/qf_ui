@@ -18,6 +18,7 @@ import {
     getApplication,
 } from "../../Services/ApplicationService";
 import TransferList from "../../CustomComponent/TransferList";
+import useMaxChar from "../../hooks/useMaxChar";
 
 let jiraProjectdata = {
     url: "",
@@ -57,6 +58,7 @@ function CreateProject() {
     let [applications, setApplications] = useState([]);
     let [jiraProject, setJiraproject] = useState(null);
     let [automation_type, setAutomationType] = useState("1");
+    let maxLength = useMaxChar();
     let submitData = useRef({
         issueTrackerType: 1,
         jira_project_id: "",
@@ -158,7 +160,6 @@ function CreateProject() {
     }, [rigthtuser]);
 
     function handleJiraProject() {
-        console.log(jiraProjectdata)
         getJiraProject(
             setJiraproject,
             jiraProjectdata.url,
@@ -277,6 +278,7 @@ function CreateProject() {
                                 name="projectname"
                                 onChange={(e) => {
                                     submitData.current.projectName = e.target.value.trim();
+                                    maxLength(e,30)
                                 }}
                                 disabled={projectId == undefined ? false : true}
                             />
@@ -314,6 +316,7 @@ function CreateProject() {
                             <input
                                 onChange={(e) => {
                                     submitData.current.projectDesc = e.target.value;
+                                    maxLength(e,50)
                                 }}
                                 defaultValue={projectDetails?.description}
                                 name="desc"
@@ -549,7 +552,6 @@ function CreateProject() {
                                 <select
                                 onChange={e=>{
                                     submitData.current.jira_project_id = e.target.value;
-                                    console.log(submitData)
                                 }}
                                 >
                                     {jiraProject.map((v) => (

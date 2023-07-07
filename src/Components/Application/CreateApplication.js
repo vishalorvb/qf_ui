@@ -9,6 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
+import useMaxChar from "../../hooks/useMaxChar";
 
 // Global module data -- create and update
 
@@ -47,7 +48,7 @@ export default function CreateApplication() {
   const refDesc = useRef(null);
 
   const [selectedType, setSelectedType] = useState(1);
-
+  let maxLength = useMaxChar();
   const APPLICATION_TYPES = [
     { value: 1, label: "API" },
     { value: 2, label: "Web" },
@@ -191,6 +192,7 @@ export default function CreateApplication() {
               defaultValue={moduledata.module_name}
               onChange={(e) => {
                 moduledata.module_name = e.target.value;
+                maxLength(e,30)
                 const isTaken = isModuleNameTaken(
                   moduledata.module_id,
                   moduledata.module_name
@@ -251,6 +253,7 @@ export default function CreateApplication() {
               ref={refDesc}
               defaultValue={moduledata.module_desc}
               onChange={(e) => {
+                maxLength(e,50)
                 moduledata.module_desc = e.target.value;
               }}
             />

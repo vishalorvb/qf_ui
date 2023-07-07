@@ -12,6 +12,7 @@ import { getSprint, getIssues, createApitestcase } from "../../Services/TestCase
 import MapScreen from "./webTestcase/MapScreen"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
 import MapApiTestCase from "./apiTestcase/MapApiTestCase"
+import useMaxChar from "../../hooks/useMaxChar"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -37,7 +38,7 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
-
+    let maxLength = useMaxChar();
     let screens = useRef()
 
     const navigate = useNavigate();
@@ -137,7 +138,7 @@ function CreateTestCase() {
         setHeader((ps) => {
             return {
                 ...ps,
-                name: "Create Testcases",
+                name: TCdata.testcase_id === undefined ? "Create TestCase" : "Update TestCase",
                 plusButton: false,
                 plusCallback: () => {
 
@@ -204,6 +205,7 @@ function CreateTestCase() {
                         options={project}
                         value={globalProject || null}
                         fullWidth
+                        disabled ={TCdata.testcase_id === undefined ? false : true}
                         getOptionLabel={(option) => option?.project_name}
                         onChange={(e, value) => {
                             setglobalApplication(null);
@@ -223,6 +225,7 @@ function CreateTestCase() {
                         options={application}
                         value={globalApplication || null}
                         fullWidth
+                        disabled ={TCdata.testcase_id === undefined ? false : true}
                         getOptionLabel={(option) => option.module_name}
                         onChange={(e, value) => {
                             setglobalApplication(value);
@@ -255,40 +258,25 @@ function CreateTestCase() {
                     </select>
                 </Grid>
                 <Grid item xs={4} md={4}>
-                    <label htmlFor="">TestCase Name</label>
+                    <label htmlFor="">TestCase Name <span className="importantfield">*</span></label>
                     <input
                         name="name"
                         defaultValue={TCdata.testcase_name}
                         onChange={e => {
                             TCdata.testcase_name = e.target.value.trim();
-                            if(TCdata.testcase_name.length>30){
-                                setSnackbarData({
-                                    status: true,
-                                    message: "TestCase Name should not more than 10 characters",
-                                    severity: "warning",
-                                })
-                                e.target.value = e.target.value.slice(0,-1)
-                            }
+                            maxLength(e,30)
                         }}
                     />
                 </Grid>
                 <br />
                 <Grid item xs={8} md={8}>
-                    <label htmlFor="">Description</label>
+                    <label htmlFor="">Description <span className="importantfield">*</span></label>
                     <input
                         name="desc"
                         defaultValue={TCdata.testcase_description}
                         onChange={e => {
                             TCdata.testcase_description = e.target.value;
-                            if(TCdata.testcase_name.length>50){
-                                setSnackbarData({
-                                    status: true,
-                                    message: "TestCase Name should not more than 10 characters",
-                                    severity: "warning",
-                                })
-                                e.target.value = e.target.value.slice(0,-1)
-
-                            }
+                            maxLength(e,50)
                         }}
                     />
                 </Grid>
