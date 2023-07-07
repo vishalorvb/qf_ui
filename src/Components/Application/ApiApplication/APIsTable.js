@@ -4,7 +4,7 @@ import Table from "../../../CustomComponent/Table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Button,  MenuItem,  } from "@mui/material";
+import { Button, MenuItem } from "@mui/material";
 import ConfirmPop from "../../../CustomComponent/ConfirmPop";
 import { Apidata, authdata } from "../../ApiComponents/Data";
 import { getApiDetails, getApis } from "../../../Services/ApiService";
@@ -40,39 +40,43 @@ export default function APIsTable() {
     Apidata.api_description = row.api_description;
     Apidata.api_id = row.api_id;
 
+    getApiDetails(() => {}, Apidata.api_id).then((res) => {
+      console.log(res);
+      Apidata.headers_list = res.headersList === null ? [] : res.headersList;
+      Apidata.params_list = res.paramsList === null ? [] : res.paramsList;
+      Apidata.apiLinkProperties =
+        res.apiLinkProperties == null ? [] : res.apiLinkProperties;
+      Apidata.successResponseProperties =
+        res.successResponseProperties == null
+          ? []
+          : res.successResponseProperties;
 
-    getApiDetails(()=>{},Apidata.api_id).then(res =>{
-      console.log(res)
-      Apidata.headers_list = res.headersList === null ? [] : res.headersList
-      Apidata.params_list = res.paramsList === null ? [] : res.paramsList
-      Apidata.apiLinkProperties = res.apiLinkProperties == null ? [] : res.apiLinkProperties
-      Apidata.successResponseProperties = res.successResponseProperties == null ? []: res.successResponseProperties
+      Apidata.body_form_data_list =
+        res.bodyFormDataList == null ? [] : res.bodyFormDataList;
+      Apidata.body_form_url_encoded_list =
+        res.bodyFormUrlEncodedList == null ? [] : res.bodyFormUrlEncodedList;
 
-      Apidata.body_form_data_list = res.bodyFormDataList == null ? [] : res.bodyFormDataList
-      Apidata.body_form_url_encoded_list = res.bodyFormUrlEncodedList == null ? [] : res.bodyFormUrlEncodedList
+      Apidata.request_type = res.request_type;
+      Apidata.body_type = res.body_type;
+      Apidata.body_raw.raw_text =
+        res.bodyRaw === null ? " " : res.bodyRaw.raw_text;
+      Apidata.body_raw.raw_type_id =
+        res.bodyRaw === null ? 1 : res.bodyRaw.raw_type_id;
 
-      Apidata.request_type = res.request_type
-      Apidata.body_type = res.body_type
-      Apidata.body_raw.raw_text = res.bodyRaw === null ? " " : res.bodyRaw.raw_text
-      Apidata.body_raw.raw_type_id = res.bodyRaw === null ? 1 : res.bodyRaw.raw_type_id
+      let auth = res.auth == null ? {} : JSON.parse(res.auth?.auth_data);
+      authdata.authtype = auth?.authtype;
+      authdata.basicauth.username = auth?.basicauth?.username;
+      authdata.basicauth.password = auth?.basicauth?.password;
+      authdata.apikey.key = auth?.apikey?.key;
+      authdata.apikey.value = auth?.apikey?.value;
+      authdata.apikey.addto = auth?.apikey?.addto;
+      authdata.bearertoken.token = auth?.bearertoken?.token;
+      authdata.oauth2.clientid = auth?.oauth2?.clientid;
+      authdata.oauth2.clientsecret = auth?.oauth2?.clientsecret;
+      authdata.oauth2.tokenurl = auth?.oauth2?.tokenurl;
 
-
-      let auth = res.auth==null?{}:JSON.parse(res.auth?.auth_data)
-      authdata.authtype = auth?.authtype
-      authdata.basicauth.username = auth?.basicauth?.username
-      authdata.basicauth.password = auth?.basicauth?.password
-      authdata.apikey.key   = auth?.apikey?.key
-      authdata.apikey.value  = auth?.apikey?.value
-      authdata.apikey.addto  = auth?.apikey?.addto
-      authdata.bearertoken.token = auth?.bearertoken?.token
-      authdata.oauth2.clientid = auth?.oauth2?.clientid
-      authdata.oauth2.clientsecret = auth?.oauth2?.clientsecret
-      authdata.oauth2.tokenurl = auth?.oauth2?.tokenurl
-      
-      navigate("Create", { state: { application: location.state} })
-    })
-
-   
+      navigate("Create", { state: { application: location.state } });
+    });
   }
 
   useEffect(() => {
@@ -112,7 +116,6 @@ export default function APIsTable() {
             <MenuItem
               onClick={(e) => {
                 handleEdit(param.row);
-                
               }}
             >
               <EditIcon sx={{ color: "blue", mr: 1 }} /> Edit
@@ -134,14 +137,16 @@ export default function APIsTable() {
   return (
     <div className="apptable">
       <div className="intable">
-        <Button
-          variant="contained"
-          onClick={() =>
-            navigate("Create", { state: { application: location.state} })
-          }
-        >
-          Create API
-        </Button>
+        <div style={{ float: "right" }}>
+          <Button
+            variant="contained"
+            onClick={() =>
+              navigate("Create", { state: { application: location.state } })
+            }
+          >
+            Create API
+          </Button>
+        </div>
       </div>
 
       <Table

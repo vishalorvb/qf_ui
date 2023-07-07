@@ -37,8 +37,13 @@ const MakeCopy = () => {
   };
 
   useEffect(() => {
+    const name = location?.pathname?.includes("CopyTestcase")
+      ? "Copy Testcase"
+      : location?.pathname?.includes("CopyTestset")
+      ? "Copy Testset"
+      : "Copy Project";
     setHeader((ps) => {
-      return { ...ps, name: "Copy Testset" };
+      return { ...ps, name: name };
     });
     console.log(location);
   }, []);

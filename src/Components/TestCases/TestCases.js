@@ -74,13 +74,14 @@ export default function TestCases() {
       flex: 6,
       sortable: false,
       renderCell: (param) => {
+        console.log(param?.row);
         return (
           <TableActions heading={param.row?.description}>
             <MenuItem
               onClick={(e) => {
                 navigate("CopyTestcase", {
                   state: {
-                    name: param?.row?.testcase_name,
+                    name: param?.row?.name,
                     id: param?.row?.testcase_id,
                     projectId: globalProject?.project_id,
                   },
@@ -134,6 +135,8 @@ export default function TestCases() {
         globalProject?.project_id,
         globalApplication?.module_id
       );
+    } else {
+      setTestcases([]);
     }
   }, [globalApplication]);
 
@@ -153,14 +156,12 @@ export default function TestCases() {
       ></SnackbarNotify>
       <div className="apptable">
         <div className="intable">
-          <Grid item container spacing={2} justifyContent="flex-end">
-            <ProjectnApplicationSelector
-              globalProject={globalProject}
-              setglobalProject={setglobalProject}
-              globalApplication={globalApplication}
-              setglobalApplication={setglobalApplication}
-            />
-          </Grid>
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
         </div>
         <Table
           searchPlaceholder="Search Testcases"

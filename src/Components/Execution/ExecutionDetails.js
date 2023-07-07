@@ -28,37 +28,37 @@ export default function ExecutionDetails({
       align: "left",
     },
   ];
-  const handleClose = () => {
-    setDataList([]);
-    setSelectedDatasets([]);
-  };
 
   useEffect(() => {
-    applicationType === 1
-      ? axios
-          .get(`/qfservice/api/testcases/${testcaseId}/datasets`)
-          .then((resp) => {
-            const dataset = resp?.data?.data ?? [];
-            setDataList(() =>
-              dataset?.map((data) => {
-                return {
-                  dataset_id: data?.testcase_dataset_id,
-                  name: data?.dataset_name_in_testcase,
-                  description: data?.description,
-                  testcase_id: data?.testcase_id,
+    if (testcaseId) {
+      applicationType === 1
+        ? axios
+            .get(`/qfservice/api/testcases/${testcaseId}/datasets`)
+            .then((resp) => {
+              const dataset = resp?.data?.data ?? [];
+              setDataList(() =>
+                dataset?.map((data) => {
+                  return {
+                    dataset_id: data?.testcase_dataset_id,
+                    name: data?.dataset_name_in_testcase,
+                    description: data?.description,
+                    testcase_id: data?.testcase_id,
 
-                  is_default: data?.is_default,
-                };
-              })
-            );
-          })
-      : axios
-          .get(
-            `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
-          )
-          .then((resp) => {
-            setDataList(resp?.data?.info?.datasets ?? []);
-          });
+                    is_default: data?.is_default,
+                  };
+                })
+              );
+            })
+        : axios
+            .get(
+              `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
+            )
+            .then((resp) => {
+              setDataList(resp?.data?.info?.datasets ?? []);
+            });
+    } else {
+      setDataList([]);
+    }
   }, [testcaseId]);
 
   return (

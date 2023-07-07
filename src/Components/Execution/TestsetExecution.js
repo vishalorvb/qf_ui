@@ -35,15 +35,19 @@ export default function TestsetExecution() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(
-        `/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
-      )
-      .then((resp) => {
-        const testcases = resp?.data?.info ? resp?.data?.info : [];
-        setTestcases(testcases);
-        setSelectedItem(testcases[0]?.testset_id);
-      });
+    if (globalApplication) {
+      axios
+        .get(
+          `/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
+        )
+        .then((resp) => {
+          const testcases = resp?.data?.info ? resp?.data?.info : [];
+          setTestcases(testcases);
+          setSelectedItem(testcases[0]?.testset_id);
+        });
+    } else {
+      setTestcases([]);
+    }
   }, [globalProject, globalApplication]);
 
   const itemRender = (rawList) => {
@@ -104,7 +108,6 @@ export default function TestsetExecution() {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
           <>
-            {" "}
             {globalApplication?.module_type != 19 && (
               <TextField
                 size="small"
@@ -117,7 +120,7 @@ export default function TestsetExecution() {
             )}
           </>
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={5}>
           <ProjectnApplicationSelector
             globalProject={globalProject}
             setglobalProject={setglobalProject}
