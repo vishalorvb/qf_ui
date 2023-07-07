@@ -66,6 +66,7 @@ const TestDesign = () => {
   const { setHeader } = useHead();
   const [showLoading, setShowLoading] = useState(false);
 
+
   const columns = [
     {
       field: "key",
@@ -401,7 +402,7 @@ const TestDesign = () => {
     createformData.projectName = globalProject.project_name;
     createformData.projectDesc = globalProject.description;
     createformData.automation_framework_type =
-      globalProject.automation_framework_type;
+    globalProject.automation_framework_type;
     createformData.jira_project_id = globalProject.jira_project_id;
     createformData.sqeProjectId = globalProject.project_id;
     createformData.userId = auth.info.id;
@@ -516,6 +517,8 @@ const TestDesign = () => {
                 setJiraProjectId(value?.jira_project_id);
                 setglobalProject(value);
                 setNotEmpty(false);
+                setglobalProject(value)
+                setIssues([])
               }}
               renderInput={(params) => (
                 <div ref={params.InputProps.ref}>

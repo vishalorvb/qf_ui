@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
-export default function ProjectnApplicationSelector({ isTestset }) {
+export default function ProjectnApplicationSelector({ isTestset ,isApplication}) {
     const {
         globalProject,
         setglobalProject,
@@ -64,7 +64,7 @@ export default function ProjectnApplicationSelector({ isTestset }) {
                     )}
                 />
             </Grid>
-            <Grid item md={6}>
+           { isApplication != false && <Grid item md={6}>
                 <label>Applications</label>
                 <Autocomplete
                     disablePortal
@@ -80,7 +80,7 @@ export default function ProjectnApplicationSelector({ isTestset }) {
                     }}
                     renderInput={(params) => <TextField {...params} size="small" />}
                 />
-            </Grid>
+            </Grid>}
         </Grid>
     );
 }
