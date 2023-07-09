@@ -9,7 +9,6 @@ import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 export default function CreateCycle({ testsetData, getCycles }) {
-
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addErrorMsg, setAddErrorMsg] = useState(false);
   const [selectedReport, setSelectedReport] = useState([]);
@@ -34,30 +33,24 @@ export default function CreateCycle({ testsetData, getCycles }) {
       reports: selectedReport,
     };
     // console.log(postData);
-    axios
-      .post(`/Biservice/projects/cycles/create`, postData)
-      .then((resp) =>{ 
-        // console.log(resp)
-        if (resp.data.message == "Succesfully Created Cycle") {
-          setAddSuccessMsg(true);
-          reset();
-          getCycles();
-          setTimeout(() => {
-            setAddSuccessMsg(false);
-          }, 3000);
-        }
-        else{
-          setAddErrorMsg(true);
-          reset();
-          getCycles();
-          setTimeout(() => {
-            setAddErrorMsg(false);
-          }, 3000);
-        }
-        
-
-      
-      });
+    axios.post(`/Biservice/projects/cycles/create`, postData).then((resp) => {
+      // console.log(resp)
+      if (resp.data.message == "Succesfully Created Cycle") {
+        setAddSuccessMsg(true);
+        reset();
+        getCycles();
+        setTimeout(() => {
+          setAddSuccessMsg(false);
+        }, 3000);
+      } else {
+        setAddErrorMsg(true);
+        reset();
+        getCycles();
+        setTimeout(() => {
+          setAddErrorMsg(false);
+        }, 3000);
+      }
+    });
   };
 
   useEffect(() => {
@@ -67,77 +60,77 @@ export default function CreateCycle({ testsetData, getCycles }) {
   // console.log(testsetData)
   return (
     <>
-    <form onSubmit={handleSubmit(submit)}>
-      <Stack spacing={1}>
-        <Typography>Cycle Name :</Typography>
-        <TextFieldElement
-          id="cycle-name"
-          variant="outlined"
-          size="small"
-          name="cycleName"
-          control={control}
-        />
-        {testsetData.map((testset) => (
-          <Grid container direction="row" spacing={2}>
-            <Grid item md={2}>
-              <Typography>{testset?.testset_name}</Typography>
-            </Grid>
-            <Grid item md={5}>
-              <SelectElement
-                name={testset?.testset_name}
-                control={control}
-                fullWidth
-                size="small"
-                options={testset?.reports}
-                valueKey="report_id"
-                labelKey="name"
-                onChange={(e) => {
-                  const a = testset?.reports?.find(
-                    (report) => report?.report_id === e
-                  );
-                  setSelectedReport((ps) => {
-                    const index = ps.findIndex(
-                      (report) => report?.testset_id === testset?.testset_id
+      <form onSubmit={handleSubmit(submit)}>
+        <Stack spacing={1}>
+          <Typography>Cycle Name :</Typography>
+          <TextFieldElement
+            id="cycle-name"
+            variant="outlined"
+            size="small"
+            name="cycleName"
+            control={control}
+          />
+          {testsetData.map((testset) => (
+            <Grid container direction="row" spacing={2}>
+              <Grid item md={2}>
+                <Typography>{testset?.testset_name}</Typography>
+              </Grid>
+              <Grid item md={5}>
+                <SelectElement
+                  name={testset?.testset_name}
+                  control={control}
+                  fullWidth
+                  size="small"
+                  options={testset?.reports}
+                  valueKey="report_id"
+                  labelKey="name"
+                  onChange={(e) => {
+                    const a = testset?.reports?.find(
+                      (report) => report?.report_id === e
                     );
-                    // console.log(index);
-                    if (index !== -1) ps[index].report_id = a?.report_id;
-                    return index !== -1
-                      ? [...ps]
-                      : [
-                          ...ps,
-                          {
-                            module_id: a.module_id,
-                            testset_id: a.testset_id,
-                            report_id: a.report_id,
-                            bi_testset_map_id: testset?.id,
-                          },
-                        ];
-                  });
-                  // console.log(e);
-                }}
-              />
+                    setSelectedReport((ps) => {
+                      const index = ps.findIndex(
+                        (report) => report?.testset_id === testset?.testset_id
+                      );
+                      // console.log(index);
+                      if (index !== -1) ps[index].report_id = a?.report_id;
+                      return index !== -1
+                        ? [...ps]
+                        : [
+                            ...ps,
+                            {
+                              module_id: a.module_id,
+                              testset_id: a.testset_id,
+                              report_id: a.report_id,
+                              bi_testset_map_id: testset?.id,
+                            },
+                          ];
+                    });
+                    // console.log(e);
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        ))}
-        <Stack direction="row" justifyContent="flex-end">
-          <Button type="submit" variant="contained">
-            Save
-          </Button>
+          ))}
+          <Stack direction="row" justifyContent="flex-end">
+            <Button type="submit" variant="contained">
+              Create & Continue
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </form>
-          <SnackbarNotify
-          open={addSuccessMsg}
-          close={setAddSuccessMsg}
-          msg={"Created Successfully"}
-          severity="success"
-        />
-        <SnackbarNotify
-          open={addErrorMsg}
-          close={setAddErrorMsg}
-          msg={"Failed"}
-          severity="error"
-        /> 
-        </>
+      </form>
+      <SnackbarNotify
+        open={addSuccessMsg}
+        close={setAddSuccessMsg}
+        msg={"Created Successfully"}
+        severity="success"
+      />
+      <SnackbarNotify
+        open={addErrorMsg}
+        close={setAddErrorMsg}
+        msg={"Failed"}
+        severity="error"
+      />
+    </>
   );
 }

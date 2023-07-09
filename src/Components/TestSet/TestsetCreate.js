@@ -236,8 +236,8 @@ function TestsetCreate() {
               })}
               type="text"
               placeholder=" Testset Name"
-              onChange={e=>{
-                maxLength(e,30)
+              onChange={(e) => {
+                maxLength(e, 30);
               }}
               error={errors.testsetName}
               helperText={errors.testsetName && errors.testsetName.message}
@@ -254,8 +254,8 @@ function TestsetCreate() {
               {...register("testsetDesc", {
                 required: "Please enter the description",
               })}
-              onChange={e=>{
-                maxLength(e,50)
+              onChange={(e) => {
+                maxLength(e, 50);
               }}
               type="text"
               placeholder=" Description"
@@ -304,7 +304,7 @@ function TestsetCreate() {
       </Grid>
       <Stack mt={2} spacing={2} direction="row-reverse">
         <Button variant="contained" type="submit">
-          Save & Continue
+          Create & Continue
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}

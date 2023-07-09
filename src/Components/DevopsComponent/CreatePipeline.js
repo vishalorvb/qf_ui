@@ -335,7 +335,7 @@ export default function CreatePipeline() {
         </AccordionTemplate>
         <Stack mt={2} spacing={2} direction="row-reverse">
           <Button variant="contained" type="submit">
-            Save
+            Create & Continue
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}

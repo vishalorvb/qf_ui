@@ -62,7 +62,10 @@ export default function CreateAnsibleInstance() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: location.pathname === "/release/createAnsibleInstance" ? "Create Ansible Release" : "Update Ansible Release",
+        name:
+          location.pathname === "/release/createAnsibleInstance"
+            ? "Create Ansible Release"
+            : "Update Ansible Release",
       };
     });
   }, []);
@@ -134,7 +137,11 @@ export default function CreateAnsibleInstance() {
       <SnackbarNotify
         open={open && true}
         close={setOpen}
-        msg={location.pathname === "/release/createAnsibleInstance" ? "Release Created Successfully" : msg}
+        msg={
+          location.pathname === "/release/createAnsibleInstance"
+            ? "Release Created Successfully"
+            : msg
+        }
         severity="success"
       />
       {location.pathname === "/release/createAnsibleInstance" ? (
@@ -291,7 +298,7 @@ export default function CreateAnsibleInstance() {
         </AccordionTemplate>
         <Stack mt={2} spacing={2} direction="row-reverse">
           <Button variant="contained" type="submit">
-            Save
+            Create & Continue
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}

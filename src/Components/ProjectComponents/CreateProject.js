@@ -601,7 +601,7 @@ function CreateProject() {
                         spacing={2}
                     >
                         <Button variant="contained" onClick={submitHandler}>
-                            Save & Continue
+                            Create & Continue
                         </Button>
                     </Stack>
                 </Grid>
