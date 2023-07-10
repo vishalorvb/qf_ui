@@ -25,22 +25,17 @@ import { getProject } from "../Services/ProjectService";
 let rowData;
 
 export default function Release() {
-  const { setHeader } = useHead();
-  const [createInstance, setCreateInstance] = useState(false);
+  const { setHeader,globalProject, setglobalProject  } = useHead();
   const [openDelete, setOpenDelete] = useState(false);
   const [instance, setInstance] = useState([]);
-  const [selectedProject, setSelectedProject] = useState({
-    project_name: "Project",
-  });
   const [project, setProject] = useState([]);
   const [msg, setMsg] = useState(false);
-  const [module, setmodule] = useState([]);
   const navigate = useNavigate();
   const { auth } = useAuth();
 
   const addReleaseInstances = (e) => {
-    console.log(selectedProject);
-    navigate("/release/createAnsibleInstance", { state: selectedProject });
+
+    navigate("/release/createAnsibleInstance", { state: globalProject });
   };
 
   useEffect(() => {
@@ -62,29 +57,32 @@ export default function Release() {
           plusCallback: () => console.log("null"),
         };
       });
-  }, [selectedProject]);
+  }, [globalProject]);
 
   useEffect(() => {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    setSelectedProject(project[0]);
+    if(globalProject == null){
+        setglobalProject(project[0]);
+    }
+    
   }, [project]);
 
   const getReleaseInstancesfromModule = () => {
-    selectedProject?.project_id
-      ? getReleaseInstances(setInstance, selectedProject?.project_id)
+    globalProject?.project_id
+      ? getReleaseInstances(setInstance, globalProject?.project_id)
       : setInstance([]);
   };
 
   useEffect(() => {
     getReleaseInstancesfromModule();
-  }, [selectedProject]);
+  }, [globalProject]);
 
   const deleteRelease = (row) => {
     axios
       .delete(
-        `qfservice/DeleteRelease?release_id=${row?.id}&project_id=${selectedProject?.project_id}`
+        `qfservice/DeleteRelease?release_id=${row?.id}&project_id=${globalProject?.project_id}`
       )
       .then((resp) => {
         console.log(resp);
@@ -163,11 +161,11 @@ export default function Release() {
               disableClearable
               id="project_id"
               options={project}
-              value={selectedProject || null}
+              value={globalProject || null}
               sx={{ width: "100%" }}
               getOptionLabel={(option) => option.project_name}
               onChange={(e, value) => {
-                setSelectedProject(value);
+                setglobalProject(value);
               }}
               renderInput={(params) => (
                 <div ref={params.InputProps.ref}>

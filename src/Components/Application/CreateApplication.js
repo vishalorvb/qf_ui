@@ -188,6 +188,7 @@ export default function CreateApplication() {
               size="small"
               type="text"
               name="appname"
+              placeholder="Application Name"
               ref={refName}
               defaultValue={moduledata.module_name}
               onChange={(e) => {
@@ -230,6 +231,7 @@ export default function CreateApplication() {
               size="small"
               type="text"
               name="url"
+              placeholder="Application URL"
               ref={refUrl}
               defaultValue={moduledata.base_url}
               onChange={(e) => {
@@ -250,6 +252,7 @@ export default function CreateApplication() {
               type="text"
               row="5"
               name="desc"
+              placeholder="Application Description"
               ref={refDesc}
               defaultValue={moduledata.module_desc}
               onChange={(e) => {
