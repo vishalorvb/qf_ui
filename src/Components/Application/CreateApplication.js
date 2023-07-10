@@ -262,7 +262,7 @@ export default function CreateApplication() {
       </Grid>
       <Stack mt={2} spacing={2} direction="row-reverse">
         <Button variant="contained" type="submit" onClick={submitHandler}>
-          Create & Continue
+            {moduledata.module_id==0 ?"Save & Continue":"Update"}
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}

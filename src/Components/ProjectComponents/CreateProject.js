@@ -278,7 +278,7 @@ function CreateProject() {
                                 name="projectname"
                                 onChange={(e) => {
                                     submitData.current.projectName = e.target.value.trim();
-                                    maxLength(e,30)
+                                    maxLength(e, 30)
                                 }}
                                 disabled={projectId == undefined ? false : true}
                             />
@@ -316,7 +316,7 @@ function CreateProject() {
                             <input
                                 onChange={(e) => {
                                     submitData.current.projectDesc = e.target.value;
-                                    maxLength(e,50)
+                                    maxLength(e, 50)
                                 }}
                                 defaultValue={projectDetails?.description}
                                 name="desc"
@@ -550,9 +550,9 @@ function CreateProject() {
                             <Grid item xs={4} sm={4} md={4}>
                                 <label>Projects :</label>
                                 <select
-                                onChange={e=>{
-                                    submitData.current.jira_project_id = e.target.value;
-                                }}
+                                    onChange={e => {
+                                        submitData.current.jira_project_id = e.target.value;
+                                    }}
                                 >
                                     {jiraProject.map((v) => (
                                         <option value={v.jira_project_id}>{v.name}</option>
@@ -577,8 +577,8 @@ function CreateProject() {
                         setRight={setRightuser}
                         id="id"
                         name="firstName"
-                        lastName = "lastName"
-                        display ={value=>`${value.firstName} ${value.lastName} (${value.id})`}
+                        lastName="lastName"
+                        display={value => `${value.firstName} ${value.lastName} (${value.id})`}
                     ></TransferList>
                 </AccordionTemplate>
 
@@ -600,8 +600,9 @@ function CreateProject() {
                         alignItems="center"
                         spacing={2}
                     >
+                <Button onClick={e=>navigate("/Projects/Search")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
                         <Button variant="contained" onClick={submitHandler}>
-                            Save & Continue
+                            {projectId == undefined?"Save & Continue":"Update"}
                         </Button>
                     </Stack>
                 </Grid>

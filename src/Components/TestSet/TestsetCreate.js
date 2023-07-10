@@ -46,7 +46,7 @@ function TestsetCreate() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create Testset",
+        name: "Create TestSet",
       };
     });
   }, []);

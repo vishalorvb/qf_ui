@@ -217,7 +217,7 @@ function CreateTestCase() {
                     />
                 </Grid>
                 <Grid item md={3}>
-                    <label htmlFor="">Application</label>
+                    <label htmlFor="">Applications</label>
                     <Autocomplete
                         disablePortal
                         disableClearable
@@ -303,8 +303,9 @@ function CreateTestCase() {
                 alignItems="center"
                 spacing={2}
             >
-                {/* <Button sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button> */}
-                <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined ? "Save" : "Update"} </Button>
+                <Button onClick={e=>navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined ? "Save & Continue" : "Update"} </Button>
+                {/*<Button variant="contained" onClick={handleSubmit}>Cancel </Button>*/}
             </Stack>
             <SnackbarNotify
                 open={reportFailMsg}

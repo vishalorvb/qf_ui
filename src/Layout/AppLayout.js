@@ -7,7 +7,6 @@ import { ProjectProvider } from "../context/ProjectProvider";
 
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
-import { Paper } from "@mui/material";
 import { ProjectnApplicationProvider } from "../context/ProjectnApplicationProvider";
 
 export default function AppLayout() {

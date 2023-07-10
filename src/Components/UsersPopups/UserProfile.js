@@ -32,7 +32,7 @@ function UserProfile() {
     let [showPassword, setShowPassword] = useState("")
     let [snackbarerror, setSnackbarerror] = useState(false);
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-    let [imageUrl, setImageUrl] = useState(" ");
+    let [imageUrl, setImageUrl] = useState("");
     const { auth } = useAuth();
     const fileInputRef = useRef(null);
     const { setHeader } = useHead();
@@ -44,11 +44,11 @@ function UserProfile() {
         const formData = new FormData();
         const file = event.target.files[0];
         formData.append('file', file);
-        uploadPic(auth.userId,formData,auth.token).then(res=>{
-            if(res){
+        uploadPic(auth.userId, formData, auth.token).then(res => {
+            if (res) {
                 successmsg = "Profile Picture update"
                 setSnackbarsuccess(true)
-                getPhoto(setImageUrl,auth.userId,auth.token)
+                getPhoto(setImageUrl, auth.userId, auth.token)
             }
         })
         if (file.size > 2 * 1024 * 1024) {
@@ -68,20 +68,20 @@ function UserProfile() {
                     else {
                         errormsg = "Something went wrong"
                         setSnackbarerror(true)
-                      
+
                     }
                 })
             }
             else {
                 errormsg = "Confirm password should be same"
                 setSnackbarerror(true)
-                
+
             }
         }
     }
 
     useEffect(() => {
-        getPhoto(setImageUrl,auth.userId,auth.token)
+        getPhoto(setImageUrl, auth.userId, auth.token)
         setHeader((ps) => {
             return {
                 name: "User Profile",
@@ -129,17 +129,17 @@ function UserProfile() {
                     <h5>Primary Info</h5>
                 </Grid>
                 <Grid container md={6} alignItems='center' >
-               
-                    <Grid item md={2}>         
-                            <input type="file"
-                                ref={fileInputRef}
-                                accept="image/png, image/gif, image/jpeg"
-                                style={{ display: "none" }}
-                                onChange={handleFileInputChange}
-                            />
-                     
-                        {imageUrl!= " " && <img src={imageUrl } onClick={handleUploadClick} alt="Array of Bytes"  width="60" height="60" style={{borderRadius: "50%"}}/>}
-                        {imageUrl==" "&& <img src="profile.jpg" alt="Array of Bytes"  width="60" height="60" style={{borderRadius: "50%"}}  onClick={handleUploadClick}/>}
+
+                    <Grid item md={2}>
+                        <input type="file"
+                            ref={fileInputRef}
+                            accept="image/png, image/gif, image/jpeg"
+                            style={{ display: "none" }}
+                            onChange={handleFileInputChange}
+                        />
+
+                        {imageUrl != "" && <img src={imageUrl} onClick={handleUploadClick} alt="Array of Bytes" width="60" height="60" style={{ borderRadius: "50%" }} />}
+                        {imageUrl == "" && <img src="profile.jpg" alt="Array of Bytes" width="60" height="60" style={{ borderRadius: "50%" }} onClick={handleUploadClick} />}
                     </Grid>
                     <Grid item md={7}>
                         <label >Email Address</label>
@@ -266,10 +266,10 @@ function UserProfile() {
 
                 </Grid>
                 <Grid item md={6}>
-                    <label >Company</label>
-                    <h4>Prolifics</h4>
-                    <label >Phone</label>
-                    <h4>987654321</h4>
+                    <h4  className='userinfodata'>Company</h4>
+                    <label className='userinfodata'>Prolifics</label>
+                    <h4  className='userinfodata'>Phone</h4>
+                    <label className='userinfodata'>987654321</label>
                 </Grid>
             </Grid>
         </div>
