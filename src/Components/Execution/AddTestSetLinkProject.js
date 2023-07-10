@@ -158,7 +158,7 @@ function AddTestSetLinkProject() {
             type="submit"
             onClick={onSubmitHandler}
           >
-            Save
+            Create & Continue
           </Button>
         </Grid>
       </Grid>

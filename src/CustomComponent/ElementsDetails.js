@@ -100,8 +100,8 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
         <form onSubmit={handleSubmit(updateElement)}>
           <DialogContent>
             <Stack direction="row" spacing={1} mt={3}>
+              <label>Path Type</label>
               <SelectElement
-                label="Path Type"
                 name="pathType"
                 size="small"
                 onChange={(e) => {
@@ -112,9 +112,9 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
                 sx={{ width: 200 }}
                 options={allXpath || []}
               />
+              <label>Path</label>
               <TextFieldElement
                 id="name"
-                label="Path"
                 variant="outlined"
                 size="small"
                 name="path"
@@ -123,18 +123,18 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
               />
             </Stack>
             <Stack spacing={2} mt={2}>
+              <label>Field Name</label>
               <TextFieldElement
                 id="field-name"
-                label="Field Name"
                 variant="outlined"
                 size="small"
                 name="fieldname"
                 fullWidth
                 control={control}
               />
+              <label>Field Type</label>
               <SelectElement
                 name="fieldType"
-                label="Field Type"
                 size="small"
                 fullWidth
                 control={control}
@@ -146,9 +146,9 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
                   { id: "Link", label: "Link" },
                 ]}
               />
+              <label>Other Field Type</label>
               <SelectElement
                 name="otherFieldType"
-                label="Other Field Type"
                 size="small"
                 fullWidth
                 control={control}

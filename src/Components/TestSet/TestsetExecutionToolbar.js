@@ -521,8 +521,9 @@ function TestsetExecutionToolbar({
 
       {(execLoc == "docker" || execLoc == "jenkins") && (
         <Stack mt={1}>
+          <label>Commit message</label>
+
           <TextFieldElement
-            label="Commit message"
             variant="outlined"
             size="small"
             fullWidth
