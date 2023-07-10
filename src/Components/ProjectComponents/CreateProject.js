@@ -276,6 +276,7 @@ function CreateProject() {
                                 defaultValue={projectDetails?.project_name}
                                 type="text"
                                 name="projectname"
+                                placeholder="Project Name"
                                 onChange={(e) => {
                                     submitData.current.projectName = e.target.value.trim();
                                     maxLength(e, 30)
@@ -314,6 +315,7 @@ function CreateProject() {
                                 Description <span className="importantfield">*</span>:
                             </label>
                             <input
+                                placeholder="Project Description"
                                 onChange={(e) => {
                                     submitData.current.projectDesc = e.target.value;
                                     maxLength(e, 50)
@@ -337,6 +339,7 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Git URL :</label>
                             <input
+                                placeholder="Repository URL"
                                 defaultValue={projectDetails?.repository_url}
                                 type="text"
                                 onChange={(e) => {
@@ -347,6 +350,7 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Git Access Token :</label>
                             <input
+                                placeholder="Repository Access Token"
                                 defaultValue={projectDetails?.repository_token}
                                 type="text"
                                 onChange={(e) => {
@@ -357,6 +361,7 @@ function CreateProject() {
                         <Grid item xs={12} sm={12} md={12}>
                             <label>Branch :</label>
                             <input
+                                placeholder="Repository Branch Name"
                                 type="text"
                                 defaultValue={projectDetails?.repository_branch}
                                 onChange={(e) => {
@@ -380,6 +385,7 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins URL :</label>
                             <input
+                                placeholder="Jenkins URL"
                                 defaultValue={projectDetails?.jenkins_url}
                                 type="text"
                                 onChange={(e) => {
@@ -390,6 +396,7 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins Token :</label>
                             <input
+                                placeholder="Jenkins Token"
                                 defaultValue={projectDetails?.jenkins_token}
                                 type="text"
                                 name="jenkins_token"
@@ -401,6 +408,7 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins UserName :</label>
                             <input
+                                placeholder="Jenkins UserName"
                                 defaultValue={projectDetails.jenkins_user_name}
                                 autoComplete="off"
                                 type="text"
@@ -412,6 +420,7 @@ function CreateProject() {
                         <Grid item xs={6} sm={6} md={6}>
                             <label>Jenkins Password :</label>
                             <input
+                                placeholder="Jenkins Password"
                                 defaultValue={projectDetails.jenkins_password}
                                 type="password"
                                 autoComplete="off"
@@ -436,7 +445,9 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>Database Type :</label>
                             <input
+
                                 type="text"
+                                placeholder="Database Type"
                                 defaultValue={projectDetails?.testdata_db_config?.db_type}
                                 onChange={(e) => {
                                     submitData.current.db_type = e.target.value;
@@ -446,6 +457,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>Database Name :</label>
                             <input
+                                placeholder="Database Name"
                                 type="text"
                                 defaultValue={projectDetails?.testdata_db_config?.db_name}
                                 onChange={(e) => {
@@ -456,6 +468,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>Host Name :</label>
                             <input
+                                placeholder="Host Name"
                                 type="text"
                                 defaultValue={projectDetails?.testdata_db_config?.db_host}
                                 onChange={(e) => {
@@ -466,6 +479,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>DB UserName :</label>
                             <input
+                                placeholder="Database Username"
                                 type="text"
                                 defaultValue={projectDetails?.testdata_db_config?.db_user_name}
                                 onChange={(e) => {
@@ -476,6 +490,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>Port Number :</label>
                             <input
+                                placeholder="Database Port"
                                 type="text"
                                 defaultValue={projectDetails?.testdata_db_config?.db_port}
                                 onChange={(e) => {
@@ -486,6 +501,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>DB Password :</label>
                             <input
+                                placeholder="Database Password"
                                 type="password"
                                 defaultValue={projectDetails?.testdata_db_config?.db_password}
                                 onChange={(e) => {
@@ -522,6 +538,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>URL :</label>
                             <input
+                                placeholder="Jira URL"
                                 type="text"
                                 onChange={(e) => {
                                     jiraProjectdata.url = e.target.value;
@@ -531,6 +548,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>User Name :</label>
                             <input
+                                placeholder="Jira Username"
                                 type="text"
                                 onChange={(e) => {
                                     jiraProjectdata.username = e.target.value;
@@ -540,6 +558,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>Token :</label>
                             <input
+                                placeholder="Jira Token"
                                 type="text"
                                 onChange={(e) => {
                                     jiraProjectdata.password = e.target.value;
@@ -600,9 +619,9 @@ function CreateProject() {
                         alignItems="center"
                         spacing={2}
                     >
-                <Button onClick={e=>navigate("/Projects/Search")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                        <Button onClick={e => navigate("/Projects/Search")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
                         <Button variant="contained" onClick={submitHandler}>
-                            {projectId == undefined?"Save & Continue":"Update"}
+                            {projectId == undefined ? "Save & Continue" : "Update"}
                         </Button>
                     </Stack>
                 </Grid>

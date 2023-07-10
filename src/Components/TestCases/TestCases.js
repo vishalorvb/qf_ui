@@ -30,8 +30,9 @@ export default function TestCases() {
     setglobalProject,
     globalApplication,
     setglobalApplication,
+    setShowloader
   } = useHead();
-
+ 
   const columns = [
     {
       field: "name",
@@ -142,7 +143,7 @@ export default function TestCases() {
 
   useEffect(() => {
     setTestcases([])
-  }, [globalProject])
+  }, [globalProject,globalApplication])
 
   return (
     <>

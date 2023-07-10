@@ -166,8 +166,8 @@ function CreateTestCase() {
             setglobalApplication(application[0])
         }
     }, [application])
-    useEffect(() => {
 
+    useEffect(() => {
         getProject(setProject, auth.userId)
         return () => {
             TCdata = {
@@ -195,7 +195,6 @@ function CreateTestCase() {
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
-
                 <Grid item md={3}>
                     <label htmlFor="">Projects</label>
                     <Autocomplete
@@ -257,9 +256,10 @@ function CreateTestCase() {
                         {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
                     </select>
                 </Grid>
-                <Grid item xs={4} md={4}>
+                <Grid item xs={6} md={6}>
                     <label htmlFor="">TestCase Name <span className="importantfield">*</span></label>
                     <input
+                    placeholder="Testcase Name"
                         name="name"
                         defaultValue={TCdata.testcase_name}
                         onChange={e => {
@@ -269,9 +269,10 @@ function CreateTestCase() {
                     />
                 </Grid>
                 <br />
-                <Grid item xs={8} md={8}>
+                <Grid item xs={6} md={6}>
                     <label htmlFor="">Description <span className="importantfield">*</span></label>
                     <input
+                    placeholder="Testcase Description"
                         name="desc"
                         defaultValue={TCdata.testcase_description}
                         onChange={e => {
