@@ -185,9 +185,9 @@ export default function CreateAnsibleInstance() {
             sx={{ marginTop: 0.1 }}
           >
             <Grid item md={6}>
+              <label>Release Name</label>
               <TextFieldElement
                 id="release-name"
-                label="Release Name"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -196,9 +196,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Release Description</label>
               <TextFieldElement
                 id="release-description"
-                label="Release Description"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -218,9 +218,9 @@ export default function CreateAnsibleInstance() {
             sx={{ marginTop: 0.1 }}
           >
             <Grid item md={6}>
+              <label>Repo Username</label>
               <TextFieldElement
                 id="Repo-Username"
-                label="Repo Username"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -229,9 +229,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Repo Access Token</label>
               <TextFieldElement
                 id="repo-access-token "
-                label="Repo Access Token "
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -240,9 +240,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={12}>
+              <label>Repo URL</label>
               <TextFieldElement
                 id="repo-url "
-                label="Repo URL"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -251,9 +251,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Repo Name</label>
               <TextFieldElement
                 id="Repo Name"
-                label="Repo Name"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -262,9 +262,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Repo Branch</label>
               <TextFieldElement
                 id="Repo Branch"
-                label="Repo Branch  "
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -273,9 +273,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Credentials Id</label>
               <TextFieldElement
                 id="Credentials Id"
-                label="Credentials Id"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -284,9 +284,9 @@ export default function CreateAnsibleInstance() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Playbook Path</label>
               <TextFieldElement
                 id="Playbook Path"
-                label="Playbook Path"
                 variant="outlined"
                 size="small"
                 fullWidth

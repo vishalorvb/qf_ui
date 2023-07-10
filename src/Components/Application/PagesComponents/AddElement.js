@@ -64,75 +64,87 @@ export default function AddElement({ setPopup, webPageId, setelementAdded }) {
         <form onSubmit={handleSubmit(handleElementSave)}>
           <DialogContent>
             <Stack direction="row" spacing={1} mt={3}>
-              <SelectElement
-                label="Path Type"
-                name="pathType"
-                size="medium"
-                control={control}
-                sx={{ width: 200 }}
-                options={[
-                  { id: "absolute_xpath", label: "absolute_xpath" },
-                  { id: "xpath_name", label: "xpath_name" },
-                  { id: "xpath_id", label: "xpath_id" },
-                ]}
-              />
-              <TextFieldElement
-                id="name"
-                label="Path"
-                variant="outlined"
-                size="small"
-                name="path"
-                fullWidth
-                control={control}
-              />
+              <Stack>
+                <label>Path Type</label>
+                <SelectElement
+                  name="pathType"
+                  size="small"
+                  control={control}
+                  sx={{ width: 200 }}
+                  options={[
+                    { id: "absolute_xpath", label: "absolute_xpath" },
+                    { id: "xpath_name", label: "xpath_name" },
+                    { id: "xpath_id", label: "xpath_id" },
+                  ]}
+                />
+              </Stack>
+              <Stack>
+                <label>Path</label>
+                <TextFieldElement
+                  id="name"
+                  variant="outlined"
+                  size="small"
+                  name="path"
+                  fullWidth
+                  control={control}
+                />
+              </Stack>
             </Stack>
             <Stack spacing={2} mt={2}>
-              <TextFieldElement
-                id="field-name"
-                label="Field Name"
-                variant="outlined"
-                size="small"
-                name="fieldname"
-                fullWidth
-                control={control}
-              />
-              <SelectElement
-                name="fieldType"
-                label="Field Type"
-                size="medium"
-                fullWidth
-                control={control}
-                options={[
-                  { id: "", label: "Nothing Selected" },
-                  { id: "Label", label: "Label" },
-                  { id: "Button", label: "Button" },
-                  { id: "InputText", label: "InputText" },
-                  { id: "Link", label: "Link" },
-                ]}
-              />
-              <SelectElement
-                name="secondaryFieldType"
-                label="Secondary Field Type"
-                size="medium"
-                fullWidth
-                control={control}
-                options={[
-                  { id: "", label: "Nothing Selected" },
-                  { id: "DropDown", label: "DropDown" },
-                  { id: "MouseOver", label: "MouseOver" },
-                  { id: "WindowSwitch", label: "WindowSwitch" },
-                  { id: "Alert", label: "Alert" },
-                ]}
-              />
-              <TextFieldElement
-                id="tag-name"
-                label="Tag Name"
-                variant="outlined"
-                size="small"
-                name="tagname"
-                fullWidth
-                control={control}
-              />
+              <Stack>
+                <label>Field Name</label>
+                <TextFieldElement
+                  id="field-name"
+                  variant="outlined"
+                  size="small"
+                  name="fieldname"
+                  fullWidth
+                  control={control}
+                />
+              </Stack>
+              <Stack>
+                <label>Field Type</label>
+                <SelectElement
+                  name="fieldType"
+                  size="small"
+                  fullWidth
+                  control={control}
+                  options={[
+                    { id: "", label: "Nothing Selected" },
+                    { id: "Label", label: "Label" },
+                    { id: "Button", label: "Button" },
+                    { id: "InputText", label: "InputText" },
+                    { id: "Link", label: "Link" },
+                  ]}
+                />
+              </Stack>
+              <Stack>
+                <label>Secondary Field Type</label>
+                <SelectElement
+                  name="secondaryFieldType"
+                  size="small"
+                  fullWidth
+                  control={control}
+                  options={[
+                    { id: "", label: "Nothing Selected" },
+                    { id: "DropDown", label: "DropDown" },
+                    { id: "MouseOver", label: "MouseOver" },
+                    { id: "WindowSwitch", label: "WindowSwitch" },
+                    { id: "Alert", label: "Alert" },
+                  ]}
+                />
+              </Stack>
+              <Stack>
+                <label>Tag Name</label>
+                <TextFieldElement
+                  id="tag-name"
+                  variant="outlined"
+                  size="small"
+                  name="tagname"
+                  fullWidth
+                  control={control}
+                />
+              </Stack>
             </Stack>
           </DialogContent>
           <DialogActions>

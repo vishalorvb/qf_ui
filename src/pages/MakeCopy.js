@@ -52,25 +52,28 @@ const MakeCopy = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography>Making Copy Of {location?.state?.name}</Typography>
       <Stack gap={2} direction="row">
-        <TextField
-          label="Name"
-          {...register("name", { required: true })}
-          error={!!errors.name}
-          helperText={errors.name ? "Name is required" : ""}
-          margin="normal"
-          fullWidth
-          size="small"
-        />
-
-        <TextField
-          label="Description"
-          {...register("description", { required: true })}
-          error={!!errors.description}
-          helperText={errors.description ? "Description is required" : ""}
-          margin="normal"
-          fullWidth
-          size="small"
-        />
+        <Stack>
+          <label>Name</label>
+          <TextField
+            {...register("name", { required: true })}
+            error={!!errors.name}
+            helperText={errors.name ? "Name is required" : ""}
+            margin="normal"
+            fullWidth
+            size="small"
+          />
+        </Stack>
+        <Stack>
+          <label>Description</label>
+          <TextField
+            {...register("description", { required: true })}
+            error={!!errors.description}
+            helperText={errors.description ? "Description is required" : ""}
+            margin="normal"
+            fullWidth
+            size="small"
+          />
+        </Stack>
       </Stack>
       <Stack direction="row-reverse">
         <Button type="submit" variant="contained">

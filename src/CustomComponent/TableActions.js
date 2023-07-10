@@ -12,13 +12,12 @@ function TableActions(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const heading = props?.heading ?? "";
   return (
     <div className="descColumn">
-      <Tooltip title={props?.heading?.length <= 140 ? "" : props?.heading}>
+      <Tooltip title={heading?.length <= 140 ? "" : heading}>
         <Typography variant="p">
-          {props?.heading?.length <= 140
-            ? props?.heading
-            : props?.heading?.substr(0, 140) + "..."}
+          {heading?.length <= 140 ? heading : heading?.substr(0, 140) + "..."}
         </Typography>
       </Tooltip>
       <MoreVertIcon

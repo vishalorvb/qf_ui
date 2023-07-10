@@ -55,8 +55,8 @@ export default function AllReports({}) {
       align: "center",
       renderCell: (params) => {
         const date = new Date(params.row.created_at);
-        const utcTime = date.toLocaleString('en-US', { timeZone: 'UTC' });
-        return utcTime
+        const utcTime = date.toLocaleString("en-US", { timeZone: "UTC" });
+        return utcTime;
       },
     },
     {

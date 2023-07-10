@@ -183,9 +183,9 @@ export default function CreatePipeline() {
             sx={{ marginTop: 0.1 }}
           >
             <Grid item md={6}>
+              <label>Release Name</label>
               <TextFieldElement
                 id="release-name"
-                label="Release Name"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -194,9 +194,9 @@ export default function CreatePipeline() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Release Description</label>
               <TextFieldElement
                 id="release-description"
-                label="Release Description"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -205,9 +205,9 @@ export default function CreatePipeline() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Select Release</label>
               <TextFieldElement
                 id="select"
-                label="Select Release"
                 select
                 size="small"
                 fullWidth
@@ -223,9 +223,9 @@ export default function CreatePipeline() {
               </TextFieldElement>
             </Grid>
             <Grid item md={6}>
+              <label>CICD Type</label>
               <TextFieldElement
                 id="select"
-                label="CICD Type"
                 fullWidth
                 select
                 size="small"
@@ -252,9 +252,9 @@ export default function CreatePipeline() {
             sx={{ marginTop: 0.1 }}
           >
             <Grid item md={6}>
+              <label>Select web Testset</label>
               <TextFieldElement
                 id="select"
-                label="Select web Testset"
                 select
                 size="small"
                 fullWidth
@@ -270,9 +270,9 @@ export default function CreatePipeline() {
               </TextFieldElement>
             </Grid>
             <Grid item md={6}>
+              <label>Select API Testset</label>
               <TextFieldElement
                 id="select"
-                label="Select API Testset"
                 select
                 size="small"
                 fullWidth
@@ -299,9 +299,9 @@ export default function CreatePipeline() {
             sx={{ marginTop: 0.1 }}
           >
             <Grid item md={6}>
+              <label>Sonar cube code Path</label>
               <TextFieldElement
                 id="Sonar-cube-code-Path"
-                label="Sonar cube code Path"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -310,9 +310,9 @@ export default function CreatePipeline() {
               />
             </Grid>
             <Grid item md={6}>
+              <label>Sonar cube Project Key</label>
               <TextFieldElement
                 id="Sonar-cube-Project-Key"
-                label="Sonar cube Project Key"
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -321,9 +321,9 @@ export default function CreatePipeline() {
               />
             </Grid>
             <Grid item md={12}>
+              <label>Unit testset path</label>
               <TextFieldElement
                 id="Unit-testset-path"
-                label="Unit testset path"
                 variant="outlined"
                 size="small"
                 fullWidth
