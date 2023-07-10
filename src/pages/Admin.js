@@ -99,7 +99,7 @@ export default function Admin() {
   const getUsers = () => {
     axiosPrivate
       .get(
-        `/qfauthservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
+        `/qfuserservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
       )
       .then((res) => {
         setUsers(res.data.info);

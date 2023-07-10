@@ -218,7 +218,7 @@ function AddUser() {
         </Grid>
         <Stack mt={2} spacing={2} direction="row-reverse">
           <Button variant="contained" type="submit" onClick={submit}>
-            Save
+            Save & Continue
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}

@@ -57,7 +57,7 @@ export async function deleteProject(projectid, userid) {
 }
 
 export async function getUsers(callback, orgid, ssoid, token) {
-  return await axios.get(`${baseUrl}/qfauthservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
+  return await axios.get(`${baseUrl}/qfuserservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
