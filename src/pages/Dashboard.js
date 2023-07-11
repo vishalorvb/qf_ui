@@ -61,6 +61,7 @@ export default function Dashboard() {
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [predictionInfo, setPredictionInfo] = useState([])
     let [percentage, setPercentage] = useState(0)
+    let [faildata,setFaildata] = useState([])
     function dashboardDetails() {
         setAutomationTDgraph(false)
         axios.get(`/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`).then((res) => {
@@ -173,6 +174,10 @@ export default function Dashboard() {
             getTensorflowData()
             getPredictionTestcases()
         }
+        axios.post(`/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${globalProject?.project_id}&sprintname=${sprintName=="All"?"":sprintName}`).then(res=>{
+            console.log(res.data.data)
+            setFaildata(res.data.data)
+        })
     }, [globalProject, sprintName])
     useEffect(() => {
         if (sprintName != 'All') {
@@ -478,15 +483,15 @@ useEffect(() => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {fail_row_data.map((row) => (
+                                        {faildata?.map((row) => (
                                             <TableRow
                                                 key={row.summary}
                                                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                                             >
                                                 <TableCell component="th" scope="row">
-                                                    {row.summary}
+                                                    {row[0]}
                                                 </TableCell>
-                                                <TableCell align="right">{row.info}</TableCell>
+                                                <TableCell align="right">{row[1]}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
