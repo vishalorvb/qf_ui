@@ -35,7 +35,7 @@ export default function CreatePipeline() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    releaseName: yup.string().required(),
+    releaseName: yup.string().required().max(30, "Max length exceeded"),
     releaseDesc: yup.string().required(),
     cicdType: yup.string().required(),
     release: yup.string().required(),

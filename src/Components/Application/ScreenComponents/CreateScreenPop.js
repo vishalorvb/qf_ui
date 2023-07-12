@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -90,11 +91,13 @@ export default function CreateScreenPop(props) {
         />
       )}
       <Grid container direction="row" spacing={1}>
-        <Grid item md={5}>
-          <input
+        <Grid item md={4}>
+          <label>Screen name</label>
+          <TextField
+            size="small"
             type="text"
             name="screenName"
-            placeholder="Screen Name"
+            fullWidth
             value={screenData.name}
             onChange={(e) => {
               console.log(e);
@@ -104,11 +107,13 @@ export default function CreateScreenPop(props) {
             }}
           />
         </Grid>
-        <Grid item md={5}>
-          <input
+        <Grid item md={4}>
+          <label>Screen Description</label>
+          <TextField
+            size="small"
             type="text"
             name="description"
-            placeholder="Description"
+            fullWidth
             value={screenData.desc}
             onChange={(e) => {
               console.log(e);
@@ -118,7 +123,7 @@ export default function CreateScreenPop(props) {
             }}
           />
         </Grid>
-        <Grid item md={2}>
+        <Grid item md={4} mt={2.3}>
           <Button variant="contained" onClick={saveScreen}>
             Create & Continue
           </Button>
