@@ -40,9 +40,7 @@ const MenuProps = {
 const data = [];
 
 function BIReports() {
-  const [selectedProject, setSelectedProject] = useState({
-    project_name: "Project",
-  });
+
   // const [selectedTestset, setSelectedTestset] = useState({});
   const [project, setProject] = useState([]);
   const [testset, setTestset] = useState([]);
@@ -55,7 +53,7 @@ function BIReports() {
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [msg, setMsg] = useState("");
-
+  const { setHeader ,globalProject, setglobalProject} = useHead();
   const handleSelectChange = (e) => {
     console.log(e.target.value);
     setSelectedOptions(e.target.value);
@@ -92,7 +90,7 @@ function BIReports() {
       selectedOptions.forEach((option) => {
         if (option === ts.testset_name) {
           data.push({
-            project_id: selectedProject.project_id,
+            project_id: globalProject.project_id,
             module_id: ts.module_id,
             testset_id: ts.testset_id,
           });
@@ -177,7 +175,7 @@ function BIReports() {
                     navigate("activeReports", {
                       state: {
                         param1: param.row.testsetmap_id,
-                        param2: selectedProject?.project_id,
+                        param2: globalProject?.project_id,
                       },
                     })
                   }
@@ -223,22 +221,24 @@ function BIReports() {
   }, [auth.userId]);
 
   useEffect(() => {
-    setSelectedProject(project[0]);
+    if(globalProject == null){
+        setglobalProject(project[0]);
+    }
   }, [project]);
 
   useEffect(() => {
-    selectedProject?.project_id &&
+    globalProject?.project_id &&
       axios
         .post(
-          `Biservice/bireport/gettestsets?project_id=${selectedProject?.project_id}&reqst`
+          `Biservice/bireport/gettestsets?project_id=${globalProject?.project_id}&reqst`
         )
         .then((resp) => {
           const testsets = resp?.data?.info ? resp?.data?.info : [];
           setTestset(testsets);
         });
-  }, [selectedProject]);
+  }, [globalProject]);
 
-  const { setHeader } = useHead();
+ 
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -268,13 +268,13 @@ function BIReports() {
               disableClearable
               id="project_id"
               options={project}
-              value={selectedProject || null}
+              value={globalProject || null}
               // sx={{ width: "100%" }}
               getOptionLabel={(option) =>
                 option.project_name ? option.project_name : ""
               }
               onChange={(e, value) => {
-                setSelectedProject(value);
+                setglobalProject(value);
               }}
               renderInput={(params) => (
                 <TextField {...params} size="small" fullWidth />

@@ -5,7 +5,7 @@ import { Button, Checkbox, Grid, Typography } from "@mui/material";
 import Table from "../../../CustomComponent/Table";
 import MastPop from "../../../CustomComponent/MastPop";
 
-let click = ["InputText", "Link",];
+let click = ["InputText", "select",];
 
 function ElementList({ elementList, updateDataset, screenName }) {
   let [popUp, setPopup] = useState(false);
@@ -161,7 +161,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                 }}
               />
             )}
-            {param.row.web_page_elements.input_type == "Link" && (
+            {param.row.web_page_elements.input_type == "select" && (
               <select
                 defaultValue={param.row.dataset_values.input_value}
                 style={{ width: "100%" }}

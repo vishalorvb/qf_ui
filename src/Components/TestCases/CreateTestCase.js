@@ -169,44 +169,46 @@ function CreateTestCase() {
     } catch (error) {}
   }, [globalProject, globalApplication]);
 
-  useEffect(() => {
-    if (globalProject?.project_id !== undefined) {
-      getApplicationOfProject(setApplication, globalProject?.project_id);
-      getSprint(setJiraSprint, globalProject?.project_id);
-    }
-  }, [globalProject]);
-  useEffect(() => {
-    if (globalApplication == null) {
-      setglobalApplication(application[0]);
-    }
-  }, [application]);
-  useEffect(() => {
-    getProject(setProject, auth.userId);
-    return () => {
-      TCdata = {
-        module_id: 0,
-        testcase_name: "",
-        testcase_description: "",
-        project_id: 0,
-        testcase_sprints: [],
-      };
-      sprintData = {
-        sprint_id: 0,
-        sprint_name: "2",
-        issue_id: 0,
-      };
-    };
-  }, []);
-  useEffect(() => {
-    if (globalProject == null) {
-      setglobalProject(project[0]);
-    }
-  }, [project]);
+    useEffect(() => {
+        if (globalProject?.project_id !== undefined) {
+            getApplicationOfProject(setApplication, globalProject?.project_id)
+            getSprint(setJiraSprint, globalProject?.project_id)
+        }
+    }, [globalProject])
+    useEffect(() => {
+        if (globalApplication == null) {
+            setglobalApplication(application[0])
+        }
+    }, [application])
+
+    useEffect(() => {
+        getProject(setProject, auth.userId)
+        return () => {
+            TCdata = {
+                module_id: 0,
+                testcase_name: "",
+                testcase_description: "",
+                project_id: 0,
+                testcase_sprints: []
+            }
+            sprintData = {
+                "sprint_id": 0,
+                "sprint_name": "2",
+                "issue_id": 0
+            }
+        };
+    }, [])
+    useEffect(() => {
+        if (globalProject == null) {
+            setglobalProject(project[0])
+        }
+    }, [project])
+
+
 
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
-
                 <Grid item md={3}>
                     <label htmlFor="">Projects</label>
                     <Autocomplete
@@ -268,9 +270,10 @@ function CreateTestCase() {
                         {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
                     </select>
                 </Grid>
-                <Grid item xs={4} md={4}>
+                <Grid item xs={6} md={6}>
                     <label htmlFor="">TestCase Name <span className="importantfield">*</span></label>
                     <input
+                    placeholder="Testcase Name"
                         name="name"
                         defaultValue={TCdata.testcase_name}
                         onChange={e => {
@@ -280,9 +283,10 @@ function CreateTestCase() {
                     />
                 </Grid>
                 <br />
-                <Grid item xs={8} md={8}>
+                <Grid item xs={6} md={6}>
                     <label htmlFor="">Description <span className="importantfield">*</span></label>
                     <input
+                    placeholder="Testcase Description"
                         name="desc"
                         defaultValue={TCdata.testcase_description}
                         onChange={e => {
