@@ -26,10 +26,7 @@ import { getProject } from "../../Services/ProjectService";
 export default function CreatePipeline() {
   const [pipelineData, setPipelineData] = useState({});
   const [defaultData, setDefaultData] = useState({});
-  const [msg, setMsg] = useState("");
-  const [selectedProject, setSelectedProject] = useState({
-    project_name: "Project",
-  });
+  const [msg, setMsg] = useState("");;
   const [project, setProject] = useState([]);
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -92,7 +89,7 @@ export default function CreatePipeline() {
 
   console.log(location.state);
 
-  const { setHeader } = useHead();
+  const { setHeader , globalProject, setglobalProject} = useHead();
 
   useEffect(() => {
     getCreatePipelineData(
@@ -122,7 +119,9 @@ export default function CreatePipeline() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    setSelectedProject(project[0]);
+    if(globalProject == null){
+        setglobalProject(project[0]);
+    }
   }, [project]);
 
   const cicdTypes = [];
@@ -151,11 +150,11 @@ export default function CreatePipeline() {
               disableClearable
               id="project_id"
               options={project}
-              value={selectedProject || null}
+              value={globalProject || null}
               sx={{ width: "100%" }}
               getOptionLabel={(option) => option.project_name}
               onChange={(e, value) => {
-                setSelectedProject(value);
+                setglobalProject(value);
               }}
               renderInput={(params) => (
                 <div ref={params.InputProps.ref}>

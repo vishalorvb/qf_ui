@@ -17,7 +17,6 @@ import { getSprint, getIssues } from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
 import { axiosPrivate } from "../../api/axios";
-import useMaxChar from "../../hooks/useMaxChar";
 
 function TestsetCreate() {
   const {
@@ -36,7 +35,6 @@ function TestsetCreate() {
   const [selectedDatasets, setSelectedDatasets] = useState({});
   const [command, setCommand] = useState("");
   const [preSelectedElement, setPreSelectedElement] = useState([]);
-  let maxLength = useMaxChar();
   const navigate = useNavigate();
   let [jiraSprint, setJiraSprint] = useState([]);
   let [jiraIssue, setJiraIssue] = useState([]);
@@ -46,7 +44,7 @@ function TestsetCreate() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Create TestSet",
+        name: "Create Testset",
       };
     });
   }, []);
@@ -236,8 +234,12 @@ function TestsetCreate() {
               })}
               type="text"
               placeholder=" Testset Name"
+<<<<<<< HEAD
               onChange={(e) => {
                 maxLength(e, 30);
+=======
+              onChange={e=>{
+>>>>>>> project
               }}
               error={errors.testsetName}
               helperText={errors.testsetName && errors.testsetName.message}
@@ -254,11 +256,15 @@ function TestsetCreate() {
               {...register("testsetDesc", {
                 required: "Please enter the description",
               })}
+<<<<<<< HEAD
               onChange={(e) => {
                 maxLength(e, 50);
+=======
+              onChange={e=>{
+>>>>>>> project
               }}
               type="text"
-              placeholder=" Description"
+              placeholder="Testset Description"
               error={errors.testsetDesc}
               helperText={errors.testsetDesc && errors.testsetDesc.message}
             />

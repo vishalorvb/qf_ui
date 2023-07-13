@@ -75,6 +75,8 @@ export default function Table(props) {
             {
               display: hideheaderCheckbox && "none",
             },
+            overflow: "hidden",
+            
         }}
         initialState={{
           filter: {

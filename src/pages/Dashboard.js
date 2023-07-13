@@ -67,6 +67,7 @@ export default function Dashboard() {
         axios.get(`/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`).then((res) => {
             setInfo(res?.data?.data?.model)
             setTestCases(res?.data?.data?.model.automation_test_cases_count)
+            console.log(res?.data?.data?.model.automation_test_cases_count)
             setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count)
             settotalSprint(res?.data?.data?.model.sprint_overview)
             if ((res?.data?.data?.model.automation_graph)?.length > 0) {
@@ -174,8 +175,7 @@ export default function Dashboard() {
             getTensorflowData()
             getPredictionTestcases()
         }
-        axios.post(`/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${globalProject?.project_id}&sprintname=${sprintName=="All"?"":sprintName}`).then(res=>{
-            console.log(res.data.data)
+        axios.post(`/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${globalProject?.project_id}${sprintName=="All"?"":`&sprintname=${sprintName}`}`).then(res=>{
             setFaildata(res.data.data)
         })
     }, [globalProject, sprintName])

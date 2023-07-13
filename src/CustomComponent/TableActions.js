@@ -17,7 +17,9 @@ function TableActions(props) {
     <div className="descColumn">
       <Tooltip title={heading?.length <= 140 ? "" : heading}>
         <Typography variant="p">
-          {heading?.length <= 140 ? heading : heading?.substr(0, 140) + "..."}
+          {props?.heading?.length <= 100
+            ? props?.heading
+            : props?.heading?.substr(0, 100) + "..."}
         </Typography>
       </Tooltip>
       <MoreVertIcon

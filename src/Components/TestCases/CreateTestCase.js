@@ -1,30 +1,17 @@
-import {
-  Autocomplete,
-  Button,
-  Divider,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import { useNavigate } from "react-router";
-import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { useEffect, useRef, useState } from "react";
-import { Stack } from "@mui/system";
-import useHead from "../../hooks/useHead";
-import { getProject } from "../../Services/ProjectService";
-import { getApplicationOfProject } from "../../Services/ApplicationService";
-import useAuth from "../../hooks/useAuth";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import {
-  getSprint,
-  getIssues,
-  createApitestcase,
-} from "../../Services/TestCaseService";
-import MapScreen from "./webTestcase/MapScreen";
-import { CreateTestCaseService } from "../../Services/TestCaseService";
-import MapApiTestCase from "./apiTestcase/MapApiTestCase";
-import useMaxChar from "../../hooks/useMaxChar";
+import { Autocomplete, Button, Divider, Grid, TextField } from "@mui/material"
+import { useNavigate } from "react-router"
+import { validateFormbyName } from "../../CustomComponent/FormValidation"
+import { useEffect, useRef, useState } from "react"
+import { Stack } from "@mui/system"
+import useHead from "../../hooks/useHead"
+import { getProject } from "../../Services/ProjectService"
+import { getApplicationOfProject } from "../../Services/ApplicationService"
+import useAuth from "../../hooks/useAuth"
+import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
+import { getSprint, getIssues, createApitestcase } from "../../Services/TestCaseService"
+import MapScreen from "./webTestcase/MapScreen"
+import { CreateTestCaseService } from "../../Services/TestCaseService"
+import MapApiTestCase from "./apiTestcase/MapApiTestCase"
 export let TCdata = {
   module_id: 0,
   testcase_name: "",
@@ -41,24 +28,16 @@ let sprintData = {
 let snackbarErrorMsg = "";
 
 function CreateTestCase() {
-  const [reportFailMsg, setReportFailMsg] = useState(false);
-  let [project, setProject] = useState([]);
-  let [application, setApplication] = useState([]);
-  const { auth } = useAuth();
-  const {
-    setHeader,
-    globalProject,
-    setglobalProject,
-    globalApplication,
-    setglobalApplication,
-    setSnackbarData,
-  } = useHead();
-  let [jiraSprint, setJiraSprint] = useState([]);
-  let [jiraIssue, setJiraIssue] = useState([]);
-  let [snackbarError, setSnackbarError] = useState(false);
-  let [selectedApiList, setSelectedApiList] = useState([]);
-  let maxLength = useMaxChar();
-  let screens = useRef();
+    const [reportFailMsg, setReportFailMsg] = useState(false);
+    let [project, setProject] = useState([])
+    let [application, setApplication] = useState([])
+    const { auth } = useAuth();
+    const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication, setSnackbarData } = useHead();
+    let [jiraSprint, setJiraSprint] = useState([]);
+    let [jiraIssue, setJiraIssue] = useState([]);
+    let [snackbarError, setSnackbarError] = useState(false);
+    let [selectedApiList, setSelectedApiList] = useState([]);
+    let screens = useRef()
 
   const navigate = useNavigate();
 
@@ -117,50 +96,51 @@ function CreateTestCase() {
         TCdata.testcase_sprints.push(sprintData);
       }
 
-      if (validateFormbyName(["name", "desc"], "error")) {
-        if (!TCdata.testcase_name.startsWith("TC_")) {
-          TCdata.testcase_name = "TC_" + TCdata.testcase_name;
+            if (validateFormbyName(["name", "desc"], "error")) {
+                if (!TCdata.testcase_name.startsWith("TC_")) {
+                    TCdata.testcase_name = "TC_" + TCdata.testcase_name
+                }
+                if (globalApplication?.module_type != 1) {
+                    let scr = []
+                    screens.current.forEach(sc => {
+                        sc.screenList.forEach(screen => {
+                            let temp = { screen_id: screen?.screen_id }
+                            scr.push(temp)
+                        })
+                    })
+                    TCdata.screens_in_testcase = scr
+                    WebTestcase(TCdata)
+                }
+                if (globalApplication?.module_type == 1) {
+                    let desc = TCdata.testcase_description
+                    delete TCdata.testcase_description
+                    TCdata.testcase_desc = desc
+                    TCdata.apis_list = selectedApiList?.map(api => {
+                        return { api_id: api }
+                    })
+                    ApiTestcase(TCdata)
+                }
+
+            }
+            else {
+                console.log("Invalid form")
+                snackbarErrorMsg = "Fill all required fields"
+                setSnackbarError(true)
+            }
         }
-        if (globalApplication?.module_type != 1) {
-          let scr = [];
-          screens.current.forEach((sc) => {
-            sc.screenList.forEach((screen) => {
-              let temp = { screen_id: screen?.screen_id };
-              scr.push(temp);
-            });
-          });
-          TCdata.screens_in_testcase = scr;
-          WebTestcase(TCdata);
-        }
-        if (globalApplication?.module_type == 1) {
-          let desc = TCdata.testcase_description;
-          delete TCdata.testcase_description;
-          TCdata.testcase_desc = desc;
-          TCdata.apis_list = selectedApiList?.map((api) => {
-            return { api_id: api };
-          });
-          ApiTestcase(TCdata);
-        }
-      } else {
-        console.log("Invalid form");
-        snackbarErrorMsg = "Fill all required fields";
-        setSnackbarError(true);
-      }
     }
-  }
-  useEffect(() => {
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name:
-          TCdata.testcase_id === undefined
-            ? "Create TestCase"
-            : "Update TestCase",
-        plusButton: false,
-        plusCallback: () => {},
-      };
-    });
-  }, []);
+    useEffect(() => {
+        setHeader((ps) => {
+            return {
+                ...ps,
+                name: TCdata.testcase_id === undefined ? "Create Testcase" : "Update TestCase",
+                plusButton: false,
+                plusCallback: () => {
+
+                },
+            };
+        });
+    }, []);
 
   useEffect(() => {
     try {
@@ -218,7 +198,7 @@ function CreateTestCase() {
                         options={project}
                         value={globalProject || null}
                         fullWidth
-                        disabled ={TCdata.testcase_id === undefined ? false : true}
+                        disabled={TCdata.testcase_id === undefined ? false : true}
                         getOptionLabel={(option) => option?.project_name}
                         onChange={(e, value) => {
                             setglobalApplication(null);
@@ -238,7 +218,7 @@ function CreateTestCase() {
                         options={application}
                         value={globalApplication || null}
                         fullWidth
-                        disabled ={TCdata.testcase_id === undefined ? false : true}
+                        disabled={TCdata.testcase_id === undefined ? false : true}
                         getOptionLabel={(option) => option.module_name}
                         onChange={(e, value) => {
                             setglobalApplication(value);
@@ -271,29 +251,34 @@ function CreateTestCase() {
                     </select>
                 </Grid>
                 <Grid item xs={6} md={6}>
-                    <label htmlFor="">TestCase Name <span className="importantfield">*</span></label>
-                    <input
-                    placeholder="Testcase Name"
-                        name="name"
-                        defaultValue={TCdata.testcase_name}
-                        onChange={e => {
-                            TCdata.testcase_name = e.target.value.trim();
-                            maxLength(e,30)
-                        }}
-                    />
+                    <Stack spacing={1}>
+                        <label htmlFor="">Testcase Name <span className="importantfield">*</span></label>
+                        <TextField
+                            size="small"
+                            placeholder="Testcase Name"
+                            name="name"
+                            defaultValue={TCdata.testcase_name}
+                            onChange={e => {
+                                TCdata.testcase_name = e.target.value.trim();
+                            }}
+                        />
+                    </Stack>
+
                 </Grid>
                 <br />
                 <Grid item xs={6} md={6}>
-                    <label htmlFor="">Description <span className="importantfield">*</span></label>
-                    <input
-                    placeholder="Testcase Description"
-                        name="desc"
-                        defaultValue={TCdata.testcase_description}
-                        onChange={e => {
-                            TCdata.testcase_description = e.target.value;
-                            maxLength(e,50)
-                        }}
-                    />
+                    <Stack spacing={1}>
+                        <label htmlFor="">Description <span className="importantfield">*</span></label>
+                        <TextField
+                            size="small"
+                            placeholder="Testcase Description"
+                            name="desc"
+                            defaultValue={TCdata.testcase_description}
+                            onChange={e => {
+                                TCdata.testcase_description = e.target.value;
+                            }}
+                        />
+                    </Stack>
                 </Grid>
 
             </Grid >
@@ -318,7 +303,7 @@ function CreateTestCase() {
                 alignItems="center"
                 spacing={2}
             >
-                <Button onClick={e=>navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                <Button onClick={e => navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
                 <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined ? "Save & Continue" : "Update"} </Button>
                 {/*<Button variant="contained" onClick={handleSubmit}>Cancel </Button>*/}
             </Stack>
