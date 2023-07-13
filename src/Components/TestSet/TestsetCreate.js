@@ -234,12 +234,7 @@ function TestsetCreate() {
               })}
               type="text"
               placeholder=" Testset Name"
-<<<<<<< HEAD
-              onChange={(e) => {
-                maxLength(e, 30);
-=======
               onChange={e=>{
->>>>>>> project
               }}
               error={errors.testsetName}
               helperText={errors.testsetName && errors.testsetName.message}
@@ -256,12 +251,7 @@ function TestsetCreate() {
               {...register("testsetDesc", {
                 required: "Please enter the description",
               })}
-<<<<<<< HEAD
-              onChange={(e) => {
-                maxLength(e, 50);
-=======
               onChange={e=>{
->>>>>>> project
               }}
               type="text"
               placeholder="Testset Description"
