@@ -61,7 +61,7 @@ export default function Dashboard() {
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [predictionInfo, setPredictionInfo] = useState([])
     let [percentage, setPercentage] = useState(0)
-    let [faildata,setFaildata] = useState([])
+    let [faildata, setFaildata] = useState([])
     function dashboardDetails() {
         setAutomationTDgraph(false)
         axios.get(`/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`).then((res) => {
@@ -175,7 +175,7 @@ export default function Dashboard() {
             getTensorflowData()
             getPredictionTestcases()
         }
-        axios.post(`/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${globalProject?.project_id}${sprintName=="All"?"":`&sprintname=${sprintName}`}`).then(res=>{
+        axios.post(`/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${globalProject?.project_id}${sprintName == "All" ? "" : `&sprintname=${sprintName}`}`).then(res => {
             setFaildata(res.data.data)
         })
     }, [globalProject, sprintName])
@@ -199,12 +199,12 @@ export default function Dashboard() {
         });
     }, []);
 
-useEffect(() => {
-    axios.post(`/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${globalProject?.project_id}`).then(res=>{
-        setPercentage(Math.floor(res.data.data.total_pass_percentage))
-    })
+    useEffect(() => {
+        axios.post(`/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${globalProject?.project_id}`).then(res => {
+            setPercentage(Math.floor(res.data.data.total_pass_percentage))
+        })
 
-}, [globalProject])
+    }, [globalProject])
     const graphData = {
         title: {
             text: 'Automation',
@@ -361,43 +361,49 @@ useEffect(() => {
 
     return (
         <div style={{ overflowX: "hidden" }}>
-            <Stack
-                direction="row"
-                justifyContent="flex-end"
-                alignItems="center"
-                spacing={1}
-                mb={2}>
-                <Autocomplete
-                    disablePortal
-                    id="project_id"
-                    options={projectsList}
-                    value={globalProject}
-                    sx={{ width: "250px" }}
-                    getOptionLabel={(option) => option.project_name}
-                    onChange={(e, value) => {
-                        setglobalProject(value);
-                        setSprintName('All')
-                        setSprintList([])
-                        setAutomationTDgraph(false)
-                        setShowTensorFlow(false)
-                    }}
-                    renderInput={(params) => (
-                        <TextField {...params} size="small" />
-                    )}
-                />
-                <FormControl sx={{ width: "150px" }}>
-                    <Select
-                        id="demo-simple-select"
-                        value={sprintName}
-                        onChange={(e) => { setSprintName(e.target.value) }}
-                    >
-                        <MenuItem value={"All"}>All</MenuItem>
-                        {sprintList?.map((period, index) => {
-                            return <MenuItem value={period} key={index}>{period}</MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
-            </Stack>
+            <Grid container spacing={2} justifyContent="right">
+                <Grid item md={4}>
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        spacing={1}
+                        mb={2}>
+                        <Autocomplete
+                            disablePortal
+                            id="project_id"
+                            options={projectsList}
+                            value={globalProject}
+                            getOptionLabel={(option) => option.project_name}
+                            fullWidth
+                            onChange={(e, value) => {
+                                setglobalProject(value);
+                                setSprintName('All')
+                                setSprintList([])
+                                setAutomationTDgraph(false)
+                                setShowTensorFlow(false)
+                            }}
+                            renderInput={(params) => (
+                                <TextField {...params} size="small" />
+                            )}
+                        />
+                        <select
+                            style={{height:"38px"}}
+                            id="demo-simple-select"
+                            value={sprintName}
+                            onChange={(e) => { setSprintName(e.target.value) }}
+                        >
+                            <option value={"All"}>All</option>
+                            {sprintList?.map((period, index) => {
+                                return <option value={period} key={index}>{period}</option>
+                            })}
+                        </select>
+
+                    </Stack>
+
+                </Grid>
+            </Grid>
+
             <Divider orientation="horizontal" flexItem sx={{ marginBottom: "10px" }} />
             <Box sx={{ flexGrow: 1 }}>
                 <Grid
