@@ -12,7 +12,6 @@ import { getSprint, getIssues, createApitestcase } from "../../Services/TestCase
 import MapScreen from "./webTestcase/MapScreen"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
 import MapApiTestCase from "./apiTestcase/MapApiTestCase"
-import useMaxChar from "../../hooks/useMaxChar"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -38,7 +37,6 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
-    let maxLength = useMaxChar();
     let screens = useRef()
 
     const navigate = useNavigate();
@@ -138,7 +136,7 @@ function CreateTestCase() {
         setHeader((ps) => {
             return {
                 ...ps,
-                name: TCdata.testcase_id === undefined ? "Create TestCase" : "Update TestCase",
+                name: TCdata.testcase_id === undefined ? "Create Testcase" : "Update TestCase",
                 plusButton: false,
                 plusCallback: () => {
 
@@ -204,7 +202,7 @@ function CreateTestCase() {
                         options={project}
                         value={globalProject || null}
                         fullWidth
-                        disabled ={TCdata.testcase_id === undefined ? false : true}
+                        disabled={TCdata.testcase_id === undefined ? false : true}
                         getOptionLabel={(option) => option?.project_name}
                         onChange={(e, value) => {
                             setglobalApplication(null);
@@ -224,7 +222,7 @@ function CreateTestCase() {
                         options={application}
                         value={globalApplication || null}
                         fullWidth
-                        disabled ={TCdata.testcase_id === undefined ? false : true}
+                        disabled={TCdata.testcase_id === undefined ? false : true}
                         getOptionLabel={(option) => option.module_name}
                         onChange={(e, value) => {
                             setglobalApplication(value);
@@ -257,29 +255,34 @@ function CreateTestCase() {
                     </select>
                 </Grid>
                 <Grid item xs={6} md={6}>
-                    <label htmlFor="">TestCase Name <span className="importantfield">*</span></label>
-                    <input
-                    placeholder="Testcase Name"
-                        name="name"
-                        defaultValue={TCdata.testcase_name}
-                        onChange={e => {
-                            TCdata.testcase_name = e.target.value.trim();
-                            maxLength(e,30)
-                        }}
-                    />
+                    <Stack spacing={1}>
+                        <label htmlFor="">Testcase Name <span className="importantfield">*</span></label>
+                        <TextField
+                            size="small"
+                            placeholder="Testcase Name"
+                            name="name"
+                            defaultValue={TCdata.testcase_name}
+                            onChange={e => {
+                                TCdata.testcase_name = e.target.value.trim();
+                            }}
+                        />
+                    </Stack>
+
                 </Grid>
                 <br />
                 <Grid item xs={6} md={6}>
-                    <label htmlFor="">Description <span className="importantfield">*</span></label>
-                    <input
-                    placeholder="Testcase Description"
-                        name="desc"
-                        defaultValue={TCdata.testcase_description}
-                        onChange={e => {
-                            TCdata.testcase_description = e.target.value;
-                            maxLength(e,50)
-                        }}
-                    />
+                    <Stack spacing={1}>
+                        <label htmlFor="">Description <span className="importantfield">*</span></label>
+                        <TextField
+                            size="small"
+                            placeholder="Testcase Description"
+                            name="desc"
+                            defaultValue={TCdata.testcase_description}
+                            onChange={e => {
+                                TCdata.testcase_description = e.target.value;
+                            }}
+                        />
+                    </Stack>
                 </Grid>
 
             </Grid >
@@ -304,7 +307,7 @@ function CreateTestCase() {
                 alignItems="center"
                 spacing={2}
             >
-                <Button onClick={e=>navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                <Button onClick={e => navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
                 <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined ? "Save & Continue" : "Update"} </Button>
                 {/*<Button variant="contained" onClick={handleSubmit}>Cancel </Button>*/}
             </Stack>

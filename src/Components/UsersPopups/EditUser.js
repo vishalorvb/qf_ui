@@ -169,7 +169,7 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>User Id <span className="importantfield">*</span></label>
+              <label>User ID <span className="importantfield">*</span></label>
               <Tooltip title="Non Editable">
                 <input
                   value={values.uid}

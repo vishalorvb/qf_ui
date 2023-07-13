@@ -23,9 +23,6 @@ export default function CreateAnsibleInstance() {
   const location = useLocation();
   const [msg, setMsg] = useState(false);
   const [open, setOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState({
-    project_name: "Project",
-  });
   const [project, setProject] = useState([]);
   const navigate = useNavigate();
 
@@ -54,10 +51,12 @@ export default function CreateAnsibleInstance() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    setSelectedProject(project[0]);
+    if(globalProject == null){
+        setglobalProject(project[0]);
+    }
   }, [project]);
 
-  const { setHeader } = useHead();
+  const { setHeader,globalProject,setglobalProject } = useHead();
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -95,7 +94,6 @@ export default function CreateAnsibleInstance() {
 
   const onSubmitHandler = (data) => {
     console.log(location?.state?.project_id);
-    console.log(selectedProject?.project_id);
 
     axios
       .post(
@@ -104,7 +102,7 @@ export default function CreateAnsibleInstance() {
         }&project_id=${
           location?.state?.project_id
             ? location?.state?.project_id
-            : selectedProject?.project_id
+            : globalProject?.project_id
         }&release_name=${data?.releaseName}&release_desc=${
           data?.releaseDesc
         }&app_source_code_branch_name=${
@@ -146,11 +144,11 @@ export default function CreateAnsibleInstance() {
               disableClearable
               id="project_id"
               options={project}
-              value={selectedProject || null}
+              value={globalProject || null}
               sx={{ width: "100%" }}
               getOptionLabel={(option) => option.project_name}
               onChange={(e, value) => {
-                setSelectedProject(value);
+                setglobalProject(value);
               }}
               renderInput={(params) => (
                 <div ref={params.InputProps.ref}>

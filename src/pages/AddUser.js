@@ -157,7 +157,7 @@ function AddUser() {
           <Grid item md={6}>
             <Stack spacing={1}>
               <label>
-                User Id <span className="importantfield">*</span>
+                User ID <span className="importantfield">*</span>
               </label>
               <input
                 type="text"
@@ -185,7 +185,7 @@ function AddUser() {
           <Grid item md={6}>
             <Stack spacing={1}>
               <label>
-                Email Id <span className="importantfield">*</span>
+                Email  <span className="importantfield">*</span>
               </label>
               <input
                 name="email"
