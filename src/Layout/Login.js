@@ -96,11 +96,7 @@ export default function Login() {
       } catch (err) {
         console.log(err?.response?.data);
         const error = err?.response?.data;
-        // error?.status === 401 &&
-        //   setfieldsErr({
-        //     email: "please check username",
-        //     password: "please check password",
-        //   });
+
         setLoginErr({
           state: true,
           message: error ? error?.message : "Network Error !!",

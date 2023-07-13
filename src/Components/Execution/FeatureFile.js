@@ -16,7 +16,11 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 function FeatureFile(props) {
   const { selectedDatasets, open, close, testcaseId } = props;
-  const schema = yup.object().shape({ testcaseName: yup.string().required() });
+  const schema = yup
+    .object()
+    .shape({
+      testcaseName: yup.string().required().max(30, "Max length exceeded"),
+    });
   const {
     control,
     handleSubmit,

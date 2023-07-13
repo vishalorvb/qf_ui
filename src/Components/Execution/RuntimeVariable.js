@@ -25,7 +25,11 @@ function RuntimeVariable(props) {
     runtimeVar,
   } = props;
   const [variables, setVariables] = useState("");
-  const schema = yup.object().shape({ testcaseName: yup.string().required() });
+  const schema = yup
+    .object()
+    .shape({
+      testcaseName: yup.string().required().max(30, "Max length exceeded"),
+    });
   const [snack, setSnack] = useState(false);
 
   // console.log(envId)

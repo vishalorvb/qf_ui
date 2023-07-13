@@ -27,7 +27,7 @@ export default function CreateAnsibleInstance() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    releaseName: yup.string().required(),
+    releaseName: yup.string().required().max(30, "Max length exceeded"),
     releaseDesc: yup.string().required(),
     playbookPath: yup.string().required(),
     credId: yup.string().required(),

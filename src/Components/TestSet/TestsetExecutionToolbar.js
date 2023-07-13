@@ -82,8 +82,10 @@ function TestsetExecutionToolbar({
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
-    browser: yup.array().required(),
-    commitMsg: execLoc !== "local" && yup.string().required(),
+    browser:
+      applicationType !== 3 && applicationType !== 4 && yup.array().required(),
+    commitMsg:
+      (execLoc == "docker" || execLoc == "jenkins") && yup.string().required(),
   });
 
   const handleToggle = () => {
