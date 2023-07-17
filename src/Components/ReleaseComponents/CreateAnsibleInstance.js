@@ -296,7 +296,7 @@ export default function CreateAnsibleInstance() {
         </AccordionTemplate>
         <Stack mt={2} spacing={2} direction="row-reverse">
           <Button variant="contained" type="submit">
-            Create & Continue
+            Save & Continue
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}

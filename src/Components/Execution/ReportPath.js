@@ -85,7 +85,7 @@ function ReportPath(props) {
             Cancel
           </Button>
           <Button variant="contained" type="submit" onClick={onSubmitHandler}>
-            Create & Continue
+            Save & Continue
           </Button>
         </DialogActions>
       </Dialog>
