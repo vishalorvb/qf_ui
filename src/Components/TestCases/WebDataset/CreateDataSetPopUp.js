@@ -57,7 +57,7 @@ function CreateDataSetPopUp({ func, dsName, dsDesciption, dsType, setToogle }) {
 
                 <Grid container spacing={1} justifyContent='flex-end'>
                     <Grid item sm={2} md={2}>
-                        <label for="">Database Type:<span className="importantfield">*</span></label>
+                        <label for="">Dataset Type:<span className="importantfield">*</span></label>
                         <select
                             defaultValue={dsType}
                             onChange={(e) => (datasetinfo.current.is_db_dataset = e.target.value)}
@@ -68,7 +68,7 @@ function CreateDataSetPopUp({ func, dsName, dsDesciption, dsType, setToogle }) {
                     </Grid>
 
                     <Grid item md={2}>
-                        <label for="">Database Name: <span className="importantfield">*</span></label>
+                        <label for="">Dataset Name: <span className="importantfield">*</span></label>
                         <input
                             type="text"
                             name="name"

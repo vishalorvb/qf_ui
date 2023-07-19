@@ -101,6 +101,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Release Name"
               />
             </Grid>
             <Grid item md={6}>
@@ -112,6 +113,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Release Description"
               />
             </Grid>
           </Grid>
@@ -133,6 +135,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Server URL"
               />
             </Grid>
             <Grid item md={6}>
@@ -144,6 +147,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Server Type"
               />
             </Grid>
             <Grid item md={12}>
@@ -155,6 +159,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Server CredentialId"
               />
             </Grid>
 
@@ -167,6 +172,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="War Name"
               />
             </Grid>
           </Grid>
@@ -188,6 +194,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Repository Username"
               />
             </Grid>
             <Grid item md={6}>
@@ -199,6 +206,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Repository Token"
               />
             </Grid>
             <Grid item md={12}>
@@ -210,6 +218,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Repository Url"
               />
             </Grid>
 
@@ -222,6 +231,7 @@ export default function CreateAnsibleInstance() {
                 variant="outlined"
                 size="small"
                 fullWidth
+                placeholder="Repository Branch"
               />
             </Grid>
           </Grid>
