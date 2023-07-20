@@ -11,12 +11,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { getTestcasesInProjects } from "../../Services/TestsetService";
 import useHead from "../../hooks/useHead";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import { getSprint, getIssues } from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
-import { axiosPrivate } from "../../api/axios";
+import axios, { axiosPrivate } from "../../api/axios";
 
 function TestsetCreate() {
   const {
@@ -26,10 +26,14 @@ function TestsetCreate() {
     setglobalApplication,
     setSnackbarData,
   } = useHead();
+  const location = useLocation();
+  const isUpdate = location?.pathname?.includes("Update");
+  const editData = location?.state;
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
   const [testcaseObject, setTestcaseObject] = useState([]);
   const [selectedDatasets, setSelectedDatasets] = useState({});
@@ -59,10 +63,27 @@ function TestsetCreate() {
       getTestcasesInProjects(
         setTestcaseObject,
         globalProject?.project_id,
-        globalApplication?.module_id
+        globalApplication?.module_id,
+        editData?.testcase_id
       );
     }
   }, [globalApplication?.module_id]);
+
+  useEffect(() => {
+    setPreSelectedElement(() => {
+      return testcaseObject
+        ?.filter((testcase) => testcase?.is_selected === true)
+        .map((testcase) => testcase?.testcase_id);
+    });
+  }, [testcaseObject]);
+
+  useEffect(() => {
+    console.log(location);
+    reset({
+      testsetName: editData?.testset_name.substring(3),
+      testsetDesc: editData?.testset_desc,
+    });
+  }, []);
 
   const submit = (data) => {
     const selectedTestcases = [];
@@ -98,7 +119,7 @@ function TestsetCreate() {
 
     const testsetData = {
       testset_name: "TS_" + data?.testsetName.trim(),
-      testset_desc: "TS_" + data?.testsetDesc.trim(),
+      testset_desc: data?.testsetDesc.trim(),
       project_id: globalProject?.project_id,
       testset_id: 0,
       module_id: globalApplication?.module_id,
@@ -188,6 +209,7 @@ function TestsetCreate() {
             setglobalProject={setglobalProject}
             globalApplication={globalApplication}
             setglobalApplication={setglobalApplication}
+            selectorDisabled={location?.pathname?.includes("Update")}
           />
         </Grid>
         <Grid item md={3}>
@@ -234,8 +256,7 @@ function TestsetCreate() {
               })}
               type="text"
               placeholder=" Testset Name"
-              onChange={e=>{
-              }}
+              onChange={(e) => {}}
               error={errors.testsetName}
               helperText={errors.testsetName && errors.testsetName.message}
             />
@@ -251,8 +272,7 @@ function TestsetCreate() {
               {...register("testsetDesc", {
                 required: "Please enter the description",
               })}
-              onChange={e=>{
-              }}
+              onChange={(e) => {}}
               type="text"
               placeholder="Testset Description"
               error={errors.testsetDesc}

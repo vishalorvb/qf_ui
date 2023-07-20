@@ -105,11 +105,7 @@ export default function Testset() {
             <MenuItem
               onClick={() =>
                 navigate("Update", {
-                  state: {
-                    param1: param?.row,
-                    param2: globalProject?.project_id,
-                    param3: globalApplication?.module_id,
-                  },
+                  state: param?.row,
                 })
               }
             >

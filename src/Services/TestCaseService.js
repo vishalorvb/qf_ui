@@ -102,17 +102,23 @@ export async function DeleteTestCase(testcaseId) {
   return x;
 }
 
-export function GetTestCase(callback, projectId, applicationId) {
+export function GetTestCase(callback, projectId, applicationId, isFailed) {
   axios
     .get(
-      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
+      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId`,
+      {
+        params: {
+          project_id: projectId,
+          module_id: applicationId,
+          failTestcases: isFailed ?? false,
+        },
+      }
     )
     .then((resp) => {
       const testcases = resp?.data?.info ?? [];
       callback(testcases);
     });
 }
-
 
 export function getSprint(callback, projectId) {
   axios
