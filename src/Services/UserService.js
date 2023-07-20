@@ -23,7 +23,6 @@ export async function UpdateUser(data) {
 
 
 export async function uploadPic(userId, picfile, token) {
-    console.log(token)
     let x = await axios.post(`${baseUrl}/qfuserservice/user/profilePicUpload?user_id=${userId}`,picfile,{
         headers: {
             'Content-Type': 'multipart/form-data',

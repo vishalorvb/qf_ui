@@ -258,7 +258,17 @@ function CreateProject() {
                 projectDetails.testdata_db_config?.db_password;
             submitData.current.db_port = projectDetails.testdata_db_config?.db_port;
             submitData.current.db_host = projectDetails.testdata_db_config?.db_hosts;
+
+
+            jiraProjectdata.url =projectDetails?.jiraUser?.jira_url
+            jiraProjectdata.username = projectDetails?.jiraUser?.jira_user_name
+            jiraProjectdata.password = projectDetails?.jiraUser?.password
         }
+        return(()=>{
+            jiraProjectdata.url =""
+            jiraProjectdata.username = ""
+            jiraProjectdata.password = ""
+        })
     }, [projectDetails]);
 
     const ref = useRef(null);
@@ -349,7 +359,7 @@ function CreateProject() {
                             <input
                                 placeholder="Repository Access Token"
                                 defaultValue={projectDetails?.repository_token}
-                                type="text"
+                                type="password"
                                 onChange={(e) => {
                                     submitData.current.repository_token = e.target.value;
                                 }}
@@ -395,7 +405,7 @@ function CreateProject() {
                             <input
                                 placeholder="Jenkins Token"
                                 defaultValue={projectDetails?.jenkins_token}
-                                type="text"
+                                type="password"
                                 name="jenkins_token"
                                 onChange={(e) => {
                                     submitData.current.jenkins_token = e.target.value;
@@ -535,6 +545,7 @@ function CreateProject() {
                         <Grid item xs={4} sm={4} md={4}>
                             <label>URL :</label>
                             <input
+                                defaultValue={projectDetails?.jiraUser?.jira_url}
                                 placeholder="Jira URL"
                                 type="text"
                                 onChange={(e) => {
@@ -547,6 +558,7 @@ function CreateProject() {
                             <input
                                 placeholder="Jira Username"
                                 type="text"
+                                defaultValue={projectDetails?.jiraUser?.jira_user_name}
                                 onChange={(e) => {
                                     jiraProjectdata.username = e.target.value;
                                 }}
@@ -556,7 +568,8 @@ function CreateProject() {
                             <label>Token :</label>
                             <input
                                 placeholder="Jira Token"
-                                type="text"
+                                type="password"
+                                defaultValue={projectDetails?.jiraUser?.password}
                                 onChange={(e) => {
                                     jiraProjectdata.password = e.target.value;
                                 }}

@@ -114,7 +114,7 @@ export default function CreateCycle({ testsetData, getCycles }) {
           ))}
           <Stack direction="row" justifyContent="flex-end">
             <Button type="submit" variant="contained">
-              Create & Continue
+              Save & Continue
             </Button>
           </Stack>
         </Stack>

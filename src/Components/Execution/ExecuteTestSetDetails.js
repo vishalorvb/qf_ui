@@ -72,7 +72,7 @@ function ExecuteTestSetDetails({
               value={
                 applicationType === 1 ? "dataset_name_in_testcase" : "name"
               }
-              id="testcase_dataset_id"
+              id="dataset_id"
               stateList={(list) => {
                 const obj = {
                   testcase_id: param.row.testcase_id,

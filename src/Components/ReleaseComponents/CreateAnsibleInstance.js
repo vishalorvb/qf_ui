@@ -191,6 +191,7 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="releaseName"
                 control={control}
+                placeholder="Release Name"
               />
             </Grid>
             <Grid item md={6}>
@@ -202,6 +203,7 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="releaseDesc"
                 control={control}
+                placeholder="Release Description"
               />
             </Grid>
           </Grid>
@@ -224,6 +226,7 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="repoUserName"
                 control={control}
+                placeholder="Repository Username"
               />
             </Grid>
             <Grid item md={6}>
@@ -235,6 +238,7 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="repoToken"
                 control={control}
+                placeholder="Repository Token"
               />
             </Grid>
             <Grid item md={12}>
@@ -246,6 +250,8 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="repoUrl"
                 control={control}
+                placeholder="Repository Url"
+
               />
             </Grid>
             <Grid item md={6}>
@@ -257,6 +263,8 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="repoName"
                 control={control}
+                placeholder="Repository Name"
+
               />
             </Grid>
             <Grid item md={6}>
@@ -268,6 +276,8 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="repoBranch"
                 control={control}
+                placeholder="Repository Branch"
+
               />
             </Grid>
             <Grid item md={6}>
@@ -279,6 +289,8 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="credId"
                 control={control}
+                placeholder="Repository Credentials Id"
+
               />
             </Grid>
             <Grid item md={6}>
@@ -290,13 +302,15 @@ export default function CreateAnsibleInstance() {
                 fullWidth
                 name="playbookPath"
                 control={control}
+                placeholder="Playbook Path"
+                
               />
             </Grid>
           </Grid>
         </AccordionTemplate>
         <Stack mt={2} spacing={2} direction="row-reverse">
           <Button variant="contained" type="submit">
-            Create & Continue
+            Save & Continue
           </Button>
           <Button
             sx={{ color: "grey", textDecoration: "underline" }}

@@ -209,7 +209,7 @@ function ApiDatasets() {
                 </Grid>
                 <Grid item md={1}>
                   <Button variant="contained" onClick={handleSave}>
-                    Create & Continue
+                    Save & Continue
                   </Button>
                 </Grid>
                 <Grid item md={1}>
