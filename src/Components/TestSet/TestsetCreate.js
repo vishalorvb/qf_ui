@@ -80,7 +80,7 @@ function TestsetCreate() {
   useEffect(() => {
     console.log(location);
     reset({
-      testsetName: editData?.testset_name.substring(3),
+      testsetName: editData?.testset_name?.substring(3),
       testsetDesc: editData?.testset_desc,
     });
   }, []);
@@ -311,7 +311,6 @@ function TestsetCreate() {
               checkboxSelection={true}
               selectionModel={preSelectedElement}
               setSelectionModel={setPreSelectedElement}
-              hideheaderCheckbox={true}
               rowHeight={90}
               hideSearch={true}
             />
