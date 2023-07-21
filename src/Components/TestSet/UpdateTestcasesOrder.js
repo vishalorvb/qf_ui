@@ -57,7 +57,9 @@ function UpdateTestcasesOrder() {
       : axios
           .post(`/qfservice/webtestset/updateWebTestcasesOrderInTestset`, {
             testset_id: location?.state?.testsetId,
-            web_testcases_list: order,
+            web_testcases_list: order.map((testcase) => {
+              return { testcase_id: testcase };
+            }),
           })
           .then((resp) => {
             console.log(resp);
