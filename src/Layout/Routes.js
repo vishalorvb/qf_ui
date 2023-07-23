@@ -107,9 +107,9 @@ const ViewReport = lazy(() => import("../pages/ViewReport"));
 
 const AllReport = lazy(() => import("../Components/Reports/AllReports"));
 
-const UpdateScreenOrder = lazy(() =>
-  import("../Components/TestCases/UpdateScreenOrderinDataset")
-);
+//const UpdateScreenOrder = lazy(() =>
+//  import("../Components/TestCases/UpdateScreenOrderinDataset")
+//);
 const APIorderupdate = lazy(() =>
   import(`../Components/TestCases/apiTestcase/APIorderupdate`)
 );
@@ -635,11 +635,11 @@ export const Routes = [
         element: TempDataset,
         accessRole: [1, 2, 4, 5],
       },
-      {
-        path: "updateScreenOrder",
-        element: UpdateScreenOrder,
-        accessRole: [1, 2, 4, 5],
-      },
+    //  {
+    //    path: "updateScreenOrder",
+    //    element: UpdateScreenOrder,
+    //    accessRole: [1, 2, 4, 5],
+    //  },
       {
         path: "updateAPIOrder",
         element: APIorderupdate,

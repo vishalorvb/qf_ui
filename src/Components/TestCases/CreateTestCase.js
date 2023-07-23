@@ -12,18 +12,20 @@ import { getSprint, getIssues, createApitestcase } from "../../Services/TestCase
 import MapScreen from "./webTestcase/MapScreen"
 import { CreateTestCaseService } from "../../Services/TestCaseService"
 import MapApiTestCase from "./apiTestcase/MapApiTestCase"
+import ElementList from "./ElementList"
+import { getElement } from "../../Services/TestCaseService"
 export let TCdata = {
-  module_id: 0,
-  testcase_name: "",
-  testcase_description: "",
-  project_id: 0,
-  testcase_sprints: [],
+    module_id: 0,
+    testcase_name: "",
+    testcase_description: "",
+    project_id: 0,
+    testcase_sprints: [],
 };
 
 let sprintData = {
-  sprint_id: 0,
-  sprint_name: "",
-  issue_id: 0,
+    sprint_id: 0,
+    sprint_name: "",
+    issue_id: 0,
 };
 let snackbarErrorMsg = "";
 
@@ -37,64 +39,66 @@ function CreateTestCase() {
     let [jiraIssue, setJiraIssue] = useState([]);
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
+    let [screenList, setScreenList] = useState([])
+    let [elementList,setElementList] = useState([]);
     let screens = useRef()
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  function WebTestcase(data) {
-    CreateTestCaseService(data).then((res) => {
-      if (res) {
-        setSnackbarData({
-          status: true,
-          message: res,
-          severity: "success",
+    function WebTestcase(data) {
+        CreateTestCaseService(data).then((res) => {
+            if (res) {
+                setSnackbarData({
+                    status: true,
+                    message: res,
+                    severity: "success",
+                });
+                navigate("/Testcase/Recent");
+            } else {
+                snackbarErrorMsg = "Error, Make sure Testcase Name is Unique";
+                setSnackbarError(true);
+            }
         });
-        navigate("/Testcase/Recent");
-      } else {
-        snackbarErrorMsg = "Error, Make sure Testcase Name is Unique";
-        setSnackbarError(true);
-      }
-    });
-  }
-
-  function ApiTestcase(data) {
-    if (TCdata.apis_list.length < 1) {
-      setSnackbarData({
-        status: true,
-        message: "Select Atleast One Api",
-        severity: "warning",
-      });
-      return 0;
     }
 
-    createApitestcase(data).then((res) => {
-      if (res) {
-        setSnackbarData({
-          status: true,
-          message:
-            TCdata.testcase_id === undefined
-              ? res
-              : "TestCase Updated Successfully",
-          severity: "success",
-        });
-        navigate("/Testcase/Recent");
-      } else {
-        snackbarErrorMsg = "Error, Make sure Testcase Name is Unique";
-        setSnackbarError(true);
-      }
-    });
-  }
+    function ApiTestcase(data) {
+        if (TCdata.apis_list.length < 1) {
+            setSnackbarData({
+                status: true,
+                message: "Select Atleast One Api",
+                severity: "warning",
+            });
+            return 0;
+        }
 
-  function handleSubmit(e) {
-    if (globalApplication?.module_type === 19) {
-      setReportFailMsg(true);
-      setTimeout(() => {
-        setReportFailMsg(false);
-      }, 3000);
-    } else {
-      if (sprintData.sprint_id !== 0) {
-        TCdata.testcase_sprints.push(sprintData);
-      }
+        createApitestcase(data).then((res) => {
+            if (res) {
+                setSnackbarData({
+                    status: true,
+                    message:
+                        TCdata.testcase_id === undefined
+                            ? res
+                            : "TestCase Updated Successfully",
+                    severity: "success",
+                });
+                navigate("/Testcase/Recent");
+            } else {
+                snackbarErrorMsg = "Error, Make sure Testcase Name is Unique";
+                setSnackbarError(true);
+            }
+        });
+    }
+
+    function handleSubmit(e) {
+        if (globalApplication?.module_type === 19) {
+            setReportFailMsg(true);
+            setTimeout(() => {
+                setReportFailMsg(false);
+            }, 3000);
+        } else {
+            if (sprintData.sprint_id !== 0) {
+                TCdata.testcase_sprints.push(sprintData);
+            }
 
             if (validateFormbyName(["name", "desc"], "error")) {
                 if (!TCdata.testcase_name.startsWith("TC_")) {
@@ -142,12 +146,12 @@ function CreateTestCase() {
         });
     }, []);
 
-  useEffect(() => {
-    try {
-      TCdata.module_id = globalApplication.module_id;
-      TCdata.project_id = globalProject.project_id;
-    } catch (error) {}
-  }, [globalProject, globalApplication]);
+    useEffect(() => {
+        try {
+            TCdata.module_id = globalApplication.module_id;
+            TCdata.project_id = globalProject.project_id;
+        } catch (error) { }
+    }, [globalProject, globalApplication]);
 
     useEffect(() => {
         if (globalProject?.project_id !== undefined) {
@@ -184,6 +188,14 @@ function CreateTestCase() {
         }
     }, [project])
 
+
+    useEffect(() => {
+    console.log(screenList)
+    if (screenList.length > 0) {
+        getElement(screenList[0].screenId,()=>{})
+    }
+  
+    }, [screenList])
 
 
     return (
@@ -288,7 +300,20 @@ function CreateTestCase() {
                 projectId={globalProject?.project_id}
                 moduleId={globalApplication?.module_id}
                 testcaseId={TCdata.testcase_id}
-                callback={val => screens.current = val}
+                callback={val => {
+                    screens.current = val
+                    let temp = []
+                    val.forEach(webpage => {
+                        webpage?.screenList.forEach(screen => {
+                            let x = {
+                                screeName: screen.name,
+                                screenId: screen.screen_id
+                            }
+                            temp.push(x)
+                            setScreenList(temp)
+                        })
+                    })
+                }}
             ></MapScreen>}
 
             {globalApplication?.module_type === 1 && <MapApiTestCase
@@ -319,6 +344,7 @@ function CreateTestCase() {
                 msg={snackbarErrorMsg}
                 severity="error"
             />
+            <ElementList></ElementList>
         </>
 
     )
