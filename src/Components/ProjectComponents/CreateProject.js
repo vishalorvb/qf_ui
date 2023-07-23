@@ -66,9 +66,8 @@ function CreateProject() {
         automation_framework_type: 1,
         org_name: "",
         userAccessPermissions: "",
-        gitOps: true,
-        jira_project_key: "",
-        sqeProjectId: "",
+        gitOps: true,    
+        sqeProjectId:0,
         db_type: "",
         db_name: "",
         db_host: "",
@@ -161,14 +160,32 @@ function CreateProject() {
     function handleJiraProject() {
         getJiraProject(
             setJiraproject,
-            jiraProjectdata.url,
-            jiraProjectdata.username,
-            jiraProjectdata.password,
-            jiraProjectdata.itstype,
+            submitData.current.jira_url,
+            submitData.current.jira_user_name,
+            submitData.current.jira_password,
+            submitData.current.its_type = 1,
             "prolifics",
             auth.info.organization_id
-        );
+        ).then(res =>{
+            if(res == false){
+                setSnackbarData({
+                    status: true,
+                    message: "No Project Found ",
+                    severity: "error",
+                });
+            }
+        })
     }
+    useEffect(() => {
+   if(jiraProject != null){
+    submitData.current.jira_project_key= jiraProject[0]?.key
+    submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
+    submitData.current.jira_password = projectDetails?.jiraUser?.password
+    submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
+    submitData.current.its_type = 1
+   }
+    }, [jiraProject])
+
     useEffect(() => {
         getUsers(setUsers, auth.info.organization_id, auth.info.ssoId, usertoken);
         getApplication(setApplications, auth.info.id);
@@ -239,7 +256,7 @@ function CreateProject() {
             submitData.current.projectName = projectDetails.project_name;
             submitData.current.projectDesc = projectDetails.description;
             submitData.current.jira_project_id = projectDetails.jira_project_id;
-            submitData.current.sqeProjectId = projectId;
+            submitData.current.sqeProjectId = projectId==undefined?0:projectId;
             submitData.current.repository_url = projectDetails.repository_url;
             submitData.current.repository_token = projectDetails.repository_token;
             submitData.current.repository_branch = projectDetails.repository_branch;
@@ -259,16 +276,9 @@ function CreateProject() {
             submitData.current.db_port = projectDetails.testdata_db_config?.db_port;
             submitData.current.db_host = projectDetails.testdata_db_config?.db_hosts;
 
+           
 
-            jiraProjectdata.url =projectDetails?.jiraUser?.jira_url
-            jiraProjectdata.username = projectDetails?.jiraUser?.jira_user_name
-            jiraProjectdata.password = projectDetails?.jiraUser?.password
         }
-        return(()=>{
-            jiraProjectdata.url =""
-            jiraProjectdata.username = ""
-            jiraProjectdata.password = ""
-        })
     }, [projectDetails]);
 
     const ref = useRef(null);
@@ -549,7 +559,7 @@ function CreateProject() {
                                 placeholder="Jira URL"
                                 type="text"
                                 onChange={(e) => {
-                                    jiraProjectdata.url = e.target.value;
+                                    submitData.current.jira_url = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -560,7 +570,7 @@ function CreateProject() {
                                 type="text"
                                 defaultValue={projectDetails?.jiraUser?.jira_user_name}
                                 onChange={(e) => {
-                                    jiraProjectdata.username = e.target.value;
+                                    submitData.current.jira_user_name = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -571,7 +581,7 @@ function CreateProject() {
                                 type="password"
                                 defaultValue={projectDetails?.jiraUser?.password}
                                 onChange={(e) => {
-                                    jiraProjectdata.password = e.target.value;
+                                    submitData.current.jira_password = e.target.value;
                                 }}
                             />
                         </Grid>
@@ -582,6 +592,7 @@ function CreateProject() {
                                     onChange={e => {
                                         submitData.current.jira_project_id = e.target.value;
                                     }}
+                                    defaultValue={projectDetails?.jira_project_id}
                                 >
                                     {jiraProject.map((v) => (
                                         <option value={v.jira_project_id}>{v.name}</option>
