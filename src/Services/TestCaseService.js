@@ -118,17 +118,20 @@ export function getSprint(callback, projectId) {
         .get(`${baseUrl}/qfservice/getsprints?project_id=${projectId}`)
         .then((res) => {
             callback(res.data.data.sprints);
+            console.log(res.data.data.sprints)
         });
 }
 
-export function getIssues(callback, projectId, sprintname) {
-    axios
-        .get(
-            `${baseUrl}/qfservice/getissues?${projectId}=681&sprint_name=${sprintname}`
-        )
-        .then((res) => {
-            callback(res.data.data.issues);
-        });
+export function getIssues(callback, userId, projectId,data) {
+    axios({
+        method: "post",
+        url: `${baseUrl}/qfservice/getJiraIssues?user_id=${userId}&project_id=${projectId}`,
+        data: data,
+    }).then((res) => {
+       console.log(res.data.info)
+       callback(res.data.info)
+    });
+   
 }
 
 export async function getPagesForTestcase(callback, projectId, moduleId) {

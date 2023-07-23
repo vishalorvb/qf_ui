@@ -74,6 +74,7 @@ function CreateProject() {
         db_user_name: "",
         db_port: "",
         db_password: "",
+        its_type:1
     });
 
     function getUserlist() {
@@ -278,8 +279,7 @@ function CreateProject() {
             submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
             submitData.current.jira_password = projectDetails?.jiraUser?.password
             submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
-            submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
-           
+        
 
         }
     }, [projectDetails]);
@@ -547,7 +547,7 @@ function CreateProject() {
                             </label>
                             <select
                                 onChange={(e) => {
-                                    jiraProjectdata.itstype = e.target.value;
+                                    submitData.current.itstype = e.target.value;
                                 }}
                                 name="issueTracker"
                             >
