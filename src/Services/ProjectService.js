@@ -76,8 +76,8 @@ export async function getUserOfProject(callback, projectId,userId) {
 }
 
 export async function getJiraProject(callback, url, username, password, itstype, orgname, orgid) {
-  axios.post(`${baseUrl}/qfservice/loadJiraProjects?url=${url}&userName=${username}&password=${password}&its_type=${itstype}&org_name=${orgname}&orgId=${orgid}`).then(res => {
+  return axios.post(`${baseUrl}/qfservice/loadJiraProjects?url=${url}&userName=${username}&password=${password}&its_type=${itstype}&org_name=${orgname}&orgId=${orgid}`).then(res => {
     callback(res.data.info)
-    console.log(res.data.info)
+    return res.data.info === null?false:true
   })
 }
