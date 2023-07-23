@@ -25,6 +25,7 @@ import { getProject } from "../Services/ProjectService";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import DeleteTestset from "../Components/TestSet/DeleteTestset";
+import { deleteReport } from "../Services/ReportService";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -80,8 +81,9 @@ function BIReports() {
 
   const deleteUserHandler = (e) => {
     setOpenDelete(true);
-    console.log(e);
+    console.log(e.testsetmap_id);
     setDeleteObject(e);
+    deleteReport(e.testsetmap_id)
   };
 
   const data = [];
