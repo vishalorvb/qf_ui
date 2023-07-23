@@ -182,7 +182,7 @@ function CreateProject() {
     submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
     submitData.current.jira_password = projectDetails?.jiraUser?.password
     submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
-    submitData.current.its_type = 1
+    submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
    }
     }, [jiraProject])
 
@@ -591,6 +591,11 @@ function CreateProject() {
                                 <select
                                     onChange={e => {
                                         submitData.current.jira_project_id = e.target.value;
+                                        jiraProject.forEach(project=>{
+                                            if(project.jira_project_id == e.target.value) {
+                                                submitData.current.jira_project_key = project.key
+                                            }
+                                        })
                                     }}
                                     defaultValue={projectDetails?.jira_project_id}
                                 >
