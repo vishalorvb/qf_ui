@@ -179,10 +179,10 @@ function CreateProject() {
     useEffect(() => {
    if(jiraProject != null){
     submitData.current.jira_project_key= jiraProject[0]?.key
-    submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
-    submitData.current.jira_password = projectDetails?.jiraUser?.password
-    submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
-    submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
+    //submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
+    //submitData.current.jira_password = projectDetails?.jiraUser?.password
+    //submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
+    //submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
    }
     }, [jiraProject])
 
@@ -275,7 +275,10 @@ function CreateProject() {
                 projectDetails.testdata_db_config?.db_password;
             submitData.current.db_port = projectDetails.testdata_db_config?.db_port;
             submitData.current.db_host = projectDetails.testdata_db_config?.db_hosts;
-
+            submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
+            submitData.current.jira_password = projectDetails?.jiraUser?.password
+            submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
+            submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
            
 
         }
