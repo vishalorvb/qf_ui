@@ -669,7 +669,7 @@ export const Routes = [
     subRoute: [
       {
         path: "Update",
-        element: AddTestcaseToTestset,
+        element: createTestset,
         accessRole: [1, 2, 4, 5],
       },
       {
@@ -730,6 +730,11 @@ export const Routes = [
   {
     path: "logs",
     element: Logs,
+    accessRole: [1, 2, 4, 5],
+  },
+  {
+    path: "Dashboard/failedTestcases",
+    element: TestcaseExecution,
     accessRole: [1, 2, 4, 5],
   },
 ];

@@ -74,6 +74,7 @@ function CreateProject() {
         db_user_name: "",
         db_port: "",
         db_password: "",
+        its_type:1
     });
 
     function getUserlist() {
@@ -179,10 +180,10 @@ function CreateProject() {
     useEffect(() => {
    if(jiraProject != null){
     submitData.current.jira_project_key= jiraProject[0]?.key
-    submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
-    submitData.current.jira_password = projectDetails?.jiraUser?.password
-    submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
-    submitData.current.its_type = 1
+    //submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
+    //submitData.current.jira_password = projectDetails?.jiraUser?.password
+    //submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
+    //submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
    }
     }, [jiraProject])
 
@@ -275,8 +276,10 @@ function CreateProject() {
                 projectDetails.testdata_db_config?.db_password;
             submitData.current.db_port = projectDetails.testdata_db_config?.db_port;
             submitData.current.db_host = projectDetails.testdata_db_config?.db_hosts;
-
-           
+            submitData.current.jira_url = projectDetails?.jiraUser?.jira_url
+            submitData.current.jira_password = projectDetails?.jiraUser?.password
+            submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
+        
 
         }
     }, [projectDetails]);
@@ -544,7 +547,7 @@ function CreateProject() {
                             </label>
                             <select
                                 onChange={(e) => {
-                                    jiraProjectdata.itstype = e.target.value;
+                                    submitData.current.itstype = e.target.value;
                                 }}
                                 name="issueTracker"
                             >
@@ -591,6 +594,11 @@ function CreateProject() {
                                 <select
                                     onChange={e => {
                                         submitData.current.jira_project_id = e.target.value;
+                                        jiraProject.forEach(project=>{
+                                            if(project.jira_project_id == e.target.value) {
+                                                submitData.current.jira_project_key = project.key
+                                            }
+                                        })
                                     }}
                                     defaultValue={projectDetails?.jira_project_id}
                                 >

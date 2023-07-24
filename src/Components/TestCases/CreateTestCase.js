@@ -40,7 +40,7 @@ function CreateTestCase() {
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
     let [screenList, setScreenList] = useState([])
-    let [elementList,setElementList] = useState([]);
+    let [elementList, setElementList] = useState([]);
     let screens = useRef()
 
     const navigate = useNavigate();
@@ -165,6 +165,18 @@ function CreateTestCase() {
         }
     }, [application])
 
+
+    useEffect(() => {
+        if(jiraSprint.length>0){
+            let data = {
+                sprint_name: jiraSprint[0].name
+            }
+            getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
+
+        }
+
+    }, [jiraSprint])
+
     useEffect(() => {
         getProject(setProject, auth.userId)
         return () => {
@@ -190,11 +202,11 @@ function CreateTestCase() {
 
 
     useEffect(() => {
-    console.log(screenList)
-    if (screenList.length > 0) {
-        getElement(screenList[0].screenId,()=>{})
-    }
-  
+        console.log(screenList)
+        if (screenList.length > 0) {
+            getElement(screenList[0].screenId, () => { })
+        }
+
     }, [screenList])
 
 
@@ -245,11 +257,16 @@ function CreateTestCase() {
                     <label>Sprint</label>
                     <select
                         onChange={e => {
-                            getIssues(setJiraIssue, globalApplication.project_id, e.target.value)
+                            //auth.userId
+                            let data = {
+                                sprint_name: e.target.value
+                            }
+                            getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
                             sprintData.sprint_id = e.target.value
+                            console.log("Sprint change")
                         }}
                     >
-                        {jiraSprint.map(s => <option key={s.id} value={s.sprint_name}>{s.sprint_name}</option>)}
+                        {jiraSprint.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
                     </select>
                 </Grid>
                 <Grid item md={3}>

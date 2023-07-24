@@ -89,13 +89,18 @@ export default function Phases() {
         // console.log(resp?.data?.info?.phases?.length);
         // phases = resp?.data?.info?.phases?.length;
         const phasesList = resp?.data?.info ? resp?.data?.info?.phases : [];
-        setPhaseList(phasesList);
+        //console.log(resp?.data?.info.phases)
+        setPhaseList(resp?.data?.info.phases);
       });
   };
 
   useEffect(() => {
     getPhases();
   }, [projectId]);
+
+useEffect(() => {
+console.log(phaseList)
+}, [phaseList])
 
   const clickHandler = (index) => {
     setOpenNewPhase(false);
@@ -154,7 +159,8 @@ export default function Phases() {
             setAddSuccessMsg(true);
             setTimeout(() => {
               setAddSuccessMsg(false);
-              navigate("/BIReports");
+              getPhases();
+            //  navigate("/BIReports");
             }, 3000);
           } else {
             setAddErrorMsg(true);
@@ -454,7 +460,6 @@ const AdminActionCell = (index, deletePhaseHandler) => {
   };
   return (
     <div className="descColumn">
-      {/* <Typography variant="p">{}</Typography> */}
       <MoreVertIcon
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}

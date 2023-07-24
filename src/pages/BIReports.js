@@ -25,6 +25,7 @@ import { getProject } from "../Services/ProjectService";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import DeleteTestset from "../Components/TestSet/DeleteTestset";
+import { deleteReport } from "../Services/ReportService";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -40,7 +41,6 @@ const MenuProps = {
 const data = [];
 
 function BIReports() {
-
   // const [selectedTestset, setSelectedTestset] = useState({});
   const [project, setProject] = useState([]);
   const [testset, setTestset] = useState([]);
@@ -53,7 +53,8 @@ function BIReports() {
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [msg, setMsg] = useState("");
-  const { setHeader ,globalProject, setglobalProject} = useHead();
+  const { setHeader, globalProject, setglobalProject, setSnackbarData } =
+    useHead();
   const handleSelectChange = (e) => {
     console.log(e.target.value);
     setSelectedOptions(e.target.value);
@@ -80,32 +81,42 @@ function BIReports() {
 
   const deleteUserHandler = (e) => {
     setOpenDelete(true);
-    console.log(e);
+    console.log(e.testsetmap_id);
     setDeleteObject(e);
+    deleteReport(e.testsetmap_id);
   };
 
   const data = [];
   const addHandler = () => {
-    testset.map((ts) =>
-      selectedOptions.forEach((option) => {
-        if (option === ts.testset_name) {
-          data.push({
-            project_id: globalProject.project_id,
-            module_id: ts.module_id,
-            testset_id: ts.testset_id,
-          });
-        }
-      })
-    );
-    axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {
-      const message = resp?.data?.status ? resp?.data?.status : [];
-      setMsg(message);
-      setAddSuccessMsg(true);
-      getTestsets();
-      setTimeout(() => {
-        setAddSuccessMsg(false);
-      }, 3000);
-    });
+    if (testset.length > 0) {
+      testset.map((ts) =>
+        selectedOptions.forEach((option) => {
+          if (option === ts.testset_name) {
+            data.push({
+              project_id: globalProject.project_id,
+              module_id: ts.module_id,
+              testset_id: ts.testset_id,
+            });
+          }
+        })
+      );
+      axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {
+        const message = resp?.data?.status ? resp?.data?.status : [];
+        setMsg(message);
+        setAddSuccessMsg(true);
+        getTestsets();
+        setTimeout(() => {
+          setAddSuccessMsg(false);
+        }, 3000);
+      });
+    } else {
+      console.log(testset);
+      setSnackbarData({
+        status: true,
+        message: "Select at least one Testset",
+        severity: "error",
+      });
+    }
   };
 
   function TestsetsData(bitestset, columns, phaseHandler, cyclesHandler) {
@@ -221,8 +232,8 @@ function BIReports() {
   }, [auth.userId]);
 
   useEffect(() => {
-    if(globalProject == null){
-        setglobalProject(project[0]);
+    if (globalProject == null) {
+      setglobalProject(project[0]);
     }
   }, [project]);
 
@@ -238,7 +249,6 @@ function BIReports() {
         });
   }, [globalProject]);
 
- 
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -296,7 +306,6 @@ function BIReports() {
                   }
                   value={selectedOptions}
                   onChange={handleSelectChange}
-                  // onChange={(key,value) => (console.log(value))}
                 >
                   {testset.map((name) => (
                     <MenuItem key={name.testset_id} value={name.testset_name}>

@@ -5,7 +5,7 @@ import useHead from "../../hooks/useHead";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecutionDetails from "./ExecutionDetails";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GetTestCase } from "../../Services/TestCaseService";
 
 export default function TestcaseExecution() {
@@ -16,6 +16,7 @@ export default function TestcaseExecution() {
     globalApplication,
     setglobalApplication,
   } = useHead();
+  const location = useLocation();
   const [testcases, setTestcases] = useState([]);
   const [selectedItem, setSelectedItem] = useState(0);
   const [reportFailMsg, setReportFailMsg] = useState(false);
@@ -64,12 +65,12 @@ export default function TestcaseExecution() {
     if (globalApplication) {
       GetTestCase(
         (res) => {
-          // console.log(res[0]?.datasets[0]?.testcase_id)
           setTestcases(res);
           setSelectedItem(res[0]?.datasets[0]?.testcase_id);
         },
         globalProject?.project_id,
-        globalApplication?.module_id
+        globalApplication?.module_id,
+        location?.pathname?.includes("failedTestcases")
       );
     } else {
       setTestcases([]);
@@ -82,7 +83,9 @@ export default function TestcaseExecution() {
       return {
         ...ps,
 
-        name: "Testcase Execution",
+        name:
+          (location?.pathname?.includes("failedTestcases") ? "Failed " : "") +
+          "Testcase Execution",
       };
     });
   }, []);
