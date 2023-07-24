@@ -26,6 +26,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import { deleteReport } from "../Services/ReportService";
+import LiveAutocomplete from "../CustomComponent/LiveAutocomplete";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -55,9 +56,9 @@ function BIReports() {
   const [msg, setMsg] = useState("");
   const { setHeader, globalProject, setglobalProject, setSnackbarData } =
     useHead();
-  const handleSelectChange = (e) => {
-    console.log(e.target.value);
-    setSelectedOptions(e.target.value);
+  const handleSelectChange = (event, value) => {
+    console.log(value);
+    setSelectedOptions(value);
   };
 
   const phaseHandler = (phase, projectId) => {
@@ -88,18 +89,16 @@ function BIReports() {
 
   const data = [];
   const addHandler = () => {
-    if (testset.length > 0) {
-      testset.map((ts) =>
-        selectedOptions.forEach((option) => {
-          if (option === ts.testset_name) {
-            data.push({
-              project_id: globalProject.project_id,
-              module_id: ts.module_id,
-              testset_id: ts.testset_id,
-            });
-          }
-        })
-      );
+    if (selectedOptions.length > 0) {
+      selectedOptions.forEach((option) => {
+        console.log(option.module_id);
+        console.log(option.module_id);
+        data.push({
+          project_id: globalProject.project_id,
+          module_id: option.module_id,
+          testset_id: option.testset_id,
+        });
+      });
       axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {
         const message = resp?.data?.status ? resp?.data?.status : [];
         setMsg(message);
@@ -279,7 +278,6 @@ function BIReports() {
               id="project_id"
               options={project}
               value={globalProject || null}
-              // sx={{ width: "100%" }}
               getOptionLabel={(option) =>
                 option.project_name ? option.project_name : ""
               }
@@ -296,24 +294,7 @@ function BIReports() {
               <label htmlFor="">
                 Testsets <span className="importantfield">*</span>
               </label>
-              <FormControl>
-                <Select
-                  size="small"
-                  multiple
-                  options={testset}
-                  getOptionLabel={(option) =>
-                    option.testset_name ? option.testset_name : ""
-                  }
-                  value={selectedOptions}
-                  onChange={handleSelectChange}
-                >
-                  {testset.map((name) => (
-                    <MenuItem key={name.testset_id} value={name.testset_name}>
-                      {name.testset_name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <LiveAutocomplete onChange={handleSelectChange} />
             </Stack>
           </Grid>
           <Grid item md={6} mt={2.5} ml={3}>
