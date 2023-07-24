@@ -626,7 +626,7 @@ function CreateProject() {
                         id="id"
                         name="firstName"
                         lastName="lastName"
-                        display={value => `${value.firstName} ${value.lastName} (${value.id})`}
+                        display={value => `${value.firstName} ${value.lastName}`}
                     ></TransferList>
                 </AccordionTemplate>
 
