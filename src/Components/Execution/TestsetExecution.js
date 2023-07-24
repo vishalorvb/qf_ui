@@ -137,6 +137,7 @@ export default function TestsetExecution() {
               sx={{
                 overflowY: "auto",
                 height: "70vh",
+                width: "100%",
               }}
             >
               {testcases.length > 0 ? (
