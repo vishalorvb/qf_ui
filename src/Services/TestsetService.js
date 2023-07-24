@@ -42,7 +42,12 @@ export function getTestcaseDetails(callback, workflowID, testcaseId) {
     });
 }
 
-export function getTestcasesInProjects(callback, projectId, applicationId) {
+export function getTestcasesInProjects(
+  callback,
+  projectId,
+  applicationId,
+  testsetId
+) {
   axios
     .get(
       baseUrl +

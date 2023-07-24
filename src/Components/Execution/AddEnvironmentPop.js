@@ -1,4 +1,8 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { Divider, Grid, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
+import axios from "../../api/axios";
+import TextField from "@mui/material/TextField";
 import {
   Button,
   Dialog,
@@ -6,11 +10,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useEffect, useState, useRef } from "react";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import { Divider, Grid, Typography } from "@mui/material";
-import axios from "../../api/axios";
-import TextField from "@mui/material/TextField";
+import useHead from "../../hooks/useHead";
 
 let initialValue = {
   id: 0,
@@ -22,7 +22,6 @@ let initialValue = {
   is_default: false,
   runtime_variables: "",
 };
-let postVal = { ...initialValue };
 
 function AddEnvironmentPop(props) {
   const {
@@ -32,36 +31,39 @@ function AddEnvironmentPop(props) {
     projectId,
     applicationId,
   } = props;
-  const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
-  const [reportFailMsg, setReportFailMsg] = useState(false);
+  const { setSnackbarData } = useHead();
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: initialValue,
+  });
 
   const handleClose = () => {
     close(false);
+    reset(initialValue);
   };
 
-  const onSubmitHandler = (params) => {
-    {
-      //   postVal.project_id=projectId;
-      postVal.module_id = applicationId;
-      postVal.project_id = projectId;
-      postVal.url = "";
-      axios.post(`/qfservice/CreateBuildEnvironment`, postVal).then((resp) => {
-        if (resp?.data?.message === "Successfully createdBuild Environment") {
-          setReportSuccessMsg(true);
-          setTimeout(() => {
-            setReportSuccessMsg(false);
-            getBuilEnvironment();
-          }, 3000);
-          handleClose();
-        } else {
-          setReportFailMsg(true);
-          setTimeout(() => {
-            setReportFailMsg(false);
-          }, 3000);
-          handleClose();
-        }
+  const onSubmitHandler = (data) => {
+    data.module_id = applicationId;
+    data.project_id = projectId;
+    data.url = "";
+    axios.post(`/qfservice/CreateBuildEnvironment`, data).then((resp) => {
+      setSnackbarData({
+        status: true,
+        message: resp?.data?.message,
+        severity: resp?.data?.status ?? "SUCCESS",
       });
-    }
+      if (resp?.data?.message === "Successfully createdBuild Environment") {
+        getBuilEnvironment();
+        handleClose();
+      } else {
+        handleClose();
+      }
+    });
   };
 
   return (
@@ -74,91 +76,85 @@ function AddEnvironmentPop(props) {
       >
         <DialogTitle className="dialogTitle">Add Environment</DialogTitle>
         <DialogContent>
-          <Grid
-            container
-            spacing={2}
-            justifyContent="flex-start"
-            justifyItems="center"
-            sx={{ marginTop: "5px" }}
-          >
-            <Grid xs={3} sx={{ marginTop: "15px" }}>
-              {" "}
-              Name{" "}
-            </Grid>
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <Grid
+              container
+              spacing={2}
+              justifyContent="flex-start"
+              justifyItems="center"
+              sx={{ marginTop: "5px" }}
+            >
+              <Grid xs={3} sx={{ marginTop: "15px" }}>
+                Name<span className="importantfield">*</span>
+              </Grid>
 
-            <Grid xs={9}>
-              {" "}
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Environment Name"
-                sx={{ width: "340px" }}
-                name="name"
-                onChange={(e) => {
-                  postVal.name = e.target.value;
-                }}
-              />
+              <Grid xs={9}>
+                <TextField
+                  size="small"
+                  id="outlined-basic"
+                  variant="outlined"
+                  placeholder="Environment Name"
+                  sx={{ width: "340px" }}
+                  {...register("name", {
+                    required: "Environment Name is required",
+                  })}
+                />
+                {errors.name && (
+                  <Typography color="error">{errors.name.message}</Typography>
+                )}
+              </Grid>
+              <Grid xs={3} sx={{ marginTop: "30px" }}>
+                Base URL<span className="importantfield">*</span>
+              </Grid>
+              <Grid xs={9}>
+                <TextField
+                  size="small"
+                  id="outlined-basic"
+                  variant="outlined"
+                  placeholder="Environment Base URL"
+                  sx={{ marginTop: "15px", width: "340px" }}
+                  {...register("base_url", {
+                    required: "Environment Base URL is required",
+                  })}
+                />
+                {errors.base_url && (
+                  <Typography color="error">
+                    {errors.base_url.message}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid xs={3} sx={{ marginTop: "30px" }}>
+                Description<span className="importantfield">*</span>
+              </Grid>
+              <Grid xs={9}>
+                <TextField
+                  size="small"
+                  id="outlined-basic"
+                  variant="outlined"
+                  placeholder="Environment Description"
+                  sx={{ marginTop: "15px", width: "340px" }}
+                  {...register("description", {
+                    required: "Environment Description is required",
+                  })}
+                />
+                {errors.description && (
+                  <Typography color="error">
+                    {errors.description.message}
+                  </Typography>
+                )}
+              </Grid>
             </Grid>
-            <Grid xs={3} sx={{ marginTop: "30px" }}>
-              {" "}
-              Base URL{" "}
-            </Grid>
-            <Grid xs={9}>
-              {" "}
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder="Environment Base URL"
-                sx={{ marginTop: "15px", width: "340px" }}
-                name="base_url"
-                onChange={(e) => {
-                  postVal.base_url = e.target.value;
-                }}
-              />
-            </Grid>
-            <Grid xs={3} sx={{ marginTop: "30px" }}>
-              {" "}
-              Description{" "}
-            </Grid>
-            <Grid xs={9}>
-              {" "}
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                placeholder=" Environment Description"
-                sx={{ marginTop: "15px", width: "340px" }}
-                name="description"
-                onChange={(e) => {
-                  postVal.description = e.target.value;
-                }}
-              />
-            </Grid>
-          </Grid>
+            <DialogActions>
+              <Button variant="contained" type="button" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button variant="contained" type="submit">
+                Save & Continue
+              </Button>
+            </DialogActions>
+          </form>
         </DialogContent>
-        <DialogActions>
-          <Button variant="contained" type="submit" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" type="submit" onClick={onSubmitHandler}>
-            Save & Continue
-          </Button>
-        </DialogActions>
       </Dialog>
-      <SnackbarNotify
-        open={reportSuccessMsg}
-        close={setReportSuccessMsg}
-        msg="Environment created successfully"
-        severity="success"
-      />
-      <SnackbarNotify
-        open={reportFailMsg}
-        close={setReportFailMsg}
-        msg="Build Environment Name Exist."
-        severity="error"
-      />
     </>
   );
 }

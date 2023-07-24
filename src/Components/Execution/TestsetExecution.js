@@ -71,6 +71,9 @@ export default function TestsetExecution() {
             selected={selectedItem === apiItem?.testset_id}
           >
             <ListItemButton
+              sx={{
+                overflow: "hidden",
+              }}
               onClick={() => {
                 setSelectedItem(apiItem?.testset_id);
               }}

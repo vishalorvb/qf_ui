@@ -60,18 +60,17 @@ function ExecuteTestSetDetails({
         //       ]
         //     : [],
         // });
-        console.log(param.row)
+        console.log(param.row);
         //console.log(param.row.datasets.filter(ds=>ds.is_default===true))
         return (
           <div>
             <MuiltiSelect
-              preselect={param.row.datasets.filter(ds=>ds.is_default===true)}
+              preselect={[]}
               options={
                 applicationType === 1
                   ? param?.row?.api_datasets
                   : param?.row?.datasets
               }
-            
               value={
                 applicationType === 1 ? "dataset_name_in_testcase" : "name"
               }

@@ -138,14 +138,16 @@ export default function AddEnvironemt() {
     <>
       <div className="apptable">
         <div className="intable">
-          <Button
-            variant="contained"
-            onClick={(e) => {
-              setAddEnvironmentPop(true);
-            }}
-          >
-            Add Environment
-          </Button>
+          <div style={{ padding: "20px", display: "inline", float: "right" }}>
+            <Button
+              variant="contained"
+              onClick={(e) => {
+                setAddEnvironmentPop(true);
+              }}
+            >
+              Add Environment
+            </Button>
+          </div>
         </div>
         <Table
           searchPlaceholder="Search Environment"

@@ -40,12 +40,16 @@ export default function TestcaseExecution() {
           <ListItem
             sx={{
               fontSize: "x-small",
+              overflow: "hidden",
             }}
             key={apiItem.name}
             divider
             selected={selectedItem === apiItem?.testcase_id}
           >
             <ListItemButton
+              sx={{
+                overflow: "hidden",
+              }}
               onClick={() => {
                 setSelectedItem(apiItem?.testcase_id);
               }}
