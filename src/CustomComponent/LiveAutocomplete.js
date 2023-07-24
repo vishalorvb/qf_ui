@@ -44,7 +44,6 @@ export default function LiveAutocomplete({ onChange }) {
       options={options}
       onInputChange={onInputChange}
       getOptionLabel={(option) => option.testset_name}
-      style={{ width: 300 }}
       onChange={onChange}
       renderInput={(params) => (
         <TextField {...params} size="small" variant="outlined" />
