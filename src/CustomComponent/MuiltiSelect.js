@@ -19,6 +19,7 @@ const MenuProps = {
 };
 
 function MuiltiSelect({ options, id, value, stateList, preselect }) {
+    console.log(options)
   let [selectedval, setSelectedval] = useState([]);
   let [checkbox, setCheckbox] = useState([]);
   const handleChange = (event) => {
@@ -38,7 +39,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   }, [selectedval]);
 
   useEffect(() => {
-    if (preselect.length !== 0) {
+    if (preselect?.length !== 0) {
       setSelectedval(preselect);
     }
   }, [preselect]);
