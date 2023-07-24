@@ -92,11 +92,11 @@ export default function CreatePipeline() {
   const { setHeader , globalProject, setglobalProject} = useHead();
 
   useEffect(() => {
-    getCreatePipelineData(
+    globalProject?.project_id && getCreatePipelineData(
       setPipelineData,
       setDefaultData,
-      location.state.id,
-      location?.state?.project_id
+      location.state.id ?? 0,
+      globalProject?.project_id
     );
     setHeader((ps) => {
       return {
@@ -108,7 +108,7 @@ export default function CreatePipeline() {
       };
     });
     console.log(location.state.project_id);
-  }, []);
+  }, [globalProject]);
 
   useEffect(() => {
     console.log(defaultData);
