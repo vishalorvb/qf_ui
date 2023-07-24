@@ -102,7 +102,7 @@ export default function Admin() {
         `/qfuserservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
       )
       .then((res) => {
-        setUsers(res.data.info);
+        setUsers(res.data?.info);
       });
   };
 
@@ -128,7 +128,7 @@ export default function Admin() {
       sortable: false,
       align: "left",
       renderCell: (params) => {
-        return <div>{params.row.firstName + " " + params.row.lastName}</div>;
+        return <div>{params.row?.firstName + " " + params.row?.lastName}</div>;
       },
     },
     {
