@@ -30,7 +30,7 @@ export default function CreatePipeline() {
   const [project, setProject] = useState([]);
   const { auth } = useAuth();
   const navigate = useNavigate();
-
+  const { setHeader , globalProject, setglobalProject} = useHead();
   const schema = yup.object().shape({
     releaseName: yup.string().required().max(30, "Max length exceeded"),
     releaseDesc: yup.string().required(),
@@ -64,7 +64,7 @@ export default function CreatePipeline() {
     axios
       .post(`/qfservice/Createpipeline`, null, {
         params: {
-          project_id: projectId,
+          project_id: globalProject.project_id,
           release_name: params.releaseName,
           release_desc: params.releaseDesc,
           ansiblereleaseId: params.release,
@@ -75,7 +75,7 @@ export default function CreatePipeline() {
           apiTestsetid: params.ApiTest,
           cicd_type: params.cicdType,
           user_id: auth?.userId,
-          release_id: id,
+          release_id: id ?? 0,
         },
       })
       .then((resp) => {
@@ -84,19 +84,23 @@ export default function CreatePipeline() {
         const info = resp?.data?.info;
         setMsg(respMsg);
         respMsg === "SUCCESS" && reset();
+        setTimeout(() => {
+            navigate("/pipeline")  
+        }, 200);
+        
       });
   };
 
   console.log(location.state);
 
-  const { setHeader , globalProject, setglobalProject} = useHead();
+  
 
   useEffect(() => {
-    getCreatePipelineData(
+    globalProject?.project_id && getCreatePipelineData(
       setPipelineData,
       setDefaultData,
-      location.state.id,
-      location?.state?.project_id
+      location.state.id ?? 0,
+      globalProject?.project_id
     );
     setHeader((ps) => {
       return {
@@ -108,7 +112,7 @@ export default function CreatePipeline() {
       };
     });
     console.log(location.state.project_id);
-  }, []);
+  }, [globalProject]);
 
   useEffect(() => {
     console.log(defaultData);
