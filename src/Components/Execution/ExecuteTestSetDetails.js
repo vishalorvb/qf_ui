@@ -4,6 +4,7 @@ import axios from "../../api/axios";
 import Table from "../../CustomComponent/Table";
 import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
+import useHead from "../../hooks/useHead";
 
 const data = [];
 
@@ -16,7 +17,7 @@ function ExecuteTestSetDetails({
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
-
+  const {  globalProject, setglobalProject, globalApplication, setglobalApplication } = useHead()
   const columns = [
     {
       field: "name",
@@ -61,13 +62,16 @@ function ExecuteTestSetDetails({
         //     : [],
         // });
         console.log(param.row)
+        console.log(globalApplication.module_type)
         //console.log(param.row.datasets.filter(ds=>ds.is_default===true))
         return (
           <div>
             <MuiltiSelect
-              preselect={param.row.datasets.filter(ds=>ds.is_default===true)}
+            //  preselect={param.row.datasets.filter(ds=>ds.is_default===true)}
+              preselect={applicationType === 1?param.row?.api_datasets?.filter(ds=>ds.is_default===true):param.row.datasets?.filter(ds=>ds.is_default===true)}
+            //preselect={[]}
               options={
-                applicationType === 1
+                globalApplication.module_type === 1
                   ? param?.row?.api_datasets
                   : param?.row?.datasets
               }
@@ -75,8 +79,13 @@ function ExecuteTestSetDetails({
               value={
                 applicationType === 1 ? "dataset_name_in_testcase" : "name"
               }
-              id="dataset_id"
+            //  testcase_dataset_id
+            //  id="dataset_id"
+              id={applicationType === 1
+                ? "testcase_dataset_id"
+                : "dataset_id"}
               stateList={(list) => {
+                console.log(list)
                 const obj = {
                   testcase_id: param.row.testcase_id,
                   selected_testcase_dataset_ids: list.map((val) =>
