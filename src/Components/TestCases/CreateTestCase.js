@@ -263,7 +263,7 @@ function CreateTestCase() {
                             }
                             getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
                             sprintData.sprint_id = e.target.value
-                            console.log("Sprint change")
+
                         }}
                     >
                         {jiraSprint.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
