@@ -60,15 +60,23 @@ function ExecuteTestSetDetails({
           (obj) => obj.testcase_id === param.row.testcase_id
         );
         index === -1 ? data.push(obj) : (data[index] = obj);
+        console.log(
+          (globalApplication?.module_type === 1
+            ? param.row?.api_datasets?.filter((ds) => ds?.is_default === true)
+            : param?.row?.datasets?.filter((ds) => ds?.is_default === true)) ??
+            []
+        );
         return (
           <div>
             <MuiltiSelect
               preselect={
-                globalApplication?.module_type === 1
+                (globalApplication?.module_type === 1
                   ? param.row?.api_datasets?.filter(
-                      (ds) => ds.is_default === true
+                      (ds) => ds?.is_default === true
                     )
-                  : param.row.datasets?.filter((ds) => ds.is_default === true)
+                  : param?.row?.datasets?.filter(
+                      (ds) => ds?.is_default === true
+                    )) ?? []
               }
               options={
                 globalApplication?.module_type === 1
