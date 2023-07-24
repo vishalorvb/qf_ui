@@ -47,7 +47,7 @@ function ExecuteTestSetDetails({
                       ? val?.testcase_dataset_id
                       : val?.dataset_id
                   )
-              : param?.row?.api_datasets
+              : param?.row?.datasets
                   ?.filter((val) => val?.is_default)
                   ?.map((val) =>
                     globalApplication?.module_type === 1
