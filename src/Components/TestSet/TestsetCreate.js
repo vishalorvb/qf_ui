@@ -55,6 +55,10 @@ function TestsetCreate() {
   }, [globalProject]);
 
   useEffect(() => {
+  console.log(jiraIssue)
+  }, [jiraIssue])
+
+  useEffect(() => {
     if (globalProject?.project_id && globalApplication?.module_id) {
       getTestcasesInProjects(
         setTestcaseObject,
@@ -205,8 +209,8 @@ function TestsetCreate() {
             }}
           >
             {jiraSprint?.map((s) => (
-              <MenuItem key={s.id} value={s.sprint_name}>
-                {s.sprint_name}
+              <MenuItem key={s.id} value={s.name}>
+                {s.name}
               </MenuItem>
             ))}
           </Select>
