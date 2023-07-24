@@ -35,7 +35,7 @@ function TestsetExecutionToolbar({
   applicationType,
 }) {
   const { auth } = useAuth();
-  const { setSnackbarData } = useHead();
+  const { setSnackbarData, setShowloader } = useHead();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -127,6 +127,7 @@ function TestsetExecutionToolbar({
 
   const onSubmit = (data, isExecute) => {
     if (selecteddatasets?.length > 0) {
+      setShowloader(true);
       const url =
         "/qfservice/" +
         (applicationType === 1 ? "ExecuteTestset" : "ExecuteWebTestset_v11");
@@ -153,6 +154,7 @@ function TestsetExecutionToolbar({
       axios.post(url, executionData).then((resp) => {
         console.log(resp);
         if (resp?.data?.status === "FAIL") {
+          setShowloader(false);
           setSnackbarData({
             status: true,
             message: "Something went wrong!",
@@ -167,17 +169,32 @@ function TestsetExecutionToolbar({
             })
             .then((resp) => {
               console.log(resp);
+              setShowloader(false);
             })
             .catch((err) => {
               console.log(err);
+              setShowloader(false);
               setSnackbarData({
                 status: true,
                 message: "Jar client not Up and Running, please launch !",
                 severity: "error",
               });
             });
+        } else if (resp?.data?.status !== "SUCCESS") {
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: "Something went wrong !",
+            severity: "error",
+          });
         } else {
           console.log("remote");
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: "Remote execution Seccessful",
+            severity: "SUCCESS",
+          });
         }
       });
     } else {
