@@ -135,7 +135,7 @@ export default function TestsetExecution() {
           <Grid item md={2.8} justifyContent="flex-start">
             <List
               sx={{
-                overflowY: "aurto",
+                overflowY: "auto",
                 height: "70vh",
               }}
             >

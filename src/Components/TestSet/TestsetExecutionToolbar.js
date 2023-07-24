@@ -21,10 +21,8 @@ import axios from "../../api/axios";
 import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
-import BackdropLoader from "../../CustomComponent/BackdropLoader";
 
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
 function TestsetExecutionToolbar({
@@ -37,47 +35,17 @@ function TestsetExecutionToolbar({
   applicationType,
 }) {
   const { auth } = useAuth();
+  const { setSnackbarData } = useHead();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [execEnvList, setExecEnvList] = useState([]);
-  const [clientInactive, setClientInactive] = useState(false);
-  const [jarConnected, setJarConnected] = useState(false);
-  const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
   const [execLoc, setExecLoc] = useState("local");
-  const [appType, setApplicationType] = useState("");
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
-  const [snack, setSnack] = useState(false);
-  const [snackbar, setSnackbar] = useState(false);
   const [runtimeVariable, setRunTimeVariable] = useState();
   const [buildEnvId, setBuildEnvId] = useState();
-  const [showLoading, setShowLoading] = useState(false);
-
-  let appTypes = [
-    "API Automation",
-    "Web Automation",
-    "Android Automation",
-    "iOS Automation",
-    "Python Web",
-    "Test Design",
-    "Performance Testing",
-    "Security Testing",
-    "Infrastructure Monitering",
-    "Risk Prediction",
-    "",
-    "WINIUM",
-    "Mobile Web Automation",
-    "Code Coverage",
-    "Pycode Style",
-    "Locust",
-    "Python Api",
-    "Python Unit Testcase",
-    "Link Project",
-    "PipeLine",
-    "Release Management",
-  ];
 
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
@@ -100,147 +68,6 @@ function TestsetExecutionToolbar({
     resolver: yupResolver(schema),
   });
 
-  const onSubmitExecute = (data) => {
-    let datasets = [];
-    let selecteddataset = [];
-    if (selectedtestcases.length != 0) {
-      selecteddataset = selecteddatasets.filter(
-        (dt) =>
-          // console.log(dt.selected_testcase_dataset_ids),
-          dt.selected_testcase_dataset_ids.length != 0
-      );
-      // if (selectedtestcases.length == selecteddataset.length) {
-      //   datasets = selecteddataset;
-      // } else {
-      for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selecteddataset.length; j++) {
-          if (selectedtestcases[i] == selecteddataset[j].testcase_id) {
-            console.log(selecteddataset[j]);
-            datasets.push(selecteddataset[j]);
-          }
-        }
-      }
-      // }
-      console.log(selectedtestcases);
-      console.log(selecteddatasets);
-      console.log(selecteddataset);
-      if (
-        datasets.length != 0 &&
-        selecteddataset.length != 0 &&
-        datasets.length == selectedtestcases.length
-      ) {
-        console.log(datasets);
-        setShowLoading(true);
-        const executionData = {
-          testset_id: testsetId,
-          module_id: applicationId,
-          testcases_list_to_execute: datasets,
-          mobile_platform: appType,
-          config_id: null,
-          config_name: null,
-          build_environment_name: data?.buildenvName?.split("&")[1],
-          build_environment_id: parseInt(data?.buildenvName?.split("&")[0]),
-          browser_type: data?.browser?.toString(),
-          execution_location: data?.executionLoc,
-          repository_commit_message: "",
-          testcase_overwrite: false,
-          runtimevariables: data?.buildenvName?.split("&")[2],
-          is_execute: true,
-          is_generate: data?.regenerateScript?.length > 0,
-          client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          user_id: auth?.userId,
-        };
-
-        axios.post(`/qfservice/ExecuteTestset`, executionData).then((resp) => {
-          data?.executionLoc !== "local" && setShowLoading(false);
-          resp?.data?.status === "SUCCESS" && resp?.data?.info
-            ? axios
-                .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
-                  data: resp?.data?.info,
-                  jarName: `code`,
-                })
-                .then((resp) => {
-                  setJarConnected(true);
-                  setShowLoading(false);
-                })
-                .catch((err) => {
-                  err.message === "Network Error" && setClientInactive(true);
-                  setShowLoading(false);
-                })
-            : setRemoteExecutionsuccess(true);
-        });
-      } else {
-        setSnack(true);
-        setTimeout(() => {
-          setSnack(false);
-        }, 3000);
-      }
-    } else {
-      setSnackbar(true);
-      setTimeout(() => {
-        setSnackbar(false);
-      }, 3000);
-    }
-  };
-  const onSubmitGenerate = (data) => {
-    let datasets = [];
-    if (selectedtestcases.length == selecteddatasets.length) {
-      datasets = selecteddatasets;
-    } else {
-      for (let i = 0; i < selectedtestcases.length; i++) {
-        for (let j = 0; j < selecteddatasets.length; j++) {
-          if (selectedtestcases[i] == selecteddatasets[j].testcase_id) {
-            datasets.push(selecteddatasets[j]);
-          }
-        }
-      }
-    }
-    if (datasets.length != 0) {
-      setShowLoading(true);
-      const executionData = {
-        testset_id: testsetId,
-        module_id: applicationId,
-        testcases_list_to_execute: datasets,
-        mobile_platform: appType,
-        config_id: null,
-        config_name: null,
-        build_environment_name: data?.buildenvName?.split("&")[1],
-        build_environment_id: parseInt(data?.buildenvName?.split("&")[0]),
-        browser_type: data?.browser?.toString(),
-        execution_location: data?.executionLoc,
-        repository_commit_message: "",
-        testcase_overwrite: true,
-        runtimevariables: data?.buildenvName?.split("&")[2],
-        is_execute: false,
-        is_generate: true,
-        client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        user_id: auth?.userId,
-      };
-      axios.post(`/qfservice/ExecuteTestset`, executionData).then((resp) => {
-        data?.executionLoc !== "local" && setShowLoading(false);
-        resp?.data?.status === "SUCCESS" && resp?.data?.info
-          ? axios
-              .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-                setShowLoading(false);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-                setShowLoading(false);
-              })
-          : setRemoteExecutionsuccess(true);
-      });
-    } else {
-      setSnack(true);
-      setTimeout(() => {
-        setSnack(false);
-      }, 3000);
-    }
-  };
   useEffect(() => {
     reset();
     setBuildEnvList([]);
@@ -281,22 +108,7 @@ function TestsetExecutionToolbar({
           });
           const mergedObj = [...data1, ...data2];
           setExecEnvList(mergedObj);
-          // setExecEnvList(() => {
-          //   return execEnv.map((ee) => {
-          //     return { id: ee.value, label: ee.name };
-          //   });
-          // });
         });
-  }, [applicationId]);
-
-  useEffect(() => {
-    axios
-      .get(
-        `http://10.11.12.242:8080/qfservice/getmoduledetails/${applicationId}`
-      )
-      .then((resp) => {
-        setApplicationType(appTypes[resp?.data?.data?.module_type - 1]);
-      });
   }, [applicationId]);
 
   useEffect(() => {
@@ -306,49 +118,85 @@ function TestsetExecutionToolbar({
     });
   }, [execEnvList, buildEnvList]);
 
+  const execute = (data) => {
+    onSubmit(data, true);
+  };
+  const generate = (data) => {
+    onSubmit(data, false);
+  };
+
+  const onSubmit = (data, isExecute) => {
+    if (selecteddatasets?.length > 0) {
+      const url =
+        "/qfservice/" +
+        (applicationType === 1 ? "ExecuteTestset" : "ExecuteWebTestset_v11");
+
+      const executionData = {
+        browser_type: data?.browser?.toString(),
+        build_environment_id: parseInt(data?.buildenvName?.split("&")[0]),
+        build_environment_name: data?.buildenvName?.split("&")[1],
+        client_timezone_id: "Asia/Calcutta",
+        execution_location: data?.executionLoc,
+        is_execute: isExecute,
+        is_generate: data?.regenerateScript?.length > 0 || !isExecute,
+        module_id: applicationId,
+        repository_commit_message: "",
+        runtimevariables: "null",
+        testcases_list_to_execute:
+          applicationType === 1 ? selecteddatasets : undefined,
+        web_testcases_list_to_execute:
+          applicationType !== 1 ? selecteddatasets : undefined,
+        testset_id: testsetId,
+        user_id: auth?.userId,
+      };
+
+      axios.post(url, executionData).then((resp) => {
+        console.log(resp);
+        if (resp?.data?.status === "FAIL") {
+          setSnackbarData({
+            status: true,
+            message: "Something went wrong!",
+            severity: "error",
+          });
+        }
+        if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
+          axios
+            .postForm(`http://127.0.0.1:8765/connecttcexecute`, {
+              data: resp?.data?.info,
+              jarName: `code`,
+            })
+            .then((resp) => {
+              console.log(resp);
+            })
+            .catch((err) => {
+              console.log(err);
+              setSnackbarData({
+                status: true,
+                message: "Jar client not Up and Running, please launch !",
+                severity: "error",
+              });
+            });
+        } else {
+          console.log("remote");
+        }
+      });
+    } else {
+      setSnackbarData({
+        status: true,
+        message: "Select at least one Testcase!",
+        severity: "error",
+      });
+    }
+  };
+
   return (
     <form>
-      <SnackbarNotify
-        open={clientInactive}
-        close={setClientInactive}
-        msg={"Local Client Jar is not running!"}
-        severity="error"
-      />
-      <SnackbarNotify
-        open={jarConnected}
-        close={setJarConnected}
-        msg={"Local Client Jar Launched!"}
-        severity="success"
-      />
-      <SnackbarNotify
-        open={remoteExecutionsuccess}
-        close={setRemoteExecutionsuccess}
-        msg={"Scripts Executed Successfully"}
-        severity="success"
-      />
-      {snack && (
-        <SnackbarNotify
-          open={snack}
-          close={setSnack}
-          msg={"Please select atleast one dataset"}
-          severity="error"
-        />
-      )}
-      {snackbar && (
-        <SnackbarNotify
-          open={snackbar}
-          close={setSnackbar}
-          msg={"Please select atleast one Testcase"}
-          severity="error"
-        />
-      )}
       <Grid container>
         <Grid item container xs={10} spacing={1} justifyContent="flex-start">
           <Grid item xs={2} sm={4} md={4} lg={2.5}>
             <label>Execution Location</label>
             <SelectElement
               name="executionLoc"
-              // label="Execution Location"
               size="small"
               fullWidth
               control={control}
@@ -417,7 +265,6 @@ function TestsetExecutionToolbar({
                 render={({ field }) => (
                   <MultiSelectElement
                     menuMaxWidth={5}
-                    // label="Browser"
                     size="small"
                     fullWidth
                     options={options}
@@ -456,7 +303,7 @@ function TestsetExecutionToolbar({
                     sx={{ backgroundColor: "#009fee" }}
                     fullWidth
                     type="submit"
-                    onClick={handleSubmit(onSubmitExecute)}
+                    onClick={handleSubmit(execute)}
                   >
                     Execute
                   </Button>
@@ -496,7 +343,7 @@ function TestsetExecutionToolbar({
                         <MenuList id="split-button-menu" autoFocusItem>
                           <MenuItem
                             size="small"
-                            onClick={handleSubmit(onSubmitGenerate)}
+                            onClick={handleSubmit(generate)}
                           >
                             GENERATE Script
                           </MenuItem>
@@ -534,7 +381,6 @@ function TestsetExecutionToolbar({
           />
         </Stack>
       )}
-      <BackdropLoader open={showLoading} />
     </form>
   );
 }
