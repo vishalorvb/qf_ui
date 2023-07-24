@@ -167,14 +167,14 @@ function CreateTestCase() {
 
 
     useEffect(() => {
-        if(jiraSprint.length>0){
+        if (jiraSprint.length > 0) {
             let data = {
                 sprint_name: jiraSprint[0].name
             }
             getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
 
         }
-
+        console.log(jiraSprint)
     }, [jiraSprint])
 
     useEffect(() => {
@@ -189,7 +189,7 @@ function CreateTestCase() {
             }
             sprintData = {
                 "sprint_id": 0,
-                "sprint_name": "2",
+                "sprint_name": "",
                 "issue_id": 0
             }
         };
@@ -266,7 +266,7 @@ function CreateTestCase() {
 
                         }}
                     >
-                        {jiraSprint.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
+                        {jiraSprint.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                     </select>
                 </Grid>
                 <Grid item md={3}>
