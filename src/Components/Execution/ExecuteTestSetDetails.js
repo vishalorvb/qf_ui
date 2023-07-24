@@ -13,17 +13,10 @@ function ExecuteTestSetDetails({
   applicationId,
   projectId,
   frameworkType,
-  applicationType,
 }) {
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
-  const {
-    globalProject,
-    setglobalProject,
-    globalApplication,
-    setglobalApplication,
-  } = useHead();
-  console.log(globalApplication);
+  const { globalApplication } = useHead();
   const columns = [
     {
       field: "name",
@@ -43,37 +36,9 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-        const defaultDataset =
-          globalApplication?.module_type === 1
-            ? param?.row?.api_datasets?.find(
-                (dataset) => dataset?.is_default === true
-              )
-            : param?.row?.datasets?.find(
-                (dataset) => dataset?.is_default === true
-              );
-        //console.log(
-        //    param?.row?.api_datasets?.find(
-        //        (dataset) => dataset?.is_default === true
-        //    )
-        //);
-
-        // data.push({
-        //   testcase_id: param.row.testcase_id,
-        //   selected_testcase_dataset_ids: defaultDataset
-        //     ? [
-        //         applicationType === 1
-        //           ? defaultDataset?.testcase_dataset_id
-        //           : defaultDataset?.dataset_id,
-        //       ]
-        //     : [],
-        // });
-        console.log(param.row);
-        console.log(globalApplication?.module_type);
-        //console.log(param.row.datasets.filter(ds=>ds.is_default===true))
         return (
           <div>
             <MuiltiSelect
-              //  preselect={param.row.datasets.filter(ds=>ds.is_default===true)}
               preselect={
                 globalApplication?.module_type === 1
                   ? param.row?.api_datasets?.filter(
@@ -81,19 +46,16 @@ function ExecuteTestSetDetails({
                     )
                   : param.row.datasets?.filter((ds) => ds.is_default === true)
               }
-              //preselect={[]}
               options={
                 globalApplication?.module_type === 1
                   ? param?.row?.api_datasets
                   : param?.row?.datasets
               }
               value={
-                globalApplication.module_type === 1
+                globalApplication?.module_type === 1
                   ? "dataset_name_in_testcase"
                   : "name"
               }
-              //  testcase_dataset_id
-              //  id="dataset_id"
               id={
                 globalApplication?.module_type === 1
                   ? "testcase_dataset_id"
@@ -124,13 +86,13 @@ function ExecuteTestSetDetails({
     },
   ];
 
-  const handleClose = () => {
-    settestcaseList([]);
-    setSelectedtestcases([]);
-  };
-
   useEffect(() => {
-    if (testsetId) {
+    console.log(globalApplication);
+    if (
+      testsetId &&
+      globalApplication !== undefined &&
+      globalApplication !== null
+    ) {
       globalApplication?.module_type === 1
         ? axios
             .get(`/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`)
@@ -149,7 +111,7 @@ function ExecuteTestSetDetails({
     } else {
       settestcaseList([]);
     }
-  }, [testsetId]);
+  }, [testsetId, globalApplication]);
 
   return (
     <div>
