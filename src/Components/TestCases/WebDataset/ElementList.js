@@ -161,7 +161,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
                 }}
               />
             )}
-            {param.row.web_page_elements.input_type == "select" && (
+            {param.row.web_page_elements.tag_name == "select" && (
               <select
                 defaultValue={param.row.dataset_values.input_value}
                 style={{ width: "100%" }}

@@ -55,7 +55,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
           onChange={handleChange}
           input={<OutlinedInput />}
           placeholder="Select"
-          renderValue={(selected) => selected?.map((v) => v && v[value] + ",")}
+          renderValue={(selected) => selected?.map((v) => v && (v[value] + ",").slice(0, -1))}
           MenuProps={MenuProps}
         >
           {options?.map((opt) => {
