@@ -36,6 +36,30 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
+        const obj = {
+          testcase_id: param.row.testcase_id,
+          selected_testcase_dataset_ids:
+            globalApplication?.module_type === 1
+              ? param?.row?.api_datasets
+                  ?.filter((val) => val?.is_default)
+                  ?.map((val) =>
+                    globalApplication?.module_type === 1
+                      ? val?.testcase_dataset_id
+                      : val?.dataset_id
+                  )
+              : param?.row?.api_datasets
+                  ?.filter((val) => val?.is_default)
+                  ?.map((val) =>
+                    globalApplication?.module_type === 1
+                      ? val?.testcase_dataset_id
+                      : val?.dataset_id
+                  ),
+        };
+
+        const index = data.findIndex(
+          (obj) => obj.testcase_id === param.row.testcase_id
+        );
+        index === -1 ? data.push(obj) : (data[index] = obj);
         return (
           <div>
             <MuiltiSelect
@@ -120,7 +144,9 @@ function ExecuteTestSetDetails({
         applicationId={applicationId}
         selectedtestcases={selectedtestcases}
         testsetId={testsetId}
-        selecteddatasets={data}
+        selecteddatasets={data.filter((val) =>
+          selectedtestcases.includes(val?.testcase_id)
+        )}
         frameworkType={frameworkType}
         applicationType={globalApplication?.module_type}
       />
