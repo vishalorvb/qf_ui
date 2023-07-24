@@ -19,7 +19,6 @@ const MenuProps = {
 };
 
 function MuiltiSelect({ options, id, value, stateList, preselect }) {
-    console.log(options)
   let [selectedval, setSelectedval] = useState([]);
   let [checkbox, setCheckbox] = useState([]);
   const handleChange = (event) => {

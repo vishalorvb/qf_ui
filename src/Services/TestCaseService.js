@@ -118,7 +118,6 @@ export function getSprint(callback, projectId) {
         .get(`${baseUrl}/qfservice/getsprints?project_id=${projectId}`)
         .then((res) => {
             callback(res.data.data.sprints);
-            console.log(res.data.data.sprints)
         });
 }
 
@@ -128,7 +127,6 @@ export function getIssues(callback, userId, projectId,data) {
         url: `${baseUrl}/qfservice/getJiraIssues?user_id=${userId}&project_id=${projectId}`,
         data: data,
     }).then((res) => {
-       console.log(res.data.info)
        callback(res.data.info)
     });
    

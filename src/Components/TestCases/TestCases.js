@@ -77,7 +77,6 @@ export default  function TestCases() {
             flex: 6,
             sortable: false,
             renderCell: (param) => {
-                console.log(param?.row);
                 return (
                     <TableActions heading={param.row?.description}>
                         <MenuItem
