@@ -115,7 +115,7 @@ export function GetTestCase(
         params: {
           project_id: projectId,
           module_id: applicationId,
-          failedTestcase: failedTestcase,
+          failTestcases: failedTestcase,
         },
       }
     )
