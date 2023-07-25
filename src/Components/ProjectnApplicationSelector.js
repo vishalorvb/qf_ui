@@ -40,6 +40,7 @@ export default function ProjectnApplicationSelector({
       getApplicationOfProject(setapplicationList, globalProject?.project_id);
     }
     setapplicationList([]);
+    console.log("first");
   }, [globalProject]);
   useEffect(() => {
     if (globalApplication == null) {

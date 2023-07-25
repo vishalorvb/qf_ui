@@ -37,9 +37,16 @@ import {
 } from "@mui/material";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
+import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 
 export default function Dashboard() {
-  const { setHeader, globalProject, setglobalProject } = useHead();
+  const {
+    setHeader,
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
   const navigate = useNavigate();
   const { auth } = useAuth();
   const header = [
@@ -475,51 +482,52 @@ export default function Dashboard() {
     ),
   ];
 
+  useEffect(() => {
+    setSprintName("All");
+    setSprintList([]);
+    setAutomationTDgraph(false);
+    setShowTensorFlow(false);
+  }, [globalProject]);
+
   return (
     <div style={{ overflowX: "hidden" }}>
-      <Grid container spacing={2} justifyContent="right">
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        spacing={2}
+        mb={2}
+      >
         <Grid item md={4}>
-          <Stack
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={1}
-            mb={2}
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+            isApplication={false}
+          />
+        </Grid>
+        <Grid item md={1}>
+          <label>Sprint</label>
+          <select
+            fullWidth
+            style={{ height: "38px" }}
+            id="demo-simple-select"
+            value={sprintName}
+            onChange={(e) => {
+              setSprintName(e.target.value);
+            }}
           >
-            <Autocomplete
-              disablePortal
-              id="project_id"
-              options={projectsList}
-              value={globalProject}
-              getOptionLabel={(option) => option.project_name}
-              fullWidth
-              onChange={(e, value) => {
-                setglobalProject(value);
-                setSprintName("All");
-                setSprintList([]);
-                setAutomationTDgraph(false);
-                setShowTensorFlow(false);
-              }}
-              renderInput={(params) => <TextField {...params} size="small" />}
-            />
-            <select
-              style={{ height: "38px" }}
-              id="demo-simple-select"
-              value={sprintName}
-              onChange={(e) => {
-                setSprintName(e.target.value);
-              }}
-            >
-              <option value={"All"}>All</option>
-              {sprintList?.map((period, index) => {
-                return (
-                  <option value={period} key={index}>
-                    {period}
-                  </option>
-                );
-              })}
-            </select>
-          </Stack>
+            <option value={"All"}>All</option>
+            {sprintList?.map((period, index) => {
+              return (
+                <option value={period} key={index}>
+                  {period}
+                </option>
+              );
+            })}
+          </select>
         </Grid>
       </Grid>
 

@@ -56,8 +56,6 @@ export default function TestcaseExecution() {
               style={{ fontSize: "15px", color: "#009fee", fontWeight: "400" }}
             >
               {apiItem.name}
-              {/* <br />
-                <p style={{color:"black"}}>{apiItem.description}</p> */}
             </ListItemButton>
           </ListItem>
         );
