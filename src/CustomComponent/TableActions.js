@@ -13,13 +13,12 @@ function TableActions(props) {
     setAnchorEl(null);
   };
   const heading = props?.heading ?? "";
+  console.log(heading);
   return (
     <div className="descColumn">
       <Tooltip title={heading?.length <= 140 ? "" : heading}>
         <Typography variant="p">
-          {props?.heading?.length <= 100
-            ? props?.heading
-            : props?.heading?.substr(0, 100) + "..."}
+          {heading?.length <= 100 ? heading : heading?.substr(0, 100) + "..."}
         </Typography>
       </Tooltip>
       <MoreVertIcon
