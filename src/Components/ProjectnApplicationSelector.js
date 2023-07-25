@@ -48,7 +48,12 @@ export default function ProjectnApplicationSelector({
   }, [applicationList]);
 
   return (
-    <Grid container spacing={2} justifyContent="space-around" direction="row">
+    <Grid
+      container
+      spacing={2}
+      justifyContent={isApplication !== false ? "space-around" : "flex-end"}
+      direction="row"
+    >
       <Grid item md={6}>
         <label>Projects</label>
         <Autocomplete
