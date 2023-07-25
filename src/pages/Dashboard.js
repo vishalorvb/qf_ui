@@ -25,702 +25,699 @@ import AppleIcon from "@mui/icons-material/Apple";
 import { Language } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import {
-  Divider,
-  Card,
-  CardContent,
-  Typography,
-  Autocomplete,
-  Stack,
-  TextField,
-  FormControl,
-  CircularProgress,
+    Divider,
+    Card,
+    CardContent,
+    Typography,
+    Autocomplete,
+    Stack,
+    TextField,
+    FormControl,
+    CircularProgress,
 } from "@mui/material";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
-
+import { ReportPercentage } from "../Services/DashboardService";
 export default function Dashboard() {
-  const { setHeader, globalProject, setglobalProject } = useHead();
-  const navigate = useNavigate();
-  const { auth } = useAuth();
-  const header = [
-    <SettingsApplicationsIcon
-      style={{ width: "100%", height: "100%", color: "#009fee" }}
-    />,
-    <AssignmentIcon
-      style={{ width: "100%", height: "100%", color: "#009fee" }}
-    />,
-    <ManageSearchIcon
-      style={{ width: "100%", height: "100%", color: "#009fee" }}
-    />,
-  ];
-  const [testCases, setTestCases] = useState();
-  const [dataSets, setdataSets] = useState();
-  const [totalSprint, settotalSprint] = useState();
-  const data = [testCases, dataSets, totalSprint];
-  const body = ["Total Testcases", "Total Datasets", "Total Sprints"];
-  const [info, setInfo] = useState([]);
-  const [projectsList, setProjectList] = useState([]);
-  const [sprintName, setSprintName] = useState("All");
-  const [progress, setProgress] = useState();
-  const [androidTestcase, setAndroidTestcase] = useState();
-  const [iosTestcase, setIosTestcase] = useState();
-  const [webTestcase, setWebTestcase] = useState();
-  const [apiTestcase, setApiTestcase] = useState();
-  const [period, setPeriod] = useState();
-  const [automation, setAutomation] = useState();
-  const [defects, setDefects] = useState();
-  const [coverage, setCoverage] = useState();
-  const [testDesignPeriod, setTestDesingperiod] = useState();
-  const [snackbar, setSnackbar] = useState(false);
-  const [sprintList, setSprintList] = useState();
-  const [failMsg, setFailMsg] = useState(false);
-  const [showTensorFlow, setShowTensorFlow] = useState(false);
-  const [automationGraph, setAutomationGraph] = useState(false);
-  const [automationTDgraph, setAutomationTDgraph] = useState(false);
-  const [showFailMsg, setShowFailMsg] = useState(false);
-  const [showProgressBar, setShowProgressBar] = useState(false);
-  const [predictionInfo, setPredictionInfo] = useState([]);
-  let [percentage, setPercentage] = useState(0);
-  let [faildata, setFaildata] = useState([]);
-  function dashboardDetails() {
-    setAutomationTDgraph(false);
-    axios
-      .get(
-        `/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`
-      )
-      .then((res) => {
-        setInfo(res?.data?.data?.model);
-        setTestCases(res?.data?.data?.model.automation_test_cases_count);
-        console.log(res?.data?.data?.model.automation_test_cases_count);
-        setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count);
-        settotalSprint(res?.data?.data?.model.sprint_overview);
-        if (res?.data?.data?.model.automation_graph?.length > 0) {
-          let info = (res.data?.data?.model.automation_graph).replace(
-            /(&#034\;)/g,
-            '"'
-          );
-          let jinfo = JSON.parse(info);
-          const sprintList = jinfo.map((element) => element.period);
-          setSprintList(sprintList);
-        }
-        if (res?.data?.data?.model.show_automation_graph == true) {
-          setAutomationGraph(true);
-        }
-        if (res?.data?.data?.model.show_tensorflow == true) {
-          setShowTensorFlow(true);
-        }
-        if (
-          res?.data?.data?.model.show_automation_of_testdesign_graph == true
-        ) {
-          setAutomationTDgraph(true);
-        }
-        if (res?.data?.data?.model.pure_automation_graph?.length > 0) {
-          let info = (res?.data?.data?.model.pure_automation_graph).replace(
-            /(&#034\;)/g,
-            '"'
-          );
-          let jinfo = JSON.parse(info);
-          const androidArray = jinfo.map(
-            (element) => element.android_testcases
-          );
-          setAndroidTestcase(androidArray);
-          const iosArray = jinfo.map((element) => element.ios_testcases);
-          setIosTestcase(iosArray);
-          const webArray = jinfo.map((element) => element.web_testcases);
-          setWebTestcase(webArray);
-          const apiArray = jinfo.map((element) => element.api_testcases);
-          setApiTestcase(apiArray);
-          const periodArray = jinfo.map((element) => element.period);
-          setPeriod(periodArray);
-        }
-      });
-  }
-
-  function getTensorflowData() {
-    setShowFailMsg(false);
-    setShowProgressBar(false);
-    axios
-      .post(
-        `/qfdashboard/getTensorflowData?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
-      )
-      .then((res) => {
-        if (res.data.status == "FAIL") {
-          setFailMsg(res.data.message);
-          setSnackbar(true);
-          console.log(res.data.message);
-          if (
-            res.data.message ==
-            "Prediction is not available due to insufficient data."
-          ) {
-            setShowFailMsg(true);
-          }
-          setTimeout(() => {
-            setSnackbar(false);
-          }, 3000);
-        }
-        if (res.data.status == "SUCCESS") {
-          let progress = Math.round(
-            res.data?.info?.next_sprint_pass_percentage
-          );
-          setProgress(progress);
-          setShowProgressBar(true);
-        }
-      });
-  }
-  function getPredictionTestcases() {
-    axios
-      .post(
-        `/qfdashboard/getPredictionTestcases?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
-      )
-      .then((res) => {
-        setPredictionInfo(res?.data?.info);
-      });
-  }
-  function dashboardDetailsBySprintId() {
-    setShowTensorFlow(false);
-    setShowProgressBar(false);
-    axios
-      .get(
-        `/qfdashboard/dashboard/${globalProject?.project_id}/${sprintName}?userId=${auth?.userId}`
-      )
-      .then((res) => {
+    const { setHeader, globalProject, setglobalProject } = useHead();
+    const navigate = useNavigate();
+    const { auth } = useAuth();
+    const header = [
+        <SettingsApplicationsIcon
+            style={{ width: "100%", height: "100%", color: "#009fee" }}
+        />,
+        <AssignmentIcon
+            style={{ width: "100%", height: "100%", color: "#009fee" }}
+        />,
+        <ManageSearchIcon
+            style={{ width: "100%", height: "100%", color: "#009fee" }}
+        />,
+    ];
+    const [testCases, setTestCases] = useState();
+    const [dataSets, setdataSets] = useState();
+    const [totalSprint, settotalSprint] = useState();
+    const data = [testCases, dataSets, totalSprint];
+    const body = ["Total Testcases", "Total Datasets", "Total Sprints"];
+    const [info, setInfo] = useState([]);
+    const [projectsList, setProjectList] = useState([]);
+    const [sprintName, setSprintName] = useState("All");
+    const [progress, setProgress] = useState();
+    const [androidTestcase, setAndroidTestcase] = useState();
+    const [iosTestcase, setIosTestcase] = useState();
+    const [webTestcase, setWebTestcase] = useState();
+    const [apiTestcase, setApiTestcase] = useState();
+    const [period, setPeriod] = useState();
+    const [automation, setAutomation] = useState();
+    const [defects, setDefects] = useState();
+    const [coverage, setCoverage] = useState();
+    const [testDesignPeriod, setTestDesingperiod] = useState();
+    const [snackbar, setSnackbar] = useState(false);
+    const [sprintList, setSprintList] = useState();
+    const [failMsg, setFailMsg] = useState(false);
+    const [showTensorFlow, setShowTensorFlow] = useState(false);
+    const [automationGraph, setAutomationGraph] = useState(false);
+    const [automationTDgraph, setAutomationTDgraph] = useState(false);
+    const [showFailMsg, setShowFailMsg] = useState(false);
+    const [showProgressBar, setShowProgressBar] = useState(false);
+    const [predictionInfo, setPredictionInfo] = useState([]);
+    let [percentage, setPercentage] = useState(10);
+    let [faildata, setFaildata] = useState([]);
+    function dashboardDetails() {
         setAutomationTDgraph(false);
+        axios
+            .get(
+                `/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`
+            )
+            .then((res) => {
+                setInfo(res?.data?.data?.model);
+                setTestCases(res?.data?.data?.model.automation_test_cases_count);
+                setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count);
+                settotalSprint(res?.data?.data?.model.sprint_overview);
+                if (res?.data?.data?.model.automation_graph?.length > 0) {
+                    let info = (res.data?.data?.model.automation_graph).replace(
+                        /(&#034\;)/g,
+                        '"'
+                    );
+                    let jinfo = JSON.parse(info);
+                    const sprintList = jinfo.map((element) => element.period);
+                    setSprintList(sprintList);
+                }
+                if (res?.data?.data?.model.show_automation_graph == true) {
+                    setAutomationGraph(true);
+                }
+                if (res?.data?.data?.model.show_tensorflow == true) {
+                    setShowTensorFlow(true);
+                }
+                if (
+                    res?.data?.data?.model.show_automation_of_testdesign_graph == true
+                ) {
+                    setAutomationTDgraph(true);
+                }
+                if (res?.data?.data?.model.pure_automation_graph?.length > 0) {
+                    let info = (res?.data?.data?.model.pure_automation_graph).replace(
+                        /(&#034\;)/g,
+                        '"'
+                    );
+                    let jinfo = JSON.parse(info);
+                    const androidArray = jinfo.map(
+                        (element) => element.android_testcases
+                    );
+                    setAndroidTestcase(androidArray);
+                    const iosArray = jinfo.map((element) => element.ios_testcases);
+                    setIosTestcase(iosArray);
+                    const webArray = jinfo.map((element) => element.web_testcases);
+                    setWebTestcase(webArray);
+                    const apiArray = jinfo.map((element) => element.api_testcases);
+                    setApiTestcase(apiArray);
+                    const periodArray = jinfo.map((element) => element.period);
+                    setPeriod(periodArray);
+                }
+            });
+    }
+
+    function getTensorflowData() {
+        setShowFailMsg(false);
+        setShowProgressBar(false);
+        axios
+            .post(
+                `/qfdashboard/getTensorflowData?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
+            )
+            .then((res) => {
+                if (res.data.status == "FAIL") {
+                    setFailMsg(res.data.message);
+                    setSnackbar(true);
+                    if (
+                        res.data.message ==
+                        "Prediction is not available due to insufficient data."
+                    ) {
+                        setShowFailMsg(true);
+                    }
+                    setTimeout(() => {
+                        setSnackbar(false);
+                    }, 3000);
+                }
+                if (res.data.status == "SUCCESS") {
+                    let progress = Math.round(
+                        res.data?.info?.next_sprint_pass_percentage
+                    );
+                    setProgress(progress);
+                    setShowProgressBar(true);
+                }
+            });
+    }
+    function getPredictionTestcases() {
+        axios
+            .post(
+                `/qfdashboard/getPredictionTestcases?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
+            )
+            .then((res) => {
+                setPredictionInfo(res?.data?.info);
+            });
+    }
+    function dashboardDetailsBySprintId() {
         setShowTensorFlow(false);
-        setInfo(res?.data?.data?.data?.model);
-        setTestCases(res?.data?.data?.data?.model.automation_test_cases_count);
-        setdataSets(
-          res?.data?.data?.data?.model.automation_test_cases_dataset_count
-        );
-        settotalSprint(res?.data?.data?.data?.model.sprint_overview);
-        if (res?.data?.data?.data?.model.show_automation_graph == true) {
-          setAutomationGraph(true);
-        }
-        if (
-          res?.data?.data?.data?.model.show_automation_of_testdesign_graph ==
-          true
-        ) {
-          setAutomationTDgraph(true);
-        }
-        if (res?.data?.data?.data?.model.show_tensorflow == true) {
-          setShowTensorFlow(true);
-        }
-        if ((res?.data?.data?.data?.model.pure_automation_graph).length > 0) {
-          let info = (res?.data?.data?.data?.model.automation_graph).replace(
-            /(&#034\;)/g,
-            '"'
-          );
-          let jinfo = JSON.parse(info);
-          const automationArray = jinfo.map((element) => element.automation);
-          setAutomation(automationArray);
-          const defectsArray = jinfo.map((element) => element.defects);
-          setDefects(defectsArray);
-          const coverageArray = jinfo.map((element) => element.coverage);
-          setCoverage(coverageArray);
-          const periodArray = jinfo.map((element) => element.period);
-          setTestDesingperiod(periodArray);
-        }
-      });
-  }
-  useEffect(() => {
-    setHeader((ps) => {
-      return { ...ps, name: "Dashboard" };
-    });
-  }, []);
-
-  useEffect(() => {
-    if (sprintName == "All") {
-      dashboardDetails();
-      getTensorflowData();
-      getPredictionTestcases();
-    }
-    axios
-      .post(
-        `/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${
-          globalProject?.project_id
-        }${sprintName == "All" ? "" : `&sprintname=${sprintName}`}`
-      )
-      .then((res) => {
-        setFaildata(res.data.data);
-      });
-  }, [globalProject, sprintName]);
-  useEffect(() => {
-    if (sprintName != "All") {
-      dashboardDetailsBySprintId();
-      getTensorflowData();
-      getPredictionTestcases();
-    }
-  }, [sprintName]);
-
-  useEffect(() => {
-    axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
-      const projects = res?.data?.result?.projects_list;
-      setProjectList(projects);
-      if (globalProject == null) {
-        setglobalProject(projects[0]);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .post(
-        `/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${globalProject?.project_id}`
-      )
-      .then((res) => {
-        setPercentage(Math.floor(res.data.data.total_pass_percentage));
-      });
-  }, [globalProject]);
-  const graphData = {
-    title: {
-      text: "Automation",
-      align: "left",
-      style: {
-        "font-size": "20px",
-        "font-weight": "bold",
-        "font-family": "Roboto",
-      },
-    },
-    xAxis: {
-      categories: period,
-      crosshair: true,
-    },
-    yAxis: {
-      allowDecimals: true,
-      padding: 1,
-    },
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false,
-        },
-      },
-    },
-
-    series: [
-      {
-        name: "API",
-        data: apiTestcase,
-      },
-      {
-        name: "Web",
-        data: webTestcase,
-      },
-      {
-        name: "Android",
-        data: androidTestcase,
-      },
-      {
-        name: "iOS",
-        data: iosTestcase,
-      },
-    ],
-
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
-            },
-          },
-        },
-      ],
-    },
-  };
-  const testDesignGraphData = {
-    title: {
-      text: "Automation of Test Design",
-      align: "left",
-      style: {
-        "font-size": "20px",
-        "font-weight": "bold",
-        "font-family": "Roboto",
-      },
-    },
-    xAxis: {
-      categories: testDesignPeriod,
-      crosshair: true,
-    },
-    yAxis: {
-      allowDecimals: true,
-      padding: 1,
-    },
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false,
-        },
-      },
-    },
-
-    series: [
-      {
-        name: "Automation",
-        data: automation,
-      },
-      {
-        name: "Defects",
-        data: defects,
-      },
-      {
-        name: "Coverage",
-        data: coverage,
-      },
-    ],
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
-            },
-          },
-        },
-      ],
-    },
-  };
-  const crd = (index) => {
-    return (
-      <Card sx={{ Width: "100px", display: "flex", height: "90px" }}>
-        <Box sx={{ display: "flex", flexDirection: "column", width: "150px" }}>
-          {header[index]}
-        </Box>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", marginLeft: "50px" }}
-        >
-          <Typography
-            variant="h3"
-            align="left"
-            component="div"
-            marginBottom={1}
-          >
-            {data[index]}
-          </Typography>
-          <Typography variant="subtitle1" align="left" component="div">
-            <b>{body[index]}</b>
-          </Typography>
-        </Box>
-      </Card>
-    );
-  };
-
-  function createData(summary, info) {
-    return { summary, info };
-  }
-
-  const rows = [
-    createData("Api Testcases", info?.api_testcases_count),
-    createData("Web Testcases", info?.web_testcases_count),
-    createData("Android Testcases", info?.android_testcases_count),
-    createData("IOS Testcases", info?.ios_testcases_count),
-  ];
-
-  const row_data = [
-    createData(
-      "Total Regression Testcases",
-      info?.regression_testcases_count != undefined
-        ? info?.regression_testcases_count
-        : 0
-    ),
-    createData(
-      "Identified Automation Testcases",
-      info?.automation_testcases_by_sprint != undefined
-        ? info?.automation_testcases_by_sprint
-        : 0
-    ),
-    createData(
-      "Yet to Automate Testcases",
-      info?.yet_to_automate_testcases != undefined
-        ? info?.yet_to_automate_testcases
-        : 0
-    ),
-    createData(
-      "Test Datasets Created by Automated Testcases",
-      info?.datasets_created_for_automated_testcases != undefined
-        ? info?.datasets_created_for_automated_testcases
-        : 0
-    ),
-  ];
-
-  const fail_row_data = [
-    createData(
-      "API",
-      predictionInfo?.api?.fail != undefined ? predictionInfo.api?.fail : 0
-    ),
-    createData(
-      "Web",
-      predictionInfo?.web?.fail != undefined ? predictionInfo.web?.fail : 0
-    ),
-    createData(
-      "Android",
-      predictionInfo?.web?.android != undefined
-        ? predictionInfo.web?.android
-        : 0
-    ),
-    createData(
-      "iOS",
-      predictionInfo?.android?.fail != undefined
-        ? predictionInfo.android?.fail
-        : 0
-    ),
-  ];
-
-  return (
-    <div style={{ overflowX: "hidden" }}>
-      <Grid container spacing={2} justifyContent="right">
-        <Grid item md={4}>
-          <Stack
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={1}
-            mb={2}
-          >
-            <Autocomplete
-              disablePortal
-              id="project_id"
-              options={projectsList}
-              value={globalProject}
-              getOptionLabel={(option) => option.project_name}
-              fullWidth
-              onChange={(e, value) => {
-                setglobalProject(value);
-                setSprintName("All");
-                setSprintList([]);
+        setShowProgressBar(false);
+        axios
+            .get(
+                `/qfdashboard/dashboard/${globalProject?.project_id}/${sprintName}?userId=${auth?.userId}`
+            )
+            .then((res) => {
                 setAutomationTDgraph(false);
                 setShowTensorFlow(false);
-              }}
-              renderInput={(params) => <TextField {...params} size="small" />}
-            />
-            <select
-              style={{ height: "38px" }}
-              id="demo-simple-select"
-              value={sprintName}
-              onChange={(e) => {
-                setSprintName(e.target.value);
-              }}
-            >
-              <option value={"All"}>All</option>
-              {sprintList?.map((period, index) => {
-                return (
-                  <option value={period} key={index}>
-                    {period}
-                  </option>
+                setInfo(res?.data?.data?.data?.model);
+                setTestCases(res?.data?.data?.data?.model.automation_test_cases_count);
+                setdataSets(
+                    res?.data?.data?.data?.model.automation_test_cases_dataset_count
                 );
-              })}
-            </select>
-          </Stack>
-        </Grid>
-      </Grid>
+                settotalSprint(res?.data?.data?.data?.model.sprint_overview);
+                if (res?.data?.data?.data?.model.show_automation_graph == true) {
+                    setAutomationGraph(true);
+                }
+                if (
+                    res?.data?.data?.data?.model.show_automation_of_testdesign_graph ==
+                    true
+                ) {
+                    setAutomationTDgraph(true);
+                }
+                if (res?.data?.data?.data?.model.show_tensorflow == true) {
+                    setShowTensorFlow(true);
+                }
+                if ((res?.data?.data?.data?.model.pure_automation_graph).length > 0) {
+                    let info = (res?.data?.data?.data?.model.automation_graph).replace(
+                        /(&#034\;)/g,
+                        '"'
+                    );
+                    let jinfo = JSON.parse(info);
+                    const automationArray = jinfo.map((element) => element.automation);
+                    setAutomation(automationArray);
+                    const defectsArray = jinfo.map((element) => element.defects);
+                    setDefects(defectsArray);
+                    const coverageArray = jinfo.map((element) => element.coverage);
+                    setCoverage(coverageArray);
+                    const periodArray = jinfo.map((element) => element.period);
+                    setTestDesingperiod(periodArray);
+                }
+            });
+    }
+    useEffect(() => {
+        setHeader((ps) => {
+            return { ...ps, name: "Dashboard" };
+        });
+    }, []);
 
-      <Divider
-        orientation="horizontal"
-        flexItem
-        sx={{ marginBottom: "10px" }}
-      />
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-          {Array.from(Array(3)).map((_, index) => (
-            <Grid item xs={2} sm={4} md={4} key={index}>
-              {crd(index)}
+    useEffect(() => {
+        if (sprintName == "All") {
+            dashboardDetails();
+            getTensorflowData();
+            getPredictionTestcases();
+        }
+        axios
+            .post(
+                `/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${globalProject?.project_id
+                }${sprintName == "All" ? "" : `&sprintname=${sprintName}`}`
+            )
+            .then((res) => {
+                setFaildata(res.data.data);
+            });
+    }, [globalProject, sprintName]);
+    useEffect(() => {
+        if (sprintName != "All") {
+            dashboardDetailsBySprintId();
+            getTensorflowData();
+            getPredictionTestcases();
+        }
+    }, [sprintName]);
+
+    useEffect(() => {
+        axios.get(`/qfservice/projects?user_id=${auth?.userId}`).then((res) => {
+            const projects = res?.data?.result?.projects_list;
+            setProjectList(projects);
+            if (globalProject == null) {
+                setglobalProject(projects[0]);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        //axios
+        //  .post(
+        //    `/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${globalProject?.project_id}`
+        //  )
+        //  .then((res) => {
+        //    setPercentage(Math.floor(res.data.data.total_pass_percentage));
+        //  });
+
+        ReportPercentage(setPercentage, globalProject?.project_id)
+    }, [globalProject]);
+    useEffect(() => {
+        console.log(percentage)
+    }, [percentage])
+    const graphData = {
+        title: {
+            text: "Automation",
+            align: "left",
+            style: {
+                "font-size": "20px",
+                "font-weight": "bold",
+                "font-family": "Roboto",
+            },
+        },
+        xAxis: {
+            categories: period,
+            crosshair: true,
+        },
+        yAxis: {
+            allowDecimals: true,
+            padding: 1,
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false,
+                },
+            },
+        },
+
+        series: [
+            {
+                name: "API",
+                data: apiTestcase,
+            },
+            {
+                name: "Web",
+                data: webTestcase,
+            },
+            {
+                name: "Android",
+                data: androidTestcase,
+            },
+            {
+                name: "iOS",
+                data: iosTestcase,
+            },
+        ],
+
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: "horizontal",
+                            align: "center",
+                            verticalAlign: "bottom",
+                        },
+                    },
+                },
+            ],
+        },
+    };
+    const testDesignGraphData = {
+        title: {
+            text: "Automation of Test Design",
+            align: "left",
+            style: {
+                "font-size": "20px",
+                "font-weight": "bold",
+                "font-family": "Roboto",
+            },
+        },
+        xAxis: {
+            categories: testDesignPeriod,
+            crosshair: true,
+        },
+        yAxis: {
+            allowDecimals: true,
+            padding: 1,
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false,
+                },
+            },
+        },
+
+        series: [
+            {
+                name: "Automation",
+                data: automation,
+            },
+            {
+                name: "Defects",
+                data: defects,
+            },
+            {
+                name: "Coverage",
+                data: coverage,
+            },
+        ],
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: "horizontal",
+                            align: "center",
+                            verticalAlign: "bottom",
+                        },
+                    },
+                },
+            ],
+        },
+    };
+    const crd = (index) => {
+        return (
+            <Card sx={{ Width: "100px", display: "flex", height: "90px" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", width: "150px" }}>
+                    {header[index]}
+                </Box>
+                <Box
+                    sx={{ display: "flex", flexDirection: "column", marginLeft: "50px" }}
+                >
+                    <Typography
+                        variant="h3"
+                        align="left"
+                        component="div"
+                        marginBottom={1}
+                    >
+                        {data[index]}
+                    </Typography>
+                    <Typography variant="subtitle1" align="left" component="div">
+                        <b>{body[index]}</b>
+                    </Typography>
+                </Box>
+            </Card>
+        );
+    };
+
+    function createData(summary, info) {
+        return { summary, info };
+    }
+
+    const rows = [
+        createData("Api Testcases", info?.api_testcases_count),
+        createData("Web Testcases", info?.web_testcases_count),
+        createData("Android Testcases", info?.android_testcases_count),
+        createData("IOS Testcases", info?.ios_testcases_count),
+    ];
+
+    const row_data = [
+        createData(
+            "Total Regression Testcases",
+            info?.regression_testcases_count != undefined
+                ? info?.regression_testcases_count
+                : 0
+        ),
+        createData(
+            "Identified Automation Testcases",
+            info?.automation_testcases_by_sprint != undefined
+                ? info?.automation_testcases_by_sprint
+                : 0
+        ),
+        createData(
+            "Yet to Automate Testcases",
+            info?.yet_to_automate_testcases != undefined
+                ? info?.yet_to_automate_testcases
+                : 0
+        ),
+        createData(
+            "Test Datasets Created by Automated Testcases",
+            info?.datasets_created_for_automated_testcases != undefined
+                ? info?.datasets_created_for_automated_testcases
+                : 0
+        ),
+    ];
+
+    const fail_row_data = [
+        createData(
+            "API",
+            predictionInfo?.api?.fail != undefined ? predictionInfo.api?.fail : 0
+        ),
+        createData(
+            "Web",
+            predictionInfo?.web?.fail != undefined ? predictionInfo.web?.fail : 0
+        ),
+        createData(
+            "Android",
+            predictionInfo?.web?.android != undefined
+                ? predictionInfo.web?.android
+                : 0
+        ),
+        createData(
+            "iOS",
+            predictionInfo?.android?.fail != undefined
+                ? predictionInfo.android?.fail
+                : 0
+        ),
+    ];
+
+    return (
+        <div style={{ overflowX: "hidden" }}>
+            <Grid container spacing={2} justifyContent="right">
+                <Grid item md={2}>
+                    <label for="">Project:</label>
+                    <Autocomplete
+                        disablePortal
+                        id="project_id"
+                        options={projectsList}
+                        value={globalProject}
+                        getOptionLabel={(option) => option.project_name}
+                        fullWidth
+                        onChange={(e, value) => {
+                            setglobalProject(value);
+                            setSprintName("All");
+                            setSprintList([]);
+                            setAutomationTDgraph(false);
+                            setShowTensorFlow(false);
+                        }}
+                        renderInput={(params) => <TextField {...params} size="small" />}
+                    />
+                </Grid>
+                <Grid item md={2}>
+                    <label for="">Sprint:</label>
+                        <select
+                            style={{ height: "38px" }}
+                            id="demo-simple-select"
+                            value={sprintName}
+                            onChange={(e) => {
+                                setSprintName(e.target.value);
+                                ReportPercentage(setPercentage, globalProject?.project_id,e.target.value=="All"?0:e.target.value)
+                            }}
+                        >
+                            <option value={"All"}>All</option>
+                            {sprintList?.map((period, index) => {
+                                return (
+                                    <option value={period} key={index}>
+                                        {period}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </Grid>
             </Grid>
-          ))}
-        </Grid>
-      </Box>
 
-      <Grid
-        container
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ marginTop: "20px" }}
-      >
-        {automationGraph && (
-          <Grid item md={6}>
-            <Card sx={{ maxWidth: 600 }} elevation={0}>
-              <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
-                <HighchartsReact highcharts={Highcharts} options={graphData} />
-              </CardContent>
-              <Stack
-                direction="row"
-                spacing={1}
-                style={{ marginLeft: "20px" }}
-                onClick={() => console.log("clicked")}
-              >
-                <Brightness5Icon style={{ color: "rgb(124, 181, 236)" }} />
-                <Typography>API</Typography>
-                <Language />
-                <Typography>Web</Typography>
-                <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
-                <Typography>Android</Typography>
-                <AppleIcon style={{ color: "rgb(247,163,92)" }} />
-                <Typography>iOS</Typography>
-              </Stack>
-              <TableContainer
-                component={Paper}
-                style={{ marginTop: "20px", marginBottom: "10px" }}
-              >
-                <Table
-                  sx={{ minWidth: 600 }}
-                  size="small"
-                  aria-label="a dense table"
+            <Divider
+                orientation="horizontal"
+                flexItem
+                sx={{ marginBottom: "10px" }}
+            />
+            <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 4, sm: 8, md: 12 }}
                 >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Summary</TableCell>
-                      <TableCell align="right">Info</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row.summary}
-                        </TableCell>
-                        <TableCell align="right">{row.info}</TableCell>
-                      </TableRow>
+                    {Array.from(Array(3)).map((_, index) => (
+                        <Grid item xs={2} sm={4} md={4} key={index}>
+                            {crd(index)}
+                        </Grid>
                     ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          </Grid>
-        )}
+                </Grid>
+            </Box>
 
-        {showTensorFlow && (
-          <Grid item md={6} justifyContent="space-between" alignItems="center">
-            <Card sx={{ maxWidth: 600, alignItems: "center" }} elevation={0}>
-              <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
-                <Typography style={{ fontSize: "20px" }}>
-                  <b>
-                    QualityFusion prediction : Success of Testcases in next
-                    sprint
-                  </b>
-                </Typography>
-                {showProgressBar && <ProgressBar percentage={percentage} />}
-                {showFailMsg && (
-                  <Typography style={{ fontSize: "50px", fontWeight: "400" }}>
-                    <b style={{ fontSize: "15px" }}>
-                      {failMsg != "Jira is not configured" ? failMsg : ""}
-                    </b>
-                  </Typography>
+            <Grid
+                container
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                sx={{ marginTop: "20px" }}
+            >
+                {automationGraph && (
+                    <Grid item md={6}>
+                        <Card sx={{ maxWidth: 600 }} elevation={0}>
+                            <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
+                                <HighchartsReact highcharts={Highcharts} options={graphData} />
+                            </CardContent>
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                style={{ marginLeft: "20px" }}
+                                onClick={() => console.log("clicked")}
+                            >
+                                <Brightness5Icon style={{ color: "rgb(124, 181, 236)" }} />
+                                <Typography>API</Typography>
+                                <Language />
+                                <Typography>Web</Typography>
+                                <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
+                                <Typography>Android</Typography>
+                                <AppleIcon style={{ color: "rgb(247,163,92)" }} />
+                                <Typography>iOS</Typography>
+                            </Stack>
+                            <TableContainer
+                                component={Paper}
+                                style={{ marginTop: "20px", marginBottom: "10px" }}
+                            >
+                                <Table
+                                    sx={{ minWidth: 600 }}
+                                    size="small"
+                                    aria-label="a dense table"
+                                >
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Summary</TableCell>
+                                            <TableCell align="right">Info</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {rows.map((row) => (
+                                            <TableRow
+                                                key={row.summary}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th": { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell component="th" scope="row">
+                                                    {row.summary}
+                                                </TableCell>
+                                                <TableCell align="right">{row.info}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Card>
+                    </Grid>
                 )}
-              </CardContent>
-              <TableContainer
-                component={Paper}
-                style={{ marginTop: "20px", marginBottom: "10px" }}
-                onClick={() => navigate("Dashboard/failedTestcases")}
-              >
-                <Table
-                  sx={{ minWidth: 600 }}
-                  size="small"
-                  aria-label="a dense table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Fail Prediction Testcases</TableCell>
-                      <TableCell align="right">Total</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {faildata?.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row[0]}
-                        </TableCell>
-                        <TableCell align="right">{row[1]}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          </Grid>
-        )}
-        {automationTDgraph && (
-          <Grid item md={6}>
-            <Card sx={{ maxWidth: 600 }} elevation={0}>
-              <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
-                <HighchartsReact
-                  highcharts={Highcharts}
-                  options={testDesignGraphData}
-                />
-              </CardContent>
-              <Stack direction="row" spacing={1} style={{ marginLeft: "20px" }}>
-                <Brightness5Icon style={{ color: "rgb(124, 181, 236)" }} />
-                <Typography>Automation</Typography>
-                <Language />
-                <Typography>Defects</Typography>
-                <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
-                <Typography>Coverage</Typography>
-              </Stack>
-              <TableContainer
-                component={Paper}
-                style={{ marginTop: "20px", marginBottom: "10px" }}
-              >
-                <Table
-                  sx={{ minWidth: 600 }}
-                  size="small"
-                  aria-label="a dense table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Summary</TableCell>
-                      <TableCell align="right">Info</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row_data.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row.summary}
-                        </TableCell>
-                        <TableCell align="right">{row.info}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          </Grid>
-        )}
-        {snackbar && (
-          <SnackbarNotify
-            open={snackbar}
-            close={setSnackbar}
-            msg={failMsg}
-            severity="error"
-          />
-        )}
-      </Grid>
-    </div>
-  );
+                <Grid item md={6} justifyContent="space-between" alignItems="center">
+                    <Card sx={{ maxWidth: 600, alignItems: "center" }} elevation={0}>
+                        <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
+                            <Typography style={{ fontSize: "20px" }}>
+                                <b>
+                                    QualityFusion prediction : Success of Testcases in next
+                                    sprint
+                                </b>
+                            </Typography>
+                            <ProgressBar percentage={percentage} />
+                            {showFailMsg && (
+                                <Typography style={{ fontSize: "50px", fontWeight: "400" }}>
+                                    <b style={{ fontSize: "15px" }}>
+                                        {failMsg != "Jira is not configured" ? failMsg : ""}
+                                    </b>
+                                </Typography>
+                            )}
+                        </CardContent>
+                        <TableContainer
+                            component={Paper}
+                            style={{ marginTop: "20px", marginBottom: "10px" }}
+                            onClick={() => navigate("Dashboard/failedTestcases")}
+                        >
+                            <Table
+                                sx={{ minWidth: 600 }}
+                                size="small"
+                                aria-label="a dense table"
+                            >
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Fail Prediction Testcases</TableCell>
+                                        <TableCell align="right">Total</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {faildata?.map((row) => (
+                                        <TableRow
+                                            key={row.summary}
+                                            sx={{
+                                                "&:last-child td, &:last-child th": { border: 0 },
+                                            }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {row[0]}
+                                            </TableCell>
+                                            <TableCell align="right">{row[1]}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Card>
+                </Grid>
+
+                {automationTDgraph && (
+                    <Grid item md={6}>
+                        <Card sx={{ maxWidth: 600 }} elevation={0}>
+                            <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
+                                <HighchartsReact
+                                    highcharts={Highcharts}
+                                    options={testDesignGraphData}
+                                />
+                            </CardContent>
+                            <Stack direction="row" spacing={1} style={{ marginLeft: "20px" }}>
+                                <Brightness5Icon style={{ color: "rgb(124, 181, 236)" }} />
+                                <Typography>Automation</Typography>
+                                <Language />
+                                <Typography>Defects</Typography>
+                                <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
+                                <Typography>Coverage</Typography>
+                            </Stack>
+                            <TableContainer
+                                component={Paper}
+                                style={{ marginTop: "20px", marginBottom: "10px" }}
+                            >
+                                <Table
+                                    sx={{ minWidth: 600 }}
+                                    size="small"
+                                    aria-label="a dense table"
+                                >
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Summary</TableCell>
+                                            <TableCell align="right">Info</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {row_data.map((row) => (
+                                            <TableRow
+                                                key={row.summary}
+                                                sx={{
+                                                    "&:last-child td, &:last-child th": { border: 0 },
+                                                }}
+                                            >
+                                                <TableCell component="th" scope="row">
+                                                    {row.summary}
+                                                </TableCell>
+                                                <TableCell align="right">{row.info}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Card>
+                    </Grid>
+                )}
+                {snackbar && (
+                    <SnackbarNotify
+                        open={snackbar}
+                        close={setSnackbar}
+                        msg={failMsg}
+                        severity="error"
+                    />
+                )}
+            </Grid>
+        </div>
+    );
 }
