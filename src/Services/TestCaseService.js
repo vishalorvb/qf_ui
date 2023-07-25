@@ -181,8 +181,8 @@ export async function getElement(screenId, callback) {
 }
 
 
-export async function getSprint_in_testcase(apitestcaseid,webtestcaseid){
-    return axios.get(`${baseUrl}/qfservice/webtestcase/getTestcaseSprints?api_testcase_id=${apitestcaseid}&web_testcase_id=${webtestcaseid}`).then(res =>{
+export async function getSprint_in_testcase(projectId,testcaseId){
+    return axios.get(`${baseUrl}/qfservice/webtestcase/getTestcaseSprints?project_id=${projectId}&testcase_id=${testcaseId}`).then(res =>{
         if(res.data.info ==null){
             return []
         }

@@ -56,7 +56,7 @@ export default function CodeQuality() {
     },
   ];
 
-  return result.length > 0 ? (
+  return result?.length > 0 ? (
     <Table
       searchPlaceholder="Search Results"
       rows={result}

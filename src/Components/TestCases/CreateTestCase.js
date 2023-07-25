@@ -161,7 +161,7 @@ function CreateTestCase() {
                 getSprint(setJiraSprint, globalProject?.project_id)
             }
             else{
-                getSprint_in_testcase(globalApplication.module_type == 1 ? TCdata.testcase_id : 0, globalApplication.module_type == 2 ? TCdata.testcase_id : 0).then(res=>{
+                getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res=>{
                     setJiraSprint(res)
                 })
             }
@@ -221,13 +221,10 @@ function CreateTestCase() {
 
     }, [screenList])
 
-function getSprint_of_testcase(){
-
-}
 
     useEffect(() => {
         if (TCdata.testcase_id != undefined) {
-            getSprint_in_testcase(globalApplication.module_type == 1 ? TCdata.testcase_id : 0, globalApplication.module_type == 2 ? TCdata.testcase_id : 0).then(res => {
+            getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res => {
                 if (res?.length > 0) {
                     sprintData.sprint_id = res[0].sprint_id
                     sprintData.sprint_name = res[0].name

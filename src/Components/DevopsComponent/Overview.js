@@ -18,24 +18,29 @@ export default function Overview() {
     getPipelinesHistoryReport(setResult, setError, location.state.id, "INFO");
   }, []);
 
+  let include = ["initialization","git","deployment","apiautomation","webautomation","codequality"]
   useEffect(() => {
     for (const key in result) {
-      if (!key.includes("response")) {
+      if (include.includes(key)) {
         setResultRender((ps) => [...ps, { name: key, status: result[key] }]);
       }
     }
-    console.log(result);
   }, [result]);
+
+  
 
   return (
     <Box sx={{ width: "100%" }}>
-      {resultRender.length > 0 ? (
+      {resultRender?.length > 0 ? (
         <Stepper orientation="vertical">
           {resultRender?.map((label) => (
             <Step completed={label.status} key={label.name}>
               <StepLabel>{label.name}</StepLabel>
             </Step>
           ))}
+           <Step completed={true} key={"Finished"}>
+              <StepLabel>{"Finished"}</StepLabel>
+            </Step>
         </Stepper>
       ) : (
         <Alert severity="error">{error}</Alert>
