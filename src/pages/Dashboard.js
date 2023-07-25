@@ -38,8 +38,16 @@ import {
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
 import { ReportPercentage } from "../Services/DashboardService";
+import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
+
 export default function Dashboard() {
-  const { setHeader, globalProject, setglobalProject } = useHead();
+  const {
+    setHeader,
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
   const navigate = useNavigate();
   const { auth } = useAuth();
   const header = [
@@ -477,31 +485,27 @@ export default function Dashboard() {
         : 0
     ),
   ];
+  useEffect(() => {
+    setSprintName("All");
+    setSprintList([]);
+    setAutomationTDgraph(false);
+    setShowTensorFlow(false);
+  }, [globalProject]);
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      <Grid container spacing={2} justifyContent="right">
-        <Grid item md={2}>
-          <label for="">Project:</label>
-          <Autocomplete
-            disablePortal
-            id="project_id"
-            options={projectsList}
-            value={globalProject}
-            getOptionLabel={(option) => option.project_name}
-            fullWidth
-            onChange={(e, value) => {
-              setglobalProject(value);
-              setSprintName("All");
-              setSprintList([]);
-              setAutomationTDgraph(false);
-              setShowTensorFlow(false);
-            }}
-            renderInput={(params) => <TextField {...params} size="small" />}
+      <Grid container spacing={2} justifyContent="right" mb={2}>
+        <Grid item md={4}>
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+            isApplication={false}
           />
         </Grid>
         <Grid item md={2}>
-          <label for="">Sprint:</label>
+          <label for="">Sprint</label>
           <select
             style={{ height: "38px" }}
             id="demo-simple-select"
