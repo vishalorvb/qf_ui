@@ -106,7 +106,8 @@ export function GetTestCase(
   callback,
   projectId,
   applicationId,
-  failedTestcase
+  failedTestcase,
+  testsetId
 ) {
   axios
     .get(
@@ -116,6 +117,7 @@ export function GetTestCase(
           project_id: projectId,
           module_id: applicationId,
           failTestcases: failedTestcase,
+          testset_id: testsetId,
         },
       }
     )
