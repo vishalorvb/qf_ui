@@ -126,7 +126,7 @@ export default function ExecutionToolbar({
           setShowloader(false);
           setSnackbarData({
             status: true,
-            message: "Something went wrong!",
+            message: resp?.data?.message ?? "Something went wrong!",
             severity: "error",
           });
         }
@@ -154,14 +154,7 @@ export default function ExecutionToolbar({
                 severity: "error",
               });
             });
-        } else if (resp?.data?.status !== "SUCCESS") {
-          setShowloader(false);
-          setSnackbarData({
-            status: true,
-            message: "Something went wrong !",
-            severity: "error",
-          });
-        } else {
+        } else if (resp?.data?.status === "SUCCESS" && !resp?.data?.info) {
           console.log("remote");
           setShowloader(false);
           setSnackbarData({
