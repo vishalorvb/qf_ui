@@ -258,15 +258,16 @@ function CreateTestCase() {
                     <select
                         onChange={e => {
                             //auth.userId
+                            let sprintName = e.target.options[e.target.selectedIndex].innerText
                             let data = {
-                                sprint_name: e.target.value
+                                sprint_name: sprintName
                             }
                             getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
                             sprintData.sprint_id = e.target.value
-
+                            sprintData.sprint_name = sprintName
                         }}
                     >
-                        {jiraSprint.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                        {jiraSprint.map(s => <option key={s.id} value={s.sprint_id}>{s.name}</option>)}
                     </select>
                 </Grid>
                 <Grid item md={3}>
