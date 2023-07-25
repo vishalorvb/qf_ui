@@ -36,15 +36,47 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
+        const obj = {
+          testcase_id: param.row.testcase_id,
+          selected_testcase_dataset_ids:
+            globalApplication?.module_type === 1
+              ? param?.row?.api_datasets
+                  ?.filter((val) => val?.is_default)
+                  ?.map((val) =>
+                    globalApplication?.module_type === 1
+                      ? val?.testcase_dataset_id
+                      : val?.dataset_id
+                  )
+              : param?.row?.datasets
+                  ?.filter((val) => val?.is_default)
+                  ?.map((val) =>
+                    globalApplication?.module_type === 1
+                      ? val?.testcase_dataset_id
+                      : val?.dataset_id
+                  ),
+        };
+
+        const index = data.findIndex(
+          (obj) => obj.testcase_id === param.row.testcase_id
+        );
+        index === -1 ? data.push(obj) : (data[index] = obj);
+        console.log(
+          (globalApplication?.module_type === 1
+            ? param.row?.api_datasets?.filter((ds) => ds?.is_default === true)
+            : param?.row?.datasets?.filter((ds) => ds?.is_default === true)) ??
+            []
+        );
         return (
           <div>
             <MuiltiSelect
               preselect={
-                globalApplication?.module_type === 1
+                (globalApplication?.module_type === 1
                   ? param.row?.api_datasets?.filter(
-                      (ds) => ds.is_default === true
+                      (ds) => ds?.is_default === true
                     )
-                  : param.row.datasets?.filter((ds) => ds.is_default === true)
+                  : param?.row?.datasets?.filter(
+                      (ds) => ds?.is_default === true
+                    )) ?? []
               }
               options={
                 globalApplication?.module_type === 1
@@ -120,7 +152,9 @@ function ExecuteTestSetDetails({
         applicationId={applicationId}
         selectedtestcases={selectedtestcases}
         testsetId={testsetId}
-        selecteddatasets={data}
+        selecteddatasets={data.filter((val) =>
+          selectedtestcases.includes(val?.testcase_id)
+        )}
         frameworkType={frameworkType}
         applicationType={globalApplication?.module_type}
       />

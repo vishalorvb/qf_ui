@@ -138,7 +138,7 @@ export default function MiniDrawer({ open, setOpen }) {
   const location = useLocation();
   let [imageUrl, setImageUrl] = useState(" ");
   useEffect(() => {
-    getPhoto(setImageUrl, auth.userId, auth.token)
+    getPhoto(setImageUrl, auth.userId, auth.token);
     !open && setOpensubNav([]);
   }, [open]);
 
@@ -146,6 +146,10 @@ export default function MiniDrawer({ open, setOpen }) {
     setOpensubNav((ps) => {
       return ps.includes(navItem.name) ? [] : [navItem.name];
     });
+  };
+
+  const OpenInNewWindow = (navItem) => {
+    window.open(navItem?.route).focus();
   };
   const navigate = useNavigate();
   const navigationItemRender = (rawList) => {
@@ -158,6 +162,8 @@ export default function MiniDrawer({ open, setOpen }) {
               onClick={() => {
                 navItem?.route === ""
                   ? openSubNavigationHandle(navItem)
+                  : navItem?.route?.includes("//")
+                  ? OpenInNewWindow(navItem)
                   : navigate(navItem.route, { state: navItem?.state || {} });
                 navItem?.route !== "" && setSelectedNavItem(navItem.id);
               }}
@@ -232,17 +238,30 @@ export default function MiniDrawer({ open, setOpen }) {
               {auth?.user?.charAt(0)?.toUpperCase() +
                 auth?.user?.charAt(1)?.toUpperCase()}
             </Avatar> */}
-           {imageUrl !=" "&& <img onClick={e => {
-              navigate("/profile")
-            }}
-              src={imageUrl} width="40" height="40" style={{ borderRadius: "50%" }} />}
+            {imageUrl != " " && (
+              <img
+                onClick={(e) => {
+                  navigate("/profile");
+                }}
+                src={imageUrl}
+                width="40"
+                height="40"
+                style={{ borderRadius: "50%" }}
+              />
+            )}
 
-            { imageUrl ==" "&&<img onClick={e => {
-              navigate("/profile")
-            }}
-              src="profile.jpg" width="40" height="40" style={{ borderRadius: "50%" }} />}
+            {imageUrl == " " && (
+              <img
+                onClick={(e) => {
+                  navigate("/profile");
+                }}
+                src="profile.jpg"
+                width="40"
+                height="40"
+                style={{ borderRadius: "50%" }}
+              />
+            )}
 
-              
             {open && (
               <div>
                 <Typography
