@@ -25,6 +25,7 @@ import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
 import { Controller } from "react-hook-form";
+import useHead from "../../hooks/useHead";
 
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
 export default function ExecutionToolbar({
@@ -37,16 +38,13 @@ export default function ExecutionToolbar({
 }) {
   console.log(applicationType);
   const { auth } = useAuth();
+  const { setShowloader, setSnackbarData } = useHead();
   const navigate = useNavigate();
   const location = useLocation();
   const [buildEnvList, setBuildEnvList] = useState([]);
   const [execEnvList, setExecEnvList] = useState([]);
-  const [clientInactive, setClientInactive] = useState(false);
-  const [jarConnected, setJarConnected] = useState(false);
-  const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
-  const [remoteAPiFails, setRemoteAPiFails] = useState(false);
+
   const [execLoc, setExecLoc] = useState("local");
-  // const [buildEnv,setBuildEnv] = useState("Testing")
   const schema = yup.object().shape({
     executionLoc: yup.string().required(),
     buildenvName: yup.string().required(),
@@ -67,25 +65,26 @@ export default function ExecutionToolbar({
   const anchorRef = React.useRef(null);
   const [buildEnvId, setBuildEnvId] = useState();
   const [runtimeVariable, setRunTimeVariable] = useState();
-  const [snack, setSnack] = useState(false);
-  const [showLoading, setShowLoading] = useState(false);
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const executionMethodSelector = (data) => {
-    console.log(data);
-    applicationType === 1 ? onApiSubmitExecute(data) : onSubmitExecute(data);
+  const execute = (data) => {
+    onSubmit(data, true);
+  };
+  const generate = (data) => {
+    onSubmit(data, false);
   };
 
-  const generateMethodSelector = (data) => {
-    applicationType === 1 ? onApiSubmitGenerate(data) : onSubmitGenerate(data);
-  };
+  const onSubmit = (data, isExecute) => {
+    if (selectedDatasets?.length > 0) {
+      setShowloader(true);
+      const url =
+        applicationType === 1
+          ? "/qfservice/ExecuteTestcase"
+          : "/qfservice/webtestcase/ExecuteWebTestcase";
 
-  const onSubmitExecute = (data) => {
-    if (selectedDatasets.length != 0) {
-      setShowLoading(true);
-      const executionData = {
+      const webExecutionData = {
         testcase_id: testcaseId,
         testcase_datasets_ids_list: selectedDatasets,
         config_id: null,
@@ -97,98 +96,13 @@ export default function ExecutionToolbar({
         repository_commit_message: "",
         testcase_overwrite: false,
         runtimevariables: data?.buildenvName?.split("&")[2],
-        is_execute: true,
-        is_generate: data?.regenerateScript?.length > 0,
+        is_execute: isExecute,
+        is_generate: data?.regenerateScript?.length > 0 || !isExecute,
         client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
         user_id: auth?.userId,
       };
-      axios
-        .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
-        .then((resp) => {
-          resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
-          resp?.data?.status === "FAIL" && setShowLoading(false);
-          if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
-            axios
-              .postForm(`http://127.0.0.1:8765/connect`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-                setShowLoading(false);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-                setShowLoading(false);
-              });
-          } else {
-            setRemoteExecutionsuccess(true);
-            setShowLoading(false);
-          }
-        });
-    } else {
-      setSnack(true);
-      setTimeout(() => {
-        setSnack(false);
-      }, 3000);
-    }
-  };
-  const onSubmitGenerate = (data) => {
-    if (selectedDatasets.length != 0) {
-      setShowLoading(true);
-      const executionData = {
-        testcase_id: testcaseId,
-        testcase_datasets_ids_list: selectedDatasets,
-        config_id: null,
-        config_name: null,
-        build_environment_name: data?.buildenvName?.split("&")[1],
-        build_environment_id: data?.buildenvName?.split("&")[0],
-        browser_type: data?.browser?.toString(),
-        execution_location: data?.executionLoc,
-        repository_commit_message: "",
-        testcase_overwrite: false,
-        runtimevariables: data?.buildenvName?.split("&")[2],
-        is_execute: false,
-        is_generate: true,
-        client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        user_id: auth?.userId,
-      };
-      axios
-        .post(`/qfservice/webtestcase/ExecuteWebTestcase`, executionData)
-        .then((resp) => {
-          resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
-          resp?.data?.status === "FAIL" && setShowLoading(false);
-          if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
-            axios
-              .postForm(`http://127.0.0.1:8765/connect`, {
-                data: resp?.data?.info,
-                jarName: `code`,
-              })
-              .then((resp) => {
-                setJarConnected(true);
-                setShowLoading(false);
-              })
-              .catch((err) => {
-                err.message === "Network Error" && setClientInactive(true);
-                setShowLoading(false);
-              });
-          } else {
-            setRemoteExecutionsuccess(true);
-            setShowLoading(false);
-          }
-        });
-    } else {
-      setSnack(true);
-      setTimeout(() => {
-        setSnack(false);
-      }, 3000);
-    }
-  };
 
-  const onApiSubmitExecute = (data) => {
-    if (selectedDatasets.length != 0) {
-      setShowLoading(true);
-      const executionData = {
+      const apiExecutionData = {
         testcase_id: testcaseId,
         user_id: auth?.userId,
         testcase_datasets_ids_list: selectedDatasets,
@@ -197,60 +111,25 @@ export default function ExecutionToolbar({
         repository_commit_message: "",
         testcase_overwrite: false,
         runtimevariables: data?.buildenvName?.split("&")[2],
-        is_execute: true,
-        is_generate: data?.regenerateScript?.length > 0,
+        is_execute: isExecute,
+        is_generate: data?.regenerateScript?.length > 0 || !isExecute,
         client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
         project_id: projectId,
       };
-      axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
-        resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
-        resp?.data?.status === "FAIL" && setShowLoading(false);
-        if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
-          axios
-            .postForm(`http://127.0.0.1:8765/connect`, {
-              data: resp?.data?.info,
-              jarName: `code`,
-            })
-            .then((resp) => {
-              setJarConnected(true);
-              setShowLoading(false);
-            })
-            .catch((err) => {
-              err.message === "Network Error" && setClientInactive(true);
-              setShowLoading(false);
-            });
-        } else {
-          setRemoteExecutionsuccess(true);
-          setShowLoading(false);
-        }
-      });
-    } else {
-      setSnack(true);
-      setTimeout(() => {
-        setSnack(false);
-      }, 3000);
-    }
-  };
 
-  const onApiSubmitGenerate = (data) => {
-    if (selectedDatasets.length != 0) {
-      setShowLoading(true);
-      const executionData = {
-        testcase_id: testcaseId,
-        user_id: auth?.userId,
-        testcase_datasets_ids_list: selectedDatasets,
-        build_environment_name: data?.buildenvName?.split("&")[1],
-        execution_location: data?.executionLoc,
-        repository_commit_message: "",
-        testcase_overwrite: false,
-        runtimevariables: data?.buildenvName?.split("&")[2],
-        is_execute: false,
-        is_generate: true,
-        client_timezone_id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      };
-      axios.post(`/qfservice/ExecuteTestcase`, executionData).then((resp) => {
-        resp?.data?.status === "FAIL" && setRemoteAPiFails(true);
-        resp?.data?.status === "FAIL" && setShowLoading(false);
+      const executionData =
+        applicationType === 1 ? apiExecutionData : webExecutionData;
+
+      axios.post(url, executionData).then((resp) => {
+        console.log(resp);
+        if (resp?.data?.status === "FAIL") {
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: "Something went wrong!",
+            severity: "error",
+          });
+        }
         if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
           axios
             .postForm(`http://127.0.0.1:8765/connect`, {
@@ -258,23 +137,46 @@ export default function ExecutionToolbar({
               jarName: `code`,
             })
             .then((resp) => {
-              setJarConnected(true);
-              setShowLoading(false);
+              console.log(resp);
+              setShowloader(false);
+              setSnackbarData({
+                status: true,
+                message: "Jar client launched Successfuly",
+                severity: "SUCCESS",
+              });
             })
             .catch((err) => {
-              err.message === "Network Error" && setClientInactive(true);
-              setShowLoading(false);
+              console.log(err);
+              setShowloader(false);
+              setSnackbarData({
+                status: true,
+                message: "Jar client not Up and Running, please launch !",
+                severity: "error",
+              });
             });
+        } else if (resp?.data?.status !== "SUCCESS") {
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: "Something went wrong !",
+            severity: "error",
+          });
         } else {
-          setRemoteExecutionsuccess(true);
-          setShowLoading(false);
+          console.log("remote");
+          setShowloader(false);
+          setSnackbarData({
+            status: true,
+            message: "Remote execution Seccessful",
+            severity: "SUCCESS",
+          });
         }
       });
     } else {
-      setSnack(true);
-      setTimeout(() => {
-        setSnack(false);
-      }, 3000);
+      setSnackbarData({
+        status: true,
+        message: "Select at least one Testcase!",
+        severity: "error",
+      });
     }
   };
 
@@ -329,43 +231,12 @@ export default function ExecutionToolbar({
 
   return (
     <form>
-      <SnackbarNotify
-        open={clientInactive}
-        close={setClientInactive}
-        msg={"Local Client Jar is not running!"}
-        severity="error"
-      />
-      <SnackbarNotify
-        open={remoteAPiFails}
-        close={setRemoteAPiFails}
-        msg={"Somthing went wrong , Info Null "}
-        severity="error"
-      />
-      <SnackbarNotify
-        open={jarConnected}
-        close={setJarConnected}
-        msg={"Local Client Jar Launched!"}
-        severity="success"
-      />
-      <SnackbarNotify
-        open={remoteExecutionsuccess}
-        close={setRemoteExecutionsuccess}
-        msg={"Scripts Executed Successfully"}
-        severity="success"
-      />
-      <SnackbarNotify
-        open={snack}
-        close={setSnack}
-        msg={"Please select atleast one dataset"}
-        severity="error"
-      />
       <Grid container>
         <Grid item container xs={10} spacing={1} justifyContent="flex-start">
           <Grid item xs={2} sm={4} md={4} lg={2.5}>
             <label>Execution Location</label>
             <SelectElement
               name="executionLoc"
-              // label="Execution Location"
               size="small"
               fullWidth
               control={control}
@@ -474,7 +345,7 @@ export default function ExecutionToolbar({
                     fullWidth
                     // type="submit"
                     sx={{ backgroundColor: "#009fee" }}
-                    onClick={handleSubmit(executionMethodSelector)}
+                    onClick={handleSubmit(execute)}
                   >
                     Execute
                   </Button>
@@ -513,7 +384,7 @@ export default function ExecutionToolbar({
                       <Paper>
                         <MenuList id="split-button-menu" autoFocusItem>
                           <MenuItem
-                            onClick={handleSubmit(generateMethodSelector)}
+                            onClick={handleSubmit(generate)}
                             size="small"
                           >
                             GENERATE Script
@@ -551,7 +422,6 @@ export default function ExecutionToolbar({
           />
         </Stack>
       )}
-      <BackdropLoader open={showLoading} />
     </form>
   );
 }
