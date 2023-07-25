@@ -181,9 +181,14 @@ function CreateTestCase() {
                 sprint_name: jiraSprint[0].name
             }
             getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
-
+            sprintData.sprint_id = jiraSprint[0]?.sprint_id
+            sprintData.sprint_name = jiraSprint[0]?.name
         }
     }, [jiraSprint])
+
+    useEffect(() => {
+        sprintData.issue_id = jiraIssue[0]?.issue_id  
+    }, [jiraIssue])
 
     useEffect(() => {
         getProject(setProject, auth.userId)
