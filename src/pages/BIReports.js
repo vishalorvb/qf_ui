@@ -1,16 +1,8 @@
 import {
-  Autocomplete,
   Button,
-  FormControl,
-  //   Checkbox,
   Grid,
   IconButton,
-  InputLabel,
-  ListItemText,
-  MenuItem,
-  Select,
   Stack,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -23,39 +15,29 @@ import useAuth from "../hooks/useAuth";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 // import DeleteTestset from "../Components/TestSet/DeleteTestset";
 import { deleteReport } from "../Services/ReportService";
 import LiveAutocomplete from "../CustomComponent/LiveAutocomplete";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const data = [];
+import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
+import ConfirmPop from "../CustomComponent/ConfirmPop";
 
 function BIReports() {
-  // const [selectedTestset, setSelectedTestset] = useState({});
   const [project, setProject] = useState([]);
   const [testset, setTestset] = useState([]);
   const [bitestset, setBiTestset] = useState([]);
   const navigate = useNavigate();
-  const { auth } = useAuth();
-  const [openDelete, setOpenDelete] = useState(false);
-  const [deleteObject, setDeleteObject] = useState([]);
-  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
-  const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [msg, setMsg] = useState("");
-  const { setHeader, globalProject, setglobalProject, setSnackbarData } =
-    useHead();
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const { auth } = useAuth();
+  const {
+    setHeader,
+    globalProject,
+    setglobalProject,
+    setSnackbarData,
+    globalApplication,
+    setglobalApplication,
+  } = useHead();
+
   const handleSelectChange = (event, value) => {
     console.log(value);
     setSelectedOptions(value);
@@ -80,11 +62,9 @@ function BIReports() {
     });
   };
 
-  const deleteUserHandler = (e) => {
-    setOpenDelete(true);
-    console.log(e.testsetmap_id);
-    setDeleteObject(e);
-    deleteReport(e.testsetmap_id);
+  const handleDelete = (e) => {
+    deleteReport(e.testsetmap_id, getTestsets);
+    setOpenConfirmDelete(false);
   };
 
   const data = [];
@@ -99,15 +79,7 @@ function BIReports() {
           testset_id: option.testset_id,
         });
       });
-      axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {
-        const message = resp?.data?.status ? resp?.data?.status : [];
-        setMsg(message);
-        setAddSuccessMsg(true);
-        getTestsets();
-        setTimeout(() => {
-          setAddSuccessMsg(false);
-        }, 3000);
-      });
+      axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {});
     } else {
       console.log(testset);
       setSnackbarData({
@@ -128,18 +100,18 @@ function BIReports() {
             rows={item.testsets}
             getRowId={(row) => row.testsetmap_id}
           />
-          <Stack mt={2} spacing={2} direction="column" mb={3}>
-            <p htmlFor="">
-              Total Phases {item.total_phases}{" "}
+          <Stack mt={1} spacing={1} direction="column" mb={3}>
+            <Typography>
+              Total Phases {item.total_phases} :
               <span
                 onClick={() => phaseHandler(item.total_phases, item.project_id)}
                 style={{ color: "#009fee", cursor: "pointer" }}
               >
                 Click
               </span>
-            </p>
-            <p htmlFor="">
-              Total Cycles {item.total_cycles}{" "}
+            </Typography>
+            <Typography>
+              Total Cycles {item.total_cycles} :
               <span
                 onClick={() =>
                   cyclesHandler(
@@ -152,7 +124,7 @@ function BIReports() {
               >
                 Click
               </span>
-            </p>
+            </Typography>
           </Stack>
         </AccordionTemplate>
       );
@@ -198,15 +170,21 @@ function BIReports() {
                 <Tooltip title="Delete">
                   <IconButton
                     onClick={(e) => {
-                      deleteUserHandler(param.row);
+                      setOpenConfirmDelete(true);
                     }}
-                    //   sx={{ ml: 4 }}
                   >
                     <DeleteOutlineOutlinedIcon />
                   </IconButton>
                 </Tooltip>
               </Grid>
             </Grid>
+            <ConfirmPop
+              open={openConfirmDelete}
+              handleClose={() => setOpenConfirmDelete(false)}
+              heading={"Delete Report"}
+              message={"Are you sure you want to delete this Report?"}
+              onConfirm={() => handleDelete(param.row)}
+            ></ConfirmPop>
           </>
         );
       },
@@ -231,24 +209,6 @@ function BIReports() {
   }, [auth.userId]);
 
   useEffect(() => {
-    if (globalProject == null) {
-      setglobalProject(project[0]);
-    }
-  }, [project]);
-
-  useEffect(() => {
-    globalProject?.project_id &&
-      axios
-        .post(
-          `Biservice/bireport/gettestsets?project_id=${globalProject?.project_id}&reqst`
-        )
-        .then((resp) => {
-          const testsets = resp?.data?.info ? resp?.data?.info : [];
-          setTestset(testsets);
-        });
-  }, [globalProject]);
-
-  useEffect(() => {
     setHeader((ps) => {
       return {
         ...ps,
@@ -259,80 +219,43 @@ function BIReports() {
 
   return (
     <>
-      <Grid container>
-        <Grid
-          item
-          container
-          justifyContent="flex-start"
-          mb={3}
-          spacing={2}
-          md={12}
-        >
-          <Grid item md={2}>
-            <label htmlFor="">
-              Projects <span className="importantfield">*</span>
-            </label>
-            <Autocomplete
-              disablePortal
-              disableClearable
-              id="project_id"
-              options={project}
-              value={globalProject || null}
-              getOptionLabel={(option) =>
-                option.project_name ? option.project_name : ""
-              }
-              onChange={(e, value) => {
-                setglobalProject(value);
-              }}
-              renderInput={(params) => (
-                <TextField {...params} size="small" fullWidth />
-              )}
-            />
-          </Grid>
-          <Grid item md={2}>
-            <Stack>
-              <label htmlFor="">
-                Testsets <span className="importantfield">*</span>
-              </label>
-              <LiveAutocomplete onChange={handleSelectChange} />
-            </Stack>
-          </Grid>
-          <Grid item md={6} mt={2.5} ml={3}>
-            <Button
-              variant="contained"
-              type="submit"
-              onClick={() => addHandler()}
-            >
-              Add
-            </Button>
-          </Grid>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        spacing={2}
+      >
+        <Grid item md={4}>
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+            isApplication={false}
+          />
+        </Grid>
+        <Grid item md={2}>
+          <label>
+            Testsets <span className="importantfield">*</span>
+          </label>
+          <LiveAutocomplete
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+            onChange={handleSelectChange}
+          />
+        </Grid>
+        <Grid item md={1} mb={0.5}>
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={() => addHandler()}
+          >
+            Add
+          </Button>
         </Grid>
       </Grid>
       {TestsetsData(bitestset, columns, phaseHandler, cyclesHandler)}
-      {/* {openDelete ? (
-        <DeleteTestset
-          object={deleteObject}
-          openDelete={openDelete}
-          setOpenDelete={setOpenDelete}
-          // loggedInId={loggedInId}
-          getTestsets={getTestsets}
-          setDelSuccessMsg={setDelSuccessMsg}
-        />
-      ) : (
-        ""
-      )} */}
-      <SnackbarNotify
-        open={delSuccessMsg}
-        close={setDelSuccessMsg}
-        msg="Testset deleted successfully"
-        severity="success"
-      />
-      <SnackbarNotify
-        open={addSuccessMsg}
-        close={setAddSuccessMsg}
-        msg={msg == "SUCCESS" ? "Testset Added successfully" : "Durga"}
-        severity="success"
-      />
     </>
   );
 }

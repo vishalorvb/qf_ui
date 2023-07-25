@@ -1,9 +1,12 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
 import useHead from "../hooks/useHead";
 
-export default function LiveAutocomplete({ onChange }) {
+export default function LiveAutocomplete({
+  selectedOptions,
+  setSelectedOptions,
+}) {
   const { globalProject } = useHead();
   const [options, setOptions] = useState([]);
   const previousController = useRef();
@@ -30,6 +33,10 @@ export default function LiveAutocomplete({ onChange }) {
       });
   };
 
+  useEffect(() => {
+    setSelectedOptions([]);
+  }, [globalProject]);
+
   const onInputChange = (event, value, reason) => {
     if (value) {
       getData(value);
@@ -40,11 +47,15 @@ export default function LiveAutocomplete({ onChange }) {
 
   return (
     <Autocomplete
+      value={selectedOptions}
       multiple
       options={options}
       onInputChange={onInputChange}
       getOptionLabel={(option) => option.testset_name}
-      onChange={onChange}
+      onChange={(event, value) => {
+        console.log(value);
+        setSelectedOptions(value);
+      }}
       renderInput={(params) => (
         <TextField {...params} size="small" variant="outlined" />
       )}
