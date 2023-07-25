@@ -196,7 +196,6 @@ export async function getElement(screenId, callback) {
     });
 }
 
-<<<<<<< HEAD
 export async function getSprint_in_testcase(apitestcaseid, webtestcaseid) {
   return axios
     .get(
@@ -208,14 +207,4 @@ export async function getSprint_in_testcase(apitestcaseid, webtestcaseid) {
       }
       return res.data.info?.filter((sprint) => sprint.is_selected);
     });
-=======
-
-export async function getSprint_in_testcase(projectId,testcaseId){
-    return axios.get(`${baseUrl}/qfservice/webtestcase/getTestcaseSprints?project_id=${projectId}&testcase_id=${testcaseId}`).then(res =>{
-        if(res.data.info ==null){
-            return []
-        }
-        return res.data.info?.filter(sprint => sprint.is_selected)
-    })
->>>>>>> project
 }
