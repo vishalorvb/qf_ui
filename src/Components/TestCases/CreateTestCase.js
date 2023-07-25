@@ -14,6 +14,7 @@ import { CreateTestCaseService } from "../../Services/TestCaseService"
 import MapApiTestCase from "./apiTestcase/MapApiTestCase"
 import ElementList from "./ElementList"
 import { getElement } from "../../Services/TestCaseService"
+import { getSprint_in_testcase } from "../../Services/TestCaseService"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -156,7 +157,15 @@ function CreateTestCase() {
     useEffect(() => {
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setApplication, globalProject?.project_id)
-            getSprint(setJiraSprint, globalProject?.project_id)
+            if(TCdata.testcase_id == undefined){
+                getSprint(setJiraSprint, globalProject?.project_id)
+            }
+            else{
+                getSprint_in_testcase(globalApplication.module_type == 1 ? TCdata.testcase_id : 0, globalApplication.module_type == 2 ? TCdata.testcase_id : 0).then(res=>{
+                    setJiraSprint(res)
+                })
+            }
+            
         }
     }, [globalProject])
     useEffect(() => {
@@ -174,7 +183,6 @@ function CreateTestCase() {
             getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
 
         }
-        console.log(jiraSprint)
     }, [jiraSprint])
 
     useEffect(() => {
@@ -202,14 +210,26 @@ function CreateTestCase() {
 
 
     useEffect(() => {
-        console.log(screenList)
         if (screenList.length > 0) {
             getElement(screenList[0].screenId, () => { })
         }
 
     }, [screenList])
 
+function getSprint_of_testcase(){
 
+}
+
+    useEffect(() => {
+        if (TCdata.testcase_id != undefined) {
+            getSprint_in_testcase(globalApplication.module_type == 1 ? TCdata.testcase_id : 0, globalApplication.module_type == 2 ? TCdata.testcase_id : 0).then(res => {
+                if (res?.length > 0) {
+                    sprintData.sprint_id = res[0].sprint_id
+                    sprintData.sprint_name = res[0].name
+                }
+            })
+        }
+    }, [])
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
