@@ -183,7 +183,7 @@ export const reportsManagementList = [
     icon: <i className="qf icon-reports"></i>,
   },
   {
-    name: "BIReports",
+    name: "PowerBI",
     route: "",
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-reports"></i>,
@@ -194,7 +194,7 @@ export const reportsManagementList = [
         accessRole: [1, 2, 4],
       },
       {
-        name: "BIReport",
+        name: "BIReports",
         route: "https://app.powerbi.com/",
         accessRole: [1, 2, 4],
       },

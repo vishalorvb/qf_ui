@@ -11,6 +11,7 @@ import {
   Select,
   Tooltip,
 } from "@mui/material";
+import ErrorIcon from "@mui/icons-material/Error";
 import {
   DeleteManualTestcase,
   ExportManualTestcases,
@@ -29,6 +30,7 @@ import SyncIcon from "@mui/icons-material/Sync";
 import { useNavigate } from "react-router-dom";
 import TableActions from "../../CustomComponent/TableActions";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import { AddAlert } from "@mui/icons-material";
 
 let manual_testcase_id = 0;
 let snakbarmsg = "";
@@ -42,7 +44,8 @@ const TestLibrary = () => {
   const [projectKey, setProjectKey] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState();
-  const { globalProject, setglobalProject,setSnackbarData,setHeader } = useHead();
+  const { globalProject, setglobalProject, setSnackbarData, setHeader } =
+    useHead();
   const [projectsList, setProjectList] = useState([]);
   const { auth } = useAuth();
   const userId = auth.info.id;
@@ -369,8 +372,8 @@ const TestLibrary = () => {
   useEffect(() => {
     getProject((res) => {
       setProjectList(res);
-      if(globalProject == null){
-     setglobalProject(res[0]);
+      if (globalProject == null) {
+        setglobalProject(res[0]);
       }
     }, auth.userId);
     if (globalProject == null) {
@@ -659,12 +662,10 @@ const TestLibrary = () => {
                 <Grid item>
                   <Button
                     variant="contained"
-                    onClick={handleClick}
-                    startIcon={<SyncIcon />}
-                    size="small"
+                    startIcon={<ErrorIcon />}
                     style={{ marginBottom: "4px" }}
                   >
-                    Configure JIRA
+                    JIRA NOT CONFIGURED
                   </Button>
                 </Grid>
               </>
