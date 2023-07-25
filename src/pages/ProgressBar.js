@@ -27,16 +27,22 @@ const ProgressBar = ({ percentage }) => {
                 }
             }, speed);
         });
+
     }, [percentage])
 
 
-
     return (
-        <div class="circular-progress" data-inner-circle-color="white" data-percentage={percentage} data-progress-color="#009fee" data-bg-color="rgba(57,80,155,.1)" style={{ marginLeft: "140px", marginTop: "25px" }}>
-            <div class="inner-circle"></div>
-            <p class="percentage" style={{ color: "black", fontWeight: "400" }}>0%</p>
-        </div>
-    )
+        isNaN(Number(percentage)) ? (
+            <div>
+                No prediction Found
+            </div>
+        ) : (
+            <div class="circular-progress" data-inner-circle-color="white" data-percentage={percentage} data-progress-color="#009fee" data-bg-color="rgba(57,80,155,.1)" style={{ marginLeft: "140px", marginTop: "25px" }}>
+                <div class="inner-circle"></div>
+                <p class="percentage" style={{ color: "black", fontWeight: "400" }}>0%</p>
+            </div>
+        )
+    );
 }
 
 export default ProgressBar

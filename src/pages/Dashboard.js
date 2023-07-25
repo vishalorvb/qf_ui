@@ -37,16 +37,9 @@ import {
 } from "@mui/material";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
-import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
-
+import { ReportPercentage } from "../Services/DashboardService";
 export default function Dashboard() {
-  const {
-    setHeader,
-    globalProject,
-    setglobalProject,
-    globalApplication,
-    setglobalApplication,
-  } = useHead();
+  const { setHeader, globalProject, setglobalProject } = useHead();
   const navigate = useNavigate();
   const { auth } = useAuth();
   const header = [
@@ -87,7 +80,7 @@ export default function Dashboard() {
   const [showFailMsg, setShowFailMsg] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [predictionInfo, setPredictionInfo] = useState([]);
-  let [percentage, setPercentage] = useState(0);
+  let [percentage, setPercentage] = useState(10);
   let [faildata, setFaildata] = useState([]);
   function dashboardDetails() {
     setAutomationTDgraph(false);
@@ -98,7 +91,6 @@ export default function Dashboard() {
       .then((res) => {
         setInfo(res?.data?.data?.model);
         setTestCases(res?.data?.data?.model.automation_test_cases_count);
-        console.log(res?.data?.data?.model.automation_test_cases_count);
         setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count);
         settotalSprint(res?.data?.data?.model.sprint_overview);
         if (res?.data?.data?.model.automation_graph?.length > 0) {
@@ -154,7 +146,6 @@ export default function Dashboard() {
         if (res.data.status == "FAIL") {
           setFailMsg(res.data.message);
           setSnackbar(true);
-          console.log(res.data.message);
           if (
             res.data.message ==
             "Prediction is not available due to insufficient data."
@@ -269,14 +260,19 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    axios
-      .post(
-        `/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${globalProject?.project_id}`
-      )
-      .then((res) => {
-        setPercentage(Math.floor(res.data.data.total_pass_percentage));
-      });
+    //axios
+    //  .post(
+    //    `/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${globalProject?.project_id}`
+    //  )
+    //  .then((res) => {
+    //    setPercentage(Math.floor(res.data.data.total_pass_percentage));
+    //  });
+
+    ReportPercentage(setPercentage, globalProject?.project_id);
   }, [globalProject]);
+  useEffect(() => {
+    console.log(percentage);
+  }, [percentage]);
   const graphData = {
     title: {
       text: "Automation",
@@ -482,41 +478,41 @@ export default function Dashboard() {
     ),
   ];
 
-  useEffect(() => {
-    setSprintName("All");
-    setSprintList([]);
-    setAutomationTDgraph(false);
-    setShowTensorFlow(false);
-  }, [globalProject]);
-
   return (
     <div style={{ overflowX: "hidden" }}>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        spacing={2}
-        mb={2}
-      >
-        <Grid item md={4}>
-          <ProjectnApplicationSelector
-            globalProject={globalProject}
-            setglobalProject={setglobalProject}
-            globalApplication={globalApplication}
-            setglobalApplication={setglobalApplication}
-            isApplication={false}
+      <Grid container spacing={2} justifyContent="right">
+        <Grid item md={2}>
+          <label for="">Project:</label>
+          <Autocomplete
+            disablePortal
+            id="project_id"
+            options={projectsList}
+            value={globalProject}
+            getOptionLabel={(option) => option.project_name}
+            fullWidth
+            onChange={(e, value) => {
+              setglobalProject(value);
+              setSprintName("All");
+              setSprintList([]);
+              setAutomationTDgraph(false);
+              setShowTensorFlow(false);
+            }}
+            renderInput={(params) => <TextField {...params} size="small" />}
           />
         </Grid>
-        <Grid item md={1}>
-          <label>Sprint</label>
+        <Grid item md={2}>
+          <label for="">Sprint:</label>
           <select
-            fullWidth
             style={{ height: "38px" }}
             id="demo-simple-select"
             value={sprintName}
             onChange={(e) => {
               setSprintName(e.target.value);
+              ReportPercentage(
+                setPercentage,
+                globalProject?.project_id,
+                e.target.value == "All" ? 0 : e.target.value
+              );
             }}
           >
             <option value={"All"}>All</option>
@@ -612,62 +608,59 @@ export default function Dashboard() {
             </Card>
           </Grid>
         )}
-
-        {showTensorFlow && (
-          <Grid item md={6} justifyContent="space-between" alignItems="center">
-            <Card sx={{ maxWidth: 600, alignItems: "center" }} elevation={0}>
-              <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
-                <Typography style={{ fontSize: "20px" }}>
-                  <b>
-                    QualityFusion prediction : Success of Testcases in next
-                    sprint
+        <Grid item md={6} justifyContent="space-between" alignItems="center">
+          <Card sx={{ maxWidth: 600, alignItems: "center" }} elevation={0}>
+            <CardContent style={{ marginBottom: "20px", maxWidth: 600 }}>
+              <Typography style={{ fontSize: "20px" }}>
+                <b>
+                  QualityFusion prediction : Success of Testcases in next sprint
+                </b>
+              </Typography>
+              <ProgressBar percentage={percentage} />
+              {showFailMsg && (
+                <Typography style={{ fontSize: "50px", fontWeight: "400" }}>
+                  <b style={{ fontSize: "15px" }}>
+                    {failMsg != "Jira is not configured" ? failMsg : ""}
                   </b>
                 </Typography>
-                {showProgressBar && <ProgressBar percentage={percentage} />}
-                {showFailMsg && (
-                  <Typography style={{ fontSize: "50px", fontWeight: "400" }}>
-                    <b style={{ fontSize: "15px" }}>
-                      {failMsg != "Jira is not configured" ? failMsg : ""}
-                    </b>
-                  </Typography>
-                )}
-              </CardContent>
-              <TableContainer
-                component={Paper}
-                style={{ marginTop: "20px", marginBottom: "10px" }}
-                onClick={() => navigate("Dashboard/failedTestcases")}
+              )}
+            </CardContent>
+            <TableContainer
+              component={Paper}
+              style={{ marginTop: "20px", marginBottom: "10px" }}
+              onClick={() => navigate("Dashboard/failedTestcases")}
+            >
+              <Table
+                sx={{ minWidth: 600 }}
+                size="small"
+                aria-label="a dense table"
               >
-                <Table
-                  sx={{ minWidth: 600 }}
-                  size="small"
-                  aria-label="a dense table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Fail Prediction Testcases</TableCell>
-                      <TableCell align="right">Total</TableCell>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Fail Prediction Testcases</TableCell>
+                    <TableCell align="right">Total</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {faildata?.map((row) => (
+                    <TableRow
+                      key={row.summary}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row[0]}
+                      </TableCell>
+                      <TableCell align="right">{row[1]}</TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {faildata?.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row[0]}
-                        </TableCell>
-                        <TableCell align="right">{row[1]}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
-          </Grid>
-        )}
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </Grid>
+
         {automationTDgraph && (
           <Grid item md={6}>
             <Card sx={{ maxWidth: 600 }} elevation={0}>
