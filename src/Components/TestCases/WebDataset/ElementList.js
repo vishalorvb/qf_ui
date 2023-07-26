@@ -123,62 +123,64 @@ function ElementList({ elementList, updateDataset, screenName }) {
       field: "Datasets",
       headerName: "DataSets",
       renderCell: (param) => {
-        return (
-          <div>
-            {param.row.web_page_elements.input_type == "InputText" && (
-              <input
-                type="text"
-                placeholder="Enter Value"
-                defaultValue={param.row.dataset_values.input_value}
-                onKeyDown={(event) => {
-                  event.stopPropagation();
-                }}
-                onChange={(e) => {
-                  updateDataset(
-                    param.row.element_id,
-                    "input_value",
-                    e.target.value
-                  );
-                }}
-              />
-            )}
-            {!click.includes(param.row.web_page_elements.input_type) && (
-              <input
-                type="checkbox"
-                defaultChecked={param.row.dataset_values.is_click}
-                style={{
-                  height: "22px",
-                  width: "22px",
-                  margin: "4px",
-                  padding: "4px",
-                }}
-                onChange={(e) => {
-                  updateDataset(
-                    param.row.element_id,
-                    "is_click",
-                    e.target.checked
-                  );
-                }}
-              />
-            )}
-            {param.row.web_page_elements.tag_name == "select" && (
-              <select
-                defaultValue={param.row.dataset_values.input_value}
-                style={{ width: "100%" }}
-                onChange={(e) => {
-                  updateDataset(
-                    param.row.element_id,
-                    "input_value",
-                    e.target.value
-                  );
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: param?.row?.web_page_elements?.child_text,
-                }}
-              ></select>
-            )}
-          </div>
-        );
+        if(param.row.web_page_elements.tag_name.toLowerCase().includes("select")){
+            return(
+                <select
+                  defaultValue={param.row.dataset_values.input_value}
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    updateDataset(
+                      param.row.element_id,
+                      "input_value",
+                      e.target.value
+                    );
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: param?.row?.web_page_elements?.child_text,
+                  }}
+                ></select>
+              )
+        }
+        if(param.row.web_page_elements.input_type.toLowerCase().includes("input")){
+            return(
+                <input
+                  type="text"
+                  placeholder="Enter Value"
+                  defaultValue={param.row.dataset_values.input_value}
+                  onKeyDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onChange={(e) => {
+                    updateDataset(
+                      param.row.element_id,
+                      "input_value",
+                      e.target.value
+                    );
+                  }}
+                />
+              )
+        }
+        else{
+            return  (
+                <input
+                  type="checkbox"
+                  defaultChecked={param.row.dataset_values.is_click}
+                  style={{
+                    height: "22px",
+                    width: "22px",
+                    margin: "4px",
+                    padding: "4px",
+                  }}
+                  onChange={(e) => {
+                    updateDataset(
+                      param.row.element_id,
+                      "is_click",
+                      e.target.checked
+                    );
+                  }}
+                />
+              )
+        }
       },
       flex: 2,
       sortable: false,
