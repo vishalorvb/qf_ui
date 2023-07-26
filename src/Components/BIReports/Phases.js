@@ -71,7 +71,7 @@ export default function Phases() {
     regression_testcases,
     saved_hours,
   ];
-  let requiredOnlyAlphabets = [phase_name];
+//  let requiredOnlyAlphabets = [phase_name];
 
   const { setHeader } = useHead();
   useEffect(() => {
@@ -127,11 +127,11 @@ console.log(phaseList)
   const submit = (e) => {
     if (
       validateForm(
+        [phase_name],
+        [],
+        [],
+        [],
         requiredOnlyNumbers,
-        [],
-        [],
-        requiredOnlyAlphabets,
-        [],
         [],
         "error"
       )

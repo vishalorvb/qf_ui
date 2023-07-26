@@ -27,7 +27,7 @@ function onlyAlphabets(str) {
 }
 function onlyNumber(str) {
     const rg = new RegExp("[^0-9]");
-    return rg.test(str);
+    return !rg.test(str);
 
 }
 
@@ -108,7 +108,8 @@ export function validateForm(refs, specialcharRefs, passwordRef, onlyalphabets, 
     });
     onlynumbers.forEach(element => {
         try {
-            if (onlyNumber(element.current.value)) {
+            console.log(element.current.value)
+            if (element.current.value.trim()=="" || onlyNumber(element.current.value)==false) {
                 element.current.className = cname;
                 status = false;
                 console.log("error in Number fiels")
