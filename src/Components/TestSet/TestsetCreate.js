@@ -13,7 +13,11 @@ import { getTestcasesInProjects } from "../../Services/TestsetService";
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
-import { getSprint, getIssues } from "../../Services/TestCaseService";
+import {
+  getSprint,
+  getIssues,
+  GetTestCase,
+} from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
 import axios, { axiosPrivate } from "../../api/axios";
@@ -68,12 +72,14 @@ function TestsetCreate() {
   }, [jiraSprint]);
 
   useEffect(() => {
+    console.log(editData);
     if (globalProject?.project_id && globalApplication?.module_id) {
-      getTestcasesInProjects(
+      GetTestCase(
         setTestcaseObject,
         globalProject?.project_id,
         globalApplication?.module_id,
-        editData?.testcase_id
+        false,
+        editData?.testset_id
       );
     }
   }, [globalApplication?.module_id]);
