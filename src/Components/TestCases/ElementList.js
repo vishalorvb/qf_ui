@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function ElementList() {
-  return (
-    <div>
-      ElementList
-    </div>
-  )
+  return <div></div>;
 }
 
-export default ElementList
+export default ElementList;
