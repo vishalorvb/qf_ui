@@ -55,9 +55,7 @@ const CreateAnsibleInstance = lazy(() =>
 const UpdateAnsibleInstance = lazy(() =>
   import("../Components/ReleaseComponents/CreateAnsibleInstance")
 );
-const AddTestcaseToTestset = lazy(() =>
-  import("../Components/TestSet/AddTestcaseToTestset")
-);
+
 const CreatePipeline = lazy(() =>
   import("../Components/DevopsComponent/CreatePipeline")
 );
@@ -635,11 +633,11 @@ export const Routes = [
         element: TempDataset,
         accessRole: [1, 2, 4, 5],
       },
-    //  {
-    //    path: "updateScreenOrder",
-    //    element: UpdateScreenOrder,
-    //    accessRole: [1, 2, 4, 5],
-    //  },
+      //  {
+      //    path: "updateScreenOrder",
+      //    element: UpdateScreenOrder,
+      //    accessRole: [1, 2, 4, 5],
+      //  },
       {
         path: "updateAPIOrder",
         element: APIorderupdate,

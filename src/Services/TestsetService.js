@@ -16,18 +16,6 @@ export function getTestsets(callback, projectId, workflowID) {
     });
 }
 
-export function getTestcasesOfTestset(callback, testsetId) {
-  console.log(testsetId);
-  axios
-    .get(
-      baseUrl +
-        `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
-    )
-    .then((res) => {
-      callback(res.data.info);
-    });
-}
-
 export function getTestcaseDetails(callback, workflowID, testcaseId) {
   axios
     .get(
