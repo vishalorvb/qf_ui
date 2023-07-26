@@ -63,7 +63,7 @@ function BIReports() {
   };
 
   const handleDelete = (e) => {
-    deleteReport(e.testsetmap_id, getTestsets);
+    deleteReport(openConfirmDelete.testsetmap_id, getTestsets);
     setOpenConfirmDelete(false);
   };
 
@@ -79,7 +79,14 @@ function BIReports() {
           testset_id: option.testset_id,
         });
       });
-      axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {});
+      axios.post(`Biservice/bireport/addtestsets`, data).then((resp) => {
+        getTestsets();
+        setSnackbarData({
+          status: true,
+          message: resp?.data?.message,
+          severity: resp?.data?.status,
+        });
+      });
     } else {
       console.log(testset);
       setSnackbarData({
@@ -170,7 +177,10 @@ function BIReports() {
                 <Tooltip title="Delete">
                   <IconButton
                     onClick={(e) => {
-                      setOpenConfirmDelete(true);
+                      setOpenConfirmDelete({
+                        testsetmap_id: param?.row?.testsetmap_id,
+                        status: true,
+                      });
                     }}
                   >
                     <DeleteOutlineOutlinedIcon />
@@ -178,13 +188,6 @@ function BIReports() {
                 </Tooltip>
               </Grid>
             </Grid>
-            <ConfirmPop
-              open={openConfirmDelete}
-              handleClose={() => setOpenConfirmDelete(false)}
-              heading={"Delete Report"}
-              message={"Are you sure you want to delete this Report?"}
-              onConfirm={() => handleDelete(param.row)}
-            ></ConfirmPop>
           </>
         );
       },
@@ -256,6 +259,15 @@ function BIReports() {
         </Grid>
       </Grid>
       {TestsetsData(bitestset, columns, phaseHandler, cyclesHandler)}
+      <ConfirmPop
+        open={openConfirmDelete?.status}
+        handleClose={() =>
+          setOpenConfirmDelete({ testsetmap_id: "", status: false })
+        }
+        heading={"Delete Testset"}
+        message={"Are you sure you want to delete this Testset?"}
+        onConfirm={handleDelete}
+      ></ConfirmPop>
     </>
   );
 }
