@@ -17,7 +17,7 @@ export default function TestsetExecution() {
     setglobalApplication,
   } = useHead();
   const [testcases, setTestcases] = useState([]);
-  const [selectedItem, setSelectedItem] = useState([]);
+  const [selectedItem, setSelectedItem] = useState();
 
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();

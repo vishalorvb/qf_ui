@@ -121,10 +121,12 @@ function ExecuteTestSetDetails({
   useEffect(() => {
     console.log(globalApplication);
     if (
-      testsetId &&
+      testsetId !== null &&
+      testsetId !== undefined &&
       globalApplication !== undefined &&
       globalApplication !== null
     ) {
+      console.log(testsetId);
       globalApplication?.module_type === 1
         ? axios
             .get(`/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`)
