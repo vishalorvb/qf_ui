@@ -8,7 +8,6 @@ let userId = 1;
 export function getPipelines(callback, project_id) {
   // This function except name of state as a callback and set value in that state
   axios.get(`${baseUrl}/qfservice/pipeline/${project_id}`).then((res) => {
-    console.log(res?.data?.data);
     callback(res?.data?.data);
   });
 }
@@ -16,20 +15,17 @@ export function getPipelines(callback, project_id) {
 export function getPipelinesHistory(callback, release_log, id) {
   // This function except name of state as a callback and set value in that state
   axios.get(`${baseUrl}/qfservice/pipeline/${id}/release`).then((res) => {
-    console.log(res?.data?.data.pipelinehisotory);
     callback(res?.data?.data?.pipelinehisotory);
     release_log(res?.data?.data1);
   });
 }
 
 export function getCreatePipelineData(callback, setdefaultData, id, project_id) {
-  // This function except name of state as a callback and set value in that state
-  console.log("====================="+project_id);
+
   axios
     .get(`${baseUrl}/qfservice/project/${project_id}/pipeline/${id}`)
     .then((res) => {
       const data = res?.data?.data;
-      console.log(data);
       callback(data);
       setdefaultData({
         releaseName: data?.pipelinerelase?.release_name,
@@ -48,7 +44,7 @@ export function getCreatePipelineData(callback, setdefaultData, id, project_id) 
 export function getPipelinesHistoryReport(callback, setError, id, tag) {
   // This function except name of state as a callback and set value in that state
   axios.get(`${baseUrl}/qfservice/pipeline/report/${id}/${tag}`).then((res) => {
-    console.log(res?.data);
+
     setError(res?.data?.error?.description);
     const result = res?.data?.data;
     if (result !== null) {
@@ -92,7 +88,6 @@ export function executePipeline(callback, id, userId) {
   axios
     .post(`${baseUrl}/qfservice/executepipeline?release_id=${id}&user_id=${userId}`)
     .then((res) => {
-      console.log(res.data);
       callback(res?.data?.message);
     });
 }
@@ -116,7 +111,6 @@ export function createPipeline(callback, params, id, project_id) {
       },
     })
     .then((res) => {
-      console.log(res?.data?.data.pipelinehisotory);
       callback(res?.data?.data.pipelinehisotory);
     });
 }
