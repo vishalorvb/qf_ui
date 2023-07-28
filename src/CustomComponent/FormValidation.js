@@ -108,7 +108,6 @@ export function validateForm(refs, specialcharRefs, passwordRef, onlyalphabets, 
     });
     onlynumbers.forEach(element => {
         try {
-            console.log(element.current.value)
             if (element.current.value.trim()=="" || onlyNumber(element.current.value)==false) {
                 element.current.className = cname;
                 status = false;

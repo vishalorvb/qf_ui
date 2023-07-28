@@ -240,67 +240,67 @@ export default function Dashboard() {
       },
     },
 
-    series: [
-      {
-        name: "API",
-        data: apiTestcase,
-      },
-      {
-        name: "Web",
-        data: webTestcase,
-      },
-      {
-        name: "Android",
-        data: androidTestcase,
-      },
-      {
-        name: "iOS",
-        data: iosTestcase,
-      },
-    ],
-
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
+        series: [
+            {
+                name: "API",
+                data: apiTestcase,
             },
-          },
+            {
+                name: "Web",
+                data: webTestcase,
+            },
+            {
+                name: "Android",
+                data: androidTestcase,
+            },
+            {
+                name: "iOS",
+                data: iosTestcase,
+            },
+        ],
+
+        responsive: {
+            rules: [
+                {
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: "horizontal",
+                            align: "center",
+                            verticalAlign: "bottom",
+                        },
+                    },
+                },
+            ],
         },
-      ],
-    },
-  };
-  const testDesignGraphData = {
-    title: {
-      text: "Automation of Test Design",
-      align: "left",
-      style: {
-        "font-size": "20px",
-        "font-weight": "bold",
-        "font-family": "Roboto",
-      },
-    },
-    xAxis: {
-      categories: testDesignPeriod,
-      crosshair: true,
-    },
-    yAxis: {
-      allowDecimals: true,
-      padding: 1,
-    },
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false,
+    };
+    const testDesignGraphData = {
+        title: {
+            text: "Automation of Test Design",
+            align: "left",
+            style: {
+                "font-size": "20px",
+                "font-weight": "bold",
+                "font-family": "Roboto",
+            },
         },
-      },
-    },
+        xAxis: {
+            categories: testDesignPeriod,
+            crosshair: true,
+        },
+        yAxis: {
+            allowDecimals: true,
+            padding: 1,
+        },
+        plotOptions: {
+            series: {
+                label: {
+                    connectorAllowed: false,
+                },
+            },
+        },
 
     series: [
       {
@@ -358,43 +358,43 @@ export default function Dashboard() {
     );
   };
 
-  function createData(summary, info) {
-    return { summary, info };
-  }
+    function createData(summary, info) {
+        return { summary, info };
+    }
 
-  const rows = [
-    createData("Api Testcases", info?.api_testcases_count),
-    createData("Web Testcases", info?.web_testcases_count),
-    createData("Android Testcases", info?.android_testcases_count),
-    createData("IOS Testcases", info?.ios_testcases_count),
-  ];
+    const rows = [
+        createData("Api Testcases", info?.api_testcases_count),
+        createData("Web Testcases", info?.web_testcases_count),
+        createData("Android Testcases", info?.android_testcases_count),
+        createData("IOS Testcases", info?.ios_testcases_count),
+    ];
 
-  const row_data = [
-    createData(
-      "Total Regression Testcases",
-      info?.regression_testcases_count != undefined
-        ? info?.regression_testcases_count
-        : 0
-    ),
-    createData(
-      "Identified Automation Testcases",
-      info?.automation_testcases_by_sprint != undefined
-        ? info?.automation_testcases_by_sprint
-        : 0
-    ),
-    createData(
-      "Yet to Automate Testcases",
-      info?.yet_to_automate_testcases != undefined
-        ? info?.yet_to_automate_testcases
-        : 0
-    ),
-    createData(
-      "Test Datasets Created by Automated Testcases",
-      info?.datasets_created_for_automated_testcases != undefined
-        ? info?.datasets_created_for_automated_testcases
-        : 0
-    ),
-  ];
+    const row_data = [
+        createData(
+            "Total Regression Testcases",
+            info?.regression_testcases_count != undefined
+                ? info?.regression_testcases_count
+                : 0
+        ),
+        createData(
+            "Identified Automation Testcases",
+            info?.automation_testcases_by_sprint != undefined
+                ? info?.automation_testcases_by_sprint
+                : 0
+        ),
+        createData(
+            "Yet to Automate Testcases",
+            info?.yet_to_automate_testcases != undefined
+                ? info?.yet_to_automate_testcases
+                : 0
+        ),
+        createData(
+            "Test Datasets Created by Automated Testcases",
+            info?.datasets_created_for_automated_testcases != undefined
+                ? info?.datasets_created_for_automated_testcases
+                : 0
+        ),
+    ];
 
   useEffect(() => {
     setHeader((ps) => {
