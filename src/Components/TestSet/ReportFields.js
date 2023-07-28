@@ -71,28 +71,20 @@ export default function ReportFields() {
       },
     },
     {
-      field: "created_at",
+      field: "created_at_string",
       headerName: "Date",
       flex: 3,
       headerAlign: "center",
       sortable: false,
       align: "center",
-      renderCell: (params) => {
-        const date = new Date(params.row.created_at);
-        const utcTime = date.toLocaleString("en-US", { timeZone: "UTC" });
-        return utcTime;
-      },
     },
     {
-      field: "executed_by",
+      field: "user_name",
       headerName: "Executed By",
       flex: 3,
       headerAlign: "center",
       sortable: false,
       align: "center",
-      renderCell: (params) => {
-        return <div>{params.row.user_name}</div>;
-      },
     },
     {
       field: "report_result",
