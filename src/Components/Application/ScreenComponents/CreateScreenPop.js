@@ -1,12 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  TextField,
-} from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
@@ -16,7 +8,6 @@ import useHead from "../../../hooks/useHead";
 
 export default function CreateScreenPop(props) {
   const { elementsList, applicationId, pageId, screenName, screenId } = props;
-  console.log(props);
   const { auth } = useAuth();
   const navigate = useNavigate();
   const { setSnackbarData } = useHead();

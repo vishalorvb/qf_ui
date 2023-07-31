@@ -1,21 +1,20 @@
 import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    IconButton,
-    Typography,
-  } from "@mui/material";
-  import React from "react";
-  import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-  import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-  import useAuth from "../../hooks/useAuth";
-  import useAxios from "../../hooks/useAxios";
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import useAxios from "../../hooks/useAxios";
 
 function ActiveBIReportsPopup(props) {
-    const { openActive, setOpenActive, object, getReports, setActSuccessMsg } =
+  const { openActive, setOpenActive, object, getReports, setActSuccessMsg } =
     props;
   const axiosPrivate = useAxios();
   const id = object.report_id;
@@ -26,9 +25,7 @@ function ActiveBIReportsPopup(props) {
 
   const submit = () => {
     axiosPrivate
-      .post(
-        `Biservice/configbireport/testset/status?report_id=${id}&status=1`
-      )
+      .post(`Biservice/configbireport/testset/status?report_id=${id}&status=1`)
       .then((res) => {
         console.log(res.message);
         setActSuccessMsg(true);
@@ -107,4 +104,4 @@ function ActiveBIReportsPopup(props) {
   );
 }
 
-export default ActiveBIReportsPopup
+export default ActiveBIReportsPopup;

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import useHead from "../hooks/useHead";
-import React, { useState } from "react";
 import ProjectTable from "../Components/ProjectComponents/ProjectTable";
-import { useNavigate, Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Projects() {
   const location = useLocation();

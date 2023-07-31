@@ -2,7 +2,6 @@ import {
   Avatar,
   Button,
   Grid,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -10,14 +9,13 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import useHead from "../../hooks/useHead";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Divider from "@mui/material/Divider";
-import { Container, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
 import { useLocation, useNavigate } from "react-router";
 import axios, { axiosPrivate } from "../../api/axios";
@@ -55,7 +53,9 @@ export default function Phases() {
   const [openNewPhase, setOpenNewPhase] = useState(true);
   const [openPhase, setOpenPhase] = useState(false);
   const [phaseId, setPhaseId] = useState(false);
-  const [phases, setPhases] = useState(location.state.param1 ? location.state.param1 : 0);
+  const [phases, setPhases] = useState(
+    location.state.param1 ? location.state.param1 : 0
+  );
   // var phases = location.state.param1 ? location.state.param1 : 0;
   // var phases;
   var projectId = location.state.param2 ? location.state.param2 : 0;
@@ -71,7 +71,7 @@ export default function Phases() {
     regression_testcases,
     saved_hours,
   ];
-//  let requiredOnlyAlphabets = [phase_name];
+  //  let requiredOnlyAlphabets = [phase_name];
 
   const { setHeader } = useHead();
   useEffect(() => {
@@ -98,9 +98,9 @@ export default function Phases() {
     getPhases();
   }, [projectId]);
 
-useEffect(() => {
-console.log(phaseList)
-}, [phaseList])
+  useEffect(() => {
+    console.log(phaseList);
+  }, [phaseList]);
 
   const clickHandler = (index) => {
     setOpenNewPhase(false);
@@ -122,19 +122,11 @@ console.log(phaseList)
     console.log(phaseList[index].id);
     setOpenDelete(true);
     setDeleteObject(phaseList[index]);
-  }
+  };
 
   const submit = (e) => {
     if (
-      validateForm(
-        [phase_name],
-        [],
-        [],
-        [],
-        requiredOnlyNumbers,
-        [],
-        "error"
-      )
+      validateForm([phase_name], [], [], [], requiredOnlyNumbers, [], "error")
     ) {
       var data = {
         id: 0,
@@ -160,7 +152,7 @@ console.log(phaseList)
             setTimeout(() => {
               setAddSuccessMsg(false);
               getPhases();
-            //  navigate("/BIReports");
+              //  navigate("/BIReports");
             }, 3000);
           } else {
             setAddErrorMsg(true);

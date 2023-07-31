@@ -12,8 +12,6 @@ import ActiveBIReportsPopup from "./ActiveBIReportsPopup";
 import DeactiveBIReportsPopup from "./DeactiveBIReportsPopup";
 
 function ActiveReports() {
-  const [project, setProject] = useState([]);
-  const { auth } = useAuth();
   const location = useLocation();
   const [bireports, setBiReports] = useState([]);
   const [openActive, setOpenActive] = useState(false);
@@ -24,7 +22,6 @@ function ActiveReports() {
   const [deactSuccessMsg, setDeactSuccessMsg] = useState(false);
 
   var TSMapping_Id = location.state.param1 ? location.state.param1 : 0;
-  var projectId = location.state.param2 ? location.state.param2 : 0;
 
   const activateBIHandler = (e) => {
     setOpenActive(true);
@@ -110,12 +107,14 @@ function ActiveReports() {
 
   const getBIReports = () => {
     TSMapping_Id &&
-      axios.get(`Biservice/configbireport/testset/${TSMapping_Id}`).then((resp) => {
-        console.log(resp?.data?.info?.bireports);
-        const reports = resp?.data?.info ? resp?.data?.info?.bireports : [];
-        setBiReports(reports);
-      });
-  }
+      axios
+        .get(`Biservice/configbireport/testset/${TSMapping_Id}`)
+        .then((resp) => {
+          console.log(resp?.data?.info?.bireports);
+          const reports = resp?.data?.info ? resp?.data?.info?.bireports : [];
+          setBiReports(reports);
+        });
+  };
 
   useEffect(() => {
     getBIReports();
@@ -124,44 +123,44 @@ function ActiveReports() {
   return (
     <div>
       {openActive ? (
-          <ActiveBIReportsPopup
-            object={activeObject}
-            openActive={openActive}
-            setOpenActive={setOpenActive}
-            getReports={getBIReports}
-            setActSuccessMsg={setActSuccessMsg}
-          />
-        ) : (
-          ""
-        )}
-        {openDeactive ? (
-          <DeactiveBIReportsPopup
-            object={deactiveObject}
-            openDeactive={openDeactive}
-            setOpenDeactive={setOpenDeactive}
-            getReports={getBIReports}
-            setDeactSuccessMsg={setDeactSuccessMsg}
-          />
-        ) : (
-          ""
-        )}
-        <SnackbarNotify
-          open={actSuccessMsg}
-          close={setActSuccessMsg}
-          msg="Report is active"
-          severity="success"
+        <ActiveBIReportsPopup
+          object={activeObject}
+          openActive={openActive}
+          setOpenActive={setOpenActive}
+          getReports={getBIReports}
+          setActSuccessMsg={setActSuccessMsg}
         />
-        <SnackbarNotify
-          open={deactSuccessMsg}
-          close={setDeactSuccessMsg}
-          msg="Report is inactive"
-          severity="success"
+      ) : (
+        ""
+      )}
+      {openDeactive ? (
+        <DeactiveBIReportsPopup
+          object={deactiveObject}
+          openDeactive={openDeactive}
+          setOpenDeactive={setOpenDeactive}
+          getReports={getBIReports}
+          setDeactSuccessMsg={setDeactSuccessMsg}
         />
+      ) : (
+        ""
+      )}
+      <SnackbarNotify
+        open={actSuccessMsg}
+        close={setActSuccessMsg}
+        msg="Report is active"
+        severity="success"
+      />
+      <SnackbarNotify
+        open={deactSuccessMsg}
+        close={setDeactSuccessMsg}
+        msg="Report is inactive"
+        severity="success"
+      />
       <Table
         hideSearch={true}
         columns={columns}
         rows={bireports}
-        getRowId={(row) => row? row.report_id : ""}
+        getRowId={(row) => (row ? row.report_id : "")}
       />
     </div>
   );

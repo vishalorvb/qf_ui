@@ -16,12 +16,7 @@ export default function CreateCycle({ testsetData, getCycles }) {
   const schema = yup.object().shape({
     cycleName: yup.string().required("Please Enter a Valid cycle Name"),
   });
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const submit = (data) => {

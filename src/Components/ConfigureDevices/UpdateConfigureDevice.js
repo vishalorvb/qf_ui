@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Grid
-} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -12,9 +9,7 @@ import { useLocation } from "react-router-dom";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 
@@ -29,7 +24,6 @@ const UpdateConfigureDevice = () => {
   const navigate = useNavigate();
   const [snack, setSnack] = useState(false);
   const { setHeader } = useHead();
-
 
   // try {
   //     specificationId
@@ -99,98 +93,98 @@ const UpdateConfigureDevice = () => {
   }, []);
   return (
     <>
-     <form onSubmit={handleUpdate}>
-      <Grid container spacing={2} justifyContent="center" alignItems="center">
-        <Grid item xs={2}>
-          <label>Configure Name :</label>
-        </Grid>
-        <Grid item xs={10}>
-          <TextField
-            id="outlined-basic"
-            value={configName}
-            required
-            size="small"
-            variant="outlined"
-            type="text"
-            defaultValue={configName}
-            sx={{ width: 300 }}
-            onChange={(e) => {
-              setConfigName(e.target.value);
-            }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <label>Platform : </label>
-        </Grid>
-        <Grid item xs={10}>
-          <Select
-            sx={{ width: 150 }}
-            value={platformType}
-            required
-            onChange={(e) => {
-              setPlatformType(e.target.value);
-            }}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-          >
-            <MenuItem value={1}>Android</MenuItem>
-            <MenuItem value={2}>Ios</MenuItem>
-          </Select>
-        </Grid>
-        <Grid item xs={2}>
-          <label>Execution Environment : </label>
-        </Grid>
-        <Grid item xs={10}>
-          <Select
-            sx={{ width: 150 }}
-            value={executionEnvironment}
-            required
-            onChange={(e) => {
-              setExecutionEnvironment(e.target.value);
-            }}
-            displayEmpty
-            inputProps={{ "aria-label": "Without label" }}
-          >
-            <MenuItem value={1}>Local</MenuItem>
-            <MenuItem value={2}>Cloud</MenuItem>
-          </Select>
-        </Grid>
-        <Grid item xs={2}>
-          <label>Device Object Info : </label>
-        </Grid>
-        <Grid item xs={10}>
-          <TextareaAutosize
-            value={configObjInfo}
-            required
-            onChange={(e) => {
-              setConfigObjInfo(e.target.value);
-            }}
-            style={{ width: 400, height: 200,fontSize : "18px"  }}
-          />
-        </Grid>
-        <Grid>
-          <Grid item xs={6}>
-            <Button
-              variant="contained"
-              type="submit"
-              style={{ marginTop: "8px" }}
+      <form onSubmit={handleUpdate}>
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
+          <Grid item xs={2}>
+            <label>Configure Name :</label>
+          </Grid>
+          <Grid item xs={10}>
+            <TextField
+              id="outlined-basic"
+              value={configName}
+              required
+              size="small"
+              variant="outlined"
+              type="text"
+              defaultValue={configName}
+              sx={{ width: 300 }}
+              onChange={(e) => {
+                setConfigName(e.target.value);
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <label>Platform : </label>
+          </Grid>
+          <Grid item xs={10}>
+            <Select
+              sx={{ width: 150 }}
+              value={platformType}
+              required
+              onChange={(e) => {
+                setPlatformType(e.target.value);
+              }}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
             >
-              Update
-            </Button>
+              <MenuItem value={1}>Android</MenuItem>
+              <MenuItem value={2}>Ios</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={2}>
+            <label>Execution Environment : </label>
+          </Grid>
+          <Grid item xs={10}>
+            <Select
+              sx={{ width: 150 }}
+              value={executionEnvironment}
+              required
+              onChange={(e) => {
+                setExecutionEnvironment(e.target.value);
+              }}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value={1}>Local</MenuItem>
+              <MenuItem value={2}>Cloud</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={2}>
+            <label>Device Object Info : </label>
+          </Grid>
+          <Grid item xs={10}>
+            <TextareaAutosize
+              value={configObjInfo}
+              required
+              onChange={(e) => {
+                setConfigObjInfo(e.target.value);
+              }}
+              style={{ width: 400, height: 200, fontSize: "18px" }}
+            />
+          </Grid>
+          <Grid>
+            <Grid item xs={6}>
+              <Button
+                variant="contained"
+                type="submit"
+                style={{ marginTop: "8px" }}
+              >
+                Update
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      {snack && (
-        <SnackbarNotify
-          open={snack}
-          close={setSnack}
-          msg="Configurations updated successfully"
-          severity="success"
-        />
-      )}
+        {snack && (
+          <SnackbarNotify
+            open={snack}
+            close={setSnack}
+            msg="Configurations updated successfully"
+            severity="success"
+          />
+        )}
       </form>
     </>
   );

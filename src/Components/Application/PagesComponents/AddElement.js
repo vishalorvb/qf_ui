@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -20,13 +19,7 @@ export default function AddElement({ setPopup, webPageId, setelementAdded }) {
     fieldType: yup.string().required("select the field type"),
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
 

@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Grid,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
-import { useForm } from "react-hook-form-mui";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Grid } from "@mui/material";
+
 import { useLocation, useNavigate } from "react-router-dom";
-import { validateFormbyName } from "../../CustomComponent/FormValidation";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import * as yup from "yup";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 

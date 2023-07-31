@@ -6,7 +6,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import useHead from "../../hooks/useHead";
 import Pages from "./PagesComponents/Pages";
 import Screen from "./ScreenComponents/Screen";

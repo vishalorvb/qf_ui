@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useHead from "../../../hooks/useHead";
 import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import { getWebpagesElementList } from "../../../Services/ProjectService";
 import { useLocation } from "react-router";
 import axios from "../../../api/axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";

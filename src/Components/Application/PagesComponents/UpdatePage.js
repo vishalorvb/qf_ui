@@ -7,8 +7,6 @@ import {
 } from "@mui/material";
 import { Grid } from "@mui/material";
 import axios from "../../../api/axios";
-import TextField from "@mui/material/TextField";
-import { validateFormbyName } from "../../../CustomComponent/FormValidation";
 import { useRef } from "react";
 import useHead from "../../../hooks/useHead";
 let initialValue = {

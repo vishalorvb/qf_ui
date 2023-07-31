@@ -16,7 +16,6 @@ export default function UpdateScreen() {
   let [elementid, setElementid] = useState(0);
   let [popup, setPopup] = useState(false);
   const [preSelectedElement, setPreSelectedElement] = useState([]);
-  const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   console.log(location);

@@ -1,16 +1,12 @@
 import { Button, Grid, Paper } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
-import UpgradeSharpIcon from "@mui/icons-material/UpgradeSharp";
 import useHead from "../hooks/useHead";
-import { baseUrl } from "../Environment";
-// import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   validateForm,
   resetClassName,
 } from "../CustomComponent/FormValidation";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-// import Table from '../../Table';
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 
@@ -91,7 +87,9 @@ function Settings() {
           <Grid container direction="row" spacing={2}>
             <Grid item md={12}>
               <Stack spacing={1}>
-                <label>URL <span className="importantfield">*</span></label>
+                <label>
+                  URL <span className="importantfield">*</span>
+                </label>
                 <input
                   type="text"
                   name=""
@@ -103,7 +101,9 @@ function Settings() {
             </Grid>
             <Grid item md={12}>
               <Stack spacing={1}>
-                <label>UUID <span className="importantfield">*</span></label>
+                <label>
+                  UUID <span className="importantfield">*</span>
+                </label>
                 <input
                   type="text"
                   name=""

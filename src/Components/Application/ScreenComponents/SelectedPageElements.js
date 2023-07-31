@@ -6,7 +6,6 @@ import axios from "../../../api/axios";
 import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
-import { Button } from "@mui/material";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import BackdropLoader from "../../../CustomComponent/BackdropLoader";
 
@@ -17,7 +16,6 @@ export default function SelectedPageElements() {
   let [elementid, setElementid] = useState(0);
   let [popup, setPopup] = useState(false);
   const [preSelectedElement, setPreSelectedElement] = useState([]);
-  const [showCreateScreenPop, setShowCreateScreenPop] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
 

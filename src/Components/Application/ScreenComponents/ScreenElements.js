@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import useHead from "../../../hooks/useHead";
 import axios from "../../../api/axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
@@ -20,7 +20,7 @@ export default function ScreenElements() {
   const [updated, setUpdated] = useState(false);
   const [updatedOrder, setUpdatedOrder] = useState(false);
   const [elementid, setElementid] = useState(0);
-const [elementOrder, setElementOrder] = useState(0);
+  const [elementOrder, setElementOrder] = useState(0);
   const getScreenElementsList = () => {
     axios
       .get(
@@ -52,14 +52,15 @@ const [elementOrder, setElementOrder] = useState(0);
       })
       .then((resp) => {
         // console.log(resp.data.message);
-        if(elementOrder === 1){
+        if (elementOrder === 1) {
           if (resp.data.message == "Order of Elements updated successfully.") {
-          setUpdatedOrder(true);
-          setTimeout(() => {
-            setUpdatedOrder(false);
-          }, 3000);
-        }}
-        setElementOrder(1)
+            setUpdatedOrder(true);
+            setTimeout(() => {
+              setUpdatedOrder(false);
+            }, 3000);
+          }
+        }
+        setElementOrder(1);
       });
   };
 

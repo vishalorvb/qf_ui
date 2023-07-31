@@ -2,23 +2,18 @@ import React from "react";
 import Table from "../../CustomComponent/Table";
 import { useState, useEffect } from "react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { IconButton, Tooltip, Button, Grid, Autocomplete } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { IconButton, Tooltip, Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router";
 import useHead from "../../hooks/useHead";
 import AddConfigurationPopUp from "./AddConfigurationPopUp";
 import axios from "../../api/axios";
-import TextField from "@mui/material/TextField";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { useLocation } from "react-router-dom";
-import UpdateConfigureDevice from "./UpdateConfigureDevice";
-
 
 const ConfigureDevice = () => {
   const [configurations, setConfigurations] = useState([]);
-  const [projectsList, setProjectList] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [specificationId, setSpecificationId] = useState();
   const [popup, setPopup] = useState(false);
@@ -28,10 +23,9 @@ const ConfigureDevice = () => {
   const [fetchSuccessMsg, setFetchSuccessMsg] = useState(false);
   const [fetchFailMsg, setFetchFailMsg] = useState(false);
   const [successDelete, setSuccessDelete] = useState(false);
-  const { auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const projectId = location?.state?.projectId
+  const projectId = location?.state?.projectId;
   const { setHeader } = useHead();
   const columns = [
     {
@@ -43,26 +37,29 @@ const ConfigureDevice = () => {
       renderCell: (param) => {
         return (
           <>
-      
-              <span style={{cursor:"pointer"}}
-                onClick={() => {
-                  setSpecificationId(param.row.specificationId)
-                  location.state.pathname == '/TestcaseExecution' &&   navigate("/TestcaseExecution/UpdateDevice", {
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setSpecificationId(param.row.specificationId);
+                location.state.pathname == "/TestcaseExecution" &&
+                  navigate("/TestcaseExecution/UpdateDevice", {
                     state: {
                       id: param.row.specificationId,
                       projectId: projectId,
                     },
                   });
 
-                  location.state.pathname == '/TestsetExecution' &&  navigate("/TestsetExecution/UpdateDevice", {
+                location.state.pathname == "/TestsetExecution" &&
+                  navigate("/TestsetExecution/UpdateDevice", {
                     state: {
                       id: param.row.specificationId,
                       projectId: projectId,
                     },
                   });
-                
-                }}>{param.row.name}
-                </span>
+              }}
+            >
+              {param.row.name}
+            </span>
           </>
         );
       },
@@ -162,28 +159,32 @@ const ConfigureDevice = () => {
   }, [specificationId]);
   return (
     <>
-      <Grid  container
+      <Grid
+        container
         direction="row"
         justifyContent="flex-end"
-        alignItems="center">
-      <Button
-            variant="contained"
-            onClick={() =>  {
-              location.state.pathname == '/TestcaseExecution' && navigate("/TestcaseExecution/AddConfigureDevice", {
-              state: {
-                projectId: projectId,
-              },
-            })
+        alignItems="center"
+      >
+        <Button
+          variant="contained"
+          onClick={() => {
+            location.state.pathname == "/TestcaseExecution" &&
+              navigate("/TestcaseExecution/AddConfigureDevice", {
+                state: {
+                  projectId: projectId,
+                },
+              });
 
-            location.state.pathname == '/TestsetExecution' && navigate("/TestsetExecution/AddConfigureDevice", {
-              state: {
-                projectId: projectId,
-              },
-            })}}
-
-          >
-            Add Configuration
-          </Button>
+            location.state.pathname == "/TestsetExecution" &&
+              navigate("/TestsetExecution/AddConfigureDevice", {
+                state: {
+                  projectId: projectId,
+                },
+              });
+          }}
+        >
+          Add Configuration
+        </Button>
       </Grid>
       <Table
         searchPlaceholder="Search Configurations"
@@ -203,31 +204,38 @@ const ConfigureDevice = () => {
           getConfigurations={getConfigurations}
         />
       )}
-     {successMsg &&  <SnackbarNotify
-        open={successMsg}
-        close={setSuccessMsg}
-        msg="Successfully setted as default"
-        severity="success"
-      />
-     }
-      {fetchSuccessMsg && <SnackbarNotify
-        open={fetchSuccessMsg}
-        close={setFetchSuccessMsg}
-        msg="Configurations fetched successfully"
-        severity="success"
-      />}
-      {fetchFailMsg && <SnackbarNotify
-        open={fetchFailMsg}
-        close={setFetchFailMsg}
-        msg="No configurations found for this project"
-        severity="error"
-      />}
-      {successDelete && <SnackbarNotify
-        open={successDelete}
-        close={setSuccessDelete}
-        msg="Deleted configuration successfully"
-        severity="success"
-      />}
+      {successMsg && (
+        <SnackbarNotify
+          open={successMsg}
+          close={setSuccessMsg}
+          msg="Successfully setted as default"
+          severity="success"
+        />
+      )}
+      {fetchSuccessMsg && (
+        <SnackbarNotify
+          open={fetchSuccessMsg}
+          close={setFetchSuccessMsg}
+          msg="Configurations fetched successfully"
+          severity="success"
+        />
+      )}
+      {fetchFailMsg && (
+        <SnackbarNotify
+          open={fetchFailMsg}
+          close={setFetchFailMsg}
+          msg="No configurations found for this project"
+          severity="error"
+        />
+      )}
+      {successDelete && (
+        <SnackbarNotify
+          open={successDelete}
+          close={setSuccessDelete}
+          msg="Deleted configuration successfully"
+          severity="success"
+        />
+      )}
       {confirm && (
         <ConfirmPop
           open={true}

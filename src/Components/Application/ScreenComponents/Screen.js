@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import useHead from "../../../hooks/useHead";
 import Table from "../../../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
-import { IconButton, MenuItem, Tooltip, Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import ConfirmPop from "../../../CustomComponent/ConfirmPop";
 import TableActions from "../../../CustomComponent/TableActions";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 export default function Screens({ location }) {
-  const { setHeader } = useHead();
   const navigate = useNavigate();
-  // const location = useLocation();
   const [page, setPage] = useState([]);
   const [popup, setPopup] = useState(false);
   const [deleted, setDeleted] = useState(false);
