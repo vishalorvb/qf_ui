@@ -127,6 +127,29 @@ export function GetTestCase(
     });
 }
 
+export function GetTestCase_V2fortestset(
+  callback,
+  projectId,
+  applicationId,
+  testsetId
+) {
+  axios
+    .get(
+      `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId1`,
+      {
+        params: {
+          project_id: projectId,
+          module_id: applicationId,
+          testset_id: testsetId,
+        },
+      }
+    )
+    .then((resp) => {
+      const testcases = resp?.data?.info ?? [];
+      callback(testcases);
+    });
+}
+
 export function getSprint(callback, projectId) {
   axios
     .get(`${baseUrl}/qfservice/getsprints?project_id=${projectId}`)

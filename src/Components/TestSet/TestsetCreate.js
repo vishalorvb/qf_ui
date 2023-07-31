@@ -9,14 +9,13 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getTestcasesInProjects } from "../../Services/TestsetService";
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import {
   getSprint,
   getIssues,
-  GetTestCase,
+  GetTestCase_V2fortestset,
 } from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
@@ -74,11 +73,10 @@ function TestsetCreate() {
   useEffect(() => {
     console.log(editData);
     if (globalProject?.project_id && globalApplication?.module_id) {
-      GetTestCase(
+      GetTestCase_V2fortestset(
         setTestcaseObject,
         globalProject?.project_id,
         globalApplication?.module_id,
-        false,
         editData?.testset_id
       );
     }
@@ -152,7 +150,9 @@ function TestsetCreate() {
       testset_name: "TS_" + data?.testsetName.trim(),
       testset_desc: data?.testsetDesc.trim(),
       project_id: globalProject?.project_id,
-      testset_id: 0,
+      testset_id: location?.pathname?.includes("Update")
+        ? editData?.testset_id
+        : 0,
       module_id: globalApplication?.module_id,
       cucumber_tags: globalApplication?.module_type == 19 ? command : undefined,
       testcases_list:
