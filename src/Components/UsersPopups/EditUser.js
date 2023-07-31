@@ -77,22 +77,24 @@ function EditUser() {
         current_user_id: loggedInId,
       };
 
-      axiosPrivate.post(`/qfuserservice/user/updateUser`, data).then((res) => {
-        console.log(res.data.info);
-        setEditSuccessMsg(true);
-        setTimeout(() => {
-          setEditSuccessMsg(false);
-          navigate("/users");
-        }, 3000);
-      })
-      .catch((err) => {
-        console.log(err.response.data.error);
-        setValidationMsg(true);
-        setMsg(err.response.data.status + " " + err.response.data.error);
-        setTimeout(() => {
-          setValidationMsg(false);
-        }, 3000);
-      });
+      axiosPrivate
+        .post(`/qfuserservice/user/updateUser`, data)
+        .then((res) => {
+          console.log(res.data.info);
+          setEditSuccessMsg(true);
+          setTimeout(() => {
+            setEditSuccessMsg(false);
+            navigate("/users");
+          }, 3000);
+        })
+        .catch((err) => {
+          console.log(err.response.data.error);
+          setValidationMsg(true);
+          setMsg(err.response.data.status + " " + err.response.data.error);
+          setTimeout(() => {
+            setValidationMsg(false);
+          }, 3000);
+        });
     } else {
       setValidationMsg(true);
       setMsg("Fill all the required fields");
@@ -129,7 +131,9 @@ function EditUser() {
         <Grid container direction="row" spacing={2}>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>First Name <span className="importantfield">*</span></label>
+              <label>
+                First Name <span className="importantfield">*</span>
+              </label>
               <input
                 value={fname}
                 ref={first_name}
@@ -142,7 +146,9 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Last Name <span className="importantfield">*</span></label>
+              <label>
+                Last Name <span className="importantfield">*</span>
+              </label>
               <input
                 value={lname}
                 ref={last_name}
@@ -155,7 +161,9 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Email <span className="importantfield">*</span></label>
+              <label>
+                Email <span className="importantfield">*</span>
+              </label>
               <input
                 name="email"
                 ref={Email}
@@ -169,7 +177,9 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>User ID <span className="importantfield">*</span></label>
+              <label>
+                User ID <span className="importantfield">*</span>
+              </label>
               <Tooltip title="Non Editable">
                 <input
                   value={values.uid}
@@ -181,7 +191,9 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Password <span className="importantfield">*</span></label>
+              <label>
+                Password <span className="importantfield">*</span>
+              </label>
               <input
                 value={password}
                 ref={Password}
@@ -194,7 +206,9 @@ function EditUser() {
           </Grid>
           <Grid item md={6}>
             <Stack spacing={1}>
-              <label>Role <span className="importantfield">*</span></label>
+              <label>
+                Role <span className="importantfield">*</span>
+              </label>
               <select
                 name="roleAutocomplete"
                 id="selectList"
@@ -204,12 +218,7 @@ function EditUser() {
                 <option selected={roleId == 1 ? true : false} value="1">
                   AUTOMATION ENGINEER
                 </option>
-                <option selected={roleId == 2 ? true : false} value="2">
-                  ADMIN
-                </option>
-                <option selected={roleId == 3 ? true : false} value="3">
-                  DBA
-                </option>
+
                 <option selected={roleId == 4 ? true : false} value="4">
                   AUTOMATION MANAGER
                 </option>
