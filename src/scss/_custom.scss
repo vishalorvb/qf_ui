@@ -364,6 +364,8 @@ select {
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 1px 1px 10px #6b86a426;
     border: 1px solid #d2dce5;
+    max-height: 89vh;
+    overflow: auto;
   }
 }
 
@@ -561,13 +563,12 @@ select {
 label {
   font-weight: 400;
 }
- .userinfodata{
-    padding-bottom: 5px;
-    padding-top: 5px;
- }
+.userinfodata {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
 
-
-.logoimage{
-width: 20px;
-height: 15px;
- }
+.logoimage {
+  width: 20px;
+  height: 15px;
+}
