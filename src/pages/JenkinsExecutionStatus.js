@@ -61,10 +61,10 @@ export default function JenkinsExecutionStatus() {
         <JobProgressionBar
           progressPercentage={insightData?.executor?.progress}
           timeLeft={
-            (insightData?.estimatedDuration - insightData?.duration) / 1000
+            (insightData?.estimatedDuration + insightData?.timestamp - (new Date()))/1000
           }
           jobName={buildData?.name}
-          inProgress={insightData?.data?.building}
+          inProgress={insightData?.building}
         />
       </div>
       <pre>{logs}</pre>
