@@ -35,6 +35,7 @@ export default function TestsetExecution() {
   }, []);
 
   useEffect(() => {
+    setSelectedItem([])
     if (globalApplication) {
       axios
         .get(

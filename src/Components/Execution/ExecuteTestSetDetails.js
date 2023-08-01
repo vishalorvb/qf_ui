@@ -6,7 +6,7 @@ import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 import useHead from "../../hooks/useHead";
 
-const data = [];
+const data = {};
 
 function ExecuteTestSetDetails({
   testsetId,
@@ -17,6 +17,7 @@ function ExecuteTestSetDetails({
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
   const { globalApplication } = useHead();
+  const [data,setData] = useState({})
   const columns = [
     {
       field: "name",
@@ -36,47 +37,12 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-        const obj = {
-          testcase_id: param.row.testcase_id,
-          selected_testcase_dataset_ids:
-            globalApplication?.module_type === 1
-              ? param?.row?.api_datasets
-                  ?.filter((val) => val?.is_default)
-                  ?.map((val) =>
-                    globalApplication?.module_type === 1
-                      ? val?.testcase_dataset_id
-                      : val?.dataset_id
-                  )
-              : param?.row?.datasets
-                  ?.filter((val) => val?.is_default)
-                  ?.map((val) =>
-                    globalApplication?.module_type === 1
-                      ? val?.testcase_dataset_id
-                      : val?.dataset_id
-                  ),
-        };
-
-        const index = data.findIndex(
-          (obj) => obj.testcase_id === param.row.testcase_id
-        );
-        index === -1 ? data.push(obj) : (data[index] = obj);
-        console.log(
-          (globalApplication?.module_type === 1
-            ? param.row?.api_datasets?.filter((ds) => ds?.is_default === true)
-            : param?.row?.datasets?.filter((ds) => ds?.is_default === true)) ??
-            []
-        );
+    
         return (
           <div>
             <MuiltiSelect
               preselect={
-                (globalApplication?.module_type === 1
-                  ? param.row?.api_datasets?.filter(
-                      (ds) => ds?.is_default === true
-                    )
-                  : param?.row?.datasets?.filter(
-                      (ds) => ds?.is_default === true
-                    )) ?? []
+                 data[param?.row?.testcase_id] ?? []
               }
               options={
                 globalApplication?.module_type === 1
@@ -93,21 +59,10 @@ function ExecuteTestSetDetails({
                   ? "testcase_dataset_id"
                   : "dataset_id"
               }
-              stateList={(list) => {
-                console.log(list);
-                const obj = {
-                  testcase_id: param.row.testcase_id,
-                  selected_testcase_dataset_ids: list.map((val) =>
-                    globalApplication?.module_type === 1
-                      ? val?.testcase_dataset_id
-                      : val?.dataset_id
-                  ),
-                };
-                const index = data.findIndex(
-                  (obj) => obj.testcase_id === param.row.testcase_id
-                );
-                index === -1 ? data.push(obj) : (data[index] = obj);
+              stateList={(list) => {setData(prevData=>{return {...prevData,[param.row.testcase_id]:list.map((val) => val)}})
               }}
+
+              
             ></MuiltiSelect>
           </div>
         );
@@ -118,21 +73,28 @@ function ExecuteTestSetDetails({
     },
   ];
 
+ 
+
   useEffect(() => {
-    console.log(globalApplication);
+    console.log(globalApplication,testsetId)
     if (
       testsetId !== null &&
       testsetId !== undefined &&
       globalApplication !== undefined &&
       globalApplication !== null
     ) {
-      console.log(testsetId);
       globalApplication?.module_type === 1
         ? axios
             .get(`/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`)
             .then((resp) => {
               const data = resp?.data?.data;
               settestcaseList(data);
+
+              setData(()=>{
+                const obj = {}
+                data?.forEach(testcase=>obj[testcase?.testcase_id] = (testcase?.api_datasets?.filter(dataset=> dataset?.is_default)))
+                return obj
+              })
             })
         : axios
             .get(
@@ -141,8 +103,14 @@ function ExecuteTestSetDetails({
             .then((resp) => {
               const data = resp?.data?.info;
               settestcaseList(data);
-            });
-    } else {
+              
+              setData(()=>{
+                const obj = {}
+                data?.forEach(testcase=>obj[testcase?.testcase_id] = (testcase?.datasets?.filter(dataset=> dataset?.is_default)))
+                return obj
+              })
+                 
+    } )}else {
       settestcaseList([]);
     }
   }, [testsetId, globalApplication]);
@@ -154,9 +122,9 @@ function ExecuteTestSetDetails({
         applicationId={applicationId}
         selectedtestcases={selectedtestcases}
         testsetId={testsetId}
-        selecteddatasets={data.filter((val) =>
-          selectedtestcases.includes(val?.testcase_id)
-        )}
+        selecteddatasets={
+          selectedtestcases.map(testcase_id => data[testcase_id])
+        }
         frameworkType={frameworkType}
         applicationType={globalApplication?.module_type}
       />
