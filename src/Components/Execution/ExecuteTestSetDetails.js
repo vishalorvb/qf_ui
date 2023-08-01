@@ -17,7 +17,7 @@ function ExecuteTestSetDetails({
   const [testcaseList, settestcaseList] = useState([]);
   const [selectedtestcases, setSelectedtestcases] = useState([]);
   const { globalApplication } = useHead();
-  const [data,setData] = useState({})
+  const [data, setData] = useState({});
   const columns = [
     {
       field: "name",
@@ -37,13 +37,10 @@ function ExecuteTestSetDetails({
       field: "datasets",
       headerName: "Datasets",
       renderCell: (param) => {
-    
         return (
           <div>
             <MuiltiSelect
-              preselect={
-                 data[param?.row?.testcase_id] ?? []
-              }
+              preselect={data[param?.row?.testcase_id] ?? []}
               options={
                 globalApplication?.module_type === 1
                   ? param?.row?.api_datasets
@@ -59,10 +56,14 @@ function ExecuteTestSetDetails({
                   ? "testcase_dataset_id"
                   : "dataset_id"
               }
-              stateList={(list) => {setData(prevData=>{return {...prevData,[param.row.testcase_id]:list.map((val) => val)}})
+              stateList={(list) => {
+                setData((prevData) => {
+                  return {
+                    ...prevData,
+                    [param.row.testcase_id]: list.map((val) => val),
+                  };
+                });
               }}
-
-              
             ></MuiltiSelect>
           </div>
         );
@@ -73,10 +74,8 @@ function ExecuteTestSetDetails({
     },
   ];
 
- 
-
   useEffect(() => {
-    console.log(globalApplication,testsetId)
+    console.log(globalApplication, testsetId);
     if (
       testsetId !== null &&
       testsetId !== undefined &&
@@ -90,11 +89,17 @@ function ExecuteTestSetDetails({
               const data = resp?.data?.data;
               settestcaseList(data);
 
-              setData(()=>{
-                const obj = {}
-                data?.forEach(testcase=>obj[testcase?.testcase_id] = (testcase?.api_datasets?.filter(dataset=> dataset?.is_default)))
-                return obj
-              })
+              setData(() => {
+                const obj = {};
+                data?.forEach(
+                  (testcase) =>
+                    (obj[testcase?.testcase_id] =
+                      testcase?.api_datasets?.filter(
+                        (dataset) => dataset?.is_default
+                      ))
+                );
+                return obj;
+              });
             })
         : axios
             .get(
@@ -103,14 +108,19 @@ function ExecuteTestSetDetails({
             .then((resp) => {
               const data = resp?.data?.info;
               settestcaseList(data);
-              
-              setData(()=>{
-                const obj = {}
-                data?.forEach(testcase=>obj[testcase?.testcase_id] = (testcase?.datasets?.filter(dataset=> dataset?.is_default)))
-                return obj
-              })
-                 
-    } )}else {
+
+              setData(() => {
+                const obj = {};
+                data?.forEach(
+                  (testcase) =>
+                    (obj[testcase?.testcase_id] = testcase?.datasets?.filter(
+                      (dataset) => dataset?.is_default
+                    ))
+                );
+                return obj;
+              });
+            });
+    } else {
       settestcaseList([]);
     }
   }, [testsetId, globalApplication]);
@@ -122,9 +132,16 @@ function ExecuteTestSetDetails({
         applicationId={applicationId}
         selectedtestcases={selectedtestcases}
         testsetId={testsetId}
-        selecteddatasets={
-          selectedtestcases.map(testcase_id => data[testcase_id])
-        }
+        selecteddatasets={selectedtestcases.map((testcase_id) => {
+          return {
+            testcase_id: testcase_id,
+            selected_testcase_dataset_ids: data[testcase_id]?.map((dataset) =>
+              globalApplication?.module_type === 1
+                ? dataset?.testcase_dataset_id
+                : dataset?.dataset_id
+            ),
+          };
+        })}
         frameworkType={frameworkType}
         applicationType={globalApplication?.module_type}
       />

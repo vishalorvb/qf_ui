@@ -50,12 +50,14 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
         <Select
           sx={{ height: "40px" }}
           multiple
-          emptyRecordMsg={"No Options Available"}
+          // emptyRecordMsg={"No Options Available"}
           value={selectedval}
           onChange={handleChange}
           input={<OutlinedInput />}
           placeholder="Select"
-          renderValue={(selected) => selected?.map((v) => v && (v[value] + ",").slice(0, -1))}
+          renderValue={(selected) =>
+            selected?.map((v) => v && (v[value] + ",").slice(0, -1))
+          }
           MenuProps={MenuProps}
         >
           {options?.map((opt) => {
