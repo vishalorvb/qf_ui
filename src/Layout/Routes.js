@@ -5,23 +5,15 @@ import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation
 import Report from "../Components/DevopsComponent/Report";
 
 const Admin = lazy(() => import("../pages/Admin"));
-// const ApiApp = lazy(() =>
-//   import("../Components/Application/ApiApplication/ApiApp")
-// );
-// const Execution = lazy(() => import("../pages/Execution"));
-// const MobileApp = lazy(() => import("../pages/MobileApp"));
+
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Pipeline = lazy(() => import("../pages/Pipeline"));
 const Projects = lazy(() => import("../pages/Projects"));
-// const QFAdmin = lazy(() => import("../pages/QFAdmin"));
 const Release = lazy(() => import("../pages/Release"));
 const Reports = lazy(() => import("../pages/Reports"));
 const TestCases = lazy(() => import("../Components/TestCases/TestCases"));
 const Testset = lazy(() => import("../pages/Testset"));
-// const Applications = lazy(() => import("../pages/Applications"));
-// const Pages = lazy(() =>
-//   import("../Components/Application/PagesComponents/Pages")
-// );
+
 const PageElements = lazy(() =>
   import("../Components/Application/PagesComponents/PageElements")
 );
@@ -33,9 +25,6 @@ const Cycles = lazy(() => import("../Components/BIReports/Cycles"));
 const ActiveReports = lazy(() =>
   import("../Components/BIReports/ActiveReports")
 );
-// const APIsTable = lazy(() =>
-//   import("../Components/Application/ApiApplication/APIsTable")
-// );
 const Dataset = lazy(() =>
   import("../Components/TestCases/WebDataset/WebDataset")
 );
@@ -75,12 +64,7 @@ const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
 const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
-// const Screen = lazy(() =>
-//   import("../Components/Application/ScreenComponents/Screen")
-// );
-// const CreateScreen = lazy(() =>
-//   import(`../Components/Application/ScreenComponents/CreateScreen`)
-// );
+
 const SelectedPageElements = lazy(() =>
   import("../Components/Application/ScreenComponents/SelectedPageElements")
 );
@@ -94,9 +78,7 @@ const UpdateScreen = lazy(() =>
 const MapApiTestCase = lazy(() =>
   import("../Components/TestCases/apiTestcase/MapApiTestCase")
 );
-// const WebTestcase = lazy(() =>
-//   import("../Components/TestCases/webTestcase/WebTestcase")
-// );
+
 const MapScreen = lazy(() =>
   import("../Components/TestCases/webTestcase/MapScreen")
 );
@@ -105,9 +87,6 @@ const ViewReport = lazy(() => import("../pages/ViewReport"));
 
 const AllReport = lazy(() => import("../Components/Reports/AllReports"));
 
-//const UpdateScreenOrder = lazy(() =>
-//  import("../Components/TestCases/UpdateScreenOrderinDataset")
-//);
 const APIorderupdate = lazy(() =>
   import(`../Components/TestCases/apiTestcase/APIorderupdate`)
 );
@@ -165,6 +144,8 @@ const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 
 const Logs = lazy(() => import(`../CustomComponent/Logs`));
 const MakeCopy = lazy(() => import(`../pages/MakeCopy`));
+
+const jenkinsExecution = lazy(() => import(`../pages/JenkinsExecutionStatus`));
 
 export const Routes = [
   {
@@ -555,11 +536,7 @@ export const Routes = [
       },
     ],
   },
-  // {
-  //   path: "qfAdmin",
-  //   element: QFAdmin,
-  //   accessRole: [1, 2],
-  // },
+
   {
     path: "release",
     element: Release,
@@ -733,6 +710,11 @@ export const Routes = [
   {
     path: "Dashboard/failedTestcases",
     element: TestcaseExecution,
+    accessRole: [1, 2, 4, 5],
+  },
+  {
+    path: "jenkinsExecution",
+    element: jenkinsExecution,
     accessRole: [1, 2, 4, 5],
   },
 ];
