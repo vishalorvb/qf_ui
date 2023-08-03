@@ -13,7 +13,6 @@ function TableActions(props) {
     setAnchorEl(null);
   };
   const heading = props?.heading ?? "";
-  console.log(heading);
   return (
     <div className="descColumn">
       <Tooltip title={heading?.length <= 140 ? "" : heading}>

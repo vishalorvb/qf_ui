@@ -157,15 +157,15 @@ function CreateTestCase() {
     useEffect(() => {
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setApplication, globalProject?.project_id)
-            if(TCdata.testcase_id == undefined){
+            if (TCdata.testcase_id == undefined) {
                 getSprint(setJiraSprint, globalProject?.project_id)
             }
-            else{
-                getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res=>{
+            else {
+                getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res => {
                     setJiraSprint(res)
                 })
             }
-            
+
         }
     }, [globalProject])
     useEffect(() => {
@@ -187,7 +187,7 @@ function CreateTestCase() {
     }, [jiraSprint])
 
     useEffect(() => {
-        sprintData.issue_id = jiraIssue[0]?.issue_id  
+        sprintData.issue_id = jiraIssue[0]?.issue_id
     }, [jiraIssue])
 
     useEffect(() => {
@@ -218,7 +218,7 @@ function CreateTestCase() {
         if (screenList.length > 0) {
             getElement(screenList[0].screenId, () => { })
         }
-
+console.log(screenList)
     }, [screenList])
 
 
