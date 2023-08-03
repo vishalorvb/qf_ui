@@ -6,15 +6,9 @@ import useHead from "../../../hooks/useHead";
 
 function MapScreen({ callback, projectId, moduleId, testcaseId }) {
     const [pages, setpages] = useState([]);
-    let selected = useRef([]);
-    const { setSnackbarData, setShowloader } = useHead();
-    function updateList(pageId, list) {
-        selected.current.forEach((page) => {
-            if (page.web_page_id === pageId) {
-                page.screenList = list;
-            }
-        });
-    }
+
+    const {  setShowloader } = useHead();
+
 
     useEffect(() => {
         setShowloader(true);
@@ -38,24 +32,12 @@ function MapScreen({ callback, projectId, moduleId, testcaseId }) {
     }, [projectId, moduleId, testcaseId]);
 
     useEffect(() => {
-        pages.map((page) => {
-            let temp = { web_page_id: page.web_page_id, screenList: [] };
-            let selectedScreen = [];
-            page.screens_list.forEach((screen) => {
-                if (screen.is_select) {
-                    selectedScreen.push(screen);
-                }
-            });
-            temp.screenList = selectedScreen;
-            if (
-                !selected.current.find((page) => page.web_page_id === temp.web_page_id)
-            ) {
-                selected.current.push(temp);
+        let val = pages.map(page => {
+            return {
+                web_page_id: page.web_page_id, screenList: page?.screens_list?.filter(screen => screen.is_select)
             }
-        });
-        let temp = selected.current;
-        callback([...temp]);
-
+        })
+        callback([...val])
     }, [pages]);
 
 
@@ -71,21 +53,17 @@ function MapScreen({ callback, projectId, moduleId, testcaseId }) {
                             id={"screen_id"}
                             value={"name"}
                             stateList={(list) => {
-                                updateList(page.web_page_id, list);
-                                let temp = selected.current;
-                                callback([...temp]);
-
                                 let p = [...pages]
-                                p.forEach(pages =>{
-                                    if(pages.web_page_id == page.web_page_id){
-                                        pages.screens_list.forEach(screens=>{
-                                            if(list.find(selectedPages=>selectedPages.screen_id == screens.screen_id)){
+                                p.forEach(pages => {
+                                    if (pages.web_page_id == page.web_page_id) {
+                                        pages.screens_list.forEach(screens => {
+                                            if (list.find(selectedPages => selectedPages.screen_id == screens.screen_id)) {
                                                 screens.is_select = true
                                             }
-                                            else{
+                                            else {
                                                 screens.is_select = false
                                             }
-                                            
+
                                         })
                                     }
                                 })
