@@ -148,6 +148,7 @@ function CreateTestCase() {
     }, []);
 
     useEffect(() => {
+        setScreenList([])
         try {
             TCdata.module_id = globalApplication.module_id;
             TCdata.project_id = globalProject.project_id;
@@ -218,7 +219,7 @@ function CreateTestCase() {
         if (screenList.length > 0) {
             getElement(screenList[0].screenId, () => { })
         }
-console.log(screenList)
+        console.log(screenList)
     }, [screenList])
 
 
@@ -335,27 +336,37 @@ console.log(screenList)
 
             </Grid >
             <br />
-            <Divider></Divider>
-            {globalApplication?.module_type !== 1 && <MapScreen
-                projectId={globalProject?.project_id}
-                moduleId={globalApplication?.module_id}
-                testcaseId={TCdata.testcase_id}
-                callback={val => {
-                    screens.current = val
-                    let temp = []
-                    val.forEach(webpage => {
-                        webpage?.screenList.forEach(screen => {
-                            let x = {
-                                screeName: screen.name,
-                                screenId: screen.screen_id
-                            }
-                            temp.push(x)
-                            setScreenList(temp)
-                        })
-                    })
-                }}
-            ></MapScreen>}
-
+            <Divider></Divider><br/>
+            {globalApplication?.module_type !== 1 && <Grid item container spacing={1} justifyContent="left">
+                <Grid item xs={2} md={2}>
+                    <MapScreen
+                        projectId={globalProject?.project_id}
+                        moduleId={globalApplication?.module_id}
+                        testcaseId={TCdata.testcase_id}
+                        callback={val => {
+                            screens.current = val
+                            let temp = []
+                            val.forEach(webpage => {
+                                webpage?.screenList.forEach(screen => {
+                                    let x = {
+                                        screenName: screen.name,
+                                        screenId: screen.screen_id,
+                                        elementList: []
+                                    }
+                                    console.log(x)
+                                    temp.push(x)
+                                    setScreenList(temp)
+                                })
+                            })
+                        }}
+                    ></MapScreen>
+                </Grid>
+                <Grid item xs={10} md={10}>
+                    <ElementList
+                        screenList={screenList}
+                    ></ElementList>
+                </Grid>
+            </Grid>}
             {globalApplication?.module_type === 1 && <MapApiTestCase
                 testcaseId={TCdata.testcase_id}
                 moduleId={globalApplication.module_id}
@@ -384,7 +395,7 @@ console.log(screenList)
                 msg={snackbarErrorMsg}
                 severity="error"
             />
-            <ElementList></ElementList>
+
         </>
 
     )

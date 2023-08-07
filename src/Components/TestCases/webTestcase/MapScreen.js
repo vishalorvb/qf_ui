@@ -29,6 +29,7 @@ function MapScreen({ callback, projectId, moduleId, testcaseId }) {
                     setShowloader(false);
                 });
         }
+      
     }, [projectId, moduleId, testcaseId]);
 
     useEffect(() => {

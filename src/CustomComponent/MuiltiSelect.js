@@ -28,7 +28,10 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
         stateList([...value]);
         setSelectedval(value);
     };
-
+    useEffect(() => {
+        setSelectedval([])
+    }, [options])
+    
     useEffect(() => {
         let t = [];
         selectedval.forEach((val) => {
@@ -42,6 +45,8 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
             setSelectedval(preselect);
         }
     }, [preselect]);
+
+
 
     return (
         <div>
@@ -59,8 +64,8 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
                     //    selected?.map((v) => v && (v[value] + ",").slice(0, -1))
                     //}
                     renderValue={selected => {
-                        let val = selected?.map(v=>v[value] + ",")
-                        val[val.length-1] = val[val.length-1].slice(0, -1)
+                        let val = selected?.map(v => v[value] + ",")
+                        val[val.length - 1] = val[val.length - 1].slice(0, -1)
                         return val
                     }}
                     MenuProps={MenuProps}

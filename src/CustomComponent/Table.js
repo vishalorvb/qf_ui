@@ -1,5 +1,5 @@
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GridToolbarQuickFilter, GridLinkOperator } from "@mui/x-data-grid";
 
 export default function Table(props) {
@@ -29,7 +29,9 @@ export default function Table(props) {
       />
     );
   }
-
+useEffect(() => {
+console.log(rows)
+}, [rows])
   // row for row data
   // columns for header details
   // hidefooter for true to hide footer
