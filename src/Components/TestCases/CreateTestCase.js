@@ -41,7 +41,7 @@ function CreateTestCase() {
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
     let [screenList, setScreenList] = useState([])
-    let [elementList, setElementList] = useState([]);
+
     let screens = useRef()
 
     const navigate = useNavigate();
@@ -219,7 +219,7 @@ function CreateTestCase() {
         if (screenList.length > 0) {
             getElement(screenList[0].screenId, () => { })
         }
-        console.log(screenList)
+
     }, [screenList])
 
 
@@ -345,27 +345,29 @@ function CreateTestCase() {
                         testcaseId={TCdata.testcase_id}
                         callback={val => {
                             screens.current = val
+                            console.log(val)
                             let temp = []
+                            console.log(val)
                             val.forEach(webpage => {
                                 webpage?.screenList.forEach(screen => {
+                                    
                                     let x = {
                                         screenName: screen.name,
                                         screenId: screen.screen_id,
-                                        elementList: []
                                     }
-                                    console.log(x)
                                     temp.push(x)
                                     setScreenList(temp)
                                 })
                             })
+                            if(temp.length === 0){setScreenList([])}
                         }}
                     ></MapScreen>
                 </Grid>
-                <Grid item xs={10} md={10}>
+               {screenList.length>0 && <Grid item xs={10} md={10}>
                     <ElementList
                         screenList={screenList}
                     ></ElementList>
-                </Grid>
+                </Grid>}
             </Grid>}
             {globalApplication?.module_type === 1 && <MapApiTestCase
                 testcaseId={TCdata.testcase_id}

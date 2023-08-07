@@ -29,9 +29,7 @@ export default function Table(props) {
       />
     );
   }
-useEffect(() => {
-console.log(rows)
-}, [rows])
+
   // row for row data
   // columns for header details
   // hidefooter for true to hide footer

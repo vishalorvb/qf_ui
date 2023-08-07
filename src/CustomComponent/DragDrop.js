@@ -1,23 +1,18 @@
 import React, { useMemo } from 'react'
 import MaterialReactTable from "material-react-table";
 
+function shiftElement(array, fromIndex, toIndex) {
+    if (fromIndex === toIndex || fromIndex < 0 || fromIndex >= array.length || toIndex < 0 || toIndex >= array.length) {
+        return array.slice();
+    }
 
-function DragDrop({ row, setRow ,children}) {
+    const elementToShift = array.splice(fromIndex, 1)[0]; // Remove element at fromIndex and get its value
+    array.splice(toIndex, 0, elementToShift); // Insert the element at toIndex
 
-    const columns = useMemo(
-        () => [
-            {
-                accessorKey: "locators",
-                header: " ",
-                Cell: ({ cell, column, row, table }) => {
-                    return (
-                        { children }
-                    )
-                },
-            },
-        ],
-        [row]
-    );
+    return array;
+}
+function DragDrop({ columns, row, setRow }) {
+
 
     return (
         <div>
@@ -38,8 +33,10 @@ function DragDrop({ row, setRow ,children}) {
                     onDragEnd: () => {
                         const { draggingRow, hoveredRow } = table.getState();
                         if (hoveredRow && draggingRow) {
-                           console.log(hoveredRow)
-                           console.log(draggingRow)
+
+                            let x = [...row]
+                            x = shiftElement(x, draggingRow.index, hoveredRow.index)
+                            setRow(x)
                         }
                     },
                 })}

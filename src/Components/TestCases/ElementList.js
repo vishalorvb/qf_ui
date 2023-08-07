@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getElement } from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
@@ -7,6 +7,7 @@ import DragDrop from "../../CustomComponent/DragDrop";
 function ElementList({ screenList }) {
 
     let [element, setElement] = useState([])
+    let [screens, setScreens] = useState([])
 
     let col = [
         {
@@ -32,14 +33,35 @@ function ElementList({ screenList }) {
         },
     ]
 
-
+    let dragDropCol = useMemo(
+        () => [
+            {
+                accessorKey: "locators",
+                header: " ",
+                Cell: ({ cell, column, row, table }) => {
+                    return (
+                        <AccordionTemplate name={row.original.screenName}>
+                            <Table
+                                hideSearch={true}
+                                rows={row.original.elements ?? []}
+                                columns={col}
+                                hidefooter={true}
+                                getRowId={(row) => row?.element_id}
+                            ></Table>
+                        </AccordionTemplate>
+                    )
+                },
+            },
+        ],
+        []
+    );
     useEffect(() => {
         screenList.forEach(screen => {
             if (!element.find(element => element.screenId == screen.screenId)) {
                 getElement(screen.screenId, () => { }).then(res => {
                     setElement(pv => {
                         let x = [...pv]
-                        let obj = { screenId: screen.screenId, elements: res }
+                        let obj = { screenName: screen.screenName, screenId: screen.screenId, elements: res }
                         x.push(obj)
                         return x
                     })
@@ -50,25 +72,29 @@ function ElementList({ screenList }) {
     }, [screenList])
 
     useEffect(() => {
-        console.log(screenList)
-    }, [screenList])
+        setScreens([])
+        let x = []
+        screenList.forEach(screen =>{
+            element.forEach(ele=>{
+                if(ele.screenId == screen.screenId){
+                    let obj = { screenName: screen.screenName, screenId: screen.screenId, elements: ele.elements }
+                    x.push(obj)
+                }
+            })
+        })
+        setScreens(x)
+    }, [screenList,element])
+
+
 
     return <div>
-        {screenList.map(screen => {
-            return (
-            
-                    <AccordionTemplate name={screen.screenName}>
-                        <Table
-                            hideSearch={true}
-                            rows={element.find(e => e.screenId === screen.screenId)?.elements ?? []}
-                            columns={col}
-                            hidefooter={true}
-                            getRowId={(row) => row?.element_id}
-                        ></Table>
-                    </AccordionTemplate>
-                
-            )
-        })}
+        <DragDrop
+            columns={dragDropCol}
+            row={screens}
+            setRow={e=>{
+                setScreens(e)
+            }}
+        ></DragDrop>
     </div>;
 }
 
