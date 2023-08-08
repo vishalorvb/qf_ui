@@ -1,5 +1,5 @@
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GridToolbarQuickFilter, GridLinkOperator } from "@mui/x-data-grid";
 
 export default function Table(props) {

@@ -190,7 +190,6 @@ export async function getPagesIntestcase(
     )
     .then((res) => {
       callback(res.data.info === null ? [] : res.data.info[0]?.webpagesList);
-      console.log(res.data.info === null ? [] : res.data.info[0]?.webpagesList);
     });
 }
 

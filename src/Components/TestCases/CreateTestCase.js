@@ -41,7 +41,7 @@ function CreateTestCase() {
     let [snackbarError, setSnackbarError] = useState(false);
     let [selectedApiList, setSelectedApiList] = useState([]);
     let [screenList, setScreenList] = useState([])
-    let [elementList, setElementList] = useState([]);
+
     let screens = useRef()
 
     const navigate = useNavigate();
@@ -148,6 +148,7 @@ function CreateTestCase() {
     }, []);
 
     useEffect(() => {
+        setScreenList([])
         try {
             TCdata.module_id = globalApplication.module_id;
             TCdata.project_id = globalProject.project_id;
@@ -157,15 +158,15 @@ function CreateTestCase() {
     useEffect(() => {
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setApplication, globalProject?.project_id)
-            if(TCdata.testcase_id == undefined){
+            if (TCdata.testcase_id == undefined) {
                 getSprint(setJiraSprint, globalProject?.project_id)
             }
-            else{
-                getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res=>{
+            else {
+                getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res => {
                     setJiraSprint(res)
                 })
             }
-            
+
         }
     }, [globalProject])
     useEffect(() => {
@@ -187,7 +188,7 @@ function CreateTestCase() {
     }, [jiraSprint])
 
     useEffect(() => {
-        sprintData.issue_id = jiraIssue[0]?.issue_id  
+        sprintData.issue_id = jiraIssue[0]?.issue_id
     }, [jiraIssue])
 
     useEffect(() => {
@@ -335,27 +336,39 @@ function CreateTestCase() {
 
             </Grid >
             <br />
-            <Divider></Divider>
-            {globalApplication?.module_type !== 1 && <MapScreen
-                projectId={globalProject?.project_id}
-                moduleId={globalApplication?.module_id}
-                testcaseId={TCdata.testcase_id}
-                callback={val => {
-                    screens.current = val
-                    let temp = []
-                    val.forEach(webpage => {
-                        webpage?.screenList.forEach(screen => {
-                            let x = {
-                                screeName: screen.name,
-                                screenId: screen.screen_id
-                            }
-                            temp.push(x)
-                            setScreenList(temp)
-                        })
-                    })
-                }}
-            ></MapScreen>}
-
+            <Divider></Divider><br/>
+            {globalApplication?.module_type !== 1 && <Grid item container spacing={2} justifyContent="left">
+                <Grid item xs={2} md={2}>
+                    <MapScreen
+                        projectId={globalProject?.project_id}
+                        moduleId={globalApplication?.module_id}
+                        testcaseId={TCdata.testcase_id}
+                        callback={val => {
+                            screens.current = val
+                            console.log(val)
+                            let temp = []
+                            console.log(val)
+                            val.forEach(webpage => {
+                                webpage?.screenList.forEach(screen => {
+                                    
+                                    let x = {
+                                        screenName: screen.name,
+                                        screenId: screen.screen_id,
+                                    }
+                                    temp.push(x)
+                                    setScreenList(temp)
+                                })
+                            })
+                            if(temp.length === 0){setScreenList([])}
+                        }}
+                    ></MapScreen>
+                </Grid>
+               {screenList.length>0 && <Grid item xs={10} md={10}>
+                    <ElementList
+                        screenList={screenList}
+                    ></ElementList>
+                </Grid>}
+            </Grid>}
             {globalApplication?.module_type === 1 && <MapApiTestCase
                 testcaseId={TCdata.testcase_id}
                 moduleId={globalApplication.module_id}
@@ -384,7 +397,7 @@ function CreateTestCase() {
                 msg={snackbarErrorMsg}
                 severity="error"
             />
-            <ElementList></ElementList>
+
         </>
 
     )
