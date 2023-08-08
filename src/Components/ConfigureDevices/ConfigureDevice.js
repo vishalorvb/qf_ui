@@ -31,14 +31,14 @@ const ConfigureDevice = () => {
     {
       field: "name",
       headerName: "Configurations",
-      flex: 2,
+      flex: 6,
       sortable: false,
       align: "left",
       renderCell: (param) => {
         return (
           <>
             <span
-              style={{ cursor: "pointer" }}
+              className="nameColumn"
               onClick={() => {
                 setSpecificationId(param.row.specificationId);
                 location.state.pathname == "/TestcaseExecution" &&
@@ -67,7 +67,7 @@ const ConfigureDevice = () => {
     {
       field: "Action",
       headerName: "Action",
-      flex: 2,
+      flex: 1,
       sortable: false,
       align: "left",
       renderCell: (param) => {

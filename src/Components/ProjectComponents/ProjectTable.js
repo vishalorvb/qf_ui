@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Button, Chip, MenuItem, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  Chip,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { getProject, makeProjectFav } from "../../Services/ProjectService";
 import { deleteProject } from "../../Services/ProjectService";
@@ -45,52 +52,6 @@ function ProjectTable({ location }) {
 
   const columns = [
     {
-        field: "pro",
-        headerName: " ",
-        flex: 3,
-        sortable: false,
-        align: "left",
-        renderCell: (param) => {
-          return (
-            <Stack direction="row" spacing={1}>
-            {{
-              1: (
-                <Tooltip title="Selenium">
-                  <img src="../selenium.png" alt="no" className="logoimage"/>
-                </Tooltip>
-              ),
-              2: (
-                <Tooltip title="BBD">
-                  <img src="../bbd.png" alt="no" className="logoimage"/>
-                </Tooltip>
-              ),
-              3: (
-                <Tooltip title="Cucumber Automation">
-                  <img src="../cucumber.png" alt="no" className="logoimage"/>
-                </Tooltip>
-              ),
-              6: (
-                <Tooltip title="Link Project">
-                    <img src="../link.png" alt="no" className="logoimage"/>
-                </Tooltip>
-              ),
-              4: (
-                <Tooltip title="Mobile">
-                  <AdUnitsIcon sx={{ color: "green" }} />
-                </Tooltip>
-              ),
-            }[param?.row?.automation_framework_type] ?? <AppleIcon sx={{ color: "white" }} />}
-            <Typography
-              variant="p"
-              className="nameColumn"
-            >
-              {param?.row?.project_name}
-            </Typography>
-          </Stack>
-          );
-        },
-      },
-    {
       field: "project_name",
       headerName: "Project Name",
       flex: 3,
@@ -98,12 +59,57 @@ function ProjectTable({ location }) {
       align: "left",
       renderCell: (param) => {
         return (
-          <span style={{ color: "rgb(0, 159, 238)" }}>
-            {param.row?.project_name}
-          </span>
+          <Stack direction="row" spacing={1}>
+            {{
+              1: (
+                <Tooltip title="Selenium">
+                  <img src="../selenium.png" alt="no" className="logoimage" />
+                </Tooltip>
+              ),
+              2: (
+                <Tooltip title="BBD">
+                  <img src="../bbd.png" alt="no" className="logoimage" />
+                </Tooltip>
+              ),
+              3: (
+                <Tooltip title="Cucumber Automation">
+                  <img src="../cucumber.png" alt="no" className="logoimage" />
+                </Tooltip>
+              ),
+              6: (
+                <Tooltip title="Link Project">
+                  <img src="../link.png" alt="no" className="logoimage" />
+                </Tooltip>
+              ),
+              4: (
+                <Tooltip title="Mobile">
+                  <AdUnitsIcon sx={{ color: "green" }} />
+                </Tooltip>
+              ),
+            }[param?.row?.automation_framework_type] ?? (
+              <AppleIcon sx={{ color: "white" }} />
+            )}
+            <Typography variant="p" className="nameColumn">
+              {param?.row?.project_name}
+            </Typography>
+          </Stack>
         );
       },
     },
+    // {
+    //   field: "project_name",
+    //   headerName: "Project Name",
+    //   flex: 3,
+    //   sortable: false,
+    //   align: "left",
+    //   renderCell: (param) => {
+    //     return (
+    //       <span style={{ color: "rgb(0, 159, 238)" }}>
+    //         {param.row?.project_name}
+    //       </span>
+    //     );
+    //   },
+    // },
     {
       field: "fav",
       headerName: "Favourite",
