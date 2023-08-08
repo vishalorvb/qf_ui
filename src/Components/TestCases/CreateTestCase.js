@@ -337,7 +337,7 @@ function CreateTestCase() {
             </Grid >
             <br />
             <Divider></Divider><br/>
-            {globalApplication?.module_type !== 1 && <Grid item container spacing={1} justifyContent="left">
+            {globalApplication?.module_type !== 1 && <Grid item container spacing={2} justifyContent="left">
                 <Grid item xs={2} md={2}>
                     <MapScreen
                         projectId={globalProject?.project_id}

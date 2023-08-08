@@ -3,12 +3,15 @@ import { getElement } from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import DragDrop from "../../CustomComponent/DragDrop";
+import { Button, Grid } from "@mui/material";
 
 function ElementList({ screenList }) {
 
     let [element, setElement] = useState([])
     let [screens, setScreens] = useState([])
-
+    let [open,setOpen] = useState(false)
+ 
+   
     let col = [
         {
             field: "name",
@@ -40,7 +43,7 @@ function ElementList({ screenList }) {
                 header: " ",
                 Cell: ({ cell, column, row, table }) => {
                     return (
-                        <AccordionTemplate name={row.original.screenName}>
+                        <AccordionTemplate name={row.original.screenName}  toggle={open}>
                             <Table
                                 hideSearch={true}
                                 rows={row.original.elements ?? []}
@@ -53,7 +56,7 @@ function ElementList({ screenList }) {
                 },
             },
         ],
-        []
+        [open]
     );
     useEffect(() => {
         screenList.forEach(screen => {
@@ -88,6 +91,13 @@ function ElementList({ screenList }) {
 
 
     return <div>
+        <Grid container spacing={2} justifyContent="right" alignItems="right">
+        <Grid item xs={2} md={2}>
+        <Button onClick={e=>setOpen(!open)} variant="contained">{open?"Hide All":"Expand All"}</Button>
+
+        </Grid>
+        </Grid>
+
         <DragDrop
             columns={dragDropCol}
             row={screens}
