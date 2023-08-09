@@ -44,7 +44,7 @@ export default function Admin() {
   const [delSuccessMsg, setDelSuccessMsg] = useState(false);
   const [actSuccessMsg, setActSuccessMsg] = useState(false);
   const [deactSuccessMsg, setDeactSuccessMsg] = useState(false);
-  const [delFailMsg,setDeleteFailMsg] = useState(false)
+  const [delFailMsg, setDeleteFailMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
 
   const axiosPrivate = useAxios();
@@ -112,15 +112,6 @@ export default function Admin() {
 
   const columns = [
     {
-      headerName: "S.No",
-      field: "sno",
-      valueGetter: (index) => index.api.getRowIndex(index.row.id) + 1,
-      flex: 1,
-      headerAlign: "left",
-      sortable: false,
-      align: "center",
-    },
-    {
       field: "name",
       headerName: "Name",
       flex: 3,
@@ -155,25 +146,7 @@ export default function Admin() {
       renderCell: (param) => {
         return (
           <>
-            {/* <Tooltip title="Edit">
-              <IconButton
-                onClick={(e) => {
-                  editUserHandler(param.row);
-                }}
-              >
-                <EditOutlinedIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton
-                onClick={(e) => {
-                  deleteUserHandler(param.row);
-                }}
-              >
-                <DeleteOutlineOutlinedIcon />
-              </IconButton>
-            </Tooltip> */}
-            {param.row.user_status === 0 ? (
+            {param.row.userStatus === 0 ? (
               <Tooltip title="Inactive">
                 <IconButton
                   onClick={(e) => {
@@ -240,7 +213,7 @@ export default function Admin() {
             loggedInId={loggedInId}
             getUsers={getUsers}
             setDelSuccessMsg={setDelSuccessMsg}
-            setDeleteFailMsg= {setDeleteFailMsg}
+            setDeleteFailMsg={setDeleteFailMsg}
           />
         ) : (
           ""
@@ -303,7 +276,7 @@ export default function Admin() {
           msg="User is already exist with this id, Please select another id"
           severity="error"
         />
-         <SnackbarNotify
+        <SnackbarNotify
           open={delFailMsg}
           close={setDeleteFailMsg}
           msg="You don't have permission to perform this operation"

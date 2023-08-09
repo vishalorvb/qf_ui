@@ -21,7 +21,7 @@ function DeleteUserPopup(props) {
     loggedInId,
     getUsers,
     setDelSuccessMsg,
-    setDeleteFailMsg
+    setDeleteFailMsg,
   } = props;
   const user = object.firstName + " " + object.lastName;
   const UserId = object.id;
@@ -35,27 +35,25 @@ function DeleteUserPopup(props) {
 
   const submit = () => {
     axiosPrivate
-      .post(
+      .delete(
         `/qfuserservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
       )
       .then((res) => {
-        if(res.data.status == 'SUCCESS')
-        {
-        setDelSuccessMsg(true);
-        getUsers();
-        setTimeout(() => {
-          setDelSuccessMsg(false);
-        }, 3000);
-      }
+        if (res.data.status == "SUCCESS") {
+          setDelSuccessMsg(true);
+          getUsers();
+          setTimeout(() => {
+            setDelSuccessMsg(false);
+          }, 3000);
+        }
 
-      if(res.data.status == 'FAIL')
-      {
-        setDeleteFailMsg(true)
-         setTimeout(() => {
-        setDeleteFailMsg(false);
-      }, 3000);
-    }
-  })
+        if (res.data.status == "FAIL") {
+          setDeleteFailMsg(true);
+          setTimeout(() => {
+            setDeleteFailMsg(false);
+          }, 3000);
+        }
+      });
     handleClose();
   };
 

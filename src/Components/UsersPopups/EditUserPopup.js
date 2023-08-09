@@ -85,7 +85,7 @@ function EditUserPopup(props) {
         current_user_id: loggedInId,
       };
 
-      axiosPrivate.post(`/qfuserservice/user/updateUser`, data).then((res) => {
+      axiosPrivate.put(`/qfuserservice/user/updateUser`, data).then((res) => {
         console.log(res.data.info);
         setEditSuccessMsg(true);
         getUsers();

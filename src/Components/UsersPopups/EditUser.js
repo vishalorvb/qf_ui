@@ -78,7 +78,7 @@ function EditUser() {
       };
 
       axiosPrivate
-        .post(`/qfuserservice/user/updateUser`, data)
+        .put(`/qfuserservice/user/updateUser`, data)
         .then((res) => {
           console.log(res.data.info);
           setEditSuccessMsg(true);
