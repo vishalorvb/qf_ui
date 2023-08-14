@@ -10,7 +10,6 @@ import useHead from "../../hooks/useHead";
 import { Stack } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
 
-
 // Global module data -- create and update
 
 export let moduledata = {
@@ -123,7 +122,11 @@ export default function CreateApplication() {
       return {
         ...ps,
         name: moduledata?.module_name
-          ? moduledata?.module_name + " " + "Update Application"
+          ? moduledata?.module_name +
+            " " +
+            (location?.pathname.includes("CreateSubApplication")
+              ? "Create SubApplication"
+              : "Update Application")
           : "Create Application",
       };
     });
@@ -262,7 +265,7 @@ export default function CreateApplication() {
       </Grid>
       <Stack mt={2} spacing={2} direction="row-reverse">
         <Button variant="contained" type="submit" onClick={submitHandler}>
-            {moduledata.module_id==0 ?"Save & Continue":"Update"}
+          {moduledata.module_id == 0 ? "Save & Continue" : "Update"}
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}

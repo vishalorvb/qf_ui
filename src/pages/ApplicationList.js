@@ -13,6 +13,7 @@ import {
   Menu,
   MenuItem,
   Popover,
+  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -104,6 +105,57 @@ export default function ApplicationsList() {
       },
     },
     {
+      field: "sub_modules_list",
+      headerName: "Sub Applications",
+      flex: 1,
+      renderCell: (param) => {
+        // return <div>abhi</div>;
+        const subModules = param?.row?.sub_modules_list;
+        const createSubModule = (
+          <Button
+            variant="contained"
+            onClick={() => {
+              moduledata.module_name = param.row.module_name;
+              moduledata.base_url = param.row.base_url;
+              moduledata.module_desc = param.row.module_desc;
+              moduledata.module_type = param.row.module_type;
+              moduledata.is_sub_module = true;
+              moduledata.parent_module_id = param.row.module_id;
+              navigate("CreateSubApplication", { state: param?.row });
+            }}
+          >
+            create submodule
+          </Button>
+        );
+        return subModules?.length > 0 ? (
+          <Select fullWidth size="small">
+            {subModules?.map((module) => (
+              <MenuItem
+                onClick={() => {
+                  if (module.module_type == "19") {
+                    setSnack(true);
+                    setTimeout(() => {
+                      setSnack(false);
+                    }, 3000);
+                  } else {
+                    navigate(`${module}`, {
+                      state: module,
+                    });
+                  }
+                }}
+              >
+                {module?.module_name}
+              </MenuItem>
+            ))}
+
+            {createSubModule}
+          </Select>
+        ) : (
+          createSubModule
+        );
+      },
+    },
+    {
       field: "module_desc",
       headerName: "Description",
       flex: 6,
@@ -155,6 +207,7 @@ export default function ApplicationsList() {
         columns={applicationColumns}
         getRowId={(row) => row?.module_id}
         searchPlaceholder="Search Applications"
+        rowHeight={60}
       />
       {snack && (
         <SnackbarNotify

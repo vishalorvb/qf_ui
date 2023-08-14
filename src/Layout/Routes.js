@@ -201,6 +201,11 @@ export const Routes = [
         element: createApplication,
         accessRole: [1, 2, 4, 5],
       },
+      {
+        path: "CreateSubApplication",
+        element: createApplication,
+        accessRole: [1, 2, 4, 5],
+      },
     ],
   },
   {
@@ -252,6 +257,11 @@ export const Routes = [
       },
       {
         path: "Update",
+        element: createApplication,
+        accessRole: [1, 2, 4, 5],
+      },
+      {
+        path: "CreateSubApplication",
         element: createApplication,
         accessRole: [1, 2, 4, 5],
       },
