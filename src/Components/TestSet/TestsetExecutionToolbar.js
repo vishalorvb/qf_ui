@@ -126,7 +126,22 @@ function TestsetExecutionToolbar({
   };
 
   const onSubmit = (data, isExecute) => {
-    if (selecteddatasets?.length > 0) {
+    let executeFlag = true;
+    let message = "";
+
+    if (selecteddatasets?.length <= 0) {
+      executeFlag = false;
+      message = "Select at least one Testcase!";
+    } else if (
+      selecteddatasets.some(
+        (datasets) => datasets?.selected_testcase_dataset_ids?.length <= 0
+      )
+    ) {
+      executeFlag = false;
+      message = "Select at least one dataset of selected Testcases!";
+    }
+
+    if (executeFlag) {
       setShowloader(true);
       const url =
         "/qfservice/" +
@@ -198,7 +213,7 @@ function TestsetExecutionToolbar({
     } else {
       setSnackbarData({
         status: true,
-        message: "Select at least one Testcase!",
+        message: message,
         severity: "error",
       });
     }
