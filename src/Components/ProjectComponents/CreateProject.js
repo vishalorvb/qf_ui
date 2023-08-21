@@ -29,7 +29,7 @@ let jiraProjectdata = {
 
 let filterApplication = {
     // "automation_type": "module type list"
-    1: [1, 2],
+    1: [1, 2,3,4],
     3: [1, 2],
     4: [3, 4, 13],
     6: [19],
