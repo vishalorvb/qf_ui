@@ -32,7 +32,7 @@ export default function ProjectnApplicationSelector({
 
     useEffect(() => {
         if (globalProject == null) {
-            setglobalProject(projectsList[0]??[]);
+            setglobalProject(projectsList[0]);
         }
     }, [projectsList]);
 
