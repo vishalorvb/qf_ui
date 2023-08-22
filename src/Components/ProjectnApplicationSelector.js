@@ -27,12 +27,12 @@ export default function ProjectnApplicationSelector({
     let [subApplication, setSubApplication] = useState([])
 
     useEffect(() => {
-        projectsList.length <= 0 && getProject(setProjectList, auth.userId);
+        projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
     }, []);
 
     useEffect(() => {
         if (globalProject == null) {
-            setglobalProject(projectsList[0]);
+            setglobalProject(projectsList[0]??[]);
         }
     }, [projectsList]);
 
