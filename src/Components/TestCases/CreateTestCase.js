@@ -345,9 +345,7 @@ function CreateTestCase() {
                         testcaseId={TCdata.testcase_id}
                         callback={val => {
                             screens.current = val
-                            console.log(val)
                             let temp = []
-                            console.log(val)
                             val.forEach(webpage => {
                                 webpage?.screenList.forEach(screen => {
                                     
@@ -356,10 +354,9 @@ function CreateTestCase() {
                                         screenId: screen.screen_id,
                                     }
                                     temp.push(x)
-                                    setScreenList(temp)
                                 })
                             })
-                            if(temp.length === 0){setScreenList([])}
+                            setScreenList(temp)
                         }}
                     ></MapScreen>
                 </Grid>
@@ -367,7 +364,7 @@ function CreateTestCase() {
                     <ElementList
                         screenList={screenList}
                     ></ElementList>
-                </Grid>}
+                </Grid>} 
             </Grid>}
             {globalApplication?.module_type === 1 && <MapApiTestCase
                 testcaseId={TCdata.testcase_id}

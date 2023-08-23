@@ -2,7 +2,6 @@ import axios from "axios";
 import { baseUrl } from "../Environment";
 
 
-
 export function getProject(callback, userId) {
   axios.get(`${baseUrl}/qfservice/getProjectsOfUser?userId=${userId}`).then(res => {
     callback(res.data.info)

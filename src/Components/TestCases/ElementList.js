@@ -91,7 +91,7 @@ function ElementList({ screenList }) {
 
 
     return <div>
-        <Grid container spacing={2} justifyContent="right" alignItems="right">
+        <Grid container spacing={2} justifyContent="right" alignItems="right" >
         <Grid item xs={2} md={2}>
         <Button onClick={e=>setOpen(!open)} variant="contained">{open?"Hide All":"Expand All"}</Button>
 
