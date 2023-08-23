@@ -35,8 +35,7 @@ export default function ApplicationsList() {
   const [application, setApplication] = useState([]);
   const location = useLocation();
   const [snack, setSnack] = useState(false);
-  let [snackbarsuccess, setSnackbarsuccess] = useState(false);
-  let [popup, setPopup] = useState(false);
+  let [popup, setPopup] = useState({ moduleId: 0, status: false });
 
   const handledeleteApplication = (module_id, id) => {
     deleteApplication(module_id, id).then((res) => {
@@ -49,7 +48,7 @@ export default function ApplicationsList() {
         });
       }
     });
-    setPopup(false);
+    setPopup({ moduleId: 0, status: false });
   };
 
   const applicationColumns = [
@@ -96,10 +95,11 @@ export default function ApplicationsList() {
             <Typography
               onClick={() => {
                 if (param?.row.module_type == "19") {
-                  setSnack(true);
-                  setTimeout(() => {
-                    setSnack(false);
-                  }, 3000);
+                  setSnackbarData({
+                    status: true,
+                    message: "Link Project don't have Pages and Screens",
+                    severity: "info",
+                  });
                 } else {
                   navigate(`${param?.row?.module_name}`, { state: param?.row });
                 }
@@ -174,25 +174,31 @@ export default function ApplicationsList() {
       sortable: false,
       renderCell: (param) => {
         return (
-          <TableActions heading={param?.row?.module_desc}>
-            <MenuItem
-              onClick={() => {
-                moduledata.module_name = param.row.module_name;
-                moduledata.base_url = param.row.base_url;
-                moduledata.module_desc = param.row.module_desc;
-                moduledata.module_type = param.row.module_type;
-                moduledata.module_id = param.row.module_id;
-                navigate("Update", { state: param?.row });
-              }}
-            >
-              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
-              Edit
-            </MenuItem>
-            <MenuItem onClick={() => setPopup(true)}>
-              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
-              Delete
-            </MenuItem>
-          </TableActions>
+          <>
+            <TableActions heading={param?.row?.module_desc}>
+              <MenuItem
+                onClick={() => {
+                  moduledata.module_name = param.row.module_name;
+                  moduledata.base_url = param.row.base_url;
+                  moduledata.module_desc = param.row.module_desc;
+                  moduledata.module_type = param.row.module_type;
+                  moduledata.module_id = param.row.module_id;
+                  navigate("Update", { state: param?.row });
+                }}
+              >
+                <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+                Edit
+              </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  setPopup({ moduleId: param?.row?.module_id, status: true })
+                }
+              >
+                <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+                Delete
+              </MenuItem>
+            </TableActions>
+          </>
         );
       },
     },
@@ -237,26 +243,14 @@ export default function ApplicationsList() {
         searchPlaceholder="Search Applications"
         rowHeight={65}
       />
-      {snack && (
-        <SnackbarNotify
-          open={snack}
-          close={setSnack}
-          msg={"Link Project don't have Pages and Screens"}
-          severity="error"
-        />
-      )}
-      <SnackbarNotify
-        open={snackbarsuccess}
-        close={setSnackbarsuccess}
-        msg="Application deleted succesfully"
-        severity="success"
-      />
       <ConfirmPop
-        open={popup}
-        handleClose={() => setPopup(false)}
+        open={popup?.status}
+        handleClose={() => setPopup({ moduleId: 0, status: false })}
         heading={"Delete Application"}
         message={"Are you sure you want to delete this application"}
-        onConfirm={() => handledeleteApplication(1, auth?.info?.id)}
+        onConfirm={() =>
+          handledeleteApplication(popup?.moduleId, auth?.info?.id)
+        }
       ></ConfirmPop>
     </div>
   );
