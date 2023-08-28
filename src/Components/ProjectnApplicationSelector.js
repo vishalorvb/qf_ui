@@ -21,10 +21,17 @@ export default function ProjectnApplicationSelector({
         setProjectList,
         applicationList,
         setapplicationList,
+        selectedApplication,
+        setSelectedApplication,
+        subApplicationList,
+        setSubApplicationList,
+        selectedSubApplication,
+        setSelectedSubApplication
     } = useHead();
 
     const { auth } = useAuth();
     let [subApplication, setSubApplication] = useState([])
+
 
     useEffect(() => {
         projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
@@ -32,26 +39,54 @@ export default function ProjectnApplicationSelector({
 
     useEffect(() => {
         if (globalProject == null) {
-            setglobalProject(projectsList[0]??[]);
+            setglobalProject(projectsList[0]);
         }
     }, [projectsList]);
 
     useEffect(() => {
+        setapplicationList([]);
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setapplicationList, globalProject?.project_id);
         }
-        setapplicationList([]);
     }, [globalProject]);
-    useEffect(() => {
-        if (globalApplication == null) {
-            setglobalApplication(applicationList[0]);
-        }
-    }, [applicationList]);
+
+    //change from here
+    //useEffect(() => {
+    //    if (globalApplication == null) {
+    //        setglobalApplication(applicationList[0]);
+    //    }
+    //}, [applicationList]);
+
+    //useEffect(() => {
+    //    console.log(globalApplication)
+    //    setSubApplication(globalApplication?.sub_modules_list)
+    //}, [globalApplication])
 
     useEffect(() => {
-    console.log(globalApplication)
-    setSubApplication(globalApplication?.sub_modules_list)
-    }, [globalApplication])
+        setSelectedApplication(applicationList[0] ?? null)
+    }, [applicationList])
+
+    useEffect(() => {
+        if (selectedApplication != null) {
+            if (selectedApplication.sub_modules_list?.length > 0) {
+                console.log(selectedApplication.sub_modules_list?.length)
+                setSubApplicationList(selectedApplication.sub_modules_list)
+            }
+            else {
+                setSubApplicationList([])
+                setglobalApplication(selectedApplication)
+            }
+        }
+
+    }, [selectedApplication])
+
+    useEffect(() => {
+        setSelectedSubApplication(subApplicationList[0])
+    }, [subApplicationList])
+
+    useEffect(() => {
+        setglobalApplication(selectedSubApplication)
+    }, [selectedSubApplication])
 
     return (
         <Grid
@@ -60,7 +95,7 @@ export default function ProjectnApplicationSelector({
             justifyContent={isApplication !== false ? "space-around" : "flex-end"}
             direction="row"
         >
-            <Grid item md={subApplication?.length>0?4:6}>
+            <Grid item md={subApplicationList?.length > 0 ? 4 : 6}>
                 <label>Projects</label>
                 <Autocomplete
                     disabled={selectorDisabled === true}
@@ -81,7 +116,7 @@ export default function ProjectnApplicationSelector({
                 />
             </Grid>
             {isApplication != false && (
-                <Grid item md={subApplication?.length>0?4:6}>
+                <Grid item md={subApplicationList?.length > 0 ? 4 : 6}>
                     <label>Applications</label>
                     <Autocomplete
                         disabled={selectorDisabled === true}
@@ -89,23 +124,36 @@ export default function ProjectnApplicationSelector({
                         disableClearable
                         id="application_id"
                         options={applicationList}
-                        value={globalApplication || null}
+                        value={selectedApplication || null}
                         // sx={{ width: "100%" }}
                         fullWidth
                         getOptionLabel={(option) => option.module_name}
                         onChange={(e, value) => {
-                            setglobalApplication(value);
+                            setSelectedApplication(value);
                         }}
                         renderInput={(params) => <TextField {...params} size="small" />}
                     />
                 </Grid>
             )}
 
-       {subApplication?.length> 0  &&     <Grid item md={4}>
+            {subApplicationList?.length > 0 && <Grid item md={4}>
                 <label>Sub Applications</label>
-                        <select> 
-                            {subApplication?.map(app=><option value={app.module_id}>{app.module_name}</option>)}
-                        </select>
+                <Autocomplete
+                    disabled={selectorDisabled === true}
+                    disablePortal
+                    disableClearable
+                    id="application_id"
+                    options={subApplicationList}
+                    value={selectedSubApplication || null}
+                    // sx={{ width: "100%" }}
+                    fullWidth
+                    getOptionLabel={(option) => option.module_name}
+                    onChange={(e, value) => {
+                        selectedSubApplication(value);
+                        
+                    }}
+                    renderInput={(params) => <TextField {...params} size="small" />}
+                />
             </Grid>}
         </Grid>
     );

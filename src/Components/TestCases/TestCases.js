@@ -158,12 +158,7 @@ export default  function TestCases() {
             ></SnackbarNotify>
             <div className="apptable">
                 <div className="intable">
-                    <ProjectnApplicationSelector
-                        globalProject={globalProject}
-                        setglobalProject={setglobalProject}
-                        globalApplication={globalApplication}
-                        setglobalApplication={setglobalApplication}
-                    />
+                    <ProjectnApplicationSelector/>
                 </div>
                 <Table
                     searchPlaceholder="Search Testcases"

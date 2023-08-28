@@ -21,6 +21,10 @@ export const HeaderProvider = ({ children }) => {
     severity: "success",
   });
 
+  let [selectedApplication, setSelectedApplication] = useState(null)
+  let [subApplicationList, setSubApplicationList] = useState([])
+  let [selectedSubApplication,setSelectedSubApplication] = useState(null)
+
   return (
     <HeadContext.Provider
       value={{
@@ -38,6 +42,13 @@ export const HeaderProvider = ({ children }) => {
         setProjectList,
         applicationList,
         setapplicationList,
+
+        selectedApplication, 
+        setSelectedApplication,
+        subApplicationList, 
+        setSubApplicationList,
+        selectedSubApplication,
+        setSelectedSubApplication
       }}
     >
       {children}
