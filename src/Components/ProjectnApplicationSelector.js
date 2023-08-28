@@ -51,41 +51,34 @@ export default function ProjectnApplicationSelector({
     }, [globalProject]);
 
     //change from here
-    //useEffect(() => {
-    //    if (globalApplication == null) {
-    //        setglobalApplication(applicationList[0]);
-    //    }
-    //}, [applicationList]);
 
-    //useEffect(() => {
-    //    console.log(globalApplication)
-    //    setSubApplication(globalApplication?.sub_modules_list)
-    //}, [globalApplication])
 
     useEffect(() => {
+        setSubApplicationList([])
+
         setSelectedApplication(applicationList[0] ?? null)
     }, [applicationList])
 
     useEffect(() => {
+        setglobalApplication(selectedApplication)
+        setSubApplicationList([])
+
         if (selectedApplication != null) {
             if (selectedApplication.sub_modules_list?.length > 0) {
                 console.log(selectedApplication.sub_modules_list?.length)
                 setSubApplicationList(selectedApplication.sub_modules_list)
             }
-            else {
-                setSubApplicationList([])
-                setglobalApplication(selectedApplication)
-            }
+
         }
 
     }, [selectedApplication])
 
     useEffect(() => {
-        setSelectedSubApplication(subApplicationList[0])
+        setSelectedSubApplication(null)
     }, [subApplicationList])
 
     useEffect(() => {
-        setglobalApplication(selectedSubApplication)
+
     }, [selectedSubApplication])
 
     return (
@@ -117,43 +110,49 @@ export default function ProjectnApplicationSelector({
             </Grid>
             {isApplication != false && (
                 <Grid item md={subApplicationList?.length > 0 ? 4 : 6}>
-                    <label>Applications</label>
+                    <div>
+                        <label>Applications</label>
+                        <Autocomplete
+                            disabled={selectorDisabled === true}
+                            disablePortal
+                            disableClearable
+                            id="application_id"
+                            options={applicationList}
+                            value={selectedApplication || null}
+                            // sx={{ width: "100%" }}
+                            fullWidth
+                            getOptionLabel={(option) => option.module_name}
+                            onChange={(e, value) => {
+                                setSelectedApplication(value);
+                            }}
+                            renderInput={(params) => <TextField {...params} size="small" />}
+                        />
+                    </div>
+                </Grid>
+            )}
+
+            {subApplicationList?.length > 0 && <Grid item md={4}>
+                <div>
+                    <label>Sub Applications</label>
                     <Autocomplete
                         disabled={selectorDisabled === true}
                         disablePortal
                         disableClearable
                         id="application_id"
-                        options={applicationList}
-                        value={selectedApplication || null}
+                        options={subApplicationList}
+                        value={selectedSubApplication || null}
                         // sx={{ width: "100%" }}
                         fullWidth
                         getOptionLabel={(option) => option.module_name}
                         onChange={(e, value) => {
-                            setSelectedApplication(value);
+                            setSelectedSubApplication(value);
+                            console.log(value)
+                            setglobalApplication(value)
                         }}
                         renderInput={(params) => <TextField {...params} size="small" />}
                     />
-                </Grid>
-            )}
+                </div>
 
-            {subApplicationList?.length > 0 && <Grid item md={4}>
-                <label>Sub Applications</label>
-                <Autocomplete
-                    disabled={selectorDisabled === true}
-                    disablePortal
-                    disableClearable
-                    id="application_id"
-                    options={subApplicationList}
-                    value={selectedSubApplication || null}
-                    // sx={{ width: "100%" }}
-                    fullWidth
-                    getOptionLabel={(option) => option.module_name}
-                    onChange={(e, value) => {
-                        selectedSubApplication(value);
-                        
-                    }}
-                    renderInput={(params) => <TextField {...params} size="small" />}
-                />
             </Grid>}
         </Grid>
     );
