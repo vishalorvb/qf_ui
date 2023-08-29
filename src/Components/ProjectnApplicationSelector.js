@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 export default function ProjectnApplicationSelector({
     isTestset,
     isApplication,
@@ -30,8 +31,8 @@ export default function ProjectnApplicationSelector({
     } = useHead();
 
     const { auth } = useAuth();
-    let [subApplication, setSubApplication] = useState([])
 
+    let [searchWord, setSearchWord] = useState("")
 
     useEffect(() => {
         projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
@@ -65,7 +66,6 @@ export default function ProjectnApplicationSelector({
 
         if (selectedApplication != null) {
             if (selectedApplication.sub_modules_list?.length > 0) {
-                console.log(selectedApplication.sub_modules_list?.length)
                 setSubApplicationList(selectedApplication.sub_modules_list)
             }
 
@@ -81,6 +81,11 @@ export default function ProjectnApplicationSelector({
 
     }, [selectedSubApplication])
 
+
+    useEffect(() => {
+        let temp = applicationList.filter(app => app.module_name.toLowerCase().includes(searchWord.toLowerCase))
+        console.log(temp)
+    }, [searchWord])
     return (
         <Grid
             container
@@ -110,9 +115,10 @@ export default function ProjectnApplicationSelector({
             </Grid>
             {isApplication != false && (
                 <Grid item md={subApplicationList?.length > 0 ? 4 : 6}>
-                    <div>
+                    <div className="searchbox">
                         <label>Applications</label>
-                        <Autocomplete
+                        <input type="text" name="application" value={searchWord} onChange={e => setSearchWord(e.target.value)} />
+                        {/*<Autocomplete
                             disabled={selectorDisabled === true}
                             disablePortal
                             disableClearable
@@ -126,7 +132,33 @@ export default function ProjectnApplicationSelector({
                                 setSelectedApplication(value);
                             }}
                             renderInput={(params) => <TextField {...params} size="small" />}
-                        />
+                        />*/}
+                        <div className="applist">
+                            <ul>
+                                {applicationList.map(app => {
+                                    return (
+                                        <li key={app.module_id}
+                                            onClick={e => {
+                                                setSelectedApplication(app)
+                                            }} >
+                                            {app.module_name} {app.sub_modules_list.length > 0 && <KeyboardArrowRightIcon></KeyboardArrowRightIcon>}
+
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+
+                        <div className="subapp">             <ul>
+                            {subApplicationList.map(app => <li key={app.module_id}
+                                onClick={e => {
+                                    setSelectedSubApplication(app);
+                                    setglobalApplication(app)
+                                }} >
+                                {app.module_name}
+                            </li>)}
+                        </ul>
+                        </div>
                     </div>
                 </Grid>
             )}
@@ -134,7 +166,8 @@ export default function ProjectnApplicationSelector({
             {subApplicationList?.length > 0 && <Grid item md={4}>
                 <div>
                     <label>Sub Applications</label>
-                    <Autocomplete
+
+                    {/*<Autocomplete
                         disabled={selectorDisabled === true}
                         disablePortal
                         disableClearable
@@ -150,7 +183,8 @@ export default function ProjectnApplicationSelector({
                             setglobalApplication(value)
                         }}
                         renderInput={(params) => <TextField {...params} size="small" />}
-                    />
+                    />*/}
+
                 </div>
 
             </Grid>}
