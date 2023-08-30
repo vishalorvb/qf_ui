@@ -91,7 +91,9 @@ export default function ApplicationsList() {
                   <JoinInnerRoundedIcon sx={{ color: "gray" }} />
                 </Tooltip>
               ),
-            }[param?.row?.module_type] ?? <AppleIcon sx={{ color: "white" }} />}
+            }[param?.row?.module_type] ?? (
+              <AppleIcon sx={{ color: "white", display: "none" }} />
+            )}
             <Typography
               onClick={() => {
                 if (param?.row.module_type == "19") {
@@ -138,28 +140,42 @@ export default function ApplicationsList() {
             </IconButton>
           </Tooltip>
         );
-        return subModules?.length > 0 ? (
+        return subModules?.filter((module) => !module?.is_deleted)?.length >
+          0 ? (
           <>
             {createSubModule}
             <Select fullWidth size="small">
-              {subModules?.map((module) => (
-                <MenuItem
-                  onClick={() => {
-                    if (module.module_type == "19") {
-                      setSnack(true);
-                      setTimeout(() => {
-                        setSnack(false);
-                      }, 3000);
-                    } else {
-                      navigate(`${module}`, {
-                        state: module,
-                      });
-                    }
-                  }}
-                >
-                  {module?.module_name}
-                </MenuItem>
-              ))}
+              {subModules
+                ?.filter((module) => !module?.is_deleted)
+                .map((module) => (
+                  <MenuItem sx={{ justifyContent: "space-between" }}>
+                    <Typography
+                      onClick={() => {
+                        if (module.module_type == "19") {
+                          setSnack(true);
+                          setTimeout(() => {
+                            setSnack(false);
+                          }, 3000);
+                        } else {
+                          navigate(`${module?.module_name}`, {
+                            state: module,
+                          });
+                        }
+                      }}
+                    >
+                      {module?.module_name}
+                    </Typography>
+                    <DeleteOutlineIcon
+                      onClick={() =>
+                        setPopup({
+                          moduleId: module?.module_id,
+                          status: true,
+                        })
+                      }
+                      sx={{ color: "red" }}
+                    />
+                  </MenuItem>
+                ))}
             </Select>
           </>
         ) : (
