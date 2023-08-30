@@ -46,41 +46,20 @@ export default function ProjectnApplicationSelector({
     }, [projectsList]);
 
     useEffect(() => {
-        setapplicationList([]);
+
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setapplicationList, globalProject?.project_id);
         }
     }, [globalProject]);
 
+    useEffect(() => {
+
+        globalApplication == null && setglobalApplication(applicationList[0] ?? null)
+    }, [applicationList])
+
     //change from here
 
 
-    useEffect(() => {
-        setSubApplicationList([])
-
-        setSelectedApplication(applicationList[0] ?? null)
-    }, [applicationList])
-
-    useEffect(() => {
-        setglobalApplication(selectedApplication)
-        setSubApplicationList([])
-
-        if (selectedApplication != null) {
-            if (selectedApplication.sub_modules_list?.length > 0) {
-                setSubApplicationList(selectedApplication.sub_modules_list)
-            }
-
-        }
-
-    }, [selectedApplication])
-
-    useEffect(() => {
-        setSelectedSubApplication(null)
-    }, [subApplicationList])
-
-    useEffect(() => {
-
-    }, [selectedSubApplication])
 
     useEffect(() => {
         setSearchWord(globalApplication?.module_name)
@@ -137,21 +116,6 @@ export default function ProjectnApplicationSelector({
                                 }, 1000);
                             }}
                         />
-                        {/*<Autocomplete
-                            disabled={selectorDisabled === true}
-                            disablePortal
-                            disableClearable
-                            id="application_id"
-                            options={applicationList}
-                            value={selectedApplication || null}
-                            // sx={{ width: "100%" }}
-                            fullWidth
-                            getOptionLabel={(option) => option.module_name}
-                            onChange={(e, value) => {
-                                setSelectedApplication(value);
-                            }}
-                            renderInput={(params) => <TextField {...params} size="small" />}
-                        />*/}
                         {show && <div className="applist">
                             <ul>
                                 {applicationList.map(app => {
@@ -164,7 +128,6 @@ export default function ProjectnApplicationSelector({
                                                 e.stopPropagation()
                                             }} >
                                             {app.module_name}
-                                            {/*{app.sub_modules_list.length > 0 && <KeyboardArrowRightIcon></KeyboardArrowRightIcon>}*/}
                                             <ul>
 
                                                 {app?.sub_modules_list?.map(subapp => {
@@ -173,7 +136,7 @@ export default function ProjectnApplicationSelector({
                                                             onClick={e => {
                                                                 console.log(subapp)
                                                                 setglobalApplication(subapp)
-
+                                                                e.stopPropagation()
                                                             }}
                                                         >{subapp.module_name}</li>
                                                     )
@@ -185,48 +148,10 @@ export default function ProjectnApplicationSelector({
                                 })}
                             </ul>
                         </div>}
-
-                        {/*<div className="subapp">
-                            <ul>
-                                {subApplicationList.map(subapp => <li key={subapp.module_id}
-                                    onClick={e => {
-                                        setSelectedSubApplication(subapp);
-                                        setglobalApplication(subapp)
-                                    }} >
-                                    {subapp.module_name}
-                                </li>)}
-                            </ul>
-                        </div>*/}
                     </div>
                 </Grid>
             )
             }
-
-            {/*{subApplicationList?.length > 0 && <Grid item md={4}>
-                <div>
-                    <label>Sub Applications</label>
-
-                    <Autocomplete
-                        disabled={selectorDisabled === true}
-                        disablePortal
-                        disableClearable
-                        id="application_id"
-                        options={subApplicationList}
-                        value={selectedSubApplication || null}
-                        // sx={{ width: "100%" }}
-                        fullWidth
-                        getOptionLabel={(option) => option.module_name}
-                        onChange={(e, value) => {
-                            setSelectedSubApplication(value);
-                            console.log(value)
-                            setglobalApplication(value)
-                        }}
-                        renderInput={(params) => <TextField {...params} size="small" />}
-                    />
-
-                </div>
-
-            </Grid>}*/}
         </Grid >
     );
 }
