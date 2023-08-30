@@ -118,7 +118,7 @@ export default function ProjectnApplicationSelector({
                         />
                         {show && <div className="applist">
                             <ul>
-                                {applicationList.map(app => {
+                                {applicationList.filter(app => app.module_name?.toLowerCase().includes(searchWord?.toLowerCase())).map(app => {
 
                                     return (
                                         <li key={app.module_id}
