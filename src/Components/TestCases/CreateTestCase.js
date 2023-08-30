@@ -15,6 +15,7 @@ import MapApiTestCase from "./apiTestcase/MapApiTestCase"
 import ElementList from "./ElementList"
 import { getElement } from "../../Services/TestCaseService"
 import { getSprint_in_testcase } from "../../Services/TestCaseService"
+import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
 export let TCdata = {
     module_id: 0,
     testcase_name: "",
@@ -236,8 +237,8 @@ function CreateTestCase() {
     return (
         <>
             <Grid item container spacing={2} justifyContent="left">
-                <Grid item md={3}>
-                    <label htmlFor="">Projects</label>
+                <Grid item md={6}>
+                    {/*<label htmlFor="">Projects</label>
                     <Autocomplete
                         disablePortal
                         disableClearable
@@ -254,9 +255,10 @@ function CreateTestCase() {
                         renderInput={(params) => (
                             <TextField {...params} size="small" fullWidth />
                         )}
-                    />
+                    />*/}
+                    <ProjectnApplicationSelector />
                 </Grid>
-                <Grid item md={3}>
+                {/*<Grid item md={3}>
                     <label htmlFor="">Applications</label>
                     <Autocomplete
                         disablePortal
@@ -275,7 +277,7 @@ function CreateTestCase() {
                         )}
                     />
 
-                </Grid>
+                </Grid>*/}
                 <Grid item md={3}>
                     <label>Sprint</label>
                     <select
@@ -336,7 +338,7 @@ function CreateTestCase() {
 
             </Grid >
             <br />
-            <Divider></Divider><br/>
+            <Divider></Divider><br />
             {globalApplication?.module_type !== 1 && <Grid item container spacing={2} justifyContent="left">
                 <Grid item xs={2} md={2}>
                     <MapScreen
@@ -348,7 +350,7 @@ function CreateTestCase() {
                             let temp = []
                             val.forEach(webpage => {
                                 webpage?.screenList.forEach(screen => {
-                                    
+
                                     let x = {
                                         screenName: screen.name,
                                         screenId: screen.screen_id,
@@ -360,11 +362,11 @@ function CreateTestCase() {
                         }}
                     ></MapScreen>
                 </Grid>
-               {screenList.length>0 && <Grid item xs={10} md={10}>
+                {screenList.length > 0 && <Grid item xs={10} md={10}>
                     <ElementList
                         screenList={screenList}
                     ></ElementList>
-                </Grid>} 
+                </Grid>}
             </Grid>}
             {globalApplication?.module_type === 1 && <MapApiTestCase
                 testcaseId={TCdata.testcase_id}

@@ -641,18 +641,19 @@ label {
     padding: 10px 0;
     box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
+    position: absolute;
 
     ul {
         list-style: none;
 
         li {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
             padding: 5px 10px;
-            display: flex;
+            //display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid $borders;
+            //border-bottom: 1px solid $borders;
             cursor: pointer;
 
             &:last-of-type {

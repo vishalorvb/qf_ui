@@ -1,4 +1,4 @@
-import { Autocomplete, Grid } from "@mui/material";
+import { Autocomplete, Fab, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -33,6 +33,7 @@ export default function ProjectnApplicationSelector({
     const { auth } = useAuth();
 
     let [searchWord, setSearchWord] = useState("")
+    let [show, setShow] = useState(false)
 
     useEffect(() => {
         projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
@@ -81,10 +82,14 @@ export default function ProjectnApplicationSelector({
 
     }, [selectedSubApplication])
 
+    useEffect(() => {
+        setSearchWord(globalApplication?.module_name)
+        console.log(globalApplication)
+    }, [globalApplication])
 
     useEffect(() => {
-        let temp = applicationList.filter(app => app.module_name.toLowerCase().includes(searchWord.toLowerCase))
-        console.log(temp)
+        let temp = applicationList.filter(app => app.module_name?.toLowerCase().includes(searchWord?.toLowerCase()))
+        //console.log(temp)
     }, [searchWord])
     return (
         <Grid
@@ -93,7 +98,7 @@ export default function ProjectnApplicationSelector({
             justifyContent={isApplication !== false ? "space-around" : "flex-end"}
             direction="row"
         >
-            <Grid item md={subApplicationList?.length > 0 ? 4 : 6}>
+            <Grid item md={6}>
                 <label>Projects</label>
                 <Autocomplete
                     disabled={selectorDisabled === true}
@@ -114,10 +119,24 @@ export default function ProjectnApplicationSelector({
                 />
             </Grid>
             {isApplication != false && (
-                <Grid item md={subApplicationList?.length > 0 ? 4 : 6}>
+                <Grid item md={6}>
                     <div className="searchbox">
                         <label>Applications</label>
-                        <input type="text" name="application" value={searchWord} onChange={e => setSearchWord(e.target.value)} />
+                        <input type="text" autoComplete="off" name="application" value={searchWord}
+                            onChange={e => setSearchWord(e.target.value)}
+                            onFocus={e => {
+                                setShow(true)
+                                setSearchWord("")
+                            }}
+                            onBlur={e => {
+
+
+                                setTimeout(() => {
+                                    setSearchWord(globalApplication?.module_name)
+                                    setShow(false)
+                                }, 1000);
+                            }}
+                        />
                         {/*<Autocomplete
                             disabled={selectorDisabled === true}
                             disablePortal
@@ -133,41 +152,61 @@ export default function ProjectnApplicationSelector({
                             }}
                             renderInput={(params) => <TextField {...params} size="small" />}
                         />*/}
-                        <div className="applist">
+                        {show && <div className="applist">
                             <ul>
                                 {applicationList.map(app => {
+
                                     return (
                                         <li key={app.module_id}
                                             onClick={e => {
-                                                setSelectedApplication(app)
+                                                console.log(app)
+                                                setglobalApplication(app)
+                                                e.stopPropagation()
                                             }} >
-                                            {app.module_name} {app.sub_modules_list.length > 0 && <KeyboardArrowRightIcon></KeyboardArrowRightIcon>}
+                                            {app.module_name}
+                                            {/*{app.sub_modules_list.length > 0 && <KeyboardArrowRightIcon></KeyboardArrowRightIcon>}*/}
+                                            <ul>
 
+                                                {app?.sub_modules_list?.map(subapp => {
+                                                    return (
+                                                        <li key={subapp.module_id}
+                                                            onClick={e => {
+                                                                console.log(subapp)
+                                                                setglobalApplication(subapp)
+
+                                                            }}
+                                                        >{subapp.module_name}</li>
+                                                    )
+                                                })}
+                                            </ul>
                                         </li>
+
                                     )
                                 })}
                             </ul>
-                        </div>
+                        </div>}
 
-                        <div className="subapp">             <ul>
-                            {subApplicationList.map(app => <li key={app.module_id}
-                                onClick={e => {
-                                    setSelectedSubApplication(app);
-                                    setglobalApplication(app)
-                                }} >
-                                {app.module_name}
-                            </li>)}
-                        </ul>
-                        </div>
+                        {/*<div className="subapp">
+                            <ul>
+                                {subApplicationList.map(subapp => <li key={subapp.module_id}
+                                    onClick={e => {
+                                        setSelectedSubApplication(subapp);
+                                        setglobalApplication(subapp)
+                                    }} >
+                                    {subapp.module_name}
+                                </li>)}
+                            </ul>
+                        </div>*/}
                     </div>
                 </Grid>
-            )}
+            )
+            }
 
-            {subApplicationList?.length > 0 && <Grid item md={4}>
+            {/*{subApplicationList?.length > 0 && <Grid item md={4}>
                 <div>
                     <label>Sub Applications</label>
 
-                    {/*<Autocomplete
+                    <Autocomplete
                         disabled={selectorDisabled === true}
                         disablePortal
                         disableClearable
@@ -183,11 +222,11 @@ export default function ProjectnApplicationSelector({
                             setglobalApplication(value)
                         }}
                         renderInput={(params) => <TextField {...params} size="small" />}
-                    />*/}
+                    />
 
                 </div>
 
-            </Grid>}
-        </Grid>
+            </Grid>}*/}
+        </Grid >
     );
 }
