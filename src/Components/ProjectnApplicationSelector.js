@@ -112,7 +112,7 @@ export default function ProjectnApplicationSelector({
                                             }} >
                                             {app.module_name}
                                             <ul style={{ paddingLeft: "10px" }}>
-                                                {app?.sub_modules_list?.map(subapp => {
+                                                {app?.sub_modules_list?.filter(a => !a.is_deleted)?.map(subapp => {
                                                     return (
                                                         <li key={subapp.module_id}
                                                             onClick={e => {
