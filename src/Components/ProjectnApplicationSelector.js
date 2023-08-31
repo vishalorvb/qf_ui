@@ -22,12 +22,6 @@ export default function ProjectnApplicationSelector({
         setProjectList,
         applicationList,
         setapplicationList,
-        selectedApplication,
-        setSelectedApplication,
-        subApplicationList,
-        setSubApplicationList,
-        selectedSubApplication,
-        setSelectedSubApplication
     } = useHead();
 
     const { auth } = useAuth();
@@ -59,17 +53,10 @@ export default function ProjectnApplicationSelector({
 
     //change from here
 
-
-
     useEffect(() => {
         setSearchWord(globalApplication?.module_name)
-        console.log(globalApplication)
     }, [globalApplication])
 
-    useEffect(() => {
-        let temp = applicationList.filter(app => app.module_name?.toLowerCase().includes(searchWord?.toLowerCase()))
-        //console.log(temp)
-    }, [searchWord])
     return (
         <Grid
             container
@@ -108,10 +95,7 @@ export default function ProjectnApplicationSelector({
                                 setSearchWord("")
                             }}
                             onBlur={e => {
-
-
                                 setTimeout(() => {
-                                    setSearchWord(globalApplication?.module_name)
                                     setShow(false)
                                 }, 1000);
                             }}
@@ -123,7 +107,6 @@ export default function ProjectnApplicationSelector({
                                     return (
                                         <li key={app.module_id}
                                             onClick={e => {
-                                                console.log(app)
                                                 setglobalApplication(app)
                                                 e.stopPropagation()
                                             }} >
@@ -134,7 +117,6 @@ export default function ProjectnApplicationSelector({
                                                     return (
                                                         <li key={subapp.module_id}
                                                             onClick={e => {
-                                                                console.log(subapp)
                                                                 setglobalApplication(subapp)
                                                                 e.stopPropagation()
                                                             }}
