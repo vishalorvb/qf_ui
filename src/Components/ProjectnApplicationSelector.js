@@ -111,8 +111,7 @@ export default function ProjectnApplicationSelector({
                                                 e.stopPropagation()
                                             }} >
                                             {app.module_name}
-                                            <ul>
-
+                                            <ul style={{ paddingLeft: "10px" }}>
                                                 {app?.sub_modules_list?.map(subapp => {
                                                     return (
                                                         <li key={subapp.module_id}
