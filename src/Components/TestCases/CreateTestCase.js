@@ -339,8 +339,8 @@ function CreateTestCase() {
             </Grid >
             <br />
             <Divider></Divider><br />
-            {globalApplication?.module_type !== 1 && <Grid item container spacing={2} justifyContent="left">
-                <Grid item xs={2} md={2}>
+            {globalApplication?.module_type !== 1 && <Grid item container spacing={1} justifyContent="left">
+                <Grid item xs={3} md={3}>
                     <MapScreen
                         projectId={globalProject?.project_id}
                         moduleId={globalApplication?.module_id}
@@ -362,7 +362,7 @@ function CreateTestCase() {
                         }}
                     ></MapScreen>
                 </Grid>
-                {screenList.length > 0 && <Grid item xs={10} md={10}>
+                {screenList.length > 0 && <Grid item xs={9} md={9}>
                     <ElementList
                         screenList={screenList}
                     ></ElementList>
