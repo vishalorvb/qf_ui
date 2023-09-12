@@ -9,27 +9,6 @@ export const testManagementList = [
     icon: <i className="qf icon-dashboard"></i>,
   },
   {
-    name: "Organization",
-    id: "10",
-    route: "",
-    accessRole: [3, 5],
-    icon: <i className=""></i>,
-    subList: [
-      {
-        name: "Add Organization",
-        id: "93",
-        route: "AddOrganization",
-        accessRole: [3, 5],
-      },
-      {
-        name: "Recent",
-        id: "94",
-        route: "Organization",
-        accessRole: [3, 5],
-      },
-    ],
-  },
-  {
     name: "Admin",
     id: "1",
     route: "",
@@ -264,10 +243,24 @@ export const opsManagementList = [
 
 export const qfAdmin = [
   {
-    name: "QF Admin",
-    id: "1b",
-    route: "qfAdmin",
-    accessRole: [2],
+    name: "Organization",
+    id: "10",
+    route: "",
+    accessRole: [5],
     icon: <i className="qf icon-admin"></i>,
+    subList: [
+      {
+        name: "Add Organization",
+        id: "93",
+        route: "AddOrganization",
+        accessRole: [3, 5],
+      },
+      {
+        name: "Recent",
+        id: "94",
+        route: "Organization",
+        accessRole: [3, 5],
+      },
+    ],
   },
 ];

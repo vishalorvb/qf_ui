@@ -211,6 +211,14 @@ export default function MiniDrawer({ open, setOpen }) {
     return navigationList;
   };
 
+  const testManagementMenu = navigationItemRender(testManagementList);
+  const reportsManagementMenu = navigationItemRender(reportsManagementList);
+  const functionalManagementMenu = navigationItemRender(
+    functionalManagementList
+  );
+  const opsManagementMenu = navigationItemRender(opsManagementList);
+  const qfAdminMenu = navigationItemRender(qfAdmin);
+
   return (
     <ThemeProvider theme={drawerTheme}>
       <Drawer variant="permanent" open={open} className="drawer">
@@ -280,45 +288,51 @@ export default function MiniDrawer({ open, setOpen }) {
             )}
           </div>
 
-          {open && (
-            <div className="sideNavSections">
-              <span>Test management</span>
-            </div>
+          {testManagementMenu.length > 0 && (
+            <>
+              {open && (
+                <div className="sideNavSections">
+                  <span>Test management</span>
+                </div>
+              )}
+              <List className="menuList">{testManagementMenu}</List>
+            </>
           )}
-
-          <List className="menuList">
-            {navigationItemRender(testManagementList)}
-          </List>
-
-          {open && (
-            <div className="sideNavSections">
-              <span>Reports</span>
-            </div>
+          {reportsManagementMenu.length > 0 && (
+            <>
+              {open && (
+                <div className="sideNavSections">
+                  <span>Reports</span>
+                </div>
+              )}
+              <List className="menuList">{reportsManagementMenu}</List>
+            </>
           )}
-
-          <List className="menuList">
-            {navigationItemRender(reportsManagementList)}
-          </List>
-
-          {open && (
-            <div className="sideNavSections">
-              <span>Functional</span>
-            </div>
+          {functionalManagementMenu.length > 0 && (
+            <>
+              {open && (
+                <div className="sideNavSections">
+                  <span>Functional</span>
+                </div>
+              )}
+              <List className="menuList">{functionalManagementMenu}</List>
+            </>
           )}
-
-          <List className="menuList">
-            {navigationItemRender(functionalManagementList)}
-          </List>
-
-          {open && (
-            <div className="sideNavSections">
-              <span>Ops</span>
-            </div>
+          {opsManagementMenu.length > 0 && (
+            <>
+              {open && (
+                <div className="sideNavSections">
+                  <span>Ops</span>
+                </div>
+              )}
+              <List className="menuList">{opsManagementMenu}</List>
+            </>
           )}
-
-          <List className="menuList">
-            {navigationItemRender(opsManagementList)}
-          </List>
+          {qfAdminMenu.length > 0 && (
+            <>
+              <List className="menuList">{qfAdminMenu}</List>
+            </>
+          )}
         </div>
         {open && (
           <Button
