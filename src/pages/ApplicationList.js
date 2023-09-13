@@ -189,6 +189,12 @@ export default function ApplicationsList() {
                   moduledata.module_desc = param.row.module_desc;
                   moduledata.module_type = param.row.module_type;
                   moduledata.module_id = param.row.module_id;
+                  moduledata.is_sub_module = param?.row?.is_parent_module
+                    ? undefined
+                    : true;
+                  moduledata.parent_module_id = param?.row?.is_parent_module
+                    ? undefined
+                    : param.row.parent_module_id;
                   navigate("Update", { state: param?.row });
                 }}
               >
