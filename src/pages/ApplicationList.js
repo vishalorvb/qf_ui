@@ -85,32 +85,6 @@ export default function ApplicationsList() {
 
   const applicationColumns = [
     {
-      field: "",
-      header: "isOpen",
-      flex: 1,
-      sortable: false,
-      renderCell: (param) => {
-        return (
-          <>
-            {param.row.is_parent_module == true && (
-              <span onClick={() => handleExpand(param.row.module_id)}>
-                <ExpandMore
-                  expand={expanded.includes(param.row.module_id)}
-                  aria-expanded={expanded.includes(param.row.module_id)}
-                  aria-label="show more"
-                  disableFocusRipple
-                  disableRipple
-                  sx={{ color: "black", padding: "0px" }}
-                >
-                  <ExpandMoreIcon />
-                </ExpandMore>
-              </span>
-            )}
-          </>
-        );
-      },
-    },
-    {
       field: "module_name",
       headerName: "Application Name",
       flex: 3,
@@ -281,7 +255,33 @@ export default function ApplicationsList() {
           // ) : (
           //   createSubModule
           // ))
-          createSubModule
+          param.row.is_parent_module && createSubModule
+        );
+      },
+    },
+    {
+      field: " ",
+      header: "isOpen",
+      flex: 0.1,
+      sortable: false,
+      renderCell: (param) => {
+        return (
+          <>
+            {param.row.is_parent_module == true && (
+              <span onClick={() => handleExpand(param.row.module_id)}>
+                <ExpandMore
+                  expand={expanded.includes(param.row.module_id)}
+                  aria-expanded={expanded.includes(param.row.module_id)}
+                  aria-label="show more"
+                  disableFocusRipple
+                  disableRipple
+                  sx={{ color: "black", padding: "0px" }}
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </span>
+            )}
+          </>
         );
       },
     },
