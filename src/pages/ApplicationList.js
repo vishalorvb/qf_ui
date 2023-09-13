@@ -40,6 +40,7 @@ export default function ApplicationsList() {
   let [popup, setPopup] = useState({ moduleId: 0, status: false });
 
   const [expanded, setExpanded] = useState([]);
+  const [sizeDiff, setSizeDiff] = useState(0);
 
   const handledeleteApplication = (module_id, id) => {
     deleteApplication(module_id, id).then((res) => {
@@ -58,6 +59,7 @@ export default function ApplicationsList() {
   const handleExpand = (id) => {
     id = parseInt(id);
     if (expanded.includes(id)) {
+      setSizeDiff(0);
       setExpanded((prevState) => {
         return prevState.filter((applicationId) => applicationId != id);
       });
@@ -73,7 +75,9 @@ export default function ApplicationsList() {
         const subModules = prevState[index].sub_modules_list;
         const newArr = [...prevState];
         newArr.splice(index + 1, 0, ...subModules);
-
+        setSizeDiff((prevsd) => {
+          return prevsd + subModules.length;
+        });
         return newArr;
       });
     }
@@ -308,7 +312,7 @@ export default function ApplicationsList() {
       <Table
         rows={
           location?.state === "recentApplication"
-            ? application.slice(0, 10)
+            ? application.slice(0, 10 + sizeDiff)
             : application
         }
         columns={applicationColumns}
