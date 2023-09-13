@@ -27,6 +27,8 @@ import JoinInnerRoundedIcon from "@mui/icons-material/JoinInnerRounded";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
 import TableActions from "../CustomComponent/TableActions";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ExpandMore } from "../CustomComponent/ExpandMore";
 
 export default function ApplicationsList() {
   const { setHeader, setSnackbarData } = useHead();
@@ -36,6 +38,8 @@ export default function ApplicationsList() {
   const location = useLocation();
   const [snack, setSnack] = useState(false);
   let [popup, setPopup] = useState({ moduleId: 0, status: false });
+
+  const [expanded, setExpanded] = useState([]);
 
   const handledeleteApplication = (module_id, id) => {
     deleteApplication(module_id, id).then((res) => {
@@ -51,7 +55,57 @@ export default function ApplicationsList() {
     setPopup({ moduleId: 0, status: false });
   };
 
+  const handleExpand = (id) => {
+    id = parseInt(id);
+    if (expanded.includes(id)) {
+      setExpanded((prevState) => {
+        return prevState.filter((applicationId) => applicationId != id);
+      });
+      setApplication((prevState) => {
+        return prevState.filter((module) => module.parent_module_id !== id);
+      });
+    } else {
+      setExpanded((prevState) => {
+        return [id, ...prevState];
+      });
+      setApplication((prevState) => {
+        const index = prevState.findIndex((module) => module.module_id == id);
+        const subModules = prevState[index].sub_modules_list;
+        const newArr = [...prevState];
+        newArr.splice(index + 1, 0, ...subModules);
+
+        return newArr;
+      });
+    }
+  };
+
   const applicationColumns = [
+    {
+      field: "",
+      header: "isOpen",
+      flex: 1,
+      sortable: false,
+      renderCell: (param) => {
+        return (
+          <>
+            {param.row.is_parent_module == true && (
+              <span onClick={() => handleExpand(param.row.module_id)}>
+                <ExpandMore
+                  expand={expanded.includes(param.row.module_id)}
+                  aria-expanded={expanded.includes(param.row.module_id)}
+                  aria-label="show more"
+                  disableFocusRipple
+                  disableRipple
+                  sx={{ color: "black", padding: "0px" }}
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </span>
+            )}
+          </>
+        );
+      },
+    },
     {
       field: "module_name",
       headerName: "Application Name",
@@ -140,46 +194,48 @@ export default function ApplicationsList() {
             </IconButton>
           </Tooltip>
         );
-        return subModules?.filter((module) => !module?.is_deleted)?.length >
-          0 ? (
-          <>
-            {createSubModule}
-            <Select fullWidth size="small">
-              {subModules
-                ?.filter((module) => !module?.is_deleted)
-                .map((module) => (
-                  <MenuItem sx={{ justifyContent: "space-between" }}>
-                    <Typography
-                      onClick={() => {
-                        if (module.module_type == "19") {
-                          setSnack(true);
-                          setTimeout(() => {
-                            setSnack(false);
-                          }, 3000);
-                        } else {
-                          navigate(`${module?.module_name}`, {
-                            state: module,
-                          });
+        return (
+          param.row.is_parent_module &&
+          (subModules?.filter((module) => !module?.is_deleted)?.length > 0 ? (
+            <>
+              {createSubModule}
+              <Select fullWidth size="small">
+                {subModules
+                  ?.filter((module) => !module?.is_deleted)
+                  .map((module) => (
+                    <MenuItem sx={{ justifyContent: "space-between" }}>
+                      <Typography
+                        onClick={() => {
+                          if (module.module_type == "19") {
+                            setSnack(true);
+                            setTimeout(() => {
+                              setSnack(false);
+                            }, 3000);
+                          } else {
+                            navigate(`${module?.module_name}`, {
+                              state: module,
+                            });
+                          }
+                        }}
+                      >
+                        {module?.module_name}
+                      </Typography>
+                      <DeleteOutlineIcon
+                        onClick={() =>
+                          setPopup({
+                            moduleId: module?.module_id,
+                            status: true,
+                          })
                         }
-                      }}
-                    >
-                      {module?.module_name}
-                    </Typography>
-                    <DeleteOutlineIcon
-                      onClick={() =>
-                        setPopup({
-                          moduleId: module?.module_id,
-                          status: true,
-                        })
-                      }
-                      sx={{ color: "red" }}
-                    />
-                  </MenuItem>
-                ))}
-            </Select>
-          </>
-        ) : (
-          createSubModule
+                        sx={{ color: "red" }}
+                      />
+                    </MenuItem>
+                  ))}
+              </Select>
+            </>
+          ) : (
+            createSubModule
+          ))
         );
       },
     },
@@ -238,6 +294,9 @@ export default function ApplicationsList() {
 
   return (
     <div className="apptable">
+      {expanded.map((id) => (
+        <div key={id}>{id}</div>
+      ))}
       <div className="intable">
         <div style={{ float: "right" }}>
           <Button
