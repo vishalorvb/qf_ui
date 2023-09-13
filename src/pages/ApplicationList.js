@@ -170,76 +170,6 @@ export default function ApplicationsList() {
       },
     },
     {
-      field: "sub_modules_list",
-      headerName: "Sub Applications",
-      flex: 2,
-      renderCell: (param) => {
-        const subModules = param?.row?.sub_modules_list;
-        const createSubModule = (
-          <Tooltip title="Create SubModule">
-            <IconButton
-              variant="contained"
-              size="small"
-              onClick={() => {
-                moduledata.module_name = param.row.module_name;
-                moduledata.base_url = param.row.base_url;
-                moduledata.module_desc = param.row.module_desc;
-                moduledata.module_type = param.row.module_type;
-                moduledata.is_sub_module = true;
-                moduledata.parent_module_id = param.row.module_id;
-                navigate("CreateSubApplication", { state: param?.row });
-              }}
-            >
-              <AddCircleOutlineIcon color="primary" />
-            </IconButton>
-          </Tooltip>
-        );
-        return (
-          param.row.is_parent_module &&
-          (subModules?.filter((module) => !module?.is_deleted)?.length > 0 ? (
-            <>
-              {createSubModule}
-              <Select fullWidth size="small">
-                {subModules
-                  ?.filter((module) => !module?.is_deleted)
-                  .map((module) => (
-                    <MenuItem sx={{ justifyContent: "space-between" }}>
-                      <Typography
-                        onClick={() => {
-                          if (module.module_type == "19") {
-                            setSnack(true);
-                            setTimeout(() => {
-                              setSnack(false);
-                            }, 3000);
-                          } else {
-                            navigate(`${module?.module_name}`, {
-                              state: module,
-                            });
-                          }
-                        }}
-                      >
-                        {module?.module_name}
-                      </Typography>
-                      <DeleteOutlineIcon
-                        onClick={() =>
-                          setPopup({
-                            moduleId: module?.module_id,
-                            status: true,
-                          })
-                        }
-                        sx={{ color: "red" }}
-                      />
-                    </MenuItem>
-                  ))}
-              </Select>
-            </>
-          ) : (
-            createSubModule
-          ))
-        );
-      },
-    },
-    {
       field: "module_desc",
       headerName: "Description",
       flex: 6,
@@ -274,6 +204,77 @@ export default function ApplicationsList() {
         );
       },
     },
+    {
+      field: "sub_modules_list",
+      headerName: "Add Applications",
+      flex: 2,
+      renderCell: (param) => {
+        const subModules = param?.row?.sub_modules_list;
+        const createSubModule = (
+          <Tooltip title="Create SubModule">
+            <IconButton
+              variant="contained"
+              size="small"
+              onClick={() => {
+                moduledata.module_name = param.row.module_name;
+                moduledata.base_url = param.row.base_url;
+                moduledata.module_desc = param.row.module_desc;
+                moduledata.module_type = param.row.module_type;
+                moduledata.is_sub_module = true;
+                moduledata.parent_module_id = param.row.module_id;
+                navigate("CreateSubApplication", { state: param?.row });
+              }}
+            >
+              <AddCircleOutlineIcon color="primary" />
+            </IconButton>
+          </Tooltip>
+        );
+        return (
+          // param.row.is_parent_module &&
+          // (subModules?.filter((module) => !module?.is_deleted)?.length > 0 ? (
+          //   <>
+          //     {createSubModule}
+          //     <Select fullWidth size="small">
+          //       {subModules
+          //         ?.filter((module) => !module?.is_deleted)
+          //         .map((module) => (
+          //           <MenuItem sx={{ justifyContent: "space-between" }}>
+          //             <Typography
+          //               onClick={() => {
+          //                 if (module.module_type == "19") {
+          //                   setSnack(true);
+          //                   setTimeout(() => {
+          //                     setSnack(false);
+          //                   }, 3000);
+          //                 } else {
+          //                   navigate(`${module?.module_name}`, {
+          //                     state: module,
+          //                   });
+          //                 }
+          //               }}
+          //             >
+          //               {module?.module_name}
+          //             </Typography>
+          //             <DeleteOutlineIcon
+          //               onClick={() =>
+          //                 setPopup({
+          //                   moduleId: module?.module_id,
+          //                   status: true,
+          //                 })
+          //               }
+          //               sx={{ color: "red" }}
+          //             />
+          //           </MenuItem>
+          //         ))}
+          //     </Select>
+          //   </>
+          // ) : (
+          //   createSubModule
+          // ))
+          createSubModule
+        );
+      },
+    },
   ];
 
   useEffect(() => {
@@ -294,9 +295,6 @@ export default function ApplicationsList() {
 
   return (
     <div className="apptable">
-      {expanded.map((id) => (
-        <div key={id}>{id}</div>
-      ))}
       <div className="intable">
         <div style={{ float: "right" }}>
           <Button
