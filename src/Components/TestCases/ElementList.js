@@ -9,9 +9,9 @@ function ElementList({ screenList }) {
 
     let [element, setElement] = useState([])
     let [screens, setScreens] = useState([])
-    let [open,setOpen] = useState(false)
- 
-   
+    let [open, setOpen] = useState(false)
+
+
     let col = [
         {
             field: "name",
@@ -43,7 +43,7 @@ function ElementList({ screenList }) {
                 header: " ",
                 Cell: ({ cell, column, row, table }) => {
                     return (
-                        <AccordionTemplate name={row.original.screenName}  toggle={open}>
+                        <AccordionTemplate name={row.original.screenName} toggle={open}>
                             <Table
                                 hideSearch={true}
                                 rows={row.original.elements ?? []}
@@ -77,31 +77,31 @@ function ElementList({ screenList }) {
     useEffect(() => {
         setScreens([])
         let x = []
-        screenList.forEach(screen =>{
-            element.forEach(ele=>{
-                if(ele.screenId == screen.screenId){
+        screenList.forEach(screen => {
+            element.forEach(ele => {
+                if (ele.screenId == screen.screenId) {
                     let obj = { screenName: screen.screenName, screenId: screen.screenId, elements: ele.elements }
                     x.push(obj)
                 }
             })
         })
         setScreens(x)
-    }, [screenList,element])
+    }, [screenList, element])
 
 
 
     return <div>
         <Grid container spacing={2} justifyContent="right" alignItems="right" >
-        <Grid item xs={2} md={2}>
-        <Button onClick={e=>setOpen(!open)} variant="contained">{open?"Hide All":"Expand All"}</Button>
+            <Grid item xs={2} md={2}>
+                <Button onClick={e => setOpen(!open)} variant="contained">{open ? "Hide All" : "Expand All"}</Button>
 
-        </Grid>
+            </Grid>
         </Grid>
 
         <DragDrop
             columns={dragDropCol}
             row={screens}
-            setRow={e=>{
+            setRow={e => {
                 setScreens(e)
             }}
         ></DragDrop>
