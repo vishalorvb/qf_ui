@@ -11,7 +11,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Table from '../../CustomComponent/Table';
 import ConfirmPop from '../../CustomComponent/ConfirmPop';
 
-function TestcaseTable({ project, application }) {
+function TestcaseTable({ project, application, showname }) {
     const [testcases, setTestcases] = useState([]);
     let [popup, setPopup] = useState(false);
     const navigate = useNavigate();
@@ -106,8 +106,8 @@ function TestcaseTable({ project, application }) {
             },
         },
     ];
-
     useEffect(() => {
+        setTestcases([])
         GetTestCase(
             setTestcases,
             project?.project_id,
@@ -116,7 +116,7 @@ function TestcaseTable({ project, application }) {
     }, [project, application])
     return (
         <div >
-            <Typography variant='h4' >{application.module_name}</Typography>
+            {showname && <Typography variant='h4' >{application.module_name}</Typography>}
             <Table
                 searchPlaceholder="Search Testcases"
                 rows={testcases}
@@ -126,7 +126,10 @@ function TestcaseTable({ project, application }) {
             ></Table>
             <ConfirmPop
                 open={popup}
-                handleClose={() => setPopup(false)}
+                handleClose={() => {
+                    setDeleteTestcaseId(0)
+                    setPopup(false)
+                }}
                 heading={"Delete TestCase"}
                 message={"Are you sure you want to delete this TestCase?"}
                 onConfirm={() => {
@@ -151,5 +154,4 @@ function TestcaseTable({ project, application }) {
         </div>
     )
 }
-
 export default TestcaseTable
