@@ -2,7 +2,6 @@ import { lazy } from "react";
 import MapDiffElements from "../Components/Application/MapDiffElements";
 
 import PipelineAutomation from "../Components/DevopsComponent/PipelineAutomation";
-import PipelineLogs from "../Components/DevopsComponent/Logs";
 import Report from "../Components/DevopsComponent/Report";
 
 const Admin = lazy(() => import("../pages/Admin"));
@@ -45,7 +44,12 @@ const CreateAnsibleInstance = lazy(() =>
 const UpdateAnsibleInstance = lazy(() =>
     import("../Components/ReleaseComponents/CreateAnsibleInstance")
 );
-
+const ReleaseHistory = lazy(() =>
+    import("../Components/ReleaseComponents/ReleaseHistory")
+);
+const ReleaseLogs = lazy(() =>
+    import("../Components/ReleaseComponents/Logs")
+);
 const CreatePipeline = lazy(() =>
     import("../Components/DevopsComponent/CreatePipeline")
 );
@@ -543,12 +547,7 @@ export const Routes = [
                         element: Report,
                         accessRole: [1, 2, 4, 5],
                     },
-                    {
-                        path: "viewLogs",
-                        element: PipelineLogs,
-                        accessRole: [1, 2, 4, 5],
 
-                    }
                 ],
             },
         ],
@@ -572,6 +571,16 @@ export const Routes = [
             {
                 path: "UpdateAnsibleInstance",
                 element: UpdateAnsibleInstance,
+                accessRole: [1, 2, 4, 5],
+            },
+            {
+                path: "history",
+                element: ReleaseHistory,
+                accessRole: [1, 2, 4, 5],
+            },
+            {
+                path: "logs",
+                element: ReleaseLogs,
                 accessRole: [1, 2, 4, 5],
             },
         ],

@@ -2,16 +2,52 @@ import { Chip, CircularProgress, Grid } from '@mui/material'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { useEffect, useState } from 'react';
+import { getGitData } from '../../Services/DevopsServices';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Logs() {
 
+    const navigate = useNavigate()
+    const location = useLocation()
+    let [status, setStatus] = useState({
+        initialize: false,
+        continuousIntegration: false,
+        releaseAutomationTest: false,
+        testAutomation: false
 
+    })
     let getIcon = {
-        pass: <CheckCircleOutlineIcon />,
+        success: <CheckCircleOutlineIcon />,
         fail: <CancelOutlinedIcon />,
-        loading: <CircularProgress color="success" size={20} />,
+        false: <CircularProgress color="success" size={20} />,
         deploy: <KeyboardDoubleArrowRightIcon />
     }
+    useEffect(() => {
+        let releaseId
+        let projectId
+        let historyId
+        try {
+            releaseId = location.state.releaseId
+            projectId = location.state.projectId
+            historyId = location.state.historyId
+
+        } catch (error) {
+            navigate("/release");
+            return
+        }
+        let listOfAllStatus = Object.values(status)
+        if (listOfAllStatus.some(s => s != "success")) {
+            setTimeout(() => {
+                getGitData(setStatus, releaseId, historyId, projectId)
+            }, 1000);
+
+        }
+    }, [status])
+
+    useEffect(() => {
+        console.log(status)
+    }, [status])
 
     return (
         <div>
@@ -23,12 +59,11 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="Initialize"
-                            avatar={<CheckCircleOutlineIcon />}
+                            avatar={getIcon[status.initialize ?? false]}
                             variant="outlined"
                             color="success"
                         />
                     </div>
-
                 </Grid>
                 <Grid item md={2.4}>
                     <div className='automation'>
@@ -37,12 +72,11 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="RetriveCode"
-                            avatar={<CancelOutlinedIcon />}
+                            avatar={getIcon[status.continuousIntegration ?? false]}
                             variant="outlined"
                             color="error"
                         />
                     </div>
-
                 </Grid>
                 <Grid item md={2.4}>
                     <div className='automation'>
@@ -51,12 +85,11 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="DeployeToDev"
-                            avatar={<CircularProgress color="success" size={20} />}
+                            avatar={getIcon[status.testAutomation ?? false]}
                             variant="outlined"
                             color="success"
                         />
                     </div>
-
                 </Grid>
                 <Grid item md={2.4}>
                     <div className='automation'>
@@ -65,12 +98,11 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="RunTests"
-                            avatar={getIcon.pass}
+                            avatar={getIcon[status.testAutomation ?? false]}
                             variant="outlined"
                             color="success"
                         />
                     </div>
-
                 </Grid>
                 <Grid item md={2.4}>
                     <div className='automation'>
@@ -92,13 +124,9 @@ function Logs() {
                             color="success"
                         />
                     </div>
-
-
-
                 </Grid>
             </Grid>
         </div>
     )
 }
-
 export default Logs
