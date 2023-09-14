@@ -13,12 +13,13 @@ import { TCdata } from "./CreateTestCase";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
+import TestcaseTable from "./TestcaseTable";
 
 let snakbarmsg = "";
 
 let delete_testcase_id = 0;
 
-export default  function TestCases() {
+export default function TestCases() {
     const [testcases, setTestcases] = useState([]);
     const [snack, setSnack] = useState(false);
     let [popup, setPopup] = useState(false);
@@ -27,10 +28,7 @@ export default  function TestCases() {
     const {
         setHeader,
         globalProject,
-        setglobalProject,
         globalApplication,
-        setglobalApplication,
-        setShowloader
     } = useHead();
     const columns = [
         {
@@ -130,6 +128,8 @@ export default  function TestCases() {
         });
     }, []);
 
+    console.log(globalApplication)
+
     useEffect(() => {
         if (globalApplication?.module_id !== undefined) {
             GetTestCase(
@@ -158,7 +158,7 @@ export default  function TestCases() {
             ></SnackbarNotify>
             <div className="apptable">
                 <div className="intable">
-                    <ProjectnApplicationSelector/>
+                    <ProjectnApplicationSelector />
                 </div>
                 <Table
                     searchPlaceholder="Search Testcases"
@@ -167,6 +167,11 @@ export default  function TestCases() {
                     hidefooter={true}
                     getRowId={(row) => row.testcase_id}
                 ></Table>
+                {globalApplication?.sub_modules_list?.map(app =>
+                    <TestcaseTable
+                        project={globalProject}
+                        application={app}
+                    ></TestcaseTable>)}
                 <ConfirmPop
                     open={popup}
                     handleClose={() => setPopup(false)}
