@@ -3,13 +3,12 @@ import useHead from "../hooks/useHead";
 import Table from "../CustomComponent/Table";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { getApplication } from "../Services/ApplicationService";
 import {
   Button,
   IconButton,
   MenuItem,
-  Select,
+  // Select,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -36,7 +35,6 @@ export default function ApplicationsList() {
   const navigate = useNavigate();
   const [application, setApplication] = useState([]);
   const location = useLocation();
-  const [snack, setSnack] = useState(false);
   let [popup, setPopup] = useState({ moduleId: 0, status: false });
 
   const [expanded, setExpanded] = useState([]);
@@ -61,7 +59,7 @@ export default function ApplicationsList() {
     if (expanded.includes(id)) {
       setSizeDiff(0);
       setExpanded((prevState) => {
-        return prevState.filter((applicationId) => applicationId != id);
+        return prevState.filter((applicationId) => applicationId !== id);
       });
       setApplication((prevState) => {
         return prevState.filter((module) => module.parent_module_id !== id);
@@ -71,7 +69,7 @@ export default function ApplicationsList() {
         return [id, ...prevState];
       });
       setApplication((prevState) => {
-        const index = prevState.findIndex((module) => module.module_id == id);
+        const index = prevState.findIndex((module) => module.module_id === id);
         const subModules = prevState[index].sub_modules_list;
         const newArr = [...prevState];
         newArr.splice(index + 1, 0, ...subModules);
@@ -92,43 +90,47 @@ export default function ApplicationsList() {
       renderCell: (param) => {
         return (
           <Stack direction="row" spacing={1}>
-            {{
-              1: (
-                <Tooltip title="API">
-                  <ApiIcon sx={{ color: "#ffd700 " }} />
-                </Tooltip>
-              ),
-              2: (
-                <Tooltip title="Web">
-                  <LanguageIcon sx={{ color: "#0fadc8" }} />
-                </Tooltip>
-              ),
-              3: (
-                <Tooltip title="Android">
-                  <AndroidIcon sx={{ color: "#a4c639" }} />
-                </Tooltip>
-              ),
-              4: (
-                <Tooltip title="Ios">
-                  <AppleIcon sx={{ color: "#A2AAAD" }} />
-                </Tooltip>
-              ),
-              13: (
-                <Tooltip title="Mobile-Web">
-                  <AdUnitsIcon sx={{ color: "green" }} />
-                </Tooltip>
-              ),
-              19: (
-                <Tooltip title="Link-Project">
-                  <JoinInnerRoundedIcon sx={{ color: "gray" }} />
-                </Tooltip>
-              ),
-            }[param?.row?.module_type] ?? (
-              <AppleIcon sx={{ color: "white", display: "none" }} />
+            {param.row.is_parent_module ? (
+              {
+                1: (
+                  <Tooltip title="API">
+                    <ApiIcon sx={{ color: "#ffd700 " }} />
+                  </Tooltip>
+                ),
+                2: (
+                  <Tooltip title="Web">
+                    <LanguageIcon sx={{ color: "#0fadc8" }} />
+                  </Tooltip>
+                ),
+                3: (
+                  <Tooltip title="Android">
+                    <AndroidIcon sx={{ color: "#a4c639" }} />
+                  </Tooltip>
+                ),
+                4: (
+                  <Tooltip title="Ios">
+                    <AppleIcon sx={{ color: "#A2AAAD" }} />
+                  </Tooltip>
+                ),
+                13: (
+                  <Tooltip title="Mobile-Web">
+                    <AdUnitsIcon sx={{ color: "green" }} />
+                  </Tooltip>
+                ),
+                19: (
+                  <Tooltip title="Link-Project">
+                    <JoinInnerRoundedIcon sx={{ color: "gray" }} />
+                  </Tooltip>
+                ),
+              }[param?.row?.module_type] ?? (
+                <AppleIcon sx={{ color: "white", display: "none" }} />
+              )
+            ) : (
+              <div style={{ width: "25px" }}></div>
             )}
             <Typography
               onClick={() => {
-                if (param?.row.module_type == "19") {
+                if (param?.row.module_type === 19) {
                   setSnackbarData({
                     status: true,
                     message: "Link Project don't have Pages and Screens",
@@ -175,6 +177,22 @@ export default function ApplicationsList() {
                 <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
                 Edit
               </MenuItem>
+              {param.row.is_parent_module && (
+                <MenuItem
+                  onClick={() => {
+                    moduledata.module_name = param.row.module_name;
+                    moduledata.base_url = param.row.base_url;
+                    moduledata.module_desc = param.row.module_desc;
+                    moduledata.module_type = param.row.module_type;
+                    moduledata.is_sub_module = true;
+                    moduledata.parent_module_id = param.row.module_id;
+                    navigate("CreateSubApplication", { state: param?.row });
+                  }}
+                >
+                  <AddCircleOutlineIcon sx={{ color: "pink", mr: 1 }} />
+                  Add Subapplicaton
+                </MenuItem>
+              )}
               <MenuItem
                 onClick={() =>
                   setPopup({ moduleId: param?.row?.module_id, status: true })
@@ -189,77 +207,6 @@ export default function ApplicationsList() {
       },
     },
     {
-      field: "sub_modules_list",
-      headerName: "Add Applications",
-      flex: 2,
-      renderCell: (param) => {
-        const subModules = param?.row?.sub_modules_list;
-        const createSubModule = (
-          <Tooltip title="Create SubModule">
-            <IconButton
-              variant="contained"
-              size="small"
-              onClick={() => {
-                moduledata.module_name = param.row.module_name;
-                moduledata.base_url = param.row.base_url;
-                moduledata.module_desc = param.row.module_desc;
-                moduledata.module_type = param.row.module_type;
-                moduledata.is_sub_module = true;
-                moduledata.parent_module_id = param.row.module_id;
-                navigate("CreateSubApplication", { state: param?.row });
-              }}
-            >
-              <AddCircleOutlineIcon color="primary" />
-            </IconButton>
-          </Tooltip>
-        );
-        return (
-          // param.row.is_parent_module &&
-          // (subModules?.filter((module) => !module?.is_deleted)?.length > 0 ? (
-          //   <>
-          //     {createSubModule}
-          //     <Select fullWidth size="small">
-          //       {subModules
-          //         ?.filter((module) => !module?.is_deleted)
-          //         .map((module) => (
-          //           <MenuItem sx={{ justifyContent: "space-between" }}>
-          //             <Typography
-          //               onClick={() => {
-          //                 if (module.module_type == "19") {
-          //                   setSnack(true);
-          //                   setTimeout(() => {
-          //                     setSnack(false);
-          //                   }, 3000);
-          //                 } else {
-          //                   navigate(`${module?.module_name}`, {
-          //                     state: module,
-          //                   });
-          //                 }
-          //               }}
-          //             >
-          //               {module?.module_name}
-          //             </Typography>
-          //             <DeleteOutlineIcon
-          //               onClick={() =>
-          //                 setPopup({
-          //                   moduleId: module?.module_id,
-          //                   status: true,
-          //                 })
-          //               }
-          //               sx={{ color: "red" }}
-          //             />
-          //           </MenuItem>
-          //         ))}
-          //     </Select>
-          //   </>
-          // ) : (
-          //   createSubModule
-          // ))
-          param.row.is_parent_module && createSubModule
-        );
-      },
-    },
-    {
       field: " ",
       header: "isOpen",
       flex: 0.1,
@@ -267,7 +214,7 @@ export default function ApplicationsList() {
       renderCell: (param) => {
         return (
           <>
-            {param.row.is_parent_module == true && (
+            {param.row.is_parent_module === true && (
               <span onClick={() => handleExpand(param.row.module_id)}>
                 <ExpandMore
                   expand={expanded.includes(param.row.module_id)}
@@ -297,10 +244,12 @@ export default function ApplicationsList() {
             : "Search Applications",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location?.state]);
 
   useEffect(() => {
     getApplication(setApplication, auth?.info?.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
