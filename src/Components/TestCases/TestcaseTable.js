@@ -1,5 +1,5 @@
 import { MenuItem, Paper, Tooltip, Typography } from '@mui/material';
-import { TCdata } from "./CreateTestCase";
+//import { TCdata } from "./CreateTestCase";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { DeleteTestCase, GetTestCase } from '../../Services/TestCaseService';
@@ -67,13 +67,7 @@ function TestcaseTable({ project, application, showname }) {
                     <TableActions heading={param.row?.description}>
                         <MenuItem
                             onClick={(e) => {
-                                navigate("CopyTestcase", {
-                                    state: {
-                                        name: param?.row?.name,
-                                        id: param?.row?.testcase_id,
-                                        projectId: project?.project_id,
-                                    },
-                                });
+                                navigate("/Testcase/Create", { testcase_id: param.row.testcase_id });
                             }}
                         >
                             <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
@@ -81,12 +75,12 @@ function TestcaseTable({ project, application, showname }) {
                         </MenuItem>
                         <MenuItem
                             onClick={(e) => {
-                                TCdata.module_id = param.row.module_id;
-                                TCdata.project_id = param.row.project;
-                                TCdata.testcase_name = param.row.name;
-                                TCdata.testcase_description = param.row.description;
-                                TCdata.testcase_id = param.row.testcase_id;
-                                navigate("/Testcase/Create");
+                                //TCdata.module_id = param.row.module_id;
+                                //TCdata.project_id = param.row.project;
+                                //TCdata.testcase_name = param.row.name;
+                                //TCdata.testcase_description = param.row.description;
+                                //TCdata.testcase_id = param.row.testcase_id;
+                                navigate("/Testcase/Create", { state: { testcaseId: param.row.testcase_id } });
                             }}
                         >
                             <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />

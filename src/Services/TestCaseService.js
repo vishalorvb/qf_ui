@@ -231,3 +231,10 @@ export async function getSprint_in_testcase(projectId, webtestcaseid) {
             return res.data.info?.filter((sprint) => sprint.is_selected);
         });
 }
+
+
+export async function getTestcaseDetails(testcaseId, callback) {
+    return await axios.get(`${baseUrl}/qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`).then(res => {
+        return res.data.info ?? {}
+    })
+}
