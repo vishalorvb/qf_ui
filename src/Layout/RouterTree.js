@@ -13,6 +13,7 @@ import Login from "./Login";
 import UnAuthorized from "../pages/UnAuthorized";
 import Dashboard from "../pages/Dashboard";
 import Skeleton from "./Skeleton";
+import Error from "../Components/Error";
 
 const routeLister = (rawList) => {
   const routeList = rawList.map((routeItem, idx) => {
@@ -56,7 +57,7 @@ export const router = createBrowserRouter(
       <Route element={<PersistLogin />}>
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<UnAuthorized />} />
-        <Route path="/" element={<AppLayout />}>
+        <Route path="/" element={<AppLayout />} errorElement={<Error />}>
           <Route element={<RequireAuth allowedRoles={[1, 2, 4]} />}>
             <Route index element={<Dashboard />} />
           </Route>
