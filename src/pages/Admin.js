@@ -139,7 +139,7 @@ export default function Admin() {
       align: "left",
     },
     {
-      field: "",
+      field: "actions",
       headerName: "Actions",
       flex: 2,
       sortable: false,
