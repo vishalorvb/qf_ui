@@ -4,42 +4,43 @@ import { getPagesIntestcase } from "../../../Services/TestCaseService";
 import MuiltiSelect from "../../../CustomComponent/MuiltiSelect";
 import useHead from "../../../hooks/useHead";
 
-function MapScreen({ callback, projectId, moduleId, testcaseId }) {
-    const [pages, setpages] = useState([]);
+//function MapScreen({ callback, projectId, moduleId, testcaseId }) {
+function MapScreen({ pages, setpages }) {
+    //const [pages, setpages] = useState([]);
 
-    const {  setShowloader } = useHead();
+    const { setShowloader } = useHead();
 
 
-    useEffect(() => {
-        setShowloader(true);
-        if (testcaseId === undefined) {
-            getPagesForTestcase(setpages, projectId, moduleId)
-                .then((res) => {
-                    setShowloader(false);
-                })
-                .catch(() => {
-                    setShowloader(false);
-                });
-        } else {
-            getPagesIntestcase(setpages, projectId, moduleId, testcaseId)
-                .then((res) => {
-                    setShowloader(false);
-                })
-                .catch(() => {
-                    setShowloader(false);
-                });
-        }
-      
-    }, [projectId, moduleId, testcaseId]);
+    //useEffect(() => {
+    //    setShowloader(true);
+    //    if (testcaseId === undefined) {
+    //        getPagesForTestcase(setpages, projectId, moduleId)
+    //            .then((res) => {
+    //                setShowloader(false);
+    //            })
+    //            .catch(() => {
+    //                setShowloader(false);
+    //            });
+    //    } else {
+    //        getPagesIntestcase(setpages, projectId, moduleId, testcaseId)
+    //            .then((res) => {
+    //                setShowloader(false);
+    //            })
+    //            .catch(() => {
+    //                setShowloader(false);
+    //            });
+    //    }
 
-    useEffect(() => {
-        let val = pages.map(page => {
-            return {
-                web_page_id: page.web_page_id, screenList: page?.screens_list?.filter(screen => screen.is_select)
-            }
-        })
-        callback([...val])
-    }, [pages]);
+    //}, [projectId, moduleId, testcaseId]);
+
+    //useEffect(() => {
+    //    let val = pages.map(page => {
+    //        return {
+    //            web_page_id: page.web_page_id, screenList: page?.screens_list?.filter(screen => screen.is_select)
+    //        }
+    //    })
+    //    callback([...val])
+    //}, [pages]);
 
 
 

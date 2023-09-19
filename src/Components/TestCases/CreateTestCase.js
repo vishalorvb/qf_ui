@@ -17,6 +17,7 @@ import { getElement } from "../../Services/TestCaseService"
 import { getSprint_in_testcase } from "../../Services/TestCaseService"
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
 import { useLocation, useNavigate } from "react-router";
+import Web from "./webTestcase/Web"
 
 function CreateTestCase() {
 
@@ -145,35 +146,14 @@ function CreateTestCase() {
             <Divider></Divider><br />
             {globalApplication?.module_type !== 1 ?
                 <div className="web">
-                    <Grid container spacing={2}>
-                        <Grid item xs={3} md={3}>
-                            <MapScreen
-                                projectId={globalProject?.project_id}
-                                moduleId={globalApplication?.module_id}
-                                testcaseId={TCdata.testcase_id}
-                                callback={val => {
-                                    screens.current = val
-                                    let temp = []
-                                    val.forEach(webpage => {
-                                        webpage?.screenList.forEach(screen => {
-
-                                            let x = {
-                                                screenName: screen.name,
-                                                screenId: screen.screen_id,
-                                            }
-                                            temp.push(x)
-                                        })
-                                    })
-                                    setScreenList(temp)
-                                }}
-                            ></MapScreen>
-                        </Grid>
-                        {screenList.length > 0 && <Grid item xs={9} md={9}>
-                            <ElementList
-                                screenList={screenList}
-                            ></ElementList>
-                        </Grid>}
-                    </Grid>
+                    <Web
+                        project={globalProject}
+                        application={globalApplication}
+                        testcaseId={TC_ID}
+                        setScreen={(s) => {
+                            console.log(s)
+                        }}
+                    ></Web>
                 </div>
                 :
                 <div className="api">

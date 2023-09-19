@@ -75,11 +75,6 @@ function TestcaseTable({ project, application, showname }) {
                         </MenuItem>
                         <MenuItem
                             onClick={(e) => {
-                                //TCdata.module_id = param.row.module_id;
-                                //TCdata.project_id = param.row.project;
-                                //TCdata.testcase_name = param.row.name;
-                                //TCdata.testcase_description = param.row.description;
-                                //TCdata.testcase_id = param.row.testcase_id;
                                 navigate("/Testcase/Create", { state: { testcaseId: param.row.testcase_id } });
                             }}
                         >
