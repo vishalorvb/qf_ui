@@ -151,7 +151,9 @@ export async function getReleaseHistory(projectId, releaseId, callback) {
 
 
 export async function release(projectId, releaseId, userId) {
-    axios.post(`${baseUrl}/qfservice/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`).then(res => {
+    return await axios.post(`${baseUrl}/qfservice/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`).then(res => {
         console.log(res.data.status)
+        if (res.data.status == "FAIL") return false
+        else return res.data.info.id
     })
 }

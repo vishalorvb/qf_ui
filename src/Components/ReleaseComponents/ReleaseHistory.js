@@ -90,7 +90,15 @@ function ReleaseHistory() {
                             variant="contained"
                             onClick={() => {
                                 console.log(location.state.projectId, location.state.releaseId, loggedInId)
-                                release(location.state.projectId, location.state.releaseId, loggedInId)
+                                release(location.state.projectId, location.state.releaseId, loggedInId).then(res => {
+                                    console.log(res)
+                                    if (res) {
+                                        navigate('/release/logs', { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: res } })
+                                    }
+                                    else {
+
+                                    }
+                                })
                             }}
                         >
                             Release Now
