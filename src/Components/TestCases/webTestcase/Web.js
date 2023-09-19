@@ -24,7 +24,6 @@ function Web({ project, application, testcaseId, setScreen }) {
 
 
             project != null && application != null && application?.sub_modules_list?.forEach(subapp => {
-                console.log(subapp.module_id)
                 getPagesForTestcase(() => { }, project?.project_id, subapp?.module_id)
                     .then((res) => {
                         let temp = { ...subpage }
@@ -51,9 +50,27 @@ function Web({ project, application, testcaseId, setScreen }) {
     }, [project, application, testcaseId]);
 
     useEffect(() => {
-        console.log(subpage)
-    }, [subpage])
 
+        let screen = []
+        page?.forEach(p => {
+            screen.push(p.screens_list?.filter(screen => screen.is_select))
+        });
+
+        Object.keys(subpage)?.forEach(appId => {
+            subpage[appId].forEach(p => {
+                screen.push(p.screens_list?.filter(screen => screen.is_select))
+            })
+        });
+
+
+        setScreenList([...screen.flat(Infinity)])
+
+    }, [subpage, page])
+
+
+    useEffect(() => {
+        console.log(screenList)
+    }, [screenList])
     return (
         <div>
             <Grid item container spacing={1} justifyContent="left">
@@ -62,7 +79,17 @@ function Web({ project, application, testcaseId, setScreen }) {
                         pages={page}
                         setpages={setPage}
                     ></MapScreen>
+                    {application?.sub_modules_list?.map(app => <div>
+                        <MapScreen
+                            pages={subpage[app.module_id] ?? []}
+                            setpages={list => {
+                                let temp = { ...subpage }
+                                temp[app.module_id] = list
+                                setSubpage(temp)
+                            }}
 
+                        ></MapScreen>
+                    </div>)}
                 </Grid>
                 <Grid item xs={9} md={9}>
                     screenlist

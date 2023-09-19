@@ -6,7 +6,7 @@ import DragDrop from "../../CustomComponent/DragDrop";
 import { Button, Grid } from "@mui/material";
 
 function ElementList({ screenList }) {
-
+    console.log(screenList)
     let [element, setElement] = useState([])
     let [screens, setScreens] = useState([])
     let [open, setOpen] = useState(false)
