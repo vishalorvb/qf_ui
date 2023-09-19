@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getReleaseHistory } from '../../Services/DevopsServices'
 import Table from '../../CustomComponent/Table'
-import { IconButton, Tooltip, Typography } from '@mui/material'
+import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
+import { release } from '../../Services/DevopsServices'
+import useAuth from "../../hooks/useAuth";
 function ReleaseHistory() {
 
     const navigate = useNavigate()
     const location = useLocation()
-
+    const { auth } = useAuth();
+    const loggedInId = auth.info.id;
     let [releaseData, setReleasedata] = useState([])
 
     let col = [
@@ -81,7 +83,23 @@ function ReleaseHistory() {
 
     return (
         <div>
-            <Table rows={releaseData} columns={col} />
+            <div className='apptable'>
+                <div className="intable">
+                    <div style={{ float: "right" }}>
+                        <Button
+                            variant="contained"
+                            onClick={() => {
+                                console.log(location.state.projectId, location.state.releaseId, loggedInId)
+                                release(location.state.projectId, location.state.releaseId, loggedInId)
+                            }}
+                        >
+                            Release Now
+                        </Button>
+                    </div>
+                </div>
+                <Table rows={releaseData} columns={col} />
+            </div>
+
         </div>
     )
 }
