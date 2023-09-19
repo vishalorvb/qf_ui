@@ -43,6 +43,7 @@ function Logs() {
             }, 1000);
 
         }
+        console.log(status)
     }, [status])
 
     useEffect(() => {
