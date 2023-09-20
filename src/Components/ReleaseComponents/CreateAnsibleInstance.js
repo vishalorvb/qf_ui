@@ -36,6 +36,7 @@ export default function CreateAnsibleInstance() {
     repoUrl: yup.string().url(),
     repoToken: yup.string().required(),
     repoUserName: yup.string().required(),
+    repoProjectId: yup.number().required(),
   });
 
   const {
@@ -51,12 +52,12 @@ export default function CreateAnsibleInstance() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    if(globalProject == null){
-        setglobalProject(project[0]);
+    if (globalProject == null) {
+      setglobalProject(project[0]);
     }
   }, [project]);
 
-  const { setHeader,globalProject,setglobalProject } = useHead();
+  const { setHeader, globalProject, setglobalProject } = useHead();
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -90,6 +91,7 @@ export default function CreateAnsibleInstance() {
               repoUrl: data?.app_source_code_repo_url,
               repoToken: data?.app_source_code_repo_access_token,
               repoUserName: data?.gitusername,
+              repoProjectId: data?.git_project_id,
             });
           })
       : reset();
@@ -114,7 +116,9 @@ export default function CreateAnsibleInstance() {
           data?.repoUserName
         }&git_url=${data?.repoUrl}&repo_name=${data?.repoName}&credentialsid=${
           data?.credId
-        }&playbook_path=${data?.playbookPath}&user_id=${auth?.userId}`
+        }&playbook_path=${data?.playbookPath}&user_id=${
+          auth?.userId
+        }&git_project_id=${data?.repoProjectId}`
       )
       .then((resp) => {
         console.log(resp);
@@ -241,7 +245,7 @@ export default function CreateAnsibleInstance() {
                 placeholder="Repository Token"
               />
             </Grid>
-            <Grid item md={12}>
+            <Grid item md={6}>
               <label>Repo URL</label>
               <TextFieldElement
                 id="repo-url "
@@ -251,7 +255,18 @@ export default function CreateAnsibleInstance() {
                 name="repoUrl"
                 control={control}
                 placeholder="Repository Url"
-
+              />
+            </Grid>
+            <Grid item md={6}>
+              <label>Repo Project Id</label>
+              <TextFieldElement
+                id="repo-id "
+                variant="outlined"
+                size="small"
+                fullWidth
+                name="repoProjectId"
+                control={control}
+                placeholder="Project Id"
               />
             </Grid>
             <Grid item md={6}>
@@ -264,7 +279,6 @@ export default function CreateAnsibleInstance() {
                 name="repoName"
                 control={control}
                 placeholder="Repository Name"
-
               />
             </Grid>
             <Grid item md={6}>
@@ -277,7 +291,6 @@ export default function CreateAnsibleInstance() {
                 name="repoBranch"
                 control={control}
                 placeholder="Repository Branch"
-
               />
             </Grid>
             <Grid item md={6}>
@@ -290,7 +303,6 @@ export default function CreateAnsibleInstance() {
                 name="credId"
                 control={control}
                 placeholder="Repository Credentials Id"
-
               />
             </Grid>
             <Grid item md={6}>
@@ -303,7 +315,6 @@ export default function CreateAnsibleInstance() {
                 name="playbookPath"
                 control={control}
                 placeholder="Playbook Path"
-                
               />
             </Grid>
           </Grid>
