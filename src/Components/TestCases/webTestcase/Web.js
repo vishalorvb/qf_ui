@@ -10,8 +10,6 @@ function Web({ project, application, testcaseId, setScreen }) {
     let [subpage, setSubpage] = useState({})
     let [screenList, setScreenList] = useState([])
     const { setShowloader } = useHead();
-    console.log(application)
-
     useEffect(() => {
         //setShowloader(true);
         if (testcaseId === 0) {
@@ -70,7 +68,6 @@ function Web({ project, application, testcaseId, setScreen }) {
 
 
     useEffect(() => {
-        console.log(screenList)
         setScreen(screenList)
     }, [screenList])
     return (
