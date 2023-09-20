@@ -32,6 +32,14 @@ function CreateTestCase() {
             return
         }
         console.log(selectedScreen)
+        if (selectedScreen.length === 0) {
+            setSnackbarData({
+                status: true,
+                message: "Error, Select Atleast one screen",
+                severity: "error",
+            });
+            return
+        }
         let data = {
             "module_id": globalApplication.module_id,
             "testcase_name": basicDetails.testcaseName,
@@ -43,6 +51,9 @@ function CreateTestCase() {
                     "screen_id": s.screen_id
                 })
             })
+        }
+        if (TC_ID != 0) {
+            data.testcase_id = TC_ID
         }
         CreateTestCaseService(data).then((res) => {
             if (res) {
