@@ -150,11 +150,12 @@ export function GetTestCase_V2fortestset(
         });
 }
 
-export function getSprint(callback, projectId) {
-    axios
+export async function getSprint(callback, projectId) {
+    return await axios
         .get(`${baseUrl}/qfservice/getsprints?project_id=${projectId}`)
         .then((res) => {
-            callback(res.data.data.sprints);
+            callback(res.data.data.sprints ?? []);
+            return res.data.data.sprints ?? []
         });
 }
 

@@ -67,7 +67,7 @@ function TestcaseTable({ project, application, showname }) {
                     <TableActions heading={param.row?.description}>
                         <MenuItem
                             onClick={(e) => {
-                                navigate("/Testcase/Create", { testcase_id: param.row.testcase_id, isCopy: true });
+                                navigate("/Testcase/Create", { state: { testcase_id: param.row.testcase_id, isCopy: true } });
                             }}
                         >
                             <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
