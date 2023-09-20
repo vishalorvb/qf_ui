@@ -1,53 +1,62 @@
-import { Autocomplete, Button, Divider, Grid, TextField } from "@mui/material"
-import { useNavigate } from "react-router"
-import { validateFormbyName } from "../../CustomComponent/FormValidation"
-import { useEffect, useRef, useState } from "react"
+import { Button, Divider, Grid, TextField } from "@mui/material"
+import { useEffect, useState } from "react"
 import { Stack } from "@mui/system"
 import useHead from "../../hooks/useHead"
-import { getProject } from "../../Services/ProjectService"
-import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
-import { getSprint, getIssues, createApitestcase } from "../../Services/TestCaseService"
-import MapScreen from "./webTestcase/MapScreen"
-import { CreateTestCaseService } from "../../Services/TestCaseService"
-import MapApiTestCase from "./apiTestcase/MapApiTestCase"
-import ElementList from "./ElementList"
-import { getElement } from "../../Services/TestCaseService"
+import { getSprint, getIssues, getTestcaseDetails, CreateTestCaseService, createApitestcase } from "../../Services/TestCaseService"
 import { getSprint_in_testcase } from "../../Services/TestCaseService"
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
-export let TCdata = {
-    module_id: 0,
-    testcase_name: "",
-    testcase_description: "",
-    project_id: 0,
-    testcase_sprints: [],
-};
-
-let sprintData = {
-    sprint_id: 0,
-    sprint_name: "",
-    issue_id: 0,
-};
-let snackbarErrorMsg = "";
-
+import { useLocation, useNavigate } from "react-router";
+import Web from "./webTestcase/Web"
+import { validateFormbyName } from "../../CustomComponent/FormValidation"
+import MapApiTestCase from "./apiTestcase/MapApiTestCase"
 function CreateTestCase() {
-    const [reportFailMsg, setReportFailMsg] = useState(false);
-    let [project, setProject] = useState([])
-    let [application, setApplication] = useState([])
+
+    let location = useLocation()
     const { auth } = useAuth();
     const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication, setSnackbarData } = useHead();
-    let [jiraSprint, setJiraSprint] = useState([]);
-    let [jiraIssue, setJiraIssue] = useState([]);
-    let [snackbarError, setSnackbarError] = useState(false);
-    let [selectedApiList, setSelectedApiList] = useState([]);
-    let [screenList, setScreenList] = useState([])
-
-    let screens = useRef()
-
     const navigate = useNavigate();
 
-    function WebTestcase(data) {
+
+    let [basicDetails, setBasicDetails] = useState({ testcaseName: "", testcaseDescription: "" })
+    let [jiraSprint, setJiraSprint] = useState([])
+    let [jiraIssue, setJiraIssue] = useState(null)
+    let [selectedSprint, setSelectedSprint] = useState(null)
+    let [selectedIssues, setSelectedIssues] = useState(null)
+    let [TC_ID, setTC_ID] = useState(location.state.testcaseId ?? 0)
+    let [isCopy, setIsCopy] = useState(location.state.isCopy ?? false)
+    let [selectedScreen, setSelectedScreen] = useState([])
+    let [selectedApiList, setSelectedApiList] = useState([])
+    let [sprintData, setSprintData] = useState({
+        "sprint_id": "",
+        "sprint_name": "",
+        "issue_id": ""
+    })
+
+    function WebTestcase() {
+        if (selectedScreen.length === 0) {
+            setSnackbarData({
+                status: true,
+                message: "Error, Select Atleast one screen",
+                severity: "error",
+            });
+            return
+        }
+        let data = {
+            "module_id": globalApplication.module_id,
+            "testcase_name": basicDetails.testcaseName,
+            "testcase_description": basicDetails.testcaseDescription,
+            "project_id": globalProject.project_id,
+            "testcase_sprints": [sprintData],
+            "screens_in_testcase": selectedScreen.map(s => {
+                return ({
+                    "screen_id": s.screen_id
+                })
+            })
+        }
+        if (TC_ID != 0 && isCopy == false) {
+            data.testcase_id = TC_ID
+        }
         CreateTestCaseService(data).then((res) => {
             if (res) {
                 setSnackbarData({
@@ -57,89 +66,123 @@ function CreateTestCase() {
                 });
                 navigate("/Testcase/Recent");
             } else {
-                snackbarErrorMsg = "Error, Make sure Testcase Name is Unique";
-                setSnackbarError(true);
+                setSnackbarData({
+                    status: true,
+                    message: "Error, Make sure Testcase Name is Unique",
+                    severity: "error",
+                });
             }
         });
     }
 
-    function ApiTestcase(data) {
-        if (TCdata.apis_list.length < 1) {
+
+    function ApiTestcase() {
+        if (selectedApiList.length == 0) {
             setSnackbarData({
                 status: true,
-                message: "Select Atleast One Api",
-                severity: "warning",
+                message: "Error, Select Atleast one Api",
+                severity: "error",
             });
-            return 0;
+            return
         }
-
+        let data = {
+            "module_id": globalApplication.module_id,
+            "testcase_name": basicDetails.testcaseName,
+            "testcase_description": basicDetails.testcaseDescription,
+            "project_id": globalProject.project_id,
+            "testcase_sprints": [sprintData],
+            "apis_list": selectedApiList.map(api => {
+                return ({ "api_id": api })
+            })
+        }
+        if (TC_ID != 0 && isCopy == false) {
+            data.testcase_id = TC_ID
+        }
         createApitestcase(data).then((res) => {
             if (res) {
                 setSnackbarData({
                     status: true,
                     message:
-                        TCdata.testcase_id === undefined
+                        TC_ID === 0
                             ? res
                             : "TestCase Updated Successfully",
                     severity: "success",
                 });
                 navigate("/Testcase/Recent");
             } else {
-                snackbarErrorMsg = "Error, Make sure Testcase Name is Unique";
-                setSnackbarError(true);
+                setSnackbarData({
+                    status: true,
+                    message: "Error, Make sure Testcase Name is Unique",
+                    severity: "error",
+                });
             }
         });
+
+
     }
-
-    function handleSubmit(e) {
+    function handleSubmit() {
         if (globalApplication?.module_type === 19) {
-            setReportFailMsg(true);
-            setTimeout(() => {
-                setReportFailMsg(false);
-            }, 3000);
-        } else {
-            if (sprintData.sprint_id !== 0) {
-                TCdata.testcase_sprints.push(sprintData);
-            }
-
-            if (validateFormbyName(["name", "desc"], "error")) {
-                if (!TCdata.testcase_name.startsWith("TC_")) {
-                    TCdata.testcase_name = "TC_" + TCdata.testcase_name
-                }
-                if (globalApplication?.module_type != 1) {
-                    let scr = []
-                    screens.current.forEach(sc => {
-                        sc.screenList.forEach(screen => {
-                            let temp = { screen_id: screen?.screen_id }
-                            scr.push(temp)
-                        })
-                    })
-                    TCdata.screens_in_testcase = scr
-                    WebTestcase(TCdata)
-                }
-                if (globalApplication?.module_type == 1) {
-                    let desc = TCdata.testcase_description
-                    delete TCdata.testcase_description
-                    TCdata.testcase_desc = desc
-                    TCdata.apis_list = selectedApiList?.map(api => {
-                        return { api_id: api }
-                    })
-                    ApiTestcase(TCdata)
-                }
-
-            }
-            else {
-                console.log("Invalid form")
-                snackbarErrorMsg = "Fill all required fields"
-                setSnackbarError(true)
-            }
+            setSnackbarData({
+                status: true,
+                message: "Error, Make sure Testcase Name is Unique",
+                severity: "error",
+            });
+            return;
+        }
+        if (validateFormbyName(["name", "desc"], "error") == false) {
+            return
+        }
+        if (globalApplication?.module_type != 1) {
+            WebTestcase()
+        }
+        if (globalApplication?.module_type == 1) {
+            ApiTestcase()
         }
     }
+    useEffect(() => {
+        setJiraIssue(null)
+        if (TC_ID != 0) {
+            //To Updtae  testcase
+            getTestcaseDetails(TC_ID).then(res => {
+                setBasicDetails({ testcaseName: res.name, testcaseDescription: res.description })
+
+            })
+            getSprint_in_testcase(globalProject?.project_id, TC_ID).then(res => {
+                setJiraSprint(res)
+
+            })
+
+        }
+        else {
+            //To create new testcase
+            globalProject?.project_id != undefined && getSprint(setJiraSprint, globalProject?.project_id).then(res => {
+
+            })
+        }
+
+    }, [globalProject])
+
+    useEffect(() => {
+        if (jiraIssue == null && jiraSprint.length > 0) {
+            let data = {
+                sprint_name: jiraSprint[0]?.name
+            }
+            getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
+        }
+        setSprintData({ ...sprintData, sprint_id: jiraSprint[0]?.id ?? "", sprint_name: jiraSprint[0]?.name ?? "" })
+    }, [jiraSprint])
+
+    useEffect(() => {
+        setSprintData({ ...sprintData, issue_id: jiraIssue == null ? "" : jiraIssue[0]?.id ?? "" })
+    }, [jiraIssue])
+
+    useEffect(() => {
+    }, [sprintData])
     useEffect(() => {
         setHeader((ps) => {
             return {
                 ...ps,
-                name: TCdata.testcase_id === undefined ? "Create Testcase" : "Update TestCase",
+                name: TC_ID === 0 ? "Create Testcase" : "Update TestCase",
                 plusButton: false,
                 plusCallback: () => {
 
@@ -147,137 +190,14 @@ function CreateTestCase() {
             };
         });
     }, []);
-
-    useEffect(() => {
-        setScreenList([])
-        try {
-            TCdata.module_id = globalApplication.module_id;
-            TCdata.project_id = globalProject.project_id;
-        } catch (error) { }
-    }, [globalProject, globalApplication]);
-
-    useEffect(() => {
-        if (globalProject?.project_id !== undefined) {
-            getApplicationOfProject(setApplication, globalProject?.project_id)
-            if (TCdata.testcase_id == undefined) {
-                getSprint(setJiraSprint, globalProject?.project_id)
-            }
-            else {
-                getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res => {
-                    setJiraSprint(res)
-                })
-            }
-
-        }
-    }, [globalProject])
-    useEffect(() => {
-        if (globalApplication == null) {
-            setglobalApplication(application[0])
-        }
-    }, [application])
-
-
-    useEffect(() => {
-        if (jiraSprint.length > 0) {
-            let data = {
-                sprint_name: jiraSprint[0].name
-            }
-            getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
-            sprintData.sprint_id = jiraSprint[0]?.sprint_id
-            sprintData.sprint_name = jiraSprint[0]?.name
-        }
-    }, [jiraSprint])
-
-    useEffect(() => {
-        sprintData.issue_id = jiraIssue[0]?.issue_id
-    }, [jiraIssue])
-
-    useEffect(() => {
-        getProject(setProject, auth.userId)
-        return () => {
-            TCdata = {
-                module_id: 0,
-                testcase_name: "",
-                testcase_description: "",
-                project_id: 0,
-                testcase_sprints: []
-            }
-            sprintData = {
-                "sprint_id": 0,
-                "sprint_name": "",
-                "issue_id": 0
-            }
-        };
-    }, [])
-    useEffect(() => {
-        if (globalProject == null) {
-            setglobalProject(project[0])
-        }
-    }, [project])
-
-
-    useEffect(() => {
-        if (screenList.length > 0) {
-            getElement(screenList[0].screenId, () => { })
-        }
-
-    }, [screenList])
-
-
-    useEffect(() => {
-        if (TCdata.testcase_id != undefined) {
-            getSprint_in_testcase(globalProject.project_id, TCdata.testcase_id).then(res => {
-                if (res?.length > 0) {
-                    sprintData.sprint_id = res[0].sprint_id
-                    sprintData.sprint_name = res[0].name
-                }
-            })
-        }
-    }, [])
     return (
-        <>
+        <div>
             <Grid item container spacing={2} justifyContent="left">
                 <Grid item md={6}>
-                    {/*<label htmlFor="">Projects</label>
-                    <Autocomplete
-                        disablePortal
-                        disableClearable
-                        id="project_id"
-                        options={project}
-                        value={globalProject || null}
-                        fullWidth
-                        disabled={TCdata.testcase_id === undefined ? false : true}
-                        getOptionLabel={(option) => option?.project_name}
-                        onChange={(e, value) => {
-                            setglobalApplication(null);
-                            setglobalProject(value);
-                        }}
-                        renderInput={(params) => (
-                            <TextField {...params} size="small" fullWidth />
-                        )}
-                    />*/}
-                    <ProjectnApplicationSelector />
-                </Grid>
-                {/*<Grid item md={3}>
-                    <label htmlFor="">Applications</label>
-                    <Autocomplete
-                        disablePortal
-                        disableClearable
-                        id="model_id"
-                        options={application}
-                        value={globalApplication || null}
-                        fullWidth
-                        disabled={TCdata.testcase_id === undefined ? false : true}
-                        getOptionLabel={(option) => option.module_name}
-                        onChange={(e, value) => {
-                            setglobalApplication(value);
-                        }}
-                        renderInput={(params) => (
-                            <TextField {...params} size="small" fullWidth />
-                        )}
+                    <ProjectnApplicationSelector
+                        selectorDisabled={TC_ID != 0}
                     />
-
-                </Grid>*/}
+                </Grid>
                 <Grid item md={3}>
                     <label>Sprint</label>
                     <select
@@ -287,22 +207,23 @@ function CreateTestCase() {
                             let data = {
                                 sprint_name: sprintName
                             }
+                            setSprintData({ ...sprintData, sprint_id: e.target.value, sprint_name: sprintName })
+
                             getIssues(setJiraIssue, auth.userId, globalProject?.project_id, data)
-                            sprintData.sprint_id = e.target.value
-                            sprintData.sprint_name = sprintName
                         }}
                     >
-                        {jiraSprint.map(s => <option key={s.id} value={s.sprint_id}>{s.name}</option>)}
+                        {jiraSprint?.map(s => <option key={s.id} value={s.sprint_id}>{s?.name}</option>)}
                     </select>
                 </Grid>
                 <Grid item md={3}>
                     <label >Issues</label>
                     <select
                         onChange={e => {
-                            sprintData.issue_id = e.target.value
+                            setSprintData({ ...sprintData, issue_id: e.target.value })
+
                         }}
                     >
-                        {jiraIssue.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
+                        {jiraIssue?.map(s => <option key={s.id} value={s.issue_id}>{s.key}</option>)}
                     </select>
                 </Grid>
                 <Grid item xs={6} md={6}>
@@ -312,9 +233,13 @@ function CreateTestCase() {
                             size="small"
                             placeholder="Testcase Name"
                             name="name"
-                            defaultValue={TCdata.testcase_name}
+                            value={basicDetails.testcaseName}
                             onChange={e => {
-                                TCdata.testcase_name = e.target.value.trim();
+                                let val = e.target.value;
+                                setBasicDetails({
+                                    ...basicDetails,
+                                    testcaseName: val.startsWith("TC_") ? val : "TC_" + val
+                                })
                             }}
                         />
                     </Stack>
@@ -328,9 +253,12 @@ function CreateTestCase() {
                             size="small"
                             placeholder="Testcase Description"
                             name="desc"
-                            defaultValue={TCdata.testcase_description}
+                            value={basicDetails.testcaseDescription}
                             onChange={e => {
-                                TCdata.testcase_description = e.target.value;
+                                setBasicDetails({
+                                    ...basicDetails,
+                                    testcaseDescription: e.target.value
+                                })
                             }}
                         />
                     </Stack>
@@ -339,41 +267,27 @@ function CreateTestCase() {
             </Grid >
             <br />
             <Divider></Divider><br />
-            {globalApplication?.module_type !== 1 && <Grid item container spacing={1} justifyContent="left">
-                <Grid item xs={3} md={3}>
-                    <MapScreen
-                        projectId={globalProject?.project_id}
-                        moduleId={globalApplication?.module_id}
-                        testcaseId={TCdata.testcase_id}
-                        callback={val => {
-                            screens.current = val
-                            let temp = []
-                            val.forEach(webpage => {
-                                webpage?.screenList.forEach(screen => {
-
-                                    let x = {
-                                        screenName: screen.name,
-                                        screenId: screen.screen_id,
-                                    }
-                                    temp.push(x)
-                                })
-                            })
-                            setScreenList(temp)
+            {globalApplication?.module_type !== 1 ?
+                <div className="web">
+                    <Web
+                        project={globalProject}
+                        application={globalApplication}
+                        testcaseId={TC_ID}
+                        setScreen={(s) => {
+                            setSelectedScreen(s)
                         }}
-                    ></MapScreen>
-                </Grid>
-                {screenList.length > 0 && <Grid item xs={9} md={9}>
-                    <ElementList
-                        screenList={screenList}
-                    ></ElementList>
-                </Grid>}
-            </Grid>}
-            {globalApplication?.module_type === 1 && <MapApiTestCase
-                testcaseId={TCdata.testcase_id}
-                moduleId={globalApplication.module_id}
-                preSelectedElement={selectedApiList}
-                setPreSelectedElement={setSelectedApiList}
-            ></MapApiTestCase>}
+                    ></Web>
+
+                </div>
+                :
+                <div className="api">
+                    <MapApiTestCase
+                        testcaseId={TC_ID}
+                        moduleId={globalApplication.module_id}
+                        setApiList={setSelectedApiList}
+                    ></MapApiTestCase>
+                </div>
+            }
             <Stack
                 direction="row"
                 justifyContent="flex-end"
@@ -381,24 +295,10 @@ function CreateTestCase() {
                 spacing={2}
             >
                 <Button onClick={e => navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
-                <Button variant="contained" onClick={handleSubmit}>{TCdata.testcase_id === undefined ? "Save & Continue" : "Update"} </Button>
+                <Button variant="contained" onClick={handleSubmit}>{TC_ID === 0 ? "Save & Continue" : "Update"} </Button>
             </Stack>
-            <SnackbarNotify
-                open={reportFailMsg}
-                close={setReportFailMsg}
-                msg="Testcases can't be created for this Application."
-                severity="error"
-            />
-            <SnackbarNotify
-                open={snackbarError}
-                close={setSnackbarError}
-                msg={snackbarErrorMsg}
-                severity="error"
-            />
-
-        </>
-
+        </div>
     )
 }
 
-export default CreateTestCase;
+export default CreateTestCase
