@@ -6,14 +6,14 @@ import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { release } from '../../Services/DevopsServices'
 import useAuth from "../../hooks/useAuth";
+import useHead from "../../hooks/useHead";
 function ReleaseHistory() {
-
     const navigate = useNavigate()
     const location = useLocation()
     const { auth } = useAuth();
     const loggedInId = auth.info.id;
     let [releaseData, setReleasedata] = useState([])
-
+    const { setShowloader } = useHead();
     let col = [
         {
             field: "release_name",
@@ -65,7 +65,6 @@ function ReleaseHistory() {
             },
         },
     ]
-
     useEffect(() => {
         let releaseId
         let projectId
@@ -80,7 +79,6 @@ function ReleaseHistory() {
         getReleaseHistory(projectId, releaseId, setReleasedata)
     }, [])
 
-
     return (
         <div>
             <div className='apptable'>
@@ -89,9 +87,9 @@ function ReleaseHistory() {
                         <Button
                             variant="contained"
                             onClick={() => {
-                                console.log(location.state.projectId, location.state.releaseId, loggedInId)
+                                setShowloader(true)
                                 release(location.state.projectId, location.state.releaseId, loggedInId).then(res => {
-                                    console.log(res)
+                                    setShowloader(false)
                                     if (res) {
                                         navigate('/release/logs', { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: res } })
                                     }
@@ -111,5 +109,4 @@ function ReleaseHistory() {
         </div>
     )
 }
-
 export default ReleaseHistory
