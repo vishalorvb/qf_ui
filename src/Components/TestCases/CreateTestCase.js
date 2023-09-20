@@ -1,29 +1,21 @@
-import { Autocomplete, Button, Divider, Grid, TextField } from "@mui/material"
-
-import { validateFormbyName } from "../../CustomComponent/FormValidation"
-import { useEffect, useRef, useState } from "react"
+import { Button, Divider, Grid, TextField } from "@mui/material"
+import { useEffect, useState } from "react"
 import { Stack } from "@mui/system"
 import useHead from "../../hooks/useHead"
-import { getProject } from "../../Services/ProjectService"
-import { getApplicationOfProject } from "../../Services/ApplicationService"
 import useAuth from "../../hooks/useAuth"
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify"
-import { getSprint, getIssues, createApitestcase, getTestcaseDetails } from "../../Services/TestCaseService"
-import MapScreen from "./webTestcase/MapScreen"
-import { CreateTestCaseService } from "../../Services/TestCaseService"
-import MapApiTestCase from "./apiTestcase/MapApiTestCase"
-import ElementList from "./ElementList"
-import { getElement } from "../../Services/TestCaseService"
+import { getSprint, getIssues, getTestcaseDetails, CreateTestCaseService } from "../../Services/TestCaseService"
 import { getSprint_in_testcase } from "../../Services/TestCaseService"
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector"
 import { useLocation, useNavigate } from "react-router";
 import Web from "./webTestcase/Web"
-
+import { validateFormbyName } from "../../CustomComponent/FormValidation"
 function CreateTestCase() {
 
     let location = useLocation()
     const { auth } = useAuth();
     const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication, setSnackbarData } = useHead();
+    const navigate = useNavigate();
+
 
     let [basicDetails, setBasicDetails] = useState({ testcaseName: "", testcaseDescription: "" })
     let [jiraSprint, setJiraSprint] = useState([])
@@ -32,6 +24,62 @@ function CreateTestCase() {
     let [selectedIssues, setSelectedIssues] = useState(null)
     let [TC_ID, setTC_ID] = useState(location.state.testcaseId ?? 0)
     let [isCopy, setIsCopy] = useState(false)
+    let [selectedScreen, setSelectedScreen] = useState([])
+
+
+    function WebTestcase() {
+        if (validateFormbyName(["name", "desc"], "error") == false) {
+            return
+        }
+        console.log(selectedScreen)
+        let data = {
+            "module_id": globalApplication.module_id,
+            "testcase_name": basicDetails.testcaseName,
+            "testcase_description": basicDetails.testcaseDescription,
+            "project_id": globalProject.project_id,
+            "testcase_sprints": [],
+            "screens_in_testcase": selectedScreen.map(s => {
+                return ({
+                    "screen_id": s.screen_id
+                })
+            })
+        }
+        CreateTestCaseService(data).then((res) => {
+            if (res) {
+                setSnackbarData({
+                    status: true,
+                    message: res,
+                    severity: "success",
+                });
+                navigate("/Testcase/Recent");
+            } else {
+                setSnackbarData({
+                    status: true,
+                    message: "Error, Make sure Testcase Name is Unique",
+                    severity: "error",
+                });
+            }
+        });
+    }
+    function ApiTestcase() {
+
+    }
+    function handleSubmit() {
+        if (globalApplication?.module_type === 19) {
+            setSnackbarData({
+                status: true,
+                message: "Error, Make sure Testcase Name is Unique",
+                severity: "error",
+            });
+            return;
+        }
+        if (globalApplication?.module_type != 1) {
+            WebTestcase()
+        }
+        if (globalApplication?.module_type == 1) {
+            ApiTestcase()
+        }
+    }
     useEffect(() => {
         setJiraIssue(null)
         if (TC_ID != 0) {
@@ -113,9 +161,10 @@ function CreateTestCase() {
                             name="name"
                             value={basicDetails.testcaseName}
                             onChange={e => {
+                                let val = e.target.value;
                                 setBasicDetails({
                                     ...basicDetails,
-                                    testcaseName: e.target.value
+                                    testcaseName: val.startsWith("TC_") ? val : "TC_" + val
                                 })
                             }}
                         />
@@ -134,7 +183,7 @@ function CreateTestCase() {
                             onChange={e => {
                                 setBasicDetails({
                                     ...basicDetails,
-                                    testcaseName: e.target.value
+                                    testcaseDescription: e.target.value
                                 })
                             }}
                         />
@@ -152,8 +201,18 @@ function CreateTestCase() {
                         testcaseId={TC_ID}
                         setScreen={(s) => {
                             console.log(s)
+                            setSelectedScreen(s)
                         }}
                     ></Web>
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                        spacing={2}
+                    >
+                        <Button onClick={e => navigate("/Testcase/Recent")} sx={{ color: "grey", textDecoration: "underline" }}>Cancel</Button>
+                        <Button variant="contained" onClick={handleSubmit}>{TC_ID === 0 ? "Save & Continue" : "Update"} </Button>
+                    </Stack>
                 </div>
                 :
                 <div className="api">

@@ -1,15 +1,16 @@
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ElementList from '../ElementList'
 import useHead from '../../../hooks/useHead'
 import { getPagesForTestcase, getPagesIntestcase } from '../../../Services/TestCaseService'
 import MapScreen from './MapScreen'
+
 function Web({ project, application, testcaseId, setScreen }) {
     let [page, setPage] = useState([])
     let [subpage, setSubpage] = useState({})
     let [screenList, setScreenList] = useState([])
     const { setShowloader } = useHead();
-
+    console.log(application)
 
     useEffect(() => {
         //setShowloader(true);
@@ -70,6 +71,7 @@ function Web({ project, application, testcaseId, setScreen }) {
 
     useEffect(() => {
         console.log(screenList)
+        setScreen(screenList)
     }, [screenList])
     return (
         <div>
@@ -80,6 +82,9 @@ function Web({ project, application, testcaseId, setScreen }) {
                         setpages={setPage}
                     ></MapScreen>
                     {application?.sub_modules_list?.map(app => <div>
+                        {/*<Typography variant="h4" component="h2">
+                            {app.module_name}
+                        </Typography>*/}
                         <MapScreen
                             pages={subpage[app.module_id] ?? []}
                             setpages={list => {
@@ -92,9 +97,13 @@ function Web({ project, application, testcaseId, setScreen }) {
                     </div>)}
                 </Grid>
                 <Grid item xs={9} md={9}>
-                    screenlist
                     <ElementList
-                        screenList={screenList}
+                        screenList={screenList.map(screen => {
+                            return ({
+                                "screenName": screen.name,
+                                "screenId": screen.screen_id
+                            })
+                        })}
                     ></ElementList>
                 </Grid>
             </Grid>
