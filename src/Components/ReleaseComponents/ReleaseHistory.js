@@ -80,7 +80,7 @@ function ReleaseHistory() {
     }, [])
 
     useEffect(() => {
-        console.log(releaseData)
+        console.log(releaseData[0])
     }, [releaseData])
     return (
         <div>
@@ -107,7 +107,7 @@ function ReleaseHistory() {
                     </div>
                 </div>
                 <Table
-                    rows={releaseData}
+                    rows={releaseData[0] ?? []}
                     columns={col}
                     getRowId={(row) => row.id}
                 />

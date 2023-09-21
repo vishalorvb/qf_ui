@@ -22,6 +22,7 @@ function Logs() {
         success: <CheckCircleOutlineIcon />,
         created: <CheckCircleOutlineIcon />,
         fail: <CancelOutlinedIcon />,
+        false: <CancelOutlinedIcon />,
         pending: <CircularProgress color="success" size={20} />,
         running: <CircularProgress color="success" size={20} />,
         default: <WarningAmberIcon></WarningAmberIcon>,
@@ -105,7 +106,7 @@ function Logs() {
                             label="RunTests"
                             avatar={getIcon[status.testAutomation ?? "default"]}
                             variant="outlined"
-                            color="success"
+                            color={status.initialize == "success" ? "success" : "error"}
                         />
                     </div>
                 </Grid>
