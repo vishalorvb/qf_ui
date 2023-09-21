@@ -145,7 +145,7 @@ export async function getGitData(callback, releaseId, historyId, projectId) {
 
 export async function getReleaseHistory(projectId, releaseId, callback) {
     axios.get(`${baseUrl}/qfservice/project/${projectId}/ansible-release/${releaseId}/release-history`).then(res => {
-        callback([res.data.data] ?? [])
+        callback([res.data.data.webReleaseHistories] ?? [])
     })
 }
 

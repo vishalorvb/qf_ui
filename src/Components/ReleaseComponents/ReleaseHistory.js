@@ -16,8 +16,8 @@ function ReleaseHistory() {
     const { setShowloader } = useHead();
     let col = [
         {
-            field: "release_name",
-            headerName: "Name",
+            field: "rid",
+            headerName: "Release ID",
             flex: 3,
             sortable: false,
             renderCell: (param) => {
@@ -25,14 +25,14 @@ function ReleaseHistory() {
                     <Typography
                         variant="p"
                     >
-                        {param.row.release_name}
+                        {param.row.id}
                     </Typography>
                 );
             },
         },
         {
-            field: "release_desc",
-            headerName: "Description",
+            field: "created_at",
+            headerName: "Release Date",
             flex: 3,
             sortable: false,
             renderCell: (param) => {
@@ -40,7 +40,7 @@ function ReleaseHistory() {
                     <Typography
                         variant="p"
                     >
-                        {param.row.release_name}
+                        {param.row.created_at}
                     </Typography>
                 );
             },
@@ -55,7 +55,7 @@ function ReleaseHistory() {
                     <Tooltip title="View Log">
                         <IconButton
                             onClick={() => {
-                                navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: 1 } })
+                                navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: param.row.web_release_id } })
                             }}
                         >
                             <VisibilityIcon />
@@ -79,6 +79,9 @@ function ReleaseHistory() {
         getReleaseHistory(projectId, releaseId, setReleasedata)
     }, [])
 
+    useEffect(() => {
+        console.log(releaseData)
+    }, [releaseData])
     return (
         <div>
             <div className='apptable'>
@@ -103,7 +106,11 @@ function ReleaseHistory() {
                         </Button>
                     </div>
                 </div>
-                <Table rows={releaseData} columns={col} />
+                <Table
+                    rows={releaseData}
+                    columns={col}
+                    getRowId={(row) => row.id}
+                />
             </div>
 
         </div>
