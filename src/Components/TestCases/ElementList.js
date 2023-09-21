@@ -6,7 +6,6 @@ import DragDrop from "../../CustomComponent/DragDrop";
 import { Button, Grid } from "@mui/material";
 
 function ElementList({ screenList }) {
-
     let [element, setElement] = useState([])
     let [screens, setScreens] = useState([])
     let [open, setOpen] = useState(false)
@@ -91,20 +90,23 @@ function ElementList({ screenList }) {
 
 
     return <div>
-        <Grid container spacing={2} justifyContent="right" alignItems="right" >
-            <Grid item xs={2} md={2}>
-                <Button onClick={e => setOpen(!open)} variant="contained">{open ? "Hide All" : "Expand All"}</Button>
+        {screenList.length > 0 && <div>
+            <Grid container spacing={2} justifyContent="right" alignItems="right" >
+                <Grid item xs={2} md={2}>
+                    <Button onClick={e => setOpen(!open)} variant="contained">{open ? "Hide All" : "Expand All"}</Button>
 
+                </Grid>
             </Grid>
-        </Grid>
 
-        <DragDrop
-            columns={dragDropCol}
-            row={screens}
-            setRow={e => {
-                setScreens(e)
-            }}
-        ></DragDrop>
+            <DragDrop
+                columns={dragDropCol}
+                row={screens}
+                setRow={e => {
+                    setScreens(e)
+                }}
+            ></DragDrop>
+        </div>}
+
     </div>;
 }
 

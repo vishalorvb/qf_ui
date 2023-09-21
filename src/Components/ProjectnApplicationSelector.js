@@ -74,6 +74,7 @@ export default function ProjectnApplicationSelector({
                     options={projectsList}
                     value={globalProject || null}
                     fullWidth
+
                     getOptionLabel={(option) => option.project_name ?? ""}
                     onChange={(e, value) => {
                         setglobalApplication(null);
@@ -89,6 +90,7 @@ export default function ProjectnApplicationSelector({
                     <div className="searchbox">
                         <label>Applications</label>
                         <input type="text" autoComplete="off" name="application" value={searchWord}
+                            disabled={selectorDisabled == true}
                             onChange={e => setSearchWord(e.target.value)}
                             onFocus={e => {
                                 setShow(true)
@@ -96,6 +98,7 @@ export default function ProjectnApplicationSelector({
                             }}
                             onBlur={e => {
                                 setTimeout(() => {
+
                                     setShow(false)
                                 }, 1000);
                             }}

@@ -5,6 +5,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import { useEffect, useState } from 'react';
 import { getGitData } from '../../Services/DevopsServices';
 import { useLocation, useNavigate } from 'react-router-dom';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 function Logs() {
 
@@ -19,8 +20,11 @@ function Logs() {
     })
     let getIcon = {
         success: <CheckCircleOutlineIcon />,
+        created: <CheckCircleOutlineIcon />,
         fail: <CancelOutlinedIcon />,
-        false: <CircularProgress color="success" size={20} />,
+        pending: <CircularProgress color="success" size={20} />,
+        running: <CircularProgress color="success" size={20} />,
+        default: <WarningAmberIcon></WarningAmberIcon>,
         deploy: <KeyboardDoubleArrowRightIcon />
     }
     useEffect(() => {
@@ -60,9 +64,9 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="Initialize"
-                            avatar={getIcon[status.initialize ?? false]}
+                            avatar={getIcon[status.initialize ?? "default"]}
                             variant="outlined"
-                            color="success"
+                            color={status.initialize == "success" ? "success" : "error"}
                         />
                     </div>
                 </Grid>
@@ -73,7 +77,7 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="RetriveCode"
-                            avatar={getIcon[status.continuousIntegration ?? false]}
+                            avatar={getIcon[status.continuousIntegration ?? "default"]}
                             variant="outlined"
                             color="error"
                         />
@@ -86,7 +90,7 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="DeployeToDev"
-                            avatar={getIcon[status.testAutomation ?? false]}
+                            avatar={getIcon[status.testAutomation ?? "default"]}
                             variant="outlined"
                             color="success"
                         />
@@ -99,7 +103,7 @@ function Logs() {
                     <div className='automation'>
                         <Chip
                             label="RunTests"
-                            avatar={getIcon[status.testAutomation ?? false]}
+                            avatar={getIcon[status.testAutomation ?? "default"]}
                             variant="outlined"
                             color="success"
                         />
