@@ -69,7 +69,6 @@ function Web({ project, application, testcaseId, setScreen }) {
 
     useEffect(() => {
         setScreen(screenList)
-        console.log(screenList)
     }, [screenList])
     return (
         <div>
