@@ -7,9 +7,8 @@ import { Button, Grid } from "@mui/material";
 
 function ElementList({ screenList }) {
     let [element, setElement] = useState([])
-    let [screens, setScreens] = useState([])
     let [open, setOpen] = useState(false)
-
+    console.log(screenList)
 
     let col = [
         {
@@ -73,19 +72,6 @@ function ElementList({ screenList }) {
 
     }, [screenList])
 
-    useEffect(() => {
-        setScreens([])
-        let x = []
-        screenList.forEach(screen => {
-            element.forEach(ele => {
-                if (ele.screenId == screen.screenId) {
-                    let obj = { screenName: screen.screenName, screenId: screen.screenId, elements: ele.elements }
-                    x.push(obj)
-                }
-            })
-        })
-        setScreens(x)
-    }, [screenList, element])
 
 
 
@@ -100,9 +86,9 @@ function ElementList({ screenList }) {
 
             <DragDrop
                 columns={dragDropCol}
-                row={screens}
+                row={screenList}
                 setRow={e => {
-                    setScreens(e)
+
                 }}
             ></DragDrop>
         </div>}
