@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "../api/axios";
 import { useLocation } from "react-router-dom";
 import ReportList from "../Components/Reports/ReportList";
+import pagegenerator from "../Components/Reports/HTMLgenrator";
 
 export default function ViewReport() {
   const location = useLocation();
@@ -19,5 +20,10 @@ export default function ViewReport() {
     });
   }
 
-  return <ReportList result={reportData} />;
+  return (
+    <>
+      <ReportList result={reportData} />
+      {/* {pagegenerator(reportData)} */}
+    </>
+  );
 }
