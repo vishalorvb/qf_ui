@@ -2,9 +2,6 @@ import axios from "axios";
 import { baseUrl } from "../Environment";
 import { Axis } from "highcharts";
 
-let userId = 1;
-// let module_id = 1052;
-// let module_id = 1036;
 
 export function getPipelines(callback, project_id) {
     // This function except name of state as a callback and set value in that state
@@ -93,7 +90,7 @@ export function executePipeline(callback, id, userId) {
         });
 }
 
-export function createPipeline(callback, params, id, project_id) {
+export function createPipeline(callback, params, id, project_id, userId) {
     axios
         .post(`${baseUrl}/qfservice/Createpipeline`, null, {
             params: {
@@ -145,7 +142,7 @@ export async function getGitData(callback, releaseId, historyId, projectId) {
 
 export async function getReleaseHistory(projectId, releaseId, callback) {
     axios.get(`${baseUrl}/qfservice/project/${projectId}/ansible-release/${releaseId}/release-history`).then(res => {
-        callback([res.data.data] ?? [])
+        callback([res.data.data.webReleaseHistories] ?? [])
     })
 }
 

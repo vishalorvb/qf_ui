@@ -7,7 +7,6 @@ import { Button, Grid } from "@mui/material";
 
 function ElementList({ screenList }) {
     let [element, setElement] = useState([])
-    let [screens, setScreens] = useState([])
     let [open, setOpen] = useState(false)
 
 
@@ -45,7 +44,7 @@ function ElementList({ screenList }) {
                         <AccordionTemplate name={row.original.screenName} toggle={open}>
                             <Table
                                 hideSearch={true}
-                                rows={row.original.elements ?? []}
+                                rows={element.find(e => e.screenId == row.original.screenId)?.elements ?? []}
                                 columns={col}
                                 hidefooter={true}
                                 getRowId={(row) => row?.element_id}
@@ -55,7 +54,7 @@ function ElementList({ screenList }) {
                 },
             },
         ],
-        [open]
+        [open, element]
     );
     useEffect(() => {
         screenList.forEach(screen => {
@@ -73,21 +72,10 @@ function ElementList({ screenList }) {
 
     }, [screenList])
 
+
     useEffect(() => {
-        setScreens([])
-        let x = []
-        screenList.forEach(screen => {
-            element.forEach(ele => {
-                if (ele.screenId == screen.screenId) {
-                    let obj = { screenName: screen.screenName, screenId: screen.screenId, elements: ele.elements }
-                    x.push(obj)
-                }
-            })
-        })
-        setScreens(x)
-    }, [screenList, element])
 
-
+    }, [element])
 
     return <div>
         {screenList.length > 0 && <div>
@@ -100,9 +88,9 @@ function ElementList({ screenList }) {
 
             <DragDrop
                 columns={dragDropCol}
-                row={screens}
+                row={screenList}
                 setRow={e => {
-                    setScreens(e)
+
                 }}
             ></DragDrop>
         </div>}

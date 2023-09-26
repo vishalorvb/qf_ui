@@ -14,7 +14,7 @@ function CreateTestCase() {
 
     let location = useLocation()
     const { auth } = useAuth();
-    const { setHeader, globalProject, setglobalProject, globalApplication, setglobalApplication, setSnackbarData } = useHead();
+    const { setHeader, globalProject, globalApplication, setSnackbarData } = useHead();
     const navigate = useNavigate();
 
 
