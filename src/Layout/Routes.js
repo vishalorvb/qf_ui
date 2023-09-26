@@ -150,7 +150,14 @@ const MakeCopy = lazy(() => import(`../pages/MakeCopy`));
 
 const jenkinsExecution = lazy(() => import(`../pages/JenkinsExecutionStatus`));
 
+const ProjectSettings = lazy(() => import(`../pages/ProjectSettings`));
+
 export const Routes = [
+  {
+    path: "ProjectSettings",
+    element: ProjectSettings,
+    accessRole: [1, 2, 4],
+  },
   {
     path: "Application/Recent",
     element: applicationList,
