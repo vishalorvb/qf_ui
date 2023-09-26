@@ -54,12 +54,14 @@ function Reports() {
       `http://10.11.12.243:8083/qfreportservice/reportResult/${reportData?.report_id}`
     );
 
-    const htmlContent = renderToString(pagegenerator(response?.data?.info));
+    const htmlContent = renderToString(
+      pagegenerator(response?.data?.info, reportData?.name)
+    );
     const blob = new Blob([htmlContent], { type: "text/html" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "example.html";
+    a.download = `${reportData.name ?? "Report"}.html`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
