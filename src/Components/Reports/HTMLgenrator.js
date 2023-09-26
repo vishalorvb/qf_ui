@@ -38,27 +38,73 @@ const pagegenerator = (data, name) => {
         <body>
           <nav class="navbar fixed-top navbar-light bg-light m-20 ">
             <div class="container-fluid topnav__logo">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 673.5 84">
-                <style>
-                  {`.st0 { fill: #ef3e42; }
-    .st1 { fill: #231f20; }`}
-                </style>
-                <path
-                  class="st0"
-                  d="M23.8 10.1H11.3c0 35.6 28.9 64.5 64.4 64.5h.5V62.1h-.5c-28.6 0-51.9-23.3-51.9-52"
-                />
-                <path
-                  class="st0"
-                  d="M75.8 49.7h.5V37.5h-.5c-15.1 0-27.3-12.3-27.3-27.4H36.2c0 21.9 17.7 39.6 39.6 39.6M60.6 10.1c0 8.3 6.8 15.1 15.1 15.1h.5V10.1H60.6z"
-                />
-                <path
-                  class="st1"
-                  d="M147.3 47.2h-24.7v29.1h-8.8V10.7H151v7.1h-28.4v22.6h24.7zM186.2 69.2h34.1v7.1h-42.9V10.7h8.8zM252.1 69.2h30.8v7.1h-39.6V10.7h37.2v7.1h-28.4v21h24.7v6.4h-24.7zM317.4 69.2h30.8v7.1h-39.6V10.7h37.2v7.1h-28.4v21h24.7v6.4h-24.7zM421.9 17.4h-22v58.9h-8.4V17.4h-22.3v-6.7h52.7zM484.1 62.1h7.8c0 3.6-1.4 7-4.1 10.1-3.6 4.1-9.1 6.1-16.6 6.1-8.3 0-15.1-2.9-20.3-8.8-5.4-5.9-8.1-14.5-8.1-26 0-11.7 2.7-20.4 8.1-26 5.2-5.9 11.9-8.8 20.3-8.8 7.2 0 12.5 1.7 15.9 5.1 3.2 3.8 4.7 7.6 4.7 11.2H484c0-3.2-1-5.5-3-7.1-2.3-1.6-5.4-2.4-9.5-2.4-5.9 0-10.5 1.9-13.9 5.7-4.1 5.4-6.1 12.8-6.1 22.3 0 9.7 2 17.1 6.1 22.3 3.4 4.1 7.9 6.1 13.5 6.1 4.1 0 7.3-.9 9.8-2.7 2.2-1.8 3.2-4.2 3.2-7.1M542.6 71.6c5.6 0 9.9-2 12.8-6.1 4.1-5.2 6.1-12.5 6.1-22 0-9.7-2-17-6.1-22-2.9-4.1-7.2-6.1-12.8-6.1-5.4 0-9.7 2-12.8 6.1-4.1 5-6.1 12.3-6.1 22 0 9.5 2 16.8 6.1 22 3.4 4 7.9 6.1 12.8 6.1m0 6.7c-8.1 0-14.8-3-19.9-9.1-5.2-5.9-7.8-14.4-7.8-25.7 0-11.7 2.7-20.4 8.1-26 5.2-5.9 11.7-8.8 19.6-8.8 8.1 0 14.8 2.9 19.9 8.8 5.2 6.5 7.8 15.2 7.8 26 0 11.3-2.6 19.8-7.8 25.7-4.9 6.1-11.5 9.1-19.9 9.1M613.6 17.4h-8.8v24h8.1c4.5 0 8-1.2 10.5-3.7 2.3-2.3 3.4-5.3 3.4-9.1 0-3.6-1-6.4-3-8.5-2.5-1.7-5.9-2.7-10.2-2.7m-.3 30.8h-8.5v28.1H596V10.7h20.3c6.1 0 11 1.6 14.9 4.7 3.2 3.2 4.7 7.3 4.7 12.5 0 4.5-1.1 8.2-3.4 11.2-2.5 3.4-6.1 6-10.8 7.8 2 1.1 3.4 2.0 4.1 2.7 0.7 0.5 2.1 2.9 4.4 7.4l10.5 19.3h-9.8L621.7 59c-2-4.2-4.8-7.8-8.4-10.8M665 16c-.5-1-1.1-1.9-1.8-2.7-.8-.8-1.7-1.4-2.7-1.8-1-.4-2.1-.6-3.3-.6-1.2 0-2.3.2-3.3.6-1 .4-2 1-2.7 1.8-.8.8-1.4 1.7-1.9 2.7-.5 1-.7 2.2-.7 3.4 0 1.2.2 2.4.7 3.4.5 1 1.1 1.9 1.9 2.7.8.8 1.7 1.4 2.7 1.8 1 .4 2.1.6 3.3.6 1.2 0 2.3-.2 3.3-.6 1-.4 1.9-1 2.7-1.8.8-.8 1.4-1.7 1.8-2.7.5-1 .7-2.2.7-3.4-.1-1.2-.3-2.4-.7-3.4zm-1.4 6.3c-.4.9-.9 1.7-1.5 2.3-.6.6-1.4 1.2-2.2 1.5-.8.4-1.8.6-2.8.6-1 0-1.9-.2-2.8-.6-.9-.4-1.6-.9-2.2-1.5-.6-.7-1.1-1.4-1.5-2.3-.4-.9-.5-1.9-.5-2.9s.2-2 .5-2.9c.4-.9.8-1.6 1.5-2.3.6-.6 1.4-1.2 2.2-1.5.9-.4 1.8-.6 2.8-.6 1 0 1.9.2 2.8.6.9.4 1.6.9 2.2 1.5.6.6 1.1 1.4 1.5 2.3.4.9.5 1.8.5 2.9 0 1-.2 2-.5 2.9z"
+              <svg
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                width="254px"
+                height="41px"
+                viewBox="0 0 254 41"
+                enable-background="new 0 0 254 41"
+                space="preserve"
+              >
+                {" "}
+                <image
+                  id="image0"
+                  width="254"
+                  height="41"
+                  x="0"
+                  y="0"
+                  href="data:image/png;base64,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"
                 />
               </svg>
             </div>
           </nav>
-          <div class="container m-0 mt-5 ml-2 full-width">
+          <div class="container m-0 pt-5 mt-5 ml-2 full-width">
             <div class="row ">
               <div class="col-md-4 border-line">
                 <ul class="nav flex-column nav-pills">
