@@ -108,11 +108,11 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
             <div class="row ">
               <div class="col-md-4 border-line">
                 <ul class="nav flex-column nav-pills">
-                  {data?.map((d) => {
+                  {data?.map((d, id) => {
                     return (
                       <li class="nav-item">
                         <a
-                          class="nav-link active"
+                          class={`nav-link ${id == 0 && "active"}`}
                           id={`${d.id}-tab`}
                           data-bs-toggle="tab"
                           href={`#${d.id}`}
@@ -190,7 +190,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
                   {data?.map((d) => {
                     return (
                       <div
-                        class="tab-pane fade show active"
+                        class={`tab-pane fade show ${id == 0 && "active"}`}
                         id={d.id}
                         role="tabpanel"
                         aria-labelledby={`${d.id}-tab`}
