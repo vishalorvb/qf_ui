@@ -187,7 +187,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
               </div>
               <div class="col-md-8">
                 <div class="tab-content">
-                  {data?.map((d) => {
+                  {data?.map((d, id) => {
                     return (
                       <div
                         class={`tab-pane fade show ${id == 0 && "active"}`}
