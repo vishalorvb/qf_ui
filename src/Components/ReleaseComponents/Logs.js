@@ -6,9 +6,12 @@ import { useEffect, useState } from 'react';
 import { getGitData } from '../../Services/DevopsServices';
 import { useLocation, useNavigate } from 'react-router-dom';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import PendingIcon from '@mui/icons-material/Pending';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import PauseIcon from '@mui/icons-material/Pause';
+
 
 function Logs() {
-
     const navigate = useNavigate()
     const location = useLocation()
     let [status, setStatus] = useState({
@@ -20,11 +23,12 @@ function Logs() {
     })
     let getIcon = {
         success: <CheckCircleOutlineIcon />,
-        created: <CheckCircleOutlineIcon />,
-        fail: <CancelOutlinedIcon />,
-        false: <CancelOutlinedIcon />,
-        pending: <CircularProgress color="success" size={20} />,
         running: <CircularProgress color="success" size={20} />,
+        pending: <PauseIcon />,
+        failed: <CancelOutlinedIcon />,
+        created: <DoneOutlineIcon />,
+
+
         default: <WarningAmberIcon></WarningAmberIcon>,
         deploy: <KeyboardDoubleArrowRightIcon />
     }
@@ -67,7 +71,7 @@ function Logs() {
                             label="Initialize"
                             avatar={getIcon[status.initialize ?? "default"]}
                             variant="outlined"
-                            color={status.initialize == "success" ? "success" : "error"}
+                            color="success"
                         />
                     </div>
                 </Grid>
@@ -80,7 +84,7 @@ function Logs() {
                             label="RetriveCode"
                             avatar={getIcon[status.continuousIntegration ?? "default"]}
                             variant="outlined"
-                            color="error"
+                            color="success"
                         />
                     </div>
                 </Grid>
@@ -106,7 +110,7 @@ function Logs() {
                             label="RunTests"
                             avatar={getIcon[status.testAutomation ?? "default"]}
                             variant="outlined"
-                            color={status.initialize == "success" ? "success" : "error"}
+                            color="success"
                         />
                     </div>
                 </Grid>
