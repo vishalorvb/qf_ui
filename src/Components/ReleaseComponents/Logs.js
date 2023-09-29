@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { getGitData } from '../../Services/DevopsServices';
 import { useLocation, useNavigate } from 'react-router-dom';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import PendingIcon from '@mui/icons-material/Pending';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import PauseIcon from '@mui/icons-material/Pause';
 
@@ -52,12 +51,9 @@ function Logs() {
             }, 1000);
 
         }
-        console.log(status)
     }, [status])
 
-    useEffect(() => {
-        console.log(status)
-    }, [status])
+
 
     return (
         <div>

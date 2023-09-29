@@ -64,7 +64,7 @@ function ReleaseHistory() {
                     //</Tooltip>
                     <div style={{ textDecoration: "underline", color: "cyan", cursor: "pointer" }}
                         onClick={() => {
-                            navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: param.row.web_release_id } })
+                            navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: param.row.id } })
                         }}
                     >
                         <p>View Report</p>
