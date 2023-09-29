@@ -7,6 +7,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { release } from '../../Services/DevopsServices'
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
+import { dateFormater } from '../../utilities/Utility'
 function ReleaseHistory() {
     const navigate = useNavigate()
     const location = useLocation()
@@ -40,27 +41,34 @@ function ReleaseHistory() {
                     <Typography
                         variant="p"
                     >
-                        {param.row.created_at}
+                        {dateFormater(param.row.created_at)}
                     </Typography>
                 );
             },
         },
         {
             field: "release_d",
-            headerName: "Logs",
+            headerName: "Status",
             flex: 1,
             sortable: false,
             renderCell: (param) => {
                 return (
-                    <Tooltip title="View Log">
-                        <IconButton
-                            onClick={() => {
-                                navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: param.row.web_release_id } })
-                            }}
-                        >
-                            <VisibilityIcon />
-                        </IconButton>
-                    </Tooltip>
+                    //<Tooltip title="View Log">
+                    //    <IconButton
+                    //        onClick={() => {
+                    //            navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: param.row.web_release_id } })
+                    //        }}
+                    //    >
+                    //        <VisibilityIcon />
+                    //    </IconButton>
+                    //</Tooltip>
+                    <div style={{ textDecoration: "underline", color: "cyan", cursor: "pointer" }}
+                        onClick={() => {
+                            navigate("/release/logs", { state: { projectId: location.state.projectId, releaseId: location.state.releaseId, historyId: param.row.web_release_id } })
+                        }}
+                    >
+                        <p>View Report</p>
+                    </div>
                 );
             },
         },
@@ -79,9 +87,7 @@ function ReleaseHistory() {
         getReleaseHistory(projectId, releaseId, setReleasedata)
     }, [])
 
-    useEffect(() => {
-        console.log(releaseData[0])
-    }, [releaseData])
+
     return (
         <div>
             <div className='apptable'>
