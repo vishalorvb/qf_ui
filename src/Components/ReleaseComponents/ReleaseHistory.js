@@ -48,7 +48,7 @@ function ReleaseHistory() {
         },
         {
             field: "release_d",
-            headerName: "Logs",
+            headerName: "Status",
             flex: 1,
             sortable: false,
             renderCell: (param) => {
