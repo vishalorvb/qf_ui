@@ -33,6 +33,7 @@ const ProgressBar = ({ percentage }) => {
   return isNaN(Number(percentage)) ? (
     <div>No prediction Found</div>
   ) : (
+    // this file is in wrong folder; move it to components under dashboard
     <div
       class="circular-progress"
       data-inner-circle-color="white"

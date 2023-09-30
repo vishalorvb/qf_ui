@@ -7,7 +7,7 @@ import {
   ListItemText,
   MenuItem,
 } from "@mui/material";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
 import ImageIcon from "@mui/icons-material/Image";
 import Divider from "@mui/material/Divider";
@@ -16,7 +16,7 @@ import axios from "../../api/axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import CreateCycle from "./CreateCycle";
 import ViewCycle from "./ViewCycle";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import TableActions from "../../CustomComponent/TableActions";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 function Cycles() {
@@ -45,9 +45,7 @@ function Cycles() {
 
   function deleteCycle(cycleId) {
     axios
-      .post(
-        `/Biservice/projects/cycles/delete?cycle_id=${cycleId}`
-      )
+      .post(`/Biservice/projects/cycles/delete?cycle_id=${cycleId}`)
       .then((res) => {
         // console.log(res);
         if (res.data.status == "SUCCESS") {
@@ -57,7 +55,6 @@ function Cycles() {
           setTimeout(() => {
             setSuccessDelete(false);
           }, 3000);
-
         }
       })
       .catch((res) => {
@@ -101,7 +98,7 @@ function Cycles() {
                     <ListItemButton
                       onClick={() => {
                         setOpenNewPhase(false);
-                        setSelectedCycleList(cycle)
+                        setSelectedCycleList(cycle);
                         // console.log(cycle);
                       }}
                       dense
@@ -117,9 +114,8 @@ function Cycles() {
                         <MenuItem
                           onClick={(e) => {
                             // console.log(cycle.cycle_id)
-                            setCycleId(cycle.cycle_id)
+                            setCycleId(cycle.cycle_id);
                             setConfirm(true);
-
                           }}
                         >
                           <DeleteIcon sx={{ color: "black", mr: 1 }} />
@@ -137,7 +133,11 @@ function Cycles() {
           <Divider orientation="vertical" />
         </Grid>
         <Grid item md={9}>
-          {openNewPhase ? <CreateCycle testsetData={TSList} getCycles={getCycles} /> : <ViewCycle selectedCycleList={selectedCycleList} />}
+          {openNewPhase ? (
+            <CreateCycle testsetData={TSList} getCycles={getCycles} />
+          ) : (
+            <ViewCycle selectedCycleList={selectedCycleList} />
+          )}
         </Grid>
       </Grid>
 
@@ -159,12 +159,14 @@ function Cycles() {
         msg={msg}
         severity="error"
       />
-      {successDelete && <SnackbarNotify
-        open={successDelete}
-        close={setSuccessDelete}
-        msg="Cycle deleted successfully"
-        severity="success"
-      />}
+      {successDelete && (
+        <SnackbarNotify
+          open={successDelete}
+          close={setSuccessDelete}
+          msg="Cycle deleted successfully"
+          severity="success"
+        />
+      )}
       {confirm && (
         <ConfirmPop
           open={true}

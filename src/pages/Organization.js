@@ -1,17 +1,15 @@
-
-import React, { useEffect, useState } from 'react'
-import Table from '../CustomComponent/Table'
-import { MenuItem,} from '@mui/material';
-import useHead from '../hooks/useHead';
-import axios from '../api/axios';
-import useAuth from '../hooks/useAuth';
+import React, { useEffect, useState } from "react";
+import Table from "../CustomComponent/Table";
+import { MenuItem } from "@mui/material";
+import useHead from "../hooks/useHead";
+import axios from "../api/axios";
+import useAuth from "../hooks/useAuth";
 import TableActions from "../../src/CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useNavigate } from "react-router-dom";
-import { postVal } from './UpdateOrganization';
-import moment from 'moment';
+import { postVal } from "./UpdateOrganization";
+import moment from "moment";
 const Organization = () => {
-
   const { auth } = useAuth();
   const { setHeader } = useHead();
   const navigate = useNavigate();
@@ -26,17 +24,17 @@ const Organization = () => {
       align: "left",
       renderCell: (param) => {
         return (
-          <span style={{ color: "rgb(0, 159, 238)", cursor: "pointer" }}
+          <span
+            style={{ color: "rgb(0, 159, 238)", cursor: "pointer" }}
             onClick={(e) => {
               // console.log(param.row);
               navigate("/Organization/OrganizationDashboard", {
-                      state: { orgId: param.row.id, company: param.row.company },
-                    })
-              
+                state: { orgId: param.row.id, company: param.row.company },
+              });
             }}
           >
-            {param.row?.company}</span>
-
+            {param.row?.company}
+          </span>
         );
       },
     },
@@ -55,7 +53,9 @@ const Organization = () => {
       align: "left",
       renderCell: (param) => {
         return (
-          <TableActions heading={moment(param.row?.last_modified).format("DD/MM/yyyy")}>
+          <TableActions
+            heading={moment(param.row?.last_modified).format("DD/MM/yyyy")}
+          >
             <MenuItem
               onClick={(e) => {
                 console.log(param.row);
@@ -76,7 +76,6 @@ const Organization = () => {
         );
       },
     },
-
   ];
 
   useEffect(() => {
@@ -86,51 +85,44 @@ const Organization = () => {
         name: "Organization",
       };
     });
-
   }, []);
 
   useEffect(() => {
-    getOrganization()
-  }, [])
-
+    getOrganization();
+  }, []);
 
   function getOrganization(params) {
     try {
       axios({
-        method: 'get',
+        method: "get",
         url: `/qfuserservice/user/orgdetails`,
         headers: {
-          'Authorization': `Bearer ${auth.token}`
-        }
-
-      }).then(res => {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      }).then((res) => {
         console.log(res.data.info[0]);
-        setOrganizationData(res?.data?.info)
-        if (res.data.message = "Organization Details found.") {
-          console.log("first")
+        setOrganizationData(res?.data?.info);
+        if ((res.data.message = "Organization Details found.")) {
+          console.log("first");
           // setAddSuccessMsg(true);
           // setTimeout(() => {
           //   setAddSuccessMsg(false);
           // }, 3000);
         }
-      })
-
+      });
     } catch (error) {
       console.error(error); // handle error
     }
-  };
-
+  }
 
   return (
-
     <Table
       columns={columns}
       hideSearch={false}
       rows={organizationData}
       getRowId={(row) => row?.id}
     />
+  );
+};
 
-  )
-}
-
-export default Organization
+export default Organization;
