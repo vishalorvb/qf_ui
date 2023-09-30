@@ -145,7 +145,6 @@ const TestDesign = lazy(() => import(`../Components/TestDesign/TestDesign`));
 const TestLibrary = lazy(() => import(`../Components/TestLibrary/TestLibrary`));
 const UpdateOrganization = lazy(() => import(`../pages/UpdateOrganization`));
 
-const Logs = lazy(() => import(`../CustomComponent/Logs`));
 const MakeCopy = lazy(() => import(`../pages/MakeCopy`));
 
 const jenkinsExecution = lazy(() => import(`../pages/JenkinsExecutionStatus`));
@@ -732,11 +731,7 @@ export const Routes = [
     element: TestLibrary,
     accessRole: [1, 2, 4],
   },
-  {
-    path: "logs",
-    element: Logs,
-    accessRole: [1, 2, 4],
-  },
+
   {
     path: "Dashboard/failedTestcases",
     element: TestcaseExecution,
