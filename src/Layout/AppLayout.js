@@ -3,7 +3,6 @@ import MiniDrawer from "./MiniDrawer";
 import { Box } from "@mui/system";
 
 import { HeaderProvider } from "../context/HeaderProvider";
-import { ProjectProvider } from "../context/ProjectProvider";
 
 import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -21,13 +20,14 @@ export default function AppLayout() {
             <HeaderProvider>
               <PageHead />
               <Box>
-                <ProjectProvider>
-                  <ProjectnApplicationProvider>
-                    <div className="content" style={{ maxWidth: open ? "83vw" : "93vw" }}>
-                      <Outlet />
-                    </div>
-                  </ProjectnApplicationProvider>
-                </ProjectProvider>
+                <ProjectnApplicationProvider>
+                  <div
+                    className="content"
+                    style={{ maxWidth: open ? "83vw" : "93vw" }}
+                  >
+                    <Outlet />
+                  </div>
+                </ProjectnApplicationProvider>
               </Box>
             </HeaderProvider>
           </Box>
