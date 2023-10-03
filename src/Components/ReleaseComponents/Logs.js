@@ -6,9 +6,8 @@ import { IconButton } from '@mui/material'
 import { useEffect, useState } from 'react';
 import { getGitData } from '../../Services/DevopsServices';
 import { useLocation, useNavigate } from 'react-router-dom';
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import PauseIcon from '@mui/icons-material/Pause';
-
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 function Logs() {
     const navigate = useNavigate()
@@ -25,7 +24,7 @@ function Logs() {
         running: <CircularProgress size={20} />,
         pending: <IconButton><PauseIcon /></IconButton>,
         failed: <IconButton><CancelOutlinedIcon color="warning" /></IconButton>,
-        created: <IconButton> <DoneOutlineIcon color="success" /></IconButton>,
+        created: <IconButton> <HourglassBottomIcon color="success" /></IconButton>,
         default: <CircularProgress size={20} />,
         deploy: <KeyboardDoubleArrowRightIcon color="success" />
     }
@@ -130,6 +129,7 @@ function Logs() {
                     </div>
                 </Grid>
             </Grid>
+
         </div>
     )
 }
