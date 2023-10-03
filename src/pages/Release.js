@@ -15,7 +15,7 @@ import ConfirmPop from '../CustomComponent/ConfirmPop';
 function Release() {
     let [instance, setInstance] = useState([])
     let [releaseId, setReleaseId] = useState("")
-    const { setSnackbarData, globalProject, setShowloader } = useHead();
+    const { setSnackbarData, globalProject, setShowloader, setHeader } = useHead();
     const navigate = useNavigate();
     let [popup, setPopup] = useState(false)
 
@@ -27,6 +27,14 @@ function Release() {
         })
     }, [globalProject])
 
+    useEffect(() => {
+        setHeader((ps) => {
+            return {
+                ...ps,
+                name: "Recent Release",
+            };
+        });
+    }, []);
     const col = [
         {
             field: "release_name",
