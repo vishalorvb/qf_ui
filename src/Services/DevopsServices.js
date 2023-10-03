@@ -113,14 +113,23 @@ export function createPipeline(callback, params, id, project_id, userId) {
         });
 }
 
-export function getReleaseInstances(callback, project_id) {
-    axios
+export async function getReleaseInstances(callback, project_id) {
+    return await axios
         .get(`${baseUrl}/qfservice/release-management/${project_id}`)
         .then((res) => {
             res?.data?.data !== null && callback(res?.data?.data);
         });
 }
 
+export async function deleteInstance(projectId, instanceId) {
+    return await axios
+        .delete(
+            `${baseUrl}/qfservice/DeleteRelease?release_id=${instanceId}&project_id=${projectId}`
+        )
+        .then((resp) => {
+
+        });
+}
 
 
 export async function getGitData(callback, releaseId, historyId, projectId) {
@@ -128,13 +137,12 @@ export async function getGitData(callback, releaseId, historyId, projectId) {
         let status = {
             initialize: false,
             continuousIntegration: false,
-            releaseAutomation: false,
+            releaseAutomationTest: false,
             testAutomation: false
         }
-        console.log(res.data)
         status.initialize = res.data.stages?.Initialize[0].status
         status.continuousIntegration = res.data?.stages["Continuous Integration"][0].status
-        status.releaseAutomation = res.data?.stages["Release Automation (Test)"][0].status
+        status.releaseAutomationTest = res.data?.stages["Release Automation (Test)"][0].status
         status.testAutomation = res.data?.stages["Test Automation"][0].status
         callback(status)
     })
@@ -149,8 +157,8 @@ export async function getReleaseHistory(projectId, releaseId, callback) {
 
 export async function release(projectId, releaseId, userId) {
     return await axios.post(`${baseUrl}/qfservice/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`).then(res => {
-        console.log(res.data.status)
         if (res.data.status == "FAIL") return false
         else return res.data.info.id
     })
 }
+
