@@ -24,7 +24,6 @@ export function dateFormater(originalTime) {
     // Create the formatted string
     const formattedTime = `${month}-${day}-${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
 
-    console.log(formattedTime); // Output: "Sep-29-2023 5:40:52 AM"
     return formattedTime;
 
 }

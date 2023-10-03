@@ -12,6 +12,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import useAuth from "../hooks/useAuth";
 import { getProject } from "../Services/ProjectService";
+import { dateFormater } from "../utilities/Utility";
 let rowData;
 
 export default function Release() {
@@ -189,7 +190,7 @@ const ReleaseActionCell = (param, setRowData) => {
     };
     return (
         <div className="descColumn">
-            <Typography variant="p">{param.row.updated_at}</Typography>
+            <Typography variant="p">{dateFormater(param.row.updated_at)}</Typography>
             <MoreVertIcon
                 id="basic-button"
                 aria-controls={open ? "basic-menu" : undefined}
