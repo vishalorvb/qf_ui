@@ -4,6 +4,9 @@ FROM nginx:latest
 # Remove the default Nginx configuration file
 RUN rm /etc/nginx/conf.d/default.conf
 
+# Copy the custom Nginx configuration file into the container
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Copy the health.html file and your React build into the Nginx web root
 COPY health.html /usr/share/nginx/html/
 COPY build /usr/share/nginx/html/
