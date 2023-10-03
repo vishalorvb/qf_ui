@@ -23,7 +23,7 @@ export default function AppLayout() {
                 <ProjectnApplicationProvider>
                   <div
                     className="content"
-                    style={{ maxWidth: open ? "83vw" : "93vw" }}
+                    style={{ maxWidth: open ? "83vw" : "98vw" }}
                   >
                     <Outlet />
                   </div>
