@@ -113,8 +113,8 @@ export function createPipeline(callback, params, id, project_id, userId) {
         });
 }
 
-export function getReleaseInstances(callback, project_id) {
-    axios
+export async function getReleaseInstances(callback, project_id) {
+    return await axios
         .get(`${baseUrl}/qfservice/release-management/${project_id}`)
         .then((res) => {
             res?.data?.data !== null && callback(res?.data?.data);
