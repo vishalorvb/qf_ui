@@ -121,6 +121,15 @@ export function getReleaseInstances(callback, project_id) {
         });
 }
 
+export async function deleteInstance(projectId, instanceId) {
+    return await axios
+        .delete(
+            `${baseUrl}/qfservice/DeleteRelease?release_id=${instanceId}&project_id=${projectId}`
+        )
+        .then((resp) => {
+
+        });
+}
 
 
 export async function getGitData(callback, releaseId, historyId, projectId) {
@@ -152,3 +161,4 @@ export async function release(projectId, releaseId, userId) {
         else return res.data.info.id
     })
 }
+
