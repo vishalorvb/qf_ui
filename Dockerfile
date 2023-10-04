@@ -1,21 +1,14 @@
-# Use an official Nginx runtime as the base image
-FROM nginx:latest
+FROM node:alpine3.16 as nodework
+WORKDIR /qf_react
+COPY package.json .
+RUN npm i
+COPY . .
+RUN npm run build
 
-# Remove the default Nginx configuration file
-RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy the custom Nginx configuration file into the container
-COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copy the health.html file and your React build into the Nginx web root
-COPY health.html /usr/share/nginx/html/
-COPY build /usr/share/nginx/html/
-
-# Expose port 80 to the outside world
-EXPOSE 80
-
-# Set up the health check command
-HEALTHCHECK --interval=30s --timeout=5s CMD curl --fail http://localhost/health || exit 1
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+FROM nginx:1.23-alpine
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY --from=nodework /qf_react/build .
+ENTRYPOINT ["nginx","-g","daemon off;"]
