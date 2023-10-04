@@ -8,7 +8,7 @@ RUN npm run build
 
 
 FROM nginx:1.23-alpine
-EXPOSE 3003
+EXPOSE 3000
 COPY default.conf /etc/nginx/conf.d/default.conf
 WORKDIR /usr/share/nginx/html
 # RUN rm -rf ./*
