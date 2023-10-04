@@ -5,8 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextareaAutosize,
 } from "@mui/material";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { Divider, Grid, Typography } from "@mui/material";
