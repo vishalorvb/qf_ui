@@ -102,14 +102,14 @@ export async function DeleteTestCase(testcaseId) {
     return x;
 }
 
-export function GetTestCase(
+export async function GetTestCase(
     callback,
     projectId,
     applicationId,
     failedTestcase,
     testsetId
 ) {
-    axios
+    return await axios
         .get(
             `${baseUrl}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId`,
             {

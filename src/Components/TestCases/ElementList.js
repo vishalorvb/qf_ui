@@ -4,10 +4,13 @@ import Table from "../../CustomComponent/Table";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import DragDrop from "../../CustomComponent/DragDrop";
 import { Button, Grid } from "@mui/material";
+import useHead from "../../hooks/useHead";
 
-function ElementList({ screenList }) {
+
+function ElementList({ screenList, setScreenList }) {
     let [element, setElement] = useState([])
     let [open, setOpen] = useState(false)
+    const { setSnackbarData } = useHead();
 
 
     let col = [
@@ -41,10 +44,10 @@ function ElementList({ screenList }) {
                 header: " ",
                 Cell: ({ cell, column, row, table }) => {
                     return (
-                        <AccordionTemplate name={row.original.screenName} toggle={open}>
+                        <AccordionTemplate name={row.original.name} toggle={open}>
                             <Table
                                 hideSearch={true}
-                                rows={element.find(e => e.screenId == row.original.screenId)?.elements ?? []}
+                                rows={element.find(e => e.screenId == row.original.screen_id)?.elements ?? []}
                                 columns={col}
                                 hidefooter={true}
                                 getRowId={(row) => row?.element_id}
@@ -59,10 +62,10 @@ function ElementList({ screenList }) {
     useEffect(() => {
         screenList.forEach(screen => {
             if (!element.find(element => element.screenId == screen.screenId)) {
-                getElement(screen.screenId, () => { }).then(res => {
+                getElement(screen.screen_id, () => { }).then(res => {
                     setElement(pv => {
                         let x = [...pv]
-                        let obj = { screenName: screen.screenName, screenId: screen.screenId, elements: res }
+                        let obj = { screenName: screen.name, screenId: screen.screen_id, elements: res }
                         x.push(obj)
                         return x
                     })
@@ -90,7 +93,12 @@ function ElementList({ screenList }) {
                 columns={dragDropCol}
                 row={screenList}
                 setRow={e => {
-
+                    setSnackbarData({
+                        status: true,
+                        message: "Screen order updated Successfully",
+                        severity: "success",
+                    })
+                    setScreenList(e)
                 }}
             ></DragDrop>
         </div>}

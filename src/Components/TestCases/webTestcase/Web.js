@@ -69,6 +69,7 @@ function Web({ project, application, testcaseId, setScreen }) {
 
     useEffect(() => {
         setScreen(screenList)
+
     }, [screenList])
     return (
         <div>
@@ -95,12 +96,8 @@ function Web({ project, application, testcaseId, setScreen }) {
                 </Grid>
                 <Grid item xs={9} md={9}>
                     <ElementList
-                        screenList={screenList.map(screen => {
-                            return ({
-                                "screenName": screen.name,
-                                "screenId": screen.screen_id
-                            })
-                        })}
+                        screenList={screenList}
+                        setScreenList={setScreenList}
                     ></ElementList>
                 </Grid>
             </Grid>
