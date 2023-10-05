@@ -15,8 +15,11 @@ function TestcaseTable({ project, application, showname }) {
     const [testcases, setTestcases] = useState([]);
     let [popup, setPopup] = useState(false);
     const navigate = useNavigate();
-    const { setSnackbarData } = useHead();
+    const { setSnackbarData, setShowloader } = useHead();
     let [deletTestcaseId, setDeleteTestcaseId] = useState(0)
+    let [applist, setappList] = useState([])
+
+
 
     const columns = [
         {
@@ -67,7 +70,7 @@ function TestcaseTable({ project, application, showname }) {
                     <TableActions heading={param.row?.description}>
                         <MenuItem
                             onClick={(e) => {
-                                navigate("/Testcase/Create", { state: { testcase_id: param.row.testcase_id, isCopy: true } });
+                                navigate("/Testcase/Create", { state: { testcaseId: param.row.testcase_id, isCopy: true } });
                             }}
                         >
                             <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
@@ -97,11 +100,15 @@ function TestcaseTable({ project, application, showname }) {
     ];
     useEffect(() => {
         setTestcases([])
+        setShowloader(true)
         GetTestCase(
             setTestcases,
             project?.project_id,
             application?.module_id
-        );
+        ).then(res => {
+            setShowloader(false)
+
+        })
     }, [project, application])
     return (
         <div >
@@ -122,6 +129,8 @@ function TestcaseTable({ project, application, showname }) {
                 heading={"Delete TestCase"}
                 message={"Are you sure you want to delete this TestCase?"}
                 onConfirm={() => {
+                    setShowloader(true)
+
                     DeleteTestCase(deletTestcaseId).then((res) => {
                         if (res) {
                             GetTestCase(
@@ -129,6 +138,8 @@ function TestcaseTable({ project, application, showname }) {
                                 project?.project_id,
                                 application?.module_id
                             );
+                            setShowloader(false)
+
                             setSnackbarData({
                                 status: true,
                                 message: "Testcase Deleted Successfully",
