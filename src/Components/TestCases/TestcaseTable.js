@@ -17,6 +17,9 @@ function TestcaseTable({ project, application, showname }) {
     const navigate = useNavigate();
     const { setSnackbarData, setShowloader } = useHead();
     let [deletTestcaseId, setDeleteTestcaseId] = useState(0)
+    let [applist, setappList] = useState([])
+
+
 
     const columns = [
         {
