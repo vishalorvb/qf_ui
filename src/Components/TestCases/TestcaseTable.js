@@ -2,7 +2,7 @@ import { MenuItem, Paper, Tooltip, Typography } from '@mui/material';
 //import { TCdata } from "./CreateTestCase";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { DeleteTestCase, GetTestCase } from '../../Services/TestCaseService';
+import { DeleteTestCase } from '../../Services/TestCaseService';
 import useHead from '../../hooks/useHead';
 import TableActions from '../../CustomComponent/TableActions';
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
@@ -10,16 +10,14 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Table from '../../CustomComponent/Table';
 import ConfirmPop from '../../CustomComponent/ConfirmPop';
+import { getAlltestcaseOfApplicationandSubapplication } from '../../Services/TestCaseService';
 
-function TestcaseTable({ project, application, showname }) {
+function TestcaseTable({ project, application }) {
     const [testcases, setTestcases] = useState([]);
     let [popup, setPopup] = useState(false);
     const navigate = useNavigate();
     const { setSnackbarData, setShowloader } = useHead();
     let [deletTestcaseId, setDeleteTestcaseId] = useState(0)
-    let [applist, setappList] = useState([])
-
-
 
     const columns = [
         {
@@ -59,6 +57,13 @@ function TestcaseTable({ project, application, showname }) {
                     </Tooltip>
                 );
             },
+        },
+        {
+            field: "module_name",
+            headerName: "Application Name",
+            flex: 2,
+            sortable: false,
+            align: "left"
         },
         {
             field: "description",
@@ -101,18 +106,12 @@ function TestcaseTable({ project, application, showname }) {
     useEffect(() => {
         setTestcases([])
         setShowloader(true)
-        GetTestCase(
-            setTestcases,
-            project?.project_id,
-            application?.module_id
-        ).then(res => {
+        getAlltestcaseOfApplicationandSubapplication(application?.module_id, setTestcases).then(res => {
             setShowloader(false)
-
         })
     }, [project, application])
     return (
         <div >
-            {showname && <Typography variant='h4' >{application.module_name}</Typography>}
             <Table
                 searchPlaceholder="Search Testcases"
                 rows={testcases}
@@ -133,11 +132,7 @@ function TestcaseTable({ project, application, showname }) {
 
                     DeleteTestCase(deletTestcaseId).then((res) => {
                         if (res) {
-                            GetTestCase(
-                                setTestcases,
-                                project?.project_id,
-                                application?.module_id
-                            );
+                            getAlltestcaseOfApplicationandSubapplication(application?.module_id, setTestcases);
                             setShowloader(false)
 
                             setSnackbarData({
