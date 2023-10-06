@@ -11,171 +11,186 @@ import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelect
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import TableActions from "../CustomComponent/TableActions";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
+import Timepicker from "../CustomComponent/Timepicker";
 
 export default function Testset() {
-  const {
-    globalProject,
-    setglobalProject,
-    globalApplication,
-    setglobalApplication,
-    setSnackbarData,
-  } = useHead();
-  const [testsets, setTestset] = useState([]);
-  const [openDelete, setOpenDelete] = useState(false);
-  const [deleteObject, setDeleteObject] = useState();
-  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+    const {
+        globalProject,
+        setglobalProject,
+        globalApplication,
+        setglobalApplication,
+        setSnackbarData,
+    } = useHead();
+    const [testsets, setTestset] = useState([]);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [deleteObject, setDeleteObject] = useState();
+    const [delSuccessMsg, setDelSuccessMsg] = useState(false);
 
-  const navigate = useNavigate();
-  const { setHeader } = useHead();
+    const navigate = useNavigate();
+    const { setHeader } = useHead();
 
-  const deleteTestcaseHandler = (id) => {
-    axiosPrivate
-      .delete(`/qfservice/webtestset/deleteWebTestset?testset_id=${id}`)
-      .then((resp) => {
-        setOpenDelete(false);
-        onChangeHandler();
-        setSnackbarData({
-          status: true,
-          message: resp?.data?.message,
-          severity: resp?.data?.status,
-        });
-      });
-  };
-
-  const onChangeHandler = () => {
-    axios
-      .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
-      )
-      .then((resp) => {
-        const testsets = resp?.data?.info ?? [];
-        setTestset(testsets);
-      });
-  };
-
-  const columns = [
-    {
-      field: "testset_name",
-      headerName: "Testset Name",
-      flex: 1,
-      sortable: false,
-      renderCell: (param) => {
-        return (
-          <Typography
-            onClick={() =>
-              navigate("Reorder", {
-                state: {
-                  applicationId: globalApplication?.module_id,
-                  testsetId: param.row.testset_id,
-                  projectId: globalProject?.project_id,
-                  moduleType: globalApplication?.module_type,
-                },
-              })
-            }
-            variant="p"
-            className="nameColumn"
-          >
-            {param.row.testset_name}
-          </Typography>
-        );
-      },
-    },
-    {
-      field: "testset_desc",
-      headerName: "Testset Description",
-      flex: 3,
-      sortable: false,
-      renderCell: (param) => {
-        return (
-          <TableActions heading={param?.row?.testset_desc}>
-            <MenuItem
-              onClick={(e) => {
-                navigate("CopyTestset", {
-                  state: {
-                    name: param?.row?.testset_name,
-                    id: param?.row?.testset_id,
-                    projectId: globalProject?.project_id,
-                  },
+    const deleteTestcaseHandler = (id) => {
+        axiosPrivate
+            .delete(`/qfservice/webtestset/deleteWebTestset?testset_id=${id}`)
+            .then((resp) => {
+                setOpenDelete(false);
+                onChangeHandler();
+                setSnackbarData({
+                    status: true,
+                    message: resp?.data?.message,
+                    severity: resp?.data?.status,
                 });
-              }}
-            >
-              <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
-              Copy
-            </MenuItem>
-            <MenuItem
-              onClick={() =>
-                navigate("Update", {
-                  state: param?.row,
-                })
-              }
-            >
-              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
-              Edit
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                setOpenDelete(true);
-                setDeleteObject(param?.row?.testset_id);
-              }}
-            >
-              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
-              Delete
-            </MenuItem>
-          </TableActions>
-        );
-      },
-    },
-  ];
+            });
+    };
 
-  useEffect(() => {
-    setHeader((ps) => {
-      return {
-        ...ps,
-        name: "Recent Testsets",
-      };
-    });
-  }, [setHeader]);
+    const onChangeHandler = () => {
+        axios
+            .get(
+                `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
+            )
+            .then((resp) => {
+                const testsets = resp?.data?.info ?? [];
+                setTestset(testsets);
+            });
+    };
 
-  useEffect(() => {
-    globalApplication?.module_id && onChangeHandler();
-  }, [globalApplication]);
+    const columns = [
+        {
+            field: "testset_name",
+            headerName: "Testset Name",
+            flex: 1,
+            sortable: false,
+            renderCell: (param) => {
+                return (
+                    <Typography
+                        onClick={() =>
+                            navigate("Reorder", {
+                                state: {
+                                    applicationId: globalApplication?.module_id,
+                                    testsetId: param.row.testset_id,
+                                    projectId: globalProject?.project_id,
+                                    moduleType: globalApplication?.module_type,
+                                },
+                            })
+                        }
+                        variant="p"
+                        className="nameColumn"
+                    >
+                        {param.row.testset_name}
+                    </Typography>
+                );
+            },
+        },
+        {
+            field: "scheduler",
+            headerName: "Schedule",
+            flex: 1,
+            sortable: false,
+            renderCell: (param) => {
+                return (
+                    <Timepicker
+                        date="10:10 "
+                        setDate={date => console.log(date)}
+                    ></Timepicker>
+                );
+            },
+        },
+        {
+            field: "testset_desc",
+            headerName: "Testset Description",
+            flex: 3,
+            sortable: false,
+            renderCell: (param) => {
+                return (
+                    <TableActions heading={param?.row?.testset_desc}>
+                        <MenuItem
+                            onClick={(e) => {
+                                navigate("CopyTestset", {
+                                    state: {
+                                        name: param?.row?.testset_name,
+                                        id: param?.row?.testset_id,
+                                        projectId: globalProject?.project_id,
+                                    },
+                                });
+                            }}
+                        >
+                            <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
+                            Copy
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() =>
+                                navigate("Update", {
+                                    state: param?.row,
+                                })
+                            }
+                        >
+                            <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+                            Edit
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                setOpenDelete(true);
+                                setDeleteObject(param?.row?.testset_id);
+                            }}
+                        >
+                            <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+                            Delete
+                        </MenuItem>
+                    </TableActions>
+                );
+            },
+        },
+    ];
 
-  return (
-    <>
-      <div className="apptable">
-        <div className="intable">
-          <ProjectnApplicationSelector
-            globalProject={globalProject}
-            setglobalProject={setglobalProject}
-            globalApplication={globalApplication}
-            setglobalApplication={setglobalApplication}
-          />
-        </div>
+    useEffect(() => {
+        setHeader((ps) => {
+            return {
+                ...ps,
+                name: "Recent Testsets",
+            };
+        });
+    }, [setHeader]);
 
-        <SnackbarNotify
-          open={delSuccessMsg}
-          close={setDelSuccessMsg}
-          msg="Testset deleted successfully"
-          severity="success"
-        />
+    useEffect(() => {
+        globalApplication?.module_id && onChangeHandler();
+    }, [globalApplication]);
 
-        <div className="datatable" style={{ marginTop: "20px" }}>
-          <ConfirmPop
-            open={openDelete}
-            handleClose={() => setOpenDelete(false)}
-            heading={"Delete Testset"}
-            message={"Are you sure you want to delete this Testset?"}
-            onConfirm={() => deleteTestcaseHandler(deleteObject)}
-          ></ConfirmPop>
+    return (
+        <>
+            <div className="apptable">
+                <div className="intable">
+                    <ProjectnApplicationSelector
+                        globalProject={globalProject}
+                        setglobalProject={setglobalProject}
+                        globalApplication={globalApplication}
+                        setglobalApplication={setglobalApplication}
+                    />
+                </div>
 
-          <Table
-            searchPlaceholder="Search Testset"
-            columns={columns}
-            rows={testsets}
-            getRowId={(row) => row.testset_id}
-          />
-        </div>
-      </div>
-    </>
-  );
+                <SnackbarNotify
+                    open={delSuccessMsg}
+                    close={setDelSuccessMsg}
+                    msg="Testset deleted successfully"
+                    severity="success"
+                />
+
+                <div className="datatable" style={{ marginTop: "20px" }}>
+                    <ConfirmPop
+                        open={openDelete}
+                        handleClose={() => setOpenDelete(false)}
+                        heading={"Delete Testset"}
+                        message={"Are you sure you want to delete this Testset?"}
+                        onConfirm={() => deleteTestcaseHandler(deleteObject)}
+                    ></ConfirmPop>
+
+                    <Table
+                        searchPlaceholder="Search Testset"
+                        columns={columns}
+                        rows={testsets}
+                        getRowId={(row) => row.testset_id}
+                    />
+                </div>
+            </div>
+        </>
+    );
 }

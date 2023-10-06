@@ -22,8 +22,8 @@ function Logs() {
     let getIcon = {
         success: <IconButton><CheckCircleOutlineIcon color="success" /></IconButton>,
         running: <CircularProgress size={20} />,
-        pending: <IconButton><PauseIcon /></IconButton>,
-        failed: <IconButton><CancelOutlinedIcon color="warning" /></IconButton>,
+        pending: <IconButton><PauseIcon color="success" /></IconButton>,
+        failed: <IconButton><CancelOutlinedIcon color="error" /></IconButton>,
         created: <IconButton> <HourglassBottomIcon color="success" /></IconButton>,
         default: <CircularProgress size={20} />,
         deploy: <KeyboardDoubleArrowRightIcon color="success" />
