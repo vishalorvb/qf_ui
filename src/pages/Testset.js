@@ -11,7 +11,7 @@ import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelect
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import TableActions from "../CustomComponent/TableActions";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
-import Timepicker from "../CustomComponent/Timepicker";
+import Scheduler from "../CustomComponent/Scheduler";
 
 export default function Testset() {
     const {
@@ -88,10 +88,10 @@ export default function Testset() {
             sortable: false,
             renderCell: (param) => {
                 return (
-                    <Timepicker
+                    <Scheduler
                         date="10:10 "
                         setDate={date => console.log(date)}
-                    ></Timepicker>
+                    ></Scheduler>
                 );
             },
         },
@@ -157,6 +157,10 @@ export default function Testset() {
 
     return (
         <>
+            <Scheduler
+                date="10:10 "
+                setDate={date => console.log(date)}
+            ></Scheduler>
             <div className="apptable">
                 <div className="intable">
                     <ProjectnApplicationSelector
