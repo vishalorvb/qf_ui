@@ -1,16 +1,17 @@
 import axios from "axios";
-import { baseUrl } from "../Environment";
+import { baseUrl, authservice, biservice, dashboard, qfservice, report, userservice } from "../Environment";
 
 
 
 
 
-export function ReportPercentage(callback,projectId,sprintName=0){
+
+export function ReportPercentage(callback, projectId, sprintName = 0) {
     axios({
         method: 'post',
-        url:`${baseUrl}/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${projectId}${sprintName==0?"":`&sprintname=${sprintName}`}`
+        url: `${dashboard}/getReportPercentagebyProjectandsprint?project_id=${projectId}${sprintName == 0 ? "" : `&sprintname=${sprintName}`}`
 
-    }).then(res=>{
+    }).then(res => {
         console.log(res.data)
         console.log(Math.floor(res.data.data.total_pass_percentage))
         callback(Math.floor(res.data.data.total_pass_percentage))

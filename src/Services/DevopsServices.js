@@ -1,18 +1,18 @@
 import axios from "axios";
-import { baseUrl } from "../Environment";
-import { Axis } from "highcharts";
+import { baseUrl, authservice, biservice, dashboard, qfservice, report, userservice } from "../Environment";
+
 
 
 export function getPipelines(callback, project_id) {
     // This function except name of state as a callback and set value in that state
-    axios.get(`${baseUrl}/qfservice/pipeline/${project_id}`).then((res) => {
+    axios.get(`${qfservice}/pipeline/${project_id}`).then((res) => {
         callback(res?.data?.data);
     });
 }
 
 export function getPipelinesHistory(callback, release_log, id) {
     // This function except name of state as a callback and set value in that state
-    axios.get(`${baseUrl}/qfservice/pipeline/${id}/release`).then((res) => {
+    axios.get(`${qfservice}/pipeline/${id}/release`).then((res) => {
         callback(res?.data?.data?.pipelinehisotory);
         release_log(res?.data?.data1);
     });
@@ -21,7 +21,7 @@ export function getPipelinesHistory(callback, release_log, id) {
 export function getCreatePipelineData(callback, setdefaultData, id, project_id) {
 
     axios
-        .get(`${baseUrl}/qfservice/project/${project_id}/pipeline/${id}`)
+        .get(`${qfservice}/project/${project_id}/pipeline/${id}`)
         .then((res) => {
             const data = res?.data?.data;
             callback(data);
@@ -41,7 +41,7 @@ export function getCreatePipelineData(callback, setdefaultData, id, project_id) 
 
 export function getPipelinesHistoryReport(callback, setError, id, tag) {
     // This function except name of state as a callback and set value in that state
-    axios.get(`${baseUrl}/qfservice/pipeline/report/${id}/${tag}`).then((res) => {
+    axios.get(`${qfservice}/pipeline/report/${id}/${tag}`).then((res) => {
 
         setError(res?.data?.error?.description);
         const result = res?.data?.data;
@@ -84,7 +84,7 @@ export function getPipelinesHistoryReport(callback, setError, id, tag) {
 
 export function executePipeline(callback, id, userId) {
     axios
-        .post(`${baseUrl}/qfservice/executepipeline?release_id=${id}&user_id=${userId}`)
+        .post(`${qfservice}/executepipeline?release_id=${id}&user_id=${userId}`)
         .then((res) => {
             callback(res?.data?.message);
         });
@@ -92,7 +92,7 @@ export function executePipeline(callback, id, userId) {
 
 export function createPipeline(callback, params, id, project_id, userId) {
     axios
-        .post(`${baseUrl}/qfservice/Createpipeline`, null, {
+        .post(`${qfservice}/Createpipeline`, null, {
             params: {
                 project_id: project_id,
                 release_name: params.releaseName,
@@ -115,7 +115,7 @@ export function createPipeline(callback, params, id, project_id, userId) {
 
 export async function getReleaseInstances(callback, project_id) {
     return await axios
-        .get(`${baseUrl}/qfservice/release-management/${project_id}`)
+        .get(`${qfservice}/release-management/${project_id}`)
         .then((res) => {
             res?.data?.data !== null && callback(res?.data?.data);
         });
@@ -124,7 +124,7 @@ export async function getReleaseInstances(callback, project_id) {
 export async function deleteInstance(projectId, instanceId) {
     return await axios
         .delete(
-            `${baseUrl}/qfservice/DeleteRelease?release_id=${instanceId}&project_id=${projectId}`
+            `${qfservice}/DeleteRelease?release_id=${instanceId}&project_id=${projectId}`
         )
         .then((resp) => {
 
@@ -133,7 +133,7 @@ export async function deleteInstance(projectId, instanceId) {
 
 
 export async function getGitData(callback, releaseId, historyId, projectId) {
-    axios.get(`${baseUrl}/qfservice/pipelinelogs/${releaseId}/logs/${historyId}?projectId=${projectId}`).then(res => {
+    axios.get(`${qfservice}/pipelinelogs/${releaseId}/logs/${historyId}?projectId=${projectId}`).then(res => {
         let status = {
             initialize: false,
             continuousIntegration: false,
@@ -149,14 +149,14 @@ export async function getGitData(callback, releaseId, historyId, projectId) {
 }
 
 export async function getReleaseHistory(projectId, releaseId, callback) {
-    axios.get(`${baseUrl}/qfservice/project/${projectId}/ansible-release/${releaseId}/release-history`).then(res => {
+    axios.get(`${qfservice}/project/${projectId}/ansible-release/${releaseId}/release-history`).then(res => {
         callback([res.data.data.webReleaseHistories] ?? [])
     })
 }
 
 
 export async function release(projectId, releaseId, userId) {
-    return await axios.post(`${baseUrl}/qfservice/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`).then(res => {
+    return await axios.post(`${qfservice}/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`).then(res => {
         if (res.data.status == "FAIL") return false
         else return res.data.info.id
     })
