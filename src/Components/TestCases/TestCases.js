@@ -32,14 +32,6 @@ function TestCases() {
                     ></TestcaseTable>
                 </div>}
             </div>
-            <div>
-                {globalApplication?.sub_modules_list?.map(app =>
-                    <TestcaseTable
-                        project={globalProject}
-                        application={app}
-                        showname={true}
-                    ></TestcaseTable>)}
-            </div>
         </>
     )
 }

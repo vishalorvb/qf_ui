@@ -127,6 +127,12 @@ export async function GetTestCase(
         });
 }
 
+export async function getAlltestcaseOfApplicationandSubapplication(moduleId, callback) {
+    return await axios.get(`${baseUrl}/qfservice/getModuleAndTestcases?moduleId=${moduleId}`).then(res => {
+        callback(res.data ?? [])
+    })
+}
+
 export function GetTestCase_V2fortestset(
     callback,
     projectId,

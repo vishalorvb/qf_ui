@@ -22,6 +22,7 @@ export default function ProjectnApplicationSelector({
         setProjectList,
         applicationList,
         setapplicationList,
+        setShowloader
     } = useHead();
 
     const { auth } = useAuth();
