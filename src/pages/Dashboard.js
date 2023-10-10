@@ -34,6 +34,10 @@ import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
 import { ReportPercentage } from "../Services/DashboardService";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
+import ProjectStatusCards from "../Components/DashboardComponents/ProjectStatusCards";
+import AutomationGraph from "../Components/DashboardComponents/AutomationGraph";
+import PredictionStatus from "../Components/DashboardComponents/PredictionStatus";
+import TestDesignAutomationGraph from "../Components/DashboardComponents/TestdesignAutomationGraph";
 
 export default function Dashboard() {
   const {
@@ -214,68 +218,6 @@ export default function Dashboard() {
       });
   }
 
-  const automationGraphData = {
-    title: {
-      text: "Automation",
-      align: "left",
-      style: {
-        "font-size": "20px",
-        "font-weight": "bold",
-        "font-family": "Roboto",
-      },
-    },
-    xAxis: {
-      categories: period,
-      crosshair: true,
-    },
-    yAxis: {
-      allowDecimals: true,
-      padding: 1,
-    },
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false,
-        },
-      },
-    },
-
-    series: [
-      {
-        name: "API",
-        data: apiTestcase,
-      },
-      {
-        name: "Web",
-        data: webTestcase,
-      },
-      {
-        name: "Android",
-        data: androidTestcase,
-      },
-      {
-        name: "iOS",
-        data: iosTestcase,
-      },
-    ],
-
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
-            },
-          },
-        },
-      ],
-    },
-  };
   const testDesignGraphData = {
     title: {
       text: "Automation of Test Design",
@@ -477,19 +419,11 @@ export default function Dashboard() {
         </Grid>
       </Grid>
 
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid
-          container
-          spacing={{ xs: 2, md: 3 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-        >
-          {Array.from(Array(3)).map((_, index) => (
-            <Grid item xs={2} sm={4} md={4} key={index}>
-              {card(index)}
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      <ProjectStatusCards
+        testCases={testCases}
+        dataSets={dataSets}
+        totalSprint={totalSprint}
+      />
 
       <Grid
         container
@@ -500,102 +434,27 @@ export default function Dashboard() {
       >
         {automationGraph && (
           <Grid item md={6}>
-            <Paper variant="outlined">
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={automationGraphData}
-              />
-              <Stack
-                direction="row"
-                spacing={1}
-                style={{ marginLeft: "20px" }}
-                onClick={() => console.log("clicked")}
-              >
-                <Brightness5Icon style={{ color: "rgb(124, 181, 236)" }} />
-                <Typography>API</Typography>
-                <Language />
-                <Typography>Web</Typography>
-                <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
-                <Typography>Android</Typography>
-                <AppleIcon style={{ color: "rgb(247,163,92)" }} />
-                <Typography>iOS</Typography>
-              </Stack>
-              <TableContainer>
-                <Table size="small" aria-label="a dense table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Summary</TableCell>
-                      <TableCell align="right">Info</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row.summary}
-                        </TableCell>
-                        <TableCell align="right">{row.info}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
+            <AutomationGraph
+              info={info}
+              period={period}
+              apiTestcase={apiTestcase}
+              webTestcase={webTestcase}
+              androidTestcase={androidTestcase}
+              iosTestcase={iosTestcase}
+            />
           </Grid>
         )}
+
         <Grid item md={6}>
-          <Paper variant="outlined">
-            <Stack gap={1} pt={0.5} pl={0.5}>
-              <Typography variant="h6">
-                QualityFusion prediction : Success of Testcases in next sprint
-              </Typography>
-              <ProgressBar percentage={percentage} />
-              {showFailMsg && (
-                <Alert severity="error">
-                  {failMsg != "Jira is not configured" ? failMsg : ""}
-                </Alert>
-              )}
-            </Stack>
-            {faildata?.length > 0 && (
-              <TableContainer
-                onClick={() => navigate("Dashboard/failedTestcases")}
-              >
-                <Table
-                  sx={{ minWidth: 600 }}
-                  size="small"
-                  aria-label="a dense table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Fail Prediction Testcases</TableCell>
-                      <TableCell align="right">Total</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {faildata?.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row[0]}
-                        </TableCell>
-                        <TableCell align="right">{row[1]}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </Paper>
+          <PredictionStatus
+            showFailMsg={showFailMsg}
+            failMsg={failMsg}
+            faildata={faildata}
+            percentage={percentage}
+          />
         </Grid>
+
+        <TestDesignAutomationGraph />
 
         {automationTDgraph && (
           <Grid item md={6}>
