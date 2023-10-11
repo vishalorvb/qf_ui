@@ -69,3 +69,12 @@ export async function getEnvironment(projectId, moduleId, callback) {
         return res.data.data
     })
 }
+
+
+export async function getTestcaseInTestset(testsetId, callback) {
+    return await axios.get(`${baseUrl}/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`).then(res => {
+        callback(res.data.info)
+        return res.data.info
+    })
+}
+
