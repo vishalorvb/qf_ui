@@ -10,7 +10,7 @@ import {
 
 export async function getProject(callback, userId) {
   return await axios
-    .get(`${qfservice}/getProjectsOfUser?userId=${userId}`)
+    .get(`${qfservice}/qfservice/getProjectsOfUser?userId=${userId}`)
     .then((res) => {
       callback(res.data.info ?? []);
     });
@@ -19,7 +19,7 @@ export async function getProject(callback, userId) {
 export function getProjectDetails(callback, userId, projectId) {
   axios
     .get(
-      `${qfservice}/projects/getProjectDetailsByProjectIdAndUserId?user_id=${userId}&project_id=${projectId}`
+      `${qfservice}/qfservice/projects/getProjectDetailsByProjectIdAndUserId?user_id=${userId}&project_id=${projectId}`
     )
     .then((res) => {
       callback(res.data.data);
@@ -29,7 +29,7 @@ export function getProjectDetails(callback, userId, projectId) {
 export async function makeProjectFav(userId, projectId, value) {
   return await axios
     .post(
-      `${qfservice}/makeFavourateProject?userId=${userId}&projectId=${projectId}&isFav=${value}`
+      `${qfservice}/qfservice/makeFavourateProject?userId=${userId}&projectId=${projectId}&isFav=${value}`
     )
     .then((res) => {});
 }
@@ -37,7 +37,7 @@ export async function makeProjectFav(userId, projectId, value) {
 export async function createProject(data) {
   let res = await axios({
     method: "post",
-    url: `${qfservice}/createProject`,
+    url: `${qfservice}/qfservice/createProject`,
     data: data,
   })
     .then((response) => {
@@ -52,7 +52,7 @@ export async function createProject(data) {
 export async function updateProject(data) {
   let res = await axios({
     method: "post",
-    url: `${qfservice}/updateProject`,
+    url: `${qfservice}/qfservice/updateProject`,
     data: data,
   })
     .then((response) => {
@@ -67,7 +67,7 @@ export async function updateProject(data) {
 export async function deleteProject(projectid, userid) {
   let res = await axios
     .put(
-      `${qfservice}/projects/Delete?project_id=${projectid}&user_id=${userid}`
+      `${qfservice}/qfservice/projects/Delete?project_id=${projectid}&user_id=${userid}`
     )
     .then((r) => {
       return r.data.status;
@@ -77,11 +77,14 @@ export async function deleteProject(projectid, userid) {
 
 export async function getUsers(callback, orgid, ssoid, token) {
   return await axios
-    .get(`${qfservice}/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    .get(
+      `${qfservice}/qfservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
     .then((res) => {
       callback(res.data.info);
       return res.data.info;
@@ -91,7 +94,7 @@ export async function getUsers(callback, orgid, ssoid, token) {
 export async function getUserOfProject(callback, projectId, userId) {
   return await axios
     .get(
-      `${qfservice}/projects/getUsersDetailsByProjectId?project_id=${projectId}`
+      `${qfservice}/qfservice/projects/getUsersDetailsByProjectId?project_id=${projectId}`
     )
     .then((res) => {
       callback(res.data.data?.filter((data) => data.id !== userId));
@@ -110,7 +113,7 @@ export async function getJiraProject(
 ) {
   return axios
     .post(
-      `${qfservice}/loadJiraProjects?url=${url}&userName=${username}&password=${password}&its_type=${itstype}&org_name=${orgname}&orgId=${orgid}`
+      `${qfservice}/qfservice/loadJiraProjects?url=${url}&userName=${username}&password=${password}&its_type=${itstype}&org_name=${orgname}&orgId=${orgid}`
     )
     .then((res) => {
       callback(res.data.info);

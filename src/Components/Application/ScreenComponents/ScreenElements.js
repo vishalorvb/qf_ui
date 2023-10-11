@@ -24,7 +24,7 @@ export default function ScreenElements() {
   const getScreenElementsList = () => {
     axios
       .get(
-        `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
+        `${qfservice}/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((resp) => {
         // console.log(resp?.data?.info);
@@ -46,7 +46,7 @@ export default function ScreenElements() {
 
   const updateScreenOrder = () => {
     axios
-      .post(`qfservice/screen/updateOrderOfScreenElements`, {
+      .post(`${qfservice}/qfservice/screen/updateOrderOfScreenElements`, {
         screenId: location?.state?.screen_id,
         screen_element_ids: order,
       })

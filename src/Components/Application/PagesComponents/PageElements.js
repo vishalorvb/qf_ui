@@ -76,7 +76,7 @@ export default function PageElements() {
     setShowLoading(true);
     axios
       .get(
-        `qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
+        `${qfservice}/qfservice/webpages/getWebPageElementsList?web_page_id=${location.state.id}&selected_elements_only=false`
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);

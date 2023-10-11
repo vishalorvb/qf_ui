@@ -70,7 +70,9 @@ const Container = memo(function Container() {
   const getElementsData = () => {
     setShowloader(true);
     axios
-      .post(`qfservice/check-diff-page/${location?.state?.web_page_id}`)
+      .post(
+        `${qfservice}/qfservice/check-diff-page/${location?.state?.web_page_id}`
+      )
       .then((resp) => {
         const currentElements = resp?.data?.data?.currentElements;
         const newElements = resp?.data?.data?.newElements;

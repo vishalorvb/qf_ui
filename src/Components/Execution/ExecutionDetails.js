@@ -52,7 +52,7 @@ export default function ExecutionDetails({
             })
         : axios
             .get(
-              `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
+              `${qfservice}/qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
             )
             .then((resp) => {
               setDataList(resp?.data?.info?.datasets ?? []);

@@ -10,6 +10,7 @@ import ProjectStatusCards from "../Components/DashboardComponents/ProjectStatusC
 import AutomationGraph from "../Components/DashboardComponents/AutomationGraph";
 import PredictionStatus from "../Components/DashboardComponents/PredictionStatus";
 import TestDesignAutomationGraph from "../Components/DashboardComponents/TestdesignAutomationGraph";
+import { dashboard } from "../Environment";
 
 export default function Dashboard() {
   const {
@@ -53,7 +54,7 @@ export default function Dashboard() {
     setAutomationTDgraph(false);
     axios
       .get(
-        `/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`
+        `${dashboard}/qfdashboard/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`
       )
       .then((res) => {
         setInfo(res?.data?.data?.model);
@@ -107,7 +108,7 @@ export default function Dashboard() {
     setShowProgressBar(false);
     axios
       .post(
-        `/qfdashboard/getTensorflowData?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
+        `${dashboard}/qfdashboard/getTensorflowData?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
       )
       .then((res) => {
         if (res.data.status == "FAIL") {
@@ -135,7 +136,7 @@ export default function Dashboard() {
   function getPredictionTestcases() {
     axios
       .post(
-        `/qfdashboard/getPredictionTestcases?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
+        `${dashboard}/qfdashboard/getPredictionTestcases?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
       )
       .then((res) => {
         setPredictionInfo(res?.data?.info);
@@ -147,7 +148,7 @@ export default function Dashboard() {
     setShowProgressBar(false);
     axios
       .get(
-        `/qfdashboard/dashboard/${globalProject?.project_id}/${sprintName}?userId=${auth?.userId}`
+        `${dashboard}/qfdashboard/dashboard/${globalProject?.project_id}/${sprintName}?userId=${auth?.userId}`
       )
       .then((res) => {
         setAutomationTDgraph(false);
@@ -202,7 +203,7 @@ export default function Dashboard() {
     }
     axios
       .post(
-        `/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${
+        `${dashboard}/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${
           globalProject?.project_id
         }${sprintName == "All" ? "" : `&sprintname=${sprintName}`}`
       )

@@ -21,6 +21,7 @@ import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import { qfservice } from "../../Environment";
 
 function TestsetCreate() {
   const {
@@ -166,7 +167,7 @@ function TestsetCreate() {
 
     testcaseObjFlag &&
       axios
-        .post(`qfservice/webtestset/createWebTestset`, testsetData)
+        .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
         .then((res) => {
           setSnackbarData({
             status: true,

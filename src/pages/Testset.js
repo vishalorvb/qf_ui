@@ -53,7 +53,7 @@ export default function Testset() {
   const onChangeHandler = () => {
     axios
       .get(
-        `qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
+        `${qfservice}/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
       )
       .then((resp) => {
         const testsets = resp?.data?.info ?? [];

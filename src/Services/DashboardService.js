@@ -11,7 +11,7 @@ import {
 export function ReportPercentage(callback, projectId, sprintName = 0) {
   axios({
     method: "post",
-    url: `${dashboard}/getReportPercentagebyProjectandsprint?project_id=${projectId}${
+    url: `${dashboard}/qfdashboard/getReportPercentagebyProjectandsprint?project_id=${projectId}${
       sprintName == 0 ? "" : `&sprintname=${sprintName}`
     }`,
   }).then((res) => {

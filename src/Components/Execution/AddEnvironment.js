@@ -61,7 +61,7 @@ export default function AddEnvironemt() {
   function deleteApiRequest(specificationId) {
     axios
       .post(
-        `qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`
+        `${qfservice}/qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`
       )
       .then((res) => {
         if (res.data.message === "Successfully deleted Build Environment") {
