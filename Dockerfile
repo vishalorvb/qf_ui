@@ -1,12 +1,16 @@
-FROM node:18-alpine
+FROM node:lts-alpine3.16 as build
+WORKDIR /qf_react
+COPY package.json .
+RUN npm i
+COPY . .
+RUN npm run build
 
-WORKDIR /QF01-docker/
-
-COPY public/ /QF01-docker/public
-COPY src/ /QF01-docker/src
-COPY package.json /QF01-docker/
 
 
-RUN npm install
-
-CMD ["npm", "start"]
+FROM nginx
+EXPOSE 3000
+COPY default.conf /etc/nginx/conf.d/default.conf
+WORKDIR /usr/share/nginx/html
+# RUN rm -rf ./*
+COPY --from=build /qf_react/build .
+ENTRYPOINT ["nginx","-g","daemon off;"]
