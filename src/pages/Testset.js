@@ -1,4 +1,4 @@
-import { MenuItem, Typography } from "@mui/material";
+import { IconButton, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -12,6 +12,7 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import TableActions from "../CustomComponent/TableActions";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
 import Scheduler from "../CustomComponent/Scheduler";
+import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
 
 export default function Testset() {
     const {
@@ -88,10 +89,7 @@ export default function Testset() {
             sortable: false,
             renderCell: (param) => {
                 return (
-                    <Scheduler
-                        date="10:10 "
-                        setDate={date => console.log(date)}
-                    ></Scheduler>
+                    <IconButton><ScheduleRoundedIcon color="primary" /></IconButton>
                 );
             },
         },

@@ -1,3 +1,5 @@
+import { Button } from "@mui/material"
+import { useState } from "react"
 
 
 function Scheduler({ date, setDate }) {
@@ -9,48 +11,74 @@ function Scheduler({ date, setDate }) {
 
     let weekday = [{ val: 1, name: "Sun" }, { val: 2, name: "Mon" }, { val: 3, name: "Tue" }, { val: 4, name: "Wed" }, { val: 5, name: "Thu" }, { val: 6, name: "Fri" }, { val: 7, name: "Sat" }]
 
+    let [min, setMin] = useState("*")
+    let [hrs, setHrs] = useState("*")
+    let [day, setDay] = useState("*")
+    let [mon, setMon] = useState("*")
+    let [week, setWeek] = useState("*")
+
+
+
 
 
     return (
-        <div>
-            <div className="applist">
-                <ul>
-                    {minutes.map(min => <li key={min}
-                        onClick={e => console.log(min)}
-                    >{min}</li>)}
-                </ul>
+        <div className="scheduler">
+            <div className="dropdown">
+                <label for="">Min</label>
+                <select
+                    onChange={e => setMin(e.target.value)}
+                >
+                    <option value="*">0</option>
+                    {minutes.map(min => <option value={min}>{min}</option>)}
+                </select>
             </div>
 
-            <div className="applist">
-                <ul>
-                    {hours.map(min => <li key={min}
-                        onClick={e => console.log(min)}
-                    >{min}</li>)}
-                </ul>
+            <div className="dropdown">
+                <label for="">Hr</label>
+                <select
+                    onChange={e => setHrs(e.target.value)}
+                >
+                    <option value="*">0</option>
+                    {hours.map(min => <option value={min}>{min}</option>)}
+                </select>
             </div>
 
-            <div className="applist">
-                <ul>
-                    {days.map(min => <li key={min}
-                        onClick={e => console.log(min)}
-                    >{min}</li>)}
-                </ul>
+            <div className="dropdown">
+                <label for="">Day</label>
+                <select
+                    onChange={e => setDay(e.target.value)}
+                >
+                    <option value="*">0</option>
+                    {days.map(min => <option value={min}>{min}</option>)}
+                </select>
             </div>
 
-            <div className="applist">
-                <ul>
-                    {months.map(min => <li key={min.val}
-                        onClick={e => console.log(min.name)}
-                    >{min.name}</li>)}
-                </ul>
+            <div className="dropdown">
+                <label for="">Month</label>
+                <select
+                    onChange={e => setMon(e.target.value)}
+                >
+                    <option value="*">0</option>
+                    {months.map(min => <option value={min.val}>{min.name}</option>)}
+                </select>
             </div>
+            <div className="dropdown">
+                <label for="">week</label>
+                <select
+                    onChange={e => setWeek(e.target.value)}
+                >
+                    <option value="*">0</option>
+                    {weekday.map(min => <option value={min.val}>{min.name}</option>)}
+                </select>
+            </div>
+            <div className="dropdown">
 
-            <div className="applist">
-                <ul>
-                    {weekday.map(min => <li key={min.val}
-                        onClick={e => console.log(min.name)}
-                    >{min.name}</li>)}
-                </ul>
+                <Button variant="contained"
+                    onClick={e => {
+                        setDate(`${min} ${hrs} ${day} ${mon} ${week}`)
+                    }}
+                >Schedule</Button>
+
             </div>
         </div>
     )

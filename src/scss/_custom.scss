@@ -612,6 +612,7 @@ label {
     max-height: 400px;
     overflow-x: auto;
     overflow-y: initial;
+    min-width: 10px;
 
     ul {
         list-style: none;
@@ -653,5 +654,13 @@ label {
 //.css-120bgvu-MuiTableHead-root {
 //    display: none !important;
 //}
+.scheduler {
+    display: flex;
+    justify-content: flex-start;
+}
 
-.customlist {}
+.dropdown {
+    margin: 4px;
+    padding: 4px;
+    min-width: 55px;
+}
