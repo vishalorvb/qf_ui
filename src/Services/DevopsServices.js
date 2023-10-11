@@ -10,14 +10,14 @@ import {
 
 export function getPipelines(callback, project_id) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${qfservice}/pipeline/${project_id}`).then((res) => {
+  axios.get(`${qfservice}/qfservice/pipeline/${project_id}`).then((res) => {
     callback(res?.data?.data);
   });
 }
 
 export function getPipelinesHistory(callback, release_log, id) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${qfservice}/pipeline/${id}/release`).then((res) => {
+  axios.get(`${qfservice}/qfservice/pipeline/${id}/release`).then((res) => {
     callback(res?.data?.data?.pipelinehisotory);
     release_log(res?.data?.data1);
   });
@@ -29,68 +29,74 @@ export function getCreatePipelineData(
   id,
   project_id
 ) {
-  axios.get(`${qfservice}/project/${project_id}/pipeline/${id}`).then((res) => {
-    const data = res?.data?.data;
-    callback(data);
-    setdefaultData({
-      releaseName: data?.pipelinerelase?.release_name,
-      releaseDesc: data?.pipelinerelase?.release_desc,
-      cicdType: data?.pipelinerelase?.cicd_type,
-      release: data?.pipelinerelase?.ansiblereleaseId,
-      webTest: data?.pipelinerelase?.webTestsetId,
-      ApiTest: data?.pipelinerelase?.apiTestsetid,
-      sonrCubePath: data?.pipelinerelase?.code_quality_path,
-      sonrCubeKey: data?.pipelinerelase?.code_quality_project_key,
-      unitTestPath: data?.pipelinerelase?.unittesttestset_path,
+  axios
+    .get(`${qfservice}/qfservice/project/${project_id}/pipeline/${id}`)
+    .then((res) => {
+      const data = res?.data?.data;
+      callback(data);
+      setdefaultData({
+        releaseName: data?.pipelinerelase?.release_name,
+        releaseDesc: data?.pipelinerelase?.release_desc,
+        cicdType: data?.pipelinerelase?.cicd_type,
+        release: data?.pipelinerelase?.ansiblereleaseId,
+        webTest: data?.pipelinerelase?.webTestsetId,
+        ApiTest: data?.pipelinerelase?.apiTestsetid,
+        sonrCubePath: data?.pipelinerelase?.code_quality_path,
+        sonrCubeKey: data?.pipelinerelase?.code_quality_project_key,
+        unitTestPath: data?.pipelinerelase?.unittesttestset_path,
+      });
     });
-  });
 }
 
 export function getPipelinesHistoryReport(callback, setError, id, tag) {
   // This function except name of state as a callback and set value in that state
-  axios.get(`${qfservice}/pipeline/report/${id}/${tag}`).then((res) => {
-    setError(res?.data?.error?.description);
-    const result = res?.data?.data;
-    if (result !== null) {
-      const unittestset = result?.unittestset;
-      const apiresult = result?.apiresult;
-      const webresult = result?.webresult;
-      const sonarcubereport = result?.sonarcubereport?.issues;
-      const pipelinereport = result?.pipelinereport;
+  axios
+    .get(`${qfservice}/qfservice/pipeline/report/${id}/${tag}`)
+    .then((res) => {
+      setError(res?.data?.error?.description);
+      const result = res?.data?.data;
+      if (result !== null) {
+        const unittestset = result?.unittestset;
+        const apiresult = result?.apiresult;
+        const webresult = result?.webresult;
+        const sonarcubereport = result?.sonarcubereport?.issues;
+        const pipelinereport = result?.pipelinereport;
 
-      switch (tag) {
-        case "API":
-          callback(apiresult);
+        switch (tag) {
+          case "API":
+            callback(apiresult);
 
-          break;
-        case "WEB":
-          callback(webresult);
+            break;
+          case "WEB":
+            callback(webresult);
 
-          break;
-        case "UNITTEST":
-          callback(unittestset);
+            break;
+          case "UNITTEST":
+            callback(unittestset);
 
-          break;
-        case "INFO":
-          callback(pipelinereport);
+            break;
+          case "INFO":
+            callback(pipelinereport);
 
-          break;
-        case "SONAR":
-          callback(sonarcubereport);
+            break;
+          case "SONAR":
+            callback(sonarcubereport);
 
-          break;
+            break;
 
-        default:
-          callback([]);
-          break;
+          default:
+            callback([]);
+            break;
+        }
       }
-    }
-  });
+    });
 }
 
 export function executePipeline(callback, id, userId) {
   axios
-    .post(`${qfservice}/executepipeline?release_id=${id}&user_id=${userId}`)
+    .post(
+      `${qfservice}/qfservice/executepipeline?release_id=${id}&user_id=${userId}`
+    )
     .then((res) => {
       callback(res?.data?.message);
     });
@@ -98,7 +104,7 @@ export function executePipeline(callback, id, userId) {
 
 export function createPipeline(callback, params, id, project_id, userId) {
   axios
-    .post(`${qfservice}/Createpipeline`, null, {
+    .post(`${qfservice}/qfservice/Createpipeline`, null, {
       params: {
         project_id: project_id,
         release_name: params.releaseName,
@@ -121,7 +127,7 @@ export function createPipeline(callback, params, id, project_id, userId) {
 
 export async function getReleaseInstances(callback, project_id) {
   return await axios
-    .get(`${qfservice}/release-management/${project_id}`)
+    .get(`${qfservice}/qfservice/release-management/${project_id}`)
     .then((res) => {
       res?.data?.data !== null && callback(res?.data?.data);
     });
@@ -130,7 +136,7 @@ export async function getReleaseInstances(callback, project_id) {
 export async function deleteInstance(projectId, instanceId) {
   return await axios
     .delete(
-      `${qfservice}/DeleteRelease?release_id=${instanceId}&project_id=${projectId}`
+      `${qfservice}/qfservice/DeleteRelease?release_id=${instanceId}&project_id=${projectId}`
     )
     .then((resp) => {});
 }
@@ -138,7 +144,7 @@ export async function deleteInstance(projectId, instanceId) {
 export async function getGitData(callback, releaseId, historyId, projectId) {
   axios
     .get(
-      `${qfservice}/pipelinelogs/${releaseId}/logs/${historyId}?projectId=${projectId}`
+      `${qfservice}/qfservice/pipelinelogs/${releaseId}/logs/${historyId}?projectId=${projectId}`
     )
     .then((res) => {
       let status = {
@@ -160,7 +166,7 @@ export async function getGitData(callback, releaseId, historyId, projectId) {
 export async function getReleaseHistory(projectId, releaseId, callback) {
   axios
     .get(
-      `${qfservice}/project/${projectId}/ansible-release/${releaseId}/release-history`
+      `${qfservice}/qfservice/project/${projectId}/ansible-release/${releaseId}/release-history`
     )
     .then((res) => {
       callback([res.data.data.webReleaseHistories] ?? []);
@@ -170,7 +176,7 @@ export async function getReleaseHistory(projectId, releaseId, callback) {
 export async function release(projectId, releaseId, userId) {
   return await axios
     .post(
-      `${qfservice}/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`
+      `${qfservice}/qfservice/ExecuteRelease?release_id=${releaseId}&project_id=${projectId}&user_id=${userId}`
     )
     .then((res) => {
       if (res.data.status == "FAIL") return false;

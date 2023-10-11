@@ -54,15 +54,19 @@ export function getTestcasesInProjects(
 }
 
 export function createTestset(data) {
-  axios.post(`${qfservice}/webtestset/createWebTestset`, data).then((res) => {
-    console.log("Testset Created Successfully");
-  });
+  axios
+    .post(`${qfservice}/qfserviceebtestset/createWebTestset`, data)
+    .then((res) => {
+      console.log("Testset Created Successfully");
+    });
 }
 
 export function updateTestset(data) {
-  axios.post(`${qfservice}/webtestset/createWebTestset`, data).then((res) => {
-    console.log("Testset Created Successfully");
-  });
+  axios
+    .post(`${qfservice}/qfserviceebtestset/createWebTestset`, data)
+    .then((res) => {
+      console.log("Testset Created Successfully");
+    });
 }
 
 export async function getEnvironment(projectId, moduleId, callback) {

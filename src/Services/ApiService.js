@@ -1,5 +1,6 @@
 import axios from "../api/axios";
 import {
+  baseUrl,
   authservice,
   biservice,
   dashboard,
@@ -9,7 +10,7 @@ import {
 } from "../Environment";
 
 export function getApis(callback, applicationId) {
-  axios.get(`${qfservice}/${applicationId}/apis`).then((res) => {
+  axios.get(`${qfservice}/qfservice/${applicationId}/apis`).then((res) => {
     callback(res.data.data.apisList);
   });
 }
@@ -18,7 +19,7 @@ export async function createApiRequest(data) {
   let x = axios({
     method: "post",
     data: data,
-    url: `${qfservice}/createapi`,
+    url: `${qfservice}/qfservice/createapi`,
   })
     .then((res) => {
       return true;
@@ -31,7 +32,7 @@ export async function createApiRequest(data) {
 
 export async function deleteApiRequest(apiId) {
   let x = axios
-    .post(`${qfservice}/deleteapi?api_id=${apiId}`)
+    .post(`${qfservice}/qfservice/deleteapi?api_id=${apiId}`)
     .then((res) => {
       return true;
     })
@@ -42,17 +43,19 @@ export async function deleteApiRequest(apiId) {
 }
 
 export function getApiDatasets(callback, testcaseId) {
-  axios.get(`${qfservice}/api/testcases/${testcaseId}/datasets`).then((res) => {
-    if (res.data.data != null) {
-      callback(res.data.data);
-    }
-  });
+  axios
+    .get(`${qfservice}/qfservice/api/testcases/${testcaseId}/datasets`)
+    .then((res) => {
+      if (res.data.data != null) {
+        callback(res.data.data);
+      }
+    });
 }
 
 export function getDatasetDetails(callback, datasetId) {
   axios({
     method: "post",
-    url: `${qfservice}/GetDatasetDetailsByDatasetId?dataset_id=${datasetId}`,
+    url: `${qfservice}/qfservice/GetDatasetDetailsByDatasetId?dataset_id=${datasetId}`,
   }).then((res) => {
     callback(res.data.data.apidatasets);
   });
@@ -61,7 +64,7 @@ export function getDatasetDetails(callback, datasetId) {
 export async function createApiDataset(userId, Data) {
   let x = await axios({
     method: "post",
-    url: `${qfservice}/createdataset?userId=${userId}`,
+    url: `${qfservice}/qfservice/createdataset?userId=${userId}`,
     data: Data,
   }).then((res) => {
     if (res.data.error == null) {
@@ -77,7 +80,7 @@ export async function createApiDataset(userId, Data) {
 export async function DeleteApiDataset(datasetId) {
   let x = await axios({
     method: "post",
-    url: `${qfservice}/DeleteDataset?dataset_id=${datasetId}`,
+    url: `${qfservice}/qfservice/DeleteDataset?dataset_id=${datasetId}`,
   }).then((res) => {
     if (res.data.message !== null) {
       return true;
@@ -89,16 +92,18 @@ export async function DeleteApiDataset(datasetId) {
 }
 
 export async function getApiDetails(callback, apiId) {
-  return axios.post(`${qfservice}/getapibyid?api_id=${apiId}`).then((res) => {
-    callback(res.data?.data);
-    return res.data?.data;
-  });
+  return axios
+    .post(`${qfservice}/qfservice/getapibyid?api_id=${apiId}`)
+    .then((res) => {
+      callback(res.data?.data);
+      return res.data?.data;
+    });
 }
 
 export async function updateApiOrder(data) {
   return await axios({
     method: "post",
-    url: `${qfservice}/UpdateOrderOfAPIsInTestcase`,
+    url: `${qfservice}/qfservice/UpdateOrderOfAPIsInTestcase`,
     data: data,
   }).then((res) => {
     return res.data;
