@@ -7,10 +7,11 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Divider, Grid, Typography } from "@mui/material";
-import axios from "../../api/axios";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { qfservice } from "../../Environment";
 
 let initialValue = {
   id: "",
@@ -40,24 +41,26 @@ function EditEnvironmentPop(props) {
       postVal.project_id = postVal.project_id;
       postVal.url = "";
       // console.log(postVal);
-      axios.post(`/qfservice/CreateBuildEnvironment`, postVal).then((resp) => {
-        // console.log(resp?.data?.error?.description)
-        // console.log(resp?.data?.message)
-        if (resp?.data?.message === "Successfully updatedBuild Environment") {
-          setEditSuccessMsg(true);
-          setTimeout(() => {
-            setEditSuccessMsg(false);
-            getBuilEnvironment();
-          }, 3000);
-          handleClose();
-        } else {
-          // setReportFailMsg(true);
-          setTimeout(() => {
-            // setReportFailMsg(false);
-          }, 3000);
-          handleClose();
-        }
-      });
+      axios
+        .post(`${qfservice}/qfservice/CreateBuildEnvironment`, postVal)
+        .then((resp) => {
+          // console.log(resp?.data?.error?.description)
+          // console.log(resp?.data?.message)
+          if (resp?.data?.message === "Successfully updatedBuild Environment") {
+            setEditSuccessMsg(true);
+            setTimeout(() => {
+              setEditSuccessMsg(false);
+              getBuilEnvironment();
+            }, 3000);
+            handleClose();
+          } else {
+            // setReportFailMsg(true);
+            setTimeout(() => {
+              // setReportFailMsg(false);
+            }, 3000);
+            handleClose();
+          }
+        });
     }
   };
 

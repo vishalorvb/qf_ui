@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  baseUrl,
   authservice,
   biservice,
   dashboard,
@@ -47,7 +46,7 @@ export function getTestcasesInProjects(
   axios
     .get(
       qfservice +
-        `/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
+        `${qfservice}/qfservice/webtestcase/getWebTestcasesInfoByProjectIdByApplicationId?project_id=${projectId}&module_id=${applicationId}`
     )
     .then((res) => {
       callback(res.data.info ?? []);
@@ -69,7 +68,7 @@ export function updateTestset(data) {
 export async function getEnvironment(projectId, moduleId, callback) {
   return await axios
     .get(
-      `${baseUrl}/qfservice/build-environment?project_id=${projectId}&module_id=${moduleId}`
+      `${qfservice}/qfservice/build-environment?project_id=${projectId}&module_id=${moduleId}`
     )
     .then((res) => {
       callback(res.data ?? []);
@@ -80,7 +79,7 @@ export async function getEnvironment(projectId, moduleId, callback) {
 export async function getTestcaseInTestset(testsetId, callback) {
   return await axios
     .get(
-      `${baseUrl}/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
+      `${qfservice}/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
     )
     .then((res) => {
       callback(res.data.info);

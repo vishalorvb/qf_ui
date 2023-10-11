@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import axios from "../../../api/axios";
+import axios from "axios";
 import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import BackdropLoader from "../../../CustomComponent/BackdropLoader";
+import { qfservice } from "../../../Environment";
 
 export default function UpdateScreen() {
   const { setHeader } = useHead();
@@ -77,7 +78,7 @@ export default function UpdateScreen() {
 
     axios
       .get(
-        `/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
+        `${qfservice}/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((res) => {
         res?.data?.info &&

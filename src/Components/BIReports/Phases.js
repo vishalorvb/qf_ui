@@ -18,12 +18,13 @@ import Divider from "@mui/material/Divider";
 import { Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
 import { useLocation, useNavigate } from "react-router";
-import axios, { axiosPrivate } from "../../api/axios";
+import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import PhaseDetails from "./PhaseDetails";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeletePhase from "./DeletePhase";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { biservice } from "../../Environment";
 
 export default function Phases() {
   const location = useLocation();
@@ -142,8 +143,8 @@ export default function Phases() {
         efforts_saving: savedHours,
       };
 
-      axiosPrivate
-        .post(`/Biservice/projects/phases/create`, data)
+      axios
+        .post(`${biservice}/Biservice/projects/phases/create`, data)
         .then((res) => {
           console.log(res.data.message);
           setMsg(res.data.message);

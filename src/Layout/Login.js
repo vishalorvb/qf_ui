@@ -11,7 +11,7 @@ import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-import { baseUrl } from "../Environment";
+import { authservice } from "../Environment";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { Alert } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -55,7 +55,7 @@ export default function Login() {
       setLoading(true);
       try {
         const response = await axios.post(
-          baseUrl + "/qfauthservice/authentication/login",
+          authservice + "/qfauthservice/authentication/login",
           {
             username: data.get("email"),
             password: data.get("password"),
@@ -71,7 +71,7 @@ export default function Login() {
         localStorage.setItem("token", token);
 
         const userInfo = await axios.get(
-          baseUrl + "/qfauthservice/authentication/userInfo",
+          authservice + "/qfauthservice/authentication/userInfo",
           {
             headers: {
               Authorization: `Bearer ${token}`,

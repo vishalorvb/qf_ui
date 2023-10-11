@@ -9,10 +9,11 @@ import { useLocation } from "react-router-dom";
 import AddEnvironmentPop from "./AddEnvironmentPop";
 import EditEnvironmentPop from "./EditEnvironmentPop";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import axios from "../../api/axios";
+import axios from "axios";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import useHead from "../../hooks/useHead";
 import { postVal } from "../Execution/EditEnvironmentPop";
+import { qfservice } from "../../Environment";
 
 export default function AddEnvironemt() {
   const [tbData, setTbData] = useState([]);
@@ -42,7 +43,7 @@ export default function AddEnvironemt() {
   function getBuilEnvironment() {
     axios
       .get(
-        `/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`
+        `${qfservice}/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`
       )
       .then((res) => {
         if (res.data.data.length > 0) {

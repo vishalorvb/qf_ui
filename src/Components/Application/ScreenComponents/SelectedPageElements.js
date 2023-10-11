@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
-import axios from "../../../api/axios";
+import axios from "axios";
 import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
 import CreateScreenPop from "./CreateScreenPop";

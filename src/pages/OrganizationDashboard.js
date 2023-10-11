@@ -6,9 +6,10 @@ import TabIcon from "@mui/icons-material/Tab";
 import { Box, Card, Typography } from "@mui/material";
 import useHead from "../hooks/useHead";
 import { useLocation } from "react-router";
-import axios from "../api/axios";
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { qfservice, userservice } from "../Environment";
 
 function OrganizationDashboard() {
   const header = [
@@ -34,7 +35,7 @@ function OrganizationDashboard() {
     try {
       axios({
         method: "get",
-        url: `/qfuserservice/user/usersByOrg?orgId=${location.state.orgId}`,
+        url: `${userservice}/qfuserservice/user/usersByOrg?orgId=${location.state.orgId}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -63,7 +64,7 @@ function OrganizationDashboard() {
     try {
       axios({
         method: "get",
-        url: `/qfservice/getProjectsOfOrg?orgId=${location.state.orgId}`,
+        url: `${qfservice}/qfservice/getProjectsOfOrg?orgId=${location.state.orgId}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -91,7 +92,7 @@ function OrganizationDashboard() {
     try {
       axios({
         method: "get",
-        url: `/qfservice/getApplicationsOfOrg?orgId=${location.state.orgId}`,
+        url: `${qfservice}/qfservice/getApplicationsOfOrg?orgId=${location.state.orgId}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

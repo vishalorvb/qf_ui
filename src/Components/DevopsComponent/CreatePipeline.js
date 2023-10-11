@@ -16,21 +16,22 @@ import {
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Stack } from "@mui/system";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import { getProject } from "../../Services/ProjectService";
+import { qfservice } from "../../Environment";
 
 export default function CreatePipeline() {
   const [pipelineData, setPipelineData] = useState({});
   const [defaultData, setDefaultData] = useState({});
-  const [msg, setMsg] = useState("");;
+  const [msg, setMsg] = useState("");
   const [project, setProject] = useState([]);
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const { setHeader , globalProject, setglobalProject} = useHead();
+  const { setHeader, globalProject, setglobalProject } = useHead();
   const schema = yup.object().shape({
     releaseName: yup.string().required().max(30, "Max length exceeded"),
     releaseDesc: yup.string().required(),
@@ -62,7 +63,7 @@ export default function CreatePipeline() {
     console.log(location.state);
     // createPipeline(setSaveRes, data, location.state.id);
     axios
-      .post(`/qfservice/Createpipeline`, null, {
+      .post(`${qfservice}/qfservice/Createpipeline`, null, {
         params: {
           project_id: globalProject.project_id,
           release_name: params.releaseName,
@@ -85,23 +86,21 @@ export default function CreatePipeline() {
         setMsg(respMsg);
         respMsg === "SUCCESS" && reset();
         setTimeout(() => {
-            navigate("/pipeline")  
+          navigate("/pipeline");
         }, 200);
-        
       });
   };
 
   console.log(location.state);
 
-  
-
   useEffect(() => {
-    globalProject?.project_id && getCreatePipelineData(
-      setPipelineData,
-      setDefaultData,
-      location.state.id ?? 0,
-      globalProject?.project_id
-    );
+    globalProject?.project_id &&
+      getCreatePipelineData(
+        setPipelineData,
+        setDefaultData,
+        location.state.id ?? 0,
+        globalProject?.project_id
+      );
     setHeader((ps) => {
       return {
         ...ps,
@@ -123,8 +122,8 @@ export default function CreatePipeline() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    if(globalProject == null){
-        setglobalProject(project[0]);
+    if (globalProject == null) {
+      setglobalProject(project[0]);
     }
   }, [project]);
 

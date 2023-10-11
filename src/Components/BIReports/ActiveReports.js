@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "axios";
 import Table from "../../CustomComponent/Table";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";

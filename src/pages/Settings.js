@@ -9,6 +9,7 @@ import {
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
+import { qfservice } from "../Environment";
 
 function Settings() {
   let Url = useRef();
@@ -32,7 +33,7 @@ function Settings() {
 
       axiosPrivate({
         method: "post",
-        url: `/qfservice/updateOrganisationSettings`,
+        url: `${qfservice}/qfservice/updateOrganisationSettings`,
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {

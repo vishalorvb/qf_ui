@@ -17,12 +17,13 @@ import {
   TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
-import axios from "../../api/axios";
+import axios from "axios";
 import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
+import { qfservice } from "../../Environment";
 
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
 function TestsetExecutionToolbar({
@@ -75,7 +76,7 @@ function TestsetExecutionToolbar({
     applicationId &&
       axios
         .get(
-          `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
+          `${qfservice}/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
         )
         .then((resp) => {
           const buildEnv = resp?.data?.data;
@@ -95,7 +96,7 @@ function TestsetExecutionToolbar({
     applicationId &&
       axios
         .get(
-          `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
+          `${qfservice}/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
         )
         .then((resp) => {
           const execEnv = resp?.data?.data;

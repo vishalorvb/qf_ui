@@ -3,12 +3,13 @@ import useHead from "../../../hooks/useHead";
 import Table from "../../../CustomComponent/Table";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { useLocation } from "react-router";
-import axios from "../../../api/axios";
+import axios from "axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import { Button } from "@mui/material";
 import AddElement from "./AddElement";
 import BackdropLoader from "../../../CustomComponent/BackdropLoader";
+import { qfservice } from "../../../Environment";
 export default function PageElements() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -99,7 +100,7 @@ export default function PageElements() {
     newchangedElement?.id &&
       axios
         .post(
-          `/qfservice/webpages/updatePageElement?web_element_id=${newchangedElement?.id}&status=${newchangedElement?.added}`
+          `${qfservice}/qfservice/webpages/updatePageElement?web_element_id=${newchangedElement?.id}&status=${newchangedElement?.added}`
         )
         .then((resp) => {
           console.log(resp);

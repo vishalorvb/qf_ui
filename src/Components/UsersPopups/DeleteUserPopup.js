@@ -12,6 +12,7 @@ import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import useAxios from "../../hooks/useAxios";
+import { userservice } from "../../Environment";
 
 function DeleteUserPopup(props) {
   const {
@@ -36,7 +37,7 @@ function DeleteUserPopup(props) {
   const submit = () => {
     axiosPrivate
       .delete(
-        `/qfuserservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
+        `${userservice}/qfuserservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
       )
       .then((res) => {
         if (res.data.status == "SUCCESS") {

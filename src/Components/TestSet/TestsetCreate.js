@@ -19,7 +19,7 @@ import {
 } from "../../Services/TestCaseService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
-import axios, { axiosPrivate } from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 
 function TestsetCreate() {
@@ -165,7 +165,7 @@ function TestsetCreate() {
     };
 
     testcaseObjFlag &&
-      axiosPrivate
+      axios
         .post(`qfservice/webtestset/createWebTestset`, testsetData)
         .then((res) => {
           setSnackbarData({

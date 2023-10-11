@@ -1,11 +1,12 @@
 import { Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useLocation } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { useState } from "react";
+import { qfservice } from "../../Environment";
 
 export default function Toolbar({ dustbins, getElementsData }) {
   const location = useLocation();
@@ -20,7 +21,7 @@ export default function Toolbar({ dustbins, getElementsData }) {
     console.log("first");
     setShowloader(true);
     axios
-      .post(`/qfservice/webpages/LaunchJNLPToCreateWebPage`, null, {
+      .post(`${qfservice}/qfservice/webpages/LaunchJNLPToCreateWebPage`, null, {
         params: {
           user_id: auth?.userId,
           module_id: pageData?.module_id,
@@ -88,7 +89,7 @@ export default function Toolbar({ dustbins, getElementsData }) {
         initial_check: check,
       };
       axios
-        .post(`/qfservice/SyncDiffElements`, saveDiffElementData)
+        .post(`${qfservice}/qfservice/SyncDiffElements`, saveDiffElementData)
         .then((resp) => {
           console.log(resp);
           setShowloader(false);

@@ -20,6 +20,7 @@ import {
   validateForm,
   resetClassName,
 } from "../../CustomComponent/FormValidation";
+import { userservice } from "../../Environment";
 function AddUserPopup(props) {
   const {
     open,
@@ -91,7 +92,7 @@ function AddUserPopup(props) {
 
       axiosPrivate
         .post(
-          `/qfuserservice/user/createUser?user_id=0&current_user_id=${loggedInId}`,
+          `${userservice}/qfuserservice/user/createUser?user_id=0&current_user_id=${loggedInId}`,
           data
         )
         .then((res) => {

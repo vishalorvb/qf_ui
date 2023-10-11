@@ -3,12 +3,13 @@ import { Button, Grid, TextareaAutosize } from "@mui/material";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import axios from "../../api/axios";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 
 let initialval = {
   name: "",
@@ -53,7 +54,7 @@ const AddConfigurationPopUp = (props) => {
     postVal.userName = "";
     console.log(postVal);
     axios
-      .post(`/qfservice/mobileconfiguration/save.do`, postVal)
+      .post(`${qfservice}/qfservice/mobileconfiguration/save.do`, postVal)
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && setSnack(true);
         resp?.data?.status === "SUCCESS" &&

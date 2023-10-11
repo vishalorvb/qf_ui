@@ -19,6 +19,7 @@ import {
   validateForm,
   resetClassName,
 } from "../../CustomComponent/FormValidation";
+import { userservice } from "../../Environment";
 
 function EditUserPopup(props) {
   const {
@@ -85,14 +86,16 @@ function EditUserPopup(props) {
         current_user_id: loggedInId,
       };
 
-      axiosPrivate.put(`/qfuserservice/user/updateUser`, data).then((res) => {
-        console.log(res.data.info);
-        setEditSuccessMsg(true);
-        getUsers();
-        setTimeout(() => {
-          setEditSuccessMsg(false);
-        }, 3000);
-      });
+      axiosPrivate
+        .put(`${userservice}/qfuserservice/user/updateUser`, data)
+        .then((res) => {
+          console.log(res.data.info);
+          setEditSuccessMsg(true);
+          getUsers();
+          setTimeout(() => {
+            setEditSuccessMsg(false);
+          }, 3000);
+        });
       handleClose();
     } else {
       setValidationMsg(true);

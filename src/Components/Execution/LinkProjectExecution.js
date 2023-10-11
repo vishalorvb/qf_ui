@@ -4,7 +4,7 @@ import Table from "../../CustomComponent/Table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { SelectElement, useForm } from "react-hook-form-mui";
-import axios from "../../api/axios";
+import axios from "axios";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
+import { qfservice } from "../../Environment";
 
 const LinkProjectExecution = () => {
   const [execLoc, setExecLoc] = useState("local");
@@ -93,7 +94,7 @@ const LinkProjectExecution = () => {
     applicationId !== undefined &&
       axios
         .get(
-          `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
+          `${qfservice}/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
         )
         .then((resp) => {
           const execEnv = resp?.data?.data;
@@ -213,7 +214,7 @@ const LinkProjectExecution = () => {
   function deleteApiRequest(specificationId) {
     axios
       .delete(
-        `/qfservice/webtestset/deleteWebTestset?testset_id=${specificationId}`
+        `${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${specificationId}`
       )
       .then((res) => {
         // console.log(res.data.message);
@@ -242,7 +243,7 @@ const LinkProjectExecution = () => {
       // console.log(executionData)
       axios
         .post(
-          `/qfservice/ExecuteLinkTestset?user_id=${user_id}&project_id=${projectId}`,
+          `${qfservice}/qfservice/ExecuteLinkTestset?user_id=${user_id}&project_id=${projectId}`,
           executionData
         )
         .then((resp) => {

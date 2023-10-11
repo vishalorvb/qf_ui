@@ -22,6 +22,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
+import { userservice } from "../../Environment";
 
 function EditUser() {
   const location = useLocation();
@@ -78,7 +79,7 @@ function EditUser() {
       };
 
       axiosPrivate
-        .put(`/qfuserservice/user/updateUser`, data)
+        .put(`${userservice}/qfuserservice/user/updateUser`, data)
         .then((res) => {
           console.log(res.data.info);
           setEditSuccessMsg(true);

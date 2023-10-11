@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "../api/axios";
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import useHead from "../hooks/useHead";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";

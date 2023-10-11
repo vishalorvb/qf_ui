@@ -10,9 +10,10 @@ import {
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { Divider, Grid, Typography } from "@mui/material";
-import axios from "../../api/axios";
+import axios from "axios";
 import { useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { qfservice } from "../../Environment";
 
 function FeatureFile(props) {
   const { selectedDatasets, open, close, testcaseId } = props;
@@ -39,7 +40,7 @@ function FeatureFile(props) {
     if (selectedDatasets.length != 0) {
       axios
         .post(
-          `/qfservice/webtestcase/updatefeaturefile?featurefile_data=${featureFileData}&testcase_id=${testcaseId}`
+          `${qfservice}/qfservice/webtestcase/updatefeaturefile?featurefile_data=${featureFileData}&testcase_id=${testcaseId}`
         )
         .then((res) => {
           if (res?.data?.status === "SUCCESS") {

@@ -6,13 +6,14 @@ import Table from "../../CustomComponent/Table";
 import { IconButton, MenuItem, Tooltip, Typography } from "@mui/material";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import TableActions from "../../CustomComponent/TableActions";
-import axios from "../../api/axios";
+import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import UsbIcon from "@mui/icons-material/Usb";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import UpdatePage from "./PagesComponents/UpdatePage";
 import { postVal } from "./PagesComponents/UpdatePage";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 export default function PagesTable(props) {
   const { location, pages, callGetPages } = props;
   const navigate = useNavigate();
@@ -25,7 +26,9 @@ export default function PagesTable(props) {
   const handleDelete = (pageId) => {
     setShowloader(true);
     axios
-      .delete(`/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`)
+      .delete(
+        `${qfservice}/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`
+      )
       .then((resp) => {
         setShowloader(false);
         callGetPages();
