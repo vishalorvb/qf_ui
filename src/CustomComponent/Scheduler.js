@@ -71,7 +71,7 @@ function Scheduler({ date, setDate }) {
                     {weekday.map(min => <option value={min.val}>{min.name}</option>)}
                 </select>
             </div>
-            <div className="dropdown">
+            <div className="dropdown" style={{ marginTop: "21px" }}>
 
                 <Button variant="contained"
                     onClick={e => {
