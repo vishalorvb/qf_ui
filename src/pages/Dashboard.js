@@ -1,37 +1,9 @@
-import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import useHead from "../hooks/useHead";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import Grid from "@mui/material/Grid";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import ManageSearchIcon from "@mui/icons-material/ManageSearch";
-import AdbIcon from "@mui/icons-material/Adb";
-import Brightness5Icon from "@mui/icons-material/Brightness5";
-import AppleIcon from "@mui/icons-material/Apple";
-import { Language } from "@mui/icons-material";
-import { Box } from "@mui/system";
-import {
-  Divider,
-  Card,
-  CardContent,
-  Typography,
-  Stack,
-  Alert,
-} from "@mui/material";
-import ProgressBar from "./ProgressBar";
-import { useNavigate } from "react-router-dom";
 import { ReportPercentage } from "../Services/DashboardService";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 import ProjectStatusCards from "../Components/DashboardComponents/ProjectStatusCards";
@@ -47,14 +19,12 @@ export default function Dashboard() {
     globalApplication,
     setglobalApplication,
   } = useHead();
-  const navigate = useNavigate();
   const { auth } = useAuth();
 
   const [testCases, setTestCases] = useState("");
   const [dataSets, setdataSets] = useState("");
   const [totalSprint, settotalSprint] = useState("");
-  const data = [testCases, dataSets, totalSprint];
-  const body = ["Total Testcases", "Total Datasets", "Total Sprints"];
+
   const [info, setInfo] = useState([]);
   const [sprintName, setSprintName] = useState("All");
   const [progress, setProgress] = useState();
@@ -76,7 +46,7 @@ export default function Dashboard() {
   const [showFailMsg, setShowFailMsg] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [predictionInfo, setPredictionInfo] = useState([]);
-  let [percentage, setPercentage] = useState(10);
+  let [percentage, setPercentage] = useState(0);
   let [faildata, setFaildata] = useState([]);
 
   function dashboardDetails() {
@@ -218,126 +188,6 @@ export default function Dashboard() {
       });
   }
 
-  const testDesignGraphData = {
-    title: {
-      text: "Automation of Test Design",
-      align: "left",
-      style: {
-        "font-size": "20px",
-        "font-weight": "bold",
-        "font-family": "Roboto",
-      },
-    },
-    xAxis: {
-      categories: testDesignPeriod,
-      crosshair: true,
-    },
-    yAxis: {
-      allowDecimals: true,
-      padding: 1,
-    },
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false,
-        },
-      },
-    },
-
-    series: [
-      {
-        name: "Automation",
-        data: automation,
-      },
-      {
-        name: "Defects",
-        data: defects,
-      },
-      {
-        name: "Coverage",
-        data: coverage,
-      },
-    ],
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
-            },
-          },
-        },
-      ],
-    },
-  };
-
-  const cardsIconsSx = { fontSize: 100, color: "#009fee" };
-
-  const header = [
-    <SettingsApplicationsIcon sx={cardsIconsSx} />,
-    <AssignmentIcon sx={cardsIconsSx} />,
-    <ManageSearchIcon sx={cardsIconsSx} />,
-  ];
-
-  const card = (index) => {
-    return (
-      <Paper variant="outlined" sx={{ borderColor: "#b3e6ff" }}>
-        <Stack direction="row">
-          {header[index]}
-          <Stack pl={2} sx={{ backgroundColor: "#b3e6ff", width: "100%" }}>
-            <Typography variant="h3">{data[index]}</Typography>
-            <Typography variant="subtitle1" align="left" component="div">
-              <b>{body[index]}</b>
-            </Typography>
-          </Stack>
-        </Stack>
-      </Paper>
-    );
-  };
-
-  function createData(summary, info) {
-    return { summary, info };
-  }
-
-  const rows = [
-    createData("Api Testcases", info?.api_testcases_count),
-    createData("Web Testcases", info?.web_testcases_count),
-    createData("Android Testcases", info?.android_testcases_count),
-    createData("IOS Testcases", info?.ios_testcases_count),
-  ];
-
-  const row_data = [
-    createData(
-      "Total Regression Testcases",
-      info?.regression_testcases_count != undefined
-        ? info?.regression_testcases_count
-        : 0
-    ),
-    createData(
-      "Identified Automation Testcases",
-      info?.automation_testcases_by_sprint != undefined
-        ? info?.automation_testcases_by_sprint
-        : 0
-    ),
-    createData(
-      "Yet to Automate Testcases",
-      info?.yet_to_automate_testcases != undefined
-        ? info?.yet_to_automate_testcases
-        : 0
-    ),
-    createData(
-      "Test Datasets Created by Automated Testcases",
-      info?.datasets_created_for_automated_testcases != undefined
-        ? info?.datasets_created_for_automated_testcases
-        : 0
-    ),
-  ];
-
   useEffect(() => {
     setHeader((ps) => {
       return { ...ps, name: "Dashboard" };
@@ -454,55 +304,15 @@ export default function Dashboard() {
           />
         </Grid>
 
-        <TestDesignAutomationGraph />
-
         {automationTDgraph && (
           <Grid item md={6}>
-            <Paper variant="outlined">
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={testDesignGraphData}
-              />
-              <Stack direction="row" spacing={1} style={{ marginLeft: "20px" }}>
-                <Brightness5Icon style={{ color: "rgb(124, 181, 236)" }} />
-                <Typography>Automation</Typography>
-                <Language />
-                <Typography>Defects</Typography>
-                <AdbIcon style={{ color: "rgb(144, 237, 125)" }} />
-                <Typography>Coverage</Typography>
-              </Stack>
-              <TableContainer
-                style={{ marginTop: "20px", marginBottom: "10px" }}
-              >
-                <Table
-                  sx={{ minWidth: 600 }}
-                  size="small"
-                  aria-label="a dense table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Summary</TableCell>
-                      <TableCell align="right">Info</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row_data.map((row) => (
-                      <TableRow
-                        key={row.summary}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row.summary}
-                        </TableCell>
-                        <TableCell align="right">{row.info}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
+            <TestDesignAutomationGraph
+              info={info}
+              testDesignPeriod={testDesignPeriod}
+              automation={automation}
+              defects={defects}
+              coverage={coverage}
+            />
           </Grid>
         )}
         {snackbar && (
