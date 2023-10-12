@@ -15,22 +15,18 @@ export default function AppLayout() {
     return (
       <Box sx={{ display: "flex" }}>
         <MiniDrawer open={open} setOpen={setOpen} />
-        <Box component="main" sx={{ flexGrow: 1, p: 0 }}>
-          <Box className="mainContent">
-            <HeaderProvider>
-              <PageHead />
-              <Box>
-                <ProjectnApplicationProvider>
-                  <div
-                    className="content"
-                    style={{ maxWidth: open ? "83vw" : "98vw" }}
-                  >
-                    <Outlet />
-                  </div>
-                </ProjectnApplicationProvider>
+        <Box component="main" sx={{ flexGrow: 1 }} className="mainContent">
+          <HeaderProvider>
+            <PageHead />
+            <ProjectnApplicationProvider>
+              <Box
+                className="content"
+                style={{ maxWidth: open ? "83vw" : "98vw" }}
+              >
+                <Outlet />
               </Box>
-            </HeaderProvider>
-          </Box>
+            </ProjectnApplicationProvider>
+          </HeaderProvider>
         </Box>
       </Box>
     );

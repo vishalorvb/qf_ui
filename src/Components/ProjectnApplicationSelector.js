@@ -1,14 +1,11 @@
-import { Autocomplete, Fab, Grid } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { getApplicationOfProject } from "../Services/ApplicationService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/ProjectService";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 export default function ProjectnApplicationSelector({
-  isTestset,
   isApplication,
   selectorDisabled,
 }) {
@@ -21,13 +18,12 @@ export default function ProjectnApplicationSelector({
     setProjectList,
     applicationList,
     setapplicationList,
-    setShowloader,
   } = useHead();
 
   const { auth } = useAuth();
 
-  let [searchWord, setSearchWord] = useState("");
-  let [show, setShow] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
@@ -67,7 +63,6 @@ export default function ProjectnApplicationSelector({
         <label>Projects</label>
         <Autocomplete
           disabled={selectorDisabled === true}
-          disablePortal
           disableClearable
           id="project_id"
           options={projectsList}

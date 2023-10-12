@@ -80,6 +80,16 @@ export async function getEnvironment(projectId, moduleId, callback) {
     });
 }
 
+export async function getExecutionLocation(projectId, moduleId, callback) {
+  return await axios
+    .get(
+      `${baseUrl}/qfservice/execution-environment?module_id=${moduleId}&project_id=${projectId}`
+    )
+    .then((res) => {
+      callback(res.data.data ?? []);
+      return res.data.data;
+    });
+}
 export async function getTestcaseInTestset(testsetId, callback) {
   return await axios
     .get(

@@ -124,8 +124,11 @@ export default function AutomationGraph({
 
   return (
     <Paper variant="outlined">
-      <HighchartsReact highcharts={Highcharts} options={automationGraphData} />
       <TableContainer>
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={automationGraphData}
+        />
         <Table size="small">
           <TableHead>
             <TableRow>

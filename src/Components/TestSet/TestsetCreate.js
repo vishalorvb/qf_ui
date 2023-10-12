@@ -22,6 +22,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { qfservice } from "../../Environment";
+import Divider from "@mui/material/Divider";
+import TestSetScheduler from "./TestSetScheduler";
 
 function TestsetCreate() {
   const {
@@ -72,7 +74,6 @@ function TestsetCreate() {
   }, [jiraSprint]);
 
   useEffect(() => {
-    console.log(editData);
     if (globalProject?.project_id && globalApplication?.module_id) {
       GetTestCase_V2fortestset(
         setTestcaseObject,
@@ -108,7 +109,6 @@ function TestsetCreate() {
   }, [testcaseObject]);
 
   useEffect(() => {
-    console.log(location);
     reset({
       testsetName: editData?.testset_name?.substring(3),
       testsetDesc: editData?.testset_desc,
@@ -166,8 +166,8 @@ function TestsetCreate() {
     };
 
     testcaseObjFlag &&
-      axios
-        .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
+      axiosPrivate
+        .post(`qfservice/webtestset/createWebTestset`, testsetData)
         .then((res) => {
           setSnackbarData({
             status: true,
@@ -182,6 +182,18 @@ function TestsetCreate() {
       return { ...prevSelectedDatasets, [row?.testcase_id]: e };
     });
   };
+
+  testcaseObjFlag &&
+    axios
+      .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
+      .then((res) => {
+        setSnackbarData({
+          status: true,
+          message: res?.data?.message,
+          severity: res?.data?.status,
+        });
+        navigate("/Testset/Recent");
+      });
 
   const columns = [
     {
@@ -315,6 +327,24 @@ function TestsetCreate() {
             />
           </Stack>
         </Grid>
+
+        <Grid item md={12}>
+          <Divider />
+        </Grid>
+        {location?.pathname?.includes("Update") && (
+          <Grid item md={12}>
+            <TestSetScheduler
+              projectId={globalProject?.project_id}
+              moduleId={globalApplication?.module_id}
+              testsetId={location.state.testset_id}
+              onSubmit={(e) => console.log(e)}
+            />
+          </Grid>
+        )}
+        <Grid item md={12}>
+          <Divider />
+        </Grid>
+
         {globalApplication?.module_type == 19 ? (
           <Grid item md={12}>
             <Stack spacing={1}>
