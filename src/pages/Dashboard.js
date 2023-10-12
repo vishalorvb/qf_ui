@@ -4,7 +4,10 @@ import useAuth from "../hooks/useAuth";
 import useHead from "../hooks/useHead";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import Grid from "@mui/material/Grid";
-import { ReportPercentage } from "../Services/DashboardService";
+import {
+  getDashboardDetails,
+  ReportPercentage,
+} from "../Services/DashboardService";
 import ProjectnApplicationSelector from "../Components/ProjectnApplicationSelector";
 import ProjectStatusCards from "../Components/DashboardComponents/ProjectStatusCards";
 import AutomationGraph from "../Components/DashboardComponents/AutomationGraph";
@@ -193,6 +196,7 @@ export default function Dashboard() {
     setHeader((ps) => {
       return { ...ps, name: "Dashboard" };
     });
+    getDashboardDetails(globalProject?.project_id, auth?.userId);
   }, []);
 
   useEffect(() => {
@@ -296,14 +300,16 @@ export default function Dashboard() {
           </Grid>
         )}
 
-        <Grid item md={6}>
-          <PredictionStatus
-            showFailMsg={showFailMsg}
-            failMsg={failMsg}
-            faildata={faildata}
-            percentage={percentage}
-          />
-        </Grid>
+        {automationGraph && (
+          <Grid item md={6}>
+            <PredictionStatus
+              showFailMsg={showFailMsg}
+              failMsg={failMsg}
+              faildata={faildata}
+              percentage={percentage}
+            />
+          </Grid>
+        )}
 
         {automationTDgraph && (
           <Grid item md={6}>

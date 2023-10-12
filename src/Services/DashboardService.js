@@ -1,12 +1,5 @@
 import axios from "axios";
-import {
-  authservice,
-  biservice,
-  dashboard,
-  qfservice,
-  report,
-  userservice,
-} from "../Environment";
+import { dashboard } from "../Environment";
 
 export function ReportPercentage(callback, projectId, sprintName = 0) {
   axios({
@@ -16,7 +9,15 @@ export function ReportPercentage(callback, projectId, sprintName = 0) {
     }`,
   }).then((res) => {
     console.log(res.data);
-    console.log(Math.floor(res.data.data.total_pass_percentage));
     callback(Math.floor(res.data.data.total_pass_percentage));
   });
+}
+
+export function getDashboardDetails(projectId, userId) {
+  console.log(projectId);
+  axios
+    .get(`${dashboard}/qfdashboard/dashboard/${projectId}?userId=${userId}`)
+    .then((response) => {
+      console.log(response);
+    });
 }

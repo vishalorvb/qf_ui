@@ -28,8 +28,6 @@ export default function PredictionStatus({
 }) {
   const navigate = useNavigate();
 
-  console.log(percentage);
-
   const automationGraphData = {
     chart: {
       type: "solidgauge",
@@ -124,11 +122,7 @@ export default function PredictionStatus({
             highcharts={Highcharts}
             options={automationGraphData}
           />
-          {showFailMsg && (
-            <Alert severity="error">
-              {failMsg != "Jira is not configured" ? failMsg : ""}
-            </Alert>
-          )}
+          {showFailMsg && <Alert severity="error">{failMsg}</Alert>}
         </Stack>
         {faildata?.length > 0 && (
           <Table
