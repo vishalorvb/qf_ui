@@ -81,12 +81,10 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
       all_xpaths: details?.all_xpaths,
       name: elementData?.fieldname,
     };
-
+    console.log(elementDetails);
+    console.log(details);
     axios
-      .postForm(
-        `${qfservice}/qfservice/webpages/updateWebPageElementPaths`,
-        elementDetails
-      )
+      .postForm(`/qfservice/webpages/updateWebPageElementPaths`, elementDetails)
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && setUpdated(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);
