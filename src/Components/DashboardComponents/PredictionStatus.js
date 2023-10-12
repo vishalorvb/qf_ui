@@ -115,23 +115,27 @@ export default function PredictionStatus({
 
   return (
     <Paper variant="outlined">
-      <Stack gap={1} pt={0.5} pl={0.5}>
-        <Typography variant="h6">
-          QualityFusion prediction : Success of Testcases in next sprint
-        </Typography>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={automationGraphData}
-        />
-        {showFailMsg && (
-          <Alert severity="error">
-            {failMsg != "Jira is not configured" ? failMsg : ""}
-          </Alert>
-        )}
-      </Stack>
-      {faildata?.length > 0 && (
-        <TableContainer onClick={() => navigate("Dashboard/failedTestcases")}>
-          <Table size="small" aria-label="a dense table">
+      <TableContainer>
+        <Stack gap={1} pt={0.5} pl={0.5}>
+          <Typography variant="h6">
+            QualityFusion prediction : Success of Testcases in next sprint
+          </Typography>
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={automationGraphData}
+          />
+          {showFailMsg && (
+            <Alert severity="error">
+              {failMsg != "Jira is not configured" ? failMsg : ""}
+            </Alert>
+          )}
+        </Stack>
+        {faildata?.length > 0 && (
+          <Table
+            size="small"
+            aria-label="a dense table"
+            onClick={() => navigate("Dashboard/failedTestcases")}
+          >
             <TableHead>
               <TableRow>
                 <TableCell>Fail Prediction Testcases</TableCell>
@@ -154,8 +158,8 @@ export default function PredictionStatus({
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
-      )}
+        )}
+      </TableContainer>
     </Paper>
   );
 }
