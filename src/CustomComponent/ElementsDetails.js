@@ -94,25 +94,6 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
                 setLoading(false);
             });
     };
-<<<<<<< HEAD
-=======
-    console.log(elementDetails);
-    console.log(details);
-    axios
-      .postForm(
-        `${qfservice}/qfservice/webpages/updateWebPageElementPaths`,
-        elementDetails
-      )
-      .then((resp) => {
-        resp?.data?.status === "SUCCESS" && setUpdated(true);
-        resp?.data?.status === "SUCCESS" && setPopup(false);
-        setLoading(false);
-      })
-      .catch((resp) => {
-        setLoading(false);
-      });
-  };
->>>>>>> 565e4c1e6cb9489fdb190c7ee239220ebcd645e4
 
     return (
         <>
