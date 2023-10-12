@@ -1,8 +1,9 @@
 import PagesTable from "../PagesTable";
 import { useState } from "react";
 import CreatePage from "./CreatePage";
-import axios from "../../../api/axios";
+import axios from "axios";
 import useHead from "../../../hooks/useHead";
+import { qfservice } from "../../../Environment";
 export default function Pages({ location }) {
   const { setShowloader } = useHead();
   const [pages, setPages] = useState([]);
@@ -10,7 +11,7 @@ export default function Pages({ location }) {
     setShowloader(true);
     axios
       .get(
-        `/qfservice/webpages/getWebPagesList?module_id=${location?.state?.module_id}`
+        `${qfservice}/qfservice/webpages/getWebPagesList?module_id=${location?.state?.module_id}`
       )
       .then((resp) => {
         setPages(resp.data.info ?? []);

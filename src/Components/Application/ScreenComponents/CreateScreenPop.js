@@ -1,10 +1,11 @@
 import { Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../../api/axios";
+import axios from "axios";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import useAuth from "../../../hooks/useAuth";
 import useHead from "../../../hooks/useHead";
+import { qfservice } from "../../../Environment";
 
 export default function CreateScreenPop(props) {
   const { elementsList, applicationId, pageId, screenName, screenId } = props;
@@ -35,7 +36,7 @@ export default function CreateScreenPop(props) {
     };
     screenData?.name && screenData?.desc
       ? axios
-          .post(`/qfservice/screen/createScreen`, screendata)
+          .post(`${qfservice}/qfservice/screen/createScreen`, screendata)
           .then((resp) => {
             setSnackbarData({
               status: true,

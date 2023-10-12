@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import { MenuItem } from "@mui/material";
 import useHead from "../hooks/useHead";
-import axios from "../api/axios";
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import TableActions from "../../src/CustomComponent/TableActions";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useNavigate } from "react-router-dom";
 import { postVal } from "./UpdateOrganization";
 import moment from "moment";
+import { userservice } from "../Environment";
 const Organization = () => {
   const { auth } = useAuth();
   const { setHeader } = useHead();
@@ -95,7 +96,7 @@ const Organization = () => {
     try {
       axios({
         method: "get",
-        url: `/qfuserservice/user/orgdetails`,
+        url: `${userservice}/qfuserservice/user/orgdetails`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

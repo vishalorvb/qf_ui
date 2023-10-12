@@ -1,10 +1,11 @@
 import { Button, Grid, Stack } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
-import axios from "../api/axios";
+import axios from "axios";
 import useHead from "../hooks/useHead";
 import useAuth from "../hooks/useAuth";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";
+import { userservice } from "../Environment";
 
 let initialval = {
   organization_id: "",
@@ -70,7 +71,7 @@ const UpdateOrganization = () => {
     try {
       axios({
         method: "put",
-        url: `/qfuserservice/user/updateorgdetails?firstName=${postVal.firstName}&lastName=${postVal.lastName}&organizationName=${postVal.company}&adminEmail=${postVal.email}&phoneNumber=${postVal.phone}&orgId=${postVal.organization_id}`,
+        url: `${userservice}/qfuserservice/user/updateorgdetails?firstName=${postVal.firstName}&lastName=${postVal.lastName}&organizationName=${postVal.company}&adminEmail=${postVal.email}&phoneNumber=${postVal.phone}&orgId=${postVal.organization_id}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

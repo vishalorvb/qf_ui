@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import useHead from "../hooks/useHead";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../api/axios";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";

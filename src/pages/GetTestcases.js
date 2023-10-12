@@ -8,9 +8,10 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { axiosPrivate } from "../api/axios";
+import axios from "axios";
 import Table from "../CustomComponent/Table";
 import useHead from "../hooks/useHead";
+import { qfservice } from "../Environment";
 
 function GetTestcases() {
   const [testcaseObject, setTestcaseObject] = useState([]);
@@ -21,7 +22,7 @@ function GetTestcases() {
   });
 
   useEffect(() => {
-    axiosPrivate.get(`qfservice/applications`).then((res) => {
+    axios.get(`${qfservice}/qfservice/applications`).then((res) => {
       console.log(res.data.result);
       let applications = res.data.result;
       setApplicationObject(applications);
@@ -30,9 +31,9 @@ function GetTestcases() {
   }, []);
 
   useEffect(() => {
-    axiosPrivate
+    axios
       .get(
-        `qfservice/webtestcase/getWebTestcasesInfoByApplication?application_id=${applicationId}`
+        `${qfservice}/qfservice/webtestcase/getWebTestcasesInfoByApplication?application_id=${applicationId}`
       )
       .then((res) => {
         console.log(res.data.info);

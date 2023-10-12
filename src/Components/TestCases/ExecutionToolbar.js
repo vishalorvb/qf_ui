@@ -9,7 +9,7 @@ import {
   TextFieldElement,
   useForm,
 } from "react-hook-form-mui";
-import axios from "../../api/axios";
+import axios from "axios";
 import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
@@ -26,6 +26,7 @@ import MenuList from "@mui/material/MenuList";
 import BackdropLoader from "../../CustomComponent/BackdropLoader";
 import { Controller } from "react-hook-form";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 
 const options = ["Chrome", "Edge", "Firefox", "Safari"];
 export default function ExecutionToolbar({
@@ -180,7 +181,7 @@ export default function ExecutionToolbar({
     applicationId !== undefined &&
       axios
         .get(
-          `/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
+          `${qfservice}/qfservice/build-environment?project_id=${projectId}&module_id=${applicationId}`
         )
         .then((resp) => {
           setBuildEnvId(resp?.data?.data[0]?.id);
@@ -199,7 +200,7 @@ export default function ExecutionToolbar({
     applicationId !== undefined &&
       axios
         .get(
-          `/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
+          `${qfservice}/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
         )
         .then((resp) => {
           const execEnv = resp?.data?.data;

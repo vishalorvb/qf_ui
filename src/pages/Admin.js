@@ -25,6 +25,7 @@ import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";
+import { userservice } from "../Environment";
 
 export default function Admin() {
   const { setHeader } = useHead();
@@ -99,7 +100,7 @@ export default function Admin() {
   const getUsers = () => {
     axiosPrivate
       .get(
-        `/qfuserservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
+        `${userservice}/qfuserservice/user/listofAllUsers?orgId=${auth.info.organization_id}&ssoId=${auth.info.ssoId}`
       )
       .then((res) => {
         setUsers(res.data?.info);

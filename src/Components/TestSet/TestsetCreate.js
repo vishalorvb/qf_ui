@@ -19,10 +19,11 @@ import {
 } from "../../Services/QfService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
-import axios, { axiosPrivate } from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
-import Divider from '@mui/material/Divider';
-import TestSetScheduler from './TestSetScheduler';
+import { qfservice } from "../../Environment";
+import Divider from "@mui/material/Divider";
+import TestSetScheduler from "./TestSetScheduler";
 
 function TestsetCreate() {
     const {
@@ -165,8 +166,8 @@ function TestsetCreate() {
         };
 
         testcaseObjFlag &&
-            axiosPrivate
-                .post(`qfservice/webtestset/createWebTestset`, testsetData)
+            axios
+                .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
                 .then((res) => {
                     setSnackbarData({
                         status: true,
@@ -318,18 +319,19 @@ function TestsetCreate() {
                 <Grid item md={12}>
                     <Divider />
                 </Grid>
-                {location?.pathname?.includes("Update") && <Grid item md={12}>
-                    <TestSetScheduler
-                        projectId={globalProject?.project_id}
-                        moduleId={globalApplication?.module_id}
-                        testsetId={location.state.testset_id}
-                        onSubmit={e => console.log(e)}
-                    />
-                </Grid>}
+                {location?.pathname?.includes("Update") && (
+                    <Grid item md={12}>
+                        <TestSetScheduler
+                            projectId={globalProject?.project_id}
+                            moduleId={globalApplication?.module_id}
+                            testsetId={location.state.testset_id}
+                            onSubmit={(e) => console.log(e)}
+                        />
+                    </Grid>
+                )}
                 <Grid item md={12}>
                     <Divider />
                 </Grid>
-
 
                 {globalApplication?.module_type == 19 ? (
                     <Grid item md={12}>

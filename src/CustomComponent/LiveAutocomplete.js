@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import axios from "../api/axios";
+import axios from "axios";
 import useHead from "../hooks/useHead";
 
 export default function LiveAutocomplete({

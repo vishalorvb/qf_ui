@@ -6,9 +6,10 @@ import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { qfservice } from "../../Environment";
 export default function CreateAnsibleInstance() {
   const { auth } = useAuth();
   const location = useLocation();
@@ -50,7 +51,7 @@ export default function CreateAnsibleInstance() {
     console.log(data);
     axios
       .post(
-        `/qfservice/CreateWebRelease?release_id=${
+        `${qfservice}/qfservice/CreateWebRelease?release_id=${
           location?.state?.id ? location?.state?.id : 0
         }&module_id=${location?.state?.module_id}&release_name=${
           data?.releaseName

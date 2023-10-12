@@ -1,10 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "../../api/axios";
+import axios from "axios";
 import Table from "../../CustomComponent/Table";
 import TestsetExecutionToolbar from "../TestSet/TestsetExecutionToolbar";
 import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 
 const data = {};
 
@@ -84,7 +85,9 @@ function ExecuteTestSetDetails({
     ) {
       globalApplication?.module_type === 1
         ? axios
-            .get(`/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`)
+            .get(
+              `${qfservice}/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`
+            )
             .then((resp) => {
               const data = resp?.data?.data;
               settestcaseList(data);
@@ -103,7 +106,7 @@ function ExecuteTestSetDetails({
             })
         : axios
             .get(
-              `/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
+              `${qfservice}/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
             )
             .then((resp) => {
               const data = resp?.data?.info;

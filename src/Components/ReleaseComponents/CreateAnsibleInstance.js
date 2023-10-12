@@ -13,7 +13,7 @@ import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { getProject } from "../../Services/QfService";
@@ -73,7 +73,7 @@ export default function CreateAnsibleInstance() {
     useEffect(() => {
         location?.state?.id
             ? axios
-                .post(`/qfservice/get-release/${location?.state?.id}`, {
+                .post(`${qfservice}/qfservice/get-release/${location?.state?.id}`, {
                     project_id: location?.state?.project_id,
                     release_id: "",
                     release_type: "ansible_release",
@@ -102,7 +102,7 @@ export default function CreateAnsibleInstance() {
 
         axios
             .post(
-                `/qfservice/CreateAnsibleRelease/?release_id=${location?.state?.id ? location?.state?.id : 0
+                `${qfservice}/qfservice/CreateAnsibleRelease/?release_id=${location?.state?.id ? location?.state?.id : 0
                 }&project_id=${location?.state?.project_id
                     ? location?.state?.project_id
                     : globalProject?.project_id

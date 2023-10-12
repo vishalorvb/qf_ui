@@ -2,7 +2,7 @@
 //import MaterialReactTable from "material-react-table";
 //import { useEffect, useState } from "react";
 //import { useLocation, useNavigate } from "react-router-dom";
-//import axios from "../../api/axios";
+//import axios from "axios";
 //import useHead from "../../hooks/useHead";
 
 //export default function UpdateScreenOrderinDataset() {
@@ -14,7 +14,7 @@
 //  useEffect(() => {
 //    axios
 //      .get(
-//        `/qfservice/webtestcase/getScreens?testcase_id=${location?.state?.testcaseId}`
+//        `${qfservice}/qfservice/webtestcase/getScreens?testcase_id=${location?.state?.testcaseId}`
 //      )
 //      .then((resp) => {
 //        const data = resp?.data?.info;
@@ -32,7 +32,7 @@
 
 //  const updateScreenOrder = () => {
 //    axios
-//      .post(`/qfservice/webtestcase/updateOrderOfScreensInTestcase`, {
+//      .post(`${qfservice}/qfservice/webtestcase/updateOrderOfScreensInTestcase`, {
 //        testcaseId: location?.state?.testcaseId,
 //        screen_ids: order,
 //      })

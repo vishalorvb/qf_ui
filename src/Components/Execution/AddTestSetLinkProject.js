@@ -2,11 +2,12 @@ import { Button, TextareaAutosize } from "@mui/material";
 import { useEffect, useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Grid } from "@mui/material";
-import axios from "../../api/axios";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 
 let initialValue = {
   testset_id: 0,
@@ -50,7 +51,7 @@ function AddTestSetLinkProject() {
       postVal.module_id = location.state?.applicationId;
       postVal.project_id = location.state?.projectId;
       axios
-        .post(`/qfservice/webtestset/createWebTestset`, postVal)
+        .post(`${qfservice}/qfservice/webtestset/createWebTestset`, postVal)
         .then((resp) => {
           if (resp?.data?.status === "SUCCESS") {
             setReportSuccessMsg(true);

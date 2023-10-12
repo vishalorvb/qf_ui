@@ -13,7 +13,7 @@ import {
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Stack } from "@mui/system";

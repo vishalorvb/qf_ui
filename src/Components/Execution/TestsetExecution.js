@@ -2,11 +2,12 @@ import { Button, TextField, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
-import axios from "../../api/axios";
+import axios from "axios";
 import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import ExecuteTestSetDetails from "./ExecuteTestSetDetails";
 import LinkProjectExecution from "./LinkProjectExecution";
 import { useNavigate } from "react-router-dom";
+import { qfservice } from "../../Environment";
 
 export default function TestsetExecution() {
   const {
@@ -35,11 +36,11 @@ export default function TestsetExecution() {
   }, []);
 
   useEffect(() => {
-    setSelectedItem([])
+    setSelectedItem([]);
     if (globalApplication) {
       axios
         .get(
-          `/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
+          `${qfservice}/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
         )
         .then((resp) => {
           const testcases = resp?.data?.info ? resp?.data?.info : [];

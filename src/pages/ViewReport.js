@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import axios from "../api/axios";
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import ReportList from "../Components/Reports/ReportList";
 import pagegenerator from "../Components/Reports/HTMLgenrator";

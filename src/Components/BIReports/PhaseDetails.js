@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { Stack } from "@mui/system";
 import { validateForm } from "../../CustomComponent/FormValidation";
 import { useNavigate } from "react-router";
-import { axiosPrivate } from "../../api/axios";
+import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { biservice } from "../../Environment";
 
 function PhaseDetails(props) {
   const {
@@ -22,7 +23,7 @@ function PhaseDetails(props) {
     IsDefault,
     getPhases,
     setOpenNewPhase,
-    setOpenPhase
+    setOpenPhase,
   } = props;
 
   const initialvalues = {
@@ -58,7 +59,6 @@ function PhaseDetails(props) {
   ];
   let requiredOnlyAlphabets = [phase_name];
 
-  
   useEffect(() => {
     setData({ ...initialvalues });
   }, [props]);
@@ -82,7 +82,7 @@ function PhaseDetails(props) {
       var data1 = {
         id: PhaseId,
         project_id: ProjectId,
-        phase: (data.phaseName).trim(),
+        phase: data.phaseName.trim(),
         total_tc: data.totalTestcases,
         automated_tc: data.automatedTestcases,
         completed_tc: data.completedTestcases,
@@ -94,8 +94,8 @@ function PhaseDetails(props) {
         is_default: IsDefault,
       };
       console.log(data1);
-      axiosPrivate
-        .post(`/Biservice/projects/phases/create`, data1)
+      axios
+        .post(`${biservice}/Biservice/projects/phases/create`, data1)
         .then((res) => {
           console.log(res.data.message);
           setMsg(res.data.message);
@@ -123,7 +123,7 @@ function PhaseDetails(props) {
       console.log("Invalid form");
     }
   };
-console.log(data);
+  console.log(data);
   return (
     <Grid item container md={8.5}>
       <Grid item container direction="row" spacing={1} mt={2}>

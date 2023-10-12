@@ -3,11 +3,12 @@ import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useHead from "../../../hooks/useHead";
-import axios from "../../../api/axios";
+import axios from "axios";
 import ElementsDetails from "../../../CustomComponent/ElementsDetails";
 import NearMeOutlinedIcon from "@mui/icons-material/NearMeOutlined";
 import { IconButton } from "@mui/material";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+import { qfservice } from "../../../Environment";
 
 export default function ScreenElements() {
   const { setHeader } = useHead();
@@ -24,7 +25,7 @@ export default function ScreenElements() {
   const getScreenElementsList = () => {
     axios
       .get(
-        `qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
+        `${qfservice}/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((resp) => {
         // console.log(resp?.data?.info);
@@ -46,7 +47,7 @@ export default function ScreenElements() {
 
   const updateScreenOrder = () => {
     axios
-      .post(`qfservice/screen/updateOrderOfScreenElements`, {
+      .post(`${qfservice}/qfservice/screen/updateOrderOfScreenElements`, {
         screenId: location?.state?.screen_id,
         screen_element_ids: order,
       })

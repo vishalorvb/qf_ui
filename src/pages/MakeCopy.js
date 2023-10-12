@@ -4,7 +4,8 @@ import { TextField, Button, Stack, Typography } from "@mui/material";
 import useHead from "../hooks/useHead";
 import { useEffect } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
+import axios from "axios";
+import { qfservice } from "../Environment";
 
 const MakeCopy = () => {
   const {
@@ -21,10 +22,10 @@ const MakeCopy = () => {
     console.log(data);
     const { name, description } = data;
     const url = location?.pathname?.includes("CopyTestcase")
-      ? `/qfservice/webtestcase/copyTestcase?testcase_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testcase_name=TC_${name}&testcase_desc=${description}`
+      ? `${qfservice}/qfservice/webtestcase/copyTestcase?testcase_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testcase_name=TC_${name}&testcase_desc=${description}`
       : location?.pathname?.includes("CopyTestset")
-      ? `/qfservice/webtestset/copyTestSet?testset_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testset_name=TS_${name}&testset_desc=${description}`
-      : `/qfservice/copyProject?project_id=${location?.state?.id}&project_name=${name}&project_desc=${description}`;
+      ? `${qfservice}/qfservice/webtestset/copyTestSet?testset_id=${location?.state?.id}&project_id=${location?.state?.projectId}&testset_name=TS_${name}&testset_desc=${description}`
+      : `${qfservice}/qfservice/copyProject?project_id=${location?.state?.id}&project_name=${name}&project_desc=${description}`;
 
     axios.post(url).then((resp) => {
       setSnackbarData({

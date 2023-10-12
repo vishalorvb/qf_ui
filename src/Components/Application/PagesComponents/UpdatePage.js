@@ -6,8 +6,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Grid } from "@mui/material";
-import axios from "../../../api/axios";
+import axios from "axios";
 import { useRef } from "react";
+import { qfservice } from "../../../Environment";
 import useHead from "../../../hooks/useHead";
 let initialValue = {
   web_page_id: "",
@@ -36,7 +37,7 @@ function UpdatePage(props) {
           : pageName.current.classList.add("error");
         axios
           .post(
-            `/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
+            `${qfservice}/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
           )
           .then((resp) => {
             setSnackbarData({
