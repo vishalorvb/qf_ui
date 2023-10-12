@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl, authservice, biservice, dashboard, qfservice, report, userservice } from "../Environment";
+import { biservice } from "../Environment";
 
 
 export async function deleteReport(testMapId, callback) {

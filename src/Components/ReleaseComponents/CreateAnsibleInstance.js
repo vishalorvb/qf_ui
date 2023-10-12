@@ -16,7 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import { getProject } from "../../Services/ProjectService";
+import { getProject } from "../../Services/QfService";
 
 export default function CreateAnsibleInstance() {
     const { auth } = useAuth();

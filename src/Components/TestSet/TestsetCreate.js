@@ -16,7 +16,7 @@ import {
     getSprint,
     getIssues,
     GetTestCase_V2fortestset,
-} from "../../Services/TestCaseService";
+} from "../../Services/QfService";
 import Table from "../../CustomComponent/Table";
 import { useForm } from "react-hook-form";
 import axios, { axiosPrivate } from "../../api/axios";

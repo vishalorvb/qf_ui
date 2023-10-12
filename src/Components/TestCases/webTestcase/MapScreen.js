@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getPagesForTestcase } from "../../../Services/TestCaseService";
-import { getPagesIntestcase } from "../../../Services/TestCaseService";
+import { getPagesForTestcase } from "../../../Services/QfService";
+import { getPagesIntestcase } from "../../../Services/QfService";
 import MuiltiSelect from "../../../CustomComponent/MuiltiSelect";
 import useHead from "../../../hooks/useHead";
 
