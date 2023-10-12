@@ -166,8 +166,8 @@ function TestsetCreate() {
     };
 
     testcaseObjFlag &&
-      axiosPrivate
-        .post(`qfservice/webtestset/createWebTestset`, testsetData)
+      axios
+        .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
         .then((res) => {
           setSnackbarData({
             status: true,
@@ -182,18 +182,6 @@ function TestsetCreate() {
       return { ...prevSelectedDatasets, [row?.testcase_id]: e };
     });
   };
-
-  testcaseObjFlag &&
-    axios
-      .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
-      .then((res) => {
-        setSnackbarData({
-          status: true,
-          message: res?.data?.message,
-          severity: res?.data?.status,
-        });
-        navigate("/Testset/Recent");
-      });
 
   const columns = [
     {
