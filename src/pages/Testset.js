@@ -1,4 +1,4 @@
-import { MenuItem, Typography } from "@mui/material";
+import { IconButton, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -12,6 +12,9 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import TableActions from "../CustomComponent/TableActions";
 import ConfirmPop from "../CustomComponent/ConfirmPop";
 import Scheduler from "../CustomComponent/Scheduler";
+import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
+//import MastPop from "../CustomComponent/MastPop";
+//import TestSetScheduler from "../Components/TestSet/TestSetScheduler";
 
 export default function Testset() {
     const {
@@ -25,7 +28,8 @@ export default function Testset() {
     const [openDelete, setOpenDelete] = useState(false);
     const [deleteObject, setDeleteObject] = useState();
     const [delSuccessMsg, setDelSuccessMsg] = useState(false);
-
+    //let [schedulepopup, setSchedulePopup] = useState(false);
+    //let [scheduletestsetId, setScheduletestsetId] = useState();
     const navigate = useNavigate();
     const { setHeader } = useHead();
 
@@ -81,20 +85,22 @@ export default function Testset() {
                 );
             },
         },
-        {
-            field: "scheduler",
-            headerName: "Schedule",
-            flex: 1,
-            sortable: false,
-            renderCell: (param) => {
-                return (
-                    <Scheduler
-                        date="10:10 "
-                        setDate={date => console.log(date)}
-                    ></Scheduler>
-                );
-            },
-        },
+        //{
+        //    field: "scheduler",
+        //    headerName: "Schedule",
+        //    flex: 1,
+        //    sortable: false,
+        //    renderCell: (param) => {
+        //        return (
+        //            <IconButton
+        //                onClick={e => {
+        //                    setScheduletestsetId(param.row.testset_id)
+        //                    setSchedulePopup(true)
+        //                }}
+        //            ><ScheduleRoundedIcon color="primary" /></IconButton>
+        //        );
+        //    },
+        //},
         {
             field: "testset_desc",
             headerName: "Testset Description",
@@ -157,10 +163,19 @@ export default function Testset() {
 
     return (
         <>
-            <Scheduler
-                date="10:10 "
-                setDate={date => console.log(date)}
-            ></Scheduler>
+            {/*<MastPop
+                open={schedulepopup}
+                setOpen={setSchedulePopup}
+                heading="Schedule Testset"
+            >
+                <TestSetScheduler
+                    projectId={globalProject?.project_id}
+                    moduleId={globalApplication?.module_id}
+                    testsetId={scheduletestsetId}
+                    onSubmit={e => setSchedulePopup(false)}
+                />
+            </MastPop>*/}
+
             <div className="apptable">
                 <div className="intable">
                     <ProjectnApplicationSelector

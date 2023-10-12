@@ -17,5 +17,3 @@ export let report = "http://10.11.12.243:8065"
 
 export let biservice = "http://10.11.12.243:8066"
 
-
-// export const baseUrl = "https://iamsqfqa.prolifics.com";
