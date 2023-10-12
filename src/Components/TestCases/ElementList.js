@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getElement } from "../../Services/TestCaseService";
+import { getElement } from "../../Services/QfService";
 import Table from "../../CustomComponent/Table";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import DragDrop from "../../CustomComponent/DragDrop";

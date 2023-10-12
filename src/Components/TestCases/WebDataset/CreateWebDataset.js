@@ -15,12 +15,12 @@ Result:
 
 import React, { useEffect, useRef, useState } from 'react'
 import CreateDataSetPopUp from './CreateDataSetPopUp'
-import { getData_for_createDataset } from '../../../Services/TestCaseService';
+import { getData_for_createDataset } from '../../../Services/QfService';
 import { getScreenList } from './DatasetHelper';
 import ScreenList from './ScreenList';
 import ElementList from './ElementList';
 import { Grid } from '@mui/material';
-import { CreateDataset } from '../../../Services/TestCaseService';
+import { CreateDataset } from '../../../Services/QfService';
 import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
 
 let snackbarmsg = ""
@@ -74,7 +74,7 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
         CreateDataset(requestData.current).then((res) => {
             console.log(res)
             if (res === false) {
-                snackbarmsg = datasetInfo.dataset_id==0?"Dataset Created Successfully ":"Dataset Updated Successfully"
+                snackbarmsg = datasetInfo.dataset_id == 0 ? "Dataset Created Successfully " : "Dataset Updated Successfully"
                 snackbarType = "success"
                 setSnackbar(true)
                 setTimeout(() => {

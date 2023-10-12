@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getReleaseHistory } from '../../Services/DevopsServices'
+import { getReleaseHistory } from '../../Services/QfService'
 import Table from '../../CustomComponent/Table'
 import { Button, IconButton, Tooltip, Typography } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { release } from '../../Services/DevopsServices'
+import { release } from '../../Services/QfService'
 import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import { dateFormater } from '../../utilities/Utility'

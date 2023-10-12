@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import Scheduler from "../../CustomComponent/Scheduler"
 import useAuth from "../../hooks/useAuth";
-import { getEnvironment } from "../../Services/TestsetService";
-import { getTestcaseInTestset } from "../../Services/TestsetService";
-import { getExecutionLocation } from "../../Services/TestsetService";
+import { getEnvironment } from "../../Services/QfService";
+import { getTestcaseInTestset } from "../../Services/QfService";
+import { getExecutionLocation } from "../../Services/QfService";
 import { baseUrl } from "../../Environment";
 import { SelectElement } from "react-hook-form-mui";
 function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {

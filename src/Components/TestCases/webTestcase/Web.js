@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import ElementList from '../ElementList'
 import useHead from '../../../hooks/useHead'
-import { getPagesForTestcase, getPagesIntestcase } from '../../../Services/TestCaseService'
+import { getPagesForTestcase, getPagesIntestcase } from '../../../Services/QfService'
 import MapScreen from './MapScreen'
 
 function Web({ project, application, testcaseId, setScreen }) {

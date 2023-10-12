@@ -1,4 +1,8 @@
 import axios from "axios";
+<<<<<<< HEAD
+import { biservice } from "../Environment";
+
+=======
 import {
   authservice,
   biservice,
@@ -7,6 +11,7 @@ import {
   report,
   userservice,
 } from "../Environment";
+>>>>>>> 565e4c1e6cb9489fdb190c7ee239220ebcd645e4
 
 export async function deleteReport(testMapId, callback) {
   console.log("delete report service");

@@ -1,17 +1,17 @@
 import { Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
-import { getDatasetDetails } from "../../../Services/ApiService";
+import { getDatasetDetails } from "../../../Services/QfService";
 import MaterialReactTable from "material-react-table";
 import { postData } from "./ApiDatasetData";
 import useHead from "../../../hooks/useHead";
-import { updateApiOrder } from "../../../Services/ApiService";
+import { updateApiOrder } from "../../../Services/QfService";
 export let getData;
 
-function APiListDrawer({ setSelectedApi, datasetId ,testcaseId }) {
+function APiListDrawer({ setSelectedApi, datasetId, testcaseId }) {
     let [Api, setApi] = useState([]);
     let [ApiId, setApiId] = useState(0);
     let [tempApi, setTempApi] = useState([]);
-    const {setSnackbarData } = useHead();
+    const { setSnackbarData } = useHead();
 
     const columns = useMemo(
         () => [
@@ -90,10 +90,10 @@ function APiListDrawer({ setSelectedApi, datasetId ,testcaseId }) {
                             x.splice(draggingRow.index + 1, 1)
                             let data = {
                                 testcaseId: testcaseId,
-                                api_ids:[]
+                                api_ids: []
                             }
                             data.api_ids = x.map(api => api.api_id)
-                            updateApiOrder(data).then(res=>{
+                            updateApiOrder(data).then(res => {
                                 setTempApi([...x])
                                 setSnackbarData({
                                     status: true,
@@ -101,7 +101,7 @@ function APiListDrawer({ setSelectedApi, datasetId ,testcaseId }) {
                                     severity: "success",
                                 })
                             })
-                           
+
                         }
                     },
                 })}
