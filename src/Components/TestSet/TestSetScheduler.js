@@ -12,7 +12,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
     let [Scheduledate, setScheduleDate] = useState()
     let [executionLocation, setExecutionLocation] = useState([])
     let [environment, setEnvironment] = useState([])
-    let [browser, setBrowser] = useState(["Chrome", "Firefox", "Safari"])
+    let [browser, setBrowser] = useState(["Chrome", "Edge", "Firefox", "Safari"])
     let [data, setData] = useState({
         "browser_type": "Chrome",
         "build_environment_id": 0,
@@ -51,10 +51,11 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
     useEffect(() => {
         getEnvironment(projectId, moduleId, () => { }).then(res => {
             setData({ ...data, build_environment_id: res[0]?.id ?? 0 })
-            console.log(res)
             setEnvironment(res)
         })
-        getExecutionLocation(projectId, moduleId, setExecutionLocation)
+        getExecutionLocation(projectId, moduleId, setExecutionLocation).then(res => {
+            setData({ ...data, execution_location: res[0]?.value ?? 0 })
+        })
     }, [projectId, moduleId])
 
     useEffect(() => {
@@ -78,6 +79,8 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <select
                         onChange={e => {
                             setData({ ...data, build_environment_id: e.target.value })
+
+
                         }}
                     >
                         {executionLocation?.map(loc => <option value={loc.value}>{loc.name}</option>)}
@@ -89,7 +92,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <label for="">Execution Environment</label>
                     <select
                         onChange={e => {
-                            setData({ ...data, build_environment_id: e.target.value })
+                            setData({ ...data, execution_location: e.target.value })
                         }}
                     >
                         {environment?.map(env => <option value={env.id}>{env.name}</option>)}
