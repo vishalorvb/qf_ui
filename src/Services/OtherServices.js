@@ -1,15 +1,13 @@
-import { baseUrl } from "../Environment"
-import axios from "../api/axios"
+import { qfservice } from "../Environment";
+import axios from "../api/axios";
 
 //http://10.11.12.243:8083/qfservice/api/jobs/savejob
-
-
 
 //{
 
 //    "jobName": "qfreportservice",
 
-//    "baseurl": "http://10.11.12.243:8063/qfreportservice/",
+//    "qfservice": "http://10.11.12.243:8063/qfreportservice/",
 
 //    "apiurl": "actuator/health",
 
@@ -19,16 +17,17 @@ import axios from "../api/axios"
 
 //}
 
-
 export async function scheduleJob(data) {
-    return await axios({
-        method: "post",
-        data: data,
-        url: `${baseUrl}/qfservice/api/jobs/savejob`
-    }).then(res => {
-        return true
-    }).catch(err => {
-        console.log(err)
-        return false
+  return await axios({
+    method: "post",
+    data: data,
+    url: `${qfservice}/qfservice/api/jobs/savejob`,
+  })
+    .then((res) => {
+      return true;
     })
+    .catch((err) => {
+      console.log(err);
+      return false;
+    });
 }
