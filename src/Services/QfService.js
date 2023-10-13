@@ -853,7 +853,7 @@ export function updateTestset(data) {
 export async function getEnvironment(projectId, moduleId, callback) {
   return await axios
     .get(
-      `${baseUrl}/qfservice/build-environment?project_id=${projectId}&module_id=${moduleId}`
+      `${qfservice}/qfservice/build-environment?project_id=${projectId}&module_id=${moduleId}`
     )
     .then((res) => {
       callback(res.data.data ?? []);
