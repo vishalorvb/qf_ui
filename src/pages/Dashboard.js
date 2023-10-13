@@ -300,7 +300,7 @@ export default function Dashboard() {
           </Grid>
         )}
 
-        {automationGraph && (
+        {showTensorFlow && (
           <Grid item md={6}>
             <PredictionStatus
               showFailMsg={showFailMsg}

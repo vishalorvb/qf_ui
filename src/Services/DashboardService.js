@@ -14,10 +14,7 @@ export function ReportPercentage(callback, projectId, sprintName = 0) {
 }
 
 export function getDashboardDetails(projectId, userId) {
-  console.log(projectId);
-  axios
-    .get(`${dashboard}/qfdashboard/dashboard/${projectId}?userId=${userId}`)
-    .then((response) => {
-      console.log(response);
-    });
+  return axios.get(
+    `${dashboard}/qfdashboard/dashboard/${projectId}?userId=${userId}`
+  );
 }
