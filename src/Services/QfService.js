@@ -629,7 +629,7 @@ export async function getAlltestcaseOfApplicationandSubapplication(
 ) {
   return await axios
     .get(
-      `${baseUrl}/qfservice/getModuleAndTestcases?projectId=${projectId}&moduleId=${moduleId}`
+      `${qfservice}/qfservice/getModuleAndTestcases?projectId=${projectId}&moduleId=${moduleId}`
     )
     .then((res) => {
       callback(res.data ?? []);
