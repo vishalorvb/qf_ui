@@ -6,11 +6,13 @@ import { getTestcaseInTestset } from "../../Services/QfService";
 import { getExecutionLocation } from "../../Services/QfService";
 import { baseUrl } from "../../Environment";
 import { scheduleJob } from "../../Services/OtherServices";
+import useHead from "../../hooks/useHead";
 
 
 function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
 
     const { auth } = useAuth();
+    const { setSnackbarData } = useHead();
     let [Scheduledate, setScheduleDate] = useState()
     let [executionLocation, setExecutionLocation] = useState([])
     let [environment, setEnvironment] = useState([])
@@ -44,10 +46,24 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
             "baseurl": baseUrl,
             "apiurl": "/qfservice/ExecuteWebTestset_v11",
             "cron": Scheduledate,
-            "requestbody": data
+            "requestbody": JSON.stringify(data)
         }
-
-        scheduleJob(payload)
+        scheduleJob(payload).then(res => {
+            if (res) {
+                setSnackbarData({
+                    status: true,
+                    message: "Job Scheduled Successfully",
+                    severity: "success",
+                });
+            }
+            else {
+                setSnackbarData({
+                    status: true,
+                    message: "Something went wrong",
+                    severity: "error",
+                });
+            }
+        })
     }
 
     useEffect(() => {
@@ -80,7 +96,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <label for="">Execution Location</label>
                     <select
                         onChange={e => {
-                            setData({ ...data, build_environment_id: e.target.value })
+                            setData({ ...data, execution_location: e.target.value })
 
 
                         }}
@@ -94,10 +110,11 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <label for="">Execution Environment</label>
                     <select
                         onChange={e => {
-                            setData({ ...data, execution_location: e.target.value })
+                            setData({ ...data, build_environment_id: e.target.value })
                             environment.find(env => {
                                 if (env.id === e.target.value) {
                                     console.log(env.name)
+                                    setData({ ...data, build_environment_name: e.target.value })
                                 }
                             })
                         }}
