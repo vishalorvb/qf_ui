@@ -106,7 +106,7 @@ function TestcaseTable({ project, application }) {
     useEffect(() => {
         setTestcases([])
         setShowloader(true)
-        getAlltestcaseOfApplicationandSubapplication(application?.module_id, setTestcases).then(res => {
+        getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases).then(res => {
             setShowloader(false)
         })
     }, [project, application])
@@ -132,7 +132,7 @@ function TestcaseTable({ project, application }) {
 
                     DeleteTestCase(deletTestcaseId).then((res) => {
                         if (res) {
-                            getAlltestcaseOfApplicationandSubapplication(application?.module_id, setTestcases);
+                            getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases);
                             setShowloader(false)
 
                             setSnackbarData({

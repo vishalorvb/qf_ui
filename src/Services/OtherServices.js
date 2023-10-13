@@ -20,10 +20,15 @@ import axios from "../api/axios"
 //}
 
 
-export function scheduleJob(data) {
-    axios({
+export async function scheduleJob(data) {
+    return await axios({
         method: "post",
         data: data,
         url: `${baseUrl}/qfservice/api/jobs/savejob`
+    }).then(res => {
+        return true
+    }).catch(err => {
+        console.log(err)
+        return false
     })
 }
