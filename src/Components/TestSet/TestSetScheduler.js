@@ -5,14 +5,16 @@ import { getEnvironment } from "../../Services/TestsetService";
 import { getTestcaseInTestset } from "../../Services/TestsetService";
 import { getExecutionLocation } from "../../Services/TestsetService";
 import { baseUrl } from "../../Environment";
-import { SelectElement } from "react-hook-form-mui";
+import { scheduleJob } from "../../Services/OtherServices";
+
+
 function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
 
     const { auth } = useAuth();
     let [Scheduledate, setScheduleDate] = useState()
     let [executionLocation, setExecutionLocation] = useState([])
     let [environment, setEnvironment] = useState([])
-    let [browser, setBrowser] = useState(["Chrome", "Firefox", "Safari"])
+    let [browser, setBrowser] = useState(["Chrome", "Edge", "Firefox", "Safari"])
     let [data, setData] = useState({
         "browser_type": "Chrome",
         "build_environment_id": 0,
@@ -45,16 +47,17 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
             "requestbody": data
         }
 
-
+        scheduleJob(payload)
     }
 
     useEffect(() => {
         getEnvironment(projectId, moduleId, () => { }).then(res => {
             setData({ ...data, build_environment_id: res[0]?.id ?? 0 })
-            console.log(res)
             setEnvironment(res)
         })
-        getExecutionLocation(projectId, moduleId, setExecutionLocation)
+        getExecutionLocation(projectId, moduleId, setExecutionLocation).then(res => {
+            setData({ ...data, execution_location: res[0]?.value ?? 0 })
+        })
     }, [projectId, moduleId])
 
     useEffect(() => {
@@ -78,6 +81,8 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <select
                         onChange={e => {
                             setData({ ...data, build_environment_id: e.target.value })
+
+
                         }}
                     >
                         {executionLocation?.map(loc => <option value={loc.value}>{loc.name}</option>)}
@@ -89,7 +94,12 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <label for="">Execution Environment</label>
                     <select
                         onChange={e => {
-                            setData({ ...data, build_environment_id: e.target.value })
+                            setData({ ...data, execution_location: e.target.value })
+                            environment.find(env => {
+                                if (env.id === e.target.value) {
+                                    console.log(env.name)
+                                }
+                            })
                         }}
                     >
                         {environment?.map(env => <option value={env.id}>{env.name}</option>)}
@@ -99,7 +109,9 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                 <div className="dropdown">
                     <label for="">Browser</label>
                     <select
-
+                        onChange={e => {
+                            setData({ ...data, browser_type: e.target.value })
+                        }}
                     >
                         {browser?.map(br => <option value={br}>{br}</option>)}
 
