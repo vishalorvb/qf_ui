@@ -127,8 +127,8 @@ export async function GetTestCase(
         });
 }
 
-export async function getAlltestcaseOfApplicationandSubapplication(moduleId, callback) {
-    return await axios.get(`${baseUrl}/qfservice/getModuleAndTestcases?moduleId=${moduleId}`).then(res => {
+export async function getAlltestcaseOfApplicationandSubapplication(projectId, moduleId, callback) {
+    return await axios.get(`${baseUrl}/qfservice/getModuleAndTestcases?projectId=${projectId}&moduleId=${moduleId}`).then(res => {
         callback(res.data ?? [])
     })
 }
