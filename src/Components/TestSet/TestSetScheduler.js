@@ -5,7 +5,9 @@ import { getEnvironment } from "../../Services/TestsetService";
 import { getTestcaseInTestset } from "../../Services/TestsetService";
 import { getExecutionLocation } from "../../Services/TestsetService";
 import { baseUrl } from "../../Environment";
-import { SelectElement } from "react-hook-form-mui";
+import { scheduleJob } from "../../Services/OtherServices";
+
+
 function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
 
     const { auth } = useAuth();
@@ -45,7 +47,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
             "requestbody": data
         }
 
-
+        scheduleJob(payload)
     }
 
     useEffect(() => {
@@ -93,6 +95,11 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                     <select
                         onChange={e => {
                             setData({ ...data, execution_location: e.target.value })
+                            environment.find(env => {
+                                if (env.id === e.target.value) {
+                                    console.log(env.name)
+                                }
+                            })
                         }}
                     >
                         {environment?.map(env => <option value={env.id}>{env.name}</option>)}
@@ -102,7 +109,9 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
                 <div className="dropdown">
                     <label for="">Browser</label>
                     <select
-
+                        onChange={e => {
+                            setData({ ...data, browser_type: e.target.value })
+                        }}
                     >
                         {browser?.map(br => <option value={br}>{br}</option>)}
 
