@@ -12,5 +12,5 @@ EXPOSE 3000
 COPY default.conf /etc/nginx/conf.d/default.conf
 WORKDIR /usr/share/nginx/html
 # RUN rm -rf ./*
-COPY --from=build /qf_react/build .
+COPY --from=build /qf_react/dist .
 ENTRYPOINT ["nginx","-g","daemon off;"]
