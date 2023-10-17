@@ -114,13 +114,14 @@ export default function Table(props) {
                     alignItems="center"
                     spacing={2}
                 >
-                    10 of 100
+                    page {props.currentPage} of {props.totalPage}
                     <IconButton
                         onClick={e => props.onPrevious()}
-
+                        disabled={props.currentPage == 1}
                     ><NavigateBeforeIcon /></IconButton>
 
                     <IconButton
+                        disabled={props.currentPage == props.totalPage}
                         onClick={e => props.onNext()}
                     ><NavigateNextIcon /></IconButton>
 
