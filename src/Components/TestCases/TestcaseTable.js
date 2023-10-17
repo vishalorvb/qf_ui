@@ -2,7 +2,7 @@ import { MenuItem, Paper, Tooltip, Typography } from '@mui/material';
 //import { TCdata } from "./CreateTestCase";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { DeleteTestCase } from '../../Services/QfService';
+import { DeleteTestCase, getTotalpageofTestcase } from '../../Services/QfService';
 import useHead from '../../hooks/useHead';
 import TableActions from '../../CustomComponent/TableActions';
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
@@ -108,13 +108,11 @@ function TestcaseTable({ project, application }) {
     useEffect(() => {
         setTestcases([])
         setShowloader(true)
-        getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, currentPage).then(res => {
+        getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage).then(res => {
             setShowloader(false)
         })
     }, [project, application])
-    useEffect(() => {
-        console.log(testcases)
-    }, [testcases])
+
     return (
         <div >
             <Table
@@ -127,12 +125,12 @@ function TestcaseTable({ project, application }) {
                 getRowId={(row) => row.testcase_id}
                 onNext={() => {
                     setTestcases([])
-                    getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, currentPage + 1);
+                    getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage + 1);
                     setCurrentPage(currentPage + 1)
                 }}
                 onPrevious={() => {
                     setTestcases([])
-                    getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, currentPage - 1);
+                    getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage - 1);
                     setCurrentPage(currentPage - 1)
                 }}
             ></Table>
@@ -149,7 +147,7 @@ function TestcaseTable({ project, application }) {
 
                     DeleteTestCase(deletTestcaseId).then((res) => {
                         if (res) {
-                            getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, currentPage);
+                            getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage);
                             setShowloader(false)
 
                             setSnackbarData({

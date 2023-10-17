@@ -62,7 +62,7 @@ export async function createApiDataset(userId, Data) {
         if (res.data.error == null) {
             return false;
         } else {
-            console.log(res.data.error.description);
+
             return res.data.error.description;
         }
     });
@@ -111,19 +111,7 @@ export function getApplication(callback, userId) {
             callback(res.data.data);
         });
 }
-//export function getWebApplication(callback, userId, apptype) {
-//    axios
-//        .get(`${qfservice}/qfservice/users/applications?user_id=${userId}`)
-//        .then((res) => {
-//            let webapp = res.data.data.filter((app) => {
-//                if (app.module_type == apptype) {
-//                    return app;
-//                }
-//            });
-//            console.table(webapp);
-//            callback(webapp);
-//        });
-//}
+
 
 export async function createApplication(data, userId) {
     let x = await axios({
@@ -144,18 +132,6 @@ export async function createApplication(data, userId) {
     return x;
 }
 
-//export function getPages(callback, applicationId) {
-//    axios
-//        .get(
-//            `${qfservice}/qfservice/webpages/getWebPagesList?module_id=${applicationId}`
-//        )
-//        .then((res) => {
-//            console.log(res.data);
-//            if (res.data.info != null) {
-//                callback(res.data.info);
-//            }
-//        });
-//}
 
 export function getElementsDetails(callback, element_id, isDiffElement) {
     axios
@@ -163,7 +139,7 @@ export function getElementsDetails(callback, element_id, isDiffElement) {
             `${qfservice}/qfservice/webpages/getWebPageElementPathsInfo?element_id=${element_id}&is_diff_page_element=${isDiffElement}`
         )
         .then((res) => {
-            console.log(res.data.info);
+
             callback(res.data.info);
         });
 }
@@ -179,13 +155,13 @@ export function getApplicationOfProject(callback, project_id) {
 }
 
 export async function deleteApplication(applicationId, userId) {
-    console.log(applicationId);
+
     return await axios
         .put(
             `${qfservice}/qfservice/Application/Delete?app_id=${applicationId}&user_id=${userId}`
         )
         .then((res) => {
-            console.log(res.data.status);
+
             if (res.data.status == "SUCCESS") {
                 return true;
             }
@@ -193,14 +169,6 @@ export async function deleteApplication(applicationId, userId) {
         });
 }
 
-//export async function getApplicationDetails(applicationId) {
-//    let x = await axios
-//        .get(`${qfservice}/qfservice/getmoduledetails/${applicationId}`)
-//        .then((res) => {
-//            return res.data.data;
-//        });
-//    return x;
-//}
 
 // Devops service
 export function getPipelines(callback, project_id) {
@@ -297,28 +265,7 @@ export function executePipeline(callback, id, userId) {
         });
 }
 
-//export function createPipeline(callback, params, id, project_id, userId) {
-//    axios
-//        .post(`${qfservice}/qfservice/Createpipeline`, null, {
-//            params: {
-//                project_id: project_id,
-//                release_name: params.releaseName,
-//                release_desc: params.releaseDesc,
-//                ansiblereleaseId: params.release,
-//                webTestsetId: params.webTest,
-//                code_quality_path: params.sonrCubePath,
-//                code_quality_project_key: params.sonrCubeKey,
-//                unittesttestset_path: params.unitTestPath,
-//                apiTestsetid: params.ApiTest,
-//                cicd_type: params.cicdType,
-//                user_id: userId,
-//                release_id: id,
-//            },
-//        })
-//        .then((res) => {
-//            callback(res?.data?.data.pipelinehisotory);
-//        });
-//}
+
 
 export async function getReleaseInstances(callback, project_id) {
     return await axios
@@ -626,6 +573,7 @@ export async function getAlltestcaseOfApplicationandSubapplication(
     projectId,
     moduleId,
     callback,
+    setPagesize,
     page = 1,
     size = 10,
 
@@ -637,10 +585,12 @@ export async function getAlltestcaseOfApplicationandSubapplication(
         )
         .then((res) => {
             callback(res.data.info.content ?? []);
+            setPagesize(res.data.info.totalPages)
         }).catch((err) => {
             callback([]);
         })
 }
+
 
 export function GetTestCase_V2fortestset(
     callback,
@@ -789,30 +739,7 @@ export function getTestsets(callback, projectId, workflowID) {
         });
 }
 
-//export function getTestcaseDetails(callback, workflowID, testcaseId) {
-//    axios
-//        .get(
-//            baseUrl +
-//            "/module/" +
-//            workflowID +
-//            "/GetTestcaseDetailsById/" +
-//            testcaseId
-//        )
-//        .then((res) => {
-//            callback(res.data.data.testcase);
-//        });
-//    axios
-//        .get(
-//            qfservice +
-//            "/module/" +
-//            workflowID +
-//            "/GetTestcaseDetailsById/" +
-//            testcaseId
-//        )
-//        .then((res) => {
-//            callback(res.data.data.testcase);
-//        });
-//}
+
 
 export function getTestcasesInProjects(
     callback,
@@ -842,12 +769,12 @@ export function createTestset(data) {
     axios
         .post(qfservice + "/qfservice/webtestset/createWebTestset", data)
         .then((res) => {
-            console.log("Testset Created Successfully");
+
         });
     axios
         .post(`${qfservice}/qfservice/webtestset/createWebTestset`, data)
         .then((res) => {
-            console.log("Testset Created Successfully");
+
         });
 }
 
@@ -855,7 +782,7 @@ export function updateTestset(data) {
     axios
         .post(`${qfservice}/qfservice/webtestset/createWebTestset`, data)
         .then((res) => {
-            console.log("Testset Created Successfully");
+
         });
 }
 
