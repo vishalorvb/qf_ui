@@ -4,10 +4,7 @@ import Table from "../../CustomComponent/Table";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import {
-    getPipelinesHistory,
-    executePipeline,
-} from "../../Services/DevopsServices";
+import { executePipeline, getPipelinesHistory } from "../../Services/QfService";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useAuth from "../../hooks/useAuth";
 

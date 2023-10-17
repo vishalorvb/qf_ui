@@ -9,8 +9,9 @@ import {
 import { useEffect, useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Grid, Typography } from "@mui/material";
-import axios from "../../api/axios";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
+import { qfservice } from "../../Environment";
 
 function ReportPath(props) {
   const { open, close, buildEnvId } = props;
@@ -26,7 +27,7 @@ function ReportPath(props) {
     {
       axios
         .post(
-          `/qfservice/updatereportpath?reportpath=${path}&env_id=${buildEnvId}`
+          `${qfservice}/qfservice/updatereportpath?reportpath=${path}&env_id=${buildEnvId}`
         )
         .then((resp) => {
           console.log(resp);

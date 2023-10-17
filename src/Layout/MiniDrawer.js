@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
@@ -23,19 +19,10 @@ import {
   opsManagementList,
   qfAdmin,
 } from "./SidebarNavlist";
-import {
-  Avatar,
-  Badge,
-  Button,
-  Chip,
-  Collapse,
-  Typography,
-} from "@mui/material";
+import { Button, Collapse, Typography } from "@mui/material";
 import { Copyright } from "./Login";
 import useAuth from "../hooks/useAuth";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { Stack } from "@mui/system";
-import UserCard from "./UserCard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useLogout from "../hooks/useLogout";
 
@@ -344,7 +331,7 @@ export default function MiniDrawer({ open, setOpen }) {
               padding: "10px",
               backgroundColor: "#001c56",
               "&:hover": {
-                backgroundColor: "#001c56",
+                backgroundColor: "#ffff",
               },
             }}
             endIcon={<LogoutIcon />}

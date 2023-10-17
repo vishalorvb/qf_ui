@@ -1,15 +1,12 @@
-import { Autocomplete, Fab, Grid } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
-import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
-import { getApplicationOfProject } from "../Services/ApplicationService";
+//import { getApplicationOfProject } from "../Services/ApplicationService";
+import { getApplicationOfProject } from "../Services/QfService";
 import useHead from "../hooks/useHead";
-import { getProject } from "../Services/ProjectService";
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { getProject } from "../Services/QfService";
 export default function ProjectnApplicationSelector({
-    isTestset,
     isApplication,
     selectorDisabled,
 }) {
@@ -22,13 +19,12 @@ export default function ProjectnApplicationSelector({
         setProjectList,
         applicationList,
         setapplicationList,
-        setShowloader
     } = useHead();
 
     const { auth } = useAuth();
 
-    let [searchWord, setSearchWord] = useState("")
-    let [show, setShow] = useState(false)
+    const [searchWord, setSearchWord] = useState("");
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
@@ -41,22 +37,21 @@ export default function ProjectnApplicationSelector({
     }, [projectsList]);
 
     useEffect(() => {
-
         if (globalProject?.project_id !== undefined) {
             getApplicationOfProject(setapplicationList, globalProject?.project_id);
         }
     }, [globalProject]);
 
     useEffect(() => {
-
-        globalApplication == null && setglobalApplication(applicationList[0] ?? null)
-    }, [applicationList])
+        globalApplication == null &&
+            setglobalApplication(applicationList[0] ?? null);
+    }, [applicationList]);
 
     //change from here
 
     useEffect(() => {
-        setSearchWord(globalApplication?.module_name)
-    }, [globalApplication])
+        setSearchWord(globalApplication?.module_name);
+    }, [globalApplication]);
 
     return (
         <Grid
@@ -69,13 +64,11 @@ export default function ProjectnApplicationSelector({
                 <label>Projects</label>
                 <Autocomplete
                     disabled={selectorDisabled === true}
-                    disablePortal
                     disableClearable
                     id="project_id"
                     options={projectsList}
                     value={globalProject || null}
                     fullWidth
-
                     getOptionLabel={(option) => option.project_name ?? ""}
                     onChange={(e, value) => {
                         setglobalApplication(null);
@@ -90,53 +83,68 @@ export default function ProjectnApplicationSelector({
                 <Grid item md={6}>
                     <div className="searchbox">
                         <label>Applications</label>
-                        <input type="text" autoComplete="off" name="application" value={searchWord}
+                        <input
+                            type="text"
+                            autoComplete="off"
+                            name="application"
+                            value={searchWord}
                             disabled={selectorDisabled == true}
-                            onChange={e => setSearchWord(e.target.value)}
-                            onFocus={e => {
-                                setShow(true)
-                                setSearchWord("")
+                            onChange={(e) => setSearchWord(e.target.value)}
+                            onFocus={(e) => {
+                                setShow(true);
+                                setSearchWord("");
                             }}
-                            onBlur={e => {
+                            onBlur={(e) => {
                                 setTimeout(() => {
-
-                                    setShow(false)
+                                    setShow(false);
                                 }, 1000);
                             }}
                         />
-                        {show && <div className="applist">
-                            <ul>
-                                {applicationList.filter(app => app.module_name?.toLowerCase().includes(searchWord?.toLowerCase())).map(app => {
-
-                                    return (
-                                        <li key={app.module_id}
-                                            onClick={e => {
-                                                setglobalApplication(app)
-                                                e.stopPropagation()
-                                            }} >
-                                            {app.module_name}
-                                            <ul style={{ paddingLeft: "10px" }}>
-                                                {app?.sub_modules_list?.filter(a => !a.is_deleted)?.map(subapp => {
-                                                    return (
-                                                        <li key={subapp.module_id}
-                                                            onClick={e => {
-                                                                setglobalApplication(subapp)
-                                                                e.stopPropagation()
-                                                            }}
-                                                        >{subapp.module_name}</li>
-                                                    )
-                                                })}
-                                            </ul>
-                                        </li>
-
-                                    )
-                                })}
-                            </ul>
-                        </div>}
+                        {show && (
+                            <div className="applist">
+                                <ul>
+                                    {applicationList
+                                        .filter((app) =>
+                                            app.module_name
+                                                ?.toLowerCase()
+                                                .includes(searchWord?.toLowerCase())
+                                        )
+                                        .map((app) => {
+                                            return (
+                                                <li
+                                                    key={app.module_id}
+                                                    onClick={(e) => {
+                                                        setglobalApplication(app);
+                                                        e.stopPropagation();
+                                                    }}
+                                                >
+                                                    {app.module_name}
+                                                    <ul style={{ paddingLeft: "10px" }}>
+                                                        {app?.sub_modules_list
+                                                            ?.filter((a) => !a.is_deleted)
+                                                            ?.map((subapp) => {
+                                                                return (
+                                                                    <li
+                                                                        key={subapp.module_id}
+                                                                        onClick={(e) => {
+                                                                            setglobalApplication(subapp);
+                                                                            e.stopPropagation();
+                                                                        }}
+                                                                    >
+                                                                        {subapp.module_name}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                    </ul>
+                                                </li>
+                                            );
+                                        })}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 </Grid>
-            )
-            }
-        </Grid >
+            )}
+        </Grid>
     );
 }

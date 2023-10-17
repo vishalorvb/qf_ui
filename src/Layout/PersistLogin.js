@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import useAxios from "../hooks/useAxios";
 import PersistingLoading from "./PersistingLoading";
+import { authservice } from "../Environment";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +16,7 @@ const PersistLogin = () => {
     const verifyUser = async () => {
       try {
         const userInfo = await axiosPrivate.get(
-          "/qfauthservice/authentication/userInfo"
+          authservice + "/qfauthservice/authentication/userInfo"
         );
         const info = userInfo?.data?.info;
         const user = info?.ssoId;

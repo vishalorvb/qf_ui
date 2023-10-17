@@ -6,11 +6,12 @@ import { IconButton, Tooltip, Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router";
 import useHead from "../../hooks/useHead";
 import AddConfigurationPopUp from "./AddConfigurationPopUp";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { useLocation } from "react-router-dom";
+import { qfservice } from "../../Environment";
 
 const ConfigureDevice = () => {
   const [configurations, setConfigurations] = useState([]);
@@ -91,7 +92,7 @@ const ConfigureDevice = () => {
   ];
   function getConfigurations(projectId) {
     axios
-      .get(`/qfservice/mobileconfiguration?project_id=${projectId}`)
+      .get(`${qfservice}/qfservice/mobileconfiguration?project_id=${projectId}`)
       .then((res) => {
         if (res.data.data.length > 0) {
           setConfigurations(res?.data?.data);
@@ -114,7 +115,7 @@ const ConfigureDevice = () => {
   function deleteApiRequest(specificationId) {
     axios
       .delete(
-        `/qfservice/mobileconfiguration/${specificationId}/deleteconfiguration`
+        `${qfservice}/qfservice/mobileconfiguration/${specificationId}/deleteconfiguration`
       )
       .then((res) => {
         console.log(res);

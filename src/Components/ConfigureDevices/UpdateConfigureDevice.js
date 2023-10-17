@@ -1,17 +1,17 @@
 import React from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, TextareaAutosize } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useState, useEffect } from "react";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { useLocation } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 
 const UpdateConfigureDevice = () => {
   const [platformType, setPlatformType] = React.useState("");
@@ -37,7 +37,9 @@ const UpdateConfigureDevice = () => {
 
   useEffect(() => {
     axios
-      .post(`/qfservice/mobileconfiguration/${location.state.id}/addDevices`)
+      .post(
+        `${qfservice}/qfservice/mobileconfiguration/${location.state.id}/addDevices`
+      )
       .then((res) => {
         const details = res?.info;
         setConfigDetails(details);
@@ -70,7 +72,7 @@ const UpdateConfigureDevice = () => {
     };
     axios
       .post(
-        `/qfservice/mobileconfiguration/${location.state.id}/update.do`,
+        `${qfservice}/qfservice/mobileconfiguration/${location.state.id}/update.do`,
         postValues
       )
       .then((resp) => {

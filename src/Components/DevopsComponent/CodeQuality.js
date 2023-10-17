@@ -1,5 +1,5 @@
 import Table from "../../CustomComponent/Table";
-import { getPipelinesHistoryReport } from "../../Services/DevopsServices";
+import { getPipelinesHistoryReport } from "../../Services/QfService";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Alert } from "@mui/material";

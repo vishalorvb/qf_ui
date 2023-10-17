@@ -117,6 +117,7 @@ export default function Table(props) {
                     10 of 100
                     <IconButton
                         onClick={e => props.onPrevious()}
+
                     ><NavigateBeforeIcon /></IconButton>
 
                     <IconButton

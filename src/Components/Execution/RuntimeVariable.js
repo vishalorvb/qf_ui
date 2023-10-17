@@ -5,14 +5,15 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextareaAutosize,
 } from "@mui/material";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { Divider, Grid, Typography } from "@mui/material";
-import axios from "../../api/axios";
+import axios from "axios";
 import { useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { qfservice } from "../../Environment";
 
 function RuntimeVariable(props) {
   const {
@@ -25,11 +26,9 @@ function RuntimeVariable(props) {
     runtimeVar,
   } = props;
   const [variables, setVariables] = useState("");
-  const schema = yup
-    .object()
-    .shape({
-      testcaseName: yup.string().required().max(30, "Max length exceeded"),
-    });
+  const schema = yup.object().shape({
+    testcaseName: yup.string().required().max(30, "Max length exceeded"),
+  });
   const [snack, setSnack] = useState(false);
 
   // console.log(envId)
@@ -48,7 +47,7 @@ function RuntimeVariable(props) {
 
   const onSubmitHandler = () => {
     axios
-      .putForm(`/qfservice/updateruntimevariables`, {
+      .putForm(`${qfservice}/qfservice/updateruntimevariables`, {
         runtimevars: variables,
         env_id: envId,
       })

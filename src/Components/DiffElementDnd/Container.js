@@ -9,7 +9,8 @@ import Toolbar from "./Toolbar.js";
 import SyncIcon from "@mui/icons-material/Sync";
 import { useLocation } from "react-router-dom";
 import useHead from "../../hooks/useHead.js";
-import axios from "../../api/axios.js";
+import axios from "axios";
+import { qfservice } from "../../Environment.js";
 const Container = memo(function Container() {
   const location = useLocation();
   const { setShowloader, setSnackbarData, setHeader } = useHead();
@@ -70,7 +71,9 @@ const Container = memo(function Container() {
   const getElementsData = () => {
     setShowloader(true);
     axios
-      .post(`qfservice/check-diff-page/${location?.state?.web_page_id}`)
+      .post(
+        `${qfservice}/qfservice/check-diff-page/${location?.state?.web_page_id}`
+      )
       .then((resp) => {
         const currentElements = resp?.data?.data?.currentElements;
         const newElements = resp?.data?.data?.newElements;

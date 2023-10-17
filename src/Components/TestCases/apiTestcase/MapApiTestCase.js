@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getApiOfApplication } from "../../../Services/TestCaseService";
+import { getApiOfApplication } from "../../../Services/QfService";
 import Table from "../../../CustomComponent/Table";
-import { getApiOfTestcase } from "../../../Services/TestCaseService";
+import { getApiOfTestcase } from "../../../Services/QfService";
 
 function MapApiTestCase({
     moduleId,

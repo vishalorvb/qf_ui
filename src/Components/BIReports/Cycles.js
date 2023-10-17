@@ -12,7 +12,7 @@ import useHead from "../../hooks/useHead";
 import ImageIcon from "@mui/icons-material/Image";
 import Divider from "@mui/material/Divider";
 import { useLocation } from "react-router";
-import axios from "../../api/axios";
+import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import CreateCycle from "./CreateCycle";
 import ViewCycle from "./ViewCycle";

@@ -18,13 +18,13 @@ Result:
 
 import React, { useEffect, useState } from 'react'
 import Table from '../../../CustomComponent/Table';
-import { getDataset } from '../../../Services/TestCaseService';
+import { getDataset } from '../../../Services/QfService';
 import TableActions from '../../../CustomComponent/TableActions';
 import { MenuItem } from '@mui/material';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import { DeleteOutlined } from "@mui/icons-material";
-import { deleteDataset } from '../../../Services/TestCaseService';
+import { deleteDataset } from '../../../Services/QfService';
 import ConfirmPop from '../../../CustomComponent/ConfirmPop';
 import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
 
@@ -66,7 +66,7 @@ function WebDatasetList(props) {
                                 props.setCopy(true)
                             }}
                         >
-                            <ContentCopyOutlinedIcon  sx={{ color: "green", mr: 1 }}></ContentCopyOutlinedIcon>
+                            <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }}></ContentCopyOutlinedIcon>
                             Copy
                         </MenuItem>
                         <MenuItem

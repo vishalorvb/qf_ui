@@ -9,7 +9,8 @@ import { SelectElement, TextFieldElement, useForm } from "react-hook-form-mui";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
-import axios from "../../../api/axios";
+import axios from "axios";
+import { qfservice } from "../../../Environment";
 export default function AddElement({ setPopup, webPageId, setelementAdded }) {
   const schema = yup.object().shape({
     pathType: yup.string().required("select path type"),
@@ -43,7 +44,10 @@ export default function AddElement({ setPopup, webPageId, setelementAdded }) {
       secondary_input_type: data?.secondaryFieldType,
     };
     axios
-      .postForm(`/qfservice/webpages/addNewPageElement`, elementData)
+      .postForm(
+        `${qfservice}/qfservice/webpages/addNewPageElement`,
+        elementData
+      )
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && setelementAdded(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);

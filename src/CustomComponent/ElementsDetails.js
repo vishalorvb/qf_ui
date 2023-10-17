@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MastPop from "./MastPop";
-import { getElementsDetails } from "../Services/ApplicationService";
+//import { getElementsDetails } from "../Services/ApplicationService";
+import { getElementsDetails } from "../Services/QfService";
 import {
   Button,
   Dialog,
@@ -20,8 +21,9 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
-import axios from "../api/axios";
+import axios from "axios";
 import BackdropLoader from "./BackdropLoader";
+import { qfservice } from "../Environment";
 function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);

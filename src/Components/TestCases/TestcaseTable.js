@@ -2,7 +2,7 @@ import { MenuItem, Paper, Tooltip, Typography } from '@mui/material';
 //import { TCdata } from "./CreateTestCase";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { DeleteTestCase } from '../../Services/TestCaseService';
+import { DeleteTestCase } from '../../Services/QfService';
 import useHead from '../../hooks/useHead';
 import TableActions from '../../CustomComponent/TableActions';
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
@@ -10,7 +10,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import Table from '../../CustomComponent/Table';
 import ConfirmPop from '../../CustomComponent/ConfirmPop';
-import { getAlltestcaseOfApplicationandSubapplication } from '../../Services/TestCaseService';
+import { getAlltestcaseOfApplicationandSubapplication } from '../../Services/QfService';
 
 function TestcaseTable({ project, application }) {
     const [testcases, setTestcases] = useState([]);

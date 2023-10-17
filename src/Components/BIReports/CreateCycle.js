@@ -5,7 +5,7 @@ import { Stack } from "@mui/system";
 import { Button, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "../../api/axios";
+import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 
 export default function CreateCycle({ testsetData, getCycles }) {

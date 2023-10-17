@@ -1,10 +1,11 @@
 import { Button, MenuItem, Select } from "@mui/material";
 import { Stack } from "@mui/system";
-import axios from "../../../api/axios";
+import axios from "axios";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import useAuth from "../../../hooks/useAuth";
 import useHead from "../../../hooks/useHead";
 import { useLocation } from "react-router-dom";
+import { qfservice } from "../../../Environment";
 
 export default function CreatePage({ callGetPages }) {
   const { setHeader, header, setSnackbarData, setShowloader } = useHead();
@@ -14,7 +15,7 @@ export default function CreatePage({ callGetPages }) {
   const createPage = () => {
     setShowloader(true);
     axios
-      .postForm(`/qfservice/webpages/LaunchJNLPToCreateWebPage`, {
+      .postForm(`${qfservice}/qfservice/webpages/LaunchJNLPToCreateWebPage`, {
         user_id: auth?.userId,
         module_id: location?.state?.module_id,
         web_page_url: location?.state?.base_url,

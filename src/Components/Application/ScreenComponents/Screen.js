@@ -3,11 +3,12 @@ import Table from "../../../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Outlet, useNavigate } from "react-router-dom";
-import axios from "../../../api/axios";
+import axios from "axios";
 import { MenuItem, Typography } from "@mui/material";
 import ConfirmPop from "../../../CustomComponent/ConfirmPop";
 import TableActions from "../../../CustomComponent/TableActions";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
+import { qfservice } from "../../../Environment";
 export default function Screens({ location }) {
   const navigate = useNavigate();
   const [page, setPage] = useState([]);
@@ -120,7 +121,7 @@ export default function Screens({ location }) {
 
   const handleDelete = (id) => {
     axios
-      .delete(`/qfservice/screen/deleteScreen?screen_id=${id}`)
+      .delete(`${qfservice}/qfservice/screen/deleteScreen?screen_id=${id}`)
       .then((resp) => {
         console.log(resp);
         resp?.data?.status === "SUCCESS" && getScreens();
@@ -132,7 +133,7 @@ export default function Screens({ location }) {
   const getScreens = () => {
     axios
       .get(
-        `/qfservice/screen/getScreensList?module_id=${location?.state?.module_id}`
+        `${qfservice}/qfservice/screen/getScreensList?module_id=${location?.state?.module_id}`
       )
       .then((resp) => {
         console.log(resp?.data?.info);

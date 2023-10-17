@@ -2,8 +2,9 @@ import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "../../../api/axios";
+import axios from "axios";
 import useHead from "../../../hooks/useHead";
+import { qfservice } from "../../../Environment";
 
 export default function APIorderupdate() {
   const { setHeader } = useHead();
@@ -13,7 +14,9 @@ export default function APIorderupdate() {
 
   useEffect(() => {
     axios
-      .get(`/qfservice/testcase/${location?.state?.testcaseId}/apis`)
+      .get(
+        `${qfservice}/qfservice/testcase/${location?.state?.testcaseId}/apis`
+      )
       .then((resp) => {
         setData(() =>
           resp.data.data.apisList.filter((api) => api.is_selected === true)
@@ -32,7 +35,7 @@ export default function APIorderupdate() {
   const updateScreenOrder = () => {
     order.length > 0 &&
       axios
-        .post(`/qfservice/UpdateOrderOfAPIsInTestcase`, {
+        .post(`${qfservice}/qfservice/UpdateOrderOfAPIsInTestcase`, {
           testcaseId: location?.state?.testcaseId,
           api_ids: order,
         })

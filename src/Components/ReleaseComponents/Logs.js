@@ -4,7 +4,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { IconButton } from '@mui/material'
 import { useEffect, useState } from 'react';
-import { getGitData } from '../../Services/DevopsServices';
+import { getGitData } from '../../Services/QfService';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PauseIcon from '@mui/icons-material/Pause';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';

@@ -3,12 +3,11 @@ import { Button, Grid } from "@mui/material";
 import ApiTabs from "./ApiTabs";
 import { Apidata, resetApiData } from "./Data";
 import { validateFormbyName } from "../../CustomComponent/FormValidation";
-import { createApiRequest, getApiDetails } from "../../Services/ApiService";
+import { createApiRequest } from "../../Services/QfService";
 import useHead from "../../hooks/useHead";
 import { authdata } from "./Data";
-import { getApis } from "../../Services/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { getApis } from "../../Services/QfService";
 
 function Api() {
     const { setHeader, setSnackbarData } = useHead();

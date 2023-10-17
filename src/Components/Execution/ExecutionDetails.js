@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "../../api/axios";
+import axios from "axios";
 import Table from "../../CustomComponent/Table";
 import ExecutionToolbar from "../TestCases/ExecutionToolbar";
+import { qfservice } from "../../Environment";
 
 export default function ExecutionDetails({
   testcaseId,
@@ -33,7 +34,7 @@ export default function ExecutionDetails({
     if (testcaseId) {
       applicationType === 1
         ? axios
-            .get(`/qfservice/api/testcases/${testcaseId}/datasets`)
+            .get(`${qfservice}/qfservice/api/testcases/${testcaseId}/datasets`)
             .then((resp) => {
               const dataset = resp?.data?.data ?? [];
               setDataList(() =>
@@ -51,7 +52,7 @@ export default function ExecutionDetails({
             })
         : axios
             .get(
-              `qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
+              `${qfservice}/qfservice/webtestcase/getWebTestcaseInfo?testcase_id=${testcaseId}`
             )
             .then((resp) => {
               setDataList(resp?.data?.info?.datasets ?? []);
