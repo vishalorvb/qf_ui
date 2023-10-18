@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import useHead from "../../hooks/useHead";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
@@ -13,7 +13,6 @@ function UpdateTestcasesOrder() {
   const [data, setData] = useState([]);
   const [order, setOrder] = useState([]);
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     location?.state?.moduleType === 1
@@ -41,6 +40,7 @@ function UpdateTestcasesOrder() {
         plusButton: false,
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateTestcasesOrder = () => {
