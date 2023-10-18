@@ -210,6 +210,7 @@ function Reports() {
 
   useEffect(() => {
     submit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalApplication]);
 
   useEffect(() => {
@@ -219,6 +220,7 @@ function Reports() {
         name: "Reports",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const submit = (e) => {
     axiosPrivate

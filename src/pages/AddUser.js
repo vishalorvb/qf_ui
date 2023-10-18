@@ -1,18 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import axios from 'axios';
-import {
-  Autocomplete,
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import {
@@ -37,7 +25,6 @@ function AddUser() {
   const sso_id = useRef();
   const [roleId, setRoleId] = useState("");
   const role_id = useRef();
-  const [roleObject, setRoleObject] = useState([]);
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
   const axiosPrivate = useAxios();
@@ -121,6 +108,7 @@ function AddUser() {
           plusCallback: () => console.log("null"),
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

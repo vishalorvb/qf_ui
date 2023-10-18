@@ -7,7 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
-import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   firstName: yup.string().required().max(30, "Max length exceeded"),
@@ -27,7 +26,6 @@ const AddOrganization = () => {
   const { setHeader } = useHead();
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addFailMsg, setAddFailMsg] = useState(false);
-  const navigate = useNavigate();
 
   const {
     register,
@@ -42,7 +40,7 @@ const AddOrganization = () => {
     try {
       const response = await axios.post("/qfuserservice/signup", data);
       console.log(response.data.status);
-      if (response.data.status == "SUCCESS") {
+      if (response.data.status === "SUCCESS") {
         setAddSuccessMsg(true);
         setTimeout(() => {
           setAddSuccessMsg(false);
@@ -67,6 +65,7 @@ const AddOrganization = () => {
         name: "Add Organization",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

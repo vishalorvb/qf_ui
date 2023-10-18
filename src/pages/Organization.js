@@ -86,10 +86,12 @@ const Organization = () => {
         name: "Organization",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getOrganization();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getOrganization(params) {

@@ -30,7 +30,6 @@ function OrganizationDashboard() {
   const { auth } = useAuth();
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addFailMsg, setAddFailMsg] = useState(false);
-  const msg = [];
   function TotalUser() {
     try {
       axios({
@@ -165,12 +164,14 @@ function OrganizationDashboard() {
         name: "Organization Details",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     TotalUser();
     TotalProjects();
     totalApplications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

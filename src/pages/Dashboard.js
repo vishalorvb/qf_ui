@@ -31,7 +31,7 @@ export default function Dashboard() {
 
   const [info, setInfo] = useState([]);
   const [sprintName, setSprintName] = useState("All");
-  const [progress, setProgress] = useState();
+  // const [progress, setProgress] = useState();
   const [androidTestcase, setAndroidTestcase] = useState();
   const [iosTestcase, setIosTestcase] = useState();
   const [webTestcase, setWebTestcase] = useState();
@@ -48,8 +48,8 @@ export default function Dashboard() {
   const [automationGraph, setAutomationGraph] = useState(false);
   const [automationTDgraph, setAutomationTDgraph] = useState(false);
   const [showFailMsg, setShowFailMsg] = useState(false);
-  const [showProgressBar, setShowProgressBar] = useState(false);
-  const [predictionInfo, setPredictionInfo] = useState([]);
+  // const [showProgressBar, setShowProgressBar] = useState(false);
+  // const [predictionInfo, setPredictionInfo] = useState([]);
   let [percentage, setPercentage] = useState(0);
   let [faildata, setFaildata] = useState([]);
 
@@ -66,27 +66,27 @@ export default function Dashboard() {
         settotalSprint(res?.data?.data?.model.sprint_overview);
         if (res?.data?.data?.model.automation_graph?.length > 0) {
           let info = (res.data?.data?.model.automation_graph).replace(
-            /(&#034\;)/g,
+            /(&#034)/g,
             '"'
           );
           let jinfo = JSON.parse(info);
           const sprintList = jinfo.map((element) => element.period);
           setSprintList(sprintList);
         }
-        if (res?.data?.data?.model.show_automation_graph == true) {
+        if (res?.data?.data?.model.show_automation_graph === true) {
           setAutomationGraph(true);
         }
-        if (res?.data?.data?.model.show_tensorflow == true) {
+        if (res?.data?.data?.model.show_tensorflow === true) {
           setShowTensorFlow(true);
         }
         if (
-          res?.data?.data?.model.show_automation_of_testdesign_graph == true
+          res?.data?.data?.model.show_automation_of_testdesign_graph === true
         ) {
           setAutomationTDgraph(true);
         }
         if (res?.data?.data?.model.pure_automation_graph?.length > 0) {
           let info = (res?.data?.data?.model.pure_automation_graph).replace(
-            /(&#034\;)/g,
+            /(&#034)/g,
             '"'
           );
           let jinfo = JSON.parse(info);
@@ -108,17 +108,17 @@ export default function Dashboard() {
 
   function getTensorflowData() {
     setShowFailMsg(false);
-    setShowProgressBar(false);
+    // setShowProgressBar(false);
     axios
       .post(
         `${dashboard}/qfdashboard/getTensorflowData?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
       )
       .then((res) => {
-        if (res.data.status == "FAIL") {
+        if (res.data.status === "FAIL") {
           setFailMsg(res.data.message);
           setSnackbar(true);
           if (
-            res.data.message ==
+            res.data.message ===
             "Prediction is not available due to insufficient data."
           ) {
             setShowFailMsg(true);
@@ -127,12 +127,12 @@ export default function Dashboard() {
             setSnackbar(false);
           }, 3000);
         }
-        if (res.data.status == "SUCCESS") {
-          let progress = Math.round(
-            res.data?.info?.next_sprint_pass_percentage
-          );
-          setProgress(progress);
-          setShowProgressBar(true);
+        if (res.data.status === "SUCCESS") {
+          // let progress = Math.round(
+          //   res.data?.info?.next_sprint_pass_percentage
+          // );
+          // setProgress(progress);
+          // setShowProgressBar(true);
         }
       });
   }
@@ -142,13 +142,13 @@ export default function Dashboard() {
         `${dashboard}/qfdashboard/getPredictionTestcases?sqe_project_id=${globalProject?.project_id}&userId=${auth?.userId}`
       )
       .then((res) => {
-        setPredictionInfo(res?.data?.info);
+        // setPredictionInfo(res?.data?.info);
       });
   }
 
   function dashboardDetailsBySprintId() {
     setShowTensorFlow(false);
-    setShowProgressBar(false);
+    // setShowProgressBar(false);
     axios
       .get(
         `${dashboard}/qfdashboard/dashboard/${globalProject?.project_id}/${sprintName}?userId=${auth?.userId}`
@@ -162,21 +162,21 @@ export default function Dashboard() {
           res?.data?.data?.data?.model.automation_test_cases_dataset_count
         );
         settotalSprint(res?.data?.data?.data?.model.sprint_overview);
-        if (res?.data?.data?.data?.model.show_automation_graph == true) {
+        if (res?.data?.data?.data?.model.show_automation_graph === true) {
           setAutomationGraph(true);
         }
         if (
-          res?.data?.data?.data?.model.show_automation_of_testdesign_graph ==
+          res?.data?.data?.data?.model.show_automation_of_testdesign_graph ===
           true
         ) {
           setAutomationTDgraph(true);
         }
-        if (res?.data?.data?.data?.model.show_tensorflow == true) {
+        if (res?.data?.data?.data?.model.show_tensorflow === true) {
           setShowTensorFlow(true);
         }
         if ((res?.data?.data?.data?.model.pure_automation_graph).length > 0) {
           let info = (res?.data?.data?.data?.model.automation_graph).replace(
-            /(&#034\;)/g,
+            /(&#034)/g,
             '"'
           );
           let jinfo = JSON.parse(info);
@@ -197,10 +197,11 @@ export default function Dashboard() {
       return { ...ps, name: "Dashboard" };
     });
     getDashboardDetails(globalProject?.project_id, auth?.userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (sprintName == "All") {
+    if (sprintName === "All") {
       dashboardDetails();
       getTensorflowData();
       getPredictionTestcases();
@@ -209,19 +210,21 @@ export default function Dashboard() {
       .post(
         `${dashboard}/qfdashboard/getFailTestcasesbyProjectandsprint?project_id=${
           globalProject?.project_id
-        }${sprintName == "All" ? "" : `&sprintname=${sprintName}`}`
+        }${sprintName === "All" ? "" : `&sprintname=${sprintName}`}`
       )
       .then((res) => {
         setFaildata(res.data.data);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject, sprintName]);
 
   useEffect(() => {
-    if (sprintName != "All") {
+    if (sprintName !== "All") {
       dashboardDetailsBySprintId();
       getTensorflowData();
       getPredictionTestcases();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sprintName]);
 
   useEffect(() => {
@@ -258,7 +261,7 @@ export default function Dashboard() {
               ReportPercentage(
                 setPercentage,
                 globalProject?.project_id,
-                e.target.value == "All" ? 0 : e.target.value
+                e.target.value === "All" ? 0 : e.target.value
               );
             }}
           >

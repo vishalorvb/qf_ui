@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 
-export default function () {
+export default function UnAuthorized() {
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <Grid

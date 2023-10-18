@@ -1,4 +1,4 @@
-import { IconButton, MenuItem, Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Table from "../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -15,142 +15,150 @@ import { getTestset } from "../Services/QfService";
 import { qfservice } from "../Environment";
 
 export default function Testset() {
-    const {
-        globalProject,
-        setglobalProject,
-        globalApplication,
-        setglobalApplication,
-        setSnackbarData,
-    } = useHead();
-    const [testsets, setTestset] = useState([]);
-    const [openDelete, setOpenDelete] = useState(false);
-    const [deleteObject, setDeleteObject] = useState();
-    const [delSuccessMsg, setDelSuccessMsg] = useState(false);
-    //let [schedulepopup, setSchedulePopup] = useState(false);
-    //let [scheduletestsetId, setScheduletestsetId] = useState();
-    const navigate = useNavigate();
-    const { setHeader } = useHead();
-    let [currentPage, setCurrentPage] = useState(1);
-    let [totalPage, settotalPage] = useState(1);
+  const {
+    globalProject,
+    setglobalProject,
+    globalApplication,
+    setglobalApplication,
+    setSnackbarData,
+  } = useHead();
+  const [testsets, setTestset] = useState([]);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [deleteObject, setDeleteObject] = useState();
+  const [delSuccessMsg, setDelSuccessMsg] = useState(false);
+  //let [schedulepopup, setSchedulePopup] = useState(false);
+  //let [scheduletestsetId, setScheduletestsetId] = useState();
+  const navigate = useNavigate();
+  const { setHeader } = useHead();
+  let [currentPage, setCurrentPage] = useState(1);
+  let [totalPage, settotalPage] = useState(1);
 
-    const deleteTestcaseHandler = (id) => {
-        axios
-            .delete(
-                `${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${id}`
-            )
-            .then((resp) => {
-                setOpenDelete(false);
-                onChangeHandler();
-                setSnackbarData({
-                    status: true,
-                    message: resp?.data?.message,
-                    severity: resp?.data?.status,
-                });
-            });
-    };
-
-    const onChangeHandler = () => {
-        getTestset(globalProject?.project_id, globalApplication?.module_id, setTestset, currentPage, 10, settotalPage)
-        //axios
-        //  .get(
-        //    `${qfservice}/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
-        //  )
-        //  .then((resp) => {
-        //    const testsets = resp?.data?.info ?? [];
-        //    setTestset(testsets);
-        //  });
-    };
-
-    const columns = [
-        {
-            field: "testset_name",
-            headerName: "Testset Name",
-            flex: 1,
-            sortable: false,
-            renderCell: (param) => {
-                return (
-                    <Typography
-                        onClick={() =>
-                            navigate("Reorder", {
-                                state: {
-                                    applicationId: globalApplication?.module_id,
-                                    testsetId: param.row.testset_id,
-                                    projectId: globalProject?.project_id,
-                                    moduleType: globalApplication?.module_type,
-                                },
-                            })
-                        }
-                        variant="p"
-                        className="nameColumn"
-                    >
-                        {param.row.testset_name}
-                    </Typography>
-                );
-            },
-        },
-        {
-            field: "testset_desc",
-            headerName: "Testset Description",
-            flex: 3,
-            sortable: false,
-            renderCell: (param) => {
-                return (
-                    <TableActions heading={param?.row?.testset_desc}>
-                        <MenuItem
-                            onClick={(e) => {
-                                navigate("CopyTestset", {
-                                    state: {
-                                        name: param?.row?.testset_name,
-                                        id: param?.row?.testset_id,
-                                        projectId: globalProject?.project_id,
-                                    },
-                                });
-                            }}
-                        >
-                            <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
-                            Copy
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() =>
-                                navigate("Update", {
-                                    state: param?.row,
-                                })
-                            }
-                        >
-                            <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
-                            Edit
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() => {
-                                setOpenDelete(true);
-                                setDeleteObject(param?.row?.testset_id);
-                            }}
-                        >
-                            <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
-                            Delete
-                        </MenuItem>
-                    </TableActions>
-                );
-            },
-        },
-    ];
-
-    useEffect(() => {
-        setHeader((ps) => {
-            return {
-                ...ps,
-                name: "Recent Testsets",
-            };
+  const deleteTestcaseHandler = (id) => {
+    axios
+      .delete(
+        `${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${id}`
+      )
+      .then((resp) => {
+        setOpenDelete(false);
+        onChangeHandler();
+        setSnackbarData({
+          status: true,
+          message: resp?.data?.message,
+          severity: resp?.data?.status,
         });
-    }, [setHeader]);
+      });
+  };
 
-    useEffect(() => {
-        globalApplication?.module_id && onChangeHandler();
-    }, [globalApplication]);
+  const onChangeHandler = () => {
+    getTestset(
+      globalProject?.project_id,
+      globalApplication?.module_id,
+      setTestset,
+      currentPage,
+      10,
+      settotalPage
+    );
+    //axios
+    //  .get(
+    //    `${qfservice}/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
+    //  )
+    //  .then((resp) => {
+    //    const testsets = resp?.data?.info ?? [];
+    //    setTestset(testsets);
+    //  });
+  };
 
-    return (
-        <>
-            {/*<MastPop
+  const columns = [
+    {
+      field: "testset_name",
+      headerName: "Testset Name",
+      flex: 1,
+      sortable: false,
+      renderCell: (param) => {
+        return (
+          <Typography
+            onClick={() =>
+              navigate("Reorder", {
+                state: {
+                  applicationId: globalApplication?.module_id,
+                  testsetId: param.row.testset_id,
+                  projectId: globalProject?.project_id,
+                  moduleType: globalApplication?.module_type,
+                },
+              })
+            }
+            variant="p"
+            className="nameColumn"
+          >
+            {param.row.testset_name}
+          </Typography>
+        );
+      },
+    },
+    {
+      field: "testset_desc",
+      headerName: "Testset Description",
+      flex: 3,
+      sortable: false,
+      renderCell: (param) => {
+        return (
+          <TableActions heading={param?.row?.testset_desc}>
+            <MenuItem
+              onClick={(e) => {
+                navigate("CopyTestset", {
+                  state: {
+                    name: param?.row?.testset_name,
+                    id: param?.row?.testset_id,
+                    projectId: globalProject?.project_id,
+                  },
+                });
+              }}
+            >
+              <ContentCopyOutlinedIcon sx={{ color: "green", mr: 1 }} />
+              Copy
+            </MenuItem>
+            <MenuItem
+              onClick={() =>
+                navigate("Update", {
+                  state: param?.row,
+                })
+              }
+            >
+              <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+              Edit
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setOpenDelete(true);
+                setDeleteObject(param?.row?.testset_id);
+              }}
+            >
+              <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
+              Delete
+            </MenuItem>
+          </TableActions>
+        );
+      },
+    },
+  ];
+
+  useEffect(() => {
+    setHeader((ps) => {
+      return {
+        ...ps,
+        name: "Recent Testsets",
+      };
+    });
+  }, [setHeader]);
+
+  useEffect(() => {
+    globalApplication?.module_id && onChangeHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalApplication]);
+
+  return (
+    <>
+      {/*<MastPop
         open={schedulepopup}
         setOpen={setSchedulePopup}
         heading="Schedule Testset"
@@ -163,51 +171,65 @@ export default function Testset() {
         />
       </MastPop>*/}
 
-            <div className="apptable">
-                <div className="intable">
-                    <ProjectnApplicationSelector
-                        globalProject={globalProject}
-                        setglobalProject={setglobalProject}
-                        globalApplication={globalApplication}
-                        setglobalApplication={setglobalApplication}
-                    />
-                </div>
+      <div className="apptable">
+        <div className="intable">
+          <ProjectnApplicationSelector
+            globalProject={globalProject}
+            setglobalProject={setglobalProject}
+            globalApplication={globalApplication}
+            setglobalApplication={setglobalApplication}
+          />
+        </div>
 
-                <SnackbarNotify
-                    open={delSuccessMsg}
-                    close={setDelSuccessMsg}
-                    msg="Testset deleted successfully"
-                    severity="success"
-                />
+        <SnackbarNotify
+          open={delSuccessMsg}
+          close={setDelSuccessMsg}
+          msg="Testset deleted successfully"
+          severity="success"
+        />
 
-                <div className="datatable" style={{ marginTop: "20px" }}>
-                    <ConfirmPop
-                        open={openDelete}
-                        handleClose={() => setOpenDelete(false)}
-                        heading={"Delete Testset"}
-                        message={"Are you sure you want to delete this Testset?"}
-                        onConfirm={() => deleteTestcaseHandler(deleteObject)}
-                    ></ConfirmPop>
+        <div className="datatable" style={{ marginTop: "20px" }}>
+          <ConfirmPop
+            open={openDelete}
+            handleClose={() => setOpenDelete(false)}
+            heading={"Delete Testset"}
+            message={"Are you sure you want to delete this Testset?"}
+            onConfirm={() => deleteTestcaseHandler(deleteObject)}
+          ></ConfirmPop>
 
-                    <Table
-                        searchPlaceholder="Search Testset"
-                        columns={columns}
-                        rows={testsets}
-                        getRowId={(row) => row.testset_id}
-                        pagination={true}
-                        currentPage={currentPage}
-                        totalPage={totalPage}
-                        onNext={() => {
-                            setCurrentPage(currentPage + 1)
-                            getTestset(globalProject?.project_id, globalApplication?.module_id, setTestset, currentPage, 10, settotalPage)
-                        }}
-                        onPrevious={() => {
-                            setCurrentPage(currentPage - 1)
-                            getTestset(globalProject?.project_id, globalApplication?.module_id, setTestset, currentPage, 10, settotalPage)
-                        }}
-                    />
-                </div>
-            </div>
-        </>
-    );
+          <Table
+            searchPlaceholder="Search Testset"
+            columns={columns}
+            rows={testsets}
+            getRowId={(row) => row.testset_id}
+            pagination={true}
+            currentPage={currentPage}
+            totalPage={totalPage}
+            onNext={() => {
+              setCurrentPage(currentPage + 1);
+              getTestset(
+                globalProject?.project_id,
+                globalApplication?.module_id,
+                setTestset,
+                currentPage,
+                10,
+                settotalPage
+              );
+            }}
+            onPrevious={() => {
+              setCurrentPage(currentPage - 1);
+              getTestset(
+                globalProject?.project_id,
+                globalApplication?.module_id,
+                setTestset,
+                currentPage,
+                10,
+                settotalPage
+              );
+            }}
+          />
+        </div>
+      </div>
+    </>
+  );
 }

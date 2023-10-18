@@ -64,6 +64,7 @@ function Settings() {
         name: "Admin Organisation Settings",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

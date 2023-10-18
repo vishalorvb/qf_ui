@@ -1,12 +1,5 @@
 import axios from "axios";
-import {
-  authservice,
-  biservice,
-  dashboard,
-  qfservice,
-  report,
-  userservice,
-} from "../Environment";
+import { userservice } from "../Environment";
 
 export async function UpdateUser(data) {
   console.log("calllign update user");
@@ -18,7 +11,7 @@ export async function UpdateUser(data) {
       Authorization: `Bearer ${data.token}`,
     },
   }).then((res) => {
-    if (res.data.status == "SUCCESS") {
+    if (res.data.status === "SUCCESS") {
       return true;
     } else {
       return false;

@@ -76,7 +76,7 @@ const UpdateOrganization = () => {
           Authorization: `Bearer ${auth.token}`,
         },
       }).then((res) => {
-        if (res.data.message == "Organization details updated successfully.") {
+        if (res.data.message === "Organization details updated successfully.") {
           setAddSuccessMsg(true);
           setTimeout(() => {
             setAddSuccessMsg(false);
@@ -105,6 +105,7 @@ const UpdateOrganization = () => {
     return () => {
       postVal = { ...initialval };
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

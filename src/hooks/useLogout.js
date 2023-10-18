@@ -9,9 +9,7 @@ const useLogout = () => {
     setAuth({});
     localStorage.setItem("token", "");
     try {
-      const response = await axiosPrivate.get(
-        "qfauthservice/authentication/logout"
-      );
+      await axiosPrivate.get("qfauthservice/authentication/logout");
     } catch (err) {
       console.log(err);
     }

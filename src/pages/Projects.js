@@ -16,6 +16,7 @@ function Projects() {
             : "Search Projects",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location?.state]);
   return <ProjectTable location={location} />;
 }

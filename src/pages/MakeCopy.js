@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { TextField, Button, Stack, Typography } from "@mui/material";
 import useHead from "../hooks/useHead";
 import { useEffect } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { qfservice } from "../Environment";
 
@@ -47,6 +47,7 @@ const MakeCopy = () => {
       return { ...ps, name: name };
     });
     console.log(location);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

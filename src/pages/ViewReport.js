@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import ReportList from "../Components/Reports/ReportList";
-import pagegenerator from "../Components/Reports/HTMLgenrator";
+// import pagegenerator from "../Components/Reports/HTMLgenrator";
 
 export default function ViewReport() {
   const location = useLocation();
@@ -12,6 +12,7 @@ export default function ViewReport() {
 
   useEffect(() => {
     reportDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function reportDetails() {

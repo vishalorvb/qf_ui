@@ -1,21 +1,12 @@
 import { useEffect, useState } from "react";
 import useHead from "../hooks/useHead";
-import {
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import Table from "../CustomComponent/Table";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddUserPopup from "../Components/UsersPopups/AddUserPopup";
-import EditUserPopup from "../Components/UsersPopups/EditUserPopup";
+// import EditUserPopup from "../Components/UsersPopups/EditUserPopup";
 import DeleteUserPopup from "../Components/UsersPopups/DeleteUserPopup";
 import ActiveUserPopup from "../Components/UsersPopups/ActiveUserPopup";
 import DeactiveUserPopup from "../Components/UsersPopups/DeactiveUserPopup";
@@ -31,11 +22,11 @@ export default function Admin() {
   const { setHeader } = useHead();
   const [open, setOpen] = useState(false);
   const [users, setUsers] = useState([]);
-  const [openEdit, setOpenEdit] = useState(false);
+  // const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openActive, setOpenActive] = useState(false);
   const [openDeactive, setOpenDeactive] = useState(false);
-  const [editObject, setEditObject] = useState([]);
+  // const [editObject, setEditObject] = useState([]);
   const [deleteObject, setDeleteObject] = useState([]);
   const [activeObject, setActiveObject] = useState([]);
   const [deactiveObject, setDeactiveObject] = useState([]);
@@ -56,10 +47,10 @@ export default function Admin() {
     setOpen(true);
   };
 
-  const editUserHandler = (e) => {
-    setOpenEdit(true);
-    setEditObject(e);
-  };
+  // const editUserHandler = (e) => {
+  //   setOpenEdit(true);
+  //   setEditObject(e);
+  // };
 
   const deleteUserHandler = (e) => {
     setOpenDelete(true);
@@ -95,6 +86,7 @@ export default function Admin() {
           plusCallback: () => console.log("null"),
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUsers = () => {
@@ -109,6 +101,7 @@ export default function Admin() {
 
   useEffect(() => {
     getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const columns = [
@@ -194,7 +187,7 @@ export default function Admin() {
         ) : (
           ""
         )}
-        {openEdit ? (
+        {/* {openEdit ? (
           <EditUserPopup
             object={editObject}
             openEdit={openEdit}
@@ -205,7 +198,7 @@ export default function Admin() {
           />
         ) : (
           ""
-        )}
+        )} */}
         {openDelete ? (
           <DeleteUserPopup
             object={deleteObject}
