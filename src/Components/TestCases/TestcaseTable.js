@@ -2,7 +2,7 @@ import { MenuItem, Paper, Tooltip, Typography } from '@mui/material';
 //import { TCdata } from "./CreateTestCase";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { DeleteTestCase } from '../../Services/QfService';
+import { DeleteTestCase, getTotalpageofTestcase } from '../../Services/QfService';
 import useHead from '../../hooks/useHead';
 import TableActions from '../../CustomComponent/TableActions';
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
@@ -18,6 +18,8 @@ function TestcaseTable({ project, application }) {
     const navigate = useNavigate();
     const { setSnackbarData, setShowloader } = useHead();
     let [deletTestcaseId, setDeleteTestcaseId] = useState(0)
+    let [currentPage, setCurrentPage] = useState(1);
+    let [totalPage, settotalPage] = useState(1);
 
     const columns = [
         {
@@ -106,10 +108,11 @@ function TestcaseTable({ project, application }) {
     useEffect(() => {
         setTestcases([])
         setShowloader(true)
-        getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases).then(res => {
+        getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage).then(res => {
             setShowloader(false)
         })
     }, [project, application])
+
     return (
         <div >
             <Table
@@ -117,7 +120,20 @@ function TestcaseTable({ project, application }) {
                 rows={testcases}
                 columns={columns}
                 hidefooter={true}
+                currentPage={currentPage}
+                totalPage={totalPage}
                 getRowId={(row) => row.testcase_id}
+                pagination={true}
+                onNext={() => {
+                    setTestcases([])
+                    getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage + 1);
+                    setCurrentPage(currentPage + 1)
+                }}
+                onPrevious={() => {
+                    setTestcases([])
+                    getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage - 1);
+                    setCurrentPage(currentPage - 1)
+                }}
             ></Table>
             <ConfirmPop
                 open={popup}
@@ -132,7 +148,7 @@ function TestcaseTable({ project, application }) {
 
                     DeleteTestCase(deletTestcaseId).then((res) => {
                         if (res) {
-                            getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases);
+                            getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage);
                             setShowloader(false)
 
                             setSnackbarData({
