@@ -121,12 +121,12 @@ export default function MiniDrawer({ open, setOpen }) {
   const { auth } = useAuth();
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState(["Application"]);
-  const [selectedNavItem, setSelectedNavItem] = useState("22");
   const location = useLocation();
   let [imageUrl, setImageUrl] = useState(" ");
   useEffect(() => {
     getPhoto(setImageUrl, auth.userId, auth.token);
     !open && setOpensubNav([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const openSubNavigationHandle = (navItem) => {
@@ -152,7 +152,6 @@ export default function MiniDrawer({ open, setOpen }) {
                   : navItem?.route?.includes("//")
                   ? OpenInNewWindow(navItem)
                   : navigate(navItem.route, { state: navItem?.state || {} });
-                navItem?.route !== "" && setSelectedNavItem(navItem.id);
               }}
               dense
               className="navItems"
@@ -233,11 +232,12 @@ export default function MiniDrawer({ open, setOpen }) {
               {auth?.user?.charAt(0)?.toUpperCase() +
                 auth?.user?.charAt(1)?.toUpperCase()}
             </Avatar> */}
-            {imageUrl != " " && (
+            {imageUrl !== " " && (
               <img
                 onClick={(e) => {
                   navigate("/profile");
                 }}
+                alt="profile"
                 src={imageUrl}
                 width="40"
                 height="40"
@@ -245,11 +245,12 @@ export default function MiniDrawer({ open, setOpen }) {
               />
             )}
 
-            {imageUrl == " " && (
+            {imageUrl === " " && (
               <img
                 onClick={(e) => {
                   navigate("/profile");
                 }}
+                alt="profile"
                 src="profile.jpg"
                 width="40"
                 height="40"

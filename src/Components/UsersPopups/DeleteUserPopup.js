@@ -27,7 +27,6 @@ function DeleteUserPopup(props) {
   const user = object.firstName + " " + object.lastName;
   const UserId = object.id;
   const loggedInUserId = loggedInId;
-  const token = localStorage.getItem("token");
   const axiosPrivate = useAxios();
 
   const handleClose = () => {
@@ -40,7 +39,7 @@ function DeleteUserPopup(props) {
         `${userservice}/qfuserservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
       )
       .then((res) => {
-        if (res.data.status == "SUCCESS") {
+        if (res.data.status === "SUCCESS") {
           setDelSuccessMsg(true);
           getUsers();
           setTimeout(() => {
@@ -48,7 +47,7 @@ function DeleteUserPopup(props) {
           }, 3000);
         }
 
-        if (res.data.status == "FAIL") {
+        if (res.data.status === "FAIL") {
           setDeleteFailMsg(true);
           setTimeout(() => {
             setDeleteFailMsg(false);

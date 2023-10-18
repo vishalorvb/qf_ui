@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import MastPop from "./MastPop";
 //import { getElementsDetails } from "../Services/ApplicationService";
 import { getElementsDetails } from "../Services/QfService";
 import {
@@ -8,38 +7,24 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
-  Grid,
-  Typography,
 } from "@mui/material";
-import {
-  MultiSelectElement,
-  SelectElement,
-  TextFieldElement,
-  useForm,
-} from "react-hook-form-mui";
+import { SelectElement, TextFieldElement, useForm } from "react-hook-form-mui";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Stack } from "@mui/system";
 import * as yup from "yup";
 import axios from "axios";
 import BackdropLoader from "./BackdropLoader";
-import { qfservice } from "../Environment";
 function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
   const [details, setDetails] = useState();
   const [allXpath, setAllXpath] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     getElementsDetails(setDetails, ElementId, isDiffElement === true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ElementId]);
   const schema = yup.object().shape({});
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue,
-  } = useForm({
+  const { control, handleSubmit, reset, setValue } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -67,6 +52,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
       otherFieldType: details?.secondary_input_type ?? "",
       pathType: details?.prefered_field ?? "",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [details]);
 
   const updateElement = (elementData) => {

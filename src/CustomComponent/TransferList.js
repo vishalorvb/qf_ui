@@ -1,12 +1,11 @@
-import * as React from "react";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import { useState } from "react";
 
 function not(a, b) {
   return a.filter((value) => b.indexOf(value) === -1);
@@ -16,8 +15,15 @@ function intersection(a, b) {
   return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-export default function TransferList({ left, setLeft, right, setRight,id,display}) {
-  const [checked, setChecked] = React.useState([]);
+export default function TransferList({
+  left,
+  setLeft,
+  right,
+  setRight,
+  id,
+  display,
+}) {
+  const [checked, setChecked] = useState([]);
 
   const leftChecked = intersection(checked, left);
   const rightChecked = intersection(checked, right);
@@ -68,11 +74,11 @@ export default function TransferList({ left, setLeft, right, setRight,id,display
               role="listitem"
               onClick={handleToggle(value)}
             >
-                <Checkbox
-                  checked={checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                />
+              <Checkbox
+                checked={checked.indexOf(value) !== -1}
+                tabIndex={-1}
+                disableRipple
+              />
               <ListItemText id={labelId} primary={display(value)} />
             </ListItem>
           );

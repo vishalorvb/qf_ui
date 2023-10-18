@@ -5,7 +5,7 @@ import HomeIcon from "@mui/icons-material/Home";
 export default function BreadcrumbsComponent() {
   const location = useLocation();
   const navigate = useNavigate();
-  let currentLocation = ``;
+
   const LinkRouter = (props) => {
     return <Link {...props} component={RouterLink} />;
   };
@@ -19,8 +19,6 @@ export default function BreadcrumbsComponent() {
     .split("/")
     .filter((crumb) => crumb !== "" && crumb !== "dashboard")
     .map((crumb, idx) => {
-      currentLocation += `/${crumb}`;
-
       nav = ["Application", "Projects", "Testcase", "Testset"].includes(crumb)
         ? nav - 2
         : ["Application", "Projects", "Testcase", "Testset"].includes(

@@ -8,9 +8,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import ClearIcon from "@mui/icons-material/Clear";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CheckSharpIcon from "@mui/icons-material/CheckSharp";
 
 function ConfirmPop(props) {

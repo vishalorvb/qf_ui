@@ -35,6 +35,7 @@ export default function LiveAutocomplete({
 
   useEffect(() => {
     setSelectedOptions([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject]);
 
   const onInputChange = (event, value, reason) => {

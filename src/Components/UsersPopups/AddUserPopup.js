@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-// import axios from 'axios';
+import React, { useRef, useState } from "react";
 import {
-  Autocomplete,
   Button,
   Container,
   Dialog,
@@ -28,7 +26,6 @@ function AddUserPopup(props) {
     users,
     getUsers,
     setAddSuccessMsg,
-    addErrorMsg,
     setAddErrorMsg,
     setValidationMsg,
   } = props;
@@ -45,10 +42,8 @@ function AddUserPopup(props) {
   const sso_id = useRef();
   const [roleId, setRoleId] = useState("");
   const role_id = useRef();
-  const [roleObject, setRoleObject] = useState([]);
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-  // const token = localStorage.getItem("token");
   const axiosPrivate = useAxios();
 
   let requiredsFields = [Email, sso_id, Password];

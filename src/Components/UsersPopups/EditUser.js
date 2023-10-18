@@ -1,16 +1,4 @@
-import {
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Stack, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
@@ -35,7 +23,6 @@ function EditUser() {
   const [password, setPassword] = useState(location.state.param1.password);
   const Password = useRef();
   const [roleId, setRoleId] = useState(location.state.param1.role);
-  const role_id = useRef();
   const [editSuccessMsg, setEditSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
   const [msg, setMsg] = useState(false);
@@ -124,6 +111,7 @@ function EditUser() {
           plusCallback: () => console.log("null"),
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -216,11 +204,11 @@ function EditUser() {
                 onChange={(e) => setRoleId(e.target.value)}
               >
                 <option value="">Select Role...</option>
-                <option selected={roleId == 1 ? true : false} value="1">
+                <option selected={roleId === 1 ? true : false} value="1">
                   AUTOMATION ENGINEER
                 </option>
 
-                <option selected={roleId == 4 ? true : false} value="4">
+                <option selected={roleId === 4 ? true : false} value="4">
                   AUTOMATION MANAGER
                 </option>
               </select>

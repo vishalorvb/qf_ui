@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
 import useAxios from "../hooks/useAxios";
 import PersistingLoading from "./PersistingLoading";
 import { authservice } from "../Environment";
@@ -39,6 +38,7 @@ const PersistLogin = () => {
     };
 
     !auth?.user ? verifyUser() : setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <>{isLoading ? <PersistingLoading /> : <Outlet />}</>;
