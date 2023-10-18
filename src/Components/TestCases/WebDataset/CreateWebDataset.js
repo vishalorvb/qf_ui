@@ -10,151 +10,140 @@ Result:
        1.This component will fetch data for create Dataset of a above TestcaseId for web Type
 */
 
+import React, { useEffect, useRef, useState } from "react";
+import CreateDataSetPopUp from "./CreateDataSetPopUp";
+import { getData_for_createDataset } from "../../../Services/QfService";
+import { getScreenList } from "./DatasetHelper";
+import ScreenList from "./ScreenList";
+import ElementList from "./ElementList";
+import { Grid } from "@mui/material";
+import { CreateDataset } from "../../../Services/QfService";
+import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 
-
-
-import React, { useEffect, useRef, useState } from 'react'
-import CreateDataSetPopUp from './CreateDataSetPopUp'
-import { getData_for_createDataset } from '../../../Services/QfService';
-import { getScreenList } from './DatasetHelper';
-import ScreenList from './ScreenList';
-import ElementList from './ElementList';
-import { Grid } from '@mui/material';
-import { CreateDataset } from '../../../Services/QfService';
-import SnackbarNotify from '../../../CustomComponent/SnackbarNotify';
-
-let snackbarmsg = ""
-let snackbarType = "info"
-
-
+let snackbarmsg = "";
+let snackbarType = "info";
 
 function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
-    let [data, setData] = useState();
-    let [screenList, setScreenList] = useState([]);
-    let [selectedScreenIds, setSelectedScreenIds] = useState(0)
-    let [selectedScreenName, setSelectedScreenName] = useState()
-    let [snackbar, setSnackbar] = useState(false)
-    let requestData = useRef()
+  let [data, setData] = useState();
+  let [screenList, setScreenList] = useState([]);
+  let [selectedScreenIds, setSelectedScreenIds] = useState(0);
+  let [selectedScreenName, setSelectedScreenName] = useState();
+  let [snackbar, setSnackbar] = useState(false);
+  let requestData = useRef();
 
-
-
-
-    function updateDataset(elementId, tagname, value) {
-        requestData.current.screens_in_testcase.forEach(screens => {
-            screens.screen_elements.forEach(screenElements => {
-                screenElements.forEach(element => {
-                    if (element.element_id == elementId) {
-                        element.dataset_values[tagname] = value
-                    }
-                });
-            });
+  function updateDataset(elementId, tagname, value) {
+    requestData.current.screens_in_testcase.forEach((screens) => {
+      screens.screen_elements.forEach((screenElements) => {
+        screenElements.forEach((element) => {
+          if (element.element_id === elementId) {
+            element.dataset_values[tagname] = value;
+          }
         });
+      });
+    });
+  }
+
+  function getScreenName(screenId) {
+    let sName = "";
+    requestData.current?.screens_in_testcase.forEach((screens) => {
+      if (screens.screen_id === screenId) {
+        sName = screens.screen.name;
+      }
+    });
+    return sName;
+  }
+
+  function handleSubmit(datasetInfo) {
+    if (copy) {
+      datasetInfo.dataset_id = 0;
+    } else {
+      datasetInfo.dataset_id = datasetId;
     }
 
-    function getScreenName(screenId) {
-        let sName = ""
-        requestData.current?.screens_in_testcase.forEach(screens => {
-            if (screens.screen_id == screenId) {
-                sName = screens.screen.name
-            }
-        })
-        return sName
+    requestData.current.datasets_list = [datasetInfo];
+    requestData.current.datasets_list[0]?.name.trim();
+    CreateDataset(requestData.current).then((res) => {
+      console.log(res);
+      if (res === false) {
+        snackbarmsg =
+          datasetInfo.dataset_id === 0
+            ? "Dataset Created Successfully "
+            : "Dataset Updated Successfully";
+        snackbarType = "success";
+        setSnackbar(true);
+        setTimeout(() => {
+          setToogle(true);
+        }, 1000);
+      } else {
+        snackbarmsg = res;
+        snackbarType = "error";
+        setSnackbar(true);
+      }
+    });
+  }
+
+  useEffect(() => {
+    getData_for_createDataset(setData, testcaseId, datasetId);
+  }, []);
+
+  useEffect(() => {
+    setScreenList(getScreenList(data));
+    requestData.current = data;
+  }, [data]);
+
+  useEffect(() => {
+    setSelectedScreenIds(screenList[0]?.screen_id);
+  }, [screenList]);
+
+  useEffect(() => {
+    if (selectedScreenIds !== undefined && selectedScreenIds !== 0) {
+      setSelectedScreenName(getScreenName(selectedScreenIds));
     }
+  }, [selectedScreenIds]);
 
-    function handleSubmit(datasetInfo) {
-        if (copy) {
-            datasetInfo.dataset_id = 0
-        }
-        else {
-            datasetInfo.dataset_id = datasetId
-        }
+  useEffect(() => {}, [selectedScreenName]);
 
-        requestData.current.datasets_list = [datasetInfo]
-        requestData.current.datasets_list[0]?.name.trim()
-        CreateDataset(requestData.current).then((res) => {
-            console.log(res)
-            if (res === false) {
-                snackbarmsg = datasetInfo.dataset_id == 0 ? "Dataset Created Successfully " : "Dataset Updated Successfully"
-                snackbarType = "success"
-                setSnackbar(true)
-                setTimeout(() => {
-                    setToogle(true)
-                }, 1000);
+  return (
+    <div>
+      <CreateDataSetPopUp
+        func={handleSubmit}
+        dsName={requestData.current?.datasets_list[0]?.name}
+        dsDesciption={requestData.current?.datasets_list[0]?.description}
+        dsType={false}
+        setToogle={setToogle}
+      ></CreateDataSetPopUp>
+
+      <Grid container columnSpacing={2}>
+        <Grid item md={3}>
+          <ScreenList
+            testcaseId={testcaseId}
+            screen={screenList}
+            setScreenId={setSelectedScreenIds}
+          ></ScreenList>
+        </Grid>
+        <Grid item md={9}>
+          <ElementList
+            elementList={
+              requestData.current?.screens_in_testcase.filter((screens) => {
+                if (screens.screen_id === selectedScreenIds) {
+                  return screens;
+                }
+              })[0]?.screen_elements[0]
             }
-            else {
-                snackbarmsg = res
-                snackbarType = "error"
-                setSnackbar(true)
-            }
-        });
-    }
+            updateDataset={updateDataset}
+            screenName={selectedScreenName}
+          ></ElementList>
+        </Grid>
+      </Grid>
 
-
-
-    useEffect(() => {
-        getData_for_createDataset(setData, testcaseId, datasetId)
-    }, [])
-
-    useEffect(() => {
-        setScreenList(getScreenList(data))
-        requestData.current = data
-    }, [data])
-
-
-    useEffect(() => {
-        setSelectedScreenIds(screenList[0]?.screen_id)
-    }, [screenList])
-
-    useEffect(() => {
-        if (selectedScreenIds !== undefined && selectedScreenIds !== 0) {
-            setSelectedScreenName(getScreenName(selectedScreenIds))
-        }
-    }, [selectedScreenIds])
-
-    useEffect(() => {
-    }, [selectedScreenName])
-
-    return (
-        <div>
-            <CreateDataSetPopUp
-                func={handleSubmit}
-                dsName={requestData.current?.datasets_list[0]?.name}
-                dsDesciption={requestData.current?.datasets_list[0]?.description}
-                dsType={false}
-                setToogle={setToogle}
-            ></CreateDataSetPopUp>
-
-            <Grid container columnSpacing={2}>
-                <Grid item md={3}>
-                    <ScreenList
-                        testcaseId={testcaseId}
-                        screen={screenList}
-                        setScreenId={setSelectedScreenIds}
-                    ></ScreenList>
-                </Grid>
-                <Grid item md={9}>
-                    <ElementList
-                        elementList={requestData.current?.screens_in_testcase.filter(screens => {
-                            if (screens.screen_id == selectedScreenIds) {
-                                return screens
-                            }
-                        })[0]?.screen_elements[0]}
-                        updateDataset={updateDataset}
-                        screenName={selectedScreenName}
-                    ></ElementList>
-
-                </Grid>
-            </Grid>
-
-
-            <SnackbarNotify
-                open={snackbar}
-                close={setSnackbar}
-                msg={snackbarmsg}
-                severity={snackbarType}
-            ></SnackbarNotify>
-        </div>
-    )
+      <SnackbarNotify
+        open={snackbar}
+        close={setSnackbar}
+        msg={snackbarmsg}
+        severity={snackbarType}
+      ></SnackbarNotify>
+    </div>
+  );
 }
 
-export default CreateWebDataset
+export default CreateWebDataset;

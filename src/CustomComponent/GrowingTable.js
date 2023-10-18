@@ -58,7 +58,7 @@ function GrowingTable(props) {
     setRows([...rows, <GetRow />]);
   }
   function appendRow(e) {
-    if (e.target.parentElement.parentElement.nextSibling == null) {
+    if (e.target.parentElement.parentElement.nextSibling === null) {
       addRow();
     }
   }

@@ -53,7 +53,7 @@ export default function CreateAnsibleInstance() {
     getProject(setProject, auth.userId);
   }, []);
   useEffect(() => {
-    if (globalProject == null) {
+    if (globalProject === null) {
       setglobalProject(project[0]);
     }
   }, [project]);

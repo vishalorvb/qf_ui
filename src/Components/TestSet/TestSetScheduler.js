@@ -14,7 +14,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
   let [Scheduledate, setScheduleDate] = useState();
   let [executionLocation, setExecutionLocation] = useState([]);
   let [environment, setEnvironment] = useState([]);
-  let [browser, setBrowser] = useState(["Chrome", "Edge", "Firefox", "Safari"]);
+  let browser = ["Chrome", "Edge", "Firefox", "Safari"];
   let [data, setData] = useState({
     browser_type: "Chrome",
     build_environment_id: 0,
@@ -71,6 +71,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
         setData({ ...data, execution_location: res[0]?.value ?? 0 });
       }
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, moduleId]);
 
   useEffect(() => {
@@ -86,6 +87,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
       });
       setData({ ...data, web_testcases_list_to_execute: temp });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testsetId]);
   return (
     <div>
@@ -107,7 +109,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
           <select
             onChange={(e) => {
               setData({ ...data, build_environment_id: e.target.value });
-              environment.find((env) => {
+              environment.forEach((env) => {
                 if (env.id === e.target.value) {
                   console.log(env.name);
                   setData({ ...data, build_environment_name: e.target.value });

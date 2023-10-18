@@ -82,28 +82,28 @@ export default function TestDesignAutomationGraph({
     {
       summary: "Total Regression Testcases",
       info:
-        info?.regression_testcases_count != undefined
+        info?.regression_testcases_count !== undefined
           ? info?.regression_testcases_count
           : 0,
     },
     {
       summary: "Identified Automation Testcases",
       info:
-        info?.automation_testcases_by_sprint != undefined
+        info?.automation_testcases_by_sprint !== undefined
           ? info?.automation_testcases_by_sprint
           : 0,
     },
     {
       summary: "Yet to Automate Testcases",
       info:
-        info?.yet_to_automate_testcases != undefined
+        info?.yet_to_automate_testcases !== undefined
           ? info?.yet_to_automate_testcases
           : 0,
     },
     {
       summary: "Test Datasets Created by Automated Testcases",
       info:
-        info?.datasets_created_for_automated_testcases != undefined
+        info?.datasets_created_for_automated_testcases !== undefined
           ? info?.datasets_created_for_automated_testcases
           : 0,
     },

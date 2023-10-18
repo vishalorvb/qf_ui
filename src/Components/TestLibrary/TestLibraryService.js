@@ -75,7 +75,7 @@ export async function DeleteManualTestcase(testcaseId) {
       `${qfservice}/qfservice/deleteManualTestcase?manual_testcase_id=${testcaseId}`
     )
     .then((res) => {
-      if (res.data.status == "SUCCESS") {
+      if (res.data.status === "SUCCESS") {
         return true;
       }
       return false;

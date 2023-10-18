@@ -42,7 +42,7 @@ const ConfigureDevice = () => {
               className="nameColumn"
               onClick={() => {
                 setSpecificationId(param.row.specificationId);
-                location.state.pathname == "/TestcaseExecution" &&
+                location.state.pathname === "/TestcaseExecution" &&
                   navigate("/TestcaseExecution/UpdateDevice", {
                     state: {
                       id: param.row.specificationId,
@@ -50,7 +50,7 @@ const ConfigureDevice = () => {
                     },
                   });
 
-                location.state.pathname == "/TestsetExecution" &&
+                location.state.pathname === "/TestsetExecution" &&
                   navigate("/TestsetExecution/UpdateDevice", {
                     state: {
                       id: param.row.specificationId,
@@ -119,7 +119,7 @@ const ConfigureDevice = () => {
       )
       .then((res) => {
         console.log(res);
-        if (res.data.status == "SUCCESS") {
+        if (res.data.status === "SUCCESS") {
           setSuccessDelete(true);
           getConfigurations(projectId);
           setTimeout(() => {
@@ -169,14 +169,14 @@ const ConfigureDevice = () => {
         <Button
           variant="contained"
           onClick={() => {
-            location.state.pathname == "/TestcaseExecution" &&
+            location.state.pathname === "/TestcaseExecution" &&
               navigate("/TestcaseExecution/AddConfigureDevice", {
                 state: {
                   projectId: projectId,
                 },
               });
 
-            location.state.pathname == "/TestsetExecution" &&
+            location.state.pathname === "/TestsetExecution" &&
               navigate("/TestsetExecution/AddConfigureDevice", {
                 state: {
                   projectId: projectId,

@@ -48,7 +48,7 @@ function Cycles() {
       .post(`/Biservice/projects/cycles/delete?cycle_id=${cycleId}`)
       .then((res) => {
         // console.log(res);
-        if (res.data.status == "SUCCESS") {
+        if (res.data.status === "SUCCESS") {
           setSuccessDelete(true);
           getCycles();
           setOpenNewPhase(true);

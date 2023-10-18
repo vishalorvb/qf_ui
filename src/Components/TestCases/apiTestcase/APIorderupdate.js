@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import MaterialReactTable from "material-react-table";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import useHead from "../../../hooks/useHead";
 import { qfservice } from "../../../Environment";
@@ -30,6 +30,7 @@ export default function APIorderupdate() {
         plusButton: false,
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateScreenOrder = () => {
@@ -46,6 +47,7 @@ export default function APIorderupdate() {
 
   useEffect(() => {
     updateScreenOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
   const columns = useMemo(

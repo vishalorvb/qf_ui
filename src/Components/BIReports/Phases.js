@@ -240,7 +240,7 @@ export default function Phases() {
                       />
                     </ListItemButton>
                   </ListItem>
-                  {index != phases - 1 ? <Divider sx={{ mt: 1 }} /> : ""}
+                  {index !== phases - 1 ? <Divider sx={{ mt: 1 }} /> : ""}
                 </Grid>
               ))}
             </List>

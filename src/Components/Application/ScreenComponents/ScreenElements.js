@@ -54,7 +54,7 @@ export default function ScreenElements() {
       .then((resp) => {
         // console.log(resp.data.message);
         if (elementOrder === 1) {
-          if (resp.data.message == "Order of Elements updated successfully.") {
+          if (resp.data.message === "Order of Elements updated successfully.") {
             setUpdatedOrder(true);
             setTimeout(() => {
               setUpdatedOrder(false);

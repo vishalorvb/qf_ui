@@ -67,7 +67,7 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
         }
       )
       .then((resp) => {
-        if (resp.data.status == "SUCCESS") {
+        if (resp.data.status === "SUCCESS") {
           snackbarMessage = "Screen Order Updated";
           setSnackbar(true);
         }
@@ -75,7 +75,7 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
   };
 
   useEffect(() => {
-    if (order != undefined && order.length > 0) {
+    if (order !== undefined && order.length > 0) {
       updateScreenOrder();
     }
   }, [order]);
@@ -96,7 +96,7 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
         List of screens
       </Typography>
 
-      {tempScreen != undefined && (
+      {tempScreen !== undefined && (
         <MaterialReactTable
           columns={columns}
           data={tempScreen}

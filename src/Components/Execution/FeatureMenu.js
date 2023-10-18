@@ -47,7 +47,7 @@ export default function FeatureMenu({
         Features
         <ArrowDropDownIcon />
       </Button>
-      {location.pathname == "/TestcaseExecution" && (
+      {location.pathname === "/TestcaseExecution" && (
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -61,7 +61,7 @@ export default function FeatureMenu({
             Runtime Variables
           </MenuItem>
           <MenuItem onClick={() => setFeatureFile(true)}>Feature File</MenuItem>
-          {/* {frameworkType == 4 && (
+          {/* {frameworkType === 4 && (
             <MenuItem
               onClick={() => {
                 navigate("/TestcaseExecution/ConfigureDevice", {
@@ -77,7 +77,7 @@ export default function FeatureMenu({
           )} */}
         </Menu>
       )}
-      {location.pathname == "/TestsetExecution" && (
+      {location.pathname === "/TestsetExecution" && (
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -90,7 +90,7 @@ export default function FeatureMenu({
           <MenuItem onClick={() => setOpenRuntimeVar(true)}>
             Runtime Variables
           </MenuItem>
-          {/* {frameworkType == 4 && (
+          {/* {frameworkType === 4 && (
             <MenuItem
               onClick={() => {
                 navigate("/TestsetExecution/ConfigureDevice", {

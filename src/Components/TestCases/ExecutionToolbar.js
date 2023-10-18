@@ -13,7 +13,6 @@ import axios from "axios";
 import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import MenuItem from "@mui/material/MenuItem";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -23,7 +22,6 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuList from "@mui/material/MenuList";
-import BackdropLoader from "../../CustomComponent/BackdropLoader";
 import { Controller } from "react-hook-form";
 import useHead from "../../hooks/useHead";
 import { qfservice } from "../../Environment";
@@ -52,14 +50,10 @@ export default function ExecutionToolbar({
     browser:
       applicationType !== 3 && applicationType !== 4 && yup.array().required(),
     commitMsg:
-      (execLoc == "docker" || execLoc == "jenkins") && yup.string().required(),
+      (execLoc === "docker" || execLoc === "jenkins") &&
+      yup.string().required(),
   });
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const [open, setOpen] = React.useState(false);
@@ -214,6 +208,7 @@ export default function ExecutionToolbar({
           const mergedObj = [...data1, ...data2];
           setExecEnvList(mergedObj);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationId]);
 
   useEffect(() => {
@@ -221,6 +216,7 @@ export default function ExecutionToolbar({
       executionLoc: execEnvList[0]?.id,
       buildenvName: buildEnvList[0]?.id,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [execEnvList, buildEnvList]);
 
   return (
@@ -237,7 +233,7 @@ export default function ExecutionToolbar({
               onChange={(e) => setExecLoc(e)}
               options={execEnvList}
             />
-            {frameworkType == 4 && (
+            {frameworkType === 4 && (
               <h5
                 style={{
                   cursor: "pointer",
@@ -287,7 +283,7 @@ export default function ExecutionToolbar({
               </h5>
             </Stack>
           </Grid>
-          {applicationType == 3 || applicationType == 4 ? (
+          {applicationType === 3 || applicationType === 4 ? (
             ""
           ) : (
             <Grid item>
@@ -318,7 +314,7 @@ export default function ExecutionToolbar({
               selectedDatasets={selectedDatasets}
               envId={buildEnvId}
               runtimeVar={
-                runtimeVariable != undefined || runtimeVariable != null
+                runtimeVariable !== undefined || runtimeVariable !== null
                   ? runtimeVariable
                   : ""
               }
@@ -404,7 +400,7 @@ export default function ExecutionToolbar({
           </Grid>
         </Grid>
       </Grid>{" "}
-      {(execLoc == "docker" || execLoc == "jenkins") && (
+      {(execLoc === "docker" || execLoc === "jenkins") && (
         <Stack mt={1}>
           <label>Commit message</label>
           <TextFieldElement

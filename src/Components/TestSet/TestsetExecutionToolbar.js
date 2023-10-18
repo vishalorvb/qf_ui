@@ -54,7 +54,8 @@ function TestsetExecutionToolbar({
     browser:
       applicationType !== 3 && applicationType !== 4 && yup.array().required(),
     commitMsg:
-      (execLoc == "docker" || execLoc == "jenkins") && yup.string().required(),
+      (execLoc === "docker" || execLoc === "jenkins") &&
+      yup.string().required(),
   });
 
   const handleToggle = () => {
@@ -63,7 +64,7 @@ function TestsetExecutionToolbar({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+
     reset,
   } = useForm({
     resolver: yupResolver(schema),
@@ -110,6 +111,7 @@ function TestsetExecutionToolbar({
           const mergedObj = [...data1, ...data2];
           setExecEnvList(mergedObj);
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationId]);
 
   useEffect(() => {
@@ -117,6 +119,7 @@ function TestsetExecutionToolbar({
       executionLoc: execEnvList[0]?.id,
       buildenvName: buildEnvList[0]?.id,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [execEnvList, buildEnvList]);
 
   const execute = (data) => {
@@ -234,7 +237,7 @@ function TestsetExecutionToolbar({
               onChange={(e) => setExecLoc(e)}
               options={execEnvList}
             />
-            {frameworkType == 4 && (
+            {frameworkType === 4 && (
               <h5
                 style={{
                   cursor: "pointer",
@@ -284,7 +287,7 @@ function TestsetExecutionToolbar({
               </h5>
             </Stack>
           </Grid>
-          {applicationType == 3 || applicationType == 4 ? (
+          {applicationType === 3 || applicationType === 4 ? (
             ""
           ) : (
             <Grid item>
@@ -313,7 +316,7 @@ function TestsetExecutionToolbar({
               testsetId={testsetId}
               envId={buildEnvId}
               runtimeVar={
-                runtimeVariable != undefined || runtimeVariable != null
+                runtimeVariable !== undefined || runtimeVariable !== null
                   ? runtimeVariable
                   : ""
               }
@@ -399,7 +402,7 @@ function TestsetExecutionToolbar({
         </Grid>
       </Grid>
 
-      {(execLoc == "docker" || execLoc == "jenkins") && (
+      {(execLoc === "docker" || execLoc === "jenkins") && (
         <Stack mt={1}>
           <label>Commit message</label>
 

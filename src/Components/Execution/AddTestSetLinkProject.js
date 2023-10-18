@@ -60,7 +60,7 @@ function AddTestSetLinkProject() {
               // getBuilEnvironment();
             }, 3000);
             navigate(-1);
-          } else if (resp?.data?.message == "Testset already exists.") {
+          } else if (resp?.data?.message === "Testset already exists.") {
             setReportExistingFailMsg(true);
             setTimeout(() => {
               setReportExistingFailMsg(false);

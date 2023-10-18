@@ -30,7 +30,7 @@ export default function CreateCycle({ testsetData, getCycles }) {
     // console.log(postData);
     axios.post(`/Biservice/projects/cycles/create`, postData).then((resp) => {
       // console.log(resp)
-      if (resp.data.message == "Succesfully Created Cycle") {
+      if (resp.data.message === "Succesfully Created Cycle") {
         setAddSuccessMsg(true);
         reset();
         getCycles();

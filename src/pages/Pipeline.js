@@ -48,7 +48,7 @@ export default function Pipeline() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    if (globalProject == null) {
+    if (globalProject === null) {
       setglobalProject(project[0]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

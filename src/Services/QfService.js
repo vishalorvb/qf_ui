@@ -57,7 +57,7 @@ export function getApiDatasets(callback, testcaseId) {
   axios
     .get(`${qfservice}/qfservice/api/testcases/${testcaseId}/datasets`)
     .then((res) => {
-      if (res.data.data != null) {
+      if (res.data.data !== null) {
         callback(res.data.data);
       }
     });
@@ -78,7 +78,7 @@ export async function createApiDataset(userId, Data) {
     url: `${qfservice}/qfservice/createdataset?userId=${userId}`,
     data: Data,
   }).then((res) => {
-    if (res.data.error == null) {
+    if (res.data.error === null) {
       return false;
     } else {
       return res.data.error.description;
@@ -517,7 +517,7 @@ export async function CreateTestCaseService(data) {
     url: `${qfservice}/qfservice/webtestcase/CreateWebTestCase`,
     data: data,
   }).then((res) => {
-    if (res.data.info != null) {
+    if (res.data.info !== null) {
       return res.data.message;
     } else {
       return false;
@@ -531,7 +531,7 @@ export async function createApitestcase(data) {
     url: `${qfservice}/qfservice/createApiTestCaseAddApisToTestcase`,
     data: data,
   }).then((res) => {
-    if (res.data.info != null) {
+    if (res.data.info !== null) {
       return res.data.message;
     } else {
       return false;
@@ -702,7 +702,7 @@ export async function getSprint_in_testcase(projectId, webtestcaseid) {
       `${qfservice}/qfservice/webtestcase/getTestcaseSprints?project_id=${projectId}&testcase_id=${webtestcaseid}`
     )
     .then((res) => {
-      if (res.data.info == null) {
+      if (res.data.info === null) {
         return [];
       }
       return res.data.info?.filter((sprint) => sprint.is_selected);

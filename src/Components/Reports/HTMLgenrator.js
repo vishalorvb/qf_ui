@@ -123,7 +123,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
                       <li class="nav-item w-100">
                         <a
                           class={`nav-link force-wrap w-100 ${
-                            id == 0 && "active"
+                            id === 0 && "active"
                           }`}
                           id={`${d.id}-tab`}
                           data-bs-toggle="tab"
@@ -347,7 +347,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
                   {data?.map((d, id) => {
                     return (
                       <div
-                        class={`tab-pane fade show ${id == 0 && "active"}`}
+                        class={`tab-pane fade show ${id === 0 && "active"}`}
                         id={d.id}
                         role="tabpanel"
                         aria-labelledby={`${d.id}-tab`}
@@ -564,7 +564,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
                             return (
                               <>
                                 <p>
-                                  {reportDetails.result_type != "screen" &&
+                                  {reportDetails.result_type !== "screen" &&
                                     detailsIcon}{" "}
                                   {reportDetails?.text}
                                 </p>

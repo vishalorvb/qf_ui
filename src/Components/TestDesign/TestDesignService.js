@@ -7,7 +7,7 @@ export function GetJiraProjectsAndSprints(callback, projectId) {
       `${qfservice}/qfservice/getJiraProjectsAndSprints?sqe_project_id=${projectId}`
     )
     .then((resp) => {
-      if (resp?.data?.status == "SUCCESS") {
+      if (resp?.data?.status === "SUCCESS") {
         const details = resp?.data?.info;
         callback(details);
       }

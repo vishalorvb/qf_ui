@@ -72,6 +72,7 @@ function UpdateTestcasesOrder() {
 
   useEffect(() => {
     updateTestcasesOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
   const columns = useMemo(

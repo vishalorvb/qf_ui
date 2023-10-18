@@ -113,7 +113,7 @@ export default function TestsetExecution() {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item md={2.8}>
           <>
-            {globalApplication?.module_type != 19 && (
+            {globalApplication?.module_type !== 19 && (
               <TextField
                 size="small"
                 type="text"
@@ -135,7 +135,7 @@ export default function TestsetExecution() {
         </Grid>
       </Grid>
 
-      {globalApplication?.module_type != 19 ? (
+      {globalApplication?.module_type !== 19 ? (
         <Grid container justifyContent="space-between">
           <Grid item md={2.8} justifyContent="flex-start">
             <List

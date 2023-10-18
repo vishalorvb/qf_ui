@@ -44,7 +44,7 @@ export default function ViewCycle({ selectedCycleList }) {
 
   const handleInputChange = (id, fieldName, value) => {
     list.forEach((r) => {
-      if (r.id == id) {
+      if (r.id === id) {
         r[fieldName] = value;
         r[fieldName] = value;
         r[fieldName] = value;
@@ -66,7 +66,7 @@ export default function ViewCycle({ selectedCycleList }) {
     // Here you can perform further actions with the formData
     axios.post(`/Biservice/projects/cycles/update`, data).then((resp) => {
       // console.log(resp)
-      if (resp.data.message == "Succesfully Updated Results") {
+      if (resp.data.message === "Succesfully Updated Results") {
         setAddSuccessMsg(true);
         getCyclesReports();
         setTimeout(() => {

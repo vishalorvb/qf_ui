@@ -40,7 +40,7 @@ function OrganizationDashboard() {
         },
       }).then((res) => {
         if ((res.data.message = "users Details found.")) {
-          res.data.info == null
+          res.data.info === null
             ? setTotalUsers(0)
             : setTotalUsers(res.data.info.length);
 
@@ -69,7 +69,7 @@ function OrganizationDashboard() {
         },
       }).then((res) => {
         if ((res.data.message = "users Details found.")) {
-          res.data.info == null
+          res.data.info === null
             ? setTotalApplication(0)
             : setTotalApplication(res.data.info.length);
           // setAddSuccessMsg(true);
@@ -98,7 +98,7 @@ function OrganizationDashboard() {
       }).then((res) => {
         // console.log(Object.keys(res.data.info).length);
         if ((res.data.message = "Applications Details found.")) {
-          res.data.info == null
+          res.data.info === null
             ? setTotalProjects(0)
             : setTotalProjects(Object.keys(res.data.info).length);
           setAddSuccessMsg(true);

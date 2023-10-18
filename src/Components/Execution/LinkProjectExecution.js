@@ -119,7 +119,7 @@ const LinkProjectExecution = () => {
       .then((resp) => {
         // const testsets = resp?.data?.info
         // console.log(resp.data.info)
-        if (resp.data.info != null) {
+        if (resp.data.info !== null) {
           setTestsetData(resp?.data?.info);
         }
       });
@@ -218,7 +218,7 @@ const LinkProjectExecution = () => {
       )
       .then((res) => {
         // console.log(res.data.message);
-        if (res.data.message == "Testset deleted succesfully.") {
+        if (res.data.message === "Testset deleted succesfully.") {
           setSuccessDelete(true);
           setTimeout(() => {
             setSuccessDelete(false);
@@ -233,7 +233,7 @@ const LinkProjectExecution = () => {
   }
 
   function LinkExecute(params) {
-    if (selectedTestsetData?.length != 0) {
+    if (selectedTestsetData?.length !== 0) {
       console.log(params?.executionLoc);
 
       const executionData = {
