@@ -1,6 +1,18 @@
 import axios from "../api/axios";
 import { qfservice } from "../Environment";
 
+export function getTestset(projectId, moduleId, callback, page = 1, size = 10, settotalPage) {
+    axios
+        .get(
+            `${qfservice}/qfservice/getModuleAndTestsets?projectId=${projectId}&moduleId=${moduleId}&page=${page}&size=${size}`
+        )
+        .then((resp) => {
+            const testsets = resp?.data?.info.content ?? [];
+            settotalPage(resp.data?.info.totalPages)
+            callback(testsets);
+        });
+}
+
 export function getApis(callback, applicationId) {
     axios.get(`${qfservice}/qfservice/${applicationId}/apis`).then((res) => {
         callback(res.data.data.apisList);
@@ -723,19 +735,7 @@ export function getTestsets(callback, projectId, workflowID) {
             "/web/testsets"
         )
         .then((res) => {
-            callback(res.data.data);
-        });
-    axios
-        .get(
-            qfservice +
-            "/qfservice/webtestset/api/v1/projects/" +
-            projectId +
-            "/workflow/" +
-            workflowID +
-            "/web/testsets"
-        )
-        .then((res) => {
-            callback(res.data.data);
+            callback(res.data.data ?? []);
         });
 }
 

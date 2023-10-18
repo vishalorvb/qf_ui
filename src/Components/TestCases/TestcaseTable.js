@@ -19,7 +19,7 @@ function TestcaseTable({ project, application }) {
     const { setSnackbarData, setShowloader } = useHead();
     let [deletTestcaseId, setDeleteTestcaseId] = useState(0)
     let [currentPage, setCurrentPage] = useState(1);
-    let [totalPage, settotalPage] = useState(0);
+    let [totalPage, settotalPage] = useState(1);
 
     const columns = [
         {
@@ -123,6 +123,7 @@ function TestcaseTable({ project, application }) {
                 currentPage={currentPage}
                 totalPage={totalPage}
                 getRowId={(row) => row.testcase_id}
+                pagination={true}
                 onNext={() => {
                     setTestcases([])
                     getAlltestcaseOfApplicationandSubapplication(project?.project_id, application?.module_id, setTestcases, settotalPage, currentPage + 1);

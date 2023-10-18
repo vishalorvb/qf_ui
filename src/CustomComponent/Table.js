@@ -16,6 +16,7 @@ export default function Table(props) {
         setNewchangedElement,
         hideheaderCheckbox,
         searchPlaceholder,
+        pagination
     } = props;
     function QuickSearchToolbar() {
         return (
@@ -107,7 +108,7 @@ export default function Table(props) {
                 components={{ Toolbar: !hideSearch && QuickSearchToolbar }}
                 {...props}
             />
-            <div>
+            {pagination && <div>
                 <Stack
                     direction="row"
                     justifyContent="flex-end"
@@ -126,7 +127,7 @@ export default function Table(props) {
                     ><NavigateNextIcon /></IconButton>
 
                 </Stack>
-            </div>
+            </div>}
         </div >
     );
 }
