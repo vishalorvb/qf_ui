@@ -144,6 +144,7 @@ export default function Screens({ location }) {
 
   useEffect(() => {
     getScreens();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

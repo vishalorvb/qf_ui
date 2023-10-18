@@ -8,7 +8,6 @@ import TouchAppIcon from "@mui/icons-material/TouchApp";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import InfoIcon from "@mui/icons-material/Info";
-import moment from "moment";
 
 export default function ReportDetails({ selectedItemData }) {
   console.log(selectedItemData);
@@ -131,6 +130,7 @@ export default function ReportDetails({ selectedItemData }) {
               <img
                 src={`data:image/png;base64,${dataset?.screenshot}`}
                 width={"250px"}
+                alt=".."
               />
             )}
             <Divider />

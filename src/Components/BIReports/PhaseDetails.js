@@ -61,6 +61,7 @@ function PhaseDetails(props) {
 
   useEffect(() => {
     setData({ ...initialvalues });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   const handleChange = (e) => {

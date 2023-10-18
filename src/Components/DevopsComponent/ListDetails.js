@@ -1,7 +1,6 @@
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import MuiListItemText from "@mui/material/ListItemText";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
-import { List, ListItem, Typography } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 export default function ListDetails(props) {
   const { selectedItemData } = props;
 

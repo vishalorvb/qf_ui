@@ -60,6 +60,7 @@ export default function ExecutionDetails({
     } else {
       setDataList([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testcaseId]);
 
   return (

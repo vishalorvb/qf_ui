@@ -18,7 +18,7 @@ export default function Error() {
         height: "100vh",
       }}
     >
-      <img src="/somethingwentwrong.png" />
+      <img src="/somethingwentwrong.png" alt="..." />
 
       <h1>Something went wrong !</h1>
       <Button onClick={goHome} size="large" variant="contained">

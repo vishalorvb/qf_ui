@@ -3,8 +3,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import RuntimeVariable from "./RuntimeVariable";
-import FeatureFile from "./FeatureFile";
-import { useLocation, useNavigate } from "react-router-dom";
 import ReportPath from "./ReportPath";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
@@ -14,8 +12,6 @@ export default function LinkFeatureMenu({ runtimeVar, buildEnvId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [reportPath, setReportPath] = React.useState(false);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

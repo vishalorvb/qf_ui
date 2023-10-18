@@ -7,24 +7,16 @@ import {
   DialogTitle,
   TextareaAutosize,
 } from "@mui/material";
-import { TextFieldElement, useForm } from "react-hook-form-mui";
+import { useForm } from "react-hook-form-mui";
 import * as yup from "yup";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { qfservice } from "../../Environment";
 
 function RuntimeVariable(props) {
-  const {
-    projectId,
-    applicationId,
-    applicationType,
-    open,
-    close,
-    envId,
-    runtimeVar,
-  } = props;
+  const { open, close, envId, runtimeVar } = props;
   const [variables, setVariables] = useState("");
   const schema = yup.object().shape({
     testcaseName: yup.string().required().max(30, "Max length exceeded"),
@@ -32,12 +24,7 @@ function RuntimeVariable(props) {
   const [snack, setSnack] = useState(false);
 
   // console.log(envId)
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const handleClose = () => {

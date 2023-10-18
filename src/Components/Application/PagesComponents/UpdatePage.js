@@ -27,38 +27,34 @@ function UpdatePage(props) {
     close(false);
   };
   const onUpdateHandler = (params) => {
-    {
-      if (postVal.page_name !== "" && postVal.page_description !== "") {
-        pageName.current.value !== ""
-          ? pageName.current.classList.remove("error")
-          : pageName.current.classList.add("error");
-        pageDesc.current.value !== ""
-          ? pageDesc.current.classList.remove("error")
-          : pageName.current.classList.add("error");
-        axios
-          .post(
-            `${qfservice}/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
-          )
-          .then((resp) => {
-            setSnackbarData({
-              status: true,
-              message: resp?.data?.message,
-              severity: resp?.data?.status,
-            });
-            callGetPages();
-            handleClose();
+    if (postVal.page_name !== "" && postVal.page_description !== "") {
+      pageName.current.value !== ""
+        ? pageName.current.classList.remove("error")
+        : pageName.current.classList.add("error");
+      pageDesc.current.value !== ""
+        ? pageDesc.current.classList.remove("error")
+        : pageName.current.classList.add("error");
+      axios
+        .post(
+          `${qfservice}/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
+        )
+        .then((resp) => {
+          setSnackbarData({
+            status: true,
+            message: resp?.data?.message,
+            severity: resp?.data?.status,
           });
-      } else {
-        pageName.current.value === "" &&
-          pageName.current.classList.add("error");
-        pageDesc.current.value === "" &&
-          pageDesc.current.classList.add("error");
-        setSnackbarData({
-          status: true,
-          message: "Fill required fields",
-          severity: "error",
+          callGetPages();
+          handleClose();
         });
-      }
+    } else {
+      pageName.current.value === "" && pageName.current.classList.add("error");
+      pageDesc.current.value === "" && pageDesc.current.classList.add("error");
+      setSnackbarData({
+        status: true,
+        message: "Fill required fields",
+        severity: "error",
+      });
     }
   };
   return (

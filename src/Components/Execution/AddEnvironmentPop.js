@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
@@ -34,7 +33,6 @@ function AddEnvironmentPop(props) {
   } = props;
   const { setSnackbarData } = useHead();
   const {
-    control,
     handleSubmit,
     register,
     formState: { errors },

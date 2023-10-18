@@ -95,6 +95,7 @@ export default function UpdateScreen() {
       .catch((err) => {
         setShowLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updated]);
 
   useEffect(() => {
@@ -104,6 +105,7 @@ export default function UpdateScreen() {
         name: "Create Screen",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preSelectedElement]);
 
   return (

@@ -92,10 +92,8 @@ export default function PredictionStatus({
             fontSize: "16px",
           },
           formatter: function () {
-            return (
-              `<span style="font-size:2em; color: {this.color}; font-weight: bold">` +
-                percentage ?? 0 + " %" + "</span>"
-            );
+            return `<span style="font-size:2em; color: {this.color}; font-weight: bold">
+                ${percentage ?? 0}" %" + "</span>`;
           },
         },
         name: "Move",

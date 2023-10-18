@@ -11,7 +11,7 @@ Result:
         Create and update dataset of web type
 */
 
-import React, { createContext, lazy, useEffect, useState } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import WebDatasetList from "./WebDatasetList";
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
@@ -48,6 +48,7 @@ function WebDataset() {
         name: location.state?.testcaseName,
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testcaseName]);
 
   return (

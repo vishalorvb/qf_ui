@@ -134,6 +134,7 @@ export default function PagesTable(props) {
 
   useEffect(() => {
     callGetPages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

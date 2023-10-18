@@ -24,7 +24,7 @@ const UpdateConfigureDevice = () => {
   const navigate = useNavigate();
   const [snack, setSnack] = useState(false);
   const { setHeader } = useHead();
-
+  console.log(configDetails);
   // try {
   //     specificationId
   //     projectId
@@ -50,6 +50,7 @@ const UpdateConfigureDevice = () => {
         setPlatformType(res?.data?.info?.model.saucelab.plotform_type);
         setConfigObjInfo(res?.data?.info?.model.saucelab.config_obj);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleUpdate(event) {
@@ -92,6 +93,7 @@ const UpdateConfigureDevice = () => {
         name: "Update Mobile Configuration",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

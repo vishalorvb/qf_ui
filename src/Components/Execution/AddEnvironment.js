@@ -1,14 +1,12 @@
 import React from "react";
-import { IconButton, Button, Grid, Tooltip } from "@mui/material";
+import { IconButton, Button, Tooltip } from "@mui/material";
 import Table from "../../CustomComponent/Table";
 import { useEffect, useState } from "react";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import AddEnvironmentPop from "./AddEnvironmentPop";
 import EditEnvironmentPop from "./EditEnvironmentPop";
-import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import axios from "axios";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import useHead from "../../hooks/useHead";
@@ -29,6 +27,7 @@ export default function AddEnvironemt() {
 
   useEffect(() => {
     getBuilEnvironment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -38,6 +37,7 @@ export default function AddEnvironemt() {
         name: "Build Environment",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getBuilEnvironment() {

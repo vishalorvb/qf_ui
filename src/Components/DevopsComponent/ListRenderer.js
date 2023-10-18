@@ -5,7 +5,6 @@ import MuiListItemIcon from "@mui/material/ListItemIcon";
 import ApiIcon from "@mui/icons-material/Api";
 import LibraryAddCheckOutlinedIcon from "@mui/icons-material/LibraryAddCheckOutlined";
 import { useState } from "react";
-import { Box } from "@mui/system";
 import { useEffect } from "react";
 
 export default function ListRenderer(props) {

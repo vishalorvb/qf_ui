@@ -24,7 +24,7 @@ const Container = memo(function Container() {
   const [popup, setPopup] = useState(false);
   const [updated, setUpdated] = useState(false);
   const [isDiffElement, setIsDiffElement] = useState(false);
-
+  console.log(updated);
   function isDropped(boxName) {
     return droppedBoxNames.indexOf(boxName) > -1;
   }
@@ -43,6 +43,7 @@ const Container = memo(function Container() {
       });
       console.log(item);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [droppedBoxNames, dustbins]
   );
 
@@ -61,6 +62,7 @@ const Container = memo(function Container() {
         return dustbinArray;
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [droppedBoxNames, dustbins]
   );
 
@@ -77,7 +79,6 @@ const Container = memo(function Container() {
       .then((resp) => {
         const currentElements = resp?.data?.data?.currentElements;
         const newElements = resp?.data?.data?.newElements;
-        const pageId = resp?.data?.data?.page_id;
         setDustbins(() => {
           return currentElements?.map((element) => {
             return { elementData: element, lastDroppedItem: null };
@@ -109,6 +110,7 @@ const Container = memo(function Container() {
         name: "Mapp DiffElements",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

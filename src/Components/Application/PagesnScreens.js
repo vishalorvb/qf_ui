@@ -32,6 +32,7 @@ export default function PagesnScreens() {
             : "Pages and Screens"),
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>

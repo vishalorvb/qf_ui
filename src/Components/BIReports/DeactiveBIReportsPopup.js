@@ -11,7 +11,6 @@ import {
 import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
-import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 
 function DeactiveBIReportsPopup(props) {
@@ -24,7 +23,6 @@ function DeactiveBIReportsPopup(props) {
   } = props;
   const id = object.report_id;
   const axiosPrivate = useAxios();
-  const { auth } = useAuth();
 
   const handleClose = () => {
     setOpenDeactive(false);

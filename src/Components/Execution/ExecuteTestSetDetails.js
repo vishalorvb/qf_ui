@@ -7,8 +7,6 @@ import MuiltiSelect from "../../CustomComponent/MuiltiSelect";
 import useHead from "../../hooks/useHead";
 import { qfservice } from "../../Environment";
 
-const data = {};
-
 function ExecuteTestSetDetails({
   testsetId,
   applicationId,

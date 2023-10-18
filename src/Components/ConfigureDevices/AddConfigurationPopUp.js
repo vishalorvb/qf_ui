@@ -71,11 +71,13 @@ const AddConfigurationPopUp = (props) => {
         name: "Add Mobile Configuration",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     return () => {
       postVal = { ...initialval };
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -70,6 +70,7 @@ export default function PageElements() {
     setHeader((ps) => {
       return { ...ps, name: location?.state?.name + " PageElements" };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -94,6 +95,7 @@ export default function PageElements() {
       .catch((resp) => {
         setShowLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementAdded, updated]);
 
   useEffect(() => {

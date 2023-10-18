@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Button,
   Dialog,
@@ -6,9 +5,9 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { qfservice } from "../../Environment";
@@ -24,28 +23,26 @@ function ReportPath(props) {
   };
 
   const onSubmitHandler = (params) => {
-    {
-      axios
-        .post(
-          `${qfservice}/qfservice/updatereportpath?reportpath=${path}&env_id=${buildEnvId}`
-        )
-        .then((resp) => {
-          console.log(resp);
-          if (resp?.data?.message === "Successfully updated") {
-            setReportSuccessMsg(true);
-            setTimeout(() => {
-              setReportSuccessMsg(false);
-            }, 3000);
-            handleClose();
-          } else {
-            setReportFailMsg(true);
-            setTimeout(() => {
-              setReportFailMsg(false);
-            }, 3000);
-            handleClose();
-          }
-        });
-    }
+    axios
+      .post(
+        `${qfservice}/qfservice/updatereportpath?reportpath=${path}&env_id=${buildEnvId}`
+      )
+      .then((resp) => {
+        console.log(resp);
+        if (resp?.data?.message === "Successfully updated") {
+          setReportSuccessMsg(true);
+          setTimeout(() => {
+            setReportSuccessMsg(false);
+          }, 3000);
+          handleClose();
+        } else {
+          setReportFailMsg(true);
+          setTimeout(() => {
+            setReportFailMsg(false);
+          }, 3000);
+          handleClose();
+        }
+      });
   };
 
   return (

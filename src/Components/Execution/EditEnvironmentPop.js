@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Button,
   Dialog,
@@ -6,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
@@ -34,34 +33,29 @@ function EditEnvironmentPop(props) {
   };
 
   const onUpdateHandler = (params) => {
-    {
-      //   postVal.project_id=projectId;
-      postVal.id = postVal.id;
-      postVal.module_id = postVal.module_id;
-      postVal.project_id = postVal.project_id;
-      postVal.url = "";
-      // console.log(postVal);
-      axios
-        .post(`${qfservice}/qfservice/CreateBuildEnvironment`, postVal)
-        .then((resp) => {
-          // console.log(resp?.data?.error?.description)
-          // console.log(resp?.data?.message)
-          if (resp?.data?.message === "Successfully updatedBuild Environment") {
-            setEditSuccessMsg(true);
-            setTimeout(() => {
-              setEditSuccessMsg(false);
-              getBuilEnvironment();
-            }, 3000);
-            handleClose();
-          } else {
-            // setReportFailMsg(true);
-            setTimeout(() => {
-              // setReportFailMsg(false);
-            }, 3000);
-            handleClose();
-          }
-        });
-    }
+    //   postVal.project_id=projectId;
+    postVal.url = "";
+    // console.log(postVal);
+    axios
+      .post(`${qfservice}/qfservice/CreateBuildEnvironment`, postVal)
+      .then((resp) => {
+        // console.log(resp?.data?.error?.description)
+        // console.log(resp?.data?.message)
+        if (resp?.data?.message === "Successfully updatedBuild Environment") {
+          setEditSuccessMsg(true);
+          setTimeout(() => {
+            setEditSuccessMsg(false);
+            getBuilEnvironment();
+          }, 3000);
+          handleClose();
+        } else {
+          // setReportFailMsg(true);
+          setTimeout(() => {
+            // setReportFailMsg(false);
+          }, 3000);
+          handleClose();
+        }
+      });
   };
 
   // console.log(postVal);

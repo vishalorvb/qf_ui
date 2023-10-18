@@ -86,6 +86,7 @@ export default function SelectedPageElements() {
   };
   useEffect(() => {
     getPageElements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updated]);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ export default function SelectedPageElements() {
         name: location?.state?.name + " Create Screen",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   console.log(location);
 

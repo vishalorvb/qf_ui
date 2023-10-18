@@ -1,13 +1,11 @@
-import React, { useContext } from 'react'
-import GrowingTable from '../../CustomComponent/GrowingTable'
-import { Apidata } from './Data'
-
+import GrowingTable from "../../CustomComponent/GrowingTable";
+import { Apidata } from "./Data";
 
 function Header() {
-  let displayorder = ["header_key", "header_value", "header_desc"]
+  let displayorder = ["header_key", "header_value", "header_desc"];
 
   function handleHeaderData(tabdata) {
-    Apidata.headers_list = tabdata
+    Apidata.headers_list = tabdata;
   }
 
   return (
@@ -21,7 +19,7 @@ function Header() {
         order={displayorder}
       ></GrowingTable>
     </div>
-  )
+  );
 }
 
-export default Header
+export default Header;

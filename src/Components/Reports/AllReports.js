@@ -8,11 +8,10 @@ import useAxios from "../../hooks/useAxios";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import Table from "../../CustomComponent/Table";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-export default function AllReports({}) {
+export default function AllReports() {
   const location = useLocation();
   const to_Date = useRef();
   const From_Date = useRef();
@@ -22,7 +21,6 @@ export default function AllReports({}) {
   const [tbData, setTbData] = useState([]);
   const axiosPrivate = useAxios();
   const { auth } = useAuth();
-  const loggedInId = auth.info.id;
   const navigate = useNavigate();
   const [fromDate, setFromDate] = useState(location.state.fromDate);
   const [toDate, setToDate] = useState(location.state.toDate);
@@ -130,34 +128,33 @@ export default function AllReports({}) {
   ];
 
   const submit = (e, td, fd) => {
-    {
-      axiosPrivate
-        .post(
-          location.state.id.name.includes("TC_")
-            ? `qfreportservice/testcase-reports/${auth?.userId}/${report_type}/${testcaseId}/${fromDate}/${toDate}`
-            : `qfreportservice/testset-reports/${auth?.userId}/${report_type}/${testsetId}/${fromDate}/${toDate}`
-        )
-        .then((Response) => {
-          if (Response.data.info.reports_list.length > 0) {
-            setTbData(Response.data.info.reports_list);
-            setReportSuccessMsg(true);
-            setTimeout(() => {
-              setReportSuccessMsg(false);
-            }, 3000);
-          } else {
-            setTbData("");
-            setReportFailMsg(true);
-            setTimeout(() => {
-              setReportFailMsg(false);
-            }, 3000);
-          }
-        })
-        .catch((error) => {});
-    }
+    axiosPrivate
+      .post(
+        location.state.id.name.includes("TC_")
+          ? `qfreportservice/testcase-reports/${auth?.userId}/${report_type}/${testcaseId}/${fromDate}/${toDate}`
+          : `qfreportservice/testset-reports/${auth?.userId}/${report_type}/${testsetId}/${fromDate}/${toDate}`
+      )
+      .then((Response) => {
+        if (Response.data.info.reports_list.length > 0) {
+          setTbData(Response.data.info.reports_list);
+          setReportSuccessMsg(true);
+          setTimeout(() => {
+            setReportSuccessMsg(false);
+          }, 3000);
+        } else {
+          setTbData("");
+          setReportFailMsg(true);
+          setTimeout(() => {
+            setReportFailMsg(false);
+          }, 3000);
+        }
+      })
+      .catch((error) => {});
   };
 
   useEffect(() => {
     submit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

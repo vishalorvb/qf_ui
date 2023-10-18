@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Table from "../../CustomComponent/Table";
-import useAuth from "../../hooks/useAuth";
 import useHead from "../../hooks/useHead";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
@@ -103,6 +102,7 @@ function ActiveReports() {
         name: "Active Reports",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getBIReports = () => {
@@ -118,6 +118,7 @@ function ActiveReports() {
 
   useEffect(() => {
     getBIReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

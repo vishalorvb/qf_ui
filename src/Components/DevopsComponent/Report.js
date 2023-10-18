@@ -52,6 +52,7 @@ export default function BasicTabs() {
         name: "Pipeline Automation Report",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [value, setValue] = useState(0);
 
