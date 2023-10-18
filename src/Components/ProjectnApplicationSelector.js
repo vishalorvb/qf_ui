@@ -28,29 +28,34 @@ export default function ProjectnApplicationSelector({
 
   useEffect(() => {
     projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (globalProject === null) {
       setglobalProject(projectsList[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsList]);
 
   useEffect(() => {
     if (globalProject?.project_id !== undefined) {
       getApplicationOfProject(setapplicationList, globalProject?.project_id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject]);
 
   useEffect(() => {
     globalApplication === null &&
       setglobalApplication(applicationList[0] ?? null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
   //change from here
 
   useEffect(() => {
     setSearchWord(globalApplication?.module_name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalApplication]);
 
   return (

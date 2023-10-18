@@ -8,7 +8,7 @@ function GrowingTable(props) {
     while (true) {
       yield i;
     }
-    i++;
+    // i++;
   }
   let id = getId();
 

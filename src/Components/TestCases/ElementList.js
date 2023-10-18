@@ -58,6 +58,7 @@ function ElementList({ screenList, setScreenList }) {
         },
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [open, element]
   );
   useEffect(() => {
@@ -77,6 +78,7 @@ function ElementList({ screenList, setScreenList }) {
         });
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenList]);
 
   useEffect(() => {}, [element]);

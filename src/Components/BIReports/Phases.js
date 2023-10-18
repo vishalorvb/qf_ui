@@ -73,6 +73,8 @@ export default function Phases() {
     saved_hours,
   ];
   //  let requiredOnlyAlphabets = [phase_name];
+  console.log(openPhase);
+  console.log(phaseList);
 
   const { setHeader } = useHead();
   useEffect(() => {
@@ -82,6 +84,7 @@ export default function Phases() {
         name: "BI Testset Reports",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPhases = () => {
@@ -89,7 +92,6 @@ export default function Phases() {
       axios.get(`Biservice/projects/${projectId}/phases`).then((resp) => {
         // console.log(resp?.data?.info?.phases?.length);
         // phases = resp?.data?.info?.phases?.length;
-        const phasesList = resp?.data?.info ? resp?.data?.info?.phases : [];
         //console.log(resp?.data?.info.phases)
         setPhaseList(resp?.data?.info.phases);
       });
@@ -97,11 +99,8 @@ export default function Phases() {
 
   useEffect(() => {
     getPhases();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
-
-  useEffect(() => {
-    console.log(phaseList);
-  }, [phaseList]);
 
   const clickHandler = (index) => {
     setOpenNewPhase(false);

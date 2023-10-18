@@ -127,6 +127,7 @@ export default function CreateApplication() {
           : "Create Application",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -137,6 +138,7 @@ export default function CreateApplication() {
         is_deleted,
       }));
     }, auth.info.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isModuleNameTaken = (moduleId, moduleName) => {

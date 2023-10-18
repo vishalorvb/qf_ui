@@ -1,4 +1,4 @@
-import { Grid, Button, IconButton, Tooltip, Stack } from "@mui/material";
+import { Grid, Button, IconButton, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,7 +15,6 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import { qfservice } from "../../Environment";
 
 const LinkProjectExecution = () => {
@@ -27,25 +26,11 @@ const LinkProjectExecution = () => {
   const [selectedTestsetData, setSelectedTestsetData] = useState([]);
   const [specificationId, setSpecificationId] = useState();
   const [successDelete, setSuccessDelete] = useState(false);
-  const {
-    setHeader,
-    globalProject,
-    setglobalProject,
-    globalApplication,
-    setglobalApplication,
-  } = useHead();
-  const [buildEnvList, setBuildEnvList] = useState([]);
-  const [buildEnvId, setBuildEnvId] = useState();
+  const { setHeader, globalProject, globalApplication } = useHead();
+  const buildEnvId = "";
   const navigate = useNavigate();
   const location = useLocation();
-  const [remoteAPiFails, setRemoteAPiFails] = useState(false);
-  const [jarConnected, setJarConnected] = useState(false);
-  const [clientInactive, setClientInactive] = useState(false);
-  const [remoteExecutionsuccess, setRemoteExecutionsuccess] = useState(false);
-  // coselectedProjectnst [, setglobalProject] = useState({
-  //   project_name: "Project",
-  // });
-  // const [globalApplication, setglobalApplication] = useState({});
+
   let projectId = location.state?.projectId;
   let applicationId = location.state?.applicationId;
   const { auth } = useAuth();
@@ -56,12 +41,7 @@ const LinkProjectExecution = () => {
     commitMsg: execLoc !== "local" && yup.string().required(),
   });
   console.log(applicationId);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -84,10 +64,12 @@ const LinkProjectExecution = () => {
         };
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getExecutionEnvironment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, applicationId]);
 
   function getExecutionEnvironment() {
@@ -108,7 +90,7 @@ const LinkProjectExecution = () => {
 
   useEffect(() => {
     getTestsets();
-    console.log(selectedTestsetData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function getTestsets() {
@@ -247,7 +229,7 @@ const LinkProjectExecution = () => {
           executionData
         )
         .then((resp) => {
-          resp?.status === "FAIL" && setRemoteAPiFails(true);
+          // resp?.status === "FAIL" && setRemoteAPiFails(true);
           execLoc === "jenkins"
             ? resp?.status === "SUCCESS" &&
               axios
@@ -256,12 +238,13 @@ const LinkProjectExecution = () => {
                   jarName: `code`,
                 })
                 .then((resp) => {
-                  setJarConnected(true);
+                  // setJarConnected(true);
                 })
                 .catch((err) => {
-                  err.message === "Network Error" && setClientInactive(true);
+                  // err.message === "Network Error" && setClientInactive(true);
                 })
-            : setRemoteExecutionsuccess(true);
+            : console.log("");
+          // setRemoteExecutionsuccess(true);
         });
     } else {
       setSnack(true);

@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import GrowingTable from "../../../CustomComponent/GrowingTable";
 import { setGetData } from "./ApiDatasetData";
-import { getData } from "./APiListDrawer";
 
 function ApiBody({ ApiDetails }) {
   let [selected, setSelected] = useState(ApiDetails.body_type);
@@ -34,6 +33,7 @@ function ApiBody({ ApiDetails }) {
       };
       setGetData(ApiDetails.api_id, "bodyRaw", temp);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

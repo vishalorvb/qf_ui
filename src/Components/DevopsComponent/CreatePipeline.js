@@ -2,14 +2,7 @@ import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCreatePipelineData } from "../../Services/QfService";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Grid,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Button, Grid, MenuItem } from "@mui/material";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,12 +33,7 @@ export default function CreatePipeline() {
     unitTestPath: yup.string().required(),
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -55,7 +43,6 @@ export default function CreatePipeline() {
 
   const onSubmitHandler = (params) => {
     const id = location.state.id;
-    const projectId = location.state.project_id;
     axios
       .post(`/qfservice/Createpipeline`, null, {
         params: {
@@ -76,7 +63,6 @@ export default function CreatePipeline() {
       .then((resp) => {
         console.log(resp);
         const respMsg = resp?.data?.message;
-        const info = resp?.data?.info;
         setMsg(respMsg);
         respMsg === "SUCCESS" && reset();
         setTimeout(() => {
@@ -105,20 +91,24 @@ export default function CreatePipeline() {
       };
     });
     console.log(location.state.project_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject]);
 
   useEffect(() => {
     console.log(defaultData);
     reset(defaultData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultData]);
 
   useEffect(() => {
     getProject(setProject, auth.userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (globalProject === null) {
       setglobalProject(project[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project]);
 
   const cicdTypes = [];

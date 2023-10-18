@@ -2,27 +2,21 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import RuntimeVar from "./RuntimeVar";
 import RuntimeVariable from "./RuntimeVariable";
 import FeatureFile from "./FeatureFile";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useHead from "../../hooks/useHead";
 
 export default function FeatureMenu({
   envId,
   runtimeVar,
   testcaseId,
   selectedDatasets,
-  testsetId,
-  frameworkType,
-  projectId,
 }) {
   const [openRuntimeVar, setOpenRuntimeVar] = React.useState(false);
   const [openFeaturefile, setFeatureFile] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
   const location = useLocation();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

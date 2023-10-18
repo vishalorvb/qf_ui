@@ -66,6 +66,7 @@ function Logs() {
         getGitData(setStatus, releaseId, historyId, projectId);
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   return (

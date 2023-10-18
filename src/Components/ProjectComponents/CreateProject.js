@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Stack } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import useHead from "../../hooks/useHead";
@@ -19,12 +19,12 @@ import {
 } from "../../Services/QfService";
 import TransferList from "../../CustomComponent/TransferList";
 
-let jiraProjectdata = {
-  url: "",
-  username: "",
-  password: "",
-  itstype: 1,
-};
+// let jiraProjectdata = {
+//   url: "",
+//   username: "",
+//   password: "",
+//   itstype: 1,
+// };
 
 let filterApplication = {
   // "automation_type": "module type list"
@@ -155,6 +155,7 @@ function CreateProject() {
   useEffect(() => {
     let rightlist = rigthtuser.map((user) => user.id);
     setLeftuser(users.filter((user) => !rightlist.includes(user.id)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rigthtuser]);
 
   function handleJiraProject() {
@@ -184,6 +185,7 @@ function CreateProject() {
       //submitData.current.jira_user_name = projectDetails?.jiraUser?.jira_user_name
       //submitData.current.its_type = projectDetails?.jiraUser?.issueTrackerType
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jiraProject]);
 
   useEffect(() => {
@@ -210,32 +212,20 @@ function CreateProject() {
         usertoken
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     let selectApp = rightApplication.map((app) => app.module_id);
-    let x = applications.filter((a) => {
-      if (
+    let x = applications.filter(
+      (a) =>
         filterApplication[automation_type]?.includes(a.module_type) &&
         !selectApp.includes(a.module_id)
-      ) {
-        return a;
-      }
-    });
+    );
     setLeftApplication(x);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [automation_type, applications, rightApplication]);
 
-  useEffect(() => {
-    return () => {
-      ref?.current?.reset();
-      jiraProjectdata = {
-        url: "",
-        username: "",
-        password: "",
-        itstype: 1,
-      };
-    };
-  }, []);
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -243,12 +233,14 @@ function CreateProject() {
         name: projectId === undefined ? "Create Project" : "Edit Project",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (projectId !== undefined) {
       getProjectDetails(setProjectDetails, auth.info.id, projectId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -280,6 +272,7 @@ function CreateProject() {
       submitData.current.jira_user_name =
         projectDetails?.jiraUser?.jira_user_name;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectDetails]);
 
   const ref = useRef(null);

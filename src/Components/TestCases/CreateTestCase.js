@@ -29,10 +29,8 @@ function CreateTestCase() {
   });
   let [jiraSprint, setJiraSprint] = useState([]);
   let [jiraIssue, setJiraIssue] = useState(null);
-  let [selectedSprint, setSelectedSprint] = useState(null);
-  let [selectedIssues, setSelectedIssues] = useState(null);
-  let [TC_ID, setTC_ID] = useState(location.state.testcaseId ?? 0);
-  let [isCopy, setIsCopy] = useState(location.state.isCopy ?? false);
+  let TC_ID = location.state.testcaseId ?? 0;
+  let isCopy = location.state.isCopy ?? false;
   let [selectedScreen, setSelectedScreen] = useState([]);
   let [selectedApiList, setSelectedApiList] = useState([]);
   let [sprintData, setSprintData] = useState({
@@ -159,6 +157,7 @@ function CreateTestCase() {
       globalProject?.project_id !== undefined &&
         getSprint(setJiraSprint, globalProject?.project_id).then((res) => {});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject]);
 
   useEffect(() => {
@@ -173,6 +172,7 @@ function CreateTestCase() {
       sprint_id: jiraSprint[0]?.id ?? "",
       sprint_name: jiraSprint[0]?.name ?? "",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jiraSprint]);
 
   useEffect(() => {
@@ -180,9 +180,9 @@ function CreateTestCase() {
       ...sprintData,
       issue_id: jiraIssue === null ? "" : jiraIssue[0]?.id ?? "",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [jiraIssue]);
 
-  useEffect(() => {}, [sprintData]);
   useEffect(() => {
     setHeader((ps) => {
       return {
@@ -192,6 +192,7 @@ function CreateTestCase() {
         plusCallback: () => {},
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>

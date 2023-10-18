@@ -572,6 +572,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
                                   <img
                                     src={`data:image/png;base64,${reportDetails?.screenshot}`}
                                     width={"250px"}
+                                    alt="screenshot"
                                   />
                                 )}
                                 <hr />

@@ -4,7 +4,6 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Grid } from "@mui/material";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import useHead from "../../hooks/useHead";
 
@@ -25,7 +24,6 @@ function EditTestLinkProject() {
   const [reportEditSuccessMsg, setEditReportSuccessMsg] = useState(false);
   const [reportFailMsg, setReportFailMsg] = useState(false);
   const [reportExistingFailMsg, setReportExistingFailMsg] = useState(false);
-  const location = useLocation();
   const { setHeader } = useHead();
   const navigate = useNavigate();
 
@@ -36,6 +34,7 @@ function EditTestLinkProject() {
         name: "Edit Testset ",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onSubmitHandler = (params) => {
     axios

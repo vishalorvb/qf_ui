@@ -37,11 +37,13 @@ function APiListDrawer({ setSelectedApi, datasetId, testcaseId }) {
         },
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [ApiId]
   );
 
   useEffect(() => {
     getDatasetDetails(setApi, datasetId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -56,6 +58,7 @@ function APiListDrawer({ setSelectedApi, datasetId, testcaseId }) {
       setApiId(Api[0].api_id);
     }
     setTempApi([...Api]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Api]);
 
   return (

@@ -12,7 +12,7 @@ import { getApiDetails, getApis } from "../../../Services/QfService";
 import { deleteApiRequest } from "../../../Services/QfService";
 import TableActions from "../../../CustomComponent/TableActions";
 export default function APIsTable() {
-  const { setHeader, setSnackbarData } = useHead();
+  const { setSnackbarData } = useHead();
   const location = useLocation();
   const navigate = useNavigate();
   let [apis, setApis] = useState([]);
@@ -82,10 +82,12 @@ export default function APIsTable() {
 
   useEffect(() => {
     getApis(setApis, location.state.module_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     Apidata.module_id = location.state.module_id;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let requests = [" ", "Get", "Post", "Put", "Delete"];

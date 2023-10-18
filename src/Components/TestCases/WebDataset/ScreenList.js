@@ -54,6 +54,7 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
         },
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedScreenIds]
   );
 
@@ -78,12 +79,14 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
     if (order !== undefined && order.length > 0) {
       updateScreenOrder();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
   useEffect(() => {
     setScreenId([screen.screen_id]);
     setTempScreen([...screen]);
     setSelectedScreenIds(screen[0]?.screen_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen]);
 
   return (

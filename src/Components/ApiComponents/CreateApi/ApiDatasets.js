@@ -1,11 +1,4 @@
-import {
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  MenuItem,
-  Tooltip,
-} from "@mui/material";
+import { Button, Divider, Grid, MenuItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Table from "../../../CustomComponent/Table";
 import { getApiDatasets } from "../../../Services/QfService";
@@ -18,7 +11,7 @@ import { postData } from "./ApiDatasetData";
 import { createApiDataset } from "../../../Services/QfService";
 import { validateFormbyName } from "../../../CustomComponent/FormValidation";
 import useAuth from "../../../hooks/useAuth";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import SnackbarNotify from "../../../CustomComponent/SnackbarNotify";
 import { clearPostData } from "./ApiDatasetData";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
@@ -43,25 +36,11 @@ function ApiDatasets() {
   let [datasetId, setDatasetId] = useState();
   const { auth } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
   const { setSnackbarData } = useHead();
   const { globalApplication } = useHead();
   let [popup, setPopup] = useState(false);
-
-  let projectId;
+  console.log(save);
   let testcaseId;
-  let applicationId;
-  let tescaseName;
-
-  try {
-    projectId = location.state.projectId;
-    testcaseId = location.state.testcaseId;
-    applicationId = location.state.applicationId;
-    tescaseName = location.state.tescaseName;
-  } catch (error) {
-    console.log(error);
-    navigate("/testcase");
-  }
 
   function handleSave(e) {
     postData.multi_datasets_of_testcase = getData;
@@ -151,9 +130,11 @@ function ApiDatasets() {
   useEffect(() => {
     getApiDatasets(setDatasets, location.state.testcaseId);
     postData.testcase_id = location.state.testcaseId;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     setDatasetId(datasets[0]?.testcase_dataset_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [datasets]);
   useEffect(() => {
     getData?.forEach((element) => {
@@ -171,6 +152,7 @@ function ApiDatasets() {
         name: `${location?.state?.testcaseName} Datasets`,
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state.testcaseName]);
 
   return (

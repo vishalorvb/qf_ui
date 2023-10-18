@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../CustomComponent/Table";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import {
-  Button,
-  Chip,
-  MenuItem,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Button, MenuItem, Stack, Tooltip, Typography } from "@mui/material";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { getProject, makeProjectFav } from "../../Services/QfService";
 import { deleteProject } from "../../Services/QfService";
@@ -20,12 +13,8 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import TableActions from "../../CustomComponent/TableActions";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import LanguageIcon from "@mui/icons-material/Language";
-import AndroidIcon from "@mui/icons-material/Android";
 import AppleIcon from "@mui/icons-material/Apple";
 import AdUnitsIcon from "@mui/icons-material/AdUnits";
-import ApiIcon from "@mui/icons-material/Api";
-import JoinInnerRoundedIcon from "@mui/icons-material/JoinInnerRounded";
 function ProjectTable({ location }) {
   let [popup, setPopup] = useState(false);
   let [pid, setPid] = useState();

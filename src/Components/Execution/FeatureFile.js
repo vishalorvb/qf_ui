@@ -7,9 +7,9 @@ import {
   DialogTitle,
   TextareaAutosize,
 } from "@mui/material";
-import { TextFieldElement, useForm } from "react-hook-form-mui";
+import { useForm } from "react-hook-form-mui";
 import * as yup from "yup";
-import { Divider, Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
@@ -20,12 +20,7 @@ function FeatureFile(props) {
   const schema = yup.object().shape({
     testcaseName: yup.string().required().max(30, "Max length exceeded"),
   });
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const [featureFileData, setFeatureFileData] = useState("");

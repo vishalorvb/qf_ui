@@ -1,4 +1,4 @@
-import { Autocomplete, Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { Divider, Grid, List, ListItem, ListItemButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import useHead from "../../hooks/useHead";
@@ -78,6 +78,7 @@ export default function TestcaseExecution() {
       setTestcases([]);
       setSelectedItem(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject, globalApplication]);
 
   useEffect(() => {
@@ -90,6 +91,7 @@ export default function TestcaseExecution() {
           "Testcase Execution",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

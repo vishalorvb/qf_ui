@@ -1,14 +1,11 @@
-import { Language } from "@mui/icons-material";
 import {
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";

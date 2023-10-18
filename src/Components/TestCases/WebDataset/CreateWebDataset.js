@@ -84,6 +84,7 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
 
   useEffect(() => {
     getData_for_createDataset(setData, testcaseId, datasetId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -124,11 +125,9 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
         <Grid item md={9}>
           <ElementList
             elementList={
-              requestData.current?.screens_in_testcase.filter((screens) => {
-                if (screens.screen_id === selectedScreenIds) {
-                  return screens;
-                }
-              })[0]?.screen_elements[0]
+              requestData.current?.screens_in_testcase.filter(
+                (screens) => screens.screen_id === selectedScreenIds
+              )[0]?.screen_elements[0]
             }
             updateDataset={updateDataset}
             screenName={selectedScreenName}

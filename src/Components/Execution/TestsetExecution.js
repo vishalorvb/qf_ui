@@ -33,6 +33,7 @@ export default function TestsetExecution() {
         name: "Execution",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -106,6 +107,7 @@ export default function TestsetExecution() {
         name: "Testset Execution",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

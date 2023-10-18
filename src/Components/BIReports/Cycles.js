@@ -26,7 +26,7 @@ function Cycles() {
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addErrorMsg, setAddErrorMsg] = useState(false);
   const [successDelete, setSuccessDelete] = useState(false);
-  const [msg, setMsg] = useState("");
+  const msg = "";
   const [openNewPhase, setOpenNewPhase] = useState(true);
   const [confirm, setConfirm] = useState(false);
   const [cycleId, setCycleId] = useState();
@@ -71,6 +71,7 @@ function Cycles() {
       };
     });
     getCycles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

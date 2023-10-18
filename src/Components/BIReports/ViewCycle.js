@@ -35,6 +35,7 @@ export default function ViewCycle({ selectedCycleList }) {
   useEffect(() => {
     setSelectedCycleInfo(selectedCycleList);
     getCyclesReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCycleList]);
 
   //  console.log(list)

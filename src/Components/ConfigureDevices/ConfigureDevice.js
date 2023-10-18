@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 import useHead from "../../hooks/useHead";
 import AddConfigurationPopUp from "./AddConfigurationPopUp";
 import axios from "axios";
-import useAuth from "../../hooks/useAuth";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
 import { useLocation } from "react-router-dom";
@@ -15,7 +14,7 @@ import { qfservice } from "../../Environment";
 
 const ConfigureDevice = () => {
   const [configurations, setConfigurations] = useState([]);
-  const [selectedProject, setSelectedProject] = useState("");
+  const selectedProject = "";
   const [specificationId, setSpecificationId] = useState();
   const [popup, setPopup] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -149,6 +148,7 @@ const ConfigureDevice = () => {
           plusCallback: () => console.log("null"),
         };
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -199,7 +199,7 @@ const ConfigureDevice = () => {
         <AddConfigurationPopUp
           open={true}
           close={setPopup}
-          snackbar={setSnack}
+          snackbar={snack}
           projectId={projectId}
           setSnack={setSnack}
           getConfigurations={getConfigurations}

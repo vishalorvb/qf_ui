@@ -45,34 +45,33 @@ function AddTestSetLinkProject() {
     //     };
     //   });
     // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onSubmitHandler = (params) => {
-    {
-      postVal.module_id = location.state?.applicationId;
-      postVal.project_id = location.state?.projectId;
-      axios
-        .post(`${qfservice}/qfservice/webtestset/createWebTestset`, postVal)
-        .then((resp) => {
-          if (resp?.data?.status === "SUCCESS") {
-            setReportSuccessMsg(true);
-            setTimeout(() => {
-              setReportSuccessMsg(false);
-              // getBuilEnvironment();
-            }, 3000);
-            navigate(-1);
-          } else if (resp?.data?.message === "Testset already exists.") {
-            setReportExistingFailMsg(true);
-            setTimeout(() => {
-              setReportExistingFailMsg(false);
-            }, 3000);
-          } else {
-            setReportFailMsg(true);
-            setTimeout(() => {
-              setReportFailMsg(false);
-            }, 3000);
-          }
-        });
-    }
+    postVal.module_id = location.state?.applicationId;
+    postVal.project_id = location.state?.projectId;
+    axios
+      .post(`${qfservice}/qfservice/webtestset/createWebTestset`, postVal)
+      .then((resp) => {
+        if (resp?.data?.status === "SUCCESS") {
+          setReportSuccessMsg(true);
+          setTimeout(() => {
+            setReportSuccessMsg(false);
+            // getBuilEnvironment();
+          }, 3000);
+          navigate(-1);
+        } else if (resp?.data?.message === "Testset already exists.") {
+          setReportExistingFailMsg(true);
+          setTimeout(() => {
+            setReportExistingFailMsg(false);
+          }, 3000);
+        } else {
+          setReportFailMsg(true);
+          setTimeout(() => {
+            setReportFailMsg(false);
+          }, 3000);
+        }
+      });
   };
   useEffect(() => {
     return () => {

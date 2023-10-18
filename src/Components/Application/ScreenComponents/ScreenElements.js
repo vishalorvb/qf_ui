@@ -43,6 +43,7 @@ export default function ScreenElements() {
         plusButton: false,
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateScreenOrder = () => {
@@ -69,6 +70,7 @@ export default function ScreenElements() {
 
   useEffect(() => {
     updateScreenOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
 
   const columns = useMemo(

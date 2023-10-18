@@ -76,6 +76,7 @@ function Api() {
     return () => {
       resetApiData();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -83,6 +84,7 @@ function Api() {
       apiNames = res.map(({ api_id, api_name }) => ({ api_id, api_name }));
       setApis(apiNames);
     }, location.state?.application.module_id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

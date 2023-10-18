@@ -1,14 +1,7 @@
 import useHead from "../../hooks/useHead";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Grid,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Button, Grid, Stack } from "@mui/material";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import * as yup from "yup";
@@ -40,22 +33,19 @@ export default function CreateAnsibleInstance() {
     repoProjectId: yup.number().required(),
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: yupResolver(schema),
   });
 
   useEffect(() => {
     getProject(setProject, auth.userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (globalProject === null) {
       setglobalProject(project[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project]);
 
   const { setHeader, globalProject, setglobalProject } = useHead();
@@ -69,6 +59,7 @@ export default function CreateAnsibleInstance() {
             : "Update Ansible Release",
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -96,6 +87,7 @@ export default function CreateAnsibleInstance() {
             });
           })
       : reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmitHandler = (data) => {

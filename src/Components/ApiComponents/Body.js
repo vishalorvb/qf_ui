@@ -6,7 +6,7 @@ import {
   RadioGroup,
   Select,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GrowingTable from "../../CustomComponent/GrowingTable";
 import { Apidata } from "./Data";
 
