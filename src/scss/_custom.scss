@@ -2,473 +2,473 @@
 @import "./variables.scss";
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    font-family: "Roboto", sans-serif;
-    font-size: 15px;
-    font-weight: 300;
-    scrollbar-gutter: stable;
+  font-family: "Roboto", sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  scrollbar-gutter: stable;
 }
 
 body {
-    background: #f7f9ff;
+  background: #f7f9ff;
 }
 
 a {
-    color: #00143f;
+  color: #00143f;
 }
 
 .menu {
-    flex: 1;
-    flex-grow: 1;
-    overflow: auto;
-    overflow-x: hidden;
-    min-height: 2em;
+  flex: 1;
+  flex-grow: 1;
+  overflow: auto;
+  overflow-x: hidden;
+  min-height: 2em;
 
-    &+p {
-        width: 100%;
-        text-align: center;
+  & + p {
+    width: 100%;
+    text-align: center;
 
-        a {
-            color: #fff;
-        }
+    a {
+      color: #fff;
     }
+  }
 }
 
 .menu::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 .menu::-webkit-scrollbar-track {
-    background: #6b98f8;
-    border-radius: 5px;
+  background: #6b98f8;
+  border-radius: 5px;
 }
 
 .menu::-webkit-scrollbar-thumb {
-    background: #002980;
-    border-radius: 5px;
+  background: #002980;
+  border-radius: 5px;
 }
 
 .loginImg {
-    background: #00143f url(../../public/login-img.png) no-repeat bottom center;
-    background-size: 70%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  background: #00143f url(../../login-img.png) no-repeat bottom center;
+  background-size: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    .loginLogo {
-        width: 300px;
-        margin-top: 20vh;
-    }
+  .loginLogo {
+    width: 300px;
+    margin-top: 20vh;
+  }
 }
 
 .loginForm {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tableData {
-    box-shadow: 1px 1px 10px rgb(107 134 164 / 15%);
-    border: 0 !important;
-    margin-top: 20px;
-    box-shadow: 0 0 0 !important;
+  box-shadow: 1px 1px 10px rgb(107 134 164 / 15%);
+  border: 0 !important;
+  margin-top: 20px;
+  box-shadow: 0 0 0 !important;
 }
 
 .tableSearch {
-    border: 2px solid rgba(0, 0, 0, 0.12) !important;
-    padding: 0 !important;
-    border-bottom: 0 !important;
-    border-radius: 5px;
+  border: 2px solid rgba(0, 0, 0, 0.12) !important;
+  padding: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 5px;
 
-    .MuiInput-underline {
-        border-radius: 5px !important;
-        padding-left: 10px !important;
-    }
+  .MuiInput-underline {
+    border-radius: 5px !important;
+    padding-left: 10px !important;
+  }
 }
 
 .MuiInput-underline {
-    min-height: 35px;
+  min-height: 35px;
 
-    &:before {
-        border-radius: 5px !important;
-    }
+  &:before {
+    border-radius: 5px !important;
+  }
 
-    padding-left: 10px !important;
+  padding-left: 10px !important;
 }
 
 .MuiDataGrid-main {
-    margin-top: 10px;
+  margin-top: 10px;
 
-    .MuiDataGrid-columnHeaders {
-        background-color: #e8f2fd !important;
-        color: #6686a7 !important;
-        border-radius: 0 !important;
-        border: 0 !important;
-    }
+  .MuiDataGrid-columnHeaders {
+    background-color: #e8f2fd !important;
+    color: #6686a7 !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+  }
 
-    .MuiDataGrid-withBorder {
-        border-right: 0 !important;
-    }
+  .MuiDataGrid-withBorder {
+    border-right: 0 !important;
+  }
 }
 
 .sideNavSections {
-    margin: 20px 0 15px;
+  margin: 20px 0 15px;
+  width: 100%;
+  display: table;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-top: 1px dashed rgba($white, 0.4);
     width: 100%;
-    display: table;
+  }
+
+  span {
     position: relative;
-
-    &::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        border-top: 1px dashed rgba($white, 0.4);
-        width: 100%;
-    }
-
-    span {
-        position: relative;
-        background-color: $primary-dark;
-        padding: 5px;
-        border: 1px dashed rgba($white, 0.4);
-        color: rgba($white, 0.4);
-        border-radius: 5px;
-        margin-left: 10px;
-        font-size: 13px;
-    }
+    background-color: $primary-dark;
+    padding: 5px;
+    border: 1px dashed rgba($white, 0.4);
+    color: rgba($white, 0.4);
+    border-radius: 5px;
+    margin-left: 10px;
+    font-size: 13px;
+  }
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(270deg, #ffffff 0%, #f5f5f6 100%) 0% 0% no-repeat;
-    height: 65px;
-    border-radius: 0 !important;
-    padding: 0 20px;
-    border-bottom: 1px solid rgba($black, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(270deg, #ffffff 0%, #f5f5f6 100%) 0% 0% no-repeat;
+  height: 65px;
+  border-radius: 0 !important;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba($black, 0.1);
 }
 
 .navItems {
-    padding: 0 16px !important;
+  padding: 0 16px !important;
 }
 
 .addIcon {
-    margin-left: 10px !important;
-    background-color: $accent !important;
-    color: white !important;
-    box-shadow: 1px 3px 10px rgba($accent, 0.5);
-    transition: all 0.5s ease-in-out !important;
+  margin-left: 10px !important;
+  background-color: $accent !important;
+  color: white !important;
+  box-shadow: 1px 3px 10px rgba($accent, 0.5);
+  transition: all 0.5s ease-in-out !important;
 
-    &:hover {
-        box-shadow: 1px 1px 3px rgba($accent, 0.8);
-        background-color: darken($accent, 5%) !important;
-    }
+  &:hover {
+    box-shadow: 1px 1px 3px rgba($accent, 0.8);
+    background-color: darken($accent, 5%) !important;
+  }
 }
 
 .MuiAccordion-root {
-    background: #fff !important;
-    box-shadow: 0 0 0 !important;
-    border-radius: 5px !important;
-    margin-bottom: 10px !important;
-    border: 1px solid #e8eff1 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 !important;
+  border-radius: 5px !important;
+  margin-bottom: 10px !important;
+  border: 1px solid #e8eff1 !important;
 
-    &::before {
-        background-color: rgba(0, 0, 0, 0) !important;
-    }
+  &::before {
+    background-color: rgba(0, 0, 0, 0) !important;
+  }
 }
 
 .MuiContainer-root {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .MuiAccordionSummary-root {
-    background: #f0f3f4 !important;
+  background: #f0f3f4 !important;
 }
 
 .MuiAccordionSummary-root.Mui-expanded {
-    min-height: 48px !important;
-    background: #e8f2fd !important;
-    border-radius: 5px 5px 0 0 !important;
-    margin: 0 !important;
+  min-height: 48px !important;
+  background: #e8f2fd !important;
+  border-radius: 5px 5px 0 0 !important;
+  margin: 0 !important;
 }
 
 input {
-    line-height: 35px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid #d0d0d0;
-    padding: 0px 5px 0px 5px;
+  line-height: 35px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #d0d0d0;
+  padding: 0px 5px 0px 5px;
 }
 
 select {
-    min-height: 35px;
-    line-height: 35px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid #d0d0d0;
-    padding: 0px 5px 0px 5px;
+  min-height: 35px;
+  line-height: 35px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #d0d0d0;
+  padding: 0px 5px 0px 5px;
 }
 
 .menuList {
-    margin-top: 20px !important;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+  margin-top: 20px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 
-    .MuiTypography-root {
-        font-weight: 300 !important;
-        letter-spacing: 0.5px;
+  .MuiTypography-root {
+    font-weight: 300 !important;
+    letter-spacing: 0.5px;
+  }
+
+  & > li {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    flex-direction: column;
+
+    & > div:first-child {
+      width: 100%;
+      padding: 8px 10px 8px 16px !important;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+
+      *:last-child {
+        svg {
+          color: $white;
+        }
+      }
+
+      & > div:nth-child(3) {
+        width: 20px;
+
+        button {
+          padding: 4px;
+          margin-left: auto;
+          margin-right: 0;
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
     }
 
-    &>li {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        flex-direction: column;
+    & > div:nth-child(2) {
+      width: 100%;
+      padding-left: 10px;
 
-        &>div:first-child {
-            width: 100%;
-            padding: 8px 10px 8px 16px !important;
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
+      .navListIconItem {
+        display: none;
+      }
 
-            *:last-child {
-                svg {
-                    color: $white;
-                }
-            }
+      .navListItemText {
+        position: relative;
+        padding-left: 20px;
+        color: #728fad;
 
-            &>div:nth-child(3) {
-                width: 20px;
-
-                button {
-                    padding: 4px;
-                    margin-left: auto;
-                    margin-right: 0;
-
-                    svg {
-                        width: 16px;
-                        height: 16px;
-                    }
-                }
-            }
+        &::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: -2px;
+          transform: translateY(-50%);
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background-color: #728fad;
         }
+      }
 
-        &>div:nth-child(2) {
-            width: 100%;
-            padding-left: 10px;
+      .navListItemTextSelected {
+        color: white;
 
-            .navListIconItem {
-                display: none;
-            }
-
-            .navListItemText {
-                position: relative;
-                padding-left: 20px;
-                color: #728fad;
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: 50%;
-                    left: -2px;
-                    transform: translateY(-50%);
-                    width: 4px;
-                    height: 4px;
-                    border-radius: 50%;
-                    background-color: #728fad;
-                }
-            }
-
-            .navListItemTextSelected {
-                color: white;
-
-                &::before {
-                    background-color: #0097ec;
-                }
-            }
+        &::before {
+          background-color: #0097ec;
         }
-
-        .navListIconItem:first-child {
-            min-width: 40px;
-
-            .qf {
-                font-size: 16px;
-            }
-        }
-
-        &:has(.MuiCollapse-entered) {
-            background-color: #00236b;
-            border-radius: 10px;
-
-            &>div:first-child {
-                background-color: #001c56;
-                border-radius: 10px 10px 0 0;
-            }
-        }
+      }
     }
+
+    .navListIconItem:first-child {
+      min-width: 40px;
+
+      .qf {
+        font-size: 16px;
+      }
+    }
+
+    &:has(.MuiCollapse-entered) {
+      background-color: #00236b;
+      border-radius: 10px;
+
+      & > div:first-child {
+        background-color: #001c56;
+        border-radius: 10px 10px 0 0;
+      }
+    }
+  }
 }
 
 .menuList.qf-admin {
-    &>li {
-        border-radius: 10px;
-        background: linear-gradient(90deg, #2255ce 0%, #555de1 100%) 0% 0% no-repeat;
-    }
+  & > li {
+    border-radius: 10px;
+    background: linear-gradient(90deg, #2255ce 0%, #555de1 100%) 0% 0% no-repeat;
+  }
 }
 
 .customDivider {
-    position: relative;
-    border-bottom: 1px solid $borders;
+  position: relative;
+  border-bottom: 1px solid $borders;
 
-    &::before {
-        content: "";
-        position: absolute;
-        bottom: -1.5px;
-        left: 0;
-        height: 3px;
-        width: 20px;
-        border-radius: 5px;
-        background-color: #009fee;
-    }
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -1.5px;
+    left: 0;
+    height: 3px;
+    width: 20px;
+    border-radius: 5px;
+    background-color: #009fee;
+  }
 }
 
 .mainContent {
-    padding: 8px 30px;
+  padding: 8px 30px;
+  scrollbar-gutter: stable;
+
+  .content {
+    margin-top: 30px;
+    padding: 15px 20px;
+    border-radius: 16px;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: 1px 1px 10px #6b86a426;
+    border: 1px solid #d2dce5;
+    height: 89vh;
+    overflow: auto;
     scrollbar-gutter: stable;
+    transition: all 0.2s ease-in-out;
+  }
 
+  @media (-webkit-min-device-pixel-ratio: 1.1) {
     .content {
-        margin-top: 30px;
-        padding: 15px 20px;
-        border-radius: 16px;
-        background: #ffffff 0% 0% no-repeat padding-box;
-        box-shadow: 1px 1px 10px #6b86a426;
-        border: 1px solid #d2dce5;
-        height: 89vh;
-        overflow: auto;
-        scrollbar-gutter: stable;
-        transition: all 0.2s ease-in-out;
+      zoom: 0.97;
     }
+  }
 
-    @media (-webkit-min-device-pixel-ratio: 1.1) {
-        .content {
-            zoom: 0.97;
-        }
+  @media (-webkit-min-device-pixel-ratio: 1.25) {
+    .content {
+      zoom: 0.95;
     }
+  }
 
-    @media (-webkit-min-device-pixel-ratio: 1.25) {
-        .content {
-            zoom: 0.95;
-        }
+  @media (-webkit-min-device-pixel-ratio: 1.5) {
+    .content {
+      zoom: 0.93;
     }
+  }
 
-    @media (-webkit-min-device-pixel-ratio: 1.5) {
-        .content {
-            zoom: 0.93;
-        }
+  @media (-webkit-min-device-pixel-ratio: 1.75) {
+    .content {
+      zoom: 0.9;
     }
-
-    @media (-webkit-min-device-pixel-ratio: 1.75) {
-        .content {
-            zoom: 0.9;
-        }
-    }
+  }
 }
 
 .MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.css-btb81e-MuiPaper-root-MuiDrawer-paper {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
 
 .drawerHeader {
-    display: flex;
-    align-items: center !important;
-    gap: 30px;
-    padding: 0 18px !important;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center !important;
+  gap: 30px;
+  padding: 0 18px !important;
+  flex-shrink: 0;
 }
 
 .eyeIcon {
-    color: #009fee;
+  color: #009fee;
 }
 
 .copyright {
-    background-color: $primary;
-    font-weight: 300 !important;
-    color: rgba($white, 0.5) !important;
-    padding: 5px 10px;
-    text-align: left !important;
-    flex-shrink: 0;
+  background-color: $primary;
+  font-weight: 300 !important;
+  color: rgba($white, 0.5) !important;
+  padding: 5px 10px;
+  text-align: left !important;
+  flex-shrink: 0;
 }
 
 [aria-label="Edit"] {
-    color: $primary !important;
+  color: $primary !important;
 }
 
 [aria-label="Delete"] {
-    color: $red !important;
+  color: $red !important;
 }
 
 [aria-label="Active"] {
-    color: $accent !important;
+  color: $accent !important;
 }
 
 [aria-label="Copy"] {
-    color: $accent !important;
+  color: $accent !important;
 }
 
 // abhishek
 
 .dialogTitle {
-    background-color: #e8f2fd;
+  background-color: #e8f2fd;
 }
 
 .error {
-    border-color: $red;
+  border-color: $red;
 }
 
 .apptable {
-    position: relative;
+  position: relative;
 }
 
 .intable {
-    position: absolute;
-    top: -20px;
-    right: 0;
-    z-index: 2;
-    width: 40%;
+  position: absolute;
+  top: -20px;
+  right: 0;
+  z-index: 2;
+  width: 40%;
 }
 
 .intableselect {
-    width: 250px;
-    height: 45px;
-    border-radius: 5px;
+  width: 250px;
+  height: 45px;
+  border-radius: 5px;
 }
 
 .datasetInput:focus {
-    outline: none;
+  outline: none;
 }
 
 .datasetInput {
-    border: none;
+  border: none;
 }
 
 #inner {
-    width: 0px;
-    background-color: $accent;
-    transition: all 0.5s;
-    margin-left: -20px;
-    border-radius: 10px 20px 20px 10px;
-    box-shadow: 1px 3px 10px rgba($accent, 0.5);
-    color: white;
+  width: 0px;
+  background-color: $accent;
+  transition: all 0.5s;
+  margin-left: -20px;
+  border-radius: 10px 20px 20px 10px;
+  box-shadow: 1px 3px 10px rgba($accent, 0.5);
+  color: white;
 }
 
 // #buttonName {
@@ -476,201 +476,201 @@ select {
 // }
 
 #outer {
-    display: flex;
-    cursor: pointer;
+  display: flex;
+  cursor: pointer;
 }
 
 #outer:hover #inner {
-    width: 200px;
-    box-shadow: 1px 1px 3px rgba($accent, 0.8);
-    background-color: darken($accent, 5%) !important;
+  width: 200px;
+  box-shadow: 1px 1px 3px rgba($accent, 0.8);
+  background-color: darken($accent, 5%) !important;
 }
 
 .chromeImg {
-    background: url(../../public/reports-chrome.svg) no-repeat bottom center;
-    background-size: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  background: url(../../reports-chrome.svg) no-repeat bottom center;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    .loginLogo {
-        width: 30px;
-        margin-top: 5vh;
-    }
+  .loginLogo {
+    width: 30px;
+    margin-top: 5vh;
+  }
 }
 
 .ieImg {
-    background: url(../../public/reports-ie.svg) no-repeat bottom center;
-    background-size: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  background: url(../../reports-ie.svg) no-repeat bottom center;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    .loginLogo {
-        width: 30px;
-        margin-top: 5vh;
-    }
+  .loginLogo {
+    width: 30px;
+    margin-top: 5vh;
+  }
 }
 
 .css-18sg6k4-MuiPaper-root-MuiDrawer-paper {
-    top: 159px !important;
+  top: 159px !important;
 }
 
 .closeDrawerIcon {
-    background-color: $accent !important;
-    color: white !important;
-    box-shadow: 1px 3px 10px rgba($accent, 0.5);
-    transition: all 0.5s ease-in-out !important;
+  background-color: $accent !important;
+  color: white !important;
+  box-shadow: 1px 3px 10px rgba($accent, 0.5);
+  transition: all 0.5s ease-in-out !important;
 
-    &:hover {
-        box-shadow: 1px 1px 3px rgba($accent, 0.8);
-        background-color: darken($accent, 5%) !important;
-    }
+  &:hover {
+    box-shadow: 1px 1px 3px rgba($accent, 0.8);
+    background-color: darken($accent, 5%) !important;
+  }
 }
 
 .profile {
-    display: flex;
-    margin: 20px 0px 0px 10px;
-    gap: 10px;
+  display: flex;
+  margin: 20px 0px 0px 10px;
+  gap: 10px;
 }
 
 .logoutbutton {
-    margin: 8px;
-    margin-bottom: 20px;
-    background-color: #001c56;
+  margin: 8px;
+  margin-bottom: 20px;
+  background-color: #001c56;
 }
 
 .descColumn {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .descOption {
-    visibility: hidden;
-    color: $accent;
+  visibility: hidden;
+  color: $accent;
 }
 
 .descColumn:hover .descOption {
-    visibility: visible;
+  visibility: visible;
 }
 
 .nameColumn {
-    color: $accent;
-    cursor: pointer;
+  color: $accent;
+  cursor: pointer;
 }
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
-    text-transform: none !important;
-    background-color: $accent;
+  text-transform: none !important;
+  background-color: $accent;
 }
 
 .MuiButton-sizeMedium.MuiButton-containedSizeMedium.css-sghohy-MuiButtonBase-root-MuiButton-root {
-    background-color: $accent;
+  background-color: $accent;
 }
 
 .css-11qr2p8-MuiButtonBase-root-MuiButton-root {
-    text-transform: none !important;
-    background-color: $accent;
+  text-transform: none !important;
+  background-color: $accent;
 }
 
 .menuBadge {
-    background-color: $accent;
-    border-radius: 10px;
-    padding: 0px 10px;
-    color: white;
-    margin-left: -20px;
+  background-color: $accent;
+  border-radius: 10px;
+  padding: 0px 10px;
+  color: white;
+  margin-left: -20px;
 }
 
 .importantfield {
-    color: red;
+  color: red;
 }
 
 label {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 .userinfodata {
-    padding-bottom: 5px;
-    padding-top: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 .logoimage {
-    width: 20px;
-    height: 15px;
+  width: 20px;
+  height: 15px;
 }
 
 .searchbox {
-    position: relative;
+  position: relative;
 }
 
 .applist {
-    background-color: #fff;
-    padding: 10px 0;
-    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    position: absolute;
-    z-index: 10;
-    max-height: 400px;
-    overflow-x: auto;
-    overflow-y: initial;
-    min-width: 10px;
+  background-color: #fff;
+  padding: 10px 0;
+  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  max-height: 400px;
+  overflow-x: auto;
+  overflow-y: initial;
+  min-width: 10px;
 
-    ul {
-        list-style: none;
+  ul {
+    list-style: none;
 
-        li {
-            font-size: 16px;
-            font-weight: 400;
-            padding: 5px 10px;
-            //display: flex;
-            justify-content: space-between;
-            align-items: center;
-            //border-bottom: 1px solid $borders;
-            cursor: pointer;
+    li {
+      font-size: 16px;
+      font-weight: 400;
+      padding: 5px 10px;
+      //display: flex;
+      justify-content: space-between;
+      align-items: center;
+      //border-bottom: 1px solid $borders;
+      cursor: pointer;
 
-            &:last-of-type {
-                border: 0;
-            }
-        }
+      &:last-of-type {
+        border: 0;
+      }
     }
+  }
 }
 
 .subapp {
-    position: absolute;
-    left: 190px;
+  position: absolute;
+  left: 190px;
 
-    li {
-        list-style-type: none;
-        margin: 2px;
-        padding: 4px;
-    }
+  li {
+    list-style-type: none;
+    margin: 2px;
+    padding: 4px;
+  }
 }
 
 .automation {
-    margin: 20px;
-    min-height: 50px;
+  margin: 20px;
+  min-height: 50px;
 }
 
 .css-120bgvu-MuiTableHead-root {
-    display: none !important;
+  display: none !important;
 }
 
 text.highcharts-credits {
-    display: none;
+  display: none;
 }
 
 .scheduler {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .dropdown {
-    margin: 4px;
-    padding: 4px;
-    min-width: 55px;
+  margin: 4px;
+  padding: 4px;
+  min-width: 55px;
 }
 
 .tableParent {
-    position: relative;
+  position: relative;
 }
