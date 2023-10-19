@@ -28,7 +28,6 @@
     "react-hook-form-mui": "^5.12.4",
     "react-router-dom": "^6.6.2",
     "vite": "^4.5.0",
-    "vite-tsconfig-paths": "^4.2.1",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5",
     "yup": "^0.32.11"
