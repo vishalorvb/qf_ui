@@ -53,7 +53,7 @@ export default function PageHead() {
               </Typography>
             </Stack>
 
-            <BreadcrumbsComponent />
+            {/* <BreadcrumbsComponent /> */}
           </Grid>
 
           <GlobalSnackbar />

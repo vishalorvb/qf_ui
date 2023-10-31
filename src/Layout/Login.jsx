@@ -115,25 +115,13 @@ export default function Login() {
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
-    auth?.user &&
-      auth?.roles &&
-      ([1, 4].includes(auth?.roles)
-        ? navigate("/Application/Recent", { state: "recentApplication" })
-        : [5].includes(auth?.roles)
-        ? navigate("/Organization", { state: "recentApplication" })
-        : navigate("/users", { state: "recentApplication" }));
+    navigate("/Projects");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
-    auth?.user &&
-      auth?.roles &&
-      ([1, 4].includes(auth?.roles)
-        ? navigate("/Application/Recent", { state: "recentApplication" })
-        : [5].includes(auth?.roles)
-        ? navigate("/Organization", { state: "recentApplication" })
-        : navigate("/users", { state: "recentApplication" }));
+    navigate("/Projects");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

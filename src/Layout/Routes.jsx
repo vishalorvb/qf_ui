@@ -151,7 +151,16 @@ const jenkinsExecution = lazy(() => import(`../pages/JenkinsExecutionStatus`));
 
 const ProjectSettings = lazy(() => import(`../pages/ProjectSettings`));
 
+// ========================================================================================================================
+
+const projectHome = lazy(() => import(`../pages/ProjectPanel`));
+
 export const Routes = [
+  {
+    path: "Projects",
+    element: projectHome,
+    accessRole: [1, 2, 4],
+  },
   {
     path: "ProjectSettings",
     element: ProjectSettings,

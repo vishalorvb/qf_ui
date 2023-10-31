@@ -230,7 +230,7 @@ function CreateProject() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: projectId === undefined ? "Create Project" : "Edit Project",
+        name: "Quality Fusion",
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
