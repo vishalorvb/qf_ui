@@ -5,6 +5,7 @@ import { IconButton, Grid, Typography, Stack } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import GlobalSnackbar from "../CustomComponent/GloablSnackbar";
 import BackdropLoader from "../CustomComponent/BackdropLoader";
+import UserCard from "./UserCard";
 
 export default function PageHead() {
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ export default function PageHead() {
             </Stack>
 
             {/* <BreadcrumbsComponent /> */}
+            <UserCard />
           </Grid>
 
           <GlobalSnackbar />

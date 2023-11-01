@@ -207,7 +207,7 @@ function ProjectTable({ location }) {
       <div className="apptable">
         <div className="intable">
           <div style={{ float: "right" }}>
-            {/* <Button
+            <Button
               variant="contained"
               onClick={() => {
                 navigate("/Projects/Create", {
@@ -218,7 +218,7 @@ function ProjectTable({ location }) {
               }}
             >
               Create Project
-            </Button> */}
+            </Button>
           </div>
         </div>
         <Table

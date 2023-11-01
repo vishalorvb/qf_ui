@@ -5,9 +5,9 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Projects from "./Projects";
-import CreateProject from "../Components/ProjectComponents/CreateProject";
+import ApplicationList from "../pages/ApplicationList";
 
-export default function LabTabs() {
+export default function HomePanel() {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
@@ -20,14 +20,14 @@ export default function LabTabs() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Projects" value="1" />
-            <Tab label="Create" value="2" />
+            <Tab label="Applications" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">
           <Projects />
         </TabPanel>
         <TabPanel value="2">
-          <CreateProject />
+          <ApplicationList />
         </TabPanel>
       </TabContext>
     </Box>

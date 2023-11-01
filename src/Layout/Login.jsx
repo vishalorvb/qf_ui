@@ -115,13 +115,13 @@ export default function Login() {
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
-    navigate("/Projects");
+    auth?.user && navigate("/Projects");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   useEffect(() => {
     // auth?.user && navigate(from, { replace: true });
-    navigate("/Projects");
+    auth?.user && navigate("/Projects");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
