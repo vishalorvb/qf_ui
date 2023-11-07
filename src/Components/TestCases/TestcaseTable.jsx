@@ -123,6 +123,17 @@ function TestcaseTable({ project, application }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [project, application]);
 
+    useEffect(() => {
+        setTestcases([]);
+        getAlltestcaseOfApplicationandSubapplication(
+            project?.project_id,
+            application?.module_id,
+            setTestcases,
+            settotalPage,
+            currentPage - 1
+        );
+    }, [currentPage])
+
     return (
         <div>
             <Table
@@ -135,25 +146,25 @@ function TestcaseTable({ project, application }) {
                 getRowId={(row) => row.testcase_id}
                 pagination={true}
                 onNext={() => {
-                    setTestcases([]);
-                    getAlltestcaseOfApplicationandSubapplication(
-                        project?.project_id,
-                        application?.module_id,
-                        setTestcases,
-                        settotalPage,
-                        currentPage
-                    );
+                    //setTestcases([]);
+                    //getAlltestcaseOfApplicationandSubapplication(
+                    //    project?.project_id,
+                    //    application?.module_id,
+                    //    setTestcases,
+                    //    settotalPage,
+                    //    currentPage
+                    //);
                     setCurrentPage(currentPage + 1);
                 }}
                 onPrevious={() => {
-                    setTestcases([]);
-                    getAlltestcaseOfApplicationandSubapplication(
-                        project?.project_id,
-                        application?.module_id,
-                        setTestcases,
-                        settotalPage,
-                        currentPage
-                    );
+                    //setTestcases([]);
+                    //getAlltestcaseOfApplicationandSubapplication(
+                    //    project?.project_id,
+                    //    application?.module_id,
+                    //    setTestcases,
+                    //    settotalPage,
+                    //    currentPage
+                    //);
                     setCurrentPage(currentPage - 1);
                 }}
             ></Table>
