@@ -584,6 +584,7 @@ export async function getAlltestcaseOfApplicationandSubapplication(
     moduleId,
     callback,
     setPagesize,
+    totalElement,
     page = 1,
     size = 10
 ) {
@@ -595,6 +596,7 @@ export async function getAlltestcaseOfApplicationandSubapplication(
         .then((res) => {
             callback(res.data.info.content ?? []);
             setPagesize(res.data.info.totalPages);
+            totalElement(res.data.info.totalElements)
         })
         .catch((err) => {
             callback([]);
