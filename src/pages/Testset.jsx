@@ -30,6 +30,7 @@ export default function Testset() {
     const { setHeader } = useHead();
     let [currentPage, setCurrentPage] = useState(1);
     let [totalPage, settotalPage] = useState(1);
+    let [totaltestset, setTotaltestset] = useState(0)
 
     const deleteTestcaseHandler = (id) => {
         axios
@@ -54,7 +55,8 @@ export default function Testset() {
             setTestset,
             currentPage - 1,
             10,
-            settotalPage
+            settotalPage,
+            setTotaltestset
         );
     };
 
@@ -94,7 +96,6 @@ export default function Testset() {
                 return (
                     <Typography
                         variant="p"
-                        className="nameColumn"
                     >
                         {param.row.module_name}
                     </Typography>
@@ -209,6 +210,7 @@ export default function Testset() {
                         pagination={true}
                         currentPage={currentPage}
                         totalPage={totalPage}
+                        totalElement={totaltestset}
                         onNext={() => {
                             //getTestset(
                             //    globalProject?.project_id,

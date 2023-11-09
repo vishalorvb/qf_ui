@@ -7,7 +7,8 @@ export function getTestset(
     callback,
     page = 1,
     size = 10,
-    settotalPage
+    settotalPage,
+    setTotalElement
 ) {
     axios
         .get(
@@ -16,6 +17,7 @@ export function getTestset(
         .then((resp) => {
             const testsets = resp?.data?.info.content ?? [];
             settotalPage(resp.data?.info.totalPages);
+            setTotalElement(resp.data?.info.totalElements)
             callback(testsets);
         });
 }
