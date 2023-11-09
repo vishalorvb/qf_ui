@@ -20,6 +20,7 @@ function TestcaseTable({ project, application }) {
     let [deletTestcaseId, setDeleteTestcaseId] = useState(0);
     let [currentPage, setCurrentPage] = useState(1);
     let [totalPage, settotalPage] = useState(1);
+    let [totalTestcase, setTotaltestcase] = useState(0);
 
     const columns = [
         {
@@ -116,7 +117,9 @@ function TestcaseTable({ project, application }) {
             application?.module_id,
             setTestcases,
             settotalPage,
+            setTotaltestcase,
             currentPage - 1
+
         ).then((res) => {
             setShowloader(false);
         });
@@ -130,7 +133,9 @@ function TestcaseTable({ project, application }) {
             application?.module_id,
             setTestcases,
             settotalPage,
+            setTotaltestcase,
             currentPage - 1
+
         );
     }, [currentPage])
 
@@ -145,6 +150,7 @@ function TestcaseTable({ project, application }) {
                 totalPage={totalPage}
                 getRowId={(row) => row.testcase_id}
                 pagination={true}
+                totalElement={totalTestcase}
                 onNext={() => {
                     //setTestcases([]);
                     //getAlltestcaseOfApplicationandSubapplication(
@@ -186,7 +192,9 @@ function TestcaseTable({ project, application }) {
                                 application?.module_id,
                                 setTestcases,
                                 settotalPage,
-                                currentPage - 1
+                                setTotaltestcase,
+                                currentPage - 1,
+
                             );
                             setShowloader(false);
 
