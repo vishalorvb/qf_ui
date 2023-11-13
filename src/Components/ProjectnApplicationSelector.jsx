@@ -59,13 +59,8 @@ export default function ProjectnApplicationSelector({
   }, [globalApplication]);
 
   return (
-    <Grid
-      container
-      spacing={2}
-      justifyContent={isApplication !== false ? "space-around" : "flex-end"}
-      direction="row"
-    >
-      <Grid item md={6}>
+    <Grid container spacing={2} justifyContent={"flex-end"} direction="row">
+      {/* <Grid item md={6}>
         <label>Projects</label>
         <Autocomplete
           disabled={selectorDisabled === true}
@@ -83,7 +78,7 @@ export default function ProjectnApplicationSelector({
             <TextField {...params} size="small" fullWidth />
           )}
         />
-      </Grid>
+      </Grid> */}
       {isApplication !== false && (
         <Grid item md={6}>
           <div className="searchbox">

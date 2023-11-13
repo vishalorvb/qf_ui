@@ -8,33 +8,33 @@ export const testManagementList = [
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-dashboard"></i>,
   },
-  {
-    name: "Admin",
-    id: "1",
-    route: "",
-    accessRole: [2],
-    icon: <i className="qf icon-admin"></i>,
-    subList: [
-      {
-        name: "Add User",
-        id: "11",
-        route: "addUser",
-        accessRole: [2],
-      },
-      {
-        name: "Users",
-        id: "12",
-        route: "users",
-        accessRole: [2],
-      },
-      {
-        name: "Settings",
-        id: "13",
-        route: "settings",
-        accessRole: [2],
-      },
-    ],
-  },
+  // {
+  //   name: "Admin",
+  //   id: "1",
+  //   route: "",
+  //   accessRole: [2],
+  //   icon: <i className="qf icon-admin"></i>,
+  //   subList: [
+  //     {
+  //       name: "Add User",
+  //       id: "11",
+  //       route: "addUser",
+  //       accessRole: [2],
+  //     },
+  //     {
+  //       name: "Users",
+  //       id: "12",
+  //       route: "users",
+  //       accessRole: [2],
+  //     },
+  //     {
+  //       name: "Settings",
+  //       id: "13",
+  //       route: "settings",
+  //       accessRole: [2],
+  //     },
+  //   ],
+  // },
   // {
   //   name: "Application",
   //   id: "2",

@@ -55,7 +55,7 @@ export default function PageHead() {
             </Stack>
 
             {/* <BreadcrumbsComponent /> */}
-            <UserCard />
+            {/* <UserCard /> */}
           </Grid>
 
           <GlobalSnackbar />
