@@ -150,6 +150,7 @@ const MakeCopy = lazy(() => import(`../pages/MakeCopy`));
 const jenkinsExecution = lazy(() => import(`../pages/JenkinsExecutionStatus`));
 
 const ProjectSettings = lazy(() => import(`../pages/ProjectSettings`));
+const CustomCode = lazy(() => import(`../pages/CustomCode`));
 
 export const Routes = [
   {
@@ -740,6 +741,11 @@ export const Routes = [
   {
     path: "jenkinsExecution",
     element: jenkinsExecution,
+    accessRole: [1, 2, 4],
+  },
+  {
+    path: "customcode",
+    element: CustomCode,
     accessRole: [1, 2, 4],
   },
 ];

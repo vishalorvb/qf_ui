@@ -195,6 +195,13 @@ export const functionalManagementList = [
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-testsets"></i>,
   },
+  {
+    name: "Custom Code",
+    id: "6",
+    route: "CustomCode",
+    accessRole: [1, 2, 4],
+    icon: <i className="qf icon-testsets"></i>,
+  },
 ];
 export const opsManagementList = [
   {
