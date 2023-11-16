@@ -5,71 +5,85 @@ import {
   ListItemButton,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 
-export default function NavListRendedrer({ listData }) {
+export default function NavListRendedrer({
+  listData,
+  selectedObject,
+  setSelectedObject,
+  displayKey,
+  id,
+}) {
+  const [searchString, setSearchString] = useState("");
+
   const itemRender = () => {
-    const navigationList = listData.map((apiItem, index) => {
-      return (
-        <ListItem
-          sx={{
-            display: "block",
-            fontSize: "x-small",
-          }}
-          key={index}
-          divider
-          // selected={selectedItem === apiItem?.testset_id}
-        >
-          <ListItemButton
+    const navigationList = listData
+      .filter((listItem) => listItem[displayKey].includes(searchString))
+      .map((listItem, index) => {
+        return (
+          <ListItem
             sx={{
-              overflow: "hidden",
+              display: "block",
+              fontSize: "x-small",
             }}
-            onClick={() => {
-              // setSelectedItem(apiItem?.testset_id);
-            }}
+            key={listItem[id]}
+            divider
+            selected={listItem[id] === selectedObject[id]}
           >
-            <Typography>
-              <b
-                style={{
-                  fontSize: "15px",
-                  color: "#009fee",
-                  fontWeight: "400",
-                }}
-              >
-                {apiItem.name}
-              </b>
-            </Typography>
-          </ListItemButton>
-        </ListItem>
-      );
-    });
+            <ListItemButton
+              sx={{
+                overflow: "hidden",
+              }}
+              onClick={() => {
+                setSelectedObject(listItem);
+              }}
+            >
+              <Typography>
+                <b
+                  style={{
+                    fontSize: "15px",
+                    color: "#009fee",
+                    fontWeight: "400",
+                  }}
+                >
+                  {listItem[displayKey]}
+                </b>
+              </Typography>
+            </ListItemButton>
+          </ListItem>
+        );
+      });
     return navigationList;
   };
   return (
-    <List
-      sx={{
-        overflowY: "auto",
-        height: "70vh",
-        width: "100%",
-      }}
-    >
-      {
-        //   testcases.length > 0 ? (
-        itemRender()
-        //   ) : (
-        //     <div style={{ textAlign: "center" }}>
-        //       <Typography>No Testsets Found</Typography>
-        //       <br />
-        //       <Button
-        //         variant="contained"
-        //         onClick={() => {
-        //           navigate("/Testset/Create");
-        //         }}
-        //       >
-        //         Create Testset
-        //       </Button>
-        //     </div>
-        //   )
-      }
-    </List>
+    <>
+      <input onChange={(e) => setSearchString(e.target.value)} />
+      <List
+        sx={{
+          overflowY: "auto",
+          height: "70vh",
+          width: "100%",
+        }}
+      >
+        {
+          //   testcases.length > 0 ? (
+          itemRender()
+          //   ) : (
+          //     <div style={{ textAlign: "center" }}>
+          //       <Typography>No Testsets Found</Typography>
+          //       <br />
+          //       <Button
+          //         variant="contained"
+          //         onClick={() => {
+          //           navigate("/Testset/Create");
+          //         }}
+          //       >
+          //         Create Testset
+          //       </Button>
+          //     </div>
+          //   )
+        }
+      </List>
+    </>
   );
 }
