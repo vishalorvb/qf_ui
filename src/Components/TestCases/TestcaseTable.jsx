@@ -152,25 +152,9 @@ function TestcaseTable({ project, application }) {
                 pagination={true}
                 totalElement={totalTestcase}
                 onNext={() => {
-                    //setTestcases([]);
-                    //getAlltestcaseOfApplicationandSubapplication(
-                    //    project?.project_id,
-                    //    application?.module_id,
-                    //    setTestcases,
-                    //    settotalPage,
-                    //    currentPage
-                    //);
                     setCurrentPage(currentPage + 1);
                 }}
                 onPrevious={() => {
-                    //setTestcases([]);
-                    //getAlltestcaseOfApplicationandSubapplication(
-                    //    project?.project_id,
-                    //    application?.module_id,
-                    //    setTestcases,
-                    //    settotalPage,
-                    //    currentPage
-                    //);
                     setCurrentPage(currentPage - 1);
                 }}
             ></Table>
