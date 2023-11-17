@@ -23,21 +23,7 @@ function TestsetReport() {
     let columns = [
         {
             field: "pass",
-            headerName: "Pass",
-            flex: 2,
-            sortable: false,
-            align: "left",
-            renderCell: (param) => {
-                return (
-                    <div>
-                        {param.row.pass_fail_string}
-                    </div>
-                );
-            },
-        },
-        {
-            field: "fail",
-            headerName: "Fail",
+            headerName: "Pass/Fail",
             flex: 2,
             sortable: false,
             align: "left",
@@ -67,8 +53,11 @@ function TestsetReport() {
     ]
 
 
-
     useEffect(() => {
+        console.log(report)
+    }, [report])
+    useEffect(() => {
+        setReport([])
         globalProject && globalApplication && getTestsetReport(globalProject.project_id, globalApplication.module_id, limit, setReport)
     }, [globalProject, globalApplication, limit])
     return (
@@ -97,10 +86,14 @@ function TestsetReport() {
                     </select>
                 </Grid>
             </Grid>
-
-            <div style={{ marginTop: "20px" }}>
+            <div >
                 {report.map(r =>
-                    <AccordionTemplate defaultState={true} name={r.testset_name}>
+                    <div style={{ position: "relative", marginTop: "10px" }}>
+                        {/*<AccordionTemplate defaultState={true} name={r.testset_name}>*/}
+                        <div style={{ position: "absolute", top: "-20px", background: "#e8f2fd", padding: "10px" }}>
+                            <label for="" >{r.testset_name}</label>
+
+                        </div>
                         <Table
                             rows={r.pass_fail}
                             columns={columns}
@@ -108,7 +101,9 @@ function TestsetReport() {
                             hideSearch={true}
                             getRowId={(row) => row.created_at}
                         ></Table>
-                    </AccordionTemplate>
+
+                    </div>
+
                 )}
 
             </div>
