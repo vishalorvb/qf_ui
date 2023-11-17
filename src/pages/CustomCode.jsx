@@ -14,8 +14,11 @@ import { Stack } from "@mui/system";
 
 export default function CustomCode() {
   const [codeList, setCodeList] = useState([]);
-  const [selectedCode, setSelectedCodeselectedCode] = useState([]);
-  const [selectedCodeData, setselectedCodeData] = useState({});
+  const [selectedCode, setSelectedCodeselectedCode] = useState({});
+  const [selectedCodeData, setselectedCodeData] = useState({
+    code: "",
+    custom_code_page_name: "",
+  });
   const { globalApplication, globalProject, setSnackbarData, snackbarData } =
     useHead();
   const { auth } = useAuth();
@@ -26,9 +29,17 @@ export default function CustomCode() {
   }, [globalApplication, snackbarData]);
 
   useEffect(() => {
+    if (codeList.length > 0 && codeList[codeList.length - 1]["id"] == 0) {
+      setSelectedCodeselectedCode(codeList[codeList.length - 1] ?? {});
+    } else {
+      setSelectedCodeselectedCode(codeList[0] ?? {});
+    }
+  }, [codeList]);
+
+  useEffect(() => {
     if (selectedCode?.id == 0) {
       setselectedCodeData(codeList[codeList.length - 1]);
-    } else {
+    } else if (selectedCode.id) {
       getCustomCode(selectedCode?.id, setselectedCodeData);
     }
   }, [selectedCode, snackbarData]);
@@ -41,7 +52,12 @@ export default function CustomCode() {
   };
 
   const handleSave = () => {
-    const postData = { ...selectedCodeData, projectId: 467 };
+    const postData = {
+      ...selectedCodeData,
+      project_id: 467,
+      id: undefined,
+      makedefault: false,
+    };
     customCodeCreate(postData, setSnackbarData);
   };
 
