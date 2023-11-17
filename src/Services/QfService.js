@@ -407,21 +407,8 @@ export async function deleteProject(projectid, userid) {
     return res;
 }
 
-//export async function getUsers(callback, orgid, ssoid, token) {
-//    return await axios
-//        .get(
-//            `${qfservice}/qfuserservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
-//            {
-//                headers: {
-//                    Authorization: `Bearer ${token}`,
-//                },
-//            }
-//        )
-//        .then((res) => {
-//            callback(res.data.info);
-//            return res.data.info;
-//        });
-//}
+
+
 
 export async function getUserOfProject(callback, projectId, userId) {
     return await axios
@@ -544,8 +531,11 @@ export async function createApitestcase(data) {
 
 export async function DeleteTestCase(testcaseId) {
     let x = await axios
-        .delete(
-            `${qfservice}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`
+        .put(
+            //`${qfservice}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`
+            `${qfservice}/qfservice/webtestcase/softDeleteTestcase?testcase_id=${testcaseId}`
+
+
         )
         .then((res) => {
             if (res.data.status === "SUCCESS") {

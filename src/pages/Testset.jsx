@@ -34,8 +34,10 @@ export default function Testset() {
 
     const deleteTestcaseHandler = (id) => {
         axios
-            .delete(
-                `${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${id}`
+            .put(
+                //`${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${id}`
+                `${qfservice}/qfservice/webtestset/softdeleteWebTestset?testset_id=${id}`
+
             )
             .then((resp) => {
                 setOpenDelete(false);
