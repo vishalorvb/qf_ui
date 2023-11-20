@@ -9,6 +9,11 @@ export default defineConfig({
     // this ensures that the browser opens upon server start
     open: false,
     // this sets a default port to 3000
+    watch: {
+      usePolling: true,
+    },
+    host: true, // needed for the Docker Container port mapping to work
+    strictPort: true,
     port: 3000,
   },
   build: {
