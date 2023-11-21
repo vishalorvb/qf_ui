@@ -244,21 +244,21 @@ function CreateProject() {
     }, []);
 
     useEffect(() => {
-        if (projectDetails.length !== 0) {
-            submitData.current.projectName = projectDetails.project_name;
-            submitData.current.projectDesc = projectDetails.description;
-            submitData.current.jira_project_id = projectDetails.jira_project_id;
+        if (projectDetails?.length !== 0) {
+            submitData.current.projectName = projectDetails?.project_name;
+            submitData.current.projectDesc = projectDetails?.description;
+            submitData.current.jira_project_id = projectDetails?.jira_project_id;
             submitData.current.sqeProjectId = projectId === undefined ? 0 : projectId;
-            submitData.current.repository_url = projectDetails.repository_url;
-            submitData.current.repository_token = projectDetails.repository_token;
-            submitData.current.repository_branch = projectDetails.repository_branch;
-            submitData.current.jenkins_token = projectDetails.jenkins_token;
-            submitData.current.jenkins_url = projectDetails.jenkins_url;
-            submitData.current.jenkins_user_name = projectDetails.jenkins_user_name;
-            submitData.current.jenkins_password = projectDetails.jenkins_password;
+            submitData.current.repository_url = projectDetails?.repository_url;
+            submitData.current.repository_token = projectDetails?.repository_token;
+            submitData.current.repository_branch = projectDetails?.repository_branch;
+            submitData.current.jenkins_token = projectDetails?.jenkins_token;
+            submitData.current.jenkins_url = projectDetails?.jenkins_url;
+            submitData.current.jenkins_user_name = projectDetails?.jenkins_user_name;
+            submitData.current.jenkins_password = projectDetails?.jenkins_password;
             submitData.current.automation_framework_type =
-                projectDetails.automation_framework_type;
-            submitData.current.db_type = projectDetails.testdata_db_config?.db_type;
+                projectDetails?.automation_framework_type;
+            submitData.current.db_type = projectDetails?.testdata_db_config?.db_type;
             submitData.current.db_name =
                 projectDetails.testdata_db_config?.db_name.db_password;
             submitData.current.db_user_name =
@@ -420,7 +420,7 @@ function CreateProject() {
                             <label>Jenkins UserName :</label>
                             <input
                                 placeholder="Jenkins UserName"
-                                defaultValue={projectDetails.jenkins_user_name}
+                                defaultValue={projectDetails?.jenkins_user_name}
                                 autoComplete="off"
                                 type="text"
                                 onChange={(e) => {
@@ -432,7 +432,7 @@ function CreateProject() {
                             <label>Jenkins Password :</label>
                             <input
                                 placeholder="Jenkins Password"
-                                defaultValue={projectDetails.jenkins_password}
+                                defaultValue={projectDetails?.jenkins_password}
                                 type="password"
                                 autoComplete="off"
                                 onChange={(e) => {
