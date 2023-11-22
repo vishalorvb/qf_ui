@@ -326,6 +326,18 @@ const AdminActionCell = (param, deleteUserHandler) => {
       >
         <MenuItem
           onClick={() =>
+            navigate("addGitDetails", {
+              state: {
+                param1: param?.row,
+              },
+            })
+          }
+        >
+          <EditOutlinedIcon sx={{ color: "blue", mr: 1 }} />
+          Update Git Details
+        </MenuItem>
+        <MenuItem
+          onClick={() =>
             navigate("editUser", {
               state: {
                 param1: param?.row,
@@ -340,6 +352,7 @@ const AdminActionCell = (param, deleteUserHandler) => {
           <DeleteOutlineIcon sx={{ color: "red", mr: 1 }} />
           Delete
         </MenuItem>
+
       </Menu>
     </div>
   );
