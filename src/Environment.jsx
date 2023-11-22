@@ -5,8 +5,7 @@ export let qfservice = BASE_URL;
 export let dashboard = BASE_URL;
 export let report = BASE_URL;
 export let biservice = BASE_URL;
-
-export let SAVE_USER_GIT_DETAILS = BASE_URL + '/qfuserservice/user/updateUser';
+export let SAVE_USER_LOCAL_GIT_DETAILS ='http://localhost:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters';
 
 
 
