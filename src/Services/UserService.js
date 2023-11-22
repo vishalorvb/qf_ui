@@ -74,3 +74,13 @@ export async function getUsers(callback, orgid, ssoid, token) {
             return res.data.info;
         });
 }
+
+export async function getUserGitDetails(callback, userId) {
+    return await axios
+        .get(
+            `http://localhost:8062/qfuserservice/userexecutionparameters/getByUserId?userId=${userId}`)
+        .then((res) => {
+            callback(res.data.info);
+            return res.data.info;
+        });
+}

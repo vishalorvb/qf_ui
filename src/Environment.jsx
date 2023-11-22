@@ -10,3 +10,4 @@ export let dashboard = BASE_URL + "/qfdashboard";
 export let report = BASE_URL + "/qfreportservice";
 
 export let biservice = BASE_URL + "/bireport";
+export let SAVE_USER_LOCAL_GIT_DETAILS ='http://localhost:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters';

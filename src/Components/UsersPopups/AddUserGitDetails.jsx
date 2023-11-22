@@ -10,10 +10,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
-import { SAVE_USER_GIT_DETAILS } from "../../Environment";
+import { SAVE_USER_LOCAL_GIT_DETAILS } from "../../Environment";
+import { getUserGitDetails } from "../../Services/UserService";
 
 function GitDetails() {
   const location = useLocation();
+  const [gitdetails, setGitdetails] = useState([]);
   const [gitUserName, setGitUserName] = useState();
   const git_user_name = useRef();
   const [gitAccessToken, setGitAccessToken] = useState();
@@ -54,11 +56,11 @@ function GitDetails() {
         gitUserName: gitUserName.trim(),
         gitToken: gitAccessToken.trim(),
         git_branch: gitBranch.trim(),
-        id: values.id
+        userId: values.id
       };
      console.log(data);
       axiosPrivate
-        .put(SAVE_USER_GIT_DETAILS, data)
+        .post(SAVE_USER_LOCAL_GIT_DETAILS, data)
         .then((res) => {
           console.log(res.data.info);
           setEditSuccessMsg(true);
@@ -84,6 +86,12 @@ function GitDetails() {
       console.log("Invalid form");
     }
   };
+
+
+  useEffect(() => {
+    getUserGitDetails(setGitdetails, values.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { setHeader } = useHead();
   useEffect(() => {
