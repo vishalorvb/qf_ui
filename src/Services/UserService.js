@@ -40,7 +40,7 @@ export async function uploadPic(userId, picfile, token) {
 
 export function getPhoto(callback, userId, token) {
     axios
-        .get(`${userservice}/profilePic`, {
+        .get(`${userservice}/user/profilePic`, {
             params: {
                 user_id: userId,
             },
@@ -62,7 +62,7 @@ export function getPhoto(callback, userId, token) {
 export async function getUsers(callback, orgid, ssoid, token) {
     return await axios
         .get(
-            `${userservice}/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
+            `${userservice}/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

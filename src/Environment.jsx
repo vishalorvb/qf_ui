@@ -1,7 +1,7 @@
 export const BASE_URL = "http://10.11.12.243:8083";
 export let authservice = BASE_URL;
 
-export let userservice = BASE_URL + "/user";
+export let userservice = BASE_URL + "/qfuserservice";
 
 export let qfservice = BASE_URL + "/qfservice";
 
