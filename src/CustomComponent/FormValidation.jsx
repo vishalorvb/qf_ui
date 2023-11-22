@@ -54,18 +54,18 @@ export function validateForm(
         element.current === undefined
       ) {
         element.current.className = cname;
-        console.log("error in required fiels");
+        console.log("error in required fields");
         status = false;
       } else if (/EMAIL/.test(element.current.name.toUpperCase())) {
         if (!ValidateEmail(element.current.value)) {
           element.current.className = cname;
           status = false;
-          console.log("error in required fiels");
+          console.log("error in required fields");
         }
       }
     } catch (error) {
       status = false;
-      console.log("error in required fiels");
+      console.log("error in required fields");
     }
   });
   specialcharRefs.forEach((element) => {
@@ -77,11 +77,11 @@ export function validateForm(
       ) {
         element.current.className = cname;
         status = false;
-        console.log("error in special char fiels");
+        console.log("error in special char fields");
       }
     } catch (error) {
       status = false;
-      console.log("error in special char fiels");
+      console.log("error in special char fields");
     }
   });
   passwordRef.forEach((element) => {
