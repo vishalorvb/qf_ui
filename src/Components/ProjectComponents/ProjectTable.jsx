@@ -15,7 +15,6 @@ import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import AppleIcon from "@mui/icons-material/Apple";
 import AdUnitsIcon from "@mui/icons-material/AdUnits";
-import useHead from "../../hooks/useHead";
 function ProjectTable({ location }) {
   let [popup, setPopup] = useState(false);
   let [pid, setPid] = useState();
@@ -23,7 +22,6 @@ function ProjectTable({ location }) {
   let [project, setProject] = useState([]);
   let [snackbarsuccess, setSnackbarsuccess] = useState(false);
   const { auth } = useAuth();
-  const { setglobalProject } = useHead();
   const loggedInId = auth.info.id;
 
   function handleDeletePopup(pid) {
@@ -41,11 +39,6 @@ function ProjectTable({ location }) {
     setPopup(false);
   }
 
-  const handleProjectClick = (projectData) => {
-    setglobalProject(projectData);
-    navigate("/");
-  };
-
   const columns = [
     {
       field: "project_name",
@@ -55,11 +48,7 @@ function ProjectTable({ location }) {
       align: "left",
       renderCell: (param) => {
         return (
-          <Stack
-            direction="row"
-            spacing={1}
-            onClick={() => handleProjectClick(param.row)}
-          >
+          <Stack direction="row" spacing={1}>
             {{
               1: (
                 <Tooltip title="Selenium">
