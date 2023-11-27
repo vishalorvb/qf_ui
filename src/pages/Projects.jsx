@@ -10,7 +10,10 @@ function Projects() {
     setHeader((ps) => {
       return {
         ...ps,
-        name: "Quality Fusion",
+        name:
+          location?.state === "recentProjects"
+            ? "Recent Projects"
+            : "Search Projects",
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
