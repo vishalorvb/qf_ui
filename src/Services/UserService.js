@@ -40,7 +40,7 @@ export async function uploadPic(userId, picfile, token) {
 
 export function getPhoto(callback, userId, token) {
     axios
-        .get(`${userservice}/user/profilePic`, {
+        .get(`${userservice}/profilePic`, {
             params: {
                 user_id: userId,
             },
