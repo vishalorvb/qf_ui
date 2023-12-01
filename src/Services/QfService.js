@@ -7,7 +7,8 @@ export function getTestset(
   callback,
   page = 1,
   size = 10,
-  settotalPage
+  settotalPage,
+  setTotalElement
 ) {
   axios
     .get(
@@ -16,6 +17,7 @@ export function getTestset(
     .then((resp) => {
       const testsets = resp?.data?.info.content ?? [];
       settotalPage(resp.data?.info.totalPages);
+      setTotalElement(resp.data?.info.totalElements);
       callback(testsets);
     });
 }
@@ -405,22 +407,6 @@ export async function deleteProject(projectid, userid) {
   return res;
 }
 
-export async function getUsers(callback, orgid, ssoid, token) {
-  return await axios
-    .get(
-      `${qfservice}/qfservice/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-    .then((res) => {
-      callback(res.data.info);
-      return res.data.info;
-    });
-}
-
 export async function getUserOfProject(callback, projectId, userId) {
   return await axios
     .get(
@@ -543,7 +529,8 @@ export async function createApitestcase(data) {
 export async function DeleteTestCase(testcaseId) {
   let x = await axios
     .delete(
-      `${qfservice}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`
+      //`${qfservice}/qfservice/webtestcase/deleteWebTestcase?testcase_id=${testcaseId}`
+      `${qfservice}/qfservice/webtestcase/softDeleteTestcase?testcase_id=${testcaseId}`
     )
     .then((res) => {
       if (res.data.status === "SUCCESS") {
@@ -584,6 +571,7 @@ export async function getAlltestcaseOfApplicationandSubapplication(
   moduleId,
   callback,
   setPagesize,
+  totalElement,
   page = 1,
   size = 10
 ) {
@@ -595,6 +583,7 @@ export async function getAlltestcaseOfApplicationandSubapplication(
     .then((res) => {
       callback(res.data.info.content ?? []);
       setPagesize(res.data.info.totalPages);
+      totalElement(res.data.info.totalElements);
     })
     .catch((err) => {
       callback([]);
@@ -804,5 +793,45 @@ export async function getTestcaseInTestset(testsetId, callback) {
     .then((res) => {
       callback(res.data.info);
       return res.data.info;
+    });
+}
+export async function getCustomCodeList(moduleId, userId, callback) {
+  return await axios
+    .get(
+      `${qfservice}/qfservice/customcode?module_id=${moduleId}&user_id=${userId}`
+    )
+    .then((res) => {
+      callback(res.data);
+    });
+}
+export async function getCustomCode(codeId, callback) {
+  return await axios
+    .get(`${qfservice}/qfservice/customcodeById?Id=${codeId}`)
+    .then((res) => {
+      callback(res.data);
+    });
+}
+
+export async function customCodeCreate(postdata, callback) {
+  return await axios
+    .post(`${qfservice}/qfservice/addcustomcode`, postdata)
+    .then((res) => {
+      callback({
+        status: true,
+        message: res.data.message,
+        severity: res.data.status,
+      });
+    });
+}
+
+export async function customCodeDelete(id, callback) {
+  return await axios
+    .post(`${qfservice}/qfservice/deletecustomcode?customcode_id=${id}`)
+    .then((res) => {
+      callback({
+        status: true,
+        message: res.data.message,
+        severity: res.data.status,
+      });
     });
 }
