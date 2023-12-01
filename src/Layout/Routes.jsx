@@ -68,6 +68,7 @@ const Settings = lazy(() => import("../pages/Settings"));
 const AddUser = lazy(() => import("../pages/AddUser"));
 const EditUser = lazy(() => import("../Components/UsersPopups/EditUser"));
 const GetTestcases = lazy(() => import("../pages/GetTestcases"));
+const GitDetails = lazy(() => import("../Components/UsersPopups/AddUserGitDetails"));
 
 const SelectedPageElements = lazy(() =>
     import("../Components/Application/ScreenComponents/SelectedPageElements")
@@ -351,6 +352,11 @@ export const Routes = [
     {
         path: "users/editUser",
         element: EditUser,
+        accessRole: [2, 3, 4],
+    },
+    {
+        path: "users/addGitDetails",
+        element: GitDetails,
         accessRole: [2, 3, 4],
     },
     {

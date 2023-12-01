@@ -1,13 +1,14 @@
 export const BASE_URL = "http://10.11.12.243:8083";
+export let authservice = "http://10.11.12.243:8061";
 
-export let authservice = BASE_URL;
+export let userservice = "http://10.11.12.243:8062" + "/qfuserservice";
 
-export let userservice = BASE_URL;
+export let qfservice = "http://10.11.12.243:8063" + "/qfservice";
 
-export let qfservice = BASE_URL;
+export let dashboard = "http://10.11.12.243:8064" + "/qfdashboard";
 
-export let dashboard = BASE_URL;
+export let report = "http://10.11.12.243:8065" + "/qfreportservice";
 
-export let report = BASE_URL;
+export let biservice = "http://10.11.12.243:8066" + "/bireport";
 
-export let biservice = BASE_URL;
+export let SAVE_USER_LOCAL_GIT_DETAILS = 'http://localhost:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters';

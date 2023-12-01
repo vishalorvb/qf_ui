@@ -38,7 +38,6 @@ export default function Table(props) {
     // hidefooter for true to hide footer
 
     const [pagesize, setPagesize] = useState(10);
-    console.log(rows.length)
     return (
         <div className="tableParent">
             <DataGrid
