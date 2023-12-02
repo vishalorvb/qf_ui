@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
@@ -14,7 +15,6 @@
     "@mui/x-date-pickers": "^5.0.15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@vitejs/plugin-react": "^4.1.0",
     "axios": "^1.2.3",
     "highcharts": "^10.3.2",
     "highcharts-react-official": "^3.1.0",
@@ -27,15 +27,16 @@
     "react-hook-form": "^7.42.1",
     "react-hook-form-mui": "^5.12.4",
     "react-router-dom": "^6.6.2",
-    "vite": "^4.5.0",
+    "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5",
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "cross-env BROWSER=none  react-scripts start",
+    "build": "set \"CI=false\" && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -56,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "sass": "^1.69.5"
   }
 }
