@@ -33,7 +33,7 @@
         "yup": "^0.32.11"
     },
     "scripts": {
-        "start": "cross-env BROWSER=none && set PORT=1122 && react-scripts start",
+        "start": "cross-env BROWSER=none &&  react-scripts start",
         "build": "set \"CI=false\" && react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
