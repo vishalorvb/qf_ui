@@ -36,7 +36,7 @@ export default function Testset() {
         axios
             .delete(
                 //`${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${id}`
-                `${qfservice}/qfservice/webtestset/softdeleteWebTestset?testset_id=${id}`
+                `${qfservice}/webtestset/softdeleteWebTestset?testset_id=${id}`
 
             )
             .then((resp) => {
