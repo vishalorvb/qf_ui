@@ -345,7 +345,7 @@ export async function getProject(callback, userId) {
         .get(`${qfservice}/getProjectsOfUser?userId=${userId}`)
         .then((res) => {
             callback(res.data.info ?? []);
-        });
+        }).catch(err => console.log(err))
 }
 
 export function getProjectDetails(callback, userId, projectId) {
