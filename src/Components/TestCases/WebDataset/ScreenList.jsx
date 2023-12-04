@@ -60,13 +60,10 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
 
   const updateScreenOrder = () => {
     axios
-      .post(
-        `${qfservice}/qfservice/webtestcase/updateOrderOfScreensInTestcase`,
-        {
-          testcaseId: testcaseId,
-          screen_ids: order,
-        }
-      )
+      .post(`${qfservice}/webtestcase/updateOrderOfScreensInTestcase`, {
+        testcaseId: testcaseId,
+        screen_ids: order,
+      })
       .then((resp) => {
         if (resp.data.status === "SUCCESS") {
           snackbarMessage = "Screen Order Updated";

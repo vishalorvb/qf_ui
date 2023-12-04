@@ -1,12 +1,12 @@
 import useAxios from "./useAxios";
 import useAuth from "./useAuth";
+import axios from "axios";
 
 const useRefreshToken = () => {
   const { setAuth } = useAuth();
-  const axiosPrivate = useAxios();
 
   const refresh = async () => {
-    const response = await axiosPrivate.get(
+    const response = await axios.get(
       `/qfauthservice/authentication/refreshtoken`,
       {
         header: { isRefreshToken: "true" },

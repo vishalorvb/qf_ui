@@ -45,7 +45,7 @@ export default function CreateAnsibleInstance() {
     console.log(data);
     axios
       .post(
-        `${qfservice}/qfservice/CreateWebRelease?release_id=${
+        `${qfservice}/CreateWebRelease?release_id=${
           location?.state?.id ? location?.state?.id : 0
         }&module_id=${location?.state?.module_id}&release_name=${
           data?.releaseName

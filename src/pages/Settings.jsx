@@ -10,6 +10,7 @@ import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 import { qfservice } from "../Environment";
+import axios from "axios";
 
 function Settings() {
   let Url = useRef();
@@ -18,7 +19,7 @@ function Settings() {
   const [url, setUrl] = useState("");
   const [successMsg, setSuccessMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
-  const axiosPrivate = useAxios();
+
   const { auth } = useAuth();
   const organizationId = auth.info.organization_id;
 
@@ -31,9 +32,9 @@ function Settings() {
       bodyFormData.append("report_portal_uuid", uuid.trim());
       bodyFormData.append("organization_id", organizationId);
 
-      axiosPrivate({
+      axios({
         method: "post",
-        url: `${qfservice}/qfservice/updateOrganisationSettings`,
+        url: `${qfservice}/updateOrganisationSettings`,
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {

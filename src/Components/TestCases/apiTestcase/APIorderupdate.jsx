@@ -14,9 +14,7 @@ export default function APIorderupdate() {
 
   useEffect(() => {
     axios
-      .get(
-        `${qfservice}/qfservice/testcase/${location?.state?.testcaseId}/apis`
-      )
+      .get(`${qfservice}/testcase/${location?.state?.testcaseId}/apis`)
       .then((resp) => {
         setData(() =>
           resp.data.data.apisList.filter((api) => api.is_selected === true)
@@ -36,7 +34,7 @@ export default function APIorderupdate() {
   const updateScreenOrder = () => {
     order.length > 0 &&
       axios
-        .post(`${qfservice}/qfservice/UpdateOrderOfAPIsInTestcase`, {
+        .post(`${qfservice}/UpdateOrderOfAPIsInTestcase`, {
           testcaseId: location?.state?.testcaseId,
           api_ids: order,
         })

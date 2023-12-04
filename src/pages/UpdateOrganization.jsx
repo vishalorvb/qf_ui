@@ -71,7 +71,7 @@ const UpdateOrganization = () => {
     try {
       axios({
         method: "put",
-        url: `${userservice}/qfuserservice/user/updateorgdetails?firstName=${postVal.firstName}&lastName=${postVal.lastName}&organizationName=${postVal.company}&adminEmail=${postVal.email}&phoneNumber=${postVal.phone}&orgId=${postVal.organization_id}`,
+        url: `${userservice}/user/updateorgdetails?firstName=${postVal.firstName}&lastName=${postVal.lastName}&organizationName=${postVal.company}&adminEmail=${postVal.email}&phoneNumber=${postVal.phone}&orgId=${postVal.organization_id}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

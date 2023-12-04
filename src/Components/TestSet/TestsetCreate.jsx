@@ -173,7 +173,7 @@ function TestsetCreate() {
 
     testcaseObjFlag &&
       axios
-        .post(`${qfservice}/qfservice/webtestset/createWebTestset`, testsetData)
+        .post(`${qfservice}/webtestset/createWebTestset`, testsetData)
         .then((res) => {
           setSnackbarData({
             status: true,

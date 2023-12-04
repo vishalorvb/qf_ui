@@ -11,12 +11,12 @@ import {
 import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import useAxios from "../../hooks/useAxios";
+import axios from "axios";
 
 function ActiveBIReportsPopup(props) {
   const { openActive, setOpenActive, object, getReports, setActSuccessMsg } =
     props;
-  const axiosPrivate = useAxios();
+
   const id = object.report_id;
 
   const handleClose = () => {
@@ -24,7 +24,7 @@ function ActiveBIReportsPopup(props) {
   };
 
   const submit = () => {
-    axiosPrivate
+    axios
       .post(`Biservice/configbireport/testset/status?report_id=${id}&status=1`)
       .then((res) => {
         console.log(res.message);

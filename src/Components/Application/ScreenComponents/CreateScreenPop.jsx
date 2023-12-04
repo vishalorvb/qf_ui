@@ -36,7 +36,7 @@ export default function CreateScreenPop(props) {
     };
     screenData?.name && screenData?.desc
       ? axios
-          .post(`${qfservice}/qfservice/screen/createScreen`, screendata)
+          .post(`${qfservice}/screen/createScreen`, screendata)
           .then((resp) => {
             setSnackbarData({
               status: true,

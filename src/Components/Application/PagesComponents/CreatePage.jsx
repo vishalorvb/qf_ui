@@ -15,7 +15,7 @@ export default function CreatePage({ callGetPages }) {
   const createPage = () => {
     setShowloader(true);
     axios
-      .postForm(`${qfservice}/qfservice/webpages/LaunchJNLPToCreateWebPage`, {
+      .postForm(`${qfservice}/webpages/LaunchJNLPToCreateWebPage`, {
         user_id: auth?.userId,
         module_id: location?.state?.module_id,
         web_page_url: location?.state?.base_url,

@@ -50,21 +50,19 @@ function AddEnvironmentPop(props) {
     data.module_id = applicationId;
     data.project_id = projectId;
     data.url = "";
-    axios
-      .post(`${qfservice}/qfservice/CreateBuildEnvironment`, data)
-      .then((resp) => {
-        setSnackbarData({
-          status: true,
-          message: resp?.data?.message,
-          severity: resp?.data?.status ?? "SUCCESS",
-        });
-        if (resp?.data?.message === "Successfully createdBuild Environment") {
-          getBuilEnvironment();
-          handleClose();
-        } else {
-          handleClose();
-        }
+    axios.post(`${qfservice}/CreateBuildEnvironment`, data).then((resp) => {
+      setSnackbarData({
+        status: true,
+        message: resp?.data?.message,
+        severity: resp?.data?.status ?? "SUCCESS",
       });
+      if (resp?.data?.message === "Successfully createdBuild Environment") {
+        getBuilEnvironment();
+        handleClose();
+      } else {
+        handleClose();
+      }
+    });
   };
 
   return (

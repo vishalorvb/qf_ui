@@ -12,6 +12,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { SAVE_USER_LOCAL_GIT_DETAILS } from "../../Environment";
 import { getUserGitDetails } from "../../Services/UserService";
+import axios from "axios";
 
 function GitDetails() {
   const location = useLocation();
@@ -35,31 +36,19 @@ function GitDetails() {
     id: location.state.param1.id,
   };
 
-  const axiosPrivate = useAxios();
-
   let requiredsFields = [git_user_name, git_access_token, git_branch];
   let autoComplete = ["roleAutocomplete"];
 
   const submit = (e) => {
-    if (
-      validateForm(
-        requiredsFields,
-        [],
-        [],
-        [],
-        [],
-        autoComplete,
-        "error"
-      )
-    ) {
+    if (validateForm(requiredsFields, [], [], [], [], autoComplete, "error")) {
       var data = {
         gitUserName: gitUserName.trim(),
         gitToken: gitAccessToken.trim(),
         git_branch: gitBranch.trim(),
-        userId: values.id
+        userId: values.id,
       };
-     console.log(data);
-      axiosPrivate
+      console.log(data);
+      axios
         .post(SAVE_USER_LOCAL_GIT_DETAILS, data)
         .then((res) => {
           console.log(res.data.info);
@@ -86,7 +75,6 @@ function GitDetails() {
       console.log("Invalid form");
     }
   };
-
 
   useEffect(() => {
     getUserGitDetails(setGitdetails, values.id);
@@ -121,7 +109,7 @@ function GitDetails() {
           <Grid item md={6}>
             <Stack spacing={1}>
               <label>
-              Git UserName <span className="importantfield">*</span>
+                Git UserName <span className="importantfield">*</span>
               </label>
               <input
                 value={gitUserName}

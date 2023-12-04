@@ -65,7 +65,7 @@ export default function CreateAnsibleInstance() {
   useEffect(() => {
     location?.state?.id
       ? axios
-          .post(`${qfservice}/qfservice/get-release/${location?.state?.id}`, {
+          .post(`${qfservice}/get-release/${location?.state?.id}`, {
             project_id: location?.state?.project_id,
             release_id: "",
             release_type: "ansible_release",
@@ -95,7 +95,7 @@ export default function CreateAnsibleInstance() {
 
     axios
       .post(
-        `${qfservice}/qfservice/CreateAnsibleRelease/?release_id=${
+        `${qfservice}/CreateAnsibleRelease/?release_id=${
           location?.state?.id ? location?.state?.id : 0
         }&project_id=${
           location?.state?.project_id

@@ -13,6 +13,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
+import axios from "axios";
 
 function DeactiveUserPopup(props) {
   const {
@@ -24,7 +25,7 @@ function DeactiveUserPopup(props) {
   } = props;
   const user = object.firstName + " " + object.lastName;
   const id = object.id;
-  const axiosPrivate = useAxios();
+
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
 
@@ -33,7 +34,7 @@ function DeactiveUserPopup(props) {
   };
 
   const submit = () => {
-    axiosPrivate
+    axios
       .put(
         `qfuserservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=0`
       )

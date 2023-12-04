@@ -98,7 +98,7 @@ const Organization = () => {
     try {
       axios({
         method: "get",
-        url: `${userservice}/qfuserservice/user/orgdetails`,
+        url: `${userservice}/user/orgdetails`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

@@ -21,7 +21,7 @@ export default function Toolbar({ dustbins, getElementsData }) {
     console.log("first");
     setShowloader(true);
     axios
-      .post(`${qfservice}/qfservice/webpages/LaunchJNLPToCreateWebPage`, null, {
+      .post(`${qfservice}/webpages/LaunchJNLPToCreateWebPage`, null, {
         params: {
           user_id: auth?.userId,
           module_id: pageData?.module_id,
@@ -89,7 +89,7 @@ export default function Toolbar({ dustbins, getElementsData }) {
         initial_check: check,
       };
       axios
-        .post(`${qfservice}/qfservice/SyncDiffElements`, saveDiffElementData)
+        .post(`${qfservice}/SyncDiffElements`, saveDiffElementData)
         .then((resp) => {
           console.log(resp);
           setShowloader(false);

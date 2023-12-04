@@ -44,10 +44,7 @@ export default function AddElement({ setPopup, webPageId, setelementAdded }) {
       secondary_input_type: data?.secondaryFieldType,
     };
     axios
-      .postForm(
-        `${qfservice}/qfservice/webpages/addNewPageElement`,
-        elementData
-      )
+      .postForm(`${qfservice}/webpages/addNewPageElement`, elementData)
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && setelementAdded(true);
         resp?.data?.status === "SUCCESS" && setPopup(false);

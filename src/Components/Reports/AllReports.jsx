@@ -10,6 +10,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import Table from "../../CustomComponent/Table";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function AllReports() {
   const location = useLocation();
@@ -19,7 +20,7 @@ export default function AllReports() {
   const [reportFailMsg, setReportFailMsg] = useState(false);
   const [validationMsg, setValidationMsg] = useState(false);
   const [tbData, setTbData] = useState([]);
-  const axiosPrivate = useAxios();
+
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [fromDate, setFromDate] = useState(location.state.fromDate);
@@ -128,7 +129,7 @@ export default function AllReports() {
   ];
 
   const submit = (e, td, fd) => {
-    axiosPrivate
+    axios
       .post(
         location.state.id.name.includes("TC_")
           ? `qfreportservice/testcase-reports/${auth?.userId}/${report_type}/${testcaseId}/${fromDate}/${toDate}`

@@ -83,9 +83,7 @@ function ExecuteTestSetDetails({
     ) {
       globalApplication?.module_type === 1
         ? axios
-            .get(
-              `${qfservice}/qfservice/GetTestcasesInTestset?testset_id=${testsetId}`
-            )
+            .get(`${qfservice}/GetTestcasesInTestset?testset_id=${testsetId}`)
             .then((resp) => {
               const data = resp?.data?.data;
               settestcaseList(data);
@@ -104,7 +102,7 @@ function ExecuteTestSetDetails({
             })
         : axios
             .get(
-              `${qfservice}/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
+              `${qfservice}/webtestset/getTestcasesInWebTestset?testset_id=${testsetId}`
             )
             .then((resp) => {
               const data = resp?.data?.info;

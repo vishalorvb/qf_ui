@@ -36,7 +36,7 @@ function UpdatePage(props) {
         : pageName.current.classList.add("error");
       axios
         .post(
-          `${qfservice}/qfservice/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
+          `${qfservice}/webpages/updateWebPage?web_page_id=${postVal.web_page_id}&page_name=${postVal.page_name}&page_description=${postVal.page_description}`
         )
         .then((resp) => {
           setSnackbarData({

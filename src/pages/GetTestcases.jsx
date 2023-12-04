@@ -14,7 +14,7 @@ function GetTestcases() {
   });
 
   useEffect(() => {
-    axios.get(`${qfservice}/qfservice/applications`).then((res) => {
+    axios.get(`${qfservice}/applications`).then((res) => {
       console.log(res.data.result);
       let applications = res.data.result;
       setApplicationObject(applications);
@@ -25,7 +25,7 @@ function GetTestcases() {
   useEffect(() => {
     axios
       .get(
-        `${qfservice}/qfservice/webtestcase/getWebTestcasesInfoByApplication?application_id=${applicationId}`
+        `${qfservice}/webtestcase/getWebTestcasesInfoByApplication?application_id=${applicationId}`
       )
       .then((res) => {
         console.log(res.data.info);

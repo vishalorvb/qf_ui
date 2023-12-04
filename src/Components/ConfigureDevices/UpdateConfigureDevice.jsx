@@ -37,9 +37,7 @@ const UpdateConfigureDevice = () => {
 
   useEffect(() => {
     axios
-      .post(
-        `${qfservice}/qfservice/mobileconfiguration/${location.state.id}/addDevices`
-      )
+      .post(`${qfservice}/mobileconfiguration/${location.state.id}/addDevices`)
       .then((res) => {
         const details = res?.info;
         setConfigDetails(details);
@@ -73,7 +71,7 @@ const UpdateConfigureDevice = () => {
     };
     axios
       .post(
-        `${qfservice}/qfservice/mobileconfiguration/${location.state.id}/update.do`,
+        `${qfservice}/mobileconfiguration/${location.state.id}/update.do`,
         postValues
       )
       .then((resp) => {

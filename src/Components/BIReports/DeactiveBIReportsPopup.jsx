@@ -11,7 +11,7 @@ import {
 import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
-import useAxios from "../../hooks/useAxios";
+import axios from "axios";
 
 function DeactiveBIReportsPopup(props) {
   const {
@@ -22,14 +22,13 @@ function DeactiveBIReportsPopup(props) {
     setDeactSuccessMsg,
   } = props;
   const id = object.report_id;
-  const axiosPrivate = useAxios();
 
   const handleClose = () => {
     setOpenDeactive(false);
   };
 
   const submit = () => {
-    axiosPrivate
+    axios
       .post(`Biservice/configbireport/testset/status?report_id=${id}&status=0`)
       .then((res) => {
         console.log(res.message);

@@ -76,7 +76,7 @@ const LinkProjectExecution = () => {
     applicationId !== undefined &&
       axios
         .get(
-          `${qfservice}/qfservice/execution-environment?module_id=${applicationId}&project_id=${projectId}`
+          `${qfservice}/execution-environment?module_id=${applicationId}&project_id=${projectId}`
         )
         .then((resp) => {
           const execEnv = resp?.data?.data;
@@ -96,7 +96,7 @@ const LinkProjectExecution = () => {
   function getTestsets() {
     axios
       .get(
-        `${qfservice}/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject.project_id}&module_id=${globalApplication.module_id}`
+        `${qfservice}/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject.project_id}&module_id=${globalApplication.module_id}`
       )
       .then((resp) => {
         // const testsets = resp?.data?.info
@@ -196,7 +196,7 @@ const LinkProjectExecution = () => {
   function deleteApiRequest(specificationId) {
     axios
       .delete(
-        `${qfservice}/qfservice/webtestset/deleteWebTestset?testset_id=${specificationId}`
+        `${qfservice}/webtestset/deleteWebTestset?testset_id=${specificationId}`
       )
       .then((res) => {
         // console.log(res.data.message);
@@ -225,7 +225,7 @@ const LinkProjectExecution = () => {
       // console.log(executionData)
       axios
         .post(
-          `${qfservice}/qfservice/ExecuteLinkTestset?user_id=${user_id}&project_id=${projectId}`,
+          `${qfservice}/ExecuteLinkTestset?user_id=${user_id}&project_id=${projectId}`,
           executionData
         )
         .then((resp) => {

@@ -26,9 +26,7 @@ export default function PagesTable(props) {
   const handleDelete = (pageId) => {
     setShowloader(true);
     axios
-      .delete(
-        `${qfservice}/qfservice/webpages/deleteWebPage?web_page_id=${pageId}`
-      )
+      .delete(`${qfservice}/webpages/deleteWebPage?web_page_id=${pageId}`)
       .then((resp) => {
         setShowloader(false);
         callGetPages();

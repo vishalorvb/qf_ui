@@ -25,7 +25,7 @@ function ReportPath(props) {
   const onSubmitHandler = (params) => {
     axios
       .post(
-        `${qfservice}/qfservice/updatereportpath?reportpath=${path}&env_id=${buildEnvId}`
+        `${qfservice}/updatereportpath?reportpath=${path}&env_id=${buildEnvId}`
       )
       .then((resp) => {
         console.log(resp);
