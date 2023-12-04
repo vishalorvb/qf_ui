@@ -121,7 +121,7 @@ export default function Screens({ location }) {
 
   const handleDelete = (id) => {
     axios
-      .delete(`${qfservice}/qfservice/screen/deleteScreen?screen_id=${id}`)
+      .delete(`${qfservice}/screen/deleteScreen?screen_id=${id}`)
       .then((resp) => {
         console.log(resp);
         resp?.data?.status === "SUCCESS" && getScreens();
@@ -133,7 +133,7 @@ export default function Screens({ location }) {
   const getScreens = () => {
     axios
       .get(
-        `${qfservice}/qfservice/screen/getScreensList?module_id=${location?.state?.module_id}`
+        `${qfservice}/screen/getScreensList?module_id=${location?.state?.module_id}`
       )
       .then((resp) => {
         console.log(resp?.data?.info);

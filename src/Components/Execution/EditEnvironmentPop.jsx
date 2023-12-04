@@ -36,26 +36,24 @@ function EditEnvironmentPop(props) {
     //   postVal.project_id=projectId;
     postVal.url = "";
     // console.log(postVal);
-    axios
-      .post(`${qfservice}/qfservice/CreateBuildEnvironment`, postVal)
-      .then((resp) => {
-        // console.log(resp?.data?.error?.description)
-        // console.log(resp?.data?.message)
-        if (resp?.data?.message === "Successfully updatedBuild Environment") {
-          setEditSuccessMsg(true);
-          setTimeout(() => {
-            setEditSuccessMsg(false);
-            getBuilEnvironment();
-          }, 3000);
-          handleClose();
-        } else {
-          // setReportFailMsg(true);
-          setTimeout(() => {
-            // setReportFailMsg(false);
-          }, 3000);
-          handleClose();
-        }
-      });
+    axios.post(`${qfservice}/CreateBuildEnvironment`, postVal).then((resp) => {
+      // console.log(resp?.data?.error?.description)
+      // console.log(resp?.data?.message)
+      if (resp?.data?.message === "Successfully updatedBuild Environment") {
+        setEditSuccessMsg(true);
+        setTimeout(() => {
+          setEditSuccessMsg(false);
+          getBuilEnvironment();
+        }, 3000);
+        handleClose();
+      } else {
+        // setReportFailMsg(true);
+        setTimeout(() => {
+          // setReportFailMsg(false);
+        }, 3000);
+        handleClose();
+      }
+    });
   };
 
   // console.log(postVal);

@@ -18,7 +18,7 @@ function UpdateTestcasesOrder() {
     location?.state?.moduleType === 1
       ? axios
           .get(
-            `${qfservice}/qfservice/GetTestcasesInTestset?testset_id=${location?.state?.testsetId}`
+            `${qfservice}/GetTestcasesInTestset?testset_id=${location?.state?.testsetId}`
           )
           .then((resp) => {
             const data = resp?.data?.data;
@@ -26,7 +26,7 @@ function UpdateTestcasesOrder() {
           })
       : axios
           .get(
-            `${qfservice}/qfservice/webtestset/getTestcasesInWebTestset?testset_id=${location?.state?.testsetId}`
+            `${qfservice}/webtestset/getTestcasesInWebTestset?testset_id=${location?.state?.testsetId}`
           )
           .then((resp) => {
             const data = resp?.data?.info;
@@ -46,7 +46,7 @@ function UpdateTestcasesOrder() {
   const updateTestcasesOrder = () => {
     location?.state?.moduleType === 1
       ? axios
-          .post(`${qfservice}/qfservice/UpdateTestcasesOrderInTestset`, {
+          .post(`${qfservice}/UpdateTestcasesOrderInTestset`, {
             testset_id: location?.state?.testsetId,
             testcases_list: order.map((testcase) => {
               return { testcase_id: testcase };
@@ -56,15 +56,12 @@ function UpdateTestcasesOrder() {
             console.log(resp);
           })
       : axios
-          .post(
-            `${qfservice}/qfservice/webtestset/updateWebTestcasesOrderInTestset`,
-            {
-              testset_id: location?.state?.testsetId,
-              web_testcases_list: order.map((testcase) => {
-                return { testcase_id: testcase };
-              }),
-            }
-          )
+          .post(`${qfservice}/webtestset/updateWebTestcasesOrderInTestset`, {
+            testset_id: location?.state?.testsetId,
+            web_testcases_list: order.map((testcase) => {
+              return { testcase_id: testcase };
+            }),
+          })
           .then((resp) => {
             console.log(resp);
           });

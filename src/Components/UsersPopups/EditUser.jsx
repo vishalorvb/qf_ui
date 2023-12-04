@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
 import { userservice } from "../../Environment";
+import axios from "axios";
 
 function EditUser() {
   const location = useLocation();
@@ -35,8 +36,6 @@ function EditUser() {
     uid: location.state.param1.ssoId,
     id: location.state.param1.id,
   };
-
-  const axiosPrivate = useAxios();
 
   let requiredsFields = [Email, Password];
   let requiredOnlyAlphabets = [first_name, last_name];
@@ -65,8 +64,8 @@ function EditUser() {
         current_user_id: loggedInId,
       };
 
-      axiosPrivate
-        .put(`${userservice}/qfuserservice/user/updateUser`, data)
+      axios
+        .put(`${userservice}/user/updateUser`, data)
         .then((res) => {
           console.log(res.data.info);
           setEditSuccessMsg(true);

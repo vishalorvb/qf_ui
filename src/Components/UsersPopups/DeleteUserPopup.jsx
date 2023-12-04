@@ -13,6 +13,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import useAxios from "../../hooks/useAxios";
 import { userservice } from "../../Environment";
+import axios from "axios";
 
 function DeleteUserPopup(props) {
   const {
@@ -27,16 +28,15 @@ function DeleteUserPopup(props) {
   const user = object.firstName + " " + object.lastName;
   const UserId = object.id;
   const loggedInUserId = loggedInId;
-  const axiosPrivate = useAxios();
 
   const handleClose = () => {
     setOpenDelete(false);
   };
 
   const submit = () => {
-    axiosPrivate
+    axios
       .delete(
-        `${userservice}/qfuserservice/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
+        `${userservice}/user/deleteUser?current_user_id=${loggedInUserId}&user_id=${UserId}`
       )
       .then((res) => {
         if (res.data.status === "SUCCESS") {

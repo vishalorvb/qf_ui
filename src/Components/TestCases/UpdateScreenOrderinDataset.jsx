@@ -14,7 +14,7 @@
 //  useEffect(() => {
 //    axios
 //      .get(
-//        `${qfservice}/qfservice/webtestcase/getScreens?testcase_id=${location?.state?.testcaseId}`
+//        `${qfservice}/webtestcase/getScreens?testcase_id=${location?.state?.testcaseId}`
 //      )
 //      .then((resp) => {
 //        const data = resp?.data?.info;
@@ -32,7 +32,7 @@
 
 //  const updateScreenOrder = () => {
 //    axios
-//      .post(`${qfservice}/qfservice/webtestcase/updateOrderOfScreensInTestcase`, {
+//      .post(`${qfservice}/webtestcase/updateOrderOfScreensInTestcase`, {
 //        testcaseId: location?.state?.testcaseId,
 //        screen_ids: order,
 //      })

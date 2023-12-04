@@ -43,7 +43,7 @@ export default function AddEnvironemt() {
   function getBuilEnvironment() {
     axios
       .get(
-        `${qfservice}/qfservice/build-environment?project_id=${project_id}&module_id=${application_id}`
+        `${qfservice}/build-environment?project_id=${project_id}&module_id=${application_id}`
       )
       .then((res) => {
         if (res.data.data.length > 0) {
@@ -61,7 +61,7 @@ export default function AddEnvironemt() {
   function deleteApiRequest(specificationId) {
     axios
       .post(
-        `${qfservice}/qfservice/DeleteBuildEnvironment?build_environment_id=${specificationId}`
+        `${qfservice}/DeleteBuildEnvironment?build_environment_id=${specificationId}`
       )
       .then((res) => {
         if (res.data.message === "Successfully deleted Build Environment") {

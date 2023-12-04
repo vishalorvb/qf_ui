@@ -19,6 +19,8 @@ import {
   resetClassName,
 } from "../../CustomComponent/FormValidation";
 import { userservice } from "../../Environment";
+import axios from "axios";
+
 function AddUserPopup(props) {
   const {
     open,
@@ -44,7 +46,6 @@ function AddUserPopup(props) {
   const role_id = useRef();
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-  const axiosPrivate = useAxios();
 
   let requiredsFields = [Email, sso_id, Password];
   let requiredOnlyAlphabets = [first_name, last_name];
@@ -85,9 +86,9 @@ function AddUserPopup(props) {
         }
       });
 
-      axiosPrivate
+      axios
         .post(
-          `${userservice}/qfuserservice/user/createUser?user_id=0&current_user_id=${loggedInId}`,
+          `${userservice}/user/createUser?user_id=0&current_user_id=${loggedInId}`,
           data
         )
         .then((res) => {

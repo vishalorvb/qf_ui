@@ -70,7 +70,7 @@ export default function UpdateScreen() {
     setShowLoading(true);
     axios
       .get(
-        `${qfservice}/qfservice/webpages/getWebPageElementsList?web_page_id=${location?.state?.web_page_id}&selected_elements_only=true`
+        `${qfservice}/webpages/getWebPageElementsList?web_page_id=${location?.state?.web_page_id}&selected_elements_only=true`
       )
       .then((res) => {
         res?.data?.info && setElements(res?.data?.info);
@@ -78,7 +78,7 @@ export default function UpdateScreen() {
 
     axios
       .get(
-        `${qfservice}/qfservice/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
+        `${qfservice}/screen/getScreenElementsList?screen_id=${location?.state?.screen_id}`
       )
       .then((res) => {
         res?.data?.info &&

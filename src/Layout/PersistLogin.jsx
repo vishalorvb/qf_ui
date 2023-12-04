@@ -4,17 +4,18 @@ import useAuth from "../hooks/useAuth";
 import useAxios from "../hooks/useAxios";
 import PersistingLoading from "./PersistingLoading";
 import { authservice } from "../Environment";
+import axios from "axios";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { auth, setAuth } = useAuth();
-  const axiosPrivate = useAxios();
+
   const token = auth?.token ? auth?.token : localStorage.getItem("token");
 
   useEffect(() => {
     const verifyUser = async () => {
       try {
-        const userInfo = await axiosPrivate.get(
+        const userInfo = await axios.get(
           authservice + "/qfauthservice/authentication/userInfo"
         );
         const info = userInfo?.data?.info;

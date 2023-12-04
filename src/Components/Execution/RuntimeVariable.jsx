@@ -34,7 +34,7 @@ function RuntimeVariable(props) {
 
   const onSubmitHandler = () => {
     axios
-      .putForm(`${qfservice}/qfservice/updateruntimevariables`, {
+      .putForm(`${qfservice}/updateruntimevariables`, {
         runtimevars: variables,
         env_id: envId,
       })

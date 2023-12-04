@@ -11,6 +11,7 @@ import useHead from "../hooks/useHead";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";
 import { userservice } from "../Environment";
+import axios from "axios";
 
 function AddUser() {
   const [fName, setFName] = useState("");
@@ -27,7 +28,7 @@ function AddUser() {
   const role_id = useRef();
   const { auth } = useAuth();
   const loggedInId = auth.info.id;
-  const axiosPrivate = useAxios();
+
   const [validationMsg, setValidationMsg] = useState(false);
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
   const [addErrorMsg, setAddErrorMsg] = useState(false);
@@ -59,9 +60,9 @@ function AddUser() {
         role: roleId.trim(),
       };
 
-      axiosPrivate
+      axios
         .post(
-          `${userservice}/qfuserservice/user/createUser?user_id=0&current_user_id=${loggedInId}`,
+          `${userservice}/user/createUser?user_id=0&current_user_id=${loggedInId}`,
           data
         )
         .then((res) => {

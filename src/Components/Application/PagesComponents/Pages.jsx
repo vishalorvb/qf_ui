@@ -11,7 +11,7 @@ export default function Pages({ location }) {
     setShowloader(true);
     axios
       .get(
-        `${qfservice}/qfservice/webpages/getWebPagesList?module_id=${location?.state?.module_id}`
+        `${qfservice}/webpages/getWebPagesList?module_id=${location?.state?.module_id}`
       )
       .then((resp) => {
         setPages(resp.data.info ?? []);

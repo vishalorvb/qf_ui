@@ -51,7 +51,7 @@ function AddTestSetLinkProject() {
     postVal.module_id = location.state?.applicationId;
     postVal.project_id = location.state?.projectId;
     axios
-      .post(`${qfservice}/qfservice/webtestset/createWebTestset`, postVal)
+      .post(`${qfservice}/webtestset/createWebTestset`, postVal)
       .then((resp) => {
         if (resp?.data?.status === "SUCCESS") {
           setReportSuccessMsg(true);

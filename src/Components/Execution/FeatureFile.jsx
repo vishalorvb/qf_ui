@@ -35,7 +35,7 @@ function FeatureFile(props) {
     if (selectedDatasets.length !== 0) {
       axios
         .post(
-          `${qfservice}/qfservice/webtestcase/updatefeaturefile?featurefile_data=${featureFileData}&testcase_id=${testcaseId}`
+          `${qfservice}/webtestcase/updatefeaturefile?featurefile_data=${featureFileData}&testcase_id=${testcaseId}`
         )
         .then((res) => {
           if (res?.data?.status === "SUCCESS") {

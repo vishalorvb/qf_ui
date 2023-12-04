@@ -54,7 +54,7 @@ const AddConfigurationPopUp = (props) => {
     postVal.userName = "";
     console.log(postVal);
     axios
-      .post(`${qfservice}/qfservice/mobileconfiguration/save.do`, postVal)
+      .post(`${qfservice}/mobileconfiguration/save.do`, postVal)
       .then((resp) => {
         resp?.data?.status === "SUCCESS" && setSnack(true);
         resp?.data?.status === "SUCCESS" &&

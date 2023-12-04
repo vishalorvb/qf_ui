@@ -34,7 +34,7 @@ function OrganizationDashboard() {
     try {
       axios({
         method: "get",
-        url: `${userservice}/qfuserservice/user/usersByOrg?orgId=${location.state.orgId}`,
+        url: `${userservice}/user/usersByOrg?orgId=${location.state.orgId}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -63,7 +63,7 @@ function OrganizationDashboard() {
     try {
       axios({
         method: "get",
-        url: `${qfservice}/qfservice/getProjectsOfOrg?orgId=${location.state.orgId}`,
+        url: `${qfservice}/getProjectsOfOrg?orgId=${location.state.orgId}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -91,7 +91,7 @@ function OrganizationDashboard() {
     try {
       axios({
         method: "get",
-        url: `${qfservice}/qfservice/getApplicationsOfOrg?orgId=${location.state.orgId}`,
+        url: `${qfservice}/getApplicationsOfOrg?orgId=${location.state.orgId}`,
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

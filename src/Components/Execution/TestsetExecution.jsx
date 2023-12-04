@@ -37,11 +37,11 @@ export default function TestsetExecution() {
   }, []);
 
   useEffect(() => {
-    setSelectedItem([]);
+    setSelectedItem();
     if (globalApplication) {
       axios
         .get(
-          `${qfservice}/qfservice/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
+          `${qfservice}/webtestset/getWebTestsetInfoByProjectIdByApplicationId?project_id=${globalProject?.project_id}&module_id=${globalApplication?.module_id}`
         )
         .then((resp) => {
           const testcases = resp?.data?.info ? resp?.data?.info : [];
