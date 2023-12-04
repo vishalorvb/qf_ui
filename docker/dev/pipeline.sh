@@ -1,5 +1,4 @@
 ls
-cd docker/dev
 #stop container and remove
 sudo docker rm -f reactcicd 
 #remove image
@@ -20,5 +19,5 @@ sudo docker run \
 -p 1122:3000 -d --name reactcicd reactcicd
 
 
-
+echo "shel executed successfully"
 
