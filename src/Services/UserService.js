@@ -4,10 +4,10 @@ import { userservice } from "../Environment";
 export async function UpdateUser(data) {
   let x = await axios({
     method: "put",
-    url: `${userservice}/updateUserAccountInfo?user_id=${data.user_id}&firstName=${data.firstName}&lastName=${data.lastName}&ssoId=${data.ssoid}&current_password=${data.current_password}&new_password=${data.new_password}&confirm_password=${data.confirm_password}&email=${data.email}`,
+    url: `${userservice}/user/updateUserAccountInfo?user_id=${data.user_id}&firstName=${data.firstName}&lastName=${data.lastName}&ssoId=${data.ssoid}&current_password=${data.current_password}&new_password=${data.new_password}&confirm_password=${data.confirm_password}&email=${data.email}`,
 
     headers: {
-      Authorization: `Bearer ${data.token}`,
+      // Authorization: `Bearer ${data.token}`,
     },
   }).then((res) => {
     if (res.data.status === "SUCCESS") {
@@ -21,7 +21,7 @@ export async function UpdateUser(data) {
 
 export async function uploadPic(userId, picfile, token) {
   let x = await axios
-    .post(`${userservice}/profilePicUpload?user_id=${userId}`, picfile, {
+    .post(`${userservice}/user/profilePicUpload?user_id=${userId}`, picfile, {
       headers: {
         "Content-Type": "multipart/form-data",
         // Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export async function uploadPic(userId, picfile, token) {
 
 export function getPhoto(callback, userId, token) {
   axios
-    .get(`${userservice}/profilePic`, {
+    .get(`${userservice}/user/profilePic`, {
       params: {
         user_id: userId,
       },
@@ -74,7 +74,7 @@ export async function getUsers(callback, orgid, ssoid, token) {
 export async function getUserGitDetails(callback, userId) {
   return await axios
     .get(
-      `http://localhost:8062/qfuserservice/userexecutionparameters/getByUserId?userId=${userId}`
+      `${userservice}/qfuserservice/userexecutionparameters/getByUserId?userId=${userId}`
     )
     .then((res) => {
       callback(res.data.info);
