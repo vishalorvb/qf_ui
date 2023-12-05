@@ -41,7 +41,7 @@ cd /var/lib/jenkins/workspace/ReactCICD/docker/dev
 sudo rm -rf package.json
 
 # Copy the built Spring Boot JAR to the current directory
-sudo cp /var/lib/jenkins/workspace/ReactCICD .
+sudo cp /var/lib/jenkins/workspace/ReactCICD/ .
 
 # Build a Docker image with "latest" tag
 sudo docker build -t reactcicdimage:latest .
