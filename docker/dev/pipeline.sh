@@ -59,6 +59,6 @@ sudo docker run \
 -e REACT_APP_dashboard='http://10.11.12.243:8064/qfdashboard' \
 -e REACT_APP_report='http://10.11.12.243:8065/qfreportservice' \
 -e REACT_APP_biservice='http://10.11.12.243:8066/bireport' \
--p 1122:3000 -d --name reactcicdcontainer reactcicdimage:latest
+-p 3000:3000 -d --name reactcicdcontainer reactcicdimage:latest
 
 exit
