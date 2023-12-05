@@ -16,7 +16,12 @@ const PersistLogin = () => {
     const verifyUser = async () => {
       try {
         const userInfo = await axios.get(
-          authservice + "/qfauthservice/authentication/userInfo"
+          authservice + "/qfauthservice/authentication/userInfo",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const info = userInfo?.data?.info;
         const user = info?.ssoId;
