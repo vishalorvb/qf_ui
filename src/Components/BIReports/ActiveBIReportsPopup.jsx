@@ -12,6 +12,7 @@ import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import axios from "axios";
+import { biservice } from "../../Environment";
 
 function ActiveBIReportsPopup(props) {
   const { openActive, setOpenActive, object, getReports, setActSuccessMsg } =
@@ -25,7 +26,9 @@ function ActiveBIReportsPopup(props) {
 
   const submit = () => {
     axios
-      .post(`Biservice/configbireport/testset/status?report_id=${id}&status=1`)
+      .post(
+        `${biservice}/configbireport/testset/status?report_id=${id}&status=1`
+      )
       .then((res) => {
         console.log(res.message);
         setActSuccessMsg(true);

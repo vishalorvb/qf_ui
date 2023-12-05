@@ -193,33 +193,34 @@ export default function Dashboard() {
     setHeader((ps) => {
       return { ...ps, name: "Dashboard" };
     });
-    getDashboardDetails(globalProject?.project_id, auth?.userId);
+    globalProject?.project_id &&
+      getDashboardDetails(globalProject?.project_id, auth?.userId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (sprintName === "All") {
-      globalProject?.project_id && dashboardDetails();
-      globalProject?.project_id && getTensorflowData();
-      globalProject?.project_id && getPredictionTestcases();
+    if (sprintName === "All" && globalProject?.project_id) {
+      dashboardDetails();
+      getTensorflowData();
+      getPredictionTestcases();
+      axios
+        .post(
+          `${dashboard}/getFailTestcasesbyProjectandsprint?project_id=${
+            globalProject?.project_id
+          }${sprintName === "All" ? "" : `&sprintname=${sprintName}`}`
+        )
+        .then((res) => {
+          setFaildata(res.data.data);
+        });
     }
-    axios
-      .post(
-        `${dashboard}/getFailTestcasesbyProjectandsprint?project_id=${
-          globalProject?.project_id
-        }${sprintName === "All" ? "" : `&sprintname=${sprintName}`}`
-      )
-      .then((res) => {
-        setFaildata(res.data.data);
-      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject, sprintName]);
 
   useEffect(() => {
-    if (sprintName !== "All") {
-      globalProject?.project_id && dashboardDetailsBySprintId();
-      globalProject?.project_id && getTensorflowData();
-      globalProject?.project_id && getPredictionTestcases();
+    if (sprintName !== "All" && globalProject?.project_id) {
+      dashboardDetailsBySprintId();
+      getTensorflowData();
+      getPredictionTestcases();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sprintName]);

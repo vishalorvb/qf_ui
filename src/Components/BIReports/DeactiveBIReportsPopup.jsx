@@ -12,6 +12,7 @@ import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import axios from "axios";
+import { biservice } from "../../Environment";
 
 function DeactiveBIReportsPopup(props) {
   const {
@@ -29,7 +30,9 @@ function DeactiveBIReportsPopup(props) {
 
   const submit = () => {
     axios
-      .post(`Biservice/configbireport/testset/status?report_id=${id}&status=0`)
+      .post(
+        `${biservice}/configbireport/testset/status?report_id=${id}&status=0`
+      )
       .then((res) => {
         console.log(res.message);
         setDeactSuccessMsg(true);
