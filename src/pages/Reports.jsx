@@ -2,7 +2,6 @@ import { Button, Grid, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import TextField from "@mui/material/TextField";
-import useAxios from "../hooks/useAxios";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -211,7 +210,7 @@ function Reports() {
   ];
 
   useEffect(() => {
-    submit();
+    globalApplication?.module_id && submit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalApplication]);
 
@@ -225,10 +224,6 @@ function Reports() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const submit = (e) => {
-    //axios
-    //  .post(
-    //    `qfreportservice/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${globalApplication?.module_id}&user_id=${loggedInId}`
-    //  )
     getReport(fromDate, toDate, globalApplication?.module_id, loggedInId).then(
       (Response) => {
         if (Response.data.info.length > 0) {

@@ -9,6 +9,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { IconButton, Tooltip } from "@mui/material";
 import ActiveBIReportsPopup from "./ActiveBIReportsPopup";
 import DeactiveBIReportsPopup from "./DeactiveBIReportsPopup";
+import { biservice } from "../../Environment";
 
 function ActiveReports() {
   const location = useLocation();
@@ -108,7 +109,7 @@ function ActiveReports() {
   const getBIReports = () => {
     TSMapping_Id &&
       axios
-        .get(`Biservice/configbireport/testset/${TSMapping_Id}`)
+        .get(`${biservice}/configbireport/testset/${TSMapping_Id}`)
         .then((resp) => {
           console.log(resp?.data?.info?.bireports);
           const reports = resp?.data?.info ? resp?.data?.info?.bireports : [];
