@@ -1,6 +1,5 @@
 FROM node:18-alpine
 WORKDIR /qf_react
-COPY package.json .
-RUN npm i
 COPY . .
+RUN npm i
 CMD ["npm","start"]
