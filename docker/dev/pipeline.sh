@@ -41,7 +41,7 @@ cd /var/lib/jenkins/workspace/ReactCICD/docker/dev
 sudo rm -rf package.json
 
 # Copy the built Spring Boot JAR to the current directory
-sudo cp -r /var/lib/jenkins/workspace/ReactCICD/ .
+sudo cp -r /var/lib/jenkins/workspace/ReactCICD/. .
 
 pwd
 ls -l
