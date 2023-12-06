@@ -37,7 +37,7 @@ sudo docker rmi qareactcicdimage:latest || true
 # Navigate to your Spring Boot application directory
 cd /var/lib/jenkins/workspace/QAReactCICD/docker/qa
 
-rsync -av --exclude=qa/docker/ /var/lib/jenkins/workspace/QAReactCICD/ /var/lib/jenkins/workspace/QAReactCICD/docker/qa/
+sudo  rsync -av --exclude=qa/docker/ /var/lib/jenkins/workspace/QAReactCICD/ /var/lib/jenkins/workspace/QAReactCICD/docker/qa/
 pwd
 ls -l
 # Build a Docker image with "latest" tag
