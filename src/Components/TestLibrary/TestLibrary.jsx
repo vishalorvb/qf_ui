@@ -179,7 +179,7 @@ const TestLibrary = () => {
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
       XLSX.writeFile(workbook, `${issues}.xlsx`);
     } else {
-      const selectedFields = jsonData.map(
+      const selectedFields = jsonData?.map(
         ({
           issue_key,
           given_data,

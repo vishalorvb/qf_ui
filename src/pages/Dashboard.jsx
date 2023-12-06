@@ -67,7 +67,7 @@ export default function Dashboard() {
             '"'
           );
           let jinfo = JSON.parse(info);
-          const sprintList = jinfo.map((element) => element.period);
+          const sprintList = jinfo?.map((element) => element.period);
           setSprintList(sprintList);
         }
         if (res?.data?.data?.model.show_automation_graph === true) {
@@ -87,17 +87,17 @@ export default function Dashboard() {
             '"'
           );
           let jinfo = JSON.parse(info);
-          const androidArray = jinfo.map(
+          const androidArray = jinfo?.map(
             (element) => element.android_testcases
           );
           setAndroidTestcase(androidArray);
-          const iosArray = jinfo.map((element) => element.ios_testcases);
+          const iosArray = jinfo?.map((element) => element.ios_testcases);
           setIosTestcase(iosArray);
-          const webArray = jinfo.map((element) => element.web_testcases);
+          const webArray = jinfo?.map((element) => element.web_testcases);
           setWebTestcase(webArray);
-          const apiArray = jinfo.map((element) => element.api_testcases);
+          const apiArray = jinfo?.map((element) => element.api_testcases);
           setApiTestcase(apiArray);
-          const periodArray = jinfo.map((element) => element.period);
+          const periodArray = jinfo?.map((element) => element.period);
           setPeriod(periodArray);
         }
       });
@@ -177,13 +177,13 @@ export default function Dashboard() {
             '"'
           );
           let jinfo = JSON.parse(info);
-          const automationArray = jinfo.map((element) => element.automation);
+          const automationArray = jinfo?.map((element) => element.automation);
           setAutomation(automationArray);
-          const defectsArray = jinfo.map((element) => element.defects);
+          const defectsArray = jinfo?.map((element) => element.defects);
           setDefects(defectsArray);
-          const coverageArray = jinfo.map((element) => element.coverage);
+          const coverageArray = jinfo?.map((element) => element.coverage);
           setCoverage(coverageArray);
-          const periodArray = jinfo.map((element) => element.period);
+          const periodArray = jinfo?.map((element) => element.period);
           setTestDesingperiod(periodArray);
         }
       });

@@ -54,7 +54,7 @@ function CreateTestCase() {
       testcase_description: basicDetails.testcaseDescription,
       project_id: globalProject.project_id,
       testcase_sprints: [sprintData],
-      screens_in_testcase: selectedScreen.map((s) => {
+      screens_in_testcase: selectedScreen?.map((s) => {
         return {
           screen_id: s.screen_id,
         };
@@ -96,7 +96,7 @@ function CreateTestCase() {
       testcase_description: basicDetails.testcaseDescription,
       project_id: globalProject.project_id,
       testcase_sprints: [sprintData],
-      apis_list: selectedApiList.map((api) => {
+      apis_list: selectedApiList?.map((api) => {
         return { api_id: api };
       }),
     };

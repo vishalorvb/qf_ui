@@ -95,7 +95,7 @@ function APiListDrawer({ setSelectedApi, datasetId, testcaseId }) {
                   testcaseId: testcaseId,
                   api_ids: [],
                 };
-                data.api_ids = x.map((api) => api.api_id);
+                data.api_ids = x?.map((api) => api.api_id);
                 updateApiOrder(data).then((res) => {
                   setTempApi([...x]);
                   setSnackbarData({

@@ -34,7 +34,7 @@ function MapApiTestCase({ moduleId, testcaseId, setApiList }) {
 
   useEffect(() => {
     setSelectedApi(() =>
-      api.filter((api) => api.is_selected === true).map((api) => api.api_id)
+      api.filter((api) => api.is_selected === true)?.map((api) => api.api_id)
     );
   }, [api]);
 

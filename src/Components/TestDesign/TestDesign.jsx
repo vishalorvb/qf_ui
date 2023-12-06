@@ -498,7 +498,7 @@ const TestDesign = () => {
                 MenuProps={MenuProps}
                 fullWidth
               >
-                {statuses.map((name) => (
+                {statuses?.map((name) => (
                   <MenuItem key={name} value={name}>
                     <Checkbox checked={statusName.indexOf(name) > -1} />
                     <ListItemText primary={name} />

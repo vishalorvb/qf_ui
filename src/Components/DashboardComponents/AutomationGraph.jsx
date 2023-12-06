@@ -137,7 +137,7 @@ export default function AutomationGraph({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows?.map((row) => (
               <TableRow key={row.summary}>
                 <TableCell component="th" scope="row">
                   {row.summary}

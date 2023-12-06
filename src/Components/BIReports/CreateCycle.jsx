@@ -65,7 +65,7 @@ export default function CreateCycle({ testsetData, getCycles }) {
             name="cycleName"
             control={control}
           />
-          {testsetData.map((testset) => (
+          {testsetData?.map((testset) => (
             <Grid container direction="row" spacing={2}>
               <Grid item md={2}>
                 <Typography>{testset?.testset_name}</Typography>

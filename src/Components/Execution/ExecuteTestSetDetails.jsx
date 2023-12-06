@@ -59,7 +59,7 @@ function ExecuteTestSetDetails({
                 setData((prevData) => {
                   return {
                     ...prevData,
-                    [param.row.testcase_id]: list.map((val) => val),
+                    [param.row.testcase_id]: list?.map((val) => val),
                   };
                 });
               }}
@@ -131,7 +131,7 @@ function ExecuteTestSetDetails({
         applicationId={applicationId}
         selectedtestcases={selectedtestcases}
         testsetId={testsetId}
-        selecteddatasets={selectedtestcases.map((testcase_id) => {
+        selecteddatasets={selectedtestcases?.map((testcase_id) => {
           return {
             testcase_id: testcase_id,
             selected_testcase_dataset_ids: data[testcase_id]?.map((dataset) =>

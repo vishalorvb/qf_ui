@@ -412,7 +412,7 @@ VDA5OjM2OjU1KzAwOjAwQ/MLQgAAAABJRU5ErkJggg=="
                         </div>
                         <hr />
                         <div>
-                          {d.datasetdata.map((reportDetails) => {
+                          {d.datasetdata?.map((reportDetails) => {
                             const reportText = reportDetails.text;
                             const resultType = reportDetails.result_type;
                             let detailsIcon;

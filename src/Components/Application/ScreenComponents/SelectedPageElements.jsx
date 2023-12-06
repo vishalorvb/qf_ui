@@ -73,8 +73,8 @@ export default function SelectedPageElements() {
           setPreSelectedElement(() => {
             const data = res?.data?.info;
             const selectedData = data
-              .filter((item) => item.is_selected === true)
-              .map((item) => item.element_id);
+              ?.filter((item) => item.is_selected === true)
+              ?.map((item) => item.element_id);
             console.log(selectedData);
             return selectedData;
           });
@@ -106,7 +106,7 @@ export default function SelectedPageElements() {
         <CreateScreenPop
           applicationId={location?.state?.module_id}
           pageId={location?.state?.web_page_id}
-          elementsList={preSelectedElement.map((id) => {
+          elementsList={preSelectedElement?.map((id) => {
             return { web_page_element_id: id };
           })}
         />

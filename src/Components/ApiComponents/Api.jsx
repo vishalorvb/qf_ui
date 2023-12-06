@@ -82,7 +82,7 @@ function Api() {
   useEffect(() => {
     getApis((res) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      apiNames = res.map(({ api_id, api_name }) => ({ api_id, api_name }));
+      apiNames = res?.map(({ api_id, api_name }) => ({ api_id, api_name }));
       setApis(apiNames);
     }, location.state?.application.module_id);
     // eslint-disable-next-line react-hooks/exhaustive-deps

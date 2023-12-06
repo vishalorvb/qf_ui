@@ -10,15 +10,15 @@ export default function BreadcrumbsComponent() {
     return <Link {...props} component={RouterLink} />;
   };
   const crumbName = location.pathname
-    .split("/")
-    .filter((crumb) => crumb !== "" && crumb !== "dashboard");
+    ?.split("/")
+    ?.filter((crumb) => crumb !== "" && crumb !== "dashboard");
   let nav = location.pathname
-    .split("/")
-    .filter((crumb) => crumb !== "" && crumb !== "dashboard")?.length;
+    ?.split("/")
+    ?.filter((crumb) => crumb !== "" && crumb !== "dashboard")?.length;
   const crumbs = location.pathname
-    .split("/")
-    .filter((crumb) => crumb !== "" && crumb !== "dashboard")
-    .map((crumb, idx) => {
+    ?.split("/")
+    ?.filter((crumb) => crumb !== "" && crumb !== "dashboard")
+    ?.map((crumb, idx) => {
       nav = ["Application", "Projects", "Testcase", "Testset"].includes(crumb)
         ? nav - 2
         : ["Application", "Projects", "Testcase", "Testset"].includes(

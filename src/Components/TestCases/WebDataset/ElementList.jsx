@@ -239,7 +239,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
       ></Table>
       <MastPop open={popUp} setOpen={setPopup} heading="Dataset Element Info">
         <Grid container spacing={2}>
-          {opt.current.map((val) => {
+          {opt.current?.map((val) => {
             return (
               <Grid item md={4}>
                 <span>
@@ -257,7 +257,7 @@ function ElementList({ elementList, updateDataset, screenName }) {
         </Grid>
         <br />
         <Grid container spacing={2} justifyContent="center" alignItems="center">
-          {inputopt.current.map((val) => {
+          {inputopt.current?.map((val) => {
             return (
               <Grid item xs={12} md={12}>
                 <label for="">{val.label}</label>

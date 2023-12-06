@@ -66,7 +66,7 @@ export default function TransferList({
   const customList = (items) => (
     <Paper sx={{ width: 300, height: 230, overflow: "auto" }}>
       <List dense component="div" role="list">
-        {items.map((value) => {
+        {items?.map((value) => {
           const labelId = `transfer-list-item-${value}-label`;
           return (
             <ListItem

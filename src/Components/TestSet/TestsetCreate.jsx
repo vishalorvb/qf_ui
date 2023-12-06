@@ -97,7 +97,7 @@ function TestsetCreate() {
     setPreSelectedElement(() => {
       return testcaseObject
         ?.filter((testcase) => testcase?.is_selected === true)
-        .map((testcase) => {
+        ?.map((testcase) => {
           setSelectedDatasets((prevSelectedDatasets) => {
             return {
               ...prevSelectedDatasets,

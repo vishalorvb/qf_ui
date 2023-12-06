@@ -182,7 +182,7 @@ export default function ExecutionToolbar({
           setRunTimeVariable(resp?.data?.data[0]?.runtime_variables);
           const buildEnv = resp?.data?.data;
           setBuildEnvList(() => {
-            return buildEnv.map((be) => {
+            return buildEnv?.map((be) => {
               return {
                 id: be.id + "&" + be.name + "&" + be.runtime_variables,
                 label: be.name,
@@ -198,11 +198,11 @@ export default function ExecutionToolbar({
         )
         .then((resp) => {
           const execEnv = resp?.data?.data;
-          const data1 = execEnv.map((ee) => {
+          const data1 = execEnv?.map((ee) => {
             return { id: ee.value, label: ee.name };
           });
           const execConfig = resp?.data?.data1;
-          const data2 = execConfig.map((ee) => {
+          const data2 = execConfig?.map((ee) => {
             return { id: ee.specificationId, label: ee.name };
           });
           const mergedObj = [...data1, ...data2];
