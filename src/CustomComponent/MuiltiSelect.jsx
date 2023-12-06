@@ -47,39 +47,37 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
   }, [preselect]);
 
   return (
-    <div>
-      <FormControl sx={{ width: "90%" }}>
-        <InputLabel id="demo-multiple-checkbox-label"></InputLabel>
-        <Select
-          sx={{ marginRight: "5px" }}
-          multiple
-          // emptyRecordMsg={"No Options Available"}
-          value={selectedval}
-          onChange={handleChange}
-          input={<OutlinedInput />}
-          placeholder="Select"
-          //renderValue={(selected) =>
-          //    selected?.map((v) => v && (v[value] + ",").slice(0, -1))
-          //}
+    <FormControl sx={{ width: "100%" }}>
+      <InputLabel id="demo-multiple-checkbox-label"></InputLabel>
+      <Select
+        sx={{ marginRight: "5px" }}
+        multiple
+        // emptyRecordMsg={"No Options Available"}
+        value={selectedval}
+        onChange={handleChange}
+        input={<OutlinedInput />}
+        placeholder="Select"
+        //renderValue={(selected) =>
+        //    selected?.map((v) => v && (v[value] + ",").slice(0, -1))
+        //}
 
-          renderValue={(selected) => {
-            let val = selected?.map((v) => v[value] + ",");
-            val[val.length - 1] = val[val.length - 1].slice(0, -1);
-            return val;
-          }}
-          MenuProps={MenuProps}
-        >
-          {options?.map((opt) => {
-            return (
-              <MenuItem key={opt[id]} value={opt} sx={{ marginRight: "4px" }}>
-                <Checkbox checked={checkbox.indexOf(opt[id]) > -1} />
-                <ListItemText primary={opt[value]} />
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-    </div>
+        renderValue={(selected) => {
+          let val = selected?.map((v) => v[value] + ",");
+          val[val.length - 1] = val[val.length - 1].slice(0, -1);
+          return val;
+        }}
+        MenuProps={MenuProps}
+      >
+        {options?.map((opt) => {
+          return (
+            <MenuItem key={opt[id]} value={opt} sx={{ marginRight: "4px" }}>
+              <Checkbox checked={checkbox.indexOf(opt[id]) > -1} />
+              <ListItemText primary={opt[value]} />
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
   );
 }
 
