@@ -496,8 +496,6 @@ const TestLibrary = () => {
         setIssueData([]);
         GetTestLibrary(
           (res) => {
-            console.log(Object.keys(res).length);
-            console.log(res);
             if (res !== null) {
               setTableData(res);
             }

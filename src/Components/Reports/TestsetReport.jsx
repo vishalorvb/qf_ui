@@ -3,7 +3,6 @@ import ProjectnApplicationSelector from "../ProjectnApplicationSelector";
 import { getTestsetReport } from "../../Services/DashboardService";
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
-import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import Table from "../../CustomComponent/Table";
 import { dateFormater } from "../../utilities/Utility";
 
