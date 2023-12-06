@@ -128,7 +128,7 @@ function UserProfile() {
               onChange={handleFileInputChange}
             />
 
-            {imageUrl !== "" && (
+            {imageUrl !== "" ? (
               <img
                 src={imageUrl}
                 onClick={handleUploadClick}
@@ -137,8 +137,7 @@ function UserProfile() {
                 height="60"
                 style={{ borderRadius: "50%" }}
               />
-            )}
-            {imageUrl === "" && (
+            ) : (
               <img
                 src="profile.jpg"
                 alt="Array of Bytes"
@@ -160,8 +159,7 @@ function UserProfile() {
               disabled
             />
           </Grid>
-          <Grid item md={2}></Grid>
-          <Grid item md={2}></Grid>
+
           <Grid item md={7}>
             <label>User Id</label>
 

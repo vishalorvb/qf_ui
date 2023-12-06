@@ -12,7 +12,6 @@ import ActiveUserPopup from "../Components/UsersPopups/ActiveUserPopup";
 import DeactiveUserPopup from "../Components/UsersPopups/DeactiveUserPopup";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
-import useAxios from "../hooks/useAxios";
 import useAuth from "../hooks/useAuth";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
 import { useNavigate } from "react-router-dom";

@@ -15,6 +15,7 @@ import pagegenerator from "../Components/Reports/HTMLgenrator";
 import HtmlIcon from "@mui/icons-material/Html";
 import { getReport } from "../Services/ReportService";
 import axios from "axios";
+import { report } from "../Environment";
 
 function Reports() {
   const [reportSuccessMsg, setReportSuccessMsg] = useState(false);
@@ -52,7 +53,7 @@ function Reports() {
 
   const handleHtmlDownload = async (reportData) => {
     const response = await axios.get(
-      `http://10.11.12.243:8083/qfreportservice/reportResult/${reportData?.report_id}`
+      `${report}/reportResult/${reportData?.report_id}`
     );
 
     const htmlContent = renderToString(
@@ -177,9 +178,7 @@ function Reports() {
                 View All
               </div>
             </div>
-            <a
-              href={`//10.11.12.243:8083/qfreportservice/reportResult/${params.id}.pdf`}
-            >
+            <a href={`${report}/reportResult/${params.id}.pdf`}>
               <DownloadIcon
                 style={{
                   marginLeft: "5px",

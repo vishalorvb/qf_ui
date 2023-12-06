@@ -1,4 +1,3 @@
-import useAxios from "./useAxios";
 import useAuth from "./useAuth";
 import axios from "axios";
 

@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import useAxios from "../hooks/useAxios";
 import PersistingLoading from "./PersistingLoading";
 import { authservice } from "../Environment";
 import axios from "axios";

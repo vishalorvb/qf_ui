@@ -12,7 +12,6 @@ import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import useAuth from "../../hooks/useAuth";
-import useAxios from "../../hooks/useAxios";
 import axios from "axios";
 
 function DeactiveUserPopup(props) {

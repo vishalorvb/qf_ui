@@ -12,7 +12,6 @@ import React from "react";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import useAuth from "../../hooks/useAuth";
-import useAxios from "../../hooks/useAxios";
 import axios from "axios";
 
 function ActiveUserPopup(props) {

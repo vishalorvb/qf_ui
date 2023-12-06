@@ -6,6 +6,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import useHead from "../../hooks/useHead";
+import { qfservice } from "../../Environment";
 
 let initialValue = {
   testset_id: 0,
@@ -38,10 +39,7 @@ function EditTestLinkProject() {
   }, []);
   const onSubmitHandler = (params) => {
     axios
-      .post(
-        `http://10.11.12.243:8083/qfservice/webtestset/createWebTestset`,
-        postValue
-      )
+      .post(`${qfservice}/webtestset/createWebTestset`, postValue)
       .then((resp) => {
         if (resp?.data?.status === "SUCCESS") {
           setEditReportSuccessMsg(true);

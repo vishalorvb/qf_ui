@@ -1,15 +1,20 @@
-import useAxios from "./useAxios";
 import useAuth from "./useAuth";
 import axios from "axios";
+import { authservice } from "../Environment";
 
 const useLogout = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, auth } = useAuth();
+  const token = auth?.token ? auth?.token : localStorage.getItem("token");
 
   const logout = async () => {
     setAuth({});
     localStorage.setItem("token", "");
     try {
-      await axios.get("qfauthservice/authentication/logout");
+      await axios.get(`${authservice}/qfauthservice/authentication/logout`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
     } catch (err) {
       console.log(err);
     }
