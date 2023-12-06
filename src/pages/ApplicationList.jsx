@@ -207,20 +207,21 @@ export default function ApplicationsList() {
       renderCell: (param) => {
         return (
           <>
-            {param.row.is_parent_module === true && (
-              <span onClick={() => handleExpand(param.row.module_id)}>
-                <ExpandMore
-                  expand={expanded.includes(param.row.module_id)}
-                  aria-expanded={expanded.includes(param.row.module_id)}
-                  aria-label="show more"
-                  disableFocusRipple
-                  disableRipple
-                  sx={{ color: "black", padding: "0px" }}
-                >
-                  <ExpandMoreIcon />
-                </ExpandMore>
-              </span>
-            )}
+            {param.row.is_parent_module === true &&
+              param.row.sub_modules_list.length > 0 && (
+                <span onClick={() => handleExpand(param.row.module_id)}>
+                  <ExpandMore
+                    expand={expanded.includes(param.row.module_id)}
+                    aria-expanded={expanded.includes(param.row.module_id)}
+                    aria-label="show more"
+                    disableFocusRipple
+                    disableRipple
+                    sx={{ color: "black", padding: "0px" }}
+                  >
+                    <ExpandMoreIcon />
+                  </ExpandMore>
+                </span>
+              )}
           </>
         );
       },
