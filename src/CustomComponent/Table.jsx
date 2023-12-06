@@ -92,7 +92,7 @@ export default function Table(props) {
                     setSelectionModel((ps) => {
                         if (setNewchangedElement) {
                             const changedElement =
-                                i.length > ps.length
+                                i?.length > ps.length
                                     ? i.find((e) => !ps.includes(e))
                                     : ps.find((e) => !i.includes(e));
                             setNewchangedElement({
