@@ -73,9 +73,7 @@ export async function getUsers(callback, orgid, ssoid, token) {
 
 export async function getUserGitDetails(callback, userId) {
   return await axios
-    .get(
-      `${userservice}/qfuserservice/userexecutionparameters/getByUserId?userId=${userId}`
-    )
+    .get(`${userservice}/userexecutionparameters/getByUserId?userId=${userId}`)
     .then((res) => {
       callback(res.data.info);
       return res.data.info;
