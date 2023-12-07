@@ -85,8 +85,8 @@ export default function PageElements() {
           setPreSelectedElement(() => {
             const data = res?.data?.info;
             const selectedData = data
-              .filter((item) => item.is_selected === true)
-              .map((item) => item.element_id);
+              ?.filter((item) => item.is_selected === true)
+              ?.map((item) => item.element_id);
             console.log(selectedData);
             return selectedData;
           });

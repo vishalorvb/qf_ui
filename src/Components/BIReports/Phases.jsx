@@ -202,7 +202,7 @@ export default function Phases() {
                 </ListItem>
                 <Divider sx={{ mt: 1 }} />
               </Grid>
-              {Array.from(Array(phases)).map((_, index) => (
+              {Array.from(Array(phases))?.map((_, index) => (
                 <Grid item xs={2} sm={4} md={12} key={index} mt={1}>
                   <ListItem
                     button

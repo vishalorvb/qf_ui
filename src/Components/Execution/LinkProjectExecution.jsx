@@ -81,7 +81,7 @@ const LinkProjectExecution = () => {
         .then((resp) => {
           const execEnv = resp?.data?.data;
           setExecEnvList(() => {
-            return execEnv.map((ee) => {
+            return execEnv?.map((ee) => {
               return { id: ee.value, label: ee.name };
             });
           });

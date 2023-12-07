@@ -141,8 +141,8 @@ export default function MiniDrawer({ open, setOpen }) {
   const navigate = useNavigate();
   const navigationItemRender = (rawList) => {
     const navigationList = rawList
-      .filter((navItem) => navItem.accessRole.includes(role))
-      .map((navItem, index) => {
+      ?.filter((navItem) => navItem.accessRole.includes(role))
+      ?.map((navItem, index) => {
         return (
           <ListItem disableGutters key={navItem.name} className="navListItem">
             <ListItemButton

@@ -85,8 +85,8 @@ export default function UpdateScreen() {
           setPreSelectedElement(() => {
             const data = res?.data?.info;
             const selectedData = data
-              .filter((item) => item.is_selected === true)
-              .map((item) => item.element_id);
+              ?.filter((item) => item.is_selected === true)
+              ?.map((item) => item.element_id);
             console.log(selectedData);
             return selectedData;
           });
@@ -119,7 +119,7 @@ export default function UpdateScreen() {
             name: location.state.name,
             desc: location.state.description,
           }}
-          elementsList={preSelectedElement.map((id) => {
+          elementsList={preSelectedElement?.map((id) => {
             return { web_page_element_id: id };
           })}
         />{" "}

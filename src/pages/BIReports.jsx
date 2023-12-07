@@ -95,7 +95,7 @@ function BIReports() {
   };
 
   function TestsetsData(bitestset, columns, phaseHandler, cyclesHandler) {
-    return bitestset.map((item) => {
+    return bitestset?.map((item) => {
       return (
         <AccordionTemplate name={item.project_name} defaultState={true}>
           <Table

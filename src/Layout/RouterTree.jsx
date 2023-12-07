@@ -16,7 +16,7 @@ import Skeleton from "./Skeleton";
 import Error from "../Components/Error";
 
 const routeLister = (rawList) => {
-  const routeList = rawList.map((routeItem, idx) => {
+  const routeList = rawList?.map((routeItem, idx) => {
     return (
       <Route
         key={idx + routeItem.path}

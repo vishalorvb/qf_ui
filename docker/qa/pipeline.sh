@@ -37,12 +37,7 @@ sudo docker rmi qareactcicdimage:latest || true
 # Navigate to your Spring Boot application directory
 cd /var/lib/jenkins/workspace/QAReactCICD/docker/qa
 
-# Remove any files or directories starting with "package.json" (if they exist)
-sudo rm -rf package.json
-
-# Copy the built Spring Boot JAR to the current directory
-sudo cp -r /var/lib/jenkins/workspace/QAReactCICD/. .
-
+sudo rsync -av --exclude=docker/ --exclude=src/Environment.jsx /var/lib/jenkins/workspace/QAReactCICD/ /var/lib/jenkins/workspace/QAReactCICD/docker/qa/
 pwd
 ls -l
 # Build a Docker image with "latest" tag
@@ -59,6 +54,6 @@ sudo docker run \
 -e REACT_APP_dashboard='http://10.11.12.243:8054/qfdashboard' \
 -e REACT_APP_report='http://10.11.12.243:8055/qfreportservice' \
 -e REACT_APP_biservice='http://10.11.12.243:8056/bireport' \
--p 3001:3001 -d --name qareactcicdcontainer qareactcicdimage:latest
+-p 3001:3000 -d --name qareactcicdcontainer qareactcicdimage:latest
 
 exit

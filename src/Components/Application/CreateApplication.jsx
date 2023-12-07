@@ -132,7 +132,7 @@ export default function CreateApplication() {
 
   useEffect(() => {
     getApplication((res) => {
-      moduleNames = res.map(({ module_id, module_name, is_deleted }) => ({
+      moduleNames = res?.map(({ module_id, module_name, is_deleted }) => ({
         module_id,
         module_name,
         is_deleted,
@@ -170,7 +170,7 @@ export default function CreateApplication() {
               defaultValue={moduledata.module_type}
               disabled={location?.pathname !== "/Application/Create"}
             >
-              {APPLICATION_TYPES.map((appType) => {
+              {APPLICATION_TYPES?.map((appType) => {
                 return (
                   <MenuItem key={appType.value} value={appType.value}>
                     {appType.label}

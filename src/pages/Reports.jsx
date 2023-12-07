@@ -225,7 +225,7 @@ function Reports() {
   const submit = (e) => {
     getReport(fromDate, toDate, globalApplication?.module_id, loggedInId).then(
       (Response) => {
-        if (Response.data.info.length > 0) {
+        if (Response?.data?.info?.length > 0) {
           setTbData(Response.data.info);
           setReportSuccessMsg(true);
           setTimeout(() => {

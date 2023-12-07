@@ -18,8 +18,8 @@ export default function NavListRendedrer({
 
   const itemRender = () => {
     const navigationList = listData
-      .filter((listItem) => listItem[displayKey].includes(searchString))
-      .map((listItem, index) => {
+      ?.filter((listItem) => listItem[displayKey].includes(searchString))
+      ?.map((listItem, index) => {
         return (
           <ListItem
             sx={{

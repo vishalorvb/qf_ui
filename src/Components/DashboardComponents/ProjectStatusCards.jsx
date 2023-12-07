@@ -28,7 +28,7 @@ export default function ProjectStatusCards({
     },
   ];
 
-  const cardx = cardsData.map((cardObject) => {
+  const cardx = cardsData?.map((cardObject) => {
     return (
       <Grid item md={4}>
         <Paper variant="outlined" sx={{ borderColor: "#b3e6ff" }}>

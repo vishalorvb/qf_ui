@@ -13,6 +13,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
+import { userservice } from "../../Environment";
 
 function ActiveUserPopup(props) {
   const { openActive, setOpenActive, object, getUsers, setActSuccessMsg } =
@@ -30,7 +31,7 @@ function ActiveUserPopup(props) {
   const submit = () => {
     axios
       .put(
-        `qfuserservice/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=1`
+        `${userservice}/user/UpdateUserStatus?current_user_id=${loggedInId}&user_id=${id}&user_status=1`
       )
       .then((res) => {
         console.log(res.message);

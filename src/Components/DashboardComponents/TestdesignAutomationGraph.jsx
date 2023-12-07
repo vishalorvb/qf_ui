@@ -119,7 +119,7 @@ export default function TestDesignAutomationGraph({
             </TableRow>
           </TableHead>
           <TableBody>
-            {row_data.map((row) => (
+            {row_data?.map((row) => (
               <TableRow
                 key={row.summary}
                 sx={{

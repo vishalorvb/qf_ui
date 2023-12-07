@@ -146,7 +146,7 @@ export default function ScreenElements() {
               );
               setData([...data]);
               setOrder(() => {
-                return data.map((d) => d.screen_element_id);
+                return data?.map((d) => d.screen_element_id);
               });
               // console.log(data);
             }

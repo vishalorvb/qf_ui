@@ -21,14 +21,14 @@ function ExecuteTestSetDetails({
     {
       field: "name",
       headerName: "Testcase name",
-      flex: 3,
+      flex: 2,
       sortable: false,
       align: "left",
     },
     {
       field: "description",
       headerName: "Description",
-      flex: 3,
+      flex: 1,
       sortable: false,
       align: "left",
     },
@@ -37,37 +37,35 @@ function ExecuteTestSetDetails({
       headerName: "Datasets",
       renderCell: (param) => {
         return (
-          <div>
-            <MuiltiSelect
-              preselect={data[param?.row?.testcase_id] ?? []}
-              options={
-                globalApplication?.module_type === 1
-                  ? param?.row?.api_datasets
-                  : param?.row?.datasets
-              }
-              value={
-                globalApplication?.module_type === 1
-                  ? "dataset_name_in_testcase"
-                  : "name"
-              }
-              id={
-                globalApplication?.module_type === 1
-                  ? "testcase_dataset_id"
-                  : "dataset_id"
-              }
-              stateList={(list) => {
-                setData((prevData) => {
-                  return {
-                    ...prevData,
-                    [param.row.testcase_id]: list.map((val) => val),
-                  };
-                });
-              }}
-            ></MuiltiSelect>
-          </div>
+          <MuiltiSelect
+            preselect={data[param?.row?.testcase_id] ?? []}
+            options={
+              globalApplication?.module_type === 1
+                ? param?.row?.api_datasets
+                : param?.row?.datasets
+            }
+            value={
+              globalApplication?.module_type === 1
+                ? "dataset_name_in_testcase"
+                : "name"
+            }
+            id={
+              globalApplication?.module_type === 1
+                ? "testcase_dataset_id"
+                : "dataset_id"
+            }
+            stateList={(list) => {
+              setData((prevData) => {
+                return {
+                  ...prevData,
+                  [param.row.testcase_id]: list?.map((val) => val),
+                };
+              });
+            }}
+          ></MuiltiSelect>
         );
       },
-      flex: 2,
+      flex: 3,
       sortable: false,
       align: "left",
     },
@@ -131,7 +129,7 @@ function ExecuteTestSetDetails({
         applicationId={applicationId}
         selectedtestcases={selectedtestcases}
         testsetId={testsetId}
-        selecteddatasets={selectedtestcases.map((testcase_id) => {
+        selecteddatasets={selectedtestcases?.map((testcase_id) => {
           return {
             testcase_id: testcase_id,
             selected_testcase_dataset_ids: data[testcase_id]?.map((dataset) =>

@@ -3,7 +3,7 @@ import MuiltiSelect from "../../../CustomComponent/MuiltiSelect";
 function MapScreen({ pages, setpages }) {
   return (
     <div>
-      {pages.map((page) => {
+      {pages?.map((page) => {
         return (
           <div>
             {page.name}
