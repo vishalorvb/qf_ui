@@ -16,6 +16,9 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import AppleIcon from "@mui/icons-material/Apple";
 import AdUnitsIcon from "@mui/icons-material/AdUnits";
 function ProjectTable({ location }) {
+
+    console.log(process.env.REACT_APP_authservice)
+
     let [popup, setPopup] = useState(false);
     let [pid, setPid] = useState();
     const navigate = useNavigate();
@@ -171,8 +174,6 @@ function ProjectTable({ location }) {
     useEffect(() => {
         getProject(setProject, loggedInId);
     }, [loggedInId]);
-    const apiUrl = process.env.REACT_APP_API_URL;
-    console.log(apiUrl)
     return (
         <>
             <SnackbarNotify
