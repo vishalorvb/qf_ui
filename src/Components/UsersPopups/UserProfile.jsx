@@ -128,25 +128,14 @@ function UserProfile() {
               onChange={handleFileInputChange}
             />
 
-            {imageUrl !== "" ? (
-              <img
-                src={imageUrl}
-                onClick={handleUploadClick}
-                alt="Array of Bytes"
-                width="60"
-                height="60"
-                style={{ borderRadius: "50%" }}
-              />
-            ) : (
-              <img
-                src="profile.jpg"
-                alt="Array of Bytes"
-                width="60"
-                height="60"
-                style={{ borderRadius: "50%" }}
-                onClick={handleUploadClick}
-              />
-            )}
+            <img
+              src={imageUrl || "profile.jpg"}
+              onClick={handleUploadClick}
+              alt="Array of Bytes"
+              width="60"
+              height="60"
+              style={{ borderRadius: "50%" }}
+            />
           </Grid>
           <Grid item md={7}>
             <label>Email Address</label>
