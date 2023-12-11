@@ -4,11 +4,11 @@ function shiftElement(array, fromIndex, toIndex) {
   if (
     fromIndex === toIndex ||
     fromIndex < 0 ||
-    fromIndex >= array.length ||
+    fromIndex >= array?.length ||
     toIndex < 0 ||
-    toIndex >= array.length
+    toIndex >= array?.length
   ) {
-    return array.slice();
+    return array?.slice();
   }
 
   const elementToShift = array.splice(fromIndex, 1)[0]; // Remove element at fromIndex and get its value

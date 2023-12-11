@@ -276,7 +276,7 @@ export default function MiniDrawer({ open, setOpen }) {
             )}
           </div>
 
-          {testManagementMenu.length > 0 && (
+          {testManagementMenu?.length > 0 && (
             <>
               {open && (
                 <div className="sideNavSections">
@@ -286,7 +286,7 @@ export default function MiniDrawer({ open, setOpen }) {
               <List className="menuList">{testManagementMenu}</List>
             </>
           )}
-          {reportsManagementMenu.length > 0 && (
+          {reportsManagementMenu?.length > 0 && (
             <>
               {open && (
                 <div className="sideNavSections">
@@ -296,7 +296,7 @@ export default function MiniDrawer({ open, setOpen }) {
               <List className="menuList">{reportsManagementMenu}</List>
             </>
           )}
-          {functionalManagementMenu.length > 0 && (
+          {functionalManagementMenu?.length > 0 && (
             <>
               {open && (
                 <div className="sideNavSections">
@@ -306,7 +306,7 @@ export default function MiniDrawer({ open, setOpen }) {
               <List className="menuList">{functionalManagementMenu}</List>
             </>
           )}
-          {opsManagementMenu.length > 0 && (
+          {opsManagementMenu?.length > 0 && (
             <>
               {open && (
                 <div className="sideNavSections">
@@ -316,7 +316,7 @@ export default function MiniDrawer({ open, setOpen }) {
               <List className="menuList">{opsManagementMenu}</List>
             </>
           )}
-          {qfAdminMenu.length > 0 && (
+          {qfAdminMenu?.length > 0 && (
             <>
               <List className="menuList">{qfAdminMenu}</List>
             </>

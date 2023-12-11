@@ -66,7 +66,7 @@ function TestsetCreate() {
   }, [globalProject]);
 
   useEffect(() => {
-    if (jiraSprint.length > 0) {
+    if (jiraSprint?.length > 0) {
       let data = {
         sprint_name: jiraSprint[0].name,
       };
@@ -124,7 +124,7 @@ function TestsetCreate() {
     const selectedTestcases = [];
     let testcaseObjFlag = true;
     if (globalApplication?.module_type !== 19) {
-      if (preSelectedElement.length <= 0) {
+      if (preSelectedElement?.length <= 0) {
         testcaseObjFlag = false;
         setSnackbarData({
           status: true,
@@ -134,7 +134,7 @@ function TestsetCreate() {
       }
 
       preSelectedElement.sort();
-      for (let index = 0; index < preSelectedElement.length; index++) {
+      for (let index = 0; index < preSelectedElement?.length; index++) {
         if (!selectedDatasets[preSelectedElement[index]]) {
           setSnackbarData({
             status: true,

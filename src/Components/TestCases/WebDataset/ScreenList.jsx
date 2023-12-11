@@ -73,7 +73,7 @@ export default function ScreenList({ testcaseId, screen, setScreenId }) {
   };
 
   useEffect(() => {
-    if (order !== undefined && order.length > 0) {
+    if (order !== undefined && order?.length > 0) {
       updateScreenOrder();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

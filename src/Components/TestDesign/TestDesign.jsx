@@ -429,7 +429,7 @@ const TestDesign = () => {
     createformData.repository_url = globalProject.repository_url;
     createformData.repository_branch = globalProject.repository_branch;
     createformData.repository_token = globalProject.repository_token;
-    navigate("/Projects/Recent/Update");
+    navigate("/Projects/Search/Update");
   }
   async function handleSync() {
     try {

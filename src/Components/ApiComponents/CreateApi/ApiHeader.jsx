@@ -4,7 +4,7 @@ import { setGetData } from "./ApiDatasetData";
 function ApiHeader({ ApiDetails }) {
   let displayorder = ["header_key", "header_value", "header_desc"];
   function haldleTableData(data) {
-    setGetData(ApiDetails.api_id, "headersList", data.slice(0, -1));
+    setGetData(ApiDetails.api_id, "headersList", data?.slice(0, -1));
   }
 
   return (

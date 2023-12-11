@@ -76,7 +76,7 @@ export default function Toolbar({ dustbins, getElementsData }) {
         };
       });
 
-    if (mappedElements.length > 0) {
+    if (mappedElements?.length > 0) {
       setShowloader(true);
 
       const saveDiffElementData = {

@@ -30,8 +30,8 @@ export default function CustomCode() {
   }, [globalApplication, snackbarData]);
 
   useEffect(() => {
-    if (codeList.length > 0 && codeList[codeList.length - 1]["id"] == 0) {
-      setSelectedCodeselectedCode(codeList[codeList.length - 1] ?? {});
+    if (codeList?.length > 0 && codeList[codeList?.length - 1]["id"] == 0) {
+      setSelectedCodeselectedCode(codeList[codeList?.length - 1] ?? {});
     } else {
       setSelectedCodeselectedCode(codeList[0] ?? {});
     }
@@ -39,7 +39,7 @@ export default function CustomCode() {
 
   useEffect(() => {
     if (selectedCode?.id == 0) {
-      setselectedCodeData(codeList[codeList.length - 1]);
+      setselectedCodeData(codeList[codeList?.length - 1]);
     } else if (selectedCode.id) {
       getCustomCode(selectedCode?.id, setselectedCodeData);
     }

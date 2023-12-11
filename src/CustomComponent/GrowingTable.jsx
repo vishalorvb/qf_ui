@@ -34,7 +34,7 @@ function GrowingTable(props) {
   function handleOnChange(e) {
     let table = document.getElementById("mytable");
     let data = [];
-    for (let i = 1; i < table.rows.length; i++) {
+    for (let i = 1; i < table.rows?.length; i++) {
       let key = table.rows[i].cells[0].childNodes[0].value;
       let value = table.rows[i].cells[1].childNodes[0].value;
       let description = table.rows[i].cells[2].childNodes[0].value;

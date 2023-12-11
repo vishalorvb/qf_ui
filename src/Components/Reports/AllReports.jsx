@@ -135,7 +135,7 @@ export default function AllReports() {
           : `qfreportservice/testset-reports/${auth?.userId}/${report_type}/${testsetId}/${fromDate}/${toDate}`
       )
       .then((Response) => {
-        if (Response.data.info.reports_list.length > 0) {
+        if (Response.data.info.reports_list?.length > 0) {
           setTbData(Response.data.info.reports_list);
           setReportSuccessMsg(true);
           setTimeout(() => {

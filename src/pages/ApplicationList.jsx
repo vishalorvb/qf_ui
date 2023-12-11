@@ -67,7 +67,7 @@ export default function ApplicationsList() {
         const newArr = [...prevState];
         newArr.splice(index + 1, 0, ...subModules);
         setSizeDiff((prevsd) => {
-          return prevsd + subModules.length;
+          return prevsd + subModules?.length;
         });
         return newArr;
       });
@@ -208,7 +208,7 @@ export default function ApplicationsList() {
         return (
           <>
             {param.row.is_parent_module === true &&
-              param.row.sub_modules_list.length > 0 && (
+              param.row.sub_modules_list?.length > 0 && (
                 <span onClick={() => handleExpand(param.row.module_id)}>
                   <ExpandMore
                     expand={expanded.includes(param.row.module_id)}
@@ -261,7 +261,7 @@ export default function ApplicationsList() {
       <Table
         rows={
           location?.state === "recentApplication"
-            ? application.slice(0, 10 + sizeDiff)
+            ? application?.slice(0, 10 + sizeDiff)
             : application
         }
         columns={applicationColumns}

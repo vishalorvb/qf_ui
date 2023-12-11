@@ -46,7 +46,7 @@ export default function AddEnvironemt() {
         `${qfservice}/build-environment?project_id=${project_id}&module_id=${application_id}`
       )
       .then((res) => {
-        if (res.data.data.length > 0) {
+        if (res.data.data?.length > 0) {
           setTbData(res.data.data);
         } else {
           setTbData([]);

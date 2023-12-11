@@ -14,13 +14,13 @@ function ApiBody({ ApiDetails }) {
   let [selected, setSelected] = useState(ApiDetails.body_type);
 
   function handleFormData(tabdata) {
-    setGetData(ApiDetails.api_id, "bodyFormDataList", tabdata.slice(0, -1));
+    setGetData(ApiDetails.api_id, "bodyFormDataList", tabdata?.slice(0, -1));
   }
   function handleEncoderData(tabdata) {
     setGetData(
       ApiDetails.api_id,
       "bodyFormUrlEncodedList",
-      tabdata.slice(0, -1)
+      tabdata?.slice(0, -1)
     );
   }
   let displayorder = ["key", "value", "description"];

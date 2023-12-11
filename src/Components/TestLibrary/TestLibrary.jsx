@@ -146,7 +146,7 @@ const TestLibrary = () => {
         issues
       );
     });
-    if (jsonData.length === 0) {
+    if (jsonData?.length === 0) {
       const headers = [
         "Issue Key",
         "Given",
@@ -453,7 +453,7 @@ const TestLibrary = () => {
         await new Promise((resolve) => {
           GetTestLibrary(
             (res) => {
-              console.log(Object.keys(res).length);
+              console.log(Object.keys(res)?.length);
               if (res !== null) {
                 setTableData(res);
                 setSnackbarData({

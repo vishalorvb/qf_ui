@@ -135,7 +135,7 @@ export default function TestcaseExecution() {
               width: "100%",
             }}
           >
-            {testcases.length > 0 ? (
+            {testcases?.length > 0 ? (
               itemRender(testcases)
             ) : (
               <div style={{ textAlign: "center", fontWeight: "400" }}>

@@ -63,7 +63,7 @@ function MuiltiSelect({ options, id, value, stateList, preselect }) {
 
         renderValue={(selected) => {
           let val = selected?.map((v) => v[value] + ",");
-          val[val.length - 1] = val[val.length - 1].slice(0, -1);
+          val[val?.length - 1] = val[val?.length - 1]?.slice(0, -1);
           return val;
         }}
         MenuProps={MenuProps}

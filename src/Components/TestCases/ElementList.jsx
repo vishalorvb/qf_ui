@@ -85,7 +85,7 @@ function ElementList({ screenList, setScreenList }) {
 
   return (
     <div>
-      {screenList.length > 0 && (
+      {screenList?.length > 0 && (
         <div>
           <Grid container spacing={2} justifyContent="right" alignItems="right">
             <Grid item xs={2} md={2}>

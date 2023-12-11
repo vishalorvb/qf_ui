@@ -93,7 +93,7 @@ const ConfigureDevice = () => {
     axios
       .get(`${qfservice}/mobileconfiguration?project_id=${projectId}`)
       .then((res) => {
-        if (res.data.data.length > 0) {
+        if (res.data.data?.length > 0) {
           setConfigurations(res?.data?.data);
           setFetchSuccessMsg(true);
           setTimeout(() => {

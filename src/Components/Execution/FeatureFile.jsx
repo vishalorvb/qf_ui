@@ -32,7 +32,7 @@ function FeatureFile(props) {
   };
 
   const onSubmitHandler = () => {
-    if (selectedDatasets.length !== 0) {
+    if (selectedDatasets?.length !== 0) {
       axios
         .post(
           `${qfservice}/webtestcase/updatefeaturefile?featurefile_data=${featureFileData}&testcase_id=${testcaseId}`

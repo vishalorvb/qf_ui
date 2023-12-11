@@ -91,7 +91,7 @@ export function validateForm(
         !containsSpecialChars(element.current.value) ||
         !containLowerCase(element.current.value) ||
         !containsNumber(element.current.value) ||
-        element.current.value.length < 8
+        element.current.value?.length < 8
       ) {
         element.current.className = cname;
         status = false;
@@ -137,7 +137,7 @@ export function validateForm(
 
   autocompletename.forEach((element) => {
     let collection = document.getElementsByName(element);
-    for (let i = 0; i < collection.length; i++) {
+    for (let i = 0; i < collection?.length; i++) {
       console.log(collection[i].value);
       if (collection[i].value === "") {
         collection[i].className = cname;
@@ -158,9 +158,9 @@ export function resetClassName(e) {
 
 export function NumberValidation(ref, length, cname) {
   let numstatus = true;
-  console.log(ref.current.value.length);
+  console.log(ref.current.value?.length);
   console.log(ref.current.className);
-  if (ref.current.value.length !== length) {
+  if (ref.current.value?.length !== length) {
     ref.current.className = cname;
     numstatus = false;
   }
@@ -171,7 +171,7 @@ export function validateFormbyName(names, cname) {
   let status = true;
   names.forEach((element) => {
     let collection = document.getElementsByName(element);
-    for (let i = 0; i < collection.length; i++) {
+    for (let i = 0; i < collection?.length; i++) {
       if (
         collection[i].value === undefined ||
         collection[i].value.trim() === ""

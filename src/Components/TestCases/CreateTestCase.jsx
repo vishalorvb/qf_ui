@@ -40,7 +40,7 @@ function CreateTestCase() {
   });
 
   function WebTestcase() {
-    if (selectedScreen.length === 0) {
+    if (selectedScreen?.length === 0) {
       setSnackbarData({
         status: true,
         message: "Error, Select Atleast one screen",
@@ -82,7 +82,7 @@ function CreateTestCase() {
   }
 
   function ApiTestcase() {
-    if (selectedApiList.length === 0) {
+    if (selectedApiList?.length === 0) {
       setSnackbarData({
         status: true,
         message: "Error, Select Atleast one Api",
@@ -161,7 +161,7 @@ function CreateTestCase() {
   }, [globalProject]);
 
   useEffect(() => {
-    if (jiraIssue === null && jiraSprint.length > 0) {
+    if (jiraIssue === null && jiraSprint?.length > 0) {
       let data = {
         sprint_name: jiraSprint[0]?.name,
       };

@@ -13,7 +13,7 @@ export default function ApiAutomation() {
     getPipelinesHistoryReport(setResult, setError, location.state.id, "API");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return result.length > 0 ? (
+  return result?.length > 0 ? (
     <ListRenderer result={result} />
   ) : (
     <Alert severity="error">{error}</Alert>

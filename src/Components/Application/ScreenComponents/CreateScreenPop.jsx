@@ -22,7 +22,7 @@ export default function CreateScreenPop(props) {
   const [createSnack, setCreateSnack] = useState(false);
 
   const saveScreen = () => {
-    elementsList.length < 1 && setSelectElements(true);
+    elementsList?.length < 1 && setSelectElements(true);
     console.log(screenData);
 
     const screendata = {

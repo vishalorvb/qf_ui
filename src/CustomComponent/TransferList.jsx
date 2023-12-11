@@ -97,7 +97,7 @@ export default function TransferList({
             variant="outlined"
             size="small"
             onClick={handleAllRight}
-            disabled={left.length === 0}
+            disabled={left?.length === 0}
             aria-label="move all right"
           >
             ≫
@@ -107,7 +107,7 @@ export default function TransferList({
             variant="outlined"
             size="small"
             onClick={handleCheckedRight}
-            disabled={leftChecked.length === 0}
+            disabled={leftChecked?.length === 0}
             aria-label="move selected right"
           >
             &gt;
@@ -117,7 +117,7 @@ export default function TransferList({
             variant="outlined"
             size="small"
             onClick={handleCheckedLeft}
-            disabled={rightChecked.length === 0}
+            disabled={rightChecked?.length === 0}
             aria-label="move selected left"
           >
             &lt;
@@ -127,7 +127,7 @@ export default function TransferList({
             variant="outlined"
             size="small"
             onClick={handleAllLeft}
-            disabled={right.length === 0}
+            disabled={right?.length === 0}
             aria-label="move all left"
           >
             ≪
