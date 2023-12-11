@@ -171,7 +171,7 @@ export default function Dashboard() {
         if (res?.data?.data?.data?.model.show_tensorflow === true) {
           setShowTensorFlow(true);
         }
-        if ((res?.data?.data?.data?.model.pure_automation_graph).length > 0) {
+        if (res?.data?.data?.data?.model.pure_automation_graph?.length > 0) {
           let info = (res?.data?.data?.data?.model.automation_graph).replace(
             /(&#034)/g,
             '"'

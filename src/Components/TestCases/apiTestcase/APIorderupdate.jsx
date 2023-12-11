@@ -32,7 +32,7 @@ export default function APIorderupdate() {
   }, []);
 
   const updateScreenOrder = () => {
-    order.length > 0 &&
+    order?.length > 0 &&
       axios
         .post(`${qfservice}/UpdateOrderOfAPIsInTestcase`, {
           testcaseId: location?.state?.testcaseId,

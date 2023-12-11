@@ -67,7 +67,7 @@ function BIReports() {
 
   const data = [];
   const addHandler = () => {
-    if (selectedOptions.length > 0) {
+    if (selectedOptions?.length > 0) {
       selectedOptions.forEach((option) => {
         console.log(option.module_id);
         console.log(option.module_id);

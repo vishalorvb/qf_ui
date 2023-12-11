@@ -1,12 +1,11 @@
-import React from 'react'
-import GrowingTable from '../../../CustomComponent/GrowingTable'
-import { setGetData } from './ApiDatasetData'
+import React from "react";
+import GrowingTable from "../../../CustomComponent/GrowingTable";
+import { setGetData } from "./ApiDatasetData";
 
-
-function ApiLinktab({ApiDetails}) {
-  let displayorder = ["key", "value", "description"]
+function ApiLinktab({ ApiDetails }) {
+  let displayorder = ["key", "value", "description"];
   function handleLinkData(tabdata) {
-    setGetData(ApiDetails.api_id, "apiLinkProperties", tabdata.slice(0, -1))
+    setGetData(ApiDetails.api_id, "apiLinkProperties", tabdata?.slice(0, -1));
   }
 
   return (
@@ -19,7 +18,7 @@ function ApiLinktab({ApiDetails}) {
         prefilled={ApiDetails?.apiLinkProperties}
       ></GrowingTable>
     </div>
-  )
+  );
 }
 
-export default ApiLinktab
+export default ApiLinktab;

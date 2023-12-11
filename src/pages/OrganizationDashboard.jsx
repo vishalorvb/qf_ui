@@ -42,7 +42,7 @@ function OrganizationDashboard() {
         if ((res.data.message = "users Details found.")) {
           res.data.info === null
             ? setTotalUsers(0)
-            : setTotalUsers(res.data.info.length);
+            : setTotalUsers(res.data.info?.length);
 
           // setAddSuccessMsg(true);
           // setTimeout(() => {
@@ -71,7 +71,7 @@ function OrganizationDashboard() {
         if ((res.data.message = "users Details found.")) {
           res.data.info === null
             ? setTotalApplication(0)
-            : setTotalApplication(res.data.info.length);
+            : setTotalApplication(res.data.info?.length);
           // setAddSuccessMsg(true);
           // setTimeout(() => {
           //   setAddSuccessMsg(false);
@@ -96,11 +96,11 @@ function OrganizationDashboard() {
           Authorization: `Bearer ${auth.token}`,
         },
       }).then((res) => {
-        // console.log(Object.keys(res.data.info).length);
+        // console.log(Object.keys(res.data.info)?.length);
         if ((res.data.message = "Applications Details found.")) {
           res.data.info === null
             ? setTotalProjects(0)
-            : setTotalProjects(Object.keys(res.data.info).length);
+            : setTotalProjects(Object.keys(res.data.info)?.length);
           setAddSuccessMsg(true);
           setTimeout(() => {
             setAddSuccessMsg(false);

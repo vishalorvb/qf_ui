@@ -122,8 +122,11 @@ export async function updateApiOrder(data) {
 
 export function getApplication(callback, userId) {
   axios.get(`${qfservice}/users/applications?user_id=${userId}`).then((res) => {
-    callback(res.data.data);
+    callback(res.data.data ?? []);
   });
+  // .catch((err) => {
+  //   console.log(err);
+  // });
 }
 
 export async function createApplication(data, userId) {

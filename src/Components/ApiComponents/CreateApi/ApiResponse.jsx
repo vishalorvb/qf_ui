@@ -1,11 +1,15 @@
-import React from 'react'
-import GrowingTable from '../../../CustomComponent/GrowingTable'
-import { setGetData } from './ApiDatasetData'
+import React from "react";
+import GrowingTable from "../../../CustomComponent/GrowingTable";
+import { setGetData } from "./ApiDatasetData";
 
 function ApiResponse({ ApiDetails }) {
-  let displayorder = ["key", "value", "description"]
+  let displayorder = ["key", "value", "description"];
   function handleResponseData(tabdata) {
-    setGetData(ApiDetails.api_id, "successResponseProperties", tabdata.slice(0, -1))
+    setGetData(
+      ApiDetails.api_id,
+      "successResponseProperties",
+      tabdata?.slice(0, -1)
+    );
   }
   return (
     <div>
@@ -17,7 +21,7 @@ function ApiResponse({ ApiDetails }) {
         prefilled={ApiDetails?.successResponseProperties}
       ></GrowingTable>
     </div>
-  )
+  );
 }
 
-export default ApiResponse
+export default ApiResponse;
