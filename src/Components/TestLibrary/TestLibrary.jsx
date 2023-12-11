@@ -146,7 +146,7 @@ const TestLibrary = () => {
         issues
       );
     });
-    if (jsonData?.length === 0) {
+    if (jsonData.length === 0) {
       const headers = [
         "Issue Key",
         "Given",
@@ -209,10 +209,7 @@ const TestLibrary = () => {
         })
       );
       const workbook = XLSX.utils.book_new();
-      console.log("in line 170");
-      console.log(selectedFields);
       const worksheet = XLSX.utils.json_to_sheet(selectedFields);
-      console.log(worksheet);
       const headerStyle = {
         font: { bold: true },
         fill: {
@@ -221,8 +218,6 @@ const TestLibrary = () => {
           fgColor: { rgb: "c6efce" },
         },
       };
-      console.log(Object.keys(worksheet));
-
       Object.keys(worksheet)
         .filter((cell) => cell.startsWith("A1"))
         .forEach((cell) => {
@@ -453,7 +448,7 @@ const TestLibrary = () => {
         await new Promise((resolve) => {
           GetTestLibrary(
             (res) => {
-              console.log(Object.keys(res)?.length);
+              console.log(Object.keys(res).length);
               if (res !== null) {
                 setTableData(res);
                 setSnackbarData({

@@ -1,15 +1,15 @@
-export const BASE_URL = "http://10.11.12.243:8083";
-export let authservice = "http://10.11.12.243:8061";
+export const BASE_URL = process.env.REACT_APP_BASE_URL
+export let authservice = process.env.REACT_APP_authservice;
 
-export let userservice = "http://10.11.12.243:8062" + "/qfuserservice";
+export let userservice = process.env.REACT_APP_userservice
 
-export let qfservice = "http://10.11.12.243:8063" + "/qfservice";
+export let qfservice = process.env.REACT_APP_qfservice
 
-export let dashboard = "http://10.11.12.243:8064" + "/qfdashboard";
+export let dashboard = process.env.REACT_APP_dashboard
 
-export let report = "http://10.11.12.243:8065" + "/qfreportservice";
+export let report = process.env.REACT_APP_report
 
-export let biservice = "http://10.11.12.243:8066" + "/biservice";
+export let biservice = process.env.REACT_APP_biservice
 
 export let SAVE_USER_LOCAL_GIT_DETAILS =
-  "http://10.11.12.243:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters";
+    "http://10.11.12.243:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters";

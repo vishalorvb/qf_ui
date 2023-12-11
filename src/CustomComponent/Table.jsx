@@ -92,12 +92,12 @@ export default function Table(props) {
           setSelectionModel((ps) => {
             if (setNewchangedElement) {
               const changedElement =
-                i?.length > ps?.length
+                i.length > ps.length
                   ? i.find((e) => !ps.includes(e))
                   : ps.find((e) => !i.includes(e));
               setNewchangedElement({
                 id: changedElement,
-                added: i?.length > ps?.length,
+                added: i.length > ps.length,
               });
             }
             return i;
@@ -116,8 +116,8 @@ export default function Table(props) {
             spacing={2}
           >
             ({(props.currentPage - 1) * 10 + 1} -
-            {(props.currentPage - 1) * 10 + rows?.length} of{" "}
-            {props.totalElement} ) page {props.currentPage} of {props.totalPage}
+            {(props.currentPage - 1) * 10 + rows.length} of {props.totalElement}{" "}
+            ) page {props.currentPage} of {props.totalPage}
             <IconButton
               onClick={(e) => props.onPrevious()}
               disabled={props.currentPage === 1}
