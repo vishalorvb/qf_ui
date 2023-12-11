@@ -21,7 +21,7 @@ sudo docker run \
 -e REACT_APP_qfservice='http://10.11.12.243:8063/qfservice' \
 -e REACT_APP_dashboard='http://10.11.12.243:8064/qfdashboard' \
 -e REACT_APP_report='http://10.11.12.243:8065/qfreportservice' \
--e REACT_APP_biservice='http://10.11.12.243:8066/bireport' \
+-e REACT_APP_biservice='http://10.11.12.243:8066/biservice' \
 -e REACT_APP_SAVE_USER_LOCAL_GIT_DETAILS='http://10.11.12.243:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters' \
 -p 3000:3000 -d --name reactcicdcontainer reactcicdimage:latest
 
