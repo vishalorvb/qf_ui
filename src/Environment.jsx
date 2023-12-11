@@ -11,5 +11,4 @@ export let report = process.env.REACT_APP_report
 
 export let biservice = process.env.REACT_APP_biservice
 
-export let SAVE_USER_LOCAL_GIT_DETAILS =
-    "http://10.11.12.243:8062/qfuserservice/userexecutionparameters/saveUserExecutionParameters";
+export let SAVE_USER_LOCAL_GIT_DETAILS = process.env.REACT_APP_SAVE_USER_LOCAL_GIT_DETAILS
