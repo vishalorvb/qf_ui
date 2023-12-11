@@ -26,7 +26,12 @@ export default function CustomCode() {
 
   useEffect(() => {
     console.log(globalApplication);
-    getCustomCodeList(globalApplication?.module_id, auth?.userId, setCodeList);
+    globalApplication?.module_id &&
+      getCustomCodeList(
+        globalApplication?.module_id,
+        auth?.userId,
+        setCodeList
+      );
   }, [globalApplication, snackbarData]);
 
   useEffect(() => {
@@ -69,7 +74,7 @@ export default function CustomCode() {
   const handleAddNew = () => {
     setCodeList((ps) => {
       return [
-        ...ps.filter((list) => list.id != 0),
+        ...ps?.filter((list) => list.id != 0),
         { id: 0, custom_code_page_name: "New Class", code: "Your Code" },
       ];
     });

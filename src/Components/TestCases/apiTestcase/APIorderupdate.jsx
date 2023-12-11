@@ -17,7 +17,7 @@ export default function APIorderupdate() {
       .get(`${qfservice}/testcase/${location?.state?.testcaseId}/apis`)
       .then((resp) => {
         setData(() =>
-          resp.data.data.apisList.filter((api) => api.is_selected === true)
+          resp.data.data.apisList?.filter((api) => api.is_selected === true)
         );
       });
 
@@ -86,7 +86,7 @@ export default function APIorderupdate() {
               );
               setData([...data]);
               setOrder(() => {
-                return data.map((d) => d.api_id);
+                return data?.map((d) => d.api_id);
               });
             }
           },

@@ -146,7 +146,7 @@ const TestLibrary = () => {
         issues
       );
     });
-    if (jsonData.length === 0) {
+    if (jsonData?.length === 0) {
       const headers = [
         "Issue Key",
         "Given",
@@ -171,7 +171,7 @@ const TestLibrary = () => {
       console.log(Object.keys(worksheet));
       console.log(worksheet);
       Object.keys(worksheet)
-        .filter((cell) => cell.startsWith("A1"))
+        ?.filter((cell) => cell.startsWith("A1"))
         .forEach((cell) => {
           worksheet[cell].s = headerStyle;
         });
@@ -219,7 +219,7 @@ const TestLibrary = () => {
         },
       };
       Object.keys(worksheet)
-        .filter((cell) => cell.startsWith("A1"))
+        ?.filter((cell) => cell.startsWith("A1"))
         .forEach((cell) => {
           worksheet[cell].s = headerStyle;
         });
@@ -448,7 +448,7 @@ const TestLibrary = () => {
         await new Promise((resolve) => {
           GetTestLibrary(
             (res) => {
-              console.log(Object.keys(res).length);
+              console.log(Object.keys(res)?.length);
               if (res !== null) {
                 setTableData(res);
                 setSnackbarData({

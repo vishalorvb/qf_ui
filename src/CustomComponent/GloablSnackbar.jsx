@@ -4,8 +4,7 @@ import useHead from "../hooks/useHead";
 export default function GlobalSnackbar(props) {
   const { snackbarData, setSnackbarData } = useHead();
 
-  const severity =
-    snackbarData?.severity?.toUpperCase() === "SUCCESS" ? "success" : "error";
+  const severity = snackbarData?.severity?.toLowerCase();
 
   const handleClose = () => {
     setSnackbarData((ps) => {

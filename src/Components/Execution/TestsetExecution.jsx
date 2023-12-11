@@ -55,7 +55,7 @@ export default function TestsetExecution() {
 
   const itemRender = (rawList) => {
     const navigationList = rawList
-      .filter(
+      ?.filter(
         (apiItem) =>
           apiItem.testset_name
             .toLowerCase()

@@ -52,10 +52,10 @@ export default function ApplicationsList() {
     if (expanded.includes(id)) {
       setSizeDiff(0);
       setExpanded((prevState) => {
-        return prevState.filter((applicationId) => applicationId !== id);
+        return prevState?.filter((applicationId) => applicationId !== id);
       });
       setApplication((prevState) => {
-        return prevState.filter((module) => module.parent_module_id !== id);
+        return prevState?.filter((module) => module.parent_module_id !== id);
       });
     } else {
       setExpanded((prevState) => {

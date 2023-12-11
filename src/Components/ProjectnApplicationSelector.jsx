@@ -18,6 +18,7 @@ export default function ProjectnApplicationSelector({
     setProjectList,
     applicationList,
     setapplicationList,
+    setSnackbarData,
   } = useHead();
 
   const { auth } = useAuth();
@@ -27,6 +28,7 @@ export default function ProjectnApplicationSelector({
 
   useEffect(() => {
     projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -35,6 +37,15 @@ export default function ProjectnApplicationSelector({
       console.log(projectsList[0]);
       setglobalProject(projectsList[0]);
     }
+
+    if (projectsList?.length <= 0) {
+      setSnackbarData({
+        status: true,
+        message: "Projects Not Found!",
+        severity: "warning",
+      });
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsList]);
 
@@ -48,6 +59,14 @@ export default function ProjectnApplicationSelector({
   useEffect(() => {
     globalApplication === null &&
       setglobalApplication(applicationList[0] ?? null);
+
+    if (applicationList?.length <= 0) {
+      setSnackbarData({
+        status: true,
+        message: "Project Do Not Have Applications!",
+        severity: "warning",
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
@@ -116,7 +135,7 @@ export default function ProjectnApplicationSelector({
               <div className="applist">
                 <ul>
                   {applicationList
-                    .filter((app) =>
+                    ?.filter((app) =>
                       app.module_name
                         ?.toLowerCase()
                         .includes(searchWord?.toLowerCase())

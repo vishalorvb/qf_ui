@@ -125,7 +125,7 @@ function CreateWebDataset({ datasetId, testcaseId, setToogle, copy }) {
         <Grid item md={9}>
           <ElementList
             elementList={
-              requestData.current?.screens_in_testcase.filter(
+              requestData.current?.screens_in_testcase?.filter(
                 (screens) => screens.screen_id === selectedScreenIds
               )[0]?.screen_elements[0]
             }

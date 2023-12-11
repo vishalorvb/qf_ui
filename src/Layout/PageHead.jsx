@@ -10,7 +10,7 @@ export default function PageHead() {
   const navigate = useNavigate();
   const location = useLocation();
   const backButtonRender =
-    location.pathname.split("/").filter((path) => {
+    location.pathname.split("/")?.filter((path) => {
       return (
         path !== "" &&
         !["Application", "Projects", "Testcase", "Testset"].includes(path)
