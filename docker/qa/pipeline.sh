@@ -48,7 +48,7 @@ sudo docker build -t qareactcicdimage:latest .
 
 sudo docker run \
 -e REACT_APP_BASE_URL='https://api.example.com' \
--e REACT_APP_authservice='http://10.11.12.243:8051' \
+-e REACT_APP_authservice='http://10.11.12.243:8051/authservice' \
 -e REACT_APP_userservice='http://10.11.12.243:8052/qfuserservice' \
 -e REACT_APP_qfservice='http://10.11.12.243:8053/qfservice' \
 -e REACT_APP_dashboard='http://10.11.12.243:8054/qfdashboard' \
