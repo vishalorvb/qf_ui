@@ -5,12 +5,9 @@ const useRefreshToken = () => {
   const { setAuth } = useAuth();
 
   const refresh = async () => {
-    const response = await axios.get(
-      `/qfauthservice/authentication/refreshtoken`,
-      {
-        header: { isRefreshToken: "true" },
-      }
-    );
+    const response = await axios.get(`/authentication/refreshtoken`, {
+      header: { isRefreshToken: "true" },
+    });
     setAuth((prev) => {
       return { ...prev, token: response?.data?.token };
     });

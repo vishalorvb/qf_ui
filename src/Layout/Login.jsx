@@ -52,7 +52,7 @@ export default function Login() {
       setLoading(true);
       try {
         const response = await axios.post(
-          authservice + "/qfauthservice/authentication/login",
+          authservice + "/authentication/login",
           {
             username: data.get("email"),
             password: data.get("password"),
@@ -68,7 +68,7 @@ export default function Login() {
         localStorage.setItem("token", token);
 
         const userInfo = await axios.get(
-          authservice + "/qfauthservice/authentication/userInfo",
+          authservice + "/authentication/userInfo",
           {
             headers: {
               Authorization: `Bearer ${token}`,
