@@ -64,7 +64,9 @@ export default function CustomCode() {
       id: undefined,
       makedefault: false,
     };
-    customCodeCreate(postData, setSnackbarData);
+    globalApplication?.module_id &&
+      globalProject?.project_id &&
+      customCodeCreate(postData, setSnackbarData);
   };
 
   const handleDelete = () => {
