@@ -111,7 +111,7 @@ function TestcaseTable({ project, application }) {
   ];
   useEffect(() => {
     setTestcases([]);
-    setShowloader(true);
+    project?.project_id && application?.module_id && setShowloader(true);
     project?.project_id &&
       application?.module_id &&
       getAlltestcaseOfApplicationandSubapplication(

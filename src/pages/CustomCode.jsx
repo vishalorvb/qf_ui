@@ -70,7 +70,9 @@ export default function CustomCode() {
   };
 
   const handleDelete = () => {
-    customCodeDelete(selectedCodeData?.id, setSnackbarData);
+    globalApplication?.module_id &&
+      globalProject?.project_id &&
+      customCodeDelete(selectedCodeData?.id, setSnackbarData);
   };
 
   const handleAddNew = () => {
