@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
+import { userservice } from "../Environment";
 
 const schema = yup.object().shape({
   firstName: yup.string().required().max(30, "Max length exceeded"),
@@ -38,7 +39,7 @@ const AddOrganization = () => {
 
   const onSubmitHandler = async (data) => {
     try {
-      const response = await axios.post("/qfuserservice/signup", data);
+      const response = await axios.post(`${userservice}/signup`, data);
       console.log(response.data.status);
       if (response.data.status === "SUCCESS") {
         setAddSuccessMsg(true);

@@ -36,7 +36,7 @@ function DeletePhase(props) {
     phaseId &&
       axios
         .post(
-          `${biservice}/Biservice/projects/phases/delete?phase_id=${phaseId}`
+          `${biservice}/${biservice}/projects/phases/delete?phase_id=${phaseId}`
         )
         .then((res) => {
           setDelSuccessMsg(true);

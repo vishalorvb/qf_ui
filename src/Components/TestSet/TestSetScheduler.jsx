@@ -40,7 +40,7 @@ function TestSetScheduler({ projectId, moduleId, testsetId, onSubmit }) {
     let payload = {
       jobName: `Testset_${testsetId} `,
       baseurl: qfservice,
-      apiurl: "/qfservice/ExecuteWebTestset_v11",
+      apiurl: "/${qfservice}/ExecuteWebTestset_v11",
       cron: Scheduledate,
       requestbody: JSON.stringify(data),
     };

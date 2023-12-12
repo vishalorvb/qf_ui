@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { biservice } from "../../Environment";
 
 export default function CreateCycle({ testsetData, getCycles }) {
   const [addSuccessMsg, setAddSuccessMsg] = useState(false);
@@ -28,24 +29,26 @@ export default function CreateCycle({ testsetData, getCycles }) {
       reports: selectedReport,
     };
     // console.log(postData);
-    axios.post(`/Biservice/projects/cycles/create`, postData).then((resp) => {
-      // console.log(resp)
-      if (resp.data.message === "Succesfully Created Cycle") {
-        setAddSuccessMsg(true);
-        reset();
-        getCycles();
-        setTimeout(() => {
-          setAddSuccessMsg(false);
-        }, 3000);
-      } else {
-        setAddErrorMsg(true);
-        reset();
-        getCycles();
-        setTimeout(() => {
-          setAddErrorMsg(false);
-        }, 3000);
-      }
-    });
+    axios
+      .post(`/${biservice}/projects/cycles/create`, postData)
+      .then((resp) => {
+        // console.log(resp)
+        if (resp.data.message === "Succesfully Created Cycle") {
+          setAddSuccessMsg(true);
+          reset();
+          getCycles();
+          setTimeout(() => {
+            setAddSuccessMsg(false);
+          }, 3000);
+        } else {
+          setAddErrorMsg(true);
+          reset();
+          getCycles();
+          setTimeout(() => {
+            setAddErrorMsg(false);
+          }, 3000);
+        }
+      });
   };
 
   useEffect(() => {

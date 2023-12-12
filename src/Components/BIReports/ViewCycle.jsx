@@ -2,6 +2,7 @@ import { Button, Grid, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
+import { biservice } from "../../Environment";
 let list = [];
 
 export default function ViewCycle({ selectedCycleList }) {
@@ -12,7 +13,7 @@ export default function ViewCycle({ selectedCycleList }) {
   const getCyclesReports = () => {
     axios
       .get(
-        `/Biservice/projects/${selectedCycleReports?.project_id}/cycles/${selectedCycleReports?.cycle_id}`
+        `/${biservice}/projects/${selectedCycleReports?.project_id}/cycles/${selectedCycleReports?.cycle_id}`
       )
       .then((resp) => {
         // console.log(resp.data.info.selectedcycles);
@@ -65,7 +66,7 @@ export default function ViewCycle({ selectedCycleList }) {
     // console.log(data);
 
     // Here you can perform further actions with the formData
-    axios.post(`/Biservice/projects/cycles/update`, data).then((resp) => {
+    axios.post(`/${biservice}/projects/cycles/update`, data).then((resp) => {
       // console.log(resp)
       if (resp.data.message === "Succesfully Updated Results") {
         setAddSuccessMsg(true);

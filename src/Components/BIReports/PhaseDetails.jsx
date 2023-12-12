@@ -96,7 +96,7 @@ function PhaseDetails(props) {
       };
       console.log(data1);
       axios
-        .post(`${biservice}/Biservice/projects/phases/create`, data1)
+        .post(`${biservice}/${biservice}/projects/phases/create`, data1)
         .then((res) => {
           console.log(res.data.message);
           setMsg(res.data.message);

@@ -669,7 +669,7 @@ export async function getElement(screenId, callback) {
 export async function getSprint_in_testcase(projectId, webtestcaseid) {
   return axios
     .get(
-      //  `${baseUrl}/qfservice/webtestcase/getTestcaseSprints?api_testcase_id=${apitestcaseid}&web_testcase_id=${webtestcaseid}`
+      //  `${baseUrl}/${qfservice}/webtestcase/getTestcaseSprints?api_testcase_id=${apitestcaseid}&web_testcase_id=${webtestcaseid}`
       `${qfservice}/webtestcase/getTestcaseSprints?project_id=${projectId}&testcase_id=${webtestcaseid}`
     )
     .then((res) => {
