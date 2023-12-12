@@ -32,6 +32,7 @@ function Reports() {
     globalApplication,
     setglobalApplication,
     setHeader,
+    setSnackbarData,
   } = useHead();
 
   let date = new Date();
