@@ -11,6 +11,7 @@ import {
   getUserOfProject,
   getJiraProject,
   getProjectDetails,
+  getProject,
 } from "../../Services/QfService";
 import {
   getApplicationOfProject,
@@ -42,7 +43,7 @@ let automationType = [
 ];
 
 function CreateProject() {
-  const { setHeader, setSnackbarData } = useHead();
+  const { setHeader, setSnackbarData, setProjectList } = useHead();
   const { auth } = useAuth();
   const usertoken = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -116,6 +117,7 @@ function CreateProject() {
               message: "Project successfully created",
               severity: "success",
             });
+            getProject(setProjectList, auth.userId);
             navigate("/Projects/search");
           } else {
             setSnackbarData({
@@ -133,6 +135,7 @@ function CreateProject() {
               message: "Project updated successfully",
               severity: "success",
             });
+            getProject(setProjectList, auth.userId);
             navigate("/Projects/search");
           } else {
             setSnackbarData({

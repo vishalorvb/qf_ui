@@ -163,6 +163,13 @@ export function getApplicationOfProject(callback, project_id) {
     .get(`${qfservice}/projects/applications?project_id=${project_id}`)
     .then((res) => {
       callback(res.data.data);
+      if (!res.data.data) {
+        setSnackbarData({
+          status: true,
+          message: "Project Do Not Have Applications!",
+          severity: "warning",
+        });
+      }
     });
 }
 
@@ -329,11 +336,18 @@ export async function release(projectId, releaseId, userId) {
 
 //Project service
 
-export async function getProject(callback, userId) {
+export async function getProject(callback, userId, setSnackbarData) {
   return await axios
     .get(`${qfservice}/getProjectsOfUser?userId=${userId}`)
     .then((res) => {
       callback(res.data.info ?? []);
+      if (!res.data.info) {
+        setSnackbarData({
+          status: true,
+          message: "Projects Not Found!",
+          severity: "warning",
+        });
+      }
     })
     .catch((err) => console.log(err));
 }

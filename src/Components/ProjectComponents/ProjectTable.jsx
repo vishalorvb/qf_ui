@@ -172,18 +172,19 @@ function ProjectTable({ location }) {
   ];
 
   useEffect(() => {
-    projectsList?.length < 0 && getProject(setProjectList, loggedInId);
+    projectsList?.length <= 0 &&
+      getProject(setProjectList, loggedInId, setSnackbarData);
   }, [loggedInId]);
 
-  useEffect(() => {
-    if (projectsList?.length <= 0) {
-      setSnackbarData({
-        status: true,
-        message: "Projects Not Found!",
-        severity: "warning",
-      });
-    }
-  }, [projectsList]);
+  // useEffect(() => {
+  //   if (projectsList?.length <= 0) {
+  //     setSnackbarData({
+  //       status: true,
+  //       message: "Projects Not Found!",
+  //       severity: "warning",
+  //     });
+  //   }
+  // }, [projectsList]);
   return (
     <>
       <SnackbarNotify

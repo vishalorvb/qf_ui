@@ -27,7 +27,8 @@ export default function ProjectnApplicationSelector({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
+    projectsList?.length <= 0 &&
+      getProject(setProjectList, auth.userId, setSnackbarData);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -37,21 +38,16 @@ export default function ProjectnApplicationSelector({
       console.log(projectsList[0]);
       setglobalProject(projectsList[0]);
     }
-
-    if (projectsList?.length <= 0) {
-      setSnackbarData({
-        status: true,
-        message: "Projects Not Found!",
-        severity: "warning",
-      });
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectsList]);
 
   useEffect(() => {
     if (globalProject?.project_id !== undefined) {
-      getApplicationOfProject(setapplicationList, globalProject?.project_id);
+      getApplicationOfProject(
+        setapplicationList,
+        globalProject?.project_id,
+        setSnackbarData
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject]);
@@ -60,13 +56,6 @@ export default function ProjectnApplicationSelector({
     globalApplication === null &&
       setglobalApplication(applicationList[0] ?? null);
 
-    if (applicationList?.length <= 0) {
-      setSnackbarData({
-        status: true,
-        message: "Project Do Not Have Applications!",
-        severity: "warning",
-      });
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
