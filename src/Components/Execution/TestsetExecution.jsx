@@ -156,7 +156,9 @@ export default function TestsetExecution() {
                   <Button
                     variant="contained"
                     onClick={() => {
-                      navigate("/Testset/Create");
+                      globalProject?.project_id &&
+                        globalApplication?.module_id &&
+                        navigate("/Testset/Create");
                     }}
                   >
                     Create Testset

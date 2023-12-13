@@ -341,7 +341,7 @@ export async function getProject(callback, userId, setSnackbarData) {
     .get(`${qfservice}/getProjectsOfUser?userId=${userId}`)
     .then((res) => {
       callback(res.data.info ?? []);
-      if (!res.data.info) {
+      if (!res.data.info || res.data?.info?.length === 0) {
         setSnackbarData({
           status: true,
           message: "Projects Not Found!",
