@@ -22,14 +22,11 @@ function TestCases() {
         <div className="intable">
           <ProjectnApplicationSelector />
         </div>
-        {globalProject && globalApplication && (
-          <div>
-            <TestcaseTable
-              project={globalProject}
-              application={globalApplication}
-            ></TestcaseTable>
-          </div>
-        )}
+
+        <TestcaseTable
+          project={globalProject}
+          application={globalApplication}
+        ></TestcaseTable>
       </div>
     </>
   );

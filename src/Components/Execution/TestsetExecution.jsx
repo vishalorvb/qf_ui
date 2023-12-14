@@ -55,7 +55,7 @@ export default function TestsetExecution() {
 
   const itemRender = (rawList) => {
     const navigationList = rawList
-      .filter(
+      ?.filter(
         (apiItem) =>
           apiItem.testset_name
             .toLowerCase()
@@ -156,7 +156,9 @@ export default function TestsetExecution() {
                   <Button
                     variant="contained"
                     onClick={() => {
-                      navigate("/Testset/Create");
+                      globalProject?.project_id &&
+                        globalApplication?.module_id &&
+                        navigate("/Testset/Create");
                     }}
                   >
                     Create Testset

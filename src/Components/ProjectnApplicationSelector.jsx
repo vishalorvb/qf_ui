@@ -18,6 +18,7 @@ export default function ProjectnApplicationSelector({
     setProjectList,
     applicationList,
     setapplicationList,
+    setSnackbarData,
   } = useHead();
 
   const { auth } = useAuth();
@@ -26,7 +27,9 @@ export default function ProjectnApplicationSelector({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    projectsList?.length <= 0 && getProject(setProjectList, auth.userId);
+    projectsList?.length <= 0 &&
+      getProject(setProjectList, auth.userId, setSnackbarData);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -40,7 +43,11 @@ export default function ProjectnApplicationSelector({
 
   useEffect(() => {
     if (globalProject?.project_id !== undefined) {
-      getApplicationOfProject(setapplicationList, globalProject?.project_id);
+      getApplicationOfProject(
+        setapplicationList,
+        globalProject?.project_id,
+        setSnackbarData
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalProject]);
@@ -48,6 +55,7 @@ export default function ProjectnApplicationSelector({
   useEffect(() => {
     globalApplication === null &&
       setglobalApplication(applicationList[0] ?? null);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationList]);
 
@@ -116,7 +124,7 @@ export default function ProjectnApplicationSelector({
               <div className="applist">
                 <ul>
                   {applicationList
-                    .filter((app) =>
+                    ?.filter((app) =>
                       app.module_name
                         ?.toLowerCase()
                         .includes(searchWord?.toLowerCase())

@@ -15,7 +15,7 @@ const PersistLogin = () => {
     const verifyUser = async () => {
       try {
         const userInfo = await axios.get(
-          authservice + "/qfauthservice/authentication/userInfo",
+          authservice + "/authentication/userInfo",
           {
             headers: {
               Authorization: `Bearer ${token}`,

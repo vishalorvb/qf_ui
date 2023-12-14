@@ -19,6 +19,7 @@ import ViewCycle from "./ViewCycle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TableActions from "../../CustomComponent/TableActions";
 import ConfirmPop from "../../CustomComponent/ConfirmPop";
+import { biservice } from "../../Environment";
 function Cycles() {
   const { setHeader } = useHead();
   const location = useLocation();
@@ -36,7 +37,7 @@ function Cycles() {
 
   let porject_id = location.state.param2;
   const getCycles = () => {
-    axios.get(`/Biservice/projects/${porject_id}/cycles`).then((resp) => {
+    axios.get(`/${biservice}/projects/${porject_id}/cycles`).then((resp) => {
       // console.log(resp);
       setCycleList(resp?.data?.info?.cycles);
       setTSList(resp?.data?.info?.bitestsets);
@@ -45,7 +46,7 @@ function Cycles() {
 
   function deleteCycle(cycleId) {
     axios
-      .post(`/Biservice/projects/cycles/delete?cycle_id=${cycleId}`)
+      .post(`/${biservice}/projects/cycles/delete?cycle_id=${cycleId}`)
       .then((res) => {
         // console.log(res);
         if (res.data.status === "SUCCESS") {

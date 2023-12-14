@@ -143,7 +143,7 @@ export default function Phases() {
       };
 
       axios
-        .post(`${biservice}/Biservice/projects/phases/create`, data)
+        .post(`${biservice}/${biservice}/projects/phases/create`, data)
         .then((res) => {
           console.log(res.data.message);
           setMsg(res.data.message);

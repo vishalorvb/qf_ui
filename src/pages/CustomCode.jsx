@@ -26,7 +26,12 @@ export default function CustomCode() {
 
   useEffect(() => {
     console.log(globalApplication);
-    getCustomCodeList(globalApplication?.module_id, auth?.userId, setCodeList);
+    globalApplication?.module_id &&
+      getCustomCodeList(
+        globalApplication?.module_id,
+        auth?.userId,
+        setCodeList
+      );
   }, [globalApplication, snackbarData]);
 
   useEffect(() => {
@@ -59,17 +64,21 @@ export default function CustomCode() {
       id: undefined,
       makedefault: false,
     };
-    customCodeCreate(postData, setSnackbarData);
+    globalApplication?.module_id &&
+      globalProject?.project_id &&
+      customCodeCreate(postData, setSnackbarData);
   };
 
   const handleDelete = () => {
-    customCodeDelete(selectedCodeData?.id, setSnackbarData);
+    globalApplication?.module_id &&
+      globalProject?.project_id &&
+      customCodeDelete(selectedCodeData?.id, setSnackbarData);
   };
 
   const handleAddNew = () => {
     setCodeList((ps) => {
       return [
-        ...ps.filter((list) => list.id != 0),
+        ...ps?.filter((list) => list.id != 0),
         { id: 0, custom_code_page_name: "New Class", code: "Your Code" },
       ];
     });

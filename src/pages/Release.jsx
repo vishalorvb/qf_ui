@@ -22,7 +22,7 @@ function Release() {
 
   useEffect(() => {
     setInstance([]);
-    setShowloader(true);
+    globalProject?.project_id && setShowloader(true);
     globalProject?.project_id &&
       getReleaseInstances(setInstance, globalProject?.project_id).then(
         (res) => {

@@ -7,6 +7,11 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import reportWebVitals from "./reportWebVitals";
+import { stopReportingRuntimeErrors } from "react-error-overlay";
+
+// if (process.env.NODE_ENV === "development") {
+//   stopReportingRuntimeErrors(); // disables error overlays
+// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

@@ -52,7 +52,7 @@ export default function Login() {
       setLoading(true);
       try {
         const response = await axios.post(
-          authservice + "/qfauthservice/authentication/login",
+          authservice + "/authentication/login",
           {
             username: data.get("email"),
             password: data.get("password"),
@@ -68,7 +68,7 @@ export default function Login() {
         localStorage.setItem("token", token);
 
         const userInfo = await axios.get(
-          authservice + "/qfauthservice/authentication/userInfo",
+          authservice + "/authentication/userInfo",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -117,11 +117,7 @@ export default function Login() {
     // auth?.user && navigate(from, { replace: true });
     auth?.user &&
       auth?.roles &&
-      ([1, 4].includes(auth?.roles)
-        ? navigate("/Application/Recent", { state: "recentApplication" })
-        : [5].includes(auth?.roles)
-        ? navigate("/Organization", { state: "recentApplication" })
-        : navigate("/users", { state: "recentApplication" }));
+      navigate("/Projects/favourite", { state: "recentProjects" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
@@ -129,11 +125,7 @@ export default function Login() {
     // auth?.user && navigate(from, { replace: true });
     auth?.user &&
       auth?.roles &&
-      ([1, 4].includes(auth?.roles)
-        ? navigate("/Application/Recent", { state: "recentApplication" })
-        : [5].includes(auth?.roles)
-        ? navigate("/Organization", { state: "recentApplication" })
-        : navigate("/users", { state: "recentApplication" }));
+      navigate("/Projects/favourite", { state: "recentProjects" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

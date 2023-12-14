@@ -32,6 +32,7 @@ function Reports() {
     globalApplication,
     setglobalApplication,
     setHeader,
+    setSnackbarData,
   } = useHead();
 
   let date = new Date();
@@ -223,23 +224,32 @@ function Reports() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const submit = (e) => {
-    getReport(fromDate, toDate, globalApplication?.module_id, loggedInId).then(
-      (Response) => {
-        if (Response?.data?.info?.length > 0) {
-          setTbData(Response.data.info);
-          setReportSuccessMsg(true);
-          setTimeout(() => {
-            setReportSuccessMsg(false);
-          }, 3000);
-        } else {
-          setReportFailMsg(true);
-          setTbData([]);
-          setTimeout(() => {
-            setReportFailMsg(false);
-          }, 3000);
-        }
-      }
-    );
+    globalApplication?.module_id
+      ? getReport(
+          fromDate,
+          toDate,
+          globalApplication?.module_id,
+          loggedInId
+        ).then((Response) => {
+          if (Response?.data?.info?.length > 0) {
+            setTbData(Response.data.info);
+            setReportSuccessMsg(true);
+            setTimeout(() => {
+              setReportSuccessMsg(false);
+            }, 3000);
+          } else {
+            setReportFailMsg(true);
+            setTbData([]);
+            setTimeout(() => {
+              setReportFailMsg(false);
+            }, 3000);
+          }
+        })
+      : setSnackbarData({
+          status: true,
+          message: "Applications Do Not Exist",
+          severity: "error",
+        });
   };
 
   return (

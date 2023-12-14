@@ -2,6 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import useHead from "../hooks/useHead";
+import { biservice } from "../Environment";
 
 export default function LiveAutocomplete({
   selectedOptions,
@@ -20,7 +21,7 @@ export default function LiveAutocomplete({
     previousController.current = controller;
     axios
       .post(
-        `/Biservice/bireport/gettestsets?project_id=${globalProject?.project_id}&reqst=` +
+        `/${biservice}/bireport/gettestsets?project_id=${globalProject?.project_id}&reqst=` +
           searchTerm,
         {
           signal,

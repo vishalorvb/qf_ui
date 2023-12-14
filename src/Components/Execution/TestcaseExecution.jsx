@@ -144,7 +144,9 @@ export default function TestcaseExecution() {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    navigate("/Testcase/Create");
+                    globalProject?.project_id &&
+                      globalApplication?.module_id &&
+                      navigate("/Testcase/Create");
                   }}
                 >
                   Create Testcase

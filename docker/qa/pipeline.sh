@@ -37,7 +37,7 @@ sudo docker rmi qareactcicdimage:latest || true
 # Navigate to your Spring Boot application directory
 cd /var/lib/jenkins/workspace/QAReactCICD/docker/qa
 
-sudo rsync -av --exclude=docker/ --exclude=src/Environment.jsx /var/lib/jenkins/workspace/QAReactCICD/ /var/lib/jenkins/workspace/QAReactCICD/docker/qa/
+sudo rsync -av --exclude=docker/  /var/lib/jenkins/workspace/QAReactCICD/ /var/lib/jenkins/workspace/QAReactCICD/docker/qa/
 pwd
 ls -l
 # Build a Docker image with "latest" tag
@@ -48,12 +48,13 @@ sudo docker build -t qareactcicdimage:latest .
 
 sudo docker run \
 -e REACT_APP_BASE_URL='https://api.example.com' \
--e REACT_APP_authservice='http://10.11.12.243:8051' \
+-e REACT_APP_authservice='http://10.11.12.243:8051/qfauthservice' \
 -e REACT_APP_userservice='http://10.11.12.243:8052/qfuserservice' \
 -e REACT_APP_qfservice='http://10.11.12.243:8053/qfservice' \
 -e REACT_APP_dashboard='http://10.11.12.243:8054/qfdashboard' \
 -e REACT_APP_report='http://10.11.12.243:8055/qfreportservice' \
--e REACT_APP_biservice='http://10.11.12.243:8056/bireport' \
+-e REACT_APP_biservice='http://10.11.12.243:8056/biservice' \
+-e REACT_APP_SAVE_USER_LOCAL_GIT_DETAILS='http://10.11.12.243:8052/qfuserservice/userexecutionparameters/saveUserExecutionParameters' \
 -p 3001:3000 -d --name qareactcicdcontainer qareactcicdimage:latest
 
 exit

@@ -8,11 +8,11 @@ import Paper from "@mui/material/Paper";
 import { useState } from "react";
 
 function not(a, b) {
-  return a.filter((value) => b.indexOf(value) === -1);
+  return a?.filter((value) => b.indexOf(value) === -1);
 }
 
 function intersection(a, b) {
-  return a.filter((value) => b.indexOf(value) !== -1);
+  return a?.filter((value) => b.indexOf(value) !== -1);
 }
 
 export default function TransferList({

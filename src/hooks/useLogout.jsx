@@ -10,7 +10,7 @@ const useLogout = () => {
     setAuth({});
     localStorage.setItem("token", "");
     try {
-      await axios.get(`${authservice}/qfauthservice/authentication/logout`, {
+      await axios.get(`${authservice}/authentication/logout`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

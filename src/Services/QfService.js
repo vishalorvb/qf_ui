@@ -163,6 +163,13 @@ export function getApplicationOfProject(callback, project_id) {
     .get(`${qfservice}/projects/applications?project_id=${project_id}`)
     .then((res) => {
       callback(res.data.data);
+      if (!res.data.data) {
+        setSnackbarData({
+          status: true,
+          message: "Project Do Not Have Applications!",
+          severity: "warning",
+        });
+      }
     });
 }
 
@@ -329,11 +336,18 @@ export async function release(projectId, releaseId, userId) {
 
 //Project service
 
-export async function getProject(callback, userId) {
+export async function getProject(callback, userId, setSnackbarData) {
   return await axios
     .get(`${qfservice}/getProjectsOfUser?userId=${userId}`)
     .then((res) => {
       callback(res.data.info ?? []);
+      if (!res.data.info || res.data?.info?.length === 0) {
+        setSnackbarData({
+          status: true,
+          message: "Projects Not Found!",
+          severity: "warning",
+        });
+      }
     })
     .catch((err) => console.log(err));
 }
@@ -669,7 +683,7 @@ export async function getElement(screenId, callback) {
 export async function getSprint_in_testcase(projectId, webtestcaseid) {
   return axios
     .get(
-      //  `${baseUrl}/qfservice/webtestcase/getTestcaseSprints?api_testcase_id=${apitestcaseid}&web_testcase_id=${webtestcaseid}`
+      //  `${baseUrl}/${qfservice}/webtestcase/getTestcaseSprints?api_testcase_id=${apitestcaseid}&web_testcase_id=${webtestcaseid}`
       `${qfservice}/webtestcase/getTestcaseSprints?project_id=${projectId}&testcase_id=${webtestcaseid}`
     )
     .then((res) => {

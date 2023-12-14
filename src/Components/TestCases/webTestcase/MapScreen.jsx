@@ -31,7 +31,7 @@ function MapScreen({ pages, setpages }) {
                 });
                 setpages([...p]);
               }}
-              preselect={page?.screens_list.filter(
+              preselect={page?.screens_list?.filter(
                 (screen) => screen.is_select
               )}
             ></MuiltiSelect>

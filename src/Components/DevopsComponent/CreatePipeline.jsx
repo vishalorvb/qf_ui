@@ -12,6 +12,7 @@ import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import { Stack } from "@mui/system";
 import AccordionTemplate from "../../CustomComponent/AccordionTemplate";
 import { getProject } from "../../Services/QfService";
+import { qfservice } from "../../Environment";
 
 export default function CreatePipeline() {
   const [pipelineData, setPipelineData] = useState({});
@@ -44,7 +45,7 @@ export default function CreatePipeline() {
   const onSubmitHandler = (params) => {
     const id = location.state.id;
     axios
-      .post(`/qfservice/Createpipeline`, null, {
+      .post(`/${qfservice}/Createpipeline`, null, {
         params: {
           project_id: globalProject.project_id,
           release_name: params.releaseName,
