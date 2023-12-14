@@ -9,7 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import SnackbarNotify from "../../CustomComponent/SnackbarNotify";
 import useHead from "../../hooks/useHead";
-import { SAVE_USER_LOCAL_GIT_DETAILS } from "../../Environment";
+import { userservice } from "../../Environment";
 import { getUserGitDetails } from "../../Services/UserService";
 import axios from "axios";
 
@@ -48,7 +48,10 @@ function GitDetails() {
       };
       console.log(data);
       axios
-        .post(SAVE_USER_LOCAL_GIT_DETAILS, data)
+        .post(
+          `${userservice}/userexecutionparameters/saveUserExecutionParameters`,
+          data
+        )
         .then((res) => {
           console.log(res.data.info);
           setEditSuccessMsg(true);
