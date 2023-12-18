@@ -17,7 +17,7 @@ import AppleIcon from "@mui/icons-material/Apple";
 import AdUnitsIcon from "@mui/icons-material/AdUnits";
 import useHead from "../../hooks/useHead";
 function ProjectTable({ location }) {
-  console.log(process.env.authservice);
+  console.log(process.env.REACT_APP_authservice);
 
   let [popup, setPopup] = useState(false);
   let [pid, setPid] = useState();
