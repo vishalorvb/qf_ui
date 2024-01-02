@@ -63,7 +63,9 @@ export default function ApplicationsList() {
       });
       setApplication((prevState) => {
         const index = prevState.findIndex((module) => module.module_id === id);
-        const subModules = prevState[index].sub_modules_list;
+        const subModules = prevState[index].sub_modules_list?.filter(
+          (submodule) => submodule.is_deleted == false
+        );
         const newArr = [...prevState];
         newArr.splice(index + 1, 0, ...subModules);
         setSizeDiff((prevsd) => {
@@ -208,7 +210,9 @@ export default function ApplicationsList() {
         return (
           <>
             {param.row.is_parent_module === true &&
-              param.row.sub_modules_list?.length > 0 && (
+              param.row.sub_modules_list?.filter(
+                (submodule) => submodule.is_deleted == false
+              )?.length > 0 && (
                 <span onClick={() => handleExpand(param.row.module_id)}>
                   <ExpandMore
                     expand={expanded.includes(param.row.module_id)}
