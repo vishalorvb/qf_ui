@@ -72,7 +72,7 @@ function ElementsDetails({ ElementId, setPopup, setUpdated, isDiffElement }) {
     console.log(details);
     axios
       .postForm(
-        `/${qfservice}/webpages/updateWebPageElementPaths`,
+        `${qfservice}/webpages/updateWebPageElementPaths`,
         elementDetails
       )
       .then((resp) => {
