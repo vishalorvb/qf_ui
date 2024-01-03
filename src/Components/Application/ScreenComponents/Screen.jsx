@@ -138,7 +138,7 @@ export default function Screens({ location }) {
       .then((resp) => {
         console.log(resp?.data?.info);
         const data = resp?.data?.info;
-        setPage(data ? data : []);
+        setPage(data ?? []);
       });
   };
 
