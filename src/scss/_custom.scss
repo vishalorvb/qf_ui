@@ -674,3 +674,56 @@ text.highcharts-credits {
 .tableParent {
   position: relative;
 }
+
+.user-menu {
+  background-color: white;
+  padding: 10px;
+  margin: 10px 0px 0px 10px;
+  border-radius: 10px;
+  list-style: none;
+
+  li {
+    font-size: small;
+    padding: 10px;
+    cursor: pointer;
+    color: #728fad;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: 0.5s ease-in-out;
+    border-radius: 10px;
+  }
+  li:hover {
+    transform: scale(1.05);
+    background-color: #bdcff3;
+  }
+}
+
+.form-unit {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  label {
+    color: grey;
+    font-weight: bold;
+  }
+}
+
+.form-submit-unit {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tocken-badge {
+  padding: 10px 15px 10px 15px;
+  background-color: rgba($accent, 1.5);
+  color: white;
+  border-radius: 10px;
+  font-weight: bold;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

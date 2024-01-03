@@ -1,75 +1,86 @@
-import { Grid, Paper, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import { Collapse, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Stack } from "@mui/system";
-import useLogout from "../hooks/useLogout";
 import useAuth from "../hooks/useAuth";
+import { getPhoto } from "../Services/UserService";
+import MuiListItemIcon from "@mui/material/ListItemIcon";
+import { useNavigate } from "react-router-dom";
 
 export default function UserCard() {
-  const logout = useLogout();
+  const navigate = useNavigate();
   const { auth } = useAuth();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [imageUrl, setImageUrl] = useState(" ");
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  useEffect(() => {
+    getPhoto(setImageUrl, auth.userId, auth.token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="flex-start"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+    <>
+      <div
+        className="profile"
+        // style={{ width: drawerWidth - 20, overflow: "hidden" }}
       >
-        <Stack
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          spacing={0.5}
-        >
-          <Typography sx={{ color: "black", margin: "0px" }}>
-            Welcome {auth?.user}
-          </Typography>
+        <img
+          alt="profile"
+          src={
+            imageUrl == "Profile picture not found" ? "profile.jpg" : imageUrl
+          }
+          width="40"
+          height="40"
+          style={{ borderRadius: "50%" }}
+        />
+
+        {open && (
+          <div>
+            <Typography
+              sx={{
+                color: "white",
+                margin: "0px",
+                textOverflow: "ellipsis",
+              }}
+            >
+              Welcome {auth?.info?.firstName}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "#728FAD" }}>
+              {auth?.info?.userProfiles[0]?.type}
+            </Typography>
+          </div>
+        )}
+        <MuiListItemIcon>
           <ExpandMore
-            expand={open}
-            aria-expanded={open}
+            expand={showUserMenu}
+            onClick={() => setShowUserMenu((ps) => !ps)}
+            aria-expanded={showUserMenu}
             aria-label="show more"
             disableFocusRipple
             disableRipple
-            sx={{ color: "black", padding: "0px" }}
           >
-            <ExpandMoreIcon />
+            <ExpandMoreIcon sx={{ color: "white" }} />
           </ExpandMore>
-        </Stack>
-        <Typography variant="caption" sx={{ color: "#728FAD" }}>
-          {auth?.info?.userProfiles[0]?.type}
-        </Typography>
-      </Grid>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={() => logout()}>Logout</MenuItem>
-      </Menu>
-    </div>
+        </MuiListItemIcon>
+      </div>
+      <Collapse in={showUserMenu}>
+        <ul className="user-menu">
+          <li
+            onClick={(e) => {
+              navigate("/profile");
+            }}
+          >
+            Profile
+          </li>
+          <li
+            onClick={(e) => {
+              navigate("/user-settings");
+            }}
+          >
+            Settings
+          </li>
+        </ul>
+      </Collapse>
+    </>
   );
 }
