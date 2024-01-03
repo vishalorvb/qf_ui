@@ -19,12 +19,16 @@ export function getTestset(
             settotalPage(resp?.data?.info?.totalPages);
             setTotalElement(resp?.data?.info?.totalElements);
             callback(testsets);
+        }).catch((err) => {
+            console.log(err);
         });
 }
 
 export function getApis(callback, applicationId) {
     axios.get(`${qfservice}/${applicationId}/apis`).then((res) => {
         callback(res.data.data.apisList);
+    }).catch((err) => {
+        console.log(err);
     });
 }
 
@@ -60,6 +64,8 @@ export function getApiDatasets(callback, testcaseId) {
         if (res.data.data !== null) {
             callback(res.data.data);
         }
+    }).catch((err) => {
+        console.log(err);
     });
 }
 
@@ -69,6 +75,8 @@ export function getDatasetDetails(callback, datasetId) {
         url: `${qfservice}/GetDatasetDetailsByDatasetId?dataset_id=${datasetId}`,
     }).then((res) => {
         callback(res.data.data.apidatasets);
+    }).catch((err) => {
+        console.log(err);
     });
 }
 
@@ -83,6 +91,8 @@ export async function createApiDataset(userId, Data) {
         } else {
             return res.data.error.description;
         }
+    }).catch((err) => {
+        console.log(err);
     });
     return x;
 }
@@ -97,6 +107,8 @@ export async function DeleteApiDataset(datasetId) {
         } else {
             return false;
         }
+    }).catch((err) => {
+        console.log(err);
     });
     return x;
 }
@@ -115,6 +127,8 @@ export async function updateApiOrder(data) {
         data: data,
     }).then((res) => {
         return res.data;
+    }).catch((err) => {
+        console.log(err);
     });
 }
 
