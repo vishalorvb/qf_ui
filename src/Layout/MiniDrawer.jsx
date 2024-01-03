@@ -10,7 +10,6 @@ import MuiListItemText from "@mui/material/ListItemText";
 import { useLocation, useNavigate } from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
-import { getPhoto } from "../Services/UserService";
 //navItems
 import {
   testManagementList,
@@ -25,6 +24,7 @@ import useAuth from "../hooks/useAuth";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 import useLogout from "../hooks/useLogout";
+import UserCard from "./UserCard";
 
 const drawerWidth = 250;
 
@@ -122,12 +122,6 @@ export default function MiniDrawer({ open, setOpen }) {
   const role = auth?.roles;
   const [opensubNav, setOpensubNav] = useState(["Application"]);
   const location = useLocation();
-  let [imageUrl, setImageUrl] = useState(" ");
-  useEffect(() => {
-    getPhoto(setImageUrl, auth.userId, auth.token);
-    !open && setOpensubNav([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
 
   const openSubNavigationHandle = (navItem) => {
     setOpensubNav((ps) => {
@@ -220,18 +214,11 @@ export default function MiniDrawer({ open, setOpen }) {
           </IconButton>
         </DrawerHeader>
         <div className="menu">
-          <div
+          <UserCard />
+          {/* <div
             className="profile"
             style={{ width: drawerWidth - 20, overflow: "hidden" }}
           >
-            {/* <Avatar sx={{ bgcolor: "white", color: "black" }}
-            onClick={e=>{
-              navigate("/profile")
-            }}
-            >
-              {auth?.user?.charAt(0)?.toUpperCase() +
-                auth?.user?.charAt(1)?.toUpperCase()}
-            </Avatar> */}
             {imageUrl !== " " && (
               <img
                 onClick={(e) => {
@@ -274,7 +261,7 @@ export default function MiniDrawer({ open, setOpen }) {
                 </Typography>
               </div>
             )}
-          </div>
+          </div> */}
 
           {testManagementMenu?.length > 0 && (
             <>
