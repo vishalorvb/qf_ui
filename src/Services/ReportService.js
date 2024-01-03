@@ -6,5 +6,7 @@ export async function getReport(fromDate, toDate, applicationId, userId) {
         `${report}/GetReportsBetweenTwoDates?start_date=${fromDate}&end_date=${toDate}&module_id=${applicationId}&user_id=${userId}`
     ).then(res => {
         return res;
-    })
+    }).catch((err) => {
+        console.log(err);
+    });
 }
