@@ -21,6 +21,12 @@ export default function UserSettings() {
 
   const onSubmit = (data) => {
     console.log(data);
+    const postData = {
+      userId: 7,
+      gitToken: data.token,
+      // "gitTokenVerified":true,
+      repo_base_url: "https://gitlab.com",
+    };
   };
 
   return (

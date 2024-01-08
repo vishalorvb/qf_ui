@@ -26,9 +26,7 @@ export default function UserCard() {
       >
         <img
           alt="profile"
-          src={
-            imageUrl == "Profile picture not found" ? "profile.jpg" : imageUrl
-          }
+          src={imageUrl == "_" ? "profile.jpg" : imageUrl}
           width="40"
           height="40"
           style={{ borderRadius: "50%" }}

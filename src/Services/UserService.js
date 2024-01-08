@@ -52,6 +52,7 @@ export function getPhoto(callback, userId, token) {
     .then((response) => {
       const blob = new Blob([response.data], { type: "image/png" });
       callback(URL.createObjectURL(blob));
+      console.log(URL.createObjectURL(blob));
     })
     .catch((error) => {
       console.error(error);
@@ -78,4 +79,31 @@ export async function getUserGitDetails(callback, userId) {
       callback(res.data.info);
       return res.data.info;
     });
+}
+
+export function getUserProperties(callback, userId) {
+  axios
+    .get(
+      `${userservice}/userexecutionparameters/userproperties?userId=${userId}`
+    )
+    .then((res) => {
+      callback(res.data.info);
+      return res.data.info;
+    });
+}
+
+export async function postUserProperties(postData, response) {
+  axios
+    .post(
+      `${userservice}/userexecutionparameters/saveUserExecutionParameters`,
+      postData
+    )
+    .then((response) => {
+      return true;
+    })
+    .catch((error) => {
+      console.log(error);
+      return false;
+    });
+  return x;
 }
