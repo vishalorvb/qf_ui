@@ -41,26 +41,7 @@ export async function uploadPic(userId, picfile, token) {
 }
 
 export function getPhoto(callback, userId, token) {
-<<<<<<< HEAD
-  axios
-    .get(`${userservice}/user/profilePic`, {
-      params: {
-        user_id: userId,
-      },
-      responseType: "arraybuffer",
-      headers: {
-        // Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      const blob = new Blob([response.data], { type: "image/png" });
-      callback(URL.createObjectURL(blob));
-      console.log(URL.createObjectURL(blob));
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-=======
+
     axios
         .get(`${userservice}/user/profilePic`, {
             params: {
@@ -74,13 +55,13 @@ export function getPhoto(callback, userId, token) {
         .then((response) => {
             const blob = new Blob([response.data], { type: "image/png" });
             callback(URL.createObjectURL(blob));
+            console.log(URL.createObjectURL(blob));
         })
         .catch((error) => {
             console.error(error);
         });
->>>>>>> 64969b4156ef2b701bd33e10aee7469fb091d025
-}
 
+}
 export async function getUsers(callback, orgid, ssoid, token) {
     return await axios
         .get(`${userservice}/user/listUsers?orgId=${orgid}&ssoId=${ssoid}`, {
@@ -108,28 +89,28 @@ export async function getUserGitDetails(callback, userId) {
 }
 
 export function getUserProperties(callback, userId) {
-  axios
-    .get(
-      `${userservice}/userexecutionparameters/userproperties?userId=${userId}`
-    )
-    .then((res) => {
-      callback(res.data.info);
-      return res.data.info;
-    });
+    axios
+        .get(
+            `${userservice}/userexecutionparameters/userproperties?userId=${userId}`
+        )
+        .then((res) => {
+            callback(res.data.info);
+            return res.data.info;
+        });
 }
 
 export async function postUserProperties(postData, response) {
-  axios
-    .post(
-      `${userservice}/userexecutionparameters/saveUserExecutionParameters`,
-      postData
-    )
-    .then((response) => {
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
-  return x;
+    axios
+        .post(
+            `${userservice}/userexecutionparameters/saveUserExecutionParameters`,
+            postData
+        )
+        .then((response) => {
+            return true;
+        })
+        .catch((error) => {
+            console.log(error);
+            return false;
+        });
+    return x;
 }
