@@ -149,7 +149,7 @@ function TestsetExecutionToolbar({
       setShowloader(true);
       const url =
         qfservice +
-        "/${qfservice}/" +
+        "/" +
         (applicationType === 1 ? "ExecuteTestset" : "ExecuteWebTestset_v11");
 
       const executionData = {
