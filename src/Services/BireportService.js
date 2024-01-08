@@ -7,5 +7,7 @@ export async function deleteReport(testMapId, callback) {
         url: `${biservice}/deletetestsets?testset_map_id=${testMapId}`,
     }).then((res) => {
         callback();
+    }).catch((err) => {
+        console.log(err);
     });
 }
