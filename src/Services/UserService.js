@@ -9,15 +9,17 @@ export async function UpdateUser(data) {
         headers: {
             // Authorization: `Bearer ${data.token}`,
         },
-    }).then((res) => {
-        if (res.data.status === "SUCCESS") {
-            return true;
-        } else {
-            return false;
-        }
-    }).catch((err) => {
-        console.log(err);
-    });
+    })
+        .then((res) => {
+            if (res.data.status === "SUCCESS") {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     return x;
 }
 
@@ -72,7 +74,8 @@ export async function getUsers(callback, orgid, ssoid, token) {
         .then((res) => {
             callback(res.data.info);
             return res.data.info;
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err);
         });
 }
@@ -83,7 +86,8 @@ export async function getUserGitDetails(callback, userId) {
         .then((res) => {
             callback(res.data.info);
             return res.data.info;
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err);
         });
 }
