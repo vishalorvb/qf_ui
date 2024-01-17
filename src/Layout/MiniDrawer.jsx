@@ -120,7 +120,7 @@ export default function MiniDrawer({ open, setOpen }) {
   const logout = useLogout();
   const { auth } = useAuth();
   const role = auth?.roles;
-  const [opensubNav, setOpensubNav] = useState(["Application"]);
+  const [opensubNav, setOpensubNav] = useState(["Projects"]);
   const location = useLocation();
 
   const openSubNavigationHandle = (navItem) => {

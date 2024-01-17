@@ -117,7 +117,7 @@ export default function Login() {
     // auth?.user && navigate(from, { replace: true });
     auth?.user &&
       auth?.roles &&
-      navigate("/Projects/favourite", { state: "recentProjects" });
+      navigate("/Favourite-Projects", { state: "recentProjects" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
@@ -125,7 +125,7 @@ export default function Login() {
     // auth?.user && navigate(from, { replace: true });
     auth?.user &&
       auth?.roles &&
-      navigate("/Projects/favourite", { state: "recentProjects" });
+      navigate("/Favourite-Projects", { state: "recentProjects" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
