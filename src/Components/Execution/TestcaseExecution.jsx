@@ -146,7 +146,7 @@ export default function TestcaseExecution() {
                   onClick={() => {
                     globalProject?.project_id &&
                       globalApplication?.module_id &&
-                      navigate("/Testcase/Create");
+                      navigate("Create-Testcase");
                   }}
                 >
                   Create Testcase

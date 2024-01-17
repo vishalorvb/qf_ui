@@ -180,7 +180,7 @@ function TestsetCreate() {
             message: res?.data?.message,
             severity: res?.data?.status,
           });
-          navigate("/Testset/Recent");
+          navigate("Recent-Testsets");
         });
   };
   const handleDataset = (row, e) => {
@@ -382,7 +382,7 @@ function TestsetCreate() {
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}
-          onClick={() => navigate("/Testset/Recent")}
+          onClick={() => navigate("Recent-Testsets")}
         >
           Cancel
         </Button>
