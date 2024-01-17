@@ -12,7 +12,7 @@ function Projects() {
         ...ps,
         name:
           location?.state === "recentProjects"
-            ? "Recent Projects"
+            ? "Favourite Projects"
             : "Search Projects",
       };
     });
