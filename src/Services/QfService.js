@@ -134,9 +134,10 @@ export async function updateApiOrder(data) {
 
 //Application Service
 
-export function getApplication(callback, userId) {
-    axios.get(`${qfservice}/users/applications?user_id=${userId}`).then((res) => {
+export async function getApplication(callback, userId) {
+    return await axios.get(`${qfservice}/users/applications?user_id=${userId}`).then((res) => {
         callback(res.data.data ?? []);
+        return res.data.data ?? []
     })
         .catch((err) => {
             console.log(err);

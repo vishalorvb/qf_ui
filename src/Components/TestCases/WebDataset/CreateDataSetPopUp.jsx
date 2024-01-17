@@ -55,7 +55,7 @@ function CreateDataSetPopUp({ func, dsName, dsDesciption, dsType, setToogle }) {
             <div>
 
 
-                <Grid container spacing={1} justifyContent='flex-end'>
+                <Grid container spacing={1} justifyContent='flex-end' >
                     <Grid item sm={2} md={2}>
                         <label for="">Dataset Type:<span className="importantfield">*</span></label>
                         <select
@@ -80,7 +80,7 @@ function CreateDataSetPopUp({ func, dsName, dsDesciption, dsType, setToogle }) {
                         />
                     </Grid>
 
-                    <Grid item md={2}>
+                    <Grid item md={3}>
                         <label for="">Database Description: <span className="importantfield">*</span></label>
                         <input
                             type="text"
@@ -92,7 +92,7 @@ function CreateDataSetPopUp({ func, dsName, dsDesciption, dsType, setToogle }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={0.7}>
+                    <Grid item md={1}>
                         <Button variant="contained" onClick={handleSubmit} sx={{ marginTop: "18px" }}>
                             Save
                         </Button>
