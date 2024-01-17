@@ -160,17 +160,17 @@ const UserSettings = lazy(() => import(`../pages/UserSettings`));
 
 export const Routes = [
   {
-    path: "Project_Settings",
+    path: "Project-Settings",
     element: ProjectSettings,
     accessRole: [1, 2, 4],
   },
   {
-    path: "User_settings",
+    path: "User-settings",
     element: UserSettings,
     accessRole: [1, 2, 3, 4, 5],
   },
   {
-    path: "Recent_Applications",
+    path: "Recent-Applications",
     element: applicationList,
     accessRole: [1, 2, 4],
     subRoute: [
@@ -230,7 +230,7 @@ export const Routes = [
     ],
   },
   {
-    path: "Search_Applications",
+    path: "Search-Applications",
     element: applicationList,
     accessRole: [1, 2, 4],
     subRoute: [
@@ -289,12 +289,12 @@ export const Routes = [
     ],
   },
   {
-    path: "Create_Applications",
+    path: "Create-Applications",
     element: createApplication,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Favourite_Projects",
+    path: "Favourite-Projects",
     element: Projects,
     accessRole: [1, 2, 4],
     subRoute: [
@@ -311,7 +311,7 @@ export const Routes = [
     ],
   },
   {
-    path: "Search_Projects",
+    path: "Search-Projects",
     element: Projects,
     accessRole: [1, 2, 4],
     subRoute: [
@@ -328,7 +328,7 @@ export const Routes = [
     ],
   },
   {
-    path: "Create_Projects",
+    path: "Create-Projects",
     element: CreateProject,
     accessRole: [1, 2, 4],
   },
@@ -349,22 +349,22 @@ export const Routes = [
   },
 
   {
-    path: "Active_Reports",
+    path: "Active-Reports",
     element: ActiveReports,
     accessRole: [2],
   },
   {
-    path: "Add_User",
+    path: "Add-User",
     element: AddUser,
     accessRole: [2, 3, 4],
   },
   {
-    path: "Edit_User",
+    path: "Edit-User",
     element: EditUser,
     accessRole: [2, 3, 4],
   },
   {
-    path: "Add_Git_Details",
+    path: "Add-Git-Details",
     element: GitDetails,
     accessRole: [2, 3, 4],
   },
@@ -384,136 +384,136 @@ export const Routes = [
     accessRole: [1, 2, 4],
   },
   {
-    path: "Testcase_Execution",
+    path: "Testcase-Execution",
     element: TestcaseExecution,
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Add_Environment",
+        path: "Add-Environment",
         element: AddEnvironemt,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Add_Configure_Device",
+        path: "Add-Configure-Device",
         element: AddConfigurationPopUp,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Configure_Device",
+        path: "Configure-Device",
         element: ConfigureDevice,
         accessRole: [1, 2, 4],
       },
     ],
   },
   {
-    path: "Testset_Execution",
+    path: "Testset-Execution",
     element: TestsetExecution,
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Add_Environment",
+        path: "Add-Environment",
         element: AddEnvironemt,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Configure_Device",
+        path: "Configure-Device",
         element: ConfigureDevice,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Add_Configure_Device",
+        path: "Add-Configure-Device",
         element: AddConfigurationPopUp,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Update_Device",
+        path: "Update-Device",
         element: UpdateConfigureDevice,
         accessRole: [1, 2, 4],
       },
     ],
   },
   {
-    path: "Testcase_Execution",
+    path: "Testcase-Execution",
     element: TestcaseExecution,
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Add_Environment",
+        path: "Add-Environment",
         element: AddEnvironemt,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Configure_Device",
+        path: "Configure-Device",
         element: ConfigureDevice,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Update_Device",
+        path: "Update-Device",
         element: UpdateConfigureDevice,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Link_Project_Execution",
+        path: "Link-Project-Execution",
         element: LinkProjectExecution,
         accessRole: [1, 2, 4],
         subRoute: [
           {
-            path: "Add_Link_Testset",
+            path: "Add-Link-Testset",
             element: AddTestSetLinkProject,
             accessRole: [1, 2, 4],
           },
           {
-            path: "Edit_Link_Testset",
+            path: "Edit-Link-Testset",
             element: EditTestLinkProject,
             accessRole: [1, 2, 4],
           },
         ],
       },
       {
-        path: "Configure_Device",
+        path: "Configure-Device",
         element: ConfigureDevice,
         accessRole: [1, 2, 4],
       },
 
       {
-        path: "Add_Configure_Device",
+        path: "Add-Configure-Device",
         element: AddConfigurationPopUp,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Update_Device",
+        path: "Update-Device",
         element: UpdateConfigureDevice,
         accessRole: [1, 2, 4],
       },
     ],
   },
   {
-    path: "Add_Link_Testset",
+    path: "Add-Link-Testset",
     element: AddTestSetLinkProject,
     accessRole: [1, 4],
   },
   {
-    path: "Edit_Link_Testset",
+    path: "Edit-Link-Testset",
     element: EditTestLinkProject,
     accessRole: [1, 4],
   },
   {
-    path: "Testcase_Execution",
+    path: "Testcase-Execution",
     element: TestcaseExecution,
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Add_Environment",
+        path: "Add-Environment",
         element: AddEnvironemt,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Configure_Device",
+        path: "Configure-Device",
         element: ConfigureDevice,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Update_Device",
+        path: "Update-Device",
         element: UpdateConfigureDevice,
         accessRole: [1, 2, 4],
       },
@@ -521,19 +521,19 @@ export const Routes = [
   },
 
   {
-    path: "Testset_Execution",
+    path: "Testset-Execution",
     element: TestsetExecution,
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Add_Environment",
+        path: "Add-Environment",
         element: AddEnvironemt,
         accessRole: [1, 2, 4],
       },
     ],
   },
   {
-    path: "get_Testcases",
+    path: "get-Testcases",
     element: GetTestcases,
     accessRole: [1, 2, 4],
   },
@@ -544,7 +544,7 @@ export const Routes = [
     accessRole: [1, 2, 3, 4],
   },
   {
-    path: "Create_Pipeline",
+    path: "Create-Pipeline",
     element: CreatePipeline,
     accessRole: [1, 2, 4],
   },
@@ -554,12 +554,12 @@ export const Routes = [
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Update_Pipeline",
+        path: "Update-Pipeline",
         element: UpdatPipeline,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Pipeline_Automation",
+        path: "Pipeline-Automation",
         element: PipelineAutomation,
         accessRole: [1, 2, 4],
         subRoute: [
@@ -573,7 +573,7 @@ export const Routes = [
     ],
   },
   {
-    path: "Create_Ansible_Instance",
+    path: "Create-Ansible-Instance",
     element: CreateAnsibleInstance,
     accessRole: [1, 2, 4],
   },
@@ -583,13 +583,13 @@ export const Routes = [
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Create_Instance",
+        path: "Create-Instance",
         element: CreateInstance,
         accessRole: [1, 2, 4],
       },
 
       {
-        path: "Update_Ansible_Instance",
+        path: "Update-Ansible-Instance",
         element: UpdateAnsibleInstance,
         accessRole: [1, 2, 4],
       },
@@ -612,12 +612,12 @@ export const Routes = [
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "All_Reports",
+        path: "All-Reports",
         element: AllReport,
         accessRole: [1, 2, 4],
       },
       {
-        path: "View_Report",
+        path: "View-Report",
         element: ViewReport,
         accessRole: [1, 2, 4],
       },
@@ -625,17 +625,17 @@ export const Routes = [
   },
 
   {
-    path: "Recent_Testcases",
+    path: "Recent-Testcases",
     element: TestCases,
     accessRole: [1, 2, 4],
     subRoute: [
       {
-        path: "Map_Api_TestCase",
+        path: "Map-Api-TestCase",
         element: MapApiTestCase,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Map_Screen",
+        path: "Map-Screen",
         element: MapScreen,
         accessRole: [1, 2, 4],
       },
@@ -645,35 +645,35 @@ export const Routes = [
         accessRole: [1, 2, 4],
       },
       {
-        path: "Temp_Datasets",
+        path: "Temp-Datasets",
         element: TempDataset,
         accessRole: [1, 2, 4],
       },
 
       {
-        path: "Update_API_Order",
+        path: "Update-API-Order",
         element: APIorderupdate,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Api_Datasets",
+        path: "Api-Datasets",
         element: ApiDatasets,
         accessRole: [1, 2, 4],
       },
       {
-        path: "Copy_Testcase",
+        path: "Copy-Testcase",
         element: MakeCopy,
         accessRole: [1, 2, 4],
       },
     ],
   },
   {
-    path: "Create_Testcase",
+    path: "Create-Testcase",
     element: CreateTestCase,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Recent_Testsets",
+    path: "Recent-Testsets",
     element: Testset,
     accessRole: [1, 2, 4],
     subRoute: [
@@ -688,19 +688,19 @@ export const Routes = [
         accessRole: [1, 2, 4],
       },
       {
-        path: "Copy_Testset",
+        path: "Copy-Testset",
         element: MakeCopy,
         accessRole: [1, 2, 4],
       },
     ],
   },
   {
-    path: "Create_Testset",
+    path: "Create-Testset",
     element: createTestset,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Add_Organization",
+    path: "Add-Organization",
     element: AddOrganization,
     accessRole: [5],
   },
@@ -728,33 +728,33 @@ export const Routes = [
     accessRole: [1, 2, 3, 4, 5],
   },
   {
-    path: "Test_Design",
+    path: "Test-Design",
     element: TestDesign,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Test_Library",
+    path: "Test-Library",
     element: TestLibrary,
     accessRole: [1, 2, 4],
   },
 
   {
-    path: "Failed_Testcases",
+    path: "Failed-Testcases",
     element: TestcaseExecution,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Jenkins_Execution",
+    path: "Jenkins-Execution",
     element: jenkinsExecution,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Custom_Code",
+    path: "Custom-Code",
     element: CustomCode,
     accessRole: [1, 2, 4],
   },
   {
-    path: "Testset_Report",
+    path: "Testset-Report",
     element: TestsetReport,
     accessRole: [1, 2, 4],
   },

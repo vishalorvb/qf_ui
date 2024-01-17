@@ -18,7 +18,7 @@ export const testManagementList = [
       {
         name: "Add User",
         id: "11",
-        route: "Add_User",
+        route: "Add-User",
         accessRole: [2],
       },
       {
@@ -45,20 +45,20 @@ export const testManagementList = [
       {
         name: "Create",
         id: "21",
-        route: "Create_Applications",
+        route: "Create-Applications",
         accessRole: [1, 2, 4],
       },
       {
         name: "Recent",
         id: "22",
-        route: "Recent_Applications",
+        route: "Recent-Applications",
         state: "recentApplication",
         accessRole: [1, 2, 4],
       },
       {
         name: "Search",
         id: "23",
-        route: "Search_Applications",
+        route: "Search-Applications",
         accessRole: [1, 2, 4],
       },
     ],
@@ -73,20 +73,20 @@ export const testManagementList = [
       {
         name: "Create",
         id: "31",
-        route: "Create_Projects",
+        route: "Create-Projects",
         accessRole: [1, 2, 4],
       },
       {
         name: "Favourite",
         id: "32",
-        route: "Favourite_Projects",
+        route: "Favourite-Projects",
         state: "recentProjects",
         accessRole: [1, 2, 4],
       },
       {
         name: "Search",
         id: "33",
-        route: "Search_Projects",
+        route: "Search-Projects",
         accessRole: [1, 2, 4],
       },
     ],
@@ -101,13 +101,13 @@ export const testManagementList = [
       {
         name: "Create",
         id: "41",
-        route: "Create_Testcase",
+        route: "Create-Testcase",
         accessRole: [1, 2, 4],
       },
       {
         name: "Recent",
         id: "42",
-        route: "Recent_Testcases",
+        route: "Recent-Testcases",
         accessRole: [1, 2, 4],
       },
     ],
@@ -122,13 +122,13 @@ export const testManagementList = [
       {
         name: "Create",
         id: "51",
-        route: "Create_Testset",
+        route: "Create-Testset",
         accessRole: [1, 2, 4],
       },
       {
         name: "Recent",
         id: "52",
-        route: "Recent_Testsets",
+        route: "Recent-Testsets",
         accessRole: [1, 2, 4],
       },
     ],
@@ -141,12 +141,12 @@ export const testManagementList = [
     subList: [
       {
         name: "Testcase",
-        route: "Testcase_Execution",
+        route: "Testcase-Execution",
         accessRole: [1, 2, 4],
       },
       {
         name: "Testset",
-        route: "Testset_Execution",
+        route: "Testset-Execution",
         accessRole: [1, 2, 4],
       },
     ],
@@ -163,7 +163,7 @@ export const reportsManagementList = [
   },
   {
     name: "Testset Report",
-    route: "testset_report",
+    route: "testset-report",
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-reports"></i>,
   },
@@ -190,21 +190,21 @@ export const functionalManagementList = [
   {
     name: "Test Design",
     id: "5",
-    route: "Test_Design",
+    route: "Test-Design",
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-testsets"></i>,
   },
   {
     name: "Test Library",
     id: "6",
-    route: "Test_Library",
+    route: "Test-Library",
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-testsets"></i>,
   },
   {
     name: "Custom Code",
     id: "7",
-    route: "Custom_Code",
+    route: "Custom-Code",
     accessRole: [1, 2, 4],
     icon: <i className="qf icon-testsets"></i>,
   },
@@ -220,7 +220,7 @@ export const opsManagementList = [
       {
         name: "Create",
         id: "91",
-        route: "Create_Ansible_Instance",
+        route: "Create-Ansible-Instance",
         accessRole: [1, 2, 4],
       },
       {
@@ -241,7 +241,7 @@ export const opsManagementList = [
       {
         name: "Create",
         id: "1a1",
-        route: "Create_Pipeline",
+        route: "Create-Pipeline",
         accessRole: [1, 2, 4],
       },
       {
