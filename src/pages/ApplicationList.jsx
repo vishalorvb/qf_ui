@@ -23,7 +23,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ExpandMore } from "../CustomComponent/ExpandMore";
 
 export default function ApplicationsList() {
-    const { setHeader, setSnackbarData } = useHead();
+    const { setHeader, setSnackbarData, setShowloader } = useHead();
     const { auth } = useAuth();
     const navigate = useNavigate();
     const [application, setApplication] = useState([]);
@@ -36,7 +36,8 @@ export default function ApplicationsList() {
     const handledeleteApplication = (module_id, id) => {
         deleteApplication(module_id, id).then((res) => {
             if (res) {
-                getApplication(setApplication, auth?.info?.id);
+                setShowloader(true)
+                getApplication(setApplication, auth?.info?.id).then(res => { setShowloader(false) })
                 setSnackbarData({
                     status: true,
                     message: "Application Deleted Successfully",
@@ -246,7 +247,8 @@ export default function ApplicationsList() {
     }, [location?.state]);
 
     useEffect(() => {
-        getApplication(setApplication, auth?.info?.id);
+        setShowloader(true)
+        getApplication(setApplication, auth?.info?.id).then(res => { setShowloader(false) })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

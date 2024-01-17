@@ -17,15 +17,13 @@ import AppleIcon from "@mui/icons-material/Apple";
 import AdUnitsIcon from "@mui/icons-material/AdUnits";
 import useHead from "../../hooks/useHead";
 function ProjectTable({ location }) {
-    console.log(process.env.REACT_APP_authservice);
-
     let [popup, setPopup] = useState(false);
     let [pid, setPid] = useState();
     const navigate = useNavigate();
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     const { auth } = useAuth();
     const loggedInId = auth.info.id;
-    const { projectsList, setProjectList, setSnackbarData } = useHead();
+    const { projectsList, setProjectList, setSnackbarData, setShowloader } = useHead();
 
     function handleDeletePopup(pid) {
         setPopup(true);
@@ -35,13 +33,14 @@ function ProjectTable({ location }) {
         deleteProject(projectId, loggedInId).then((res) => {
             if (res === "SUCCESS") {
                 setSnackbarsuccess(true);
-                getProject(setProjectList, loggedInId);
+                setShowloader(true)
+                setShowloader(true)
+                getProject(setProjectList, loggedInId).then(res => { setShowloader(false) });
             }
         });
 
         setPopup(false);
     }
-
     const columns = [
         {
             field: "project_name",
@@ -101,7 +100,8 @@ function ProjectTable({ location }) {
                         onClick={(e) => {
                             makeProjectFav(loggedInId, param.row.project_id, false).then(
                                 (res) => {
-                                    getProject(setProject, loggedInId);
+                                    setShowloader(true)
+                                    getProject(setProjectList, loggedInId).then(res => { setShowloader(false) });
                                 }
                             );
                         }}
@@ -113,7 +113,8 @@ function ProjectTable({ location }) {
                         onClick={(e) => {
                             makeProjectFav(loggedInId, param.row.project_id, true).then(
                                 (res) => {
-                                    getProject(setProject, loggedInId);
+                                    setShowloader(true)
+                                    getProject(setProjectList, loggedInId).then(res => { setShowloader(false) });
                                 }
                             );
                         }}
@@ -173,7 +174,8 @@ function ProjectTable({ location }) {
 
     useEffect(() => {
         projectsList?.length <= 0 &&
-            getProject(setProjectList, loggedInId, setSnackbarData);
+            setShowloader(true)
+        getProject(setProjectList, loggedInId, setSnackbarData).then(res => { setShowloader(false) });
     }, [loggedInId]);
 
     return (
@@ -204,7 +206,7 @@ function ProjectTable({ location }) {
                 <Table
                     searchPlaceholder="Search Projects"
                     rows={
-                        location?.state === "recentProjects"
+                        location?.state === "fav"
                             ? projectsList?.filter(
                                 (p) => p.is_deleted === false && p.favourite === true
                             )
