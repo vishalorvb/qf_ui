@@ -170,6 +170,7 @@ export default function Login() {
               )}
               <TextField
                 margin="normal"
+                size="small"
                 required
                 fullWidth
                 id="email"
@@ -182,6 +183,7 @@ export default function Login() {
               />
               <TextField
                 margin="normal"
+                size="small"
                 required
                 fullWidth
                 name="password"
@@ -195,6 +197,7 @@ export default function Login() {
 
               <LoadingButton
                 type="submit"
+                size="small"
                 fullWidth
                 variant="contained"
                 loading={loading}
