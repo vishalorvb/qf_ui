@@ -104,7 +104,7 @@ export function getUserProperties(callback, userId) {
 }
 
 export async function postUserProperties(postData, response) {
-    axios
+    return await axios
         .post(
             `${userservice}/userexecutionparameters/saveUserExecutionParameters`,
             postData
@@ -116,5 +116,4 @@ export async function postUserProperties(postData, response) {
             console.log(error);
             return false;
         });
-    return x;
 }

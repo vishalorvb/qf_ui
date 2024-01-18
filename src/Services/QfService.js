@@ -182,13 +182,6 @@ export function getApplicationOfProject(callback, project_id) {
         .get(`${qfservice}/projects/applications?project_id=${project_id}`)
         .then((res) => {
             callback(res.data.data);
-            if (!res.data.data) {
-                setSnackbarData({
-                    status: true,
-                    message: "Project Do Not Have Applications!",
-                    severity: "warning",
-                });
-            }
         }).catch((err) => {
             console.log(err);
         });
