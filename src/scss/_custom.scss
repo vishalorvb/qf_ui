@@ -360,20 +360,19 @@ select {
     height: 88vh;
     overflow: auto;
     scrollbar-gutter: stable;
+  }
+  .content::-webkit-scrollbar {
+    width: 7px;
+  }
 
-    .content::-webkit-scrollbar {
-      width: 7px;
-    }
+  .content::-webkit-scrollbar-track {
+    background: #d6deef;
+    border-radius: 0px 50px 50px 0px;
+  }
 
-    .content::-webkit-scrollbar-track {
-      background: #d6deef;
-      border-radius: 0px 50px 50px 0px;
-    }
-
-    .content::-webkit-scrollbar-thumb {
-      background: #002980;
-      border-radius: 0px 50px 50px 0px;
-    }
+  .content::-webkit-scrollbar-thumb {
+    background: #002980;
+    border-radius: 0px 50px 50px 0px;
   }
 }
 
@@ -387,7 +386,7 @@ select {
 .drawerHeader {
   display: flex;
   align-items: center !important;
-  gap: 30px;
+  gap: 15px;
   padding: 0 18px !important;
   flex-shrink: 0;
 }
@@ -679,8 +678,8 @@ text.highcharts-credits {
   list-style: none;
 
   li {
-    font-size: small;
-    padding: 10px;
+    font-size: smaller;
+    padding: 5px;
     cursor: pointer;
     color: #728fad;
     font-weight: 500;

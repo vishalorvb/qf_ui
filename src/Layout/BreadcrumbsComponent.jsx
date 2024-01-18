@@ -12,7 +12,7 @@ export default function BreadcrumbsComponent() {
         underline="none"
         color="inherit"
         key={idx}
-        sx={{ cursor: "pointer", fontSize: "small" }}
+        sx={{ cursor: "pointer" }}
       >
         {crumb.replaceAll("%20", " ").replaceAll("-", " ")}
       </Typography>

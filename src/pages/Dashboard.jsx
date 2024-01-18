@@ -252,7 +252,7 @@ export default function Dashboard() {
         <Grid item md={2}>
           <label for="">Sprint</label>
           <select
-            style={{ height: "38px" }}
+            // style={{ height: "38px" }}
             id="demo-simple-select"
             value={sprintName}
             onChange={(e) => {
