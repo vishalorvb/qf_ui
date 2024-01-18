@@ -29,7 +29,7 @@ export default function PageHead() {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            sx={{ height: "55px" }}
+            className="pagehead"
           >
             <Stack
               direction="row"

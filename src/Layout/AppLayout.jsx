@@ -13,7 +13,7 @@ export default function AppLayout() {
   const navigate = useNavigate();
   try {
     return (
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", padding: 0, margin: 0 }}>
         <MiniDrawer open={open} setOpen={setOpen} />
         <Box component="main" sx={{ flexGrow: 1 }} className="mainContent">
           <HeaderProvider>

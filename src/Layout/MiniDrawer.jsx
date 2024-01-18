@@ -26,7 +26,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import useLogout from "../hooks/useLogout";
 import UserCard from "./UserCard";
 
-const drawerWidth = 250;
+const drawerWidth = 200;
 
 const drawerTheme = createTheme({
   components: {
