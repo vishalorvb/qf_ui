@@ -25,7 +25,7 @@ function ProjectTable({ location }) {
     let [snackbarsuccess, setSnackbarsuccess] = useState(false);
     const { auth } = useAuth();
     const loggedInId = auth.info.id;
-    const { projectsList, setProjectList, setSnackbarData } = useHead();
+    const { projectsList, setProjectList, setSnackbarData, setShowloader } = useHead();
 
     function handleDeletePopup(pid) {
         setPopup(true);
@@ -35,7 +35,10 @@ function ProjectTable({ location }) {
         deleteProject(projectId, loggedInId).then((res) => {
             if (res === "SUCCESS") {
                 setSnackbarsuccess(true);
-                getProject(setProjectList, loggedInId);
+                setShowloader(true)
+                getProject(setProjectList, loggedInId).then(res => {
+                    setShowloader(false)
+                })
             }
         });
 
@@ -101,7 +104,10 @@ function ProjectTable({ location }) {
                         onClick={(e) => {
                             makeProjectFav(loggedInId, param.row.project_id, false).then(
                                 (res) => {
-                                    getProject(setProject, loggedInId);
+                                    setShowloader(true)
+                                    getProject(setProjectList, loggedInId).then(res => {
+                                        setShowloader(false)
+                                    })
                                 }
                             );
                         }}
@@ -113,7 +119,10 @@ function ProjectTable({ location }) {
                         onClick={(e) => {
                             makeProjectFav(loggedInId, param.row.project_id, true).then(
                                 (res) => {
-                                    getProject(setProject, loggedInId);
+                                    setShowloader(true)
+                                    getProject(setProjectList, loggedInId).then(res => {
+                                        setShowloader(false)
+                                    })
                                 }
                             );
                         }}
@@ -173,7 +182,10 @@ function ProjectTable({ location }) {
 
     useEffect(() => {
         projectsList?.length <= 0 &&
-            getProject(setProjectList, loggedInId, setSnackbarData);
+            setShowloader(true)
+        getProject(setProjectList, loggedInId, setSnackbarData).then(res => {
+            setShowloader(false)
+        })
     }, [loggedInId]);
 
     return (
