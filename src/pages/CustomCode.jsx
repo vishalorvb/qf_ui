@@ -111,7 +111,6 @@ export default function CustomCode() {
             displayKey={"custom_code_page_name"}
             id={"id"}
           />
-          ;
         </Grid>
         <Divider orientation="vertical" flexItem />
         <Grid md={8} container item direction="column" gap={2}>

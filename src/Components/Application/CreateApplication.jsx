@@ -84,7 +84,7 @@ export default function CreateApplication() {
             message: "Application created successfully",
             severity: "success",
           });
-          navigate("/Application/Recent");
+          navigate("Recent-Applications");
         }
         if (res === "Module Updated Successfully") {
           setSnackbarData({
@@ -92,7 +92,7 @@ export default function CreateApplication() {
             message: "Application updated successfully",
             severity: "success",
           });
-          navigate("/Application/Recent");
+          navigate("Recent-Applications");
         }
       });
     } else {
@@ -168,7 +168,7 @@ export default function CreateApplication() {
                 setSelectedType(e.target.value);
               }}
               defaultValue={moduledata.module_type}
-              disabled={location?.pathname !== "/Application/Create"}
+              disabled={location?.pathname !== "/Create-Applications"}
             >
               {APPLICATION_TYPES?.map((appType) => {
                 return (
@@ -237,7 +237,7 @@ export default function CreateApplication() {
               onChange={(e) => {
                 moduledata.base_url = e.target.value;
               }}
-              disabled={location?.pathname !== "/Application/Create"}
+              disabled={location?.pathname !== "Create-Applications"}
             />
           </Stack>
         </Grid>
@@ -268,7 +268,7 @@ export default function CreateApplication() {
         </Button>
         <Button
           sx={{ color: "grey", textDecoration: "underline" }}
-          onClick={() => navigate("/Application/Recent")}
+          onClick={() => navigate("Recent-Applications")}
         >
           Cancel
         </Button>

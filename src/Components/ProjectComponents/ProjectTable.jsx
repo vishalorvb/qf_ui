@@ -198,20 +198,7 @@ function ProjectTable({ location }) {
             />
             <div className="apptable">
                 <div className="intable">
-                    <div style={{ float: "right" }}>
-                        <Button
-                            variant="contained"
-                            onClick={() => {
-                                navigate("/Projects/Create", {
-                                    state: {
-                                        id: undefined,
-                                    },
-                                });
-                            }}
-                        >
-                            Create Project
-                        </Button>
-                    </div>
+                    <div style={{ float: "right" }}></div>
                 </div>
                 <Table
                     searchPlaceholder="Search Projects"

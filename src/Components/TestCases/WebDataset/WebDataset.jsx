@@ -38,7 +38,7 @@ function WebDataset() {
     testcaseId = location.state.testcaseId;
     testcaseName = location.state.testcaseName;
   } catch (error) {
-    navigate("/Testcase/Recent");
+    navigate("Recent-Testcases");
   }
 
   useEffect(() => {

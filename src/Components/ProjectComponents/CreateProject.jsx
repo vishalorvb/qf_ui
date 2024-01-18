@@ -118,7 +118,7 @@ function CreateProject() {
               severity: "success",
             });
             getProject(setProjectList, auth.userId);
-            navigate("/Projects/search");
+            navigate("Search-Projects");
           } else {
             setSnackbarData({
               status: true,
@@ -136,7 +136,7 @@ function CreateProject() {
               severity: "success",
             });
             getProject(setProjectList, auth.userId);
-            navigate("/Projects/search");
+            navigate("Search-Projects");
           } else {
             setSnackbarData({
               status: true,
@@ -642,7 +642,7 @@ function CreateProject() {
             spacing={2}
           >
             <Button
-              onClick={(e) => navigate("/Projects/Search")}
+              onClick={(e) => navigate("Search-Projects")}
               sx={{ color: "grey", textDecoration: "underline" }}
             >
               Cancel

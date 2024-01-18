@@ -73,12 +73,13 @@ export default function TransferList({
               key={value[id]}
               role="listitem"
               onClick={handleToggle(value)}
+              selected={checked.indexOf(value) !== -1}
             >
-              <Checkbox
+              {/* <Checkbox
                 checked={checked.indexOf(value) !== -1}
                 tabIndex={-1}
                 disableRipple
-              />
+              /> */}
               <ListItemText id={labelId} primary={display(value)} />
             </ListItem>
           );
@@ -92,16 +93,6 @@ export default function TransferList({
       <Grid item>{customList(left)}</Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
-          <Button
-            sx={{ my: 0.5 }}
-            variant="outlined"
-            size="small"
-            onClick={handleAllRight}
-            disabled={left?.length === 0}
-            aria-label="move all right"
-          >
-            ≫
-          </Button>
           <Button
             sx={{ my: 0.5 }}
             variant="outlined"
@@ -121,16 +112,6 @@ export default function TransferList({
             aria-label="move selected left"
           >
             &lt;
-          </Button>
-          <Button
-            sx={{ my: 0.5 }}
-            variant="outlined"
-            size="small"
-            onClick={handleAllLeft}
-            disabled={right?.length === 0}
-            aria-label="move all left"
-          >
-            ≪
           </Button>
         </Grid>
       </Grid>

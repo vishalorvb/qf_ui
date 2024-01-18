@@ -158,7 +158,7 @@ export default function TestsetExecution() {
                     onClick={() => {
                       globalProject?.project_id &&
                         globalApplication?.module_id &&
-                        navigate("/Testset/Create");
+                        navigate("Create-Testset");
                     }}
                   >
                     Create Testset
