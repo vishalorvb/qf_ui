@@ -10,3 +10,4 @@ export let dashboard = process.env.REACT_APP_DASHBOARD_SERVICE;
 export let report = process.env.REACT_APP_REPORT_SERVICE;
 
 export let biservice = process.env.REACT_APP_BI_SERVICE;
+

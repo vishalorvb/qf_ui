@@ -7,31 +7,32 @@ import { getPhoto } from "../Services/UserService";
 import MuiListItemIcon from "@mui/material/ListItemIcon";
 import { useNavigate } from "react-router-dom";
 
-export default function UserCard() {
+export default function UserCard({ open, setOpen }) {
     const navigate = useNavigate();
     const { auth } = useAuth();
 
-    const [imageUrl, setImageUrl] = useState(" ");
+    const [imageUrl, setImageUrl] = useState("_");
     const [showUserMenu, setShowUserMenu] = useState(false);
     useEffect(() => {
         getPhoto(setImageUrl, auth.userId, auth.token);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
     return (
         <>
-            <div
-                className="profile"
-            // style={{ width: drawerWidth - 20, overflow: "hidden" }}
-            >
-                <img
-                    alt="profile"
-                    src={imageUrl == "_" ? "profile.jpg" : imageUrl}
-                    width="40"
-                    height="40"
-                    style={{ borderRadius: "50%" }}
-                />
-                <div>
+            <div className="profile">
+                <div className="pic">
+                    <img
+                        alt="profile"
+                        src={imageUrl == "_" ? "profile.jpg" : imageUrl}
+                        width="25"
+                        height="25"
+                        style={{ borderRadius: "50%" }}
+                    />
+                </div>
+
+                {open && <div>
                     <Typography
                         sx={{
                             color: "white",
@@ -39,24 +40,30 @@ export default function UserCard() {
                             textOverflow: "ellipsis",
                         }}
                     >
-                        Welcome {auth?.info?.firstName}
+                        {auth?.info?.firstName}
+
+
                     </Typography>
                     <Typography variant="caption" sx={{ color: "#728FAD" }}>
                         {auth?.info?.userProfiles[0]?.type}
                     </Typography>
-                </div>
-                <MuiListItemIcon>
-                    <ExpandMore
-                        expand={showUserMenu}
-                        onClick={() => setShowUserMenu((ps) => !ps)}
-                        aria-expanded={showUserMenu}
-                        aria-label="show more"
-                        disableFocusRipple
-                        disableRipple
-                    >
-                        <ExpandMoreIcon sx={{ color: "white" }} />
-                    </ExpandMore>
-                </MuiListItemIcon>
+
+                </div>}
+                {open && <div>
+                    <MuiListItemIcon>
+                        <ExpandMore
+                            expand={showUserMenu}
+                            onClick={() => setShowUserMenu((ps) => !ps)}
+                            aria-expanded={showUserMenu}
+                            aria-label="show more"
+                            disableFocusRipple
+                            disableRipple
+                        >
+                            <ExpandMoreIcon sx={{ color: "white" }} />
+                        </ExpandMore>
+                    </MuiListItemIcon>
+                </div>}
+
             </div>
             <Collapse in={showUserMenu}>
                 <ul className="user-menu">
