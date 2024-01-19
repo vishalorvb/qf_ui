@@ -31,23 +31,20 @@ export default function UserCard() {
                     height="40"
                     style={{ borderRadius: "50%" }}
                 />
-
-                {/*{open && (
-          <div>
-            <Typography
-              sx={{
-                color: "white",
-                margin: "0px",
-                textOverflow: "ellipsis",
-              }}
-            >
-              Welcome {auth?.info?.firstName}
-            </Typography>
-            <Typography variant="caption" sx={{ color: "#728FAD" }}>
-              {auth?.info?.userProfiles[0]?.type}
-            </Typography>
-          </div>
-        )}*/}
+                <div>
+                    <Typography
+                        sx={{
+                            color: "white",
+                            margin: "0px",
+                            textOverflow: "ellipsis",
+                        }}
+                    >
+                        Welcome {auth?.info?.firstName}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: "#728FAD" }}>
+                        {auth?.info?.userProfiles[0]?.type}
+                    </Typography>
+                </div>
                 <MuiListItemIcon>
                     <ExpandMore
                         expand={showUserMenu}

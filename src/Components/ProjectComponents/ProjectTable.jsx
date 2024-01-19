@@ -156,7 +156,7 @@ function ProjectTable({ location }) {
                         </MenuItem>
                         <MenuItem
                             onClick={() => {
-                                navigate("/Projects/Create", {
+                                navigate("/Create-Projects", {
                                     state: {
                                         id: param?.row?.project_id,
                                     },
