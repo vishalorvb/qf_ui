@@ -617,13 +617,13 @@ label {
         list-style: none;
 
         li {
-            font-size: 16px;
-            font-weight: 400;
+            //font-size: 16px;
+            //font-weight: 400;
             padding: 5px 10px;
             //display: flex;
             justify-content: space-between;
             align-items: center;
-            //border-bottom: 1px solid $borders;
+            border-bottom: 1px solid $borders;
             cursor: pointer;
 
             &:last-of-type {
@@ -752,4 +752,9 @@ text.highcharts-credits {
 // }
 .css-fji07o-MuiTableCell-root {
     display: none !important;
+}
+
+.application-search {
+    font-size: inherit;
+    height: 3.1rem;
 }

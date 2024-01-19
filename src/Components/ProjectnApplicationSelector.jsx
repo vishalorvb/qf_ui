@@ -6,165 +6,166 @@ import { getApplicationOfProject } from "../Services/QfService";
 import useHead from "../hooks/useHead";
 import { getProject } from "../Services/QfService";
 export default function ProjectnApplicationSelector({
-  isApplication,
-  selectorDisabled,
+    isApplication,
+    selectorDisabled,
 }) {
-  const {
-    globalProject,
-    setglobalProject,
-    globalApplication,
-    setglobalApplication,
-    projectsList,
-    setProjectList,
-    applicationList,
-    setapplicationList,
-    setSnackbarData,
-  } = useHead();
-
-  const { auth } = useAuth();
-
-  const [searchWord, setSearchWord] = useState("");
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    projectsList?.length <= 0 &&
-      getProject(setProjectList, auth.userId, setSnackbarData);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (globalProject === null || globalProject === undefined) {
-      console.log(projectsList[0]);
-      setglobalProject(projectsList[0]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectsList]);
-
-  useEffect(() => {
-    if (globalProject?.project_id !== undefined) {
-      getApplicationOfProject(
+    const {
+        globalProject,
+        setglobalProject,
+        globalApplication,
+        setglobalApplication,
+        projectsList,
+        setProjectList,
+        applicationList,
         setapplicationList,
-        globalProject?.project_id,
-        setSnackbarData
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalProject]);
+        setSnackbarData,
+    } = useHead();
 
-  useEffect(() => {
-    globalApplication === null &&
-      setglobalApplication(applicationList[0] ?? null);
+    const { auth } = useAuth();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [applicationList]);
+    const [searchWord, setSearchWord] = useState("");
+    const [show, setShow] = useState(false);
 
-  //change from here
+    useEffect(() => {
+        projectsList?.length <= 0 &&
+            getProject(setProjectList, auth.userId, setSnackbarData);
 
-  useEffect(() => {
-    //console.log(globalApplication)
-    setSearchWord(globalApplication?.module_name ?? "");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalApplication]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  useEffect(() => {
-    //console.log(searchWord)
-  }, [searchWord]);
+    useEffect(() => {
+        if (globalProject === null || globalProject === undefined) {
+            console.log(projectsList[0]);
+            setglobalProject(projectsList[0]);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [projectsList]);
 
-  return (
-    <Grid
-      container
-      spacing={2}
-      justifyContent={isApplication !== false ? "space-around" : "flex-end"}
-      direction="row"
-    >
-      <Grid item md={6}>
-        <label>Projects</label>
-        <Autocomplete
-          disabled={selectorDisabled === true}
-          disableClearable
-          id="project_id"
-          options={projectsList}
-          value={globalProject}
-          fullWidth
-          getOptionLabel={(option) => option.project_name ?? ""}
-          onChange={(e, value) => {
-            setglobalApplication(null);
-            setglobalProject(value);
-          }}
-          renderInput={(params) => (
-            <TextField {...params} size="small" fullWidth />
-          )}
-        />
-      </Grid>
-      {isApplication !== false && (
-        <Grid item md={6}>
-          <div className="searchbox">
-            <label>Applications</label>
-            <input
-              type="text"
-              autoComplete="off"
-              name="application"
-              value={searchWord}
-              disabled={selectorDisabled === true}
-              onChange={(e) => setSearchWord(e.target.value)}
-              onFocus={(e) => {
-                setShow(true);
-                setSearchWord("");
-              }}
-              onBlur={(e) => {
-                setTimeout(() => {
-                  setShow(false);
-                  console.log(globalApplication);
-                  //setSearchWord(globalApplication.module_name ?? "")
-                }, 1000);
-              }}
-            />
-            {show && (
-              <div className="applist">
-                <ul>
-                  {applicationList
-                    ?.filter((app) =>
-                      app.module_name
-                        ?.toLowerCase()
-                        .includes(searchWord?.toLowerCase())
-                    )
-                    ?.map((app) => {
-                      return (
-                        <li
-                          key={app.module_id}
-                          onClick={(e) => {
-                            setglobalApplication(app);
-                            e.stopPropagation();
-                          }}
-                        >
-                          {app.module_name}
-                          <ul style={{ paddingLeft: "10px" }}>
-                            {app?.sub_modules_list
-                              ?.filter((a) => !a.is_deleted)
-                              ?.map((subapp) => {
-                                return (
-                                  <li
-                                    key={subapp.module_id}
-                                    onClick={(e) => {
-                                      setglobalApplication(subapp);
-                                      e.stopPropagation();
-                                    }}
-                                  >
-                                    {subapp.module_name}
-                                  </li>
-                                );
-                              })}
-                          </ul>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </div>
+    useEffect(() => {
+        if (globalProject?.project_id !== undefined) {
+            getApplicationOfProject(
+                setapplicationList,
+                globalProject?.project_id,
+                setSnackbarData
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [globalProject]);
+
+    useEffect(() => {
+        globalApplication === null &&
+            setglobalApplication(applicationList[0] ?? null);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [applicationList]);
+
+    //change from here
+
+    useEffect(() => {
+        //console.log(globalApplication)
+        setSearchWord(globalApplication?.module_name ?? "");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [globalApplication]);
+
+    useEffect(() => {
+        //console.log(searchWord)
+    }, [searchWord]);
+
+    return (
+        <Grid
+            container
+            spacing={2}
+            justifyContent={isApplication !== false ? "space-around" : "flex-end"}
+            direction="row"
+        >
+            <Grid item md={6}>
+                <label>Projects</label>
+                <Autocomplete
+                    disabled={selectorDisabled === true}
+                    disableClearable
+                    id="project_id"
+                    options={projectsList}
+                    value={globalProject}
+                    fullWidth
+                    getOptionLabel={(option) => option.project_name ?? ""}
+                    onChange={(e, value) => {
+                        setglobalApplication(null);
+                        setglobalProject(value);
+                    }}
+                    renderInput={(params) => (
+                        <TextField {...params} size="small" fullWidth />
+                    )}
+                />
+            </Grid>
+            {isApplication !== false && (
+                <Grid item md={6}>
+                    <div className="searchbox">
+                        <label>Applications</label>
+                        <input
+                            className="application-search"
+                            type="text"
+                            autoComplete="off"
+                            name="application"
+                            value={searchWord}
+                            disabled={selectorDisabled === true}
+                            onChange={(e) => setSearchWord(e.target.value)}
+                            onFocus={(e) => {
+                                setShow(true);
+                                setSearchWord("");
+                            }}
+                            onBlur={(e) => {
+                                setTimeout(() => {
+                                    setShow(false);
+                                    console.log(globalApplication);
+                                    //setSearchWord(globalApplication.module_name ?? "")
+                                }, 1000);
+                            }}
+                        />
+                        {show && (
+                            <div className="applist">
+                                <ul>
+                                    {applicationList
+                                        ?.filter((app) =>
+                                            app.module_name
+                                                ?.toLowerCase()
+                                                .includes(searchWord?.toLowerCase())
+                                        )
+                                        ?.map((app) => {
+                                            return (
+                                                <li
+                                                    key={app.module_id}
+                                                    onClick={(e) => {
+                                                        setglobalApplication(app);
+                                                        e.stopPropagation();
+                                                    }}
+                                                >
+                                                    {app.module_name}
+                                                    <ul style={{ paddingLeft: "10px" }}>
+                                                        {app?.sub_modules_list
+                                                            ?.filter((a) => !a.is_deleted)
+                                                            ?.map((subapp) => {
+                                                                return (
+                                                                    <li
+                                                                        key={subapp.module_id}
+                                                                        onClick={(e) => {
+                                                                            setglobalApplication(subapp);
+                                                                            e.stopPropagation();
+                                                                        }}
+                                                                    >
+                                                                        {subapp.module_name}
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                    </ul>
+                                                </li>
+                                            );
+                                        })}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                </Grid>
             )}
-          </div>
         </Grid>
-      )}
-    </Grid>
-  );
+    );
 }
