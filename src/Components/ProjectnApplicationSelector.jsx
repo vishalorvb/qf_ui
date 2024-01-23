@@ -116,8 +116,6 @@ export default function ProjectnApplicationSelector({
                             onBlur={(e) => {
                                 setTimeout(() => {
                                     setShow(false);
-                                    console.log(globalApplication);
-                                    //setSearchWord(globalApplication.module_name ?? "")
                                 }, 1000);
                             }}
                         />

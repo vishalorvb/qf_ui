@@ -75,7 +75,6 @@ export default function CreateApplication() {
             return;
         }
         if (validateFormbyName(["appname", "url", "desc"], "error")) {
-            console.log("valid form");
             createApplication(moduledata, auth.info.id).then((res) => {
                 resetModuledata();
                 if (res === "Module Created Successfully") {
@@ -84,7 +83,7 @@ export default function CreateApplication() {
                         message: "Application created successfully",
                         severity: "success",
                     });
-                    navigate("Recent-Applications");
+                    navigate("/Recent-Applications");
                 }
                 if (res === "Module Updated Successfully") {
                     setSnackbarData({
@@ -92,7 +91,7 @@ export default function CreateApplication() {
                         message: "Application updated successfully",
                         severity: "success",
                     });
-                    navigate("Recent-Applications");
+                    navigate("/Recent-Applications");
                 }
             });
         } else {
