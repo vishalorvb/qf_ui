@@ -751,10 +751,11 @@ text.highcharts-credits {
 //   }
 // }
 .css-fji07o-MuiTableCell-root {
-    display: none !important;
+    width: 50px !important;
+    min-width: 10px !important;
 }
 
-.application-search {
+.css-fji07o-MuiTableCell-root .application-search {
     font-size: inherit;
     height: 3.1rem;
 }
