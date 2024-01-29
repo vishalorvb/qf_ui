@@ -47,13 +47,13 @@ sudo docker build -t qareactcicdimage:latest .
 #sudo docker run -d -p 1122:3000 --name reactcicdcontainer reactcicdimage:latest
 
 sudo docker run \
--e REACT_APP_BASE_URL='http://10.11.12.243:8050' \
--e REACT_APP_AUTH_SERVICE='http://10.11.12.243:8051/qfauthservice' \
--e REACT_APP_USER_SERVICE='http://10.11.12.243:8052/qfuserservice' \
--e REACT_APP_APP_SERVICE='http://10.11.12.243:8053/qfservice' \
--e REACT_APP_DASHBOARD_SERVICE='http://10.11.12.243:8054/qfdashboard' \
--e REACT_APP_REPORT_SERVICE='http://10.11.12.243:8055/qfreportservice' \
--e REACT_APP_BI_SERVICE='http://10.11.12.243:8056/biservice' \
+-e REACT_APP_BASE_URL='http://10.11.12.243:8060' \
+-e REACT_APP_AUTH_SERVICE='http://10.11.12.243:8061/qfauthservice' \
+-e REACT_APP_USER_SERVICE='http://10.11.12.243:8062/qfuserservice' \
+-e REACT_APP_APP_SERVICE='http://10.11.12.243:8063/qfservice' \
+-e REACT_APP_DASHBOARD_SERVICE='http://10.11.12.243:8064/qfdashboard' \
+-e REACT_APP_REPORT_SERVICE='http://10.11.12.243:8065/qfreportservice' \
+-e REACT_APP_BI_SERVICE='http://10.11.12.243:8066/biservice' \
 -p 3001:3000 -d --name qareactcicdcontainer qareactcicdimage:latest
 
 exit
