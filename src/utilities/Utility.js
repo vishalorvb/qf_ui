@@ -1,3 +1,4 @@
+import axios from "axios";
 
 
 
@@ -27,3 +28,13 @@ export function dateFormater(originalTime) {
     return formattedTime;
 
 }
+
+let ACCESS_TOKEN = localStorage.getItem("token")
+
+export const Axios = axios.create({
+
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${ACCESS_TOKEN}`,
+    },
+});

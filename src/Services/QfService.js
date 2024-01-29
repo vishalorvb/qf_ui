@@ -1,4 +1,4 @@
-import axios from "axios";
+import { Axios as axios } from "../utilities/Utility";
 import { qfservice } from "../Environment";
 
 export function getTestset(
