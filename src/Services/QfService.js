@@ -1,5 +1,12 @@
-import axios from "axios";
+import { Axios as axios } from "../utilities/Utility";
 import { qfservice } from "../Environment";
+
+
+export async function getElements(pageId, pageno, size = 10) {
+    return await axios.get(`${qfservice}/webpages/getWebPageElementsList1?web_page_id=${pageId}&selected_elements_only=false&page=${pageno}&size=${size}`).then(res => {
+        return { totalPage: res.data.info.totalPages, totalElement: res.data.info.totalElements, elements: res.data.info.content }
+    })
+}
 
 export function getTestset(
     projectId,
@@ -481,7 +488,8 @@ export async function getJiraProject(
         )
         .then((res) => {
             callback(res.data.info);
-            return res.data.info === null ? false : true;
+            let r = { response: res.data.info === null ? false : true, data: res.data.info ?? [] }
+            return r;
         }).catch((err) => {
             console.log(err);
         });
