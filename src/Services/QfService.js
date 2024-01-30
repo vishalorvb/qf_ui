@@ -488,7 +488,8 @@ export async function getJiraProject(
         )
         .then((res) => {
             callback(res.data.info);
-            return res.data.info === null ? false : true;
+            let r = { response: res.data.info === null ? false : true, data: res.data.info ?? [] }
+            return r;
         }).catch((err) => {
             console.log(err);
         });
