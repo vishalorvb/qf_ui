@@ -1,5 +1,6 @@
-import { Axios as axios } from "../utilities/Utility";
+
 import { dashboard } from "../Environment";
+import { Axios as axios } from "../utilities/Utility";
 
 export function ReportPercentage(callback, projectId, sprintName = 0) {
     axios({
@@ -14,7 +15,7 @@ export function ReportPercentage(callback, projectId, sprintName = 0) {
     });
 }
 
-export function getDashboardDetails(projectId, userId) {
+export async function getDashboardDetails(projectId, userId) {
     return axios.get(
         `${dashboard}/dashboard/${projectId}?userId=${userId}`
     ).catch((err) => {
