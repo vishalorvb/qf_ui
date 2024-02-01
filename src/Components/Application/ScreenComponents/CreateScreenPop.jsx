@@ -111,7 +111,7 @@ export default function CreateScreenPop(props) {
                         }}
                     />
                 </Grid>
-                <Grid item md={4} mt={2.3}>
+                <Grid item md={4} mt={1.5}>
                     <Button variant="contained" onClick={saveScreen}>
                         Save & Continue
                     </Button>
