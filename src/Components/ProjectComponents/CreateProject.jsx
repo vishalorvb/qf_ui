@@ -172,8 +172,9 @@ function CreateProject() {
             auth.info.organization_id
         ).then((res) => {
             if (res.data.length > 0) {
-                submitData.current.jira_project_id = res.data[0].id
-                console.log(res.data)
+
+                submitData.current.jira_project_id = res.data[0].jira_project_id
+                console.log(submitData)
             }
             if (res.response === false) {
                 setSnackbarData({
@@ -591,7 +592,6 @@ function CreateProject() {
                                 <select
                                     onChange={(e) => {
                                         submitData.current.jira_project_id = e.target.value;
-                                        console.log(submitData.current.jira_project_id)
                                         jiraProject.forEach((project) => {
                                             if (project.jira_project_id === e.target.value) {
                                                 submitData.current.jira_project_key = project.key;
