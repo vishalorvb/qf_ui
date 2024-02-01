@@ -38,3 +38,7 @@ export const Axios = axios.create({
         'Authorization': `Bearer ${ACCESS_TOKEN}`,
     },
 });
+
+
+
+export const AxiosWithoutHeader = axios.create()

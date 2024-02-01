@@ -1,4 +1,4 @@
-import { Axios as axios } from "../utilities/Utility";
+import axios from "axios"
 import { report } from "../Environment";
 
 export async function getReport(fromDate, toDate, applicationId, userId) {

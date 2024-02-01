@@ -1,4 +1,4 @@
-import { Axios as axios } from "../utilities/Utility";
+import axios from "axios"
 import { biservice } from "../Environment";
 
 export async function deleteReport(testMapId, callback) {

@@ -1,6 +1,6 @@
 
 import { dashboard } from "../Environment";
-import { Axios as axios } from "../utilities/Utility";
+import axios from "axios"
 
 export function ReportPercentage(callback, projectId, sprintName = 0) {
     axios({

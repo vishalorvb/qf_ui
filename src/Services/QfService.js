@@ -1,4 +1,4 @@
-import { Axios as axios } from "../utilities/Utility";
+import axios from "./AxiosConfig"
 import { qfservice } from "../Environment";
 
 

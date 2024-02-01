@@ -1,5 +1,5 @@
 import { qfservice } from "../Environment";
-import { Axios as axios } from "../utilities/Utility";
+import axios from "axios"
 
 export async function scheduleJob(data) {
     return await axios({
