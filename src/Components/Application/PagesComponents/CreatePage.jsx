@@ -1,6 +1,7 @@
 import { Button, MenuItem, Select } from "@mui/material";
 import { Stack } from "@mui/system";
 import axios from "axios";
+import { AxiosWithoutHeader } from "../../../utilities/Utility";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import useAuth from "../../../hooks/useAuth";
 import useHead from "../../../hooks/useHead";
@@ -34,7 +35,7 @@ export default function CreatePage({ callGetPages }) {
                         severity: "error",
                     });
                 resp?.data?.status === "SUCCESS" &&
-                    axios
+                    AxiosWithoutHeader
                         .postForm(`http://127.0.0.1:8765/connect`, {
                             data: resp?.data?.info,
                             jarName:

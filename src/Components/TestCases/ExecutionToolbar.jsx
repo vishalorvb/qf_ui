@@ -10,6 +10,7 @@ import {
     useForm,
 } from "react-hook-form-mui";
 import axios from "axios";
+import { AxiosWithoutHeader } from "../../utilities/Utility";
 import FeatureMenu from "../Execution/FeatureMenu";
 import * as yup from "yup";
 import useAuth from "../../hooks/useAuth";
@@ -125,7 +126,7 @@ export default function ExecutionToolbar({
                     });
                 }
                 if (resp?.data?.status === "SUCCESS" && resp?.data?.info) {
-                    axios
+                    AxiosWithoutHeader
                         .postForm(`http://127.0.0.1:8765/connect`, {
                             data: resp?.data?.info,
                             jarName: `code`,
