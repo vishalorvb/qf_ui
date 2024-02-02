@@ -36,7 +36,7 @@ export function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-    console.log("login")
+
     const [loginErr, setLoginErr] = React.useState(false);
     const [fieldsErr, setfieldsErr] = React.useState({ email: "", password: "" });
     const [loading, setLoading] = React.useState(false);
@@ -67,14 +67,13 @@ export default function Login() {
                 );
                 const token = response?.data?.token;
                 localStorage.setItem("token", token);
-                console.log(token)
                 const userInfo = await axios.get(
                     authservice + "/authentication/userInfo",
                     {
-                        //headers: {
-                        //    "Content-Type": "application/json",
-                        //    Authorization: `Bearer ${token}`,
-                        //},
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
                 );
                 const info = userInfo?.data?.info;
