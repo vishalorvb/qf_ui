@@ -13,8 +13,9 @@ axios.interceptors.request.use(
         return config;
     },
     function (error) {
+        console.log(error)
         if (error.reponse.status <= 199 || error.reponse.status >= 300) {
-
+            console.log("Error in call")
         }
         return Promise.reject(error);
     }

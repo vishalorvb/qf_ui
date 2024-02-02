@@ -57,7 +57,6 @@ export function getPhoto(callback, userId, token) {
         .then((response) => {
             const blob = new Blob([response.data], { type: "image/png" });
             callback(URL.createObjectURL(blob));
-            console.log(URL.createObjectURL(blob));
         })
         .catch((error) => {
             console.error(error);

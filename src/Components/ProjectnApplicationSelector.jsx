@@ -35,7 +35,6 @@ export default function ProjectnApplicationSelector({
 
     useEffect(() => {
         if (globalProject === null || globalProject === undefined) {
-            console.log(projectsList[0]);
             setglobalProject(projectsList[0]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

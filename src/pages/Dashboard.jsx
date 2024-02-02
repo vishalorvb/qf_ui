@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Axios as axios } from "../utilities/Utility";
+import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import useHead from "../hooks/useHead";
 import SnackbarNotify from "../CustomComponent/SnackbarNotify";
@@ -14,6 +14,7 @@ import AutomationGraph from "../Components/DashboardComponents/AutomationGraph";
 import PredictionStatus from "../Components/DashboardComponents/PredictionStatus";
 import TestDesignAutomationGraph from "../Components/DashboardComponents/TestdesignAutomationGraph";
 import { dashboard } from "../Environment";
+//import { getDashboardDetails } from "../Services/DashboardService";
 
 export default function Dashboard() {
     const {
@@ -51,57 +52,57 @@ export default function Dashboard() {
     let [faildata, setFaildata] = useState([]);
 
     function dashboardDetails() {
-        console.log(dashboard)
         setAutomationTDgraph(false);
-        axios
-            .get(
-                `${dashboard}/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`
-            )
-            .then((res) => {
-                setInfo(res?.data?.data?.model);
-                setTestCases(res?.data?.data?.model.automation_test_cases_count);
-                setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count);
-                settotalSprint(res?.data?.data?.model.sprint_overview);
-                if (res?.data?.data?.model.automation_graph?.length > 0) {
-                    let info = (res.data?.data?.model.automation_graph).replace(
-                        /(&#034)/g,
-                        '"'
-                    );
-                    let jinfo = JSON.parse(info);
-                    const sprintList = jinfo?.map((element) => element.period);
-                    setSprintList(sprintList);
-                }
-                if (res?.data?.data?.model.show_automation_graph === true) {
-                    setAutomationGraph(true);
-                }
-                if (res?.data?.data?.model.show_tensorflow === true) {
-                    setShowTensorFlow(true);
-                }
-                if (
-                    res?.data?.data?.model.show_automation_of_testdesign_graph === true
-                ) {
-                    setAutomationTDgraph(true);
-                }
-                if (res?.data?.data?.model.pure_automation_graph?.length > 0) {
-                    let info = (res?.data?.data?.model.pure_automation_graph).replace(
-                        /(&#034)/g,
-                        '"'
-                    );
-                    let jinfo = JSON.parse(info);
-                    const androidArray = jinfo?.map(
-                        (element) => element.android_testcases
-                    );
-                    setAndroidTestcase(androidArray);
-                    const iosArray = jinfo?.map((element) => element.ios_testcases);
-                    setIosTestcase(iosArray);
-                    const webArray = jinfo?.map((element) => element.web_testcases);
-                    setWebTestcase(webArray);
-                    const apiArray = jinfo?.map((element) => element.api_testcases);
-                    setApiTestcase(apiArray);
-                    const periodArray = jinfo?.map((element) => element.period);
-                    setPeriod(periodArray);
-                }
-            });
+        //axios
+        //    .get(
+        //        `${dashboard}/dashboard/${globalProject?.project_id}?userId=${auth?.userId}`
+        //    )
+        getDashboardDetails(globalProject?.project_id, auth?.userId).then((res) => {
+            console.log(res)
+            setInfo(res?.data?.data?.model);
+            setTestCases(res?.data?.data?.model.automation_test_cases_count);
+            setdataSets(res?.data?.data?.model.automation_test_cases_dataset_count);
+            settotalSprint(res?.data?.data?.model.sprint_overview);
+            if (res?.data?.data?.model.automation_graph?.length > 0) {
+                let info = (res.data?.data?.model.automation_graph).replace(
+                    /(&#034)/g,
+                    '"'
+                );
+                let jinfo = JSON.parse(info);
+                const sprintList = jinfo?.map((element) => element.period);
+                setSprintList(sprintList);
+            }
+            if (res?.data?.data?.model.show_automation_graph === true) {
+                setAutomationGraph(true);
+            }
+            if (res?.data?.data?.model.show_tensorflow === true) {
+                setShowTensorFlow(true);
+            }
+            if (
+                res?.data?.data?.model.show_automation_of_testdesign_graph === true
+            ) {
+                setAutomationTDgraph(true);
+            }
+            if (res?.data?.data?.model.pure_automation_graph?.length > 0) {
+                let info = (res?.data?.data?.model.pure_automation_graph).replace(
+                    /(&#034)/g,
+                    '"'
+                );
+                let jinfo = JSON.parse(info);
+                const androidArray = jinfo?.map(
+                    (element) => element.android_testcases
+                );
+                setAndroidTestcase(androidArray);
+                const iosArray = jinfo?.map((element) => element.ios_testcases);
+                setIosTestcase(iosArray);
+                const webArray = jinfo?.map((element) => element.web_testcases);
+                setWebTestcase(webArray);
+                const apiArray = jinfo?.map((element) => element.api_testcases);
+                setApiTestcase(apiArray);
+                const periodArray = jinfo?.map((element) => element.period);
+                setPeriod(periodArray);
+            }
+        }).catch(err => console.log(err))
     }
 
     function getTensorflowData() {
