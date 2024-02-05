@@ -29,4 +29,16 @@ export function dateFormater(originalTime) {
 
 }
 
+//let ACCESS_TOKEN = localStorage.getItem("token")
+
+//export const Axios = axios.create({
+
+//    headers: {
+//        'Content-Type': 'application/json',
+//        'Authorization': `Bearer ${ACCESS_TOKEN}`,
+//    },
+//});
+
+
+
 export const AxiosWithoutHeader = axios.create()
