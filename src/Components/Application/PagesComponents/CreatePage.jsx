@@ -15,16 +15,29 @@ export default function CreatePage({ callGetPages }) {
 
     const createPage = () => {
         setShowloader(true);
-        axios
-            .postForm(`${qfservice}/webpages/LaunchJNLPToCreateWebPage`, {
-                user_id: auth?.userId,
-                module_id: location?.state?.module_id,
-                web_page_url: location?.state?.base_url,
-                user_name: auth?.user,
-                mobile_os: "",
-                diff_page_id: 0,
-                browser_name: header?.browser,
-            })
+        axios({
+            method: 'post',
+            url: `${qfservice}/webpages/LaunchJNLPToCreateWebPage?user_id=${auth?.userId}&module_id=${location?.state?.module_id}&web_page_url=${location?.state?.base_url}&user_name=${auth?.user}&mobile_os&diff_page_id=${0}&browser_name=${header?.browser}`,
+            //data: {
+            //    user_id: auth?.userId,
+            //    module_id: location?.state?.module_id,
+            //    web_page_url: location?.state?.base_url,
+            //    user_name: auth?.user,
+            //    mobile_os: "",
+            //    diff_page_id: 0,
+            //    browser_name: header?.browser,
+            //}
+        })
+            //axios
+            //    .post(`${qfservice}/webpages/LaunchJNLPToCreateWebPage`, {
+            //        user_id: auth?.userId,
+            //        module_id: location?.state?.module_id,
+            //        web_page_url: location?.state?.base_url,
+            //        user_name: auth?.user,
+            //        mobile_os: "",
+            //        diff_page_id: 0,
+            //        browser_name: header?.browser,
+            //    })
             .then((resp) => {
                 console.log(resp?.data?.info);
                 resp?.data?.status === "FAIL" && setShowloader(false);
