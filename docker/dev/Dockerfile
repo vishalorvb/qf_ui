@@ -7,7 +7,7 @@
 
 
 
-FROM node:14-alpine
+FROM node:16
  
 # Set the working directory inside the container
 

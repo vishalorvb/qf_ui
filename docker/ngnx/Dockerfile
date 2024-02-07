@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.16 as build
+FROM node:16 as build
 WORKDIR /qf_react
 COPY package.json .
 RUN npm i
